@@ -13,26 +13,31 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build",
     "lint": "npm run lint:js",
     "lint:css": "stylelint './app/**/*.js'",
     "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts",
     "lint:eslint:fix": "eslint --ignore-path .gitignore --ignore-pattern internals/scripts --fix",
-    "lint:js": "npm run lint:eslint -- . "
+    "lint:js": "npm run lint:eslint -- . ",
+    "flow": "flow"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
-    "react-redux": "5.0.7",
-    "react-router-dom": "4.3.1",
-    "redux-immutable": "4.0.0",
-    "redux-saga": "0.16.2",
     "antd": "^3.16.2",
+    "flow-bin": "^0.96.0",
     "history": "4.7.2",
     "immutable": "3.8.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "5.0.7",
+    "react-router-dom": "4.3.1",
+    "react-scripts": "2.1.8",
+    "react-styleguidist": "^9.0.7",
+    "redux-immutable": "4.0.0",
+    "redux-saga": "0.16.2",
     "styled-components": "4.0.2"
   }
 }
