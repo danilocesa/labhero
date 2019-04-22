@@ -30,6 +30,8 @@
     "flow-bin": "^0.96.0",
     "history": "4.7.2",
     "immutable": "3.8.2",
+    "loadable-components": "2.2.3",
+    "prop-types": "15.6.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "5.0.7",
