@@ -3,6 +3,7 @@ import { Layout } from 'antd';
 import { Route, withRouter } from 'react-router-dom';
 
 import Dashboard from '../../../modules/main/dashboard';
+import SearchLabTestResult from '../../../modules/main/search_lab_result';
 
 const { Content: Antcontent } = Layout;
 
@@ -16,6 +17,7 @@ const wrapperStyle = {
 const Content = (props) => (
   <Antcontent style={wrapperStyle}>
     <Route path="/dashboard" component={Dashboard} />
+    <Route path="/searchlabresult" component={SearchLabTestResult} />
   </Antcontent>
 );
 

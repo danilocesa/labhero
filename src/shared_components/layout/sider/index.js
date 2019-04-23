@@ -29,8 +29,10 @@ class Sider extends React.Component {
             </Link>
           </Menu.Item>
           <Menu.Item key="3">
-            <Icon type="search" className="sidenav-icon" />
-            <span>SEARCH</span>
+            <Link to="/searchlabresult">
+              <Icon type="search" className="sidenav-icon" />
+              <span>SEARCH</span>
+            </Link>  
           </Menu.Item>
         </Menu>
       </AntSider>

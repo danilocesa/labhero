@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Form, Icon, Input, Button, Layout, Col, Typography  } from 'antd';
+import { Row, Form, Icon, Input, Button, Layout, Col  } from 'antd';
 import { Link } from "react-router-dom";
 
 import 'antd/dist/antd.css';
@@ -8,7 +8,6 @@ import './login.css';
 import { CompanyLogo } from '../../images';
 
 const { Header, Content, } = Layout;
-const { Title } = Typography;
   
 class Login extends React.Component {
     handleSubmit = (e) => {
