@@ -9,6 +9,11 @@
     border: #F5222D;
 }
 
+.redirect-home{
+    margin-left: 5px;
+    color:#000;
+    font-weight:600;
+}
 
 .ant-form-item-required::before{
     display:none;

@@ -2,9 +2,10 @@
 
 Describe login feature
 
-## Quick Overview
+## To Do
 
+1. Api function
+2. Show password function
 
 ## Bugs
 
-1. Fix vertical alignment
