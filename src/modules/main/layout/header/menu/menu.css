@@ -1,0 +1,29 @@
+.user-menu {
+  margin-top: 17px;
+  line-height: 15px;
+}
+
+.user-menu-text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 7px;
+}
+
+.user-menu-avatar {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 7px;
+}
+
+.user-menu-text span {
+  display: block;
+}
+
+.user-menu-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.user-menu-icon a i {
+  color: black;
+}
