@@ -1,0 +1,19 @@
+
+
+.action-container .save-button {
+    background-color: #615DE0;
+    border-radius: 30px;
+    padding: 0 30px;
+    color: #ffffff;
+    margin-left: 20px;
+    height: 35px;
+    line-height: 34px;
+}
+
+.action-container .back-button {
+    border: 0px solid transparent;
+}
+
+.action-container .back-button span {
+    text-decoration: underline;
+}

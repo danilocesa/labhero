@@ -28,15 +28,26 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "antd": "^3.16.2",
+    "babel-plugin-import": "^1.11.0",
     "bizcharts": "^3.5.2",
+<<<<<<< HEAD
     "customize-cra": "^0.2.12",
+=======
+    "customize-cra": "^0.2.11",
+>>>>>>> 7291d3b3b1f501a7766f7fa8af8e75b294d7107e
     "flow-bin": "^0.96.0",
     "history": "4.7.2",
     "immutable": "3.8.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "loadable-components": "2.2.3",
     "prop-types": "15.6.2",
     "react": "^16.8.6",
+<<<<<<< HEAD
     "react-app-rewired": "^2.1.3",
+=======
+    "react-app-rewired": "^2.1.2",
+>>>>>>> 7291d3b3b1f501a7766f7fa8af8e75b294d7107e
     "react-dom": "^16.8.6",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
@@ -46,9 +57,13 @@
     "redux-saga": "0.16.2",
     "styled-components": "4.0.2"
   },
+<<<<<<< HEAD
   "devDependencies": {
     "babel-plugin-import": "^1.11.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0"
   }
+=======
+  "devDependencies": {}
+>>>>>>> 7291d3b3b1f501a7766f7fa8af8e75b294d7107e
 }
