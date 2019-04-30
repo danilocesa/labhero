@@ -4,6 +4,8 @@ import { Route, withRouter } from 'react-router-dom';
 
 import Dashboard from '../../../modules/main/dashboard';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
+import PatientInfo from '../../../modules/main/patientinfo';
+
 
 const { Content: Antcontent } = Layout;
 
