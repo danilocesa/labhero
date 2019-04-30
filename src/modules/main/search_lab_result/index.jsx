@@ -1,10 +1,18 @@
 import React from 'react';
-import SearchLabTestForm from './searchform';
+import { Row, Col, } from 'antd';
+
+import SearchLabTestForm from './search_form';
+import SearchLabTestResultList from './search_result';
 
 class SearchLabTestResult extends React.Component {
     render() {
       return (
-          <SearchLabTestForm />
+        <Row type="flex" align="center">
+          <Col span={20}>
+            <SearchLabTestForm />
+            <SearchLabTestResultList />
+          </Col>
+        </Row>
       );
     }
 }

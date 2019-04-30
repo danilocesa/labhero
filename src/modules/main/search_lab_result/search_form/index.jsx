@@ -1,7 +1,6 @@
 import React from 'react';
 import { Row, Form, Input, Button, Col, Typography, DatePicker, Select, Radio  } from 'antd';
 
-import 'antd/dist/antd.css';
 import './searchform.css';
 
 const { Title } = Typography;
@@ -13,8 +12,6 @@ const RadioButton = Radio.Button;
 class SearchLabTestForm extends React.Component {
     render() {
         return(
-           <Row type="flex" align="center">
-            <Col span={20}>
             <Form> 
                 <Row type="flex" justify="center"><Title level={3}>Search</Title></Row>
                 <Row gutter={16}> 
@@ -73,9 +70,7 @@ class SearchLabTestForm extends React.Component {
                         <Button type="primary" shape="round" size="large"> SEARCH </Button>
                     </Form.Item>
                 </Row>
-            </Form>  
-            </Col>
-           </Row> 
+            </Form> 
         )
     }
 }

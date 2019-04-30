@@ -9,9 +9,9 @@
     "not op_mini all"
   ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
@@ -28,13 +28,18 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "antd": "^3.16.2",
+    "babel-plugin-import": "^1.11.0",
     "bizcharts": "^3.5.2",
+    "customize-cra": "^0.2.11",
     "flow-bin": "^0.96.0",
     "history": "4.7.2",
     "immutable": "3.8.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "loadable-components": "2.2.3",
     "prop-types": "15.6.2",
     "react": "^16.8.6",
+    "react-app-rewired": "^2.1.2",
     "react-dom": "^16.8.6",
     "react-redux": "5.0.7",
     "react-router-dom": "4.3.1",
@@ -43,5 +48,6 @@
     "redux-immutable": "4.0.0",
     "redux-saga": "0.16.2",
     "styled-components": "4.0.2"
-  }
+  },
+  "devDependencies": {}
 }
