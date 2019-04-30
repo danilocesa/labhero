@@ -108,7 +108,6 @@ class LineChart extends React.Component {
             position="month*temperature"
             size={2}
             color={"city"}
-            shape={"smooth"}
           />
           <Geom
             type="point"

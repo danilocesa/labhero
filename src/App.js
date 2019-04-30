@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainLayout from './modules/main/layout';
+import MainLayout from './shared_components/layout';
 
 import './App.css';
 

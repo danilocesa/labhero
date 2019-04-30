@@ -1,0 +1,9 @@
+.test-list {
+  margin-top: 10px !important;
+  height: 250px;
+  overflow: auto;
+}
+
+.test-list .ant-card-body .ant-btn {
+  margin: 5px;
+}

@@ -2,7 +2,8 @@ import React from 'react';
 import { Layout } from 'antd';
 import { Route, withRouter } from 'react-router-dom';
 
-import Dashboard from '../../dashboard';
+import DashboardPage from '../../../modules/main/dashboard';
+import CreateRequestPage from '../../../modules/main/request/create';
 
 const { Content: Antcontent } = Layout;
 
@@ -15,7 +16,8 @@ const wrapperStyle = {
 
 const Content = (props) => (
   <Antcontent style={wrapperStyle}>
-    <Route path="/dashboard" component={Dashboard} />
+    <Route path="/dashboard" component={DashboardPage} />
+    <Route path="/request/create" component={CreateRequestPage} />
   </Antcontent>
 );
 
