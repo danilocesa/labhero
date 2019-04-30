@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MainLayout from './shared_components/layout';
-<<<<<<< HEAD
-=======
 import Login from './modules/login';
 import PatientInfo from './modules/main/patientinfo';
->>>>>>> 7291d3b3b1f501a7766f7fa8af8e75b294d7107e
 
 import './App.css';
 
