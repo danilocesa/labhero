@@ -63,12 +63,12 @@ class SearchLabTestForm extends React.Component {
             <Col sm={22} xs={24} > 
                 <Form onSubmit={this.handleSubmit} id="searchlabtestresultform" > 
                     <Row type="flex" align="middle" justify="center">
-                        <Title level={3}>Search</Title>
+                        <Title level={4}>SEARCH</Title>
                     </Row>
                     <Row type="flex" align="top" gutter={24}> 
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
                             <Form.Item label="DATE CATEGORY" className="gutter-box">
-                                <RadioGroup buttonStyle="solid">
+                                <RadioGroup buttonStyle="solid" defaultValue="a">
                                     <RadioButton value="a">REQUEST</RadioButton>
                                     <RadioButton value="b">VERIFY</RadioButton>
                                     <RadioButton value="c">CHECK-IN</RadioButton>
