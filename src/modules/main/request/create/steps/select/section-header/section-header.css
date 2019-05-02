@@ -1,0 +1,9 @@
+.section-group .ant-radio-group {
+  width: 100%;
+  padding: 0;
+}
+
+.section-group .ant-radio-group .ant-radio-button-wrapper{
+  width: 20%;
+  text-align: center;
+}

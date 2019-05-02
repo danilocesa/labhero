@@ -34,9 +34,10 @@ class ConfirmationModal extends React.Component {
               footer={Footer}
         >
           <Row type="flex" justify="center" >
-            <Col> <img src={CheckIcon} 
-                       alt="logo" 
-                       style={{ height: 65, width: 50, paddingBottom: '1em' }}/>
+            <Col> 
+              <img src={CheckIcon} 
+                   alt="logo" 
+                   style={{ height: 65, width: 50, paddingBottom: '1em' }}/>
             </Col>
           </Row>
           <p className="successful-msg">

@@ -1,19 +1,19 @@
 import React from 'react';
-import { Button } from 'antd';
+import { Radio } from 'antd';
 
-import './new-file.css';
+import './section-header.css';
 
 class SectionHeader extends React.Component {
   render() {
     return (
       <div className="section-group">
-        <Button.Group>
-          <Button type="primary">PANEL</Button>
-          <Button type="primary">HEMATOLOGY</Button>
-          <Button type="primary">CHEMISTRY</Button>
-          <Button type="primary">IMMUNOLOGY</Button>
-          <Button type="primary">MICROSCOPY</Button>
-        </Button.Group>
+        <Radio.Group defaultValue="a" buttonStyle="solid">
+          <Radio.Button value="a">PANEL</Radio.Button>
+          <Radio.Button value="b">HEMATOLOGY</Radio.Button>
+          <Radio.Button value="c">CHEMISTRY</Radio.Button>
+          <Radio.Button value="d">IMMUNOLOGY</Radio.Button>
+          <Radio.Button value="e">MICROSCOPY</Radio.Button>
+        </Radio.Group>
       </div>
     );
   }

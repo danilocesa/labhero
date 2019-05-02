@@ -2,8 +2,11 @@
   margin-top: 10px !important;
   height: 250px;
   overflow: auto;
+  text-align: center;
 }
 
-.test-list .ant-card-body .ant-btn {
+.test-list .ant-card-body .ant-tag {
   margin: 5px;
+  padding: 4px 16px !important;
+  border: 1px solid #d9d9d9;
 }

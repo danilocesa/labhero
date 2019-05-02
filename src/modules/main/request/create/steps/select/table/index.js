@@ -60,45 +60,10 @@ const data = [
     exam: 'POTASSIUM',
     specimen: 'SERUM',
     action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
-  {
-    key: '6',
-    section: 'HEMATHOLOGY',
-    exam: 'CBC',
-    specimen: 'BLOOD',
-    action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
-  {
-    key: '7',
-    section: 'HEMATHOLOGY',
-    exam: 'PROTHROMBIN TIME',
-    specimen: 'SERUM',
-    action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
-  {
-    key: '8',
-    section: 'HEMATHOLOGY',
-    exam: 'EXPANDED APTT',
-    specimen: 'SERUM',
-    action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
-  {
-    key: '9',
-    section: 'CHEMISTRY',
-    exam: 'BUN',
-    specimen: 'SERUM',
-    action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
-  {
-    key: '10',
-    section: 'CHEMISTRY',
-    exam: 'POTASSIUM',
-    specimen: 'SERUM',
-    action: <Icon type="close" style={{ fontSize: 12 }} />
-  },
+  }
 ];
 
-class Table extends React.Component {
+class SelectTable extends React.Component {
   render() {
     return (
       <div className="select-step-table">
@@ -111,5 +76,5 @@ class Table extends React.Component {
   }
 }
 
-export default Table;
+export default SelectTable;
 

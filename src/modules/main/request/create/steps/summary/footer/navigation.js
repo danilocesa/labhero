@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Typography, Layout, Modal } from 'antd';
+import { Row, Col, Button, Typography } from 'antd';
 
 import ConfirmationModal from '../../confirmation/modal';
 
