@@ -22,6 +22,7 @@ const Content = (props) => (
     <Route path="/dashboard" component={DashboardPage} />
     <Route path="/request/create" component={CreateRequestPage} />
     <Route path="/searchlabresult" component={SearchLabTestResult} />
+    <Route path="/patientinfo" component={PatientInfo} />
   </Antcontent>
 );
 
