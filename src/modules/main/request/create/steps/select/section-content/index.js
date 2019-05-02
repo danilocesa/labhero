@@ -68,7 +68,7 @@ const Data = [
 
 class SectionContent extends React.Component {
   render() {
-    const ButtonList = Data.map((item) => <Button>{item}</Button>);
+    const ButtonList = Data.map((item, index) => <Button key={index}>{item}</Button>);
 
     return (
       <Card className="test-list">

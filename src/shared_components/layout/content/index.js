@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import DashboardPage from '../../../modules/main/dashboard';
 import CreateRequestPage from '../../../modules/main/request/create';
@@ -19,9 +19,13 @@ const wrapperStyle = {
 
 const Content = (props) => (
   <Antcontent style={wrapperStyle}>
-    <Route path="/dashboard" component={DashboardPage} />
-    <Route path="/request/create" component={CreateRequestPage} />
-    <Route path="/searchlabresult" component={SearchLabTestResult} />
+    <Switch>
+      <Route path="/dashboard" component={DashboardPage} />
+      <Route path="/request/create" component={CreateRequestPage} />
+      <Route path="/searchlabresult" component={SearchLabTestResult} />
+      <Route path="/patientinfo" component={PatientInfo} />
+      <Redirect from="/" to="/dashboard"/>
+    </Switch>
   </Antcontent>
 );
 

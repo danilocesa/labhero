@@ -29,8 +29,8 @@ class UserMenu extends React.Component {
           </Avatar>
         </div>
         <div className="user-menu-icon">
-          <Dropdown overlay={menu} trigger="click">
-            <a className="ant-dropdown-link" href="#">
+          <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" href="">
               <Icon type="down" />
             </a>
           </Dropdown>

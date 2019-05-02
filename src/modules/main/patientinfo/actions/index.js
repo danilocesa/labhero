@@ -35,14 +35,14 @@ class Actions extends React.Component {
       <div style={{ textAlign:'right', marginTop: '30px' }} className ="action-container">
         <Button href="#" className="back-button">Back</Button>
         <Button href="#" className="save-button" onClick={this.showModal}>SAVE</Button>
-        <div className="save-modal-container">
-          <Modal
+        <div>
+          <Modal className="save-modal-container"
           visible={this.state.visible}
           footer={[
             <Layout>
               <ButtonGroup>
-                <Button href="/" style={{ width: '50%' }} onClick={this.handleOk}>Go to Homepage</Button>
-                <Button href="/" style={{ width: '50%' }} onClick={this.handleCancel}>Search Again</Button>
+                <Button href="/" className="left-btn" style={{ width: '50%' }} onClick={this.handleOk}>Go to Homepage</Button>
+                <Button href="/" className="right-btn" style={{ width: '50%' }} onClick={this.handleCancel}>Search Again</Button>
               </ButtonGroup>
             </Layout>]}>
             <Row type="flex" justify="center" >
