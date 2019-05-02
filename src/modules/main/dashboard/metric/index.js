@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 
+
 import './metric.css';
 
 class Metrics extends React.Component {
@@ -11,10 +12,10 @@ class Metrics extends React.Component {
       <Card className="metrics">
         <img src={image} alt="metrics icon" />
         <div>
-          <text className="metric-value">{value}</text>
+          <span className="metric-value">{value}</span>
         </div>
         <div>
-          <text className="metric-label">{label}</text>
+          <span className="metric-label">{label}</span>
         </div>
       </Card>
     );
