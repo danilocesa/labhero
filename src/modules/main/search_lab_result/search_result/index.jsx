@@ -18,7 +18,7 @@ function SearchLabTestResultList() {
         { title: 'SAMPLE ID', 
           dataIndex: 'SampleId', 
           key: 'SampleId',
-          render: text =>  <Link to="/about/">{text}</Link>,
+          render: text =>  <Link to="/patientinfo/">{text}</Link>,
         },
         { title: 'STATUS', 
           dataIndex: 'Status', 
@@ -101,30 +101,30 @@ for (let i = 1; i < 4; ++i) {
 
 return (
     <div>
-        <Row style={{ paddingBottom: '1em' }} type="flex" justify="end">
-            <Col lg={4} md={6} sm={6} xs={12} className="gutter-row" style={{ lineHeight : '2.5em'}} >
-                <span className="gutter-box" style={{ float:'right', marginRight:'1em' }}> Display per page </span>
-            </Col>
-            <Col lg={2} md={3} sm={6} xs={6} className="gutter-row">
-                <Select defaultValue="10" style={{ width: '100%' }} className="gutter-box">
-                    <Option value="10">10</Option>
-                    <Option value="20">20</Option>
-                    <Option value="50">50</Option>
-                    <Option value="100">100</Option>
-                </Select>
-            </Col>
-        </Row>
-        <Row type="flex">
-            <Col lg={24} xs={24}>
-                <Table
-                className="components-table-demo-nested"
-                columns={columns}
-                expandedRowRender={expandedRowRender}
-                dataSource={data}
-                size="small"
-                />
-            </Col>
-        </Row>
+      <Row style={{ paddingBottom: '1em' }} type="flex" justify="end">
+          <Col lg={4} md={6} sm={6} xs={12} className="gutter-row" style={{ lineHeight : '2.5em'}} >
+              <span className="gutter-box" style={{ float:'right', marginRight:'1em' }}> Display per page </span>
+          </Col>
+          <Col lg={2} md={3} sm={6} xs={6} className="gutter-row">
+              <Select defaultValue="10" style={{ width: '100%' }} className="gutter-box">
+                  <Option value="10">10</Option>
+                  <Option value="20">20</Option>
+                  <Option value="50">50</Option>
+                  <Option value="100">100</Option>
+              </Select>
+          </Col>
+      </Row>
+      <Row type="flex">
+          <Col lg={24} xs={24}>
+              <Table
+              className="components-table-demo-nested"
+              columns={columns}
+              expandedRowRender={expandedRowRender}
+              dataSource={data}
+              size="small"
+              />
+          </Col>
+      </Row>
     </div>
   );
 }

@@ -59,19 +59,19 @@ class SearchLabTestForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return(
-            <Row type="flex" justify="center" align="middle">
+            <Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }} >
             <Col sm={22} xs={24} > 
                 <Form onSubmit={this.handleSubmit} id="searchlabtestresultform" > 
                     <Row type="flex" align="middle" justify="center">
                         <Title level={3}>Search</Title>
                     </Row>
-                    <Row type="flex" align="top" gutter={24} style={{ marginBottom: '-12px' }}> 
+                    <Row type="flex" align="top" gutter={24}> 
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
                             <Form.Item label="DATE CATEGORY" className="gutter-box">
                                 <RadioGroup buttonStyle="solid">
-                                    <RadioButton value="a">Request</RadioButton>
-                                    <RadioButton value="b">Verify</RadioButton>
-                                    <RadioButton value="c">Check-in</RadioButton>
+                                    <RadioButton value="a">REQUEST</RadioButton>
+                                    <RadioButton value="b">VERIFY</RadioButton>
+                                    <RadioButton value="c">CHECK-IN</RadioButton>
                                 </RadioGroup>
                             </Form.Item>
                         </Col>
@@ -89,7 +89,7 @@ class SearchLabTestForm extends React.Component {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row type="flex" align="top" gutter={24} style={{ marginBottom: '-12px' }} >
+                    <Row type="flex" align="top" gutter={24} >
                         <Col lg={8} md={8} sm={10} xs={24}  className="gutter-row" xs={24} >
                             <Form.Item label="PATIENT ID" className="gutter-box">
                                 <Input allowClear='true' />
@@ -113,7 +113,7 @@ class SearchLabTestForm extends React.Component {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row gutter={24} type="flex" align="bottom" style={{ marginBottom: '-12px' }}>
+                    <Row gutter={24} type="flex" align="bottom" gutter={24}>
                         <Col lg={8} md={8} sm={12} xs={24}  className="gutter-row">   
                             <Form.Item label="ADDRESS" hasFeedback className="gutter-box">
                                 <Select placeholder="Please select address" style={{ "width": "100%" }} allowClear="true" >
@@ -122,30 +122,36 @@ class SearchLabTestForm extends React.Component {
                                 </Select>
                             </Form.Item>
                         </Col>
-                        <Col lg={8} md={8} sm={12} xs={24}  className="gutter-row">
-                            <Form.Item label="DATE OF BIRTH" className="gutter-box" >
-                                <ReactDatePicker />
-                            </Form.Item>
+                        <Col lg={8} md={8} sm={8} xs={24}  className="gutter-row">
+                            <Row type="flex" justify="space-between">
+                                <Col className="gutter-row" span={8}>
+                                    <Form.Item label="DATE OF BIRTH" className="gutter-box" >
+                                        <ReactDatePicker />
+                                    </Form.Item>
+                                </Col>    
+                                <Col className="gutter-row">
+                                    <Form.Item label="GENDER" className="gutter-box">
+                                        <RadioGroup buttonStyle="solid">
+                                            <RadioButton value="a">MALE</RadioButton>
+                                            <RadioButton value="b">FEMALE</RadioButton>
+                                        </RadioGroup>
+                                    </Form.Item>
+                                </Col>
+                            </Row>    
                         </Col>
-                        <Col lg={8} md={8} sm={10} xs={24} className="gutter-row"> 
-                            <Form.Item label="GENDER" className="gutter-box">
-                                <RadioGroup buttonStyle="solid">
-                                    <RadioButton value="a">Male</RadioButton>
-                                    <RadioButton value="b">Female</RadioButton>
-                                </RadioGroup>
-                            </Form.Item>
-                        </Col> 
-                    </Row>
-                    <Row gutter={24} type="flex" justify="end">
-                        <Col className="gutter-row">
-                            <Form.Item>
-                                <Button shape="round" onClick={this.handleReset} > CLEAR </Button>
-                            </Form.Item>
-                        </Col>
-                        <Col className="gutter-row">
-                            <Form.Item>
-                                <Button type="primary" shape="round" htmlType="submit"> SEARCH </Button>
-                            </Form.Item>
+                        <Col lg={6} className="gutter-row">
+                            <Row gutter={6} type="flex" justify="end">
+                                <Col className="gutter-row">
+                                    <Form.Item>
+                                        <Button shape="round" onClick={this.handleReset}> CLEAR </Button>
+                                    </Form.Item>
+                                </Col>
+                                <Col className="gutter-row">
+                                    <Form.Item>
+                                        <Button type="primary" shape="round" htmlType="submit"> SEARCH </Button>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
                 </Form> 
