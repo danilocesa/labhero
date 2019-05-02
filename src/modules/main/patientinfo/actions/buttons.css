@@ -26,14 +26,14 @@
     display: none;
 }
 
-.ant-btn-group > .ant-btn:first-child:not(:last-child) {
+.save-modal-container .left-btn {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     padding: 25px;
     line-height: 0;
 }
 
-.ant-btn-group > .ant-btn:last-child:not(:first-child) {
+.save-modal-container .right-btn {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     background: #e34d5c;

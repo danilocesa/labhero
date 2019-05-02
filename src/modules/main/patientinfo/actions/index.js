@@ -31,25 +31,27 @@ class Actions extends React.Component {
 
       render() {
             return(
-                  <div style = {{ textAlign:'right', marginTop: '30px' }} className = "action-container">
-                        <Button href = "#" className = "back-button">Back</Button>
-                        <Button href = "#" className = "save-button" onClick={this.showModal} >SAVE</Button>
-                        <div className = "save-modal-container">
-                              <Modal
-                              visible={this.state.visible}
-                              footer={[
+                  <div>
+                        <div style={{ textAlign:'right', marginTop: '30px' }} className="action-container">
+                              <Button href="#" className="back-button">Back</Button>
+                              <Button href="#" className="save-button" onClick={this.showModal}>SAVE</Button> 
+                        </div>
+                        <div>
+                              <Modal className="save-modal-container"
+                                     visible={this.state.visible}
+                                     footer={[
                                     <Layout>
                                           <ButtonGroup>
-                                                <Button style= {{ width: '50%' }} onClick={this.handleOk} >Go to Homepage</Button>
-                                                <Button style= {{ width: '50%' }} onClick={this.handleCancel} >Search Again</Button>
+                                                <Button className="left-btn" style= {{ width: '50%' }} onClick={this.handleOk} >Go to Homepage</Button>
+                                                <Button className="right-btn" style= {{ width: '50%' }} onClick={this.handleCancel} >Search Again</Button>
                                           </ButtonGroup>
                                     </Layout>
                               ]}
                               >
-                                    <p className = "successful-msg">You have successfully saved a result!</p>
-                                    <p style = {{ textAlign: 'center' }}>A notification will be sent once the request has been verified.</p>
+                                    <p className="successful-msg">You have successfully saved a result!</p>
+                                    <p style={{ textAlign: 'center' }}>A notification will be sent once the request has been verified.</p>
                               </Modal>
-                        </div>
+                        </div>   
                   </div>
             );
       }

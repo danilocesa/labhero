@@ -39,8 +39,11 @@ const metrics_data = [
 
 class DashboardPage extends React.Component {
   render() {
-    const MetricList = metrics_data.map(item => (
-      <Metrics image={item.image} value={item.value} label={item.label}/>
+    const MetricList = metrics_data.map((item, index) => (
+      <Metrics key={index}
+               image={item.image} 
+               value={item.value} 
+               label={item.label} />
     ));
 
     return (
