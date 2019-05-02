@@ -5,7 +5,7 @@ import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 import DashboardPage from '../../../modules/main/dashboard';
 import CreateRequestPage from '../../../modules/main/request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
-// import PatientInfo from '../../../modules/main/patientinfo';
+import PatientInfo from '../../../modules/main/patientinfo';
 
 
 const { Content: Antcontent } = Layout;
@@ -23,6 +23,7 @@ const Content = (props) => (
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
+      <Route path="/patientinfo" component={PatientInfo} />
       <Redirect from="/" to="/dashboard"/>
     </Switch>
   </Antcontent>
