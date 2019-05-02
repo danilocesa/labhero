@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal, Layout, Button } from 'antd';
+import { Modal, Layout, Button, Row, Col } from 'antd';
+import { CheckIcon } from '../../../../../../../images';
 
 const ButtonGroup = Button.Group;
 
@@ -9,16 +10,16 @@ class ConfirmationModal extends React.Component {
       [
         <Layout key="1">
           <ButtonGroup>
-            <Button 
-              className="left-btn" 
-              style= {{ width: '50%' }} 
-              onClick={this.props.closeModal}>
+            <Button href="/"
+                    className="left-btn" 
+                    style= {{ width: '50%' }} 
+                    onClick={this.props.closeModal}>
               Go to Homepage
             </Button>
-            <Button 
-              className="right-btn" 
-              style= {{ width: '50%' }} 
-              onClick={this.props.closeModal}>
+            <Button href="/"
+                    className="right-btn" 
+                    style= {{ width: '50%' }} 
+                    onClick={this.props.closeModal}>
               Search Again
             </Button>
           </ButtonGroup>
@@ -32,6 +33,12 @@ class ConfirmationModal extends React.Component {
               visible={this.props.visible}
               footer={Footer}
         >
+          <Row type="flex" justify="center" >
+            <Col> <img src={CheckIcon} 
+                       alt="logo" 
+                       style={{ height: 65, width: 50, paddingBottom: '1em' }}/>
+            </Col>
+          </Row>
           <p className="successful-msg">
             You have successfully saved a result!
           </p>
