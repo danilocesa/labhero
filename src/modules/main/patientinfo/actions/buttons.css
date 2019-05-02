@@ -17,3 +17,42 @@
 .action-container .back-button span {
     text-decoration: underline;
 }
+
+.ant-modal-footer {
+    padding: 0px;
+}
+
+.ant-modal-close {
+    display: none;
+}
+
+.ant-btn-group > .ant-btn:first-child:not(:last-child) {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    padding: 25px;
+    line-height: 0;
+}
+
+.ant-btn-group > .ant-btn:last-child:not(:first-child) {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background: #e34d5c;
+    color: white;
+    padding: 25px;
+    line-height: 0;
+    border-color: #e34d5c;
+}
+
+.successful-msg {
+    color: #3aa2fb;
+    text-align: center;
+    font-weight: bold;
+}
+
+.ant-modal {
+    width: 450px !important;
+}
+
+.ant-modal-body {
+    padding: 70px;
+}
