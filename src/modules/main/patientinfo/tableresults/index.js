@@ -108,7 +108,7 @@ class EditableTable extends React.Component {
       title: 'EXAM NAME',
       dataIndex: 'name',
       width: 150,
-      fixed: 'left',
+      // fixed: 'left',
     },{
       title: 'INSTRUMENT RESULT',
       dataIndex: 'inst_result',
@@ -216,6 +216,7 @@ class EditableTable extends React.Component {
           columns={columns}
           rowSelection={rowSelection}
           scroll={{ x: 1000 }}
+          size="small"
         />
       </div>
     );
