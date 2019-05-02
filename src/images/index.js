@@ -5,3 +5,4 @@ export { default as MetricRefreshLogo } from './dashb_refresh.png';
 export { default as CompanyLogo } from './company_logo.png';
 export { default as PatientImgPlaceholder } from './image-placeholder.jpg';
 export { default as PrintLogo } from './printer-1.png';
+export { default as CheckIcon } from './check_icon.png';
