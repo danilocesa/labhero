@@ -10,6 +10,8 @@ class Sider extends React.Component {
   render() {
     return (
       <AntSider
+        // breakpoint="lg"
+        // collapsedWidth="0"
         trigger={null}
         collapsible
         collapsed={this.props.collapsed}
@@ -19,11 +21,12 @@ class Sider extends React.Component {
           <Menu.Item key="1">
             <Link to="/dashboard">
               <Icon type="home" className="sidenav-icon" />
+              <span>DASHBOARD</span>
             </Link>
             <span>HOME</span>
           </Menu.Item>
           <Menu.Item key="2">
-            <Link to="/request/add">
+            <Link to="/request/create/step/1">
               <Icon type="plus" className="sidenav-icon" />
               <span>REQUEST</span>
             </Link>

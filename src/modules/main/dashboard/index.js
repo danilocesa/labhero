@@ -37,7 +37,7 @@ const metrics_data = [
   }
 ];
 
-class Dashboard extends React.Component {
+class DashboardPage extends React.Component {
   render() {
     const MetricList = metrics_data.map(item => (
       <Metrics image={item.image} value={item.value} label={item.label}/>
@@ -61,4 +61,4 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+export default DashboardPage;

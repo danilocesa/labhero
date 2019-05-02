@@ -14,6 +14,7 @@ const menu = (
   </Menu>
 );
 
+
 class UserMenu extends React.Component {
   render() {
     return (

@@ -1,0 +1,36 @@
+
+
+.verticalinfo {
+      background-color: #f9f5f5;
+      height: auto;
+      padding: 8%;
+}
+ 
+.main-title {
+      font-size: 11px;
+      color: #aaa8a8;
+}
+
+.info-title {
+      font-weight: bolder;
+}
+
+.info-container {
+      margin: 15px 0px;; 
+}
+
+.info-item {
+      line-height: 30px;
+      font-size: 12px;
+}
+
+.image-placeholder {
+      height: 100%;
+      width: 100%;;
+}
+
+.patient-img {
+      width: 100%;
+      height: auto;
+}
+

@@ -1,0 +1,20 @@
+.request-summary {
+  margin-top: 50px;
+}
+
+.request-summary .section {
+  width: 50%;
+  margin: auto;
+}
+
+.request-summary .comment-section {
+  width: 75%;
+  margin: auto; 
+}
+
+@media only screen and (max-width: 500px) { 
+  .request-summary .section, .request-summary .comment-section {
+    width: 100%;
+    margin: auto;
+  }
+}

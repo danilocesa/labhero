@@ -1,0 +1,8 @@
+.section-group .ant-btn-group {
+  width: 100%;
+  padding: 0;
+}
+
+.section-group .ant-btn-group .ant-btn {
+  width: 20%;
+}
