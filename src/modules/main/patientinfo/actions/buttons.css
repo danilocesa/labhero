@@ -34,13 +34,13 @@
 }
 
 .save-modal-container .right-btn {
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    background: #e34d5c;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    background: #7c78e6;
     color: white;
     padding: 25px;
     line-height: 0;
-    border-color: #e34d5c;
+    border-color: #7c78e6;
 }
 
 .successful-msg {
