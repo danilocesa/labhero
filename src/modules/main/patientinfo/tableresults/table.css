@@ -21,11 +21,6 @@
       text-transform: uppercase;
 }
 
-.print-logo {
-      width: 20px;
-      height: auto;
-}
-
 .patient-table tr:nth-child(2n+1) {
       background: #fbfbfb;
 }

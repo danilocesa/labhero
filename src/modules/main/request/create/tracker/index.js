@@ -35,8 +35,8 @@ const items = [
 
 class Tracker extends React.Component {
   render() {
-    const StepItems = items.map((item) => (
-      <Step 
+    const StepItems = items.map((item, index) => (
+      <Step key={index}
             // title={item.title}
             title={item.description}
             icon={<Icon type={item.icon} />} />

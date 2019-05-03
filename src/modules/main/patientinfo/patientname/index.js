@@ -1,9 +1,13 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 
-import 'antd/dist/antd.css';
 import { PrintLogo } from '../../../../images';
 import { IResultsIcon } from '../../../../images';
+import './patientname.css';
+// import 'antd/dist/antd.css';
+
+
+const ButtonGroup = Button.Group;
 
 class Name extends React.Component {
       render() {
@@ -28,16 +32,19 @@ class Name extends React.Component {
                               </div>
                         </Col>
                         <Col span = {12}>
-                              <div style = {{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '13px' }}>
+                              <div style = {{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
                                     <Row>
-                                          <Col span={6} offset={12}>
-                                                <span style = {{ paddingRight: '10px' }}>iResults</span>
-                                                <img src = { IResultsIcon } className = "print-logo" alt = "iResults Icon" />
-                                          </Col>
-                                          <Col span={6}>
-                                                <span style = {{ paddingRight: '10px' }}>Print</span>
-                                                <img src = { PrintLogo } className = "print-logo" alt = "Print Icon" />
-                                          </Col>
+                                          <ButtonGroup>
+                                                <Button>
+                                                      <img src = { IResultsIcon } className = "print-logo" alt = "iResults Icon" />
+                                                      <span style = {{ paddingLeft: '7px' }}>iResults</span>
+                                                </Button>
+                                                <Button>
+                                                      <img src = { PrintLogo } className = "print-logo" alt = "Print Icon" />
+                                                      <span style = {{ paddingLeft: '7px' }}>Print</span>
+                                                </Button>
+
+                                          </ButtonGroup>
                                     </Row>
                               </div>
                         </Col>

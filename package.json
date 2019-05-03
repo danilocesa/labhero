@@ -12,7 +12,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-app-rewired eject",
+    "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "lint": "npm run lint:js",
@@ -35,7 +35,7 @@
     "history": "4.7.2",
     "immutable": "3.8.2",
     "less": "^3.9.0",
-    "less-loader": "^4.1.0",
+    "less-loader": "^5.0.0",
     "loadable-components": "2.2.3",
     "prop-types": "15.6.2",
     "react": "^16.8.6",
@@ -50,9 +50,5 @@
     "redux-saga": "0.16.2",
     "styled-components": "4.0.2"
   },
-  "devDependencies": {
-    "babel-plugin-import": "^1.11.0",
-    "less": "^3.9.0",
-    "less-loader": "^5.0.0"
-  }
+  "devDependencies": {}
 }

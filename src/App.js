@@ -12,10 +12,10 @@ class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={MainLayout} />
           <Route  path="/login" component={Login} /> 
           <Route  path="/searchlabresult" component={SearchLabTestResult} /> 
           <Route  path="/patientinfo" component={PatientInfo} /> 
+          <Route path="/" component={MainLayout} />
         </Switch>
       </Router>
     );
