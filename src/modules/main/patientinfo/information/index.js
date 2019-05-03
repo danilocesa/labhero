@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col} from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 import { PatientImgPlaceholder } from '../../../../images';
 
@@ -12,6 +12,17 @@ class Information extends React.Component {
             return(
                   
                   <div className = 'verticalinfo'>
+                        
+                        <div className="patient-number">
+                              <Row>
+                                    <Col span={24} className="differential-title">
+                                          <p>DIFFERENTIAL COUNT TOTAL</p>
+                                    </Col>
+                                    <Col span={24} className="differential-content">
+                                          <p>100</p>
+                                    </Col>
+                              </Row>
+                        </div>
 
                         {/* Patient Image Placeholder */}
                         <div className = 'patient-img'>

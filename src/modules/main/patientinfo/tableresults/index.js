@@ -3,7 +3,7 @@ import { Table, Input, Form, Typography } from 'antd';
 import 'antd/dist/antd.css';
 
 import './table.css';
-import { PrintLogo } from '../../../../images';
+
 
 
 const FormItem = Form.Item;
@@ -107,12 +107,11 @@ class EditableTable extends React.Component {
     this.columns = [{
       title: 'EXAM NAME',
       dataIndex: 'name',
-      width: 150,
-      // fixed: 'left',
+      width: 200,
     },{
       title: 'INSTRUMENT RESULT',
       dataIndex: 'inst_result',
-      width: 210,
+      width: 200,
     },{
       title: 'RESULT',
       dataIndex: 'result',
@@ -204,21 +203,18 @@ class EditableTable extends React.Component {
       };
     });
     return (
-      <div>
-        <div style = {{ textAlign: 'right', margin: '15px' }}>
-          <span style = {{ paddingRight: '10px' }}>Print</span>
-          <img src = { PrintLogo } className = "print-logo" alt = "Print Logo" />
-        </div>
-        <Table
+        <div className="patient-table">
+          <Table
           components={components}
           rowClassName={() => 'editable-row'}
           dataSource={dataSource}
           columns={columns}
           rowSelection={rowSelection}
-          scroll={{ x: 1000 }}
+          scroll={{ x: 800 }}
           size="small"
+          pagination={false}
         />
-      </div>
+        </div>
     );
   }
 }

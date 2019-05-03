@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Layout, Modal } from 'antd';
 import 'antd/dist/antd.css';
 
-import './buttons.css'
+import './actions.css'
 
 const ButtonGroup = Button.Group;
 

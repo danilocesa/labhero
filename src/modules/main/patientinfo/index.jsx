@@ -6,6 +6,7 @@ import Information from './information';
 import TableResults from './tableresults';
 import Name from './patientname';
 import Actions from './actions';
+import PatientComment from './patientcomment';
 
 import './layout.css'
 
@@ -21,6 +22,7 @@ class PatientInfo extends React.Component {
             <Col xs={24} sm={17} md={17} lg={19} xl={19} className = 'patient-info-content'>
               <Name />
               <TableResults />  
+              <PatientComment />
               <Actions /> 
             </Col>
           </Row>

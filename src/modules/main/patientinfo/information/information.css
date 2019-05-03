@@ -1,7 +1,6 @@
 
 
 .verticalinfo {
-      background-color: #f9f5f5;
       height: auto;
       padding: 8%;
 }
@@ -13,6 +12,7 @@
 
 .info-title {
       font-weight: bolder;
+      font-size: 14px;
 }
 
 .info-container {
@@ -26,7 +26,8 @@
 
 .image-placeholder {
       height: 100%;
-      width: 100%;;
+      width: 100%;
+      border-radius: 2px;
 }
 
 .patient-img {
@@ -34,3 +35,34 @@
       height: auto;
 }
 
+.patient-number {
+      color: white;
+      background: #a79ae4;
+      text-align: center;
+      margin-bottom: 10px;
+      border-radius: 2px;
+      letter-spacing: 2px;
+      border: 1px solid #a5a0a0;
+}
+
+.verticalinfo .patient-number .differential-title {
+      background:white;
+      color: black;
+      font-size:10px;
+      padding:5px;
+}
+
+.verticalinfo .patient-number .differential-title p {
+      margin-bottom: 0px;
+}
+
+.verticalinfo .patient-number .differential-content {
+      padding: 10px;
+      border-top: 1px solid #a5a0a0;
+}
+
+.verticalinfo .patient-number .differential-content p{
+      margin-bottom: 0px;
+      font-size: 18px;
+      font-weight: bold;
+}
