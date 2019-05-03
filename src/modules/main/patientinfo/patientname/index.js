@@ -1,7 +1,7 @@
 import React from 'react';
 import {} from 'antd';
 
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 
 class Name extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 import Information from './information';
 import TableResults from './tableresults';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Input, Form, Typography } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 import './table.css';
 import { PrintLogo } from '../../../../images';
