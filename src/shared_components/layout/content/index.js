@@ -7,7 +7,6 @@ import CreateRequestPage from '../../../modules/main/request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
 
-
 const { Content: Antcontent } = Layout;
 
 const wrapperStyle = {

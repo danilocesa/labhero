@@ -2,8 +2,8 @@ import React from 'react';
 import { Row, Col } from 'antd';
 
 import Tracker from '../../tracker';
-import SectionHeader from './section-header';
-import SectionContent from './section-content';
+import SectionHeader from './section_header';
+import SectionContent from './section_content';
 import SelectTable from './table';
 import Navigation from './navigation';
 

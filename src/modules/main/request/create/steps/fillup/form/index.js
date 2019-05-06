@@ -23,10 +23,10 @@ class FillupForm extends React.Component {
                   <Input />
                 </Form.Item>
                 <Form.Item label="LAST NAME">
-                  <Input />
+                  <Input name="lastname" onChange={this.props.onChangeInput}/>
                 </Form.Item>
                 <Form.Item label="FIRST NAME">
-                  <Input />
+                  <Input name="firstname" onChange={this.props.onChangeInput}/>
                 </Form.Item>
                 <Form.Item label="MIDDLE NAME">
                   <Input />

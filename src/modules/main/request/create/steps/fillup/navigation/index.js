@@ -5,6 +5,14 @@ import { Row, Col, Button, Typography } from 'antd';
 const { Text } = Typography;
 
 class Navigation extends React.Component {
+  state = { disabled: true };
+
+  componentWillReceiveProps() {
+    this.setState((state, props) => ({
+      disabled: props.fields.firstname && props.fields.lastname ? false : true
+    }));
+  }
+  
   render() {
     return (
       <Row style={{ marginTop: 10 }}>
@@ -14,7 +22,8 @@ class Navigation extends React.Component {
           </Link>
           <Button className="nav-btn-round"
                   type="primary"
-                  style={{ marginLeft: 20 }}>
+                  style={{ marginLeft: 20 }}
+                  disabled={this.state.disabled}>
             <Link to="/request/create/step/3">NEXT STEP</Link>
           </Button>
         </Col>

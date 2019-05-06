@@ -73,7 +73,9 @@ function onChange(pagination, filters, sorter) {
 class Table extends React.Component {
   render() {
     return (
-      <AntTable columns={columns} dataSource={data} onChange={onChange} />
+      <div className="search-patient-table">
+        <AntTable columns={columns} dataSource={data} onChange={onChange} />
+      </div>
     );
   }
 }

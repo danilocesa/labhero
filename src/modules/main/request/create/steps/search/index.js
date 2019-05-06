@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Tracker from '../../tracker';
 import SearchForm from './form';
-import TableHeader from './table-header';
+import TableHeader from './table_header';
 import Table from './table';
 
 class SearchStep extends React.Component {
