@@ -7,3 +7,4 @@ export { default as PatientImgPlaceholder } from './image-placeholder.jpg';
 export { default as PrintLogo } from './printer-1.png';
 export { default as IResultsIcon } from './heartbeat.png';
 export { default as CheckIcon } from './check_icon.png';
+export { default as ErrorIcon } from './error-404.png';
