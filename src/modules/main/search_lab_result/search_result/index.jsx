@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Table, Select   } from 'antd';
+import { Row, Col, Table, Select, Pagination   } from 'antd';
 import { Link } from "react-router-dom";
 
 import './searchresult.css';
@@ -57,9 +57,16 @@ const columns = [
       key: 'PatientID',
       sorter: (a, b) => a.PatientID - b.PatientID, 
     },
+    { 
+      title: 'HOSPITAL ID', 
+      dataIndex: 'HospitalID', 
+      key: 'HospitalID',
+      sorter: (a, b) => a.HospitalID - b.HospitalID, 
+    },
     { title: 'LAST NAME', 
       dataIndex: 'LastName', 
       key: 'LastName',
+      defaultSortOrder: 'ascend',
       sorter: (a, b) => a.LastName.length - b.LastName.length, 
      },
     { title: 'FIRST NAME', 
@@ -88,16 +95,19 @@ const data = [];
 const testfirstname = ['Dante', 'Matthew', 'Maria'];
 const testgender = ['M', 'F'];
 const testcityaddress = ['Pasig', 'Pasay', 'Manila'];
+const testlastname = ['Doe','Taylor','Green'];
 for (let i = 1; i < 4; ++i) {
     data.push({
     PatientID: '000' + i,
-    LastName: 'Doe',
+    HospitalID: i*4+'00'+i,
+    LastName: testlastname[Math.floor(Math.random()*testlastname.length)],
     FirstName: testfirstname[Math.floor(Math.random()*testfirstname.length)],
     DateOfBirth: '01/01/1990',
     Gender: testgender[Math.floor(Math.random()*testgender.length)],
     Address: testcityaddress[Math.floor(Math.random()*testcityaddress.length)],
     });
 }
+
 
 return (
     <div>
