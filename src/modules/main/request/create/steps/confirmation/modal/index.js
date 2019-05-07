@@ -1,39 +1,35 @@
 import React from 'react';
-import { Modal, Layout, Button, Row, Col } from 'antd';
+import { Modal, Row, Col } from 'antd';
 import { CheckIcon } from '../../../../../../../images';
 
-const ButtonGroup = Button.Group;
 
 class ConfirmationModal extends React.Component {
+  constructor(){
+    super();
+
+    this.timer = null;
+    this.countdownTime = 3000;
+  }
+  
+  componentDidMount() {
+    console.log('did mount');
+    this.timer = setTimeout(() => { this.props.closeModal(); }, this.countdownTime);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+  
   render() {
-    const Footer = (
-      [
-        <Layout key="1">
-          <ButtonGroup>
-            <Button href="/"
-                    className="left-btn" 
-                    style= {{ width: '50%' }} 
-                    onClick={this.props.closeModal}>
-              Go to Homepage
-            </Button>
-            <Button href="/"
-                    className="right-btn" 
-                    style= {{ width: '50%' }} 
-                    onClick={this.props.closeModal}>
-              Search Again
-            </Button>
-          </ButtonGroup>
-        </Layout>
-      ]
-    );
+    const { visible } = this.props;
 
     return (
       <div>
         <Modal className="save-modal-container"
-              visible={this.props.visible}
-              footer={Footer}
-        >
-          <Row type="flex" justify="center" >
+               centered
+               visible={visible}
+               footer={null}>
+          <Row type="flex" justify="center">
             <Col> 
               <img src={CheckIcon} 
                    alt="logo" 
@@ -48,7 +44,7 @@ class ConfirmationModal extends React.Component {
           </p>
         </Modal>
       </div>
-    );
+    )
   }
 }
 

@@ -8,7 +8,6 @@ import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
 import SearchPleboResult from '../../../modules/main/plebo'
 
-
 const { Content: Antcontent } = Layout;
 
 const wrapperStyle = {

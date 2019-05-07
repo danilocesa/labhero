@@ -11,5 +11,5 @@ module.exports = override(
    modifyVars: { 
     '@primary-color': '#8A73F9'
    },
- }),
+ })
 );

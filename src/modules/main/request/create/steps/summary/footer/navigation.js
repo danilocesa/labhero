@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Typography } from 'antd';
+import { Row, Col, Button, Typography, Tooltip } from 'antd';
 
 import ConfirmationModal from '../../confirmation/modal';
 
 const { Text } = Typography;
-
 
 class Navigation extends React.Component {
   state = {
@@ -25,6 +24,13 @@ class Navigation extends React.Component {
   }
   
   render() {
+    const { displayModal } = this.state;
+
+    const Prompt = !displayModal ? null : (
+      <ConfirmationModal visible={displayModal} 
+                         closeModal={this.closeModal}/> 
+    );
+
     return (
       <div>
         <Row type="flex" justify="end">
@@ -32,16 +38,17 @@ class Navigation extends React.Component {
             <Link to="/request/create/step/3">
               <Text><u>BACK</u></Text>
             </Link>
-            <Button className="nav-btn-round"
-                    type="primary"
-                    onClick={this.showModal}
-                    style={{ marginLeft: 20 }}>
-              SAVE
-            </Button>
+            <Tooltip title="Print and Save">
+              <Button className="nav-btn-round"
+                      type="primary"
+                      onClick={this.showModal}
+                      style={{ marginLeft: 20 }}>
+                PRINT
+              </Button>
+            </Tooltip>
           </Col>
         </Row>
-        <ConfirmationModal visible={this.state.displayModal} 
-                           closeModal={this.closeModal}/>
+        {Prompt}
       </div>
     );
   }

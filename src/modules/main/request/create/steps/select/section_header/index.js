@@ -1,7 +1,7 @@
 import React from 'react';
 import { Radio } from 'antd';
 
-import './section-header.css';
+import './section_header.css';
 
 class SectionHeader extends React.Component {
   render() {

@@ -5,12 +5,22 @@ import FillupForm from './form';
 import Navigation from './navigation';
 
 class FillupStep extends React.Component {
+  state = {
+    firstname: '',
+    lastname: '',
+    disabled: true
+  }
+
+  handleOnChangeInput = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }  
+
   render() {
     return (
       <div>
         <Tracker active={1} />
-        <FillupForm />
-        <Navigation />
+        <FillupForm onChangeInput={this.handleOnChangeInput} />
+        <Navigation fields={this.state}/>
       </div>
     );
   }
