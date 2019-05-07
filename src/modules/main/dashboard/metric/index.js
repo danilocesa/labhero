@@ -1,7 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
 
-
 import './metric.css';
 
 class Metrics extends React.Component {

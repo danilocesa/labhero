@@ -6,10 +6,10 @@ import Metrics from './metric';
 import LineChart from './chart';
 
 import {
-  MetricRefreshLogo, 
-  MetricCheckLogo, 
-  MetricAddLogo, 
-  MetricHistoryLogo
+  MetricRefreshLogo,
+  MetricCheckLogo,
+  MetricAddLogo,
+  MetricHistoryLogo,
 } from '../../../images/';
 
 import './dashboard.css';
@@ -18,32 +18,29 @@ const metrics_data = [
   {
     image: MetricRefreshLogo,
     value: 12,
-    label: 'Ongoing Test'
+    label: 'Ongoing Test',
   },
   {
     image: MetricAddLogo,
     value: 270,
-    label: 'New Requests'
+    label: 'New Requests',
   },
   {
     image: MetricHistoryLogo,
     value: 10,
-    label: 'Pending Requests'
+    label: 'Pending Requests',
   },
   {
     image: MetricCheckLogo,
     value: 1028,
-    label: 'Veritifed Status'
-  }
+    label: 'Veritifed Status',
+  },
 ];
 
 class DashboardPage extends React.Component {
   render() {
     const MetricList = metrics_data.map((item, index) => (
-      <Metrics key={index}
-               image={item.image} 
-               value={item.value} 
-               label={item.label} />
+      <Metrics key={index} image={item.image} value={item.value} label={item.label} />
     ));
 
     return (
@@ -52,9 +49,7 @@ class DashboardPage extends React.Component {
           <DashboardHeader />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>
-          <Col className="left-pane">
-            {MetricList}
-          </Col>
+          <Col className="left-pane">{MetricList}</Col>
           <Col className="right-pane">
             <LineChart />
           </Col>

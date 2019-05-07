@@ -1,11 +1,10 @@
-
 .ant-layout-header {
   background: white !important;
   padding: 0 25px !important;
   border-bottom: 1px solid #bbadff;
 }
 
-.ant-avatar{
+.ant-avatar {
   background: #bbadff;
 }
 

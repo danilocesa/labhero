@@ -18,6 +18,6 @@ class CreateRequestPage extends React.Component {
       </div>
     );
   }
-} 
+}
 
 export default CreateRequestPage;

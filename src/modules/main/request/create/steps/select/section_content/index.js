@@ -6,71 +6,69 @@ import Tag from './tag.js';
 import './section_content.css';
 
 const Data = [
-  { 
+  {
     label: 'CBC',
-    checked: true
+    checked: true,
   },
-  { 
+  {
     label: 'Prothrombin Time',
-    checked: true
+    checked: true,
   },
-  { 
+  {
     label: 'Potassium',
-    checked: true
+    checked: true,
   },
-  { 
+  {
     label: 'Exam One',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Expanded Aptt',
-    checked: true
+    checked: true,
   },
-  { 
+  {
     label: 'BUN',
-    checked: true
+    checked: true,
   },
-  { 
+  {
     label: 'Exam Two',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Exam Three',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Exam Four',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Exam Five',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Foo',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Bar',
-    checked: false
+    checked: false,
   },
-  { 
+  {
     label: 'Bazz',
-    checked: false
-  }
+    checked: false,
+  },
 ];
 
 class SectionContent extends React.Component {
   render() {
     const TagList = Data.map((item, index) => (
-      <Tag key={index} checked={item.checked} title={item.label}>{item.label}</Tag>)
-    );
+      <Tag key={index} checked={item.checked} title={item.label}>
+        {item.label}
+      </Tag>
+    ));
 
-    return (
-      <Card className="test-list">
-        {TagList}
-      </Card>
-    );
+    return <Card className="test-list">{TagList}</Card>;
   }
 }
 

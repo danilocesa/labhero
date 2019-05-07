@@ -1,19 +1,19 @@
 import React from 'react';
 import { Input } from 'antd';
 
-import './patientcomment.css'
+import './patientcomment.css';
 
 const { TextArea } = Input;
 
 class PatientComment extends React.Component {
-    render() {
-        return(
-          <div className="patientcomment">
-            <p>REMARKS</p>
-            <TextArea rows={3} />
-          </div>
-        );
-    }
+  render() {
+    return (
+      <div className="patientcomment">
+        <p>REMARKS</p>
+        <TextArea rows={3} />
+      </div>
+    );
+  }
 }
 
 export default PatientComment;
