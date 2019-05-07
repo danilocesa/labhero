@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ReactComponent as HomeIcon } from '../../../icons/home.svg';
 import { ReactComponent as AddIcon } from '../../../icons/add.svg';
 import { ReactComponent as SearchIcon } from '../../../icons/search.svg';
+import { ReactComponent as PleboIcon } from '../../../icons/syringe.svg';
 
 import './sider.css';
 
@@ -39,6 +40,12 @@ class Sider extends React.Component {
             <Link to="/searchlabresult">
               <Icon component={SearchIcon} />
               <span>SEARCH</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Link to="/pleboresult">
+              <Icon component={PleboIcon} />
+              <span>PLEBO</span>
             </Link>
           </Menu.Item>
         </Menu>

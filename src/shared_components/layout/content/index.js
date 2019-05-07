@@ -6,11 +6,9 @@ import DashboardPage from '../../../modules/main/dashboard';
 import CreateRequestPage from '../../../modules/main/request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
-<<<<<<< HEAD
-import SearchPleboResult from '../../../modules/main/plebo'
-=======
+import PleboSearch from '../../../modules/main/plebo'
 import Iresults from '../../../modules/main/iresults';
->>>>>>> 821d2e54775dc37fa91482c6c85a902bd941bc25
+import PleboPatientResult from '../../../modules/main/plebo/plebopatient'
 
 const { Content: Antcontent } = Layout;
 
@@ -21,25 +19,17 @@ const wrapperStyle = {
   padding: 24,
 };
 
-const Content = props => (
+const Content = () => (
   <Antcontent style={wrapperStyle}>
     <Switch>
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <Route path="/pleboresult" component={SearchPleboResult} />
-      <Redirect from="/" to="/dashboard"/>
-=======
+      <Route path="/pleboresult" component={PleboSearch} />
+      <Route path="/iresults" component={Iresults} />
+      <Route path="/plebopatient" component={PleboPatientResult} />
       <Redirect from="/" to="/dashboard" />
->>>>>>> 2e6e1211a659ac6e5f9cebd68808610bbb7e21cb
-=======
-      <Route  path="/iresults" component={Iresults} />
-      <Redirect from="/" to="/dashboard"/>
-      
->>>>>>> 821d2e54775dc37fa91482c6c85a902bd941bc25
     </Switch>
   </Antcontent>
 );

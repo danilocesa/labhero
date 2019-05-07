@@ -3,7 +3,7 @@ import {
   Form, Input, Button, Row, Col
 } from 'antd';
 
-import './searchplebo.css';
+import './plebosearch.css';
 
 const formItemLayout = [
   {
@@ -26,7 +26,7 @@ const formItemLayout = [
   },
 ];
 
-class SearchPleboTest extends React.Component {
+class PleboSearch extends React.Component {
   render() {
     return (
       <Form>
@@ -36,8 +36,7 @@ class SearchPleboTest extends React.Component {
               <Input />
             </Form.Item>
           </Col>
-          <Col {...formItemLayout[1]} style={{ paddingLeft: 15,
-                                               width: 500}}>
+          <Col {...formItemLayout[1]} style={{ paddingLeft: 15, width: 500}}>
             <Form.Item label="PATIENT'S FULLNAME">
               <Input />
             </Form.Item>
@@ -51,8 +50,7 @@ class SearchPleboTest extends React.Component {
                   </Button> 
                 </Col>
                 <Col span={12}>
-                  <Button block shape="round" type="primary" 
-                          style={{ width: 120 }}>
+                  <Button block shape="round" type="primary" style={{ width: 120 }}>
                     SEARCH
                   </Button>
                 </Col>
@@ -65,4 +63,4 @@ class SearchPleboTest extends React.Component {
   }
 }
 
-export default SearchPleboTest;
+export default PleboSearch;
