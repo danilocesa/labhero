@@ -2,17 +2,15 @@
   background: #fafafc !important;
 }
 
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+.side-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: transparent !important;
   border-right: 4px solid;
 }
 
-.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+.side-menu .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
   border-right: 0 !important;
 }
 
-.sidenav-icon {
-  font-weight: 900 !important;
-  color: #696969 !important;
-}
-
+/* :not(.ant-menu-item-selected) .anticon {
+  color: #c6c1d9;
+} */

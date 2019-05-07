@@ -1,6 +1,8 @@
 import React from 'react';
 import { Table as AntTable, Row, Col } from 'antd';
 
+import './table.css';
+
 const columns = [
   {
     title: 'SECTION',
@@ -89,9 +91,11 @@ class SummaryTable extends React.Component {
     return (
       <Row style={{ marginTop: 20 }}>
         <Col sm={{ span: 24 }} lg={{ span: 16, offset: 4 }}>
-          <AntTable columns={columns} 
-                    pagination={false}
-                    dataSource={data} />
+          <div className="summary-step-table">
+            <AntTable columns={columns} 
+                      pagination={false}
+                      dataSource={data} />
+          </div>
         </Col>
       </Row>
     );

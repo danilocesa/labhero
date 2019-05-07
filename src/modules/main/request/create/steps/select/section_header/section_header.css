@@ -6,4 +6,7 @@
 .section-group .ant-radio-group .ant-radio-button-wrapper{
   width: 20%;
   text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
