@@ -28,18 +28,9 @@ const Content = props => (
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
-<<<<<<< HEAD
-<<<<<<< HEAD
       <Route path="/pleboresult" component={SearchPleboResult} />
-      <Redirect from="/" to="/dashboard"/>
-=======
-      <Redirect from="/" to="/dashboard" />
->>>>>>> 2e6e1211a659ac6e5f9cebd68808610bbb7e21cb
-=======
       <Route  path="/iresults" component={Iresults} />
       <Redirect from="/" to="/dashboard"/>
-      
->>>>>>> 821d2e54775dc37fa91482c6c85a902bd941bc25
     </Switch>
   </Antcontent>
 );
