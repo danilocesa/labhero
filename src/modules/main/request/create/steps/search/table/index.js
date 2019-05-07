@@ -8,32 +8,32 @@ const columns = [
     title: 'LAST NAME',
     dataIndex: 'lastname',
     sorter: (a, b) => a.lastname.length - b.lastname.length,
-  }, 
+  },
   {
     title: 'FIRST NAME',
     dataIndex: 'firstname',
-    sorter: (a, b) => a.firstname.length - b.firstname.length
-  }, 
+    sorter: (a, b) => a.firstname.length - b.firstname.length,
+  },
   {
     title: 'MIDDLE NAME',
     dataIndex: 'middlename',
-    sorter: (a, b) => a.middlename.length - b.middlename.length
+    sorter: (a, b) => a.middlename.length - b.middlename.length,
   },
   {
     title: 'DATE OF BIRTH',
     dataIndex: 'birthday',
-    sorter: (a, b) => a.birthday.length - b.birthday.length
+    sorter: (a, b) => a.birthday.length - b.birthday.length,
   },
   {
     title: 'GENDER',
     dataIndex: 'gender',
-    sorter: (a, b) => a.gender.length - b.gender.length
+    sorter: (a, b) => a.gender.length - b.gender.length,
   },
   {
     title: 'CITY ADDRESS',
     dataIndex: 'address',
-    sorter: (a, b) => a.address.length - b.address.length
-  }
+    sorter: (a, b) => a.address.length - b.address.length,
+  },
 ];
 
 const data = [

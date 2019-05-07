@@ -9,11 +9,12 @@ const { Text } = Typography;
 const menu = (
   <Menu>
     <Menu.Item>
-      <a rel="noopener noreferrer" href="#">Logout</a>
+      <a rel="noopener noreferrer" href="#">
+        Logout
+      </a>
     </Menu.Item>
   </Menu>
 );
-
 
 class UserMenu extends React.Component {
   render() {
@@ -24,9 +25,7 @@ class UserMenu extends React.Component {
           <Text>Receptionist</Text>
         </div>
         <div className="user-menu-avatar">
-          <Avatar>
-            NE
-          </Avatar>
+          <Avatar>NE</Avatar>
         </div>
         <div className="user-menu-icon">
           <Dropdown overlay={menu} trigger={['click']}>

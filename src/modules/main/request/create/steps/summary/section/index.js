@@ -7,7 +7,7 @@ const { Text } = Typography;
 
 const sectionLayout = {
   sm: { span: 24 },
-  lg: { span: 8 }
+  lg: { span: 6 },
 };
 
 class SummarySection extends React.Component {
@@ -15,14 +15,13 @@ class SummarySection extends React.Component {
     return (
       <div className="request-summary">
         <Row>
-          <Col sm={{ span: 24 }} lg={{ span: 16, offset: 4 }}>
-            <div style={{ textAlign: 'center' }}>
+          <Col sm={24} lg={{ span: 18, offset: 3 }}>
+            <Row style={{ textAlign: 'center' }}>
               <Text strong style={{ fontSize: 18 }}>
                 REQUEST SUMMARY
               </Text>
-            </div>
-            <br />
-            <Row>
+            </Row>
+            <Row style={{ marginTop: 30 }}>
               <Col {...sectionLayout}>
                 <div className="section">
                   <Text strong>PATIENT NAME</Text>
@@ -44,8 +43,6 @@ class SummarySection extends React.Component {
                   <Text>MALE</Text>
                 </div>
               </Col>
-            </Row>
-            <Row style={{ marginTop: 15 }}>
               <Col {...sectionLayout}>
                 <div className="section">
                   <Text strong>CASE NO.</Text>
@@ -53,6 +50,8 @@ class SummarySection extends React.Component {
                   <Text>123456</Text>
                 </div>
               </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
               <Col {...sectionLayout}>
                 <div className="section">
                   <Text strong>PHYSICIAN ID</Text>
@@ -67,8 +66,6 @@ class SummarySection extends React.Component {
                   <Text>----</Text>
                 </div>
               </Col>
-            </Row>
-            <Row style={{ marginTop: 15 }}>
               <Col {...sectionLayout}>
                 <div className="section">
                   <Text strong>CLASS</Text>
@@ -76,20 +73,20 @@ class SummarySection extends React.Component {
                   <Text>----</Text>
                 </div>
               </Col>
-              <Col lg={{ span: 16 }} sm={{ span: 24 }}>
-                <div className="comment-section">
-                  <Text strong>COMMENT</Text>
-                  <br />
-                  <Text>This is a sample comment from a person named John Doe.</Text>
-                </div>
-              </Col>
-            </Row>
-            <Row style={{ marginTop: 15 }}>
               <Col {...sectionLayout}>
                 <div className="section">
                   <Text strong>AMOUNT</Text>
                   <br />
                   <Text>P12,000.00</Text>
+                </div>
+              </Col>
+            </Row>
+            <Row style={{ marginTop: 10 }}>
+              <Col span={24}>
+                <div className="comment-section">
+                  <Text strong>COMMENT</Text>
+                  <br />
+                  <Text>This is a sample comment from a person named John Doe.</Text>
                 </div>
               </Col>
             </Row>

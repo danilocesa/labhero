@@ -1,26 +1,26 @@
 .editable-cell {
-      position: relative;
+  position: relative;
 }
 
 .editable-cell-value-wrap {
-      cursor: pointer;
+  cursor: pointer;
 }
 
 .editable-row:hover .editable-cell-value-wrap {
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
 }
 
 .ant-table-tbody > tr > td {
-      text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 .ant-table-thead > tr > th {
-      background-color: #8a73f9;
-      color: #ffffff;
-      text-transform: uppercase;
+  background-color: #8a73f9;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
-.patient-table tr:nth-child(2n+1) {
-      background: #fbfbfb;
+.patient-table tr:nth-child(2n + 1) {
+  background: #fbfbfb;
 }

@@ -9,21 +9,25 @@ class Navigation extends React.Component {
 
   componentWillReceiveProps() {
     this.setState((state, props) => ({
-      disabled: props.fields.firstname && props.fields.lastname ? false : true
+      disabled: props.fields.firstname && props.fields.lastname ? false : true,
     }));
   }
-  
+
   render() {
     return (
       <Row style={{ marginTop: 10 }}>
-        <Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }} >
+        <Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
           <Link to="/request/create/step/1">
-            <Text><u>BACK</u></Text>
+            <Text>
+              <u>BACK</u>
+            </Text>
           </Link>
-          <Button className="nav-btn-round"
-                  type="primary"
-                  style={{ marginLeft: 20 }}
-                  disabled={this.state.disabled}>
+          <Button
+            className="nav-btn-round"
+            type="primary"
+            style={{ marginLeft: 20 }}
+            disabled={this.state.disabled}
+          >
             <Link to="/request/create/step/3">NEXT STEP</Link>
           </Button>
         </Col>

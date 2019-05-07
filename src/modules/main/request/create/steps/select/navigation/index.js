@@ -8,13 +8,13 @@ class Navigation extends React.Component {
   render() {
     return (
       <Row>
-        <Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }} >
+        <Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
           <Link to="/request/create/step/2">
-            <Text><u>BACK</u></Text>
+            <Text>
+              <u>BACK</u>
+            </Text>
           </Link>
-          <Button className="nav-btn-round"
-                  type="primary"
-                  style={{ marginLeft: 20 }}>
+          <Button className="nav-btn-round" type="primary" style={{ marginLeft: 20 }}>
             <Link to="/request/create/step/4">NEXT STEP</Link>
           </Button>
         </Col>
