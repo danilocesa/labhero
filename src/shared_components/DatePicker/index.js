@@ -2,7 +2,7 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 
 //CSS
-// import "react-datepicker/dist/react-datepicker.css";
+import "react-datepicker/dist/react-datepicker.css";
 
 class ReactDatePicker extends React.Component {
   constructor(props) {

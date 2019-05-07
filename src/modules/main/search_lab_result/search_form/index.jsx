@@ -23,12 +23,6 @@ class SearchLabTestForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(date) {
-        this.setState({
-            startDate: date
-        });
-    }
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
@@ -68,7 +62,7 @@ class SearchLabTestForm extends React.Component {
                     <Row type="flex" align="top" gutter={24}> 
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
                             <Form.Item label="DATE CATEGORY" className="gutter-box">
-                                <RadioGroup buttonStyle="solid" defaultValue="a">
+                                <RadioGroup buttonStyle="solid">
                                     <RadioButton value="a">REQUEST</RadioButton>
                                     <RadioButton value="b">VERIFY</RadioButton>
                                     <RadioButton value="c">CHECK-IN</RadioButton>
@@ -82,7 +76,7 @@ class SearchLabTestForm extends React.Component {
                         </Col> 
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
                             <Form.Item label="STATUS" hasFeedback  className="gutter-box">
-                                <Select placeholder="Please select a status" style={{ width: "100%" }} allowClear="true" >
+                                <Select placeholder="Please select a status" style={{ width: "100%" }} allowClear={true} >
                                     <Option value=""></Option>
                                     <Option value=""></Option>
                                 </Select>
@@ -90,9 +84,9 @@ class SearchLabTestForm extends React.Component {
                         </Col>
                     </Row>
                     <Row type="flex" align="top" gutter={24} >
-                        <Col lg={8} md={8} sm={10} xs={24}  className="gutter-row" xs={24} >
+                        <Col lg={8} md={8} sm={10} xs={24}  className="gutter-row" >
                             <Form.Item label="PATIENT ID" className="gutter-box">
-                                <Input allowClear='true' />
+                                <Input allowClear={true} />
                             </Form.Item>
                         </Col>
                         <Col lg={8} md={8} sm={10} xs={24} >
@@ -103,20 +97,20 @@ class SearchLabTestForm extends React.Component {
                                         { pattern: '^[a-zA-Z0-9äöüÄÖÜ]*$', message: 'Special character not allowed!' }
                                     ],
                                 })(
-                                    <Input id="PatientName" allowClear='true' />
+                                    <Input id="PatientName" allowClear={true} />
                                 )}
                             </Form.Item>
                         </Col>
-                        <Col lg={8} md={8} sm={10} xs={24}  className="gutter-row" xs={24} >
+                        <Col lg={8} md={8} sm={10} xs={24}  className="gutter-row" >
                             <Form.Item label="SAMPLE ID" className="gutter-box">
-                                <Input allowClear='true' />
+                                <Input allowClear={true} />
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Row gutter={24} type="flex" align="bottom" gutter={24}>
+                    <Row gutter={24} type="flex" align="bottom">
                         <Col lg={8} md={8} sm={12} xs={24}  className="gutter-row">   
                             <Form.Item label="ADDRESS" hasFeedback className="gutter-box">
-                                <Select placeholder="Please select address" style={{ "width": "100%" }} allowClear="true" >
+                                <Select placeholder="Please select address" style={{ "width": "100%" }} allowClear={true} >
                                     <Option value=""></Option>
                                     <Option value=""></Option>
                                 </Select>

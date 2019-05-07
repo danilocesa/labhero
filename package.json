@@ -1,6 +1,7 @@
 {
   "name": "labhero",
   "version": "0.1.7",
+  "homepage": "./",
   "private": true,
   "browserslist": [
     ">0.2%",
