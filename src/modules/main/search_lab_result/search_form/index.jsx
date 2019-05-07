@@ -18,12 +18,15 @@ class SearchLabTestForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            startDate: new Date()
+            startDate: new Date(),  
+            enableDateRange: false,
         };
-        this.handleChange = this.handleChange.bind(this);
+        this._onHandleChange = this._onHandleChange.bind(this);
+        this._onClickClear = this._onClickClear.bind(this);
+        // this._onClickDateCategory = this._onClickDateCategory.bind(this);
     }
 
-    handleSubmit = (e) => {
+    _onClickSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
           if (!err) {
@@ -38,16 +41,20 @@ class SearchLabTestForm extends React.Component {
         });
     }
 
-    handleChange(date) {
+    _onHandleChange(date) {
         this.setState({
           startDate: date
         });
     }
 
-    handleReset = (e) => {
-        console.log(e);
+    _onClickClear = (e) => {
         document.getElementById("searchlabtestresultform").reset();
-        // this.props.form.resetFields();
+    }
+
+    _onClickDateCategory = (e) => {
+        this.setState({
+            enableDateRange: true
+        });
     }
 
     render() {
@@ -55,7 +62,7 @@ class SearchLabTestForm extends React.Component {
         return(
             <Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }} >
             <Col sm={22} xs={24} > 
-                <Form onSubmit={this.handleSubmit} id="searchlabtestresultform" > 
+                <Form onSubmit={this._onClickSubmit} id="searchlabtestresultform" > 
                     <Row type="flex" align="middle" justify="center">
                         <Title level={4}>SEARCH</Title>
                     </Row>
@@ -63,15 +70,15 @@ class SearchLabTestForm extends React.Component {
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
                             <Form.Item label="DATE CATEGORY" className="gutter-box">
                                 <RadioGroup buttonStyle="solid">
-                                    <RadioButton value="a">REQUEST</RadioButton>
-                                    <RadioButton value="b">VERIFY</RadioButton>
-                                    <RadioButton value="c">CHECK-IN</RadioButton>
+                                    <RadioButton value="a" onClick={this._onClickDateCategory} >REQUEST</RadioButton>
+                                    <RadioButton value="b" onClick={this._onClickDateCategory} >VERIFY</RadioButton>
+                                    <RadioButton value="c" onClick={this._onClickDateCategory} >CHECK-IN</RadioButton>
                                 </RadioGroup>
                             </Form.Item>
                         </Col>
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24} >
                             <Form.Item label="FROM DATE - TO DATE" className="gutter-box" >
-                                <RangePicker allowClear="true" style={{ width:'100%' }} />
+                                <RangePicker disabled={!this.state.enableDateRange} allowClear="true" style={{ width:'100%' }} />
                             </Form.Item>
                         </Col> 
                         <Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
@@ -118,7 +125,7 @@ class SearchLabTestForm extends React.Component {
                         </Col>
                         <Col lg={8} md={8} sm={8} xs={24}  className="gutter-row">
                             <Row type="flex" justify="space-between">
-                                <Col className="gutter-row" span={8}>
+                                <Col className="gutter-row">
                                     <Form.Item label="DATE OF BIRTH" className="gutter-box" >
                                         <ReactDatePicker />
                                     </Form.Item>
@@ -137,7 +144,7 @@ class SearchLabTestForm extends React.Component {
                             <Row gutter={6} type="flex" justify="end">
                                 <Col className="gutter-row">
                                     <Form.Item>
-                                        <Button shape="round" onClick={this.handleReset}> CLEAR </Button>
+                                        <Button shape="round" onClick={this._onClickClear}> CLEAR </Button>
                                     </Form.Item>
                                 </Col>
                                 <Col className="gutter-row">

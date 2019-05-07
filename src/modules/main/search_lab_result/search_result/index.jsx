@@ -1,31 +1,33 @@
 import React from 'react';
-import { Row, Col, Table, Select, Drawer   } from 'antd';
-// import { Link } from "react-router-dom";
+import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton } from 'antd';
 import PatientInfo from '../../patientinfo';
 
+//CSS
 import './searchresult.css';
 
+//Constant
 const { Option } = Select;
+const { Text } = Typography;
 
-class SearchLabTestResultList extends React.Component {
+class WrapperSearchLabTestResultList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDrawer: false,
+      showPatientInfo: false,
+      showLoading: true,
     };
-    this._onButtonClick = this._onButtonClick.bind(this);
+    this._onSampleIDClick = this._onSampleIDClick.bind(this);
   }
-  _onButtonClick() {
+  _onSampleIDClick() {
     this.setState({
-      showDrawer: true,
+      showPatientInfo: true,
     });
-    console.log(1);
   }
-  onCloseDrawer = () => {
+  _onClosePatientInfoDrawer = () => {
     this.setState({
-      showDrawer: false,
+      showPatientInfo: false,
     });
-  };
+  }
   expandedRowRender = (e) => {
     const columns = [
       { 
@@ -37,7 +39,7 @@ class SearchLabTestResultList extends React.Component {
       { title: 'SAMPLE ID', 
         dataIndex: 'SampleId', 
         key: 'SampleId',
-        render: text =>  <span onClick={this._onButtonClick}>{text}</span>,
+        render: text =>  <Text onClick={this._onSampleIDClick} className="sampleLabTestID">{text}</Text>,
       },
       { title: 'STATUS', 
         dataIndex: 'Status', 
@@ -48,10 +50,9 @@ class SearchLabTestResultList extends React.Component {
         key: 'HisLink'
       },
     ];
-
     const data = [];
     const teststatus = ['On-going', 'Verified', 'Cancelled'];
-    for (let i = 1; i < 4; ++i) {
+    for (let i = 1; i < 20; ++i) {
       data.push({
         RequestDate: '04/11/2019',
         SampleId: '100' + i,
@@ -65,10 +66,18 @@ class SearchLabTestResultList extends React.Component {
         dataSource={data}
         pagination={false}
         size="small"
+        scroll={{ y: 200 }}
       />
     );
   };
 
+  //React lifecycle
+  componentDidMount() 
+  {
+    this.setState({
+      showLoading: false
+    });
+  }   
   render() {  
     const columns = [
   { 
@@ -87,12 +96,12 @@ class SearchLabTestResultList extends React.Component {
     dataIndex: 'LastName', 
     key: 'LastName',
     defaultSortOrder: 'ascend',
-    sorter: (a, b) => a.LastName.length - b.LastName.length, 
+    sorter: (a, b) => { return a.LastName.localeCompare(b.LastName)}, 
     },
   { title: 'FIRST NAME', 
     dataIndex: 'FirstName', 
     key: 'FirstName',
-    sorter: (a, b) => a.FirstName.length - b.FirstName.length,
+    sorter: (a, b) => { return a.FirstName.localeCompare(b.FirstName)},
     },
   { title: 'DATE OF BIRTH', 
     dataIndex: 'DateOfBirth', 
@@ -102,12 +111,12 @@ class SearchLabTestResultList extends React.Component {
   { title: 'GENDER', 
     dataIndex: 'Gender', 
     key: 'Gender',
-    sorter: (a, b) => a.Gender.length - b.Gender.length,
+    sorter: (a, b) => { return a.Gender.localeCompare(b.Gender)},
   },
   { title: 'ADDRESS', 
     dataIndex: 'Address', 
     key: 'Address',
-    sorter: (a, b) => a.Address.length - b.Address.length,
+    sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
   },
   ];
     const data = [];
@@ -115,7 +124,7 @@ class SearchLabTestResultList extends React.Component {
     const testgender = ['M', 'F'];
     const testcityaddress = ['Pasig', 'Pasay', 'Manila'];
     const testlastname = ['Doe','Taylor','Green'];
-    for (let i = 1; i < 4; ++i) {
+    for (let i = 1; i < 1500; ++i) {
         data.push({
         PatientID: '000' + i,
         HospitalID: i*4+'00'+i,
@@ -128,46 +137,66 @@ class SearchLabTestResultList extends React.Component {
     }
     return (
       <div>
-          <Row style={{ paddingBottom: '1em' }} type="flex" justify="end">
-              <Col lg={4} md={6} sm={6} xs={12} className="gutter-row" style={{ lineHeight : '2.5em'}} >
-                  <span className="gutter-box" style={{ float:'right', marginRight:'1em' }}> Display per page </span>
-              </Col>
-              <Col lg={2} md={3} sm={6} xs={6} className="gutter-row">
-                  <Select defaultValue="10" style={{ width: '100%' }} className="gutter-box">
-                      <Option value="10">10</Option>
-                      <Option value="20">20</Option>
-                      <Option value="50">50</Option>
-                      <Option value="100">100</Option>
-                  </Select>
-              </Col>
-          </Row>
-          <Row type="flex">
-              <Col lg={24} xs={24}>
-                  <Table
-                  className="components-table-demo-nested"
+        <Row style={{ paddingBottom: '0.5em' }} type="flex">
+          <Col md={12} className="gutter-row">
+            <Text strong>
+              Search result
+            </Text>
+            <br />
+            <Text>
+              Showing <b>0</b> items out of <b>0</b> results
+            </Text>
+          </Col>
+          <Col md={10}className="gutter-row" style={{ lineHeight : '2.5em'}} >
+            <Text className="gutter-box" style={{ float:'right', marginRight:'1em' }}>
+              Display per page 
+            </Text>
+          </Col>
+          <Col className="gutter-row">
+            <Select defaultValue="10" style={{ width: '100%' }} className="gutter-box">
+              <Option value="10">10</Option>
+              <Option value="20">20</Option>
+              <Option value="50">50</Option>
+              <Option value="100">100</Option>
+            </Select>
+          </Col>
+        </Row>
+        <Row type="flex">
+          <Col lg={24} xs={24}>
+            { this.state.showLoading ? 
+              <Skeleton /> 
+              : 
+              data.length > 0  ?
+                <Table
+                  className="searchLabTestResultTable"
                   columns={columns}
                   expandedRowRender={this.expandedRowRender}
                   dataSource={data}
                   size="small"
-                  />
-              </Col>
-          </Row>
-          {this.state.showDrawer ?
-            <Drawer
-              title="Patient information"
-              onClose={this.onCloseDrawer}
-              width="80%"
-              visible={this.state.showDrawer}
-            >
-              <PatientInfo /> 
-            </Drawer>
-            :
-            null
-          }
-        </div>
+                  scroll={{ y: 300 }}
+                />
+              :
+                <Card>
+                  <Empty />
+                </Card>
+            }
+          </Col>
+        </Row>
+        {this.state.showPatientInfo ?
+          <Drawer
+            title="Patient information"
+            onClose={this._onClosePatientInfoDrawer}
+            width="80%"
+            visible={this.state.showPatientInfo}
+          >
+            <PatientInfo /> 
+          </Drawer>
+          :
+          null
+        }
+      </div>
     );
   }
 }
     
-
-export default SearchLabTestResultList;
+export default WrapperSearchLabTestResultList;
