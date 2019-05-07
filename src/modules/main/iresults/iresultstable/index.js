@@ -3,16 +3,21 @@ import { Table } from 'antd';
 
 
 const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-let current_datetime = new Date();
-let formatted_date = current_datetime.getDate() + "-" + months[current_datetime.getMonth()] + "-" + 
-                    current_datetime.getFullYear() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes();
+const currentDatetime = new Date();
+const formattedDate = `${currentDatetime.getDate()} 
+                    - 
+                    ${months[currentDatetime.getMonth()]}
+                    -
+                    ${currentDatetime.getFullYear()} ${currentDatetime.getHours()}:
+                    ${currentDatetime.getMinutes()}`;
 
 
+// eslint-disable-next-line react/prefer-stateless-function
 class IresultsTable extends React.Component {
     render() {
 
         // PARENT COLUMN HEADER
-        const p_columns = [
+        const pColumns = [
             { title: 'RUN DATE', dataIndex: 'run_date', key: 'run_date', width: 200 },
             { title: 'MACHINE ID', dataIndex: 'machine_id', key: 'machine_id', width: 200 },
             { title: 'EXAM NAME', dataIndex: 'exam_name', key: 'exam_name',  width: 200 },
@@ -23,14 +28,14 @@ class IresultsTable extends React.Component {
           // PARENT COLUMN HEADER
         const coldatasource = [{
             key: '1',
-            run_date: formatted_date,
+            run_date: formattedDate,
             machine_id: 'DXH01(-00026)',
             results: ''
         }];
 
         // CHILD COLUMN FUNCTION
         function expandedRowRender() {
-            const c_column = [
+            const pColumns = [
                 {
                     title: '',
                     dataIndex: 'c_exam_name',
@@ -49,7 +54,8 @@ class IresultsTable extends React.Component {
             ];
 
             const data = [];
-                for (let i = 0; i < 3; ++i) {
+                // eslint-disable-next-line no-plusplus
+                for (let i = 0; i < 3; i++) {
                     data.push({
                         key: i,
                         c_exam_name: '2014-12-24 23:12:00',
@@ -59,20 +65,23 @@ class IresultsTable extends React.Component {
                 }
 
             return (
+              <div className="child-iresult-header">
                 <Table
-                    columns={c_column}
-                    dataSource={data}
-                    pagination={false}
+                  columns={pColumns}
+                  dataSource={data}
+                  pagination={false}
+                  size='small'
                 />
-                );
-            }
+              </div>
+            );
+        }
 
         return(
-            <Table 
-                columns={p_columns}
-                dataSource={coldatasource}
-                expandedRowRender={expandedRowRender}
-            />
+          <Table 
+            columns={pColumns}
+            dataSource={coldatasource}
+            expandedRowRender={expandedRowRender}
+          />
         );
     }
 }
