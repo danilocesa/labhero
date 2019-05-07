@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Form, Input, Row, Col, Typography, DatePicker, Radio, Divider  
-} from 'antd';
+import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider } from 'antd';
 
 import './form.css';
 
@@ -23,10 +21,10 @@ class FillupForm extends React.Component {
                   <Input />
                 </Form.Item>
                 <Form.Item label="LAST NAME">
-                  <Input name="lastname" onChange={this.props.onChangeInput}/>
+                  <Input name="lastname" onChange={this.props.onChangeInput} />
                 </Form.Item>
                 <Form.Item label="FIRST NAME">
-                  <Input name="firstname" onChange={this.props.onChangeInput}/>
+                  <Input name="firstname" onChange={this.props.onChangeInput} />
                 </Form.Item>
                 <Form.Item label="MIDDLE NAME">
                   <Input />
@@ -34,7 +32,7 @@ class FillupForm extends React.Component {
                 <Row gutter={12}>
                   <Col span={18}>
                     <Form.Item label="DATE OF BIRTH">
-                      <DatePicker style={{ width: '100%' }}/>
+                      <DatePicker style={{ width: '100%' }} />
                     </Form.Item>
                   </Col>
                   <Col span={6}>
@@ -52,7 +50,7 @@ class FillupForm extends React.Component {
               </div>
             </Col>
             <Col md={{ span: 2 }} style={{ textAlign: 'center' }}>
-              <Divider className="divider" type="vertical" style={{ height: 420 }}/>
+              <Divider className="divider" type="vertical" style={{ height: 420 }} />
             </Col>
             <Col sm={{ span: 12 }} md={{ span: 11 }}>
               <div className="right-form">

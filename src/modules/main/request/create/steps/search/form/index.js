@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Form, Input, Button, Row, Col
-} from 'antd';
+import { Form, Input, Button, Row, Col } from 'antd';
 
 import './form.css';
 
@@ -10,28 +8,29 @@ const formItemLayout = [
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 6 },
-    lg: { span: 5 }
+    lg: { span: 5 },
   },
   {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 6 },
-    lg: { span: 8 }
+    lg: { span: 8 },
   },
   {
     xs: { span: 24 },
     sm: { span: 24 },
     md: { span: 6 },
-    lg: { span: 5 }
+    lg: { span: 5 },
   },
 ];
 
+// eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
   render() {
     return (
       <Form>
         <Row gutter={12}>
-          <Col {...formItemLayout[0]} offset={3}>  
+          <Col {...formItemLayout[0]} offset={3}>
             <Form.Item label="PATIENT'S ID">
               <Input />
             </Form.Item>
@@ -47,7 +46,7 @@ class SearchForm extends React.Component {
                 <Col span={12}>
                   <Button block shape="round">
                     CLEAR
-                  </Button> 
+                  </Button>
                 </Col>
                 <Col span={12}>
                   <Button block shape="round" type="primary">

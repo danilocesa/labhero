@@ -19,14 +19,13 @@ class SearchStep extends React.Component {
         </div>
         <div style={{ textAlign: 'center', marginTop: 15 }}>
           <Link to="/request/create/step/2">
-            <Icon type="plus" /> CREATE REQUEST
+            <Icon type="plus" />
+            <span style={{ marginLeft: 5 }}>CREATE REQUEST</span>
           </Link>
         </div>
       </div>
     );
   }
 }
-
-
 
 export default SearchStep;

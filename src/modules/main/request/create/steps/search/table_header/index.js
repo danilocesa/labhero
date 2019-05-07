@@ -4,24 +4,27 @@ import { Typography, Select } from 'antd';
 import './table_header.css';
 
 const { Text } = Typography;
-const Option = Select.Option;
+const { Option } = Select;
 
 class TableHeader extends React.Component {
   render() {
-    return(
+    return (
       <div className="table-title">
-        <div className="left">
+        <div>
           <Text strong>SEARCH RESULTS</Text>
-          <br />
-          <Text>Showing <b>0</b> items out of <b>0</b> results</Text>
         </div>
-        <div className="right">
-          <Text>Display per page</Text> 
-          <Select defaultValue="10" style={{ marginLeft: 5 }}>
-            <Option value="10">10</Option>
-            <Option value="15">15</Option>
-            <Option value="20">20</Option>
-          </Select>
+        <div>
+          <div className="left">
+            <Text>Showing 0 items out of 0 results</Text>
+          </div>
+          <div className="right">
+            <Text>Display per page</Text>
+            <Select size="small" defaultValue="10" style={{ marginLeft: 10 }}>
+              <Option value="10">10</Option>
+              <Option value="15">15</Option>
+              <Option value="20">20</Option>
+            </Select>
+          </div>
         </div>
       </div>
     );

@@ -1,19 +1,22 @@
 .request-summary {
   margin-top: 50px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .request-summary .section {
-  width: 50%;
+  width: 80%;
   margin: auto;
 }
 
 .request-summary .comment-section {
-  width: 75%;
-  margin: auto; 
+  margin-left: 20px;
 }
 
-@media only screen and (max-width: 500px) { 
-  .request-summary .section, .request-summary .comment-section {
+@media only screen and (max-width: 500px) {
+  .request-summary .section,
+  .request-summary .comment-section {
     width: 100%;
     margin: auto;
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Form, Input, Button, Col, Typography, Select, Radio, DatePicker } from 'antd';
-import { withRouter  } from "react-router-dom";
-import ReactDatePicker from "../../../../shared_components/DatePicker";
+import { withRouter } from 'react-router-dom';
+import ReactDatePicker from '../../../../shared_components/DatePicker';
 
 //CSS
 import './searchform.css';
@@ -157,9 +157,9 @@ class SearchLabTestForm extends React.Component {
                     </Row>
                 </Form> 
             </Col>   
-            </Row>
-        )
-    }
+        </Row>
+    );
+  }
 }
 
 const WrappedSearchLabTestForm = Form.create({ name: 'searchlabtestform' })(SearchLabTestForm);

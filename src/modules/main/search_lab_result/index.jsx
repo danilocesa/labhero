@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, } from 'antd';
+import { Row, Col } from 'antd';
 
 import WrappedSearchLabTestForm from './search_form';
 import WrapperSearchLabTestResultList from './search_result';

@@ -30,14 +30,15 @@ class WrapperSearchLabTestResultList extends React.Component {
   }
   expandedRowRender = (e) => {
     const columns = [
-      { 
-        title: 'REQUEST DATE', 
-        dataIndex: 'RequestDate', 
+      {
+        title: 'REQUEST DATE',
+        dataIndex: 'RequestDate',
         key: 'RequestDate',
-        align: 'center'
+        align: 'center',
       },
-      { title: 'SAMPLE ID', 
-        dataIndex: 'SampleId', 
+      {
+        title: 'SAMPLE ID',
+        dataIndex: 'SampleId',
         key: 'SampleId',
         render: text =>  <Text onClick={this._onSampleIDClick} className="sampleLabTestID">{text}</Text>,
       },
@@ -49,6 +50,8 @@ class WrapperSearchLabTestResultList extends React.Component {
         dataIndex: 'HisLink', 
         key: 'HisLink'
       },
+      { title: 'STATUS', dataIndex: 'Status', key: 'Status' },
+      { title: 'HISLINK', dataIndex: 'HisLink', key: 'HisLink' },
     ];
     const data = [];
     const teststatus = ['On-going', 'Verified', 'Cancelled'];
@@ -56,7 +59,7 @@ class WrapperSearchLabTestResultList extends React.Component {
       data.push({
         RequestDate: '04/11/2019',
         SampleId: '100' + i,
-        Status: teststatus[Math.floor(Math.random()*teststatus.length)],
+        Status: teststatus[Math.floor(Math.random() * teststatus.length)],
         HisLink: '190411200' + i,
       });
     }
@@ -127,13 +130,13 @@ class WrapperSearchLabTestResultList extends React.Component {
     for (let i = 1; i < 1500; ++i) {
         data.push({
         PatientID: '000' + i,
-        HospitalID: i*4+'00'+i,
-        LastName: testlastname[Math.floor(Math.random()*testlastname.length)],
-        FirstName: testfirstname[Math.floor(Math.random()*testfirstname.length)],
+        HospitalID: i * 4 + '00' + i,
+        LastName: testlastname[Math.floor(Math.random() * testlastname.length)],
+        FirstName: testfirstname[Math.floor(Math.random() * testfirstname.length)],
         DateOfBirth: '01/01/1990',
-        Gender: testgender[Math.floor(Math.random()*testgender.length)],
-        Address: testcityaddress[Math.floor(Math.random()*testcityaddress.length)],
-        });
+        Gender: testgender[Math.floor(Math.random() * testgender.length)],
+        Address: testcityaddress[Math.floor(Math.random() * testcityaddress.length)],
+      });
     }
     return (
       <div>
