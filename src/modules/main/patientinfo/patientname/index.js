@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 
 import { PrintLogo } from '../../../../images';
@@ -35,10 +36,12 @@ class Name extends React.Component {
                               <div style = {{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
                                     <Row>
                                           <ButtonGroup>
-                                                <Button>
-                                                      <img src = { IResultsIcon } className = "print-logo" alt = "iResults Icon" />
-                                                      <span style = {{ paddingLeft: '7px' }}>iResults</span>
-                                                </Button>
+                                                <Link to="/iresults">
+                                                      <Button>
+                                                            <img src = { IResultsIcon } className = "print-logo" alt = "iResults Icon" />
+                                                            <span style = {{ paddingLeft: '7px' }}>iResults</span>
+                                                      </Button>
+                                                </Link>
                                                 <Button>
                                                       <img src = { PrintLogo } className = "print-logo" alt = "Print Icon" />
                                                       <span style = {{ paddingLeft: '7px' }}>Print</span>

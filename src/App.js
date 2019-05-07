@@ -4,6 +4,7 @@ import MainLayout from './shared_components/layout';
 import Login from './modules/login';
 import SearchLabTestResult from './modules/main/search_lab_result';
 import PatientInfo from './modules/main/patientinfo';
+import Iresults from './modules/main/iresults';
 
 import './App.css';
 
@@ -15,7 +16,8 @@ class App extends Component {
           <Route  path="/login" component={Login} /> 
           <Route  path="/searchlabresult" component={SearchLabTestResult} /> 
           <Route  path="/patientinfo" component={PatientInfo} /> 
-          <Route path="/" component={MainLayout} />
+          <Route  path="/" component={MainLayout} />
+          <Route  path="/iresults" component={Iresults} />
         </Switch>
       </Router>
     );

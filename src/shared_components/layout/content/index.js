@@ -6,6 +6,7 @@ import DashboardPage from '../../../modules/main/dashboard';
 import CreateRequestPage from '../../../modules/main/request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
+import Iresults from '../../../modules/main/iresults';
 
 const { Content: Antcontent } = Layout;
 
@@ -23,7 +24,9 @@ const Content = (props) => (
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
+      <Route  path="/iresults" component={Iresults} />
       <Redirect from="/" to="/dashboard"/>
+      
     </Switch>
   </Antcontent>
 );

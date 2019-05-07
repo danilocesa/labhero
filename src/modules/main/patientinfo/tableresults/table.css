@@ -21,6 +21,3 @@
       text-transform: uppercase;
 }
 
-.patient-table tr:nth-child(2n+1) {
-      background: #fbfbfb;
-}
