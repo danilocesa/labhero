@@ -1,12 +1,14 @@
-.ant-form-item-label{
-  line-height:0.8em!important;
+.ant-form-item-label {
+  line-height: 0.8em !important;
   font-weight: bold;
 }
 
-.ant-btn-round{
-  font-size: 14px!important;
+.ant-btn-round {
+  font-size: 14px !important;
 }
 
-.ant-input, .ant-radio-button-wrapper, .ant-select-selection  {
-  border:1px solid #bbadff!important;
+.ant-input,
+.ant-radio-button-wrapper,
+.ant-select-selection {
+  border: 1px solid #bbadff !important;
 }

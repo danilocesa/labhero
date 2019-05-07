@@ -12,19 +12,17 @@
 
 .select-step-table .ant-table-thead > tr > th {
   padding: 4px 16px !important;
-} 
+}
 
 .select-step-table .ant-table-tbody > tr > td {
   padding: 5px 16px !important;
-} 
+}
 
 .select-step-table .ant-table-thead > tr > th:last-child,
 .select-step-table .ant-table-tbody > tr > td:last-child {
   text-align: right;
-} 
+}
 
 .select-step-table .ant-empty {
   margin: 80px 0 !important;
 }
-
-

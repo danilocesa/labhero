@@ -1,4 +1,5 @@
-.ant-layout-sider, .side-menu {
+.ant-layout-sider,
+.side-menu {
   background: #fafafc !important;
 }
 
@@ -7,6 +8,8 @@
   border-right: 3px solid;
 }
 
-.side-menu .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+.side-menu .ant-menu-inline,
+.ant-menu-vertical,
+.ant-menu-vertical-left {
   border-right: 0 !important;
 }

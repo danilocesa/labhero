@@ -8,27 +8,26 @@ const { Text } = Typography;
 
 class Navigation extends React.Component {
   state = {
-    displayModal: false
+    displayModal: false,
   };
-  
+
   showModal = () => {
     this.setState({
-      displayModal: true
+      displayModal: true,
     });
-  }
+  };
 
   closeModal = () => {
     this.setState({
-      displayModal: false
+      displayModal: false,
     });
-  }
-  
+  };
+
   render() {
     const { displayModal } = this.state;
 
     const Prompt = !displayModal ? null : (
-      <ConfirmationModal visible={displayModal} 
-                         closeModal={this.closeModal}/> 
+      <ConfirmationModal visible={displayModal} closeModal={this.closeModal} />
     );
 
     return (
@@ -36,13 +35,17 @@ class Navigation extends React.Component {
         <Row type="flex" justify="end">
           <Col>
             <Link to="/request/create/step/3">
-              <Text><u>BACK</u></Text>
+              <Text>
+                <u>BACK</u>
+              </Text>
             </Link>
             <Tooltip title="Print and Save">
-              <Button className="nav-btn-round"
-                      type="primary"
-                      onClick={this.showModal}
-                      style={{ marginLeft: 20 }}>
+              <Button
+                className="nav-btn-round"
+                type="primary"
+                onClick={this.showModal}
+                style={{ marginLeft: 20 }}
+              >
                 PRINT
               </Button>
             </Tooltip>

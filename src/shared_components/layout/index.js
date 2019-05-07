@@ -16,7 +16,7 @@ class MainLayout extends React.Component {
     this.setState({
       collapsed: !this.state.collapsed,
     });
-  }
+  };
 
   render() {
     return (
@@ -24,14 +24,13 @@ class MainLayout extends React.Component {
         <Layout style={{ minHeight: '100vh' }}>
           <Header />
           <Layout>
-            <Sider collapsed={this.state.collapsed}/>
+            <Sider collapsed={this.state.collapsed} />
             <Content />
           </Layout>
         </Layout>
       </Router>
     );
   }
-  
 }
 
 export default MainLayout;

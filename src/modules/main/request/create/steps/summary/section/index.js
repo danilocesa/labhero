@@ -7,7 +7,7 @@ const { Text } = Typography;
 
 const sectionLayout = {
   sm: { span: 24 },
-  lg: { span: 6 }
+  lg: { span: 6 },
 };
 
 class SummarySection extends React.Component {

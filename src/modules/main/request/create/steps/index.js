@@ -9,7 +9,7 @@ import SummaryStep from './summary';
 
 class StepsPage extends React.Component {
   render() {
-    return(
+    return (
       <div>
         <Route path="/request/create/step/1" component={SearchStep} />
         <Route path="/request/create/step/2" component={FillupStep} />
