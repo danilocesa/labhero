@@ -7,8 +7,7 @@ import Navigation from './navigation';
 class FillupStep extends React.Component {
   state = {
     firstname: '',
-    lastname: '',
-    disabled: true,
+    lastname: ''
   };
 
   handleOnChangeInput = event => {

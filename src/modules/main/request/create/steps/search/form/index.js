@@ -24,6 +24,7 @@ const formItemLayout = [
   },
 ];
 
+// eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
   render() {
     return (
