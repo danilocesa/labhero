@@ -9,9 +9,7 @@ class SummaryFooter extends React.Component {
       <Row>
         <Col span={16} offset={4}>
           <Row>
-            <Col span={12}>
-              {/* <SummaryActions /> */}
-            </Col>
+            <Col span={12}>{/* <SummaryActions /> */}</Col>
             <Col span={12}>
               <Navigation />
             </Col>

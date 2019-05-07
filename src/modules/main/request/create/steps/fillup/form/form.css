@@ -1,4 +1,5 @@
-.left-form, .right-form {
+.left-form,
+.right-form {
   width: 60%;
   max-width: 400px;
 }
@@ -12,7 +13,8 @@
     display: none !important;
   }
 
-  .left-form, .right-form {
+  .left-form,
+  .right-form {
     width: 90%;
   }
 

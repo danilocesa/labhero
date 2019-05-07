@@ -27,6 +27,4 @@ class SearchStep extends React.Component {
   }
 }
 
-
-
 export default SearchStep;

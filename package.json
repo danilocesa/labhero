@@ -60,17 +60,5 @@
     "lint-staged": "^8.1.6",
     "prettier": "^1.17.0",
     "pretty-quick": "^1.10.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "eslint",
-      "pretty-quick — staged",
-      "git add"
-    ]
   }
 }
