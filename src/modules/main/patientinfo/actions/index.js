@@ -1,11 +1,19 @@
 import React from 'react';
-import { Button, Layout, Modal, Row, Col } from 'antd';
+import { Button, Modal } from 'antd';
 import { CheckIcon } from '../../../../images';
 // import 'antd/dist/antd.css';
 
 import './actions.css';
 
 const ButtonGroup = Button.Group;
+
+const ModalContent = (
+  <div>
+    <img src={CheckIcon} alt="check icon" height='70px' width='auto' style={{marginBottom:'10px'}} />
+    <p>You have successfully saved a result!</p>
+    <p>A notification will be sent once the request has been verified.</p>
+  </div>
+);
 
 class Actions extends React.Component {
   state = { visible: false };
