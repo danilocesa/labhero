@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Typography, Select } from 'antd';
 
 import './table_header.css';
@@ -8,6 +9,9 @@ const { Option } = Select;
 
 class TableHeader extends React.Component {
   render() {
+    const { pageSize, pageTotal, handleChangeSize } = this.props;
+    const items = pageTotal > 0 ? pageSize : 0;
+
     return (
       <div className="table-title">
         <div>
@@ -15,14 +19,20 @@ class TableHeader extends React.Component {
         </div>
         <div>
           <div className="left">
-            <Text>Showing 0 items out of 0 results</Text>
+            <Text>{`Showing ${items} items out of ${pageTotal} results`}</Text>
           </div>
           <div className="right">
             <Text>Display per page</Text>
-            <Select size="small" defaultValue="10" style={{ marginLeft: 10 }}>
-              <Option value="10">10</Option>
-              <Option value="15">15</Option>
-              <Option value="20">20</Option>
+            <Select 
+              size="small" 
+              defaultValue="10" 
+              style={{ marginLeft: 10 }} 
+              onChange={handleChangeSize}
+            >
+              <Option value={5}>5</Option>
+              <Option value={10}>10</Option>
+              <Option value={15}>15</Option>
+              <Option value={20}>20</Option>
             </Select>
           </div>
         </div>
@@ -30,5 +40,11 @@ class TableHeader extends React.Component {
     );
   }
 }
+
+TableHeader.propTypes = {
+  handleChangeSize: PropTypes.func.isRequired,
+  pageTotal: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired
+};
 
 export default TableHeader;

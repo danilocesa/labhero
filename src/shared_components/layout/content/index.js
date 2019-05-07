@@ -17,15 +17,15 @@ const wrapperStyle = {
   padding: 24,
 };
 
-const Content = props => (
+const Content = () => (
   <Antcontent style={wrapperStyle}>
     <Switch>
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
-      <Route  path="/iresults" component={Iresults} />
-      <Redirect from="/" to="/dashboard"/>
+      <Route path="/iresults" component={Iresults} />
+      <Redirect from="/" to="/dashboard" />
       
     </Switch>
   </Antcontent>

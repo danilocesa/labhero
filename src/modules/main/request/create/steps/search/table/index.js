@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Table as AntTable } from 'antd';
 
 import './table.css';
@@ -7,77 +8,76 @@ const columns = [
   {
     title: 'LAST NAME',
     dataIndex: 'lastname',
-    sorter: (a, b) => a.lastname.length - b.lastname.length,
+    sorter: (a, b) => a.lastname.localeCompare(b.lastname),
   },
   {
     title: 'FIRST NAME',
     dataIndex: 'firstname',
-    sorter: (a, b) => a.firstname.length - b.firstname.length,
+    sorter: (a, b) => a.firstname.localeCompare(b.firstname),
   },
   {
     title: 'MIDDLE NAME',
     dataIndex: 'middlename',
-    sorter: (a, b) => a.middlename.length - b.middlename.length,
+    sorter: (a, b) => a.middlename.localeCompare(b.middlename),
   },
   {
     title: 'DATE OF BIRTH',
     dataIndex: 'birthday',
-    sorter: (a, b) => a.birthday.length - b.birthday.length,
+    sorter: (a, b) => a.birthday.localeCompare(b.birthday),
   },
   {
     title: 'GENDER',
     dataIndex: 'gender',
-    sorter: (a, b) => a.gender.length - b.gender.length,
+    sorter: (a, b) => a.gender.localeCompare(b.gender),
   },
   {
     title: 'CITY ADDRESS',
     dataIndex: 'address',
-    sorter: (a, b) => a.address.length - b.address.length,
+    sorter: (a, b) => a.address.localeCompare(b.address),
   },
 ];
 
-const data = [
-  // {
-  //   key: '1',
-  //   lastname: 'Ramos',
-  //   firstname: 'Juana',
-  //   middlename: 'D',
-  //   birthday: '10-08-1973',
-  //   gender: 'FEMALE',
-  //   address: '3656 calle de argumosa cartagena asturias'
-  // },
-  // {
-  //   key: '2',
-  //   lastname: 'Hedal',
-  //   firstname: 'Rolf',
-  //   middlename: 'G',
-  //   birthday: '11-12-1975',
-  //   gender: 'MALE',
-  //   address: 'ljan terrasse 346 vear rogaland'
-  // },
-  // {
-  //   key: '3',
-  //   lastname: 'Johnson',
-  //   firstname: 'Karl',
-  //   middlename: 'S',
-  //   birthday: '12-25-1989',
-  //   gender: 'MALE',
-  //   address: '6057 avondale ave new orleans new york'
-  // }
-];
 
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
 
 class Table extends React.Component {
+  handleDoubleClick = () => {
+    
+  }
+  
   render() {
+    const { data, pageSize } = this.props;
+
     return (
       <div className="search-patient-table">
-        <AntTable columns={columns} dataSource={data} onChange={onChange} />
+        <AntTable 
+          pagination={{pageSize}} 
+          columns={columns} 
+          dataSource={data} 
+          onChange={onChange} 
+          onRow={(record) => {
+            return { 
+              onDoubleClick: this.handleDoubleClick
+            };
+          }}
+        />
       </div>
     );
   }
 }
+
+Table.propTypes = {
+  data: PropTypes.shape({
+    firstname: PropTypes.string.isRequired,
+    lastname: PropTypes.string.isRequired,
+    middlename: PropTypes.string.isRequired,
+    birthday: PropTypes.string.isRequired,
+    gender: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired
+  }).isRequired,
+  pageSize: PropTypes.number.isRequired
+};
 
 export default Table;
