@@ -1,10 +1,7 @@
 import React from 'react';
-import { Row, Col, Table, Select   } from 'antd';
-import { Link } from "react-router-dom";
+import { Row, Col, Table   } from 'antd';
 
-const { Option } = Select;
-
-function PleboResult() {
+function PleboTable() {
 
     const columns = [
         { 
@@ -44,9 +41,10 @@ function PleboResult() {
     const testfirstname = ['Dante', 'Matthew', 'Maria'];
     const testgender = ['M', 'F'];
     const testcityaddress = ['Pasig', 'Pasay', 'Manila'];
+    // eslint-disable-next-line no-plusplus
     for (let i = 1; i < 10; ++i) {
         data.push({
-        PatientID: '000' + i,
+        PatientID: `000${  i}`,
         LastName: 'Doe',
         FirstName: testfirstname[Math.floor(Math.random()*testfirstname.length)],
         DateOfBirth: '01/01/1990',
@@ -56,18 +54,18 @@ function PleboResult() {
     }
 
     return (
-        <div>
-          <Row type="flex">
-              <Col lg={24} xs={24}>
-                  <Table
-                  className="components-table-demo-nested"
-                  columns={columns}
-                  dataSource={data}
-                  size="small"
-                  />
-              </Col>
-          </Row>
-        </div>
+      <div>
+        <Row type="flex">
+          <Col lg={24} xs={24}>
+            <Table
+              className="components-table-demo-nested"
+              columns={columns}
+              dataSource={data}
+              size="small"
+            />
+          </Col>
+        </Row>
+      </div>
     );
   }
-export default PleboResult;
+export default PleboTable;

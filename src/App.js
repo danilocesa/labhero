@@ -4,12 +4,12 @@ import MainLayout from './shared_components/layout';
 import Login from './modules/login';
 import SearchLabTestResult from './modules/main/search_lab_result';
 import PatientInfo from './modules/main/patientinfo';
-<<<<<<< HEAD
+
 import ErrorPage from './modules/error_page';
-import SearchPleboResult from './modules/main/plebo';
-=======
+import PleboSearch from './modules/main/plebo';
 import Iresults from './modules/main/iresults';
->>>>>>> 821d2e54775dc37fa91482c6c85a902bd941bc25
+
+import PleboPatientResult from './modules/main/plebo/plebopatient';
 
 import './App.css';
 
@@ -23,7 +23,9 @@ class App extends Component {
           <Route path="/patientinfo" component={PatientInfo} />
           <Route path="/" component={MainLayout} />
           <Route path="/errorpage" component={ErrorPage} />
-          <Route path="/pleboresult" component={SearchPleboResult} />
+          <Route path="/pleboresult" component={PleboSearch} />
+          <Route path="/iresults" component={Iresults} />
+          <Route path="/plebopatient" component={PleboPatientResult} />
         </Switch>
       </Router>
     );
