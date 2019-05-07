@@ -3,7 +3,7 @@ import { Card } from 'antd';
 
 import Tag from './tag.js';
 
-import './section-content.css';
+import './section_content.css';
 
 const Data = [
   { 
@@ -63,7 +63,7 @@ const Data = [
 class SectionContent extends React.Component {
   render() {
     const TagList = Data.map((item, index) => (
-      <Tag key="index" checked={item.checked}>{item.label}</Tag>)
+      <Tag key={index} checked={item.checked} title={item.label}>{item.label}</Tag>)
     );
 
     return (
