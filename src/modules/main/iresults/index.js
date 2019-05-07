@@ -9,13 +9,13 @@ import MachinesInstalled from './machines';
 class Iresults extends React.Component {
     render() {
         return(
-            <Row>
-                <Col span={24}>
-                    <MachinesInstalled />
-                    <IresultsTable />
-                    <Actions />
-                </Col>
-            </Row>
+          <Row>
+            <Col span={24}>
+              <MachinesInstalled />
+              <IresultsTable />
+              <Actions />
+            </Col>
+          </Row>
         );
     }
 }

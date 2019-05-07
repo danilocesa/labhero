@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 
+import './iresultstable.css';
 
 const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 const currentDatetime = new Date();
@@ -35,7 +36,7 @@ class IresultsTable extends React.Component {
 
         // CHILD COLUMN FUNCTION
         function expandedRowRender() {
-            const pColumns = [
+            const cColumns = [
                 {
                     title: '',
                     dataIndex: 'c_exam_name',
@@ -67,7 +68,7 @@ class IresultsTable extends React.Component {
             return (
               <div className="child-iresult-header">
                 <Table
-                  columns={pColumns}
+                  columns={cColumns}
                   dataSource={data}
                   pagination={false}
                   size='small'
