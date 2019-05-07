@@ -4,7 +4,7 @@ import { Typography, Select } from 'antd';
 import './table_header.css';
 
 const { Text } = Typography;
-const Option = Select.Option;
+const { Option } = Select;
 
 class TableHeader extends React.Component {
   render() {
