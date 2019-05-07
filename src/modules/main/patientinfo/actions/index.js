@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal } from 'antd';
+import { Button, Modal, Layout, Row, Col } from 'antd';
 import { CheckIcon } from '../../../../images';
 // import 'antd/dist/antd.css';
 
