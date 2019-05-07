@@ -3,10 +3,9 @@
   margin-bottom: 10px;
 }
 
-.table-title .left, .table-title .right {
+.table-title .left, .table-title .right, .table-title .middle {
   display: inline-block;
   width: 50%;
-  vertical-align: bottom;
 }
 
 .table-title .right {

@@ -89,13 +89,13 @@ const data = [
 class SummaryTable extends React.Component {
   render() {
     return (
-      <Row style={{ marginTop: 20 }}>
-        <Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
+      <Row>
+        <Col span={24}>
           <div className="summary-step-table">
             <AntTable columns={columns} 
                       pagination={false}
                       dataSource={data}
-                      scroll={{ y: 260 }} />
+                       />
           </div>
         </Col>
       </Row>
