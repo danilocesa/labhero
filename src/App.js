@@ -1,8 +1,8 @@
-//LIBRARY
+// LIBRARY
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-//CUSTOM MODULES
+// CUSTOM MODULES
 import MainLayout from './shared_components/layout';
 import Login from './modules/login';
 import SearchLabTestResult from './modules/main/search_lab_result';
@@ -12,7 +12,7 @@ import PleboSearch from './modules/main/plebo';
 import Iresults from './modules/main/iresults';
 import PleboPatientResult from './modules/main/plebo/plebopatient';
 
-//CSS
+// CSS
 import './App.css';
 
 class App extends Component {

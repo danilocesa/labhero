@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 
 import PleboPatientInfo from './info';
 import PatientName from './name';
+import SpecimenList from './specimen';
 
 
 class PleboPatientResult extends React.Component {
@@ -14,6 +15,7 @@ class PleboPatientResult extends React.Component {
           </Col>
           <Col xs={24} sm={17} md={17} lg={19} xl={19} style={{ padding: 25 }}>
             <PatientName />
+            <SpecimenList />
           </Col>
         </Row>
     );

@@ -10,7 +10,7 @@ class PleboHeader extends React.Component {
       <div style={{   marginTop: 25, marginBottom: 10 }}>
         <Row>
           <Col lg={12} md={24} sm={24} xs={24}>
-            <Text>Showing 10 items out of 12 results</Text>
+            <Text>Showing <b>0</b> items out of <b>0</b> results</Text>
           </Col>
           <Col 
             lg={12} 
@@ -31,7 +31,7 @@ class PleboHeader extends React.Component {
             </Select>
             <span 
               className="gutter-box" 
-              style={{ float:'right', marginRight: '15px'}}
+              style={{ float:'right', paddingTop: 5, marginRight: '15px'}}
             > 
               Display per page 
             </span>
