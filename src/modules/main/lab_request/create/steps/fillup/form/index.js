@@ -1,4 +1,6 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider } from 'antd';
 
 import './form.css';
@@ -7,7 +9,15 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 class FillupForm extends React.Component {
+  componentDidMount() {
+    const { location } = this.props;
+
+    console.log(location);
+  }  
+  
   render() {
+    const { onChangeInput } = this.props;
+
     return (
       <div style={{ marginTop: 50 }}>
         <Form>
@@ -21,10 +31,10 @@ class FillupForm extends React.Component {
                   <Input />
                 </Form.Item>
                 <Form.Item label="LAST NAME">
-                  <Input name="lastname" onChange={this.props.onChangeInput} />
+                  <Input name="lastname" onChange={onChangeInput} />
                 </Form.Item>
                 <Form.Item label="FIRST NAME">
-                  <Input name="firstname" onChange={this.props.onChangeInput} />
+                  <Input name="firstname" onChange={onChangeInput} />
                 </Form.Item>
                 <Form.Item label="MIDDLE NAME">
                   <Input />
@@ -85,4 +95,8 @@ class FillupForm extends React.Component {
   }
 }
 
-export default FillupForm;
+FillupForm.propTypes = {
+  onChangeInput: PropTypes.func.isRequired
+};
+
+export default withRouter(FillupForm);

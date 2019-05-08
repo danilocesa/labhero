@@ -11,11 +11,16 @@
     "jest": true
   },
   "rules": {
-    "max-len": ["error", {"code": 100}],
+    "max-len": ["error", {"code": 200}],
     "prefer-promise-reject-errors": ["off"],
     "react/jsx-filename-extension": ["off"],
     "react/prop-types": ["warn"],
     "no-return-assign": ["off"],
-    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }]
+    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }],
+    "react/destructuring-assignment": ["always"],
+    "react/jsx-indent": [2,"tab"],
+    "react/jsx-indent-props": [2,"tab"],
+    "no-console": 0,
+    "react/jsx-one-expression-per-line":0
   }
 }
