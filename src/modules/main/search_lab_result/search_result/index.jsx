@@ -1,11 +1,14 @@
+//LIBRARY
 import React from 'react';
 import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton } from 'antd';
+
+//CUSTOM MODULES
 import PatientInfo from '../../patientinfo';
 
 //CSS
 import './searchresult.css';
 
-//Constant
+//CONSTANTS
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -80,48 +83,49 @@ class WrapperSearchLabTestResultList extends React.Component {
     this.setState({
       showLoading: false
     });
-  }   
+  } 
+
   render() {  
     const columns = [
-  { 
-    title: 'PATIENT ID', 
-    dataIndex: 'PatientID', 
-    key: 'PatientID',
-    sorter: (a, b) => a.PatientID - b.PatientID, 
-  },
-  { 
-    title: 'HOSPITAL ID', 
-    dataIndex: 'HospitalID', 
-    key: 'HospitalID',
-    sorter: (a, b) => a.HospitalID - b.HospitalID, 
-  },
-  { title: 'LAST NAME', 
-    dataIndex: 'LastName', 
-    key: 'LastName',
-    defaultSortOrder: 'ascend',
-    sorter: (a, b) => { return a.LastName.localeCompare(b.LastName)}, 
+    { 
+      title: 'PATIENT ID', 
+      dataIndex: 'PatientID', 
+      key: 'PatientID',
+      sorter: (a, b) => a.PatientID - b.PatientID, 
     },
-  { title: 'FIRST NAME', 
-    dataIndex: 'FirstName', 
-    key: 'FirstName',
-    sorter: (a, b) => { return a.FirstName.localeCompare(b.FirstName)},
+    { 
+      title: 'HOSPITAL ID', 
+      dataIndex: 'HospitalID', 
+      key: 'HospitalID',
+      sorter: (a, b) => a.HospitalID - b.HospitalID, 
     },
-  { title: 'DATE OF BIRTH', 
-    dataIndex: 'DateOfBirth', 
-    key: 'DateOfBirth',
-    sorter: (a, b) => a.DateOfBirth.length - b.DateOfBirth.length,
-  },
-  { title: 'GENDER', 
-    dataIndex: 'Gender', 
-    key: 'Gender',
-    sorter: (a, b) => { return a.Gender.localeCompare(b.Gender)},
-  },
-  { title: 'ADDRESS', 
-    dataIndex: 'Address', 
-    key: 'Address',
-    sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
-  },
-  ];
+    { title: 'LAST NAME', 
+      dataIndex: 'LastName', 
+      key: 'LastName',
+      defaultSortOrder: 'ascend',
+      sorter: (a, b) => { return a.LastName.localeCompare(b.LastName)}, 
+      },
+    { title: 'FIRST NAME', 
+      dataIndex: 'FirstName', 
+      key: 'FirstName',
+      sorter: (a, b) => { return a.FirstName.localeCompare(b.FirstName)},
+      },
+    { title: 'DATE OF BIRTH', 
+      dataIndex: 'DateOfBirth', 
+      key: 'DateOfBirth',
+      sorter: (a, b) => a.DateOfBirth.length - b.DateOfBirth.length,
+    },
+    { title: 'GENDER', 
+      dataIndex: 'Gender', 
+      key: 'Gender',
+      sorter: (a, b) => { return a.Gender.localeCompare(b.Gender)},
+    },
+    { title: 'ADDRESS', 
+      dataIndex: 'Address', 
+      key: 'Address',
+      sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
+    },
+    ];
     const data = [];
     const testfirstname = ['Dante', 'Matthew', 'Maria'];
     const testgender = ['M', 'F'];
