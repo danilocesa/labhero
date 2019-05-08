@@ -1,3 +1,4 @@
+//LIBRARY
 import React from 'react';
 import { Row, Form, Input, Button, Col, Typography, Select, Radio, DatePicker } from 'antd';
 import { withRouter } from 'react-router-dom';
@@ -5,7 +6,6 @@ import ReactDatePicker from '../../../../shared_components/DatePicker';
 
 //CSS
 import './searchform.css';
-// import "react-datepicker/dist/react-datepicker.css";
 
 //Constant
 const { Title } = Typography;
