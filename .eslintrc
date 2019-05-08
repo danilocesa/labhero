@@ -21,6 +21,7 @@
     "react/jsx-indent": [2,"tab"],
     "react/jsx-indent-props": [2,"tab"],
     "no-console": 0,
-    "react/jsx-one-expression-per-line":0
+    "react/jsx-one-expression-per-line": 0,
+    "react/no-multi-comp": 0
   }
 }

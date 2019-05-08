@@ -17,7 +17,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     super(props);
     this.state = {
       showPatientInfo: false,
-      // showLoading: true,
+      showLoading: true,
     };
     this.onSampleIDClick = this.onSampleIDClick.bind(this);
   }
@@ -25,9 +25,9 @@ class WrapperSearchLabTestResultList extends React.Component {
   // React lifecycle
   componentDidMount() 
   {
-    // this.setState({
-    //   showLoading: false
-    // });
+    this.setState({
+      showLoading: false
+    });
   } 
 
   onSampleIDClick() {
@@ -36,7 +36,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     });
   }
 
-  _onClosePatientInfoDrawer = () => {
+  onClosePatientInfoDrawer = () => {
     this.setState({
       showPatientInfo: false,
     });
@@ -72,9 +72,9 @@ class WrapperSearchLabTestResultList extends React.Component {
     for (let i = 1; i < 20; i+=1) {
       data.push({
         RequestDate: '04/11/2019',
-        SampleId: `100 ${i}`,
+        SampleId: `100${i}`,
         Status: teststatus[Math.floor(Math.random() * teststatus.length)],
-        HisLink: `190411200i ${i}`,
+        HisLink: `190411200i${i}`,
       });
     }
     return (
@@ -138,8 +138,8 @@ class WrapperSearchLabTestResultList extends React.Component {
     const testlastname = ['Doe','Taylor','Green'];
     for (let i = 1; i < 1500; i += 1) {
         data.push({
-        PatientID: `000 ${i}`,
-        HospitalID: `${i*4} 00 ${i}`,
+        PatientID: `000${i}`,
+        HospitalID: `${i*4}00${i}`,
         LastName: testlastname[Math.floor(Math.random() * testlastname.length)],
         FirstName: testfirstname[Math.floor(Math.random() * testfirstname.length)],
         DateOfBirth: '01/01/1990',
@@ -190,9 +190,9 @@ class WrapperSearchLabTestResultList extends React.Component {
 		    </Row>
 		    <Row type="flex">
 			    <Col lg={24} xs={24}>
-            if(this.state.showLoading){
-	            <Skeleton /> 
-            } else {
+				    { this.state.showLoading ?
+					    <Skeleton /> 
+            :
               tableEmpty
             }
 			    </Col>

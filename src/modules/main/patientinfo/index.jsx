@@ -3,8 +3,8 @@ import React from 'react';
 import { Row, Col } from 'antd';
 
 // CUSTOM MODULES
-import Information from './information';
-import TableResults from './tableresults';
+import Information from "./information";
+import TableResults from "./tableresults";
 import Name from './patientname';
 import Actions from './actions';
 import PatientComment from './patientcomment';
