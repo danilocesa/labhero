@@ -1,7 +1,8 @@
+// LIBRARY
 import React from 'react';
 import DatePicker from 'react-datepicker';
 
-//CSS
+// CSS
 import 'react-datepicker/dist/react-datepicker.css';
 
 class ReactDatePicker extends React.Component {
@@ -21,12 +22,12 @@ class ReactDatePicker extends React.Component {
 
   render() {
     return (
-      <DatePicker
-        selected={this.state.startDate}
-        onChange={this.handleChange}
-        placeholderText="MM/DD/YYYY"
-        className="ant-calendar-picker-input ant-input"
-      />
+	    <DatePicker
+		    selected={this.state.startDate}
+		    onChange={this.handleChange}
+		    placeholderText="MM/DD/YYYY"
+		    className="ant-calendar-picker-input ant-input"
+	    />
     );
   }
 }

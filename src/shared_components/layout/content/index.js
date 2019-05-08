@@ -23,23 +23,23 @@ const wrapperStyle = {
 };
 
 const Content = () => (
-  <Antcontent style={wrapperStyle}>
-    <Switch>
-      <Route exact path="/" component={DashboardPage} />
-      <Route path="/dashboard" component={DashboardPage} />
-      {/* Lab request route */}
-      <Route path="/request/create" component={CreateRequestPage} />
-      {/* Search lab result route */}
-      <Route path="/searchlabresult" component={SearchLabTestResult} />
-      <Route path="/patientinfo" component={PatientInfo} />
-      <Route path="/iresults" component={Iresults} />
-      {/* Plebo route */}
-      <Route path="/pleboresult" component={PleboSearch} />
-      <Route path="/plebopatient" component={PleboPatientResult} />
-      {/* 404 page route */}
-      <Route component={ErrorPage} />
-    </Switch>
-  </Antcontent>
+	<Antcontent style={wrapperStyle}>
+		<Switch>
+			<Route exact path="/" component={DashboardPage} />
+			<Route path="/dashboard" component={DashboardPage} />
+			{/* Lab request route */}
+			<Route path="/request/create" component={CreateRequestPage} />
+			{/* Search lab result route */}
+			<Route path="/searchlabresult" component={SearchLabTestResult} />
+			<Route path="/patientinfo" component={PatientInfo} />
+			<Route path="/iresults" component={Iresults} />
+			{/* Plebo route */}
+			<Route path="/pleboresult" component={PleboSearch} />
+			<Route path="/plebopatient" component={PleboPatientResult} />
+			{/* 404 page route */}
+			<Route component={ErrorPage} />
+		</Switch>
+	</Antcontent>
 );
 
 export default withRouter(Content);
