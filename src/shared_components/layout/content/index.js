@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
 import DashboardPage from '../../../modules/main/dashboard';
-import CreateRequestPage from '../../../modules/main/request/create';
+import CreateRequestPage from '../../../modules/main/lab_request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
 import Iresults from '../../../modules/main/iresults';

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import MainLayout from './shared_components/layout';
 import Login from './modules/login';
 import SearchLabTestResult from './modules/main/search_lab_result';
 import PatientInfo from './modules/main/patientinfo';
-import Iresults from './modules/main/iresults';
+// import Iresults from './modules/main/iresults';
 
 import './App.css';
 
