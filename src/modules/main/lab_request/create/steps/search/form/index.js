@@ -26,30 +26,55 @@ const formItemLayout = [
 
 // eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
+  state = {
+    patientId: '',
+    patientName: ''
+  };
+  
+  handleInputChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+  }
+
+  clearInputs = () => {
+    this.setState({
+      patientId: '',
+      patientName: ''
+    });
+  }
+
   render() {
+    const { patientId, patientName } = this.state;
+    const disabled = !(patientId || patientName);
+
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <Row gutter={12}>
           <Col {...formItemLayout[0]} offset={3}>
             <Form.Item label="PATIENT'S ID">
-              <Input />
+              <Input name="patientId" value={patientId} onChange={this.handleInputChange} />
             </Form.Item>
           </Col>
           <Col {...formItemLayout[1]}>
             <Form.Item label="PATIENT'S FULLNAME">
-              <Input />
+              <Input name="patientName" value={patientName} onChange={this.handleInputChange} />
             </Form.Item>
           </Col>
           <Col {...formItemLayout[2]}>
             <Form.Item style={{ marginTop: 22 }}>
               <Row gutter={12}>
                 <Col span={12}>
-                  <Button block shape="round">
+                  <Button block shape="round" onClick={this.clearInputs}>
                     CLEAR
                   </Button>
                 </Col>
                 <Col span={12}>
-                  <Button block shape="round" type="primary">
+                  <Button block shape="round" type="primary" htmlType="submit" disabled={disabled}>
                     SEARCH
                   </Button>
                 </Col>

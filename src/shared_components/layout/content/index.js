@@ -5,7 +5,7 @@ import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
 //CUSTOM MODULES
 import DashboardPage from '../../../modules/main/dashboard';
-import CreateRequestPage from '../../../modules/main/request/create';
+import CreateRequestPage from '../../../modules/main/lab_request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
 import PatientInfo from '../../../modules/main/patientinfo';
 import PleboSearch from '../../../modules/main/plebo'
@@ -22,7 +22,10 @@ const wrapperStyle = {
   padding: 24,
 };
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 085b60c39e7e591ef6bdf06c88fc6f214916c113
 const Content = () => (
   <Antcontent style={wrapperStyle}>
     <Switch>
@@ -34,11 +37,16 @@ const Content = () => (
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
       <Route path="/iresults" component={Iresults} />
+<<<<<<< HEAD
+      <Redirect from="/" to="/dashboard" />
+      
+=======
       {/* Plebo route */}
       <Route path="/pleboresult" component={PleboSearch} />
       <Route path="/plebopatient" component={PleboPatientResult} />
       {/* 404 page route */}
       <Route component={ErrorPage} />
+>>>>>>> 085b60c39e7e591ef6bdf06c88fc6f214916c113
     </Switch>
   </Antcontent>
 );
