@@ -26,16 +26,10 @@ const Content = () => (
       <Route path="/request/create" component={CreateRequestPage} />
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
-<<<<<<< HEAD
-      <Route path="/pleboresult" component={SearchPleboResult} />
-      <Route  path="/iresults" component={Iresults} />
-      <Redirect from="/" to="/dashboard"/>
-=======
       <Route path="/pleboresult" component={PleboSearch} />
       <Route path="/iresults" component={Iresults} />
       <Route path="/plebopatient" component={PleboPatientResult} />
       <Redirect from="/" to="/dashboard" />
->>>>>>> pleboresult
     </Switch>
   </Antcontent>
 );

@@ -82,6 +82,7 @@ class IresultsTable extends React.Component {
             columns={pColumns}
             dataSource={coldatasource}
             expandedRowRender={expandedRowRender}
+            pagination={false}
           />
         );
     }
