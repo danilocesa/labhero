@@ -1,9 +1,9 @@
-//LIBRARY
+// LIBRARY
 import React from 'react';
 import { Layout } from 'antd';
-import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-//CUSTOM MODULES
+// CUSTOM MODULES
 import DashboardPage from '../../../modules/main/dashboard';
 import CreateRequestPage from '../../../modules/main/lab_request/create';
 import SearchLabTestResult from '../../../modules/main/search_lab_result';
@@ -13,7 +13,7 @@ import Iresults from '../../../modules/main/iresults';
 import PleboPatientResult from '../../../modules/main/plebo/plebopatient'
 import ErrorPage from '../../../modules/error_page';
 
-//CONSTANTS
+// CONSTANTS
 const { Content: Antcontent } = Layout;
 const wrapperStyle = {
   minHeight: 280,
@@ -22,10 +22,6 @@ const wrapperStyle = {
   padding: 24,
 };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 085b60c39e7e591ef6bdf06c88fc6f214916c113
 const Content = () => (
   <Antcontent style={wrapperStyle}>
     <Switch>
@@ -37,16 +33,11 @@ const Content = () => (
       <Route path="/searchlabresult" component={SearchLabTestResult} />
       <Route path="/patientinfo" component={PatientInfo} />
       <Route path="/iresults" component={Iresults} />
-<<<<<<< HEAD
-      <Redirect from="/" to="/dashboard" />
-      
-=======
       {/* Plebo route */}
       <Route path="/pleboresult" component={PleboSearch} />
       <Route path="/plebopatient" component={PleboPatientResult} />
       {/* 404 page route */}
       <Route component={ErrorPage} />
->>>>>>> 085b60c39e7e591ef6bdf06c88fc6f214916c113
     </Switch>
   </Antcontent>
 );

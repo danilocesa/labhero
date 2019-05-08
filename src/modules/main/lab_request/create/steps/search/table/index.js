@@ -1,5 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable } from 'antd';
 
 import './table.css';
@@ -38,13 +40,11 @@ const columns = [
 ];
 
 
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 class Table extends React.Component {
-  handleDoubleClick = () => {
-    
+  handleDoubleClick = (record) => {
+    const { history } = this.props;
+
+    history.push('/request/create/step/2', { id: 7, color: 'green' });
   }
   
   render() {
@@ -56,10 +56,10 @@ class Table extends React.Component {
           pagination={{pageSize}} 
           columns={columns} 
           dataSource={data} 
-          onChange={onChange} 
+          scroll={{ y: 260 }}
           onRow={(record) => {
             return { 
-              onDoubleClick: this.handleDoubleClick
+              onDoubleClick: () => this.handleDoubleClick(record)
             };
           }}
         />
@@ -69,15 +69,16 @@ class Table extends React.Component {
 }
 
 Table.propTypes = {
-  data: PropTypes.shape({
+  history: ReactRouterPropTypes.history.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({
     firstname: PropTypes.string.isRequired,
     lastname: PropTypes.string.isRequired,
     middlename: PropTypes.string.isRequired,
     birthday: PropTypes.string.isRequired,
     gender: PropTypes.string.isRequired,
     address: PropTypes.string.isRequired
-  }).isRequired,
+  })).isRequired,
   pageSize: PropTypes.number.isRequired
 };
 
-export default Table;
+export default withRouter(Table);
