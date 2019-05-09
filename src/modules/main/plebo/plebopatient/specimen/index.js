@@ -1,40 +1,54 @@
 import React from 'react';
-import { Row, Col, Table, Typography, Empty, Card, Skeleton } from 'antd';
+import { Row, Col, Table, Button, } from 'antd';
 
-const { Text } = Typography;
+import './specimen.css';
 
 class SpecimenList extends React.Component {
+  state = {
+    Status: 'PENDING'
+  }
 
-  expandedRowRender = (e) => {
+  onPress = () => {
+    this.setState({
+      Status: ''
+    })
+  }
+
+ // React lifecycle
+ componentDidMount() 
+ {
+   this.setState({
+     showLoading: false
+   });
+ }
+ 
+  expandedRowRender = () => {
     const columns = [
       {
         dataIndex: 'Specimen',
         key: 'Specimen',
-        align: 'center',
-      },
-      {
-        dataIndex: 'Status',
-        key: 'Status',
-        render: text =>  <Text onClick={this._onSampleIDClick} >{text}</Text>,
       },
     ];
-    return (
+
+    const data = [];
+    const testspecimen = ['CBC', 'Hemoglobin', 'Hematocrit'];
+    for (let i = 1; i < 4; i+=1) {
+      data.push({
+        Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
+      });
+    }
+
+  return (
+	<div className="child-no-header-table">
       <Table
         columns={columns}
+        dataSource={data}
         pagination={false}
         size="small"
-        scroll={{ y: 200 }}
       />
+      </div>
     );
   };
-
-  //React lifecycle
-  componentDidMount() 
-  {
-    this.setState({
-      showLoading: false
-    });
-  }
 
   render() {  
     const columns = [
@@ -45,15 +59,17 @@ class SpecimenList extends React.Component {
     },
     { 
       title: 'STATUS', 
-      dataIndex: 'Status', 
-      key: 'Status',
+      dataIndex: 'StatusPending', 
+      key: 'StatusPending',
+      render: button =>  <Button onClick={this.onSampleIDClick} className="sampleLabTestID">{button}</Button>,
     },
     ];
     const data = [];
     const testspecimen = ['Blood', 'Serum'];
-    for (let i = 1; i < 5; ++i) {
+    for (let i = 1; i < 15; ++i) {
         data.push({
         Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
+        StatusPending: 'PENDING',
       });
     }
     return (
