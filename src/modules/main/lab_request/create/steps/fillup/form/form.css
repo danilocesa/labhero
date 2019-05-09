@@ -1,24 +1,27 @@
-.left-form,
-.right-form {
+.fillup-form .left-form, .right-form {
   width: 60%;
   max-width: 400px;
 }
 
-.left-form {
+.fillup-form .left-form {
   float: right;
 }
 
+.fillup-form .left-form .ant-radio-button-wrapper {
+  width: 100px;
+  text-align: center;
+}
+
 @media only screen and (max-width: 800px) {
-  .divider {
+  .fillup-form .divider {
     display: none !important;
   }
 
-  .left-form,
-  .right-form {
+  .fillup-form .left-form, .right-form {
     width: 90%;
   }
 
-  .left-form {
+  .fillup-form .left-form {
     float: unset;
   }
 }

@@ -11,26 +11,31 @@ const columns = [
     title: 'LAST NAME',
     dataIndex: 'lastname',
     sorter: (a, b) => a.lastname.localeCompare(b.lastname),
+    width: '15%'
   },
   {
     title: 'FIRST NAME',
     dataIndex: 'firstname',
     sorter: (a, b) => a.firstname.localeCompare(b.firstname),
+    width: '15%'
   },
   {
     title: 'MIDDLE NAME',
     dataIndex: 'middlename',
     sorter: (a, b) => a.middlename.localeCompare(b.middlename),
+    width: '12%'
   },
   {
     title: 'DATE OF BIRTH',
     dataIndex: 'birthday',
     sorter: (a, b) => a.birthday.localeCompare(b.birthday),
+    width: '15%'
   },
   {
     title: 'GENDER',
     dataIndex: 'gender',
     sorter: (a, b) => a.gender.localeCompare(b.gender),
+    width: '8%'
   },
   {
     title: 'CITY ADDRESS',
@@ -44,7 +49,7 @@ class Table extends React.Component {
   handleDoubleClick = (record) => {
     const { history } = this.props;
 
-    history.push('/request/create/step/2', { id: 7, color: 'green' });
+    history.push('/request/create/step/2', { record });
   }
   
   render() {

@@ -57,12 +57,22 @@ class SearchForm extends React.Component {
         <Row gutter={12}>
           <Col {...formItemLayout[0]} offset={3}>
             <Form.Item label="PATIENT'S ID">
-              <Input name="patientId" value={patientId} onChange={this.handleInputChange} />
+              <Input 
+                name="patientId" 
+                value={patientId} 
+                onChange={this.handleInputChange}
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col {...formItemLayout[1]}>
             <Form.Item label="PATIENT'S FULLNAME">
-              <Input name="patientName" value={patientName} onChange={this.handleInputChange} />
+              <Input 
+                name="patientName" 
+                value={patientName} 
+                onChange={this.handleInputChange} 
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col {...formItemLayout[2]}>
