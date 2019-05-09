@@ -1,35 +1,36 @@
+// LIBRARY
 import React from 'react';
 import { Button, Modal } from 'antd';
-import { CheckIcon } from '../../../../images';
-// import 'antd/dist/antd.css';
 
+// IMAGES
+import { CheckIcon } from '../../../../images';
+
+// CSS
 import './actions.css'
 
-const ButtonGroup = Button.Group;
-
 const ModalContent = (
-  <div>
-    <img src={CheckIcon} alt="check icon" height='70px' width='auto' style={{marginBottom:'10px'}} />
-    <p>You have successfully saved a result!</p>
-    <p>A notification will be sent once the request has been verified.</p>
-  </div>
+	<div>
+		<img src={CheckIcon} alt="check icon" height='70px' width='auto' style={{marginBottom:'10px'}} />
+		<p>You have successfully saved a result!</p>
+		<p>A notification will be sent once the request has been verified.</p>
+	</div>
 );
 
 class Actions extends React.Component {
-  state = { visible: false }
+  // state = { visible: false }
 
-  showModal = () => {
-  this.setState({
-    visible: true,
-  });
-  }
+  // showModal = () => {
+  //   this.setState({
+  //     visible: true
+  //   });
+  // }
 
-  handleCancel = (e) => {
-  console.log(e);
-  this.setState({
-    visible: false,
-  });
-  }
+  // handleCancel = (e) => {
+  //   console.log(e);
+  //   this.setState({
+  //     visible: false
+  //   });
+  // }
 
   countDown = () => {
     let secondsToGo = 3;
@@ -49,10 +50,10 @@ class Actions extends React.Component {
 
   render() {
     return(
-      <div style={{ textAlign:'right', marginTop: '30px' }} className ="action-container">
-        <Button href="#" className="back-button">Back</Button>
-        <Button href="#" className="save-button" onClick={this.countDown}>SAVE</Button>
-      </div>
+	    <div style={{ textAlign:'right', marginTop: '30px' }} className="action-container">
+		    <Button href="#" className="back-button">Back</Button>
+		    <Button href="#" className="save-button" onClick={this.countDown}>SAVE</Button>
+	    </div>
     );
   }
 }
