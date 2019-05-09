@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 
-import { PrintLogo } from '../../../../images';
-import { IResultsIcon } from '../../../../images';
+import { PrintLogo , IResultsIcon } from '../../../../images';
+
 import './patientname.css';
 // import 'antd/dist/antd.css';
 
