@@ -1,3 +1,20 @@
-.patientcomment {
-  margin-top: 30px;
+.patient-comment {
+  margin-top: 40px;
+}
+
+.patient-comment .comment-icon {
+  text-align: right;
+}
+
+.patient-comment .comment-icon img {
+  height: 20px;
+  width: auto;
+}
+
+.patient-comment .comment-container .comment-input {
+  border: 0px !important;
+}
+
+.patient-comment .comment-container .comment-input:focus {
+  box-shadow: none;
 }
