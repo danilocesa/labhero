@@ -7,54 +7,54 @@ import FillupForm from './form';
 import Navigation from './navigation';
 
 class FillupStep extends React.Component {
-  constructor() {
-    super();
+	constructor() {
+		super();
 
-    this.state = {
-      caseNumber: '',
-      firstname: '',
-      lastname: '',
-      middlename: '',
-      birthday: '',
-      age: '',
-      gender: '',
-      ward: '',
-      physicianId: '',
-      classType: '',
-      comment: '',
-      amount: ''
-    };
-  }
+		this.state = {
+			caseNumber: '',
+			firstname: '',
+			lastname: '',
+			middlename: '',
+			birthday: '',
+			age: '',
+			gender: '',
+			ward: '',
+			physicianId: '',
+			classType: '',
+			comment: '',
+			amount: ''
+		};
+	}
 
-  onClickNext = () => {
-    const { history } = this.props;
-    
-    sessionStorage.setItem('create_lab_request_fields', JSON.stringify(this.state));
+	onClickNext = () => {
+		const { history } = this.props;
+		
+		sessionStorage.setItem('create_lab_request_fields', JSON.stringify(this.state));
 
-    history.push('/request/create/step/3');
-  }
+		history.push('/request/create/step/3');
+	}
 
-  updateState = (value) => {
-    this.setState(value);
-  }
+	updateState = (value) => {
+		this.setState(value);
+	}
 
-  render() {
-    return (
-      <div>
-        <Tracker active={1} />
-        <FillupForm 
-          fields={this.state}
-          updateState={this.updateState} 
-        />
-        <Navigation onClickNext={this.onClickNext} />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Tracker active={1} />
+				<FillupForm 
+					fields={this.state}
+					updateState={this.updateState}
+				/>
+				<Navigation onClickNext={this.onClickNext} />
+			</div>
+		);
+	}
 }
 
 FillupStep.propTypes = {
-  // disabled: PropTypes.bool.isRequired,
-  history: ReactRouterPropTypes.history.isRequired
+	// disabled: PropTypes.bool.isRequired,
+	history: ReactRouterPropTypes.history.isRequired
 };
 
 export default withRouter(FillupStep);
