@@ -1,7 +1,8 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-access-state-in-setstate */
 // LIBRARY
 import React from 'react';
-import { Table, Input, Form, Typography } from 'antd';
+import { Table, Input, Form, Typography, Card, Empty } from 'antd';
 
 // CSS
 import './table.css';
@@ -71,9 +72,15 @@ class EditableCell extends React.Component {
                   )}
 	              </FormItem>
               ) : (
-	              <textbox className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={this.toggleEdit}>
+	              <div 
+		              className="editable-cell-value-wrap" 
+		              style={{ paddingRight: 24 }} 
+		              onClick={this.toggleEdit} 
+		              role="button" 
+		              tabIndex="0"
+	              >
 		             {restProps.children}
-	              </textbox>
+	              </div>
               );
             }}
 			    </EditableContext.Consumer>
@@ -197,15 +204,16 @@ class EditableTable extends React.Component {
         }),
       };
     });
+    const emptyTableData = <Card><Empty /></Card>
     return (
 	<div className="patient-table">
 		<Table
 			components={components}
 			rowClassName={() => 'editable-row'}
-			dataSource={dataSource}
+			dataSource={dataSource || emptyTableData}
 			columns={columns}
 			rowSelection={rowSelection}
-			scroll={{ x: 800 }}
+			scroll={{ x: 800, y: 300 }}
 			size="small"
 			pagination={false}
 		/>

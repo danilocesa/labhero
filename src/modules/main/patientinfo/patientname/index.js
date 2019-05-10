@@ -1,6 +1,9 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Drawer } from 'antd';
+
+// CUSTOM MODULES
+import Iresults from '../../iresults';
 
 // IMAGES
 import { PrintLogo, IResultsIcon } from '../../../../images';
@@ -12,6 +15,29 @@ import './patientname.css';
 const ButtonGroup = Button.Group;
 
 class Name extends React.Component {
+	constructor(props) {
+    super(props);
+    this.state = {
+      showIresultInfo: false
+    };
+    this.onIresultButtonClick = this.onIresultButtonClick.bind(this);
+	}
+
+	// React lifestyle
+
+	// Custom function
+	onIresultButtonClick() {
+    this.setState({
+      showIresultInfo: true,
+    });
+	}
+	
+	onCloseIresultsInfoDrawer = () => {
+    this.setState({
+      showIresultInfo: false,
+    });
+  }
+	
   render() {
     return (
 	    <Row>
@@ -29,10 +55,11 @@ class Name extends React.Component {
 			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
 				    <Row>
 					    <ButtonGroup>
-						    <Button>
+						    <Button onClick={this.onIresultButtonClick}>
 							    <img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
 							      <span style={{ paddingLeft: '7px' }}>iResults</span>
 						    </Button>
+
 						    <Button>
 							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
 							    <span style={{ paddingLeft: '7px' }}>Print</span>
@@ -41,6 +68,21 @@ class Name extends React.Component {
 				    </Row>
 			    </div>
 		    </Col>
+		{
+					this.state.showIresultInfo ? 
+		(
+			<Drawer
+				title="Re-run results"
+				onClose={this.onCloseIresultsInfoDrawer}
+				width="50%"
+				visible={this.state.showIresultInfo}
+			>
+				<Iresults /> 
+			</Drawer>
+)
+:
+null
+}
 	    </Row>
     );
   }

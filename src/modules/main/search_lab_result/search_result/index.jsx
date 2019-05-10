@@ -30,6 +30,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     });
   } 
 
+  // Custom function
   onSampleIDClick() {
     this.setState({
       showPatientInfo: true,
@@ -49,23 +50,25 @@ class WrapperSearchLabTestResultList extends React.Component {
         dataIndex: 'RequestDate',
         key: 'RequestDate',
         align: 'center',
+        width:'25%',
       },
       {
         title: 'SAMPLE ID',
         dataIndex: 'SampleId',
         key: 'SampleId',
         render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
+        width:'25%',
       },
       { title: 'STATUS', 
         dataIndex: 'Status', 
-        key: 'Status'
+        key: 'Status',
+        width:'25%',
       },
       { title: 'HISLINK', 
         dataIndex: 'HisLink', 
-        key: 'HisLink'
+        key: 'HisLink',
+        width:'25%',
       },
-      { title: 'STATUS', dataIndex: 'Status', key: 'Status' },
-      { title: 'HISLINK', dataIndex: 'HisLink', key: 'HisLink' },
     ];
     const data = [];
     const teststatus = ['On-going', 'Verified', 'Cancelled'];
@@ -147,25 +150,7 @@ class WrapperSearchLabTestResultList extends React.Component {
         Address: testcityaddress[Math.floor(Math.random() * testcityaddress.length)],
       });
     }
-
-    const tableEmpty = 
-      data.length > 0 ? 
-        (
-	        <Table
-		        className="searchLabTestResultTable"
-		        columns={columns}
-		        expandedRowRender={this.expandedRowRender}
-		        dataSource={data}
-		        size="small"
-		        scroll={{ y: 300 }}
-	        />
-        )
-        : 
-        (
-	        <Card>
-		        <Empty />
-	        </Card>
-        );
+    const emptyTableData = <Card><Empty /></Card>
     return (
 	    <div>
 		    <Row style={{ paddingBottom: '0.5em' }} type="flex">
@@ -192,9 +177,16 @@ class WrapperSearchLabTestResultList extends React.Component {
 			    <Col lg={24} xs={24}>
 				    { this.state.showLoading ?
 					    <Skeleton /> 
-            :
-              tableEmpty
-            }
+            : (
+	              <Table
+		              className="searchLabTestResultTable"
+		              columns={columns}
+		              expandedRowRender={this.expandedRowRender}
+		              dataSource={data || emptyTableData}
+		              size="small"
+		              scroll={{ y: 300 }}
+	              />
+              )}
 			    </Col>
 		    </Row>
 		      {this.state.showPatientInfo ? 
