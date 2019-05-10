@@ -7,37 +7,126 @@ import SectionContent from './section_content';
 import SelectTable from './table';
 import Navigation from './navigation';
 
+import { 
+	SECTIONS, 
+	SECTION_ALL, 
+	SECTION_HEMA, 
+	SECTION_CHEM, 
+	SECTION_IMMU, 
+	SECTION_MICR 
+} from './constants';
+
 const ColLayout = {
-  sm: { span: 24 },
-  md: { span: 12 },
-  lg: { span: 12 },
+	sm: { span: 24 },
+	md: { span: 12 },
+	lg: { span: 12 },
 };
 
 class SelectStep extends React.Component {
-  componentDidMount() {
-    const { location } = this.props;
+	state = {
+		selectedSection: SECTION_ALL,
+		displayedTests: SECTIONS.all.tests,
+		selectedTests: []
+	};
 
-    console.log(location);
-  }
+	componentDidMount() {
+		const tests = sessionStorage.getItem('create_lab_request_tests');
 
-  render() {
-    return (
-      <div>
-        <Tracker active={2} />
-        <Row gutter={48} style={{ marginTop: 50 }}>
-          <Col {...ColLayout}>
-            <SectionHeader />
-            <SectionContent />
-          </Col>
-          <Col {...ColLayout}>
-            <SelectTable />
-          </Col>
-        </Row>
-        <br />
-        <Navigation />
-      </div>
-    );
-  }
+		if(tests) {
+			this.setState({ selectedTests: JSON.parse(tests) });
+		}
+	}
+
+	onChangeHeader = (section) => {
+		let selected = null;
+
+		if(section === SECTION_ALL)
+			selected = SECTIONS.all.tests
+
+		if(section === SECTION_CHEM)
+			selected = SECTIONS.chemistry.tests	
+
+		if(section === SECTION_HEMA)	
+			selected = SECTIONS.hematology.tests	
+
+		if(section === SECTION_IMMU)	
+			selected = SECTIONS.hematology.tests		
+		
+		if(section === SECTION_MICR)
+			selected = SECTIONS.microscopy.tests	
+
+		if(selected) {
+			this.setState({ 
+				displayedTests: selected,
+				selectedSection: section
+			});	
+		}
+	}
+
+	addTest = ({id, exam}) => {
+		const { selectedSection, selectedTests } = this.state;
+
+		const existing = selectedTests.some(i => i.key === id);
+
+		if(!existing) {
+			selectedTests.push({ 
+				key: id,
+				section: selectedSection,
+				exam
+			});
+
+			this.setState({selectedTests});
+		}	
+	}
+
+	removeTest = (id) => {
+		const { selectedTests } = this.state;
+
+		this.setState({
+			selectedTests: selectedTests.filter(item => {
+
+				return item.key !== id;
+			})
+		});
+	}
+
+	removeAllTest = () => {
+		this.setState({
+			selectedTests: []
+		});
+	}
+
+	render() {
+		const { displayedTests, selectedTests } = this.state;
+
+		return (
+			<div>
+				<Tracker active={2} />
+				<Row gutter={48} style={{ marginTop: 50 }}>
+					<Col {...ColLayout}>
+						<SectionHeader handleChange={this.onChangeHeader} />
+						<SectionContent 
+							tests={displayedTests} 
+							addTest={this.addTest} 
+							removeTest={this.removeTest} 
+						/>
+					</Col>
+					<Col {...ColLayout}>
+						<SelectTable 
+							tests={selectedTests}
+							removeTest={this.removeTest}
+							removeAllTest={this.removeAllTest} 
+						/>
+					</Col>
+				</Row>
+				<br />
+				<Navigation 
+					tests={selectedTests}
+					disabled={selectedTests.length === 0}
+				/>
+			</div>
+		);
+	}
 }
 
 export default SelectStep;
