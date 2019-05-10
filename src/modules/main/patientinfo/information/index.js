@@ -23,7 +23,7 @@ class Information extends React.Component {
 
         {/* Patient Image Placeholder */}
         <div className="patient-img">
-          <img src={PatientImgPlaceholder} className="image-placeholder" alt="patient image" />
+          <img src={PatientImgPlaceholder} className="image-placeholder" alt="patient" />
         </div>
 
         {/* Personal Information */}
