@@ -37,9 +37,9 @@ class Actions extends React.Component {
   render() {
     return (
 	    <div style={{ textAlign: 'right', marginTop: '30px' }} className="action-container">
-		    <Button href="#" className="back-button">
+		    {/* <Button href="#" className="back-button">
           Back
-		    </Button>
+		    </Button> */}
 		    <Button href="#" className="save-button" onClick={this.showModal}>
             SAVE
 		    </Button>

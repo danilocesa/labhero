@@ -1,10 +1,12 @@
 /* eslint-disable react/jsx-indent */
+// LIBRARY
 import React from 'react';
 import { Row, Col } from 'antd';
 
-
+// IMAGES
 import { PatientImgPlaceholder } from '../../../../images';
 
+// CSS
 import './information.css';
 
 class Information extends React.Component {
@@ -106,7 +108,7 @@ class Information extends React.Component {
 				</div>
 			</Row>
 		</div>
-	</div>
+     </div>
     );
   }
 }

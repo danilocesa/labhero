@@ -1,6 +1,6 @@
 # Search lab result
 
-Allow user(hospital employee) to search for specific lab result of patient.
+Allow user(hospital employee) to search for specific lab result of patients.
 This module also includes printing of lab result.
 
 ## List of components
@@ -12,6 +12,7 @@ This module also includes printing of lab result.
 
 ## List of libraries used
   - Datepicker (https://reactdatepicker.com)
+      Allow user to input date while having datepicker
 
 ## Issues
   - API integration

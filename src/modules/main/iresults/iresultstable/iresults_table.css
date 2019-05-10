@@ -1,0 +1,7 @@
+.iresultTable tr:nth-child(2n + 1) {
+  background: #fbfbfb;
+}
+
+.iresultTableSelectedRow {
+  background: #ab9af9!important;
+}
