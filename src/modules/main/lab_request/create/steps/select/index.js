@@ -14,6 +14,12 @@ const ColLayout = {
 };
 
 class SelectStep extends React.Component {
+  componentDidMount() {
+    const { location } = this.props;
+
+    console.log(location);
+  }
+
   render() {
     return (
       <div>

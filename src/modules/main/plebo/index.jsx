@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PleboSearch from './plebosearch';
+import WrappedPleboSearch from './plebosearch';
 import PleboHeader from './pleboheader';
 import PleboTable from './plebotable';
 
@@ -9,7 +9,7 @@ class Plebo extends React.Component {
       return (
         <div>
           <div style={{ marginTop: 50 }}>
-            <PleboSearch />
+            <WrappedPleboSearch />
             <PleboHeader />
             <PleboTable />
           </div>

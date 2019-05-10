@@ -1,21 +1,21 @@
+/* eslint-disable react/no-access-state-in-setstate */
+// LIBRARY
 import React from 'react';
 import { Table, Input, Form, Typography } from 'antd';
-// import 'antd/dist/antd.css';
 
+// CSS
 import './table.css';
 
+// CONSTANTS
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 const { Text } = Typography;
-
 const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>
+	<EditableContext.Provider value={form}>
+		<tr {...props} />
+	</EditableContext.Provider>
 );
-
 const EditableFormRow = Form.create()(EditableRow);
-
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -51,14 +51,14 @@ class EditableCell extends React.Component {
     const { editing } = this.state;
     const { editable, dataIndex, title, record, index, handleSave, ...restProps } = this.props;
     return (
-      <td {...restProps}>
-        {editable ? (
-          <EditableContext.Consumer>
-            {form => {
+	    <td {...restProps}>
+		    {editable ? (
+			    <EditableContext.Consumer>
+				    {form => {
               this.form = form;
               return editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {form.getFieldDecorator(dataIndex, {
+	              <FormItem style={{ margin: 0 }}>
+		              {form.getFieldDecorator(dataIndex, {
                     rules: [
                       {
                         required: true,
@@ -67,28 +67,20 @@ class EditableCell extends React.Component {
                     ],
                     initialValue: record[dataIndex],
                   })(
-                    <Input
-                      ref={node => (this.input = node)}
-                      onPressEnter={this.save}
-                      onBlur={this.save}
-                    />,
+	                  <Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />,
                   )}
-                </FormItem>
+	              </FormItem>
               ) : (
-                <div
-                  className="editable-cell-value-wrap"
-                  style={{ paddingRight: 24 }}
-                  onClick={this.toggleEdit}
-                >
-                  {restProps.children}
-                </div>
+	              <textbox className="editable-cell-value-wrap" style={{ paddingRight: 24 }} onClick={this.toggleEdit}>
+		             {restProps.children}
+	              </textbox>
               );
             }}
-          </EditableContext.Consumer>
+			    </EditableContext.Consumer>
         ) : (
           restProps.children
         )}
-      </td>
+	    </td>
     );
   }
 }
@@ -206,18 +198,18 @@ class EditableTable extends React.Component {
       };
     });
     return (
-      <div className="patient-table">
-        <Table
-          components={components}
-          rowClassName={() => 'editable-row'}
-          dataSource={dataSource}
-          columns={columns}
-          rowSelection={rowSelection}
-          scroll={{ x: 800 }}
-          size="small"
-          pagination={false}
-        />
-      </div>
+	<div className="patient-table">
+		<Table
+			components={components}
+			rowClassName={() => 'editable-row'}
+			dataSource={dataSource}
+			columns={columns}
+			rowSelection={rowSelection}
+			scroll={{ x: 800 }}
+			size="small"
+			pagination={false}
+		/>
+	</div>
     );
   }
 }

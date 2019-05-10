@@ -3,15 +3,15 @@ import React from 'react';
 import { Button, Modal, Layout, Row, Col } from 'antd';
 
 // IMAGES
-import { CheckIcon } from '../../../../images';
+import { CheckIcon } from '../../../../../images';
 
 // CSS
-import './actions.css';
+import './actionbutton.css';
 
 // CONSTANTS
 const ButtonGroup = Button.Group;
 
-class Actions extends React.Component {
+class ActionButton extends React.Component {
   state = { visible: false };
 
   showModal = () => {
@@ -91,4 +91,4 @@ class Actions extends React.Component {
   }
 }
 
-export default Actions;
+export default ActionButton;

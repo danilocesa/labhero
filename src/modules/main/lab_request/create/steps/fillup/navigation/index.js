@@ -6,16 +6,8 @@ import { Row, Col, Button, Typography } from 'antd';
 const { Text } = Typography;
 
 class Navigation extends React.Component {
-  state = { disabled: true };
-
-  componentWillReceiveProps() {
-    this.setState((state, props) => ({
-      disabled: !(props.fields.firstname && props.fields.lastname),
-    }));
-  }
-
   render() {
-    const { disabled } = this.state;
+    const { onClickNext } = this.props;
 
     return (
       <Row style={{ marginTop: 10 }}>
@@ -29,7 +21,7 @@ class Navigation extends React.Component {
             className="nav-btn-round"
             type="primary"
             style={{ marginLeft: 20 }}
-            disabled={disabled}
+            onClick={onClickNext}
           >
             <Link to="/request/create/step/3">NEXT STEP</Link>
           </Button>
@@ -40,10 +32,7 @@ class Navigation extends React.Component {
 }
 
 Navigation.propTypes = {
-  fields: PropTypes.shape({
-    firstname: PropTypes.string.isRequired,
-    lastname: PropTypes.string.isRequired
-  }).isRequired
+  onClickNext: PropTypes.func.isRequired
 };
 
 export default Navigation;

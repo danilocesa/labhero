@@ -1,17 +1,11 @@
+// LIBRARY
 import React from 'react';
 import { Table } from 'antd';
 
-import './iresultstable.css';
-
+// CONSTANTS
 const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 const currentDatetime = new Date();
-const formattedDate = `${currentDatetime.getDate()} 
-                    - 
-                    ${months[currentDatetime.getMonth()]}
-                    -
-                    ${currentDatetime.getFullYear()} ${currentDatetime.getHours()}:
-                    ${currentDatetime.getMinutes()}`;
-
+const formattedDate = `${currentDatetime.getDate()} - ${months[currentDatetime.getMonth()]} - ${currentDatetime.getFullYear()} ${currentDatetime.getHours()} : ${currentDatetime.getMinutes()}`;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class IresultsTable extends React.Component {
@@ -66,14 +60,14 @@ class IresultsTable extends React.Component {
                 }
 
             return (
-              <div className="child-iresult-header">
-                <Table
-                  columns={cColumns}
-                  dataSource={data}
-                  pagination={false}
-                  size='small'
-                />
-              </div>
+	<div className="child-iresult-header">
+		<Table
+			columns={cColumns}
+			dataSource={data}
+			pagination={false}
+			size='small'
+		/>
+	</div>
             );
         }
 

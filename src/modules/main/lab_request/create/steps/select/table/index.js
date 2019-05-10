@@ -80,6 +80,7 @@ class SelectTable extends React.Component {
   };
 
   render() {
+    const { data } = this.state; 
     const TableCols = columns(this.removeAllTableItems);
 
     return (
@@ -87,7 +88,7 @@ class SelectTable extends React.Component {
         <AntTable
           columns={TableCols}
           pagination={false}
-          dataSource={this.state.data}
+          dataSource={data}
           scroll={{ y: 260 }}
         />
       </div>
