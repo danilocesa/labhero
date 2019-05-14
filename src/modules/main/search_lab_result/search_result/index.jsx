@@ -74,6 +74,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     const teststatus = ['On-going', 'Verified', 'Cancelled'];
     for (let i = 1; i < 20; i+=1) {
       data.push({
+        key: i*1000,
         RequestDate: '04/11/2019',
         SampleId: `100${i}`,
         Status: teststatus[Math.floor(Math.random() * teststatus.length)],
@@ -141,6 +142,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     const testlastname = ['Doe','Taylor','Green'];
     for (let i = 1; i < 1500; i += 1) {
         data.push({
+        key: i*2000,
         PatientID: `000${i}`,
         HospitalID: `${i*4}00${i}`,
         LastName: testlastname[Math.floor(Math.random() * testlastname.length)],
