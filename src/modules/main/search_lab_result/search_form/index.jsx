@@ -1,14 +1,16 @@
 // LIBRARY
 import React from 'react';
-import { Row, Form, Input, Button, Col, Typography, Select, Radio, DatePicker } from 'antd';
+import { Row, Form, Input, Button, Col, Select, Radio, DatePicker } from 'antd';
 import { withRouter } from 'react-router-dom';
 import ReactDatePicker from '../../../../shared_components/DatePicker';
+
+// CUSTOM MODULES
+import PageTitle from '../../../../shared_components/PageTitle';
 
 // CSS
 import './searchform.css';
 
 // CONSTANTS
-const { Title } = Typography;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const RadioGroup = Radio.Group;
@@ -54,9 +56,7 @@ class SearchLabTestForm extends React.Component {
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
 				<Col sm={22} xs={24}> 
 					<Form onSubmit={this.onClickSubmit} id="searchlabtestresultform"> 
-						<Row type="flex" align="middle" justify="center">
-							<Title level={4}>SEARCH</Title>
-						</Row>
+						<PageTitle pageTitle="SEARCH" />
 						<Row type="flex" align="top" gutter={24}> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="DATE CATEGORY" className="gutter-box">
