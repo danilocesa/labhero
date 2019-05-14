@@ -6,17 +6,30 @@ import SummaryTable from './table';
 import SummaryFooter from './footer';
 
 class SummaryStep extends React.Component {
-  render() {
-    return (
-      <div>
-        <Tracker active={3} />
-        <SummarySection />
-        <SummaryTable />
-        <br />
-        <SummaryFooter />
-      </div>
-    );
-  }
+	state = {
+		tests: []
+	}
+	
+	componentWillMount() {
+		const fields = JSON.parse(sessionStorage.getItem('create_lab_request_fields'));
+		const tests = JSON.parse(sessionStorage.getItem('create_lab_request_tests'));
+
+		this.setState({ tests });
+	}
+
+	render() {
+		const { tests } = this.state;
+
+		return (
+			<div>
+				<Tracker active={3} />
+				<SummarySection />
+				<SummaryTable tests={tests} />
+				<br />
+				<SummaryFooter />
+			</div>
+		);
+	}
 }
 
 export default SummaryStep;
