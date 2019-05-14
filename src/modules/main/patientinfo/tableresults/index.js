@@ -127,7 +127,7 @@ class EditableTable extends React.Component {
     this.state = {
       dataSource: [
         {
-          key: '0',
+          key: '5234346',
           name: 'Hemoglobin',
           inst_result: '85',
           result: '85',
