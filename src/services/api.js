@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://121.58.199.117',
+  // baseURL: 'http://121.58.199.117',
 	responseType: 'json',
-	timeout: 1000
+	// timeout: 1000
 });
 
 /* 

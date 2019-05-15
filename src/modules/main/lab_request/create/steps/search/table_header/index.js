@@ -10,7 +10,7 @@ const { Option } = Select;
 class TableHeader extends React.Component {
 	render() {
 		const { pageSize, pageTotal, handleChangeSize } = this.props;
-		const items = pageTotal > 0 ? pageSize : 0;
+		const items = pageTotal > pageSize ? pageSize : pageTotal;
 
 		return (
 			<div className="table-title">

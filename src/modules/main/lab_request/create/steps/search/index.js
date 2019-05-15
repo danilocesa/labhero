@@ -49,12 +49,12 @@ class SearchStep extends React.Component {
 					/>
 					<TableHeader 
 						pageSize={pageSize}
-						pageTotal={data.length} 
+						pageTotal={patients.length} 
 						handleChangeSize={this.handleChangeSize} 
 					/>
 					<Table 
-						patients={patients}
-						data={data}
+						data={patients}
+						// data={data}
 						pageSize={pageSize} 
 					/>
 				</div>
