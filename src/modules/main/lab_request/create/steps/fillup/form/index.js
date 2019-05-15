@@ -16,7 +16,7 @@ class FillupForm extends React.Component {
 		const sessionFields = sessionStorage.getItem('create_lab_request_fields');
 
 		if(location.state) {
-			const age = this.computeAge(location.state.record.birthday);
+			const age = this.computeAge(location.state.record.dateOfBirth);
 
 			updateState({ ...location.state.record, age });
 		}
@@ -39,7 +39,7 @@ class FillupForm extends React.Component {
 		const { updateState } = this.props;
 		const age = this.computeAge(date);
 
-		updateState({ birthday: date, age });
+		updateState({ dateOfBirth: date, age });
 	}
 
 	computeAge = (date) => {
@@ -54,12 +54,12 @@ class FillupForm extends React.Component {
 		const { fields } = this.props;
 		const { 
 			caseNumber, 
-			firstname, 
-			lastname, 
-			middlename, 
-			birthday, 
+			givenName, 
+			lastName, 
+			middleName, 
+			dateOfBirth, 
 			age, 
-			gender, 
+			sex, 
 			ward, 
 			physicianId, 
 			classType, 
@@ -67,7 +67,7 @@ class FillupForm extends React.Component {
 			amount 
 		} = fields;
 
-		const dob = birthday ? moment(birthday, 'MM-DD-YYYY') : null;
+		const dob = dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null;
 
 		return (
 			<div style={{ marginTop: 50 }}>
@@ -87,30 +87,30 @@ class FillupForm extends React.Component {
 								</Form.Item>
 								<Form.Item label="LAST NAME">
 									<Input 
-										name="lastname" 
+										name="lastName" 
 										onChange={this.onInputChange} 
-										value={lastname}
+										value={lastName}
 									/>
 								</Form.Item>
 								<Form.Item label="FIRST NAME">
 									<Input 
-										name="firstname" 
+										name="givenName" 
 										onChange={this.onInputChange} 
-										value={firstname}
+										value={givenName}
 									/>
 								</Form.Item>
 								<Form.Item label="MIDDLE NAME">
 									<Input 
-										name="middlename" 
+										name="middleName" 
 										onChange={this.onInputChange} 
-										value={middlename}
+										value={middleName}
 									/>
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
 										<Form.Item label="DATE OF BIRTH">
 											<DatePicker 
-												name="birthday" 
+												name="dateOfBirth" 
 												value={dob}
 												onChange={this.onDateChange} 
 												format="MM-DD-YYYY"
@@ -131,11 +131,11 @@ class FillupForm extends React.Component {
 								</Row>
 								<Form.Item label="PATIENT'S GENDER">
 									<Radio.Group 
-										defaultValue={gender} 
+										defaultValue={sex} 
 										buttonStyle="solid"
-										name="gender" 
+										name="sex" 
 										onChange={this.onInputChange} 
-										value={gender}
+										value={sex}
 									>
 										<Radio.Button value="MALE">MALE</Radio.Button>
 										<Radio.Button value="FEMALE">FEMALE</Radio.Button>
@@ -205,12 +205,12 @@ class FillupForm extends React.Component {
 FillupForm.propTypes = {
 	fields: PropTypes.shape({
 		caseNumber: PropTypes.string.isRequired, 
-		firstname: PropTypes.string.isRequired, 
-		lastname: PropTypes.string.isRequired, 
-		middlename: PropTypes.string.isRequired, 
-		birthday: PropTypes.string.isRequired,
+		givenName: PropTypes.string.isRequired, 
+		lastName: PropTypes.string.isRequired, 
+		middleName: PropTypes.string.isRequired, 
+		dateOfBirth: PropTypes.any.isRequired,
 		age: PropTypes.any.isRequired,
-		gender: PropTypes.string.isRequired, 
+		sex: PropTypes.string.isRequired, 
 		ward: PropTypes.string.isRequired, 
 		physicianId: PropTypes.string.isRequired, 
 		classType: PropTypes.string.isRequired, 

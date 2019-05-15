@@ -7,24 +7,20 @@ import FillupForm from './form';
 import Navigation from './navigation';
 
 class FillupStep extends React.Component {
-	constructor() {
-		super();
-
-		this.state = {
-			caseNumber: '',
-			firstname: '',
-			lastname: '',
-			middlename: '',
-			birthday: '',
-			age: '',
-			gender: '',
-			ward: '',
-			physicianId: '',
-			classType: '',
-			comment: '',
-			amount: ''
-		};
-	}
+	state = {
+		caseNumber: '',
+		givenName: '',
+		lastName: '',
+		middleName: '',
+		dateOfBirth: '',
+		age: '',
+		sex: '',
+		ward: '',
+		physicianId: '',
+		classType: '',
+		comment: '',
+		amount: ''
+	};
 
 	onClickNext = () => {
 		const { history } = this.props;

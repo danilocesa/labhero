@@ -16,10 +16,16 @@
   border-top-right-radius: 0px !important;
 }
 
+.search-patient-table .ant-table-body {
+  overflow-x: auto !important;
+}
+
+.search-patient-table .ant-table-body tr {
+  cursor: pointer;
+}
+
+
 .search-patient-table .ant-table-tbody > tr > td {
   padding: 7px 5px !important;
 }
 
-.search-patient-table .ant-table-body {
-  overflow-x: auto !important;
-}

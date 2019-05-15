@@ -9,32 +9,32 @@ import './table.css';
 const columns = [
 	{
 		title: 'LAST NAME',
-		dataIndex: 'lastname',
-		sorter: (a, b) => a.lastname.localeCompare(b.lastname),
+		dataIndex: 'lastName',
+		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
 		width: '15%'
 	},
 	{
 		title: 'FIRST NAME',
-		dataIndex: 'firstname',
-		sorter: (a, b) => a.firstname.localeCompare(b.firstname),
+		dataIndex: 'givenName',
+		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
 		width: '15%'
 	},
 	{
 		title: 'MIDDLE NAME',
-		dataIndex: 'middlename',
-		sorter: (a, b) => a.middlename.localeCompare(b.middlename),
+		dataIndex: 'middleName',
+		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
 		width: '12%'
 	},
 	{
 		title: 'DATE OF BIRTH',
-		dataIndex: 'birthday',
-		sorter: (a, b) => a.birthday.localeCompare(b.birthday),
+		dataIndex: 'dateOfBirth',
+		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
 		width: '15%'
 	},
 	{
 		title: 'GENDER',
-		dataIndex: 'gender',
-		sorter: (a, b) => a.gender.localeCompare(b.gender),
+		dataIndex: 'sex',
+		sorter: (a, b) => a.sex.localeCompare(b.sex),
 		width: '8%'
 	},
 	{
@@ -62,6 +62,7 @@ class Table extends React.Component {
 					columns={columns} 
 					dataSource={data} 
 					scroll={{ y: 260 }}
+					rowKey={record => record.patientID}
 					onRow={(record) => {
 						return { 
 							onDoubleClick: () => this.handleDoubleClick(record)
@@ -76,12 +77,11 @@ class Table extends React.Component {
 Table.propTypes = {
 	history: ReactRouterPropTypes.history.isRequired,
 	data: PropTypes.arrayOf(PropTypes.shape({
-		firstname: PropTypes.string.isRequired,
-		lastname: PropTypes.string.isRequired,
-		middlename: PropTypes.string.isRequired,
-		birthday: PropTypes.string.isRequired,
-		gender: PropTypes.string.isRequired,
-		address: PropTypes.string.isRequired
+		givenName: PropTypes.string.isRequired,
+		lastName: PropTypes.string.isRequired,
+		middleName: PropTypes.string.isRequired,
+		dateOfBirth: PropTypes.string.isRequired,
+		sex: PropTypes.string.isRequired
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired
 };

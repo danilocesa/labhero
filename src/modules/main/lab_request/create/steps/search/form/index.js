@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
+import LabApi from 'services/api';
+import PropTypes from 'prop-types';
+import { Form, Input, Button, Row, Col, message } from 'antd';
 
 import './form.css';
 
@@ -14,11 +16,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 1 },
-		lg: { span: 1 },
-		style: {
-			textAlign: 'center',
-			marginTop: 30
-		}
+		lg: { span: 1 }
 	},
 	{
 		xs: { span: 24 },
@@ -34,10 +32,9 @@ const formItemLayout = [
 	},
 ];
 
-// eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
 	state = {
-		patientId: '',
+		patientID: '',
 		patientName: ''
 	};
 	
@@ -47,20 +44,56 @@ class SearchForm extends React.Component {
 		});
 	}
 
-	handleSubmit = (event) => {
+	handleSubmit = async (event) => {
 		event.preventDefault();
+		const { patientName, patientID } = this.state;
+		const { populatePatients } = this.props;
+
+		const patients = await this.fetchPatients(patientName, patientID) 
+
+		if(patients.length > 0)
+			populatePatients(patients);
+		else
+			message.info('No results found');
 	}
 
+	fetchPatients = async (name, id) => {
+		let patients = [];
+		
+		try {
+			const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+			const byIdURL = `----------lab/Patient/id/${id}`;
+			const byNameURL = `----------lab/Patient/name/${name}`;
+			const response = await LabApi.get(PROXY_URL + (id ? byIdURL : byNameURL));
+			const { data } = await response;
+		
+			patients = data ? data.patient : [];
+		}
+		catch(error) {
+			message.error(`Something went wrong, Please try again.`);
+		}
+
+		return patients;
+	}
+	
 	clearInputs = () => {
 		this.setState({
-			patientId: '',
+			patientID: '',
 			patientName: ''
 		});
 	}
 
+	handleFocus = (event) => {
+		if(event.target.name === 'patientID')
+			this.setState({ patientName: '' });
+		
+		if(event.target.name === 'patientName')	
+			this.setState({ patientID: '' });
+	}
+
 	render() {
-		const { patientId, patientName } = this.state;
-		const disabled = !(patientId || patientName);
+		const { patientID, patientName } = this.state;
+		const disabled = !(patientID || patientName);
 
 		return (
 			<Form onSubmit={this.handleSubmit}>
@@ -68,23 +101,28 @@ class SearchForm extends React.Component {
 					<Col {...formItemLayout[0]}>
 						<Form.Item label="PATIENT ID">
 							<Input 
-								name="patientId" 
-								value={patientId} 
-								onChange={this.handleInputChange}
 								allowClear
+								name="patientID" 
+								value={patientID} 
+								onChange={this.handleInputChange}
+								onFocus={this.handleFocus}
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[1]}>
+					<Col 
+						{...formItemLayout[1]} 
+						style={{textAlign: 'center', marginTop: 30}}
+					>
 						OR
 					</Col>
 					<Col {...formItemLayout[2]}>
 						<Form.Item label="PATIENT NAME">
 							<Input 
+								allowClear
 								name="patientName" 
 								value={patientName} 
 								onChange={this.handleInputChange} 
-								allowClear
+								onFocus={this.handleFocus}
 							/>
 						</Form.Item>
 					</Col>
@@ -97,7 +135,13 @@ class SearchForm extends React.Component {
 									</Button>
 								</Col>
 								<Col span={12}>
-									<Button block shape="round" type="primary" htmlType="submit" disabled={disabled}>
+									<Button 
+										block 
+										shape="round" 
+										type="primary" 
+										htmlType="submit" 
+										disabled={disabled}
+									>
 										SEARCH
 									</Button>
 								</Col>
@@ -109,5 +153,9 @@ class SearchForm extends React.Component {
 		);
 	}
 }
+
+SearchForm.propTypes = {
+	populatePatients: PropTypes.func.isRequired
+};
 
 export default SearchForm;

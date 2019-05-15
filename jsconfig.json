@@ -1,0 +1,12 @@
+// Source https://medium.com/@fpastorelima/using-absolute-imports-with-vscode-and-create-react-app-dec6ba0da7ed
+
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2016",
+    "jsx": "preserve",
+    "checkJs": true,
+    "baseUrl": "./src"
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

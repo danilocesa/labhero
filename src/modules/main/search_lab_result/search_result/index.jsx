@@ -3,7 +3,9 @@ import React from 'react';
 import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton } from 'antd';
 
 // CUSTOM MODULES
+import axiosCall from 'services/axiosCall';
 import PatientInfo from '../../patientinfo';
+
 
 // CSS
 import './searchresult.css';
@@ -23,12 +25,23 @@ class WrapperSearchLabTestResultList extends React.Component {
   }
 
   // React lifecycle
+  componentWillMount() {
+    // axiosCall({ method: 'get', url: 'waiverChecker', params: { waiver_id: 1, token: cookies.get('user_token') } }).then((resp) => {
+    //   const showMods = resp.data.data.length !== 0 ? this.setState({ showModal: false }) : null
+    //   return showMods
+    // })
+  }  
+
   componentDidMount() 
   {
     this.setState({
       showLoading: false
     });
   } 
+
+ 
+
+
 
   // Custom function
   onSampleIDClick() {
