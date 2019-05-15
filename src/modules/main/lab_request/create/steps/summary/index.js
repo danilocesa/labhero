@@ -11,7 +11,6 @@ class SummaryStep extends React.Component {
 	}
 	
 	componentWillMount() {
-		const fields = JSON.parse(sessionStorage.getItem('create_lab_request_fields'));
 		const tests = JSON.parse(sessionStorage.getItem('create_lab_request_tests'));
 
 		this.setState({ tests });

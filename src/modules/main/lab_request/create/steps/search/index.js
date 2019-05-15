@@ -24,26 +24,36 @@ const Navigation = () => {
 };
 
 class SearchStep extends React.Component {
-	state = { pageSize: 10 }
+	state = { 
+		patients: [],
+		pageSize: 10 
+	}
 	
 	handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
 	}
 
+	populatePatients = (patients) => {
+		this.setState({ patients });
+	}
+
 	render() {
-		const { pageSize } = this.state;
+		const { patients, pageSize } = this.state;
 
 		return (
 			<div>
 				<Tracker active={0} />
 				<div style={{ marginTop: 60 }}>
-					<SearchForm />
+					<SearchForm 
+						populatePatients={this.populatePatients} 
+					/>
 					<TableHeader 
 						pageSize={pageSize}
 						pageTotal={data.length} 
 						handleChangeSize={this.handleChangeSize} 
 					/>
 					<Table 
+						patients={patients}
 						data={data}
 						pageSize={pageSize} 
 					/>

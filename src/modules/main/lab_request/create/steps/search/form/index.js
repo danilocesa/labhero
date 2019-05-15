@@ -1,5 +1,7 @@
 import React from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
+import Test from 'services/api';
+import PropTypes from 'prop-types';
+import { Form, Input, Button, Row, Col, message } from 'antd';
 
 import './form.css';
 
@@ -47,8 +49,27 @@ class SearchForm extends React.Component {
 		});
 	}
 
-	handleSubmit = (event) => {
+	handleSubmit = async (event) => {
 		event.preventDefault();
+		const { patientName } = this.state;
+		const { populatePatients } = this.props;
+
+		try {
+			// const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6InJvb3QiLCJleHAiOjE1NTc4MjEzMjIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQzODciLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQ0Mzg3In0.fbIB7Kxc087zQfkD-Hgln__Plr3VwPrEHo1lQCAWlgY`;
+			const headers = {
+				// Authorization: `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			};
+			const url = `----------lab/Patient/name/${patientName}`;
+			// const url = `----------lab/Patient/name/a`;
+			const response = await Test.get(url, headers);
+			const data = await response.json();
+
+			populatePatients(data);
+		}
+		catch(error) {
+			message.error(`Something went wrong, Please try again.`);
+		}
 	}
 
 	clearInputs = () => {
@@ -56,6 +77,14 @@ class SearchForm extends React.Component {
 			patientId: '',
 			patientName: ''
 		});
+	}
+
+	handleFocus = (event) => {
+		if(event.target.name === 'patientId')
+			this.setState({ patientName: '' });
+		
+		if(event.target.name === 'patientName')	
+			this.setState({ patientId: '' });
 	}
 
 	render() {
@@ -68,10 +97,11 @@ class SearchForm extends React.Component {
 					<Col {...formItemLayout[0]}>
 						<Form.Item label="PATIENT ID">
 							<Input 
+								allowClear
 								name="patientId" 
 								value={patientId} 
 								onChange={this.handleInputChange}
-								allowClear
+								onFocus={this.handleFocus}
 							/>
 						</Form.Item>
 					</Col>
@@ -81,10 +111,11 @@ class SearchForm extends React.Component {
 					<Col {...formItemLayout[2]}>
 						<Form.Item label="PATIENT NAME">
 							<Input 
+								allowClear
 								name="patientName" 
 								value={patientName} 
 								onChange={this.handleInputChange} 
-								allowClear
+								onFocus={this.handleFocus}
 							/>
 						</Form.Item>
 					</Col>
@@ -97,7 +128,13 @@ class SearchForm extends React.Component {
 									</Button>
 								</Col>
 								<Col span={12}>
-									<Button block shape="round" type="primary" htmlType="submit" disabled={disabled}>
+									<Button 
+										block 
+										shape="round" 
+										type="primary" 
+										htmlType="submit" 
+										disabled={disabled}
+									>
 										SEARCH
 									</Button>
 								</Col>
@@ -109,5 +146,9 @@ class SearchForm extends React.Component {
 		);
 	}
 }
+
+SearchForm.propTypes = {
+	populatePatients: PropTypes.func.isRequired
+};
 
 export default SearchForm;
