@@ -1,9 +1,11 @@
 import React from 'react';
-import { Row, Col, Table, Typography, Button } from 'antd';
+import { Row, Col, Table, Typography, Input } from 'antd';
 
 import './specimen.css';
 
 const { Text } = Typography;
+
+const button_pending = () => <Input type="radio" id="pending" name="Pending">PENDING</Input>;
 
 class SpecimenList extends React.Component {
 
@@ -17,7 +19,7 @@ class SpecimenList extends React.Component {
 
   onPress = () => {
     this.setState({
-      StatusPending: 'PENDING'
+      
     })
   }
 
@@ -30,7 +32,7 @@ class SpecimenList extends React.Component {
       { 
         dataIndex: 'StatusPending', 
         key: 'StatusPending',
-        render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
+        render: text =>  <Text onClick={this.onSampleIDClick}>{text}</Text>,
       },
     ];
 
@@ -73,7 +75,7 @@ class SpecimenList extends React.Component {
       for (let i = 1; i < 15; ++i) {
         data.push({
         Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
-        StatusPending: "PENDING",
+        StatusPending: "PENDING"
         });
       }
       return (

@@ -2,6 +2,18 @@
   background: #fbfbfb;
 }
 
+.iresultTable .ant-table-body {
+  font-size: 13px;
+}
+
 .iresultTableSelectedRow {
-  background: #ab9af9!important;
+  background: red !important;
+}
+
+.iresultTable .clickRowStyl{
+  background-color: #8478c2;
+}
+
+.ant-table-tbody>.clickRowStyl:hover>td{
+  background-color: red;
 }
