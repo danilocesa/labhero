@@ -208,7 +208,7 @@ FillupForm.propTypes = {
 		firstname: PropTypes.string.isRequired, 
 		lastname: PropTypes.string.isRequired, 
 		middlename: PropTypes.string.isRequired, 
-		birthday: PropTypes.string.isRequired,
+		birthday: PropTypes.any.isRequired,
 		age: PropTypes.any.isRequired,
 		gender: PropTypes.string.isRequired, 
 		ward: PropTypes.string.isRequired, 

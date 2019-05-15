@@ -23,5 +23,12 @@
     "no-console": 0,
     "react/jsx-one-expression-per-line": 0,
     "react/no-multi-comp": 0
-	}
+	},
+	"settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
+  }
 }

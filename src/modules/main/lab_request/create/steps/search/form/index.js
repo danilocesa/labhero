@@ -1,5 +1,5 @@
 import React from 'react';
-import Test from 'services/api';
+import LabApi from 'services/api';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col, message } from 'antd';
 
@@ -16,11 +16,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 1 },
-		lg: { span: 1 },
-		style: {
-			textAlign: 'center',
-			marginTop: 30
-		}
+		lg: { span: 1 }
 	},
 	{
 		xs: { span: 24 },
@@ -36,7 +32,6 @@ const formItemLayout = [
 	},
 ];
 
-// eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
 	state = {
 		patientId: '',
@@ -56,15 +51,12 @@ class SearchForm extends React.Component {
 
 		try {
 			// const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6InJvb3QiLCJleHAiOjE1NTc4MjEzMjIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQzODciLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQ0Mzg3In0.fbIB7Kxc087zQfkD-Hgln__Plr3VwPrEHo1lQCAWlgY`;
-			const headers = {
-				// Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json'
-			};
-			const url = `----------lab/Patient/name/${patientName}`;
-			// const url = `----------lab/Patient/name/a`;
-			const response = await Test.get(url, headers);
-			const data = await response.json();
+			
+			const url = `/lab/Patient/name/${patientName}`;
+			const response = await LabApi.get(url);
+			const data = await response;
 
+			console.log(data);
 			populatePatients(data);
 		}
 		catch(error) {
@@ -105,7 +97,10 @@ class SearchForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[1]}>
+					<Col 
+						{...formItemLayout[1]} 
+						style={{textAlign: 'center', marginTop: 30}}
+					>
 						OR
 					</Col>
 					<Col {...formItemLayout[2]}>
