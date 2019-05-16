@@ -1,0 +1,30 @@
+.image-placeholder {
+  height: 100%;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.patient-img {
+  width: 100%;
+  height: auto;
+}
+
+.info-container {
+  margin: 15px 0px;
+}
+
+.main-title {
+  font-size: 11px;
+  color: #aaa8a8;
+  font-weight: bold;
+}
+
+.info-item {
+  line-height: 30px;
+  font-size: 12px;
+}
+
+.info-title {
+  font-weight: bolder;
+  font-size: 14px;
+}
