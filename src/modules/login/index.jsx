@@ -6,6 +6,7 @@ import axiosCall from 'services/axiosCall';
 import './login.css';
 
 import { CompanyLogo } from '../../images';
+import { STATUS_CODES } from 'http';
 
 const { Header, Content } = Layout;
 
@@ -20,13 +21,9 @@ class Login extends React.Component {
       password: ''
 		}
 		this.userState={
-			username: 'Nicole',
-			password: '12345'
+			username: 'guest',
+			password: '123'
 		}
-	}
-
-	componentWillMount(){
-		
 	}
 	
 	handleUsernameChange=(event)=>{
@@ -38,17 +35,27 @@ class Login extends React.Component {
 	}
 
 	handleSubmit=(event)=>{
-		if(this.state.username===this.userState.username && this.state.password===this.userState.password){
+		// if(this.state.username===this.userState.username && this.state.password===this.userState.password){
 			event.preventDefault();
 			this.props.form.validateFields((err, values) => {
 				if (!err) {
-				 console.log('Received values of form: ', values);
-				 alert("Welcome");
-				 }
-			 });
-		} else {
-			alert("Wrong");
-		}
+				 	console.log('Received values of form: ', values);
+					axiosCall({
+							method: 'POST',
+							url: 'LogIn',
+							data: {
+							 userName: this.state.username,
+							 password: this.state.password,
+							},
+							headers: {
+								'content-type': 'application/json',
+								'authorization': 'Bearer superSecretKey@345'
+							}
+					}).then((resp) => {
+						 	console.log(resp.data);
+						});
+				 	}
+			});
 	}
 
 	
@@ -75,7 +82,7 @@ class Login extends React.Component {
 							</Row>
 							<Row style={{ height: 10 }} />
 							<Row>
-								<Form>
+								<Form onSubmit={this.handleSubmit}>
 									<Form.Item label="Username">
 										{getFieldDecorator('userName', {
 											rules: [{ required: true, message: 'Please input your username!' }],
@@ -87,7 +94,7 @@ class Login extends React.Component {
 										})(<Input.Password onChange={this.handlePasswordChange} placeholder="input password" type="password" />)}
 									</Form.Item>
 									<Form.Item>
-										<Button type="primary" htmlType="submit" className="login-form-button" onClick={this.handleSubmit} block>
+										<Button type="primary" htmlType="submit" className="login-form-button" block>
 											SIGN IN TO MY ACCOUNT
 										</Button>
 									</Form.Item>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import LabApi from 'services/api';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col, message } from 'antd';
