@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -7,10 +8,8 @@ import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 
-import data from './dummy_data';
-
-const Navigation = () => {
-	if(data.length > 0)
+const Navigation = ({dataLength}) => {
+	if(dataLength > 0)
 		return null;
 
 	return (
@@ -23,10 +22,15 @@ const Navigation = () => {
 	);
 };
 
+Navigation.propTypes = { 
+	dataLength: PropTypes.number.isRequired
+}
+
 class SearchStep extends React.Component {
 	state = { 
 		patients: [],
-		pageSize: 10 
+		pageSize: 10,
+		loading: false 
 	}
 	
 	handleChangeSize = (pageSize) => {
@@ -37,15 +41,20 @@ class SearchStep extends React.Component {
 		this.setState({ patients });
 	}
 
+	displayLoading = (isLoading) => {
+		this.setState({ loading: isLoading });
+	}
+
 	render() {
-		const { patients, pageSize } = this.state;
+		const { patients, pageSize, loading } = this.state;
 
 		return (
 			<div>
 				<Tracker active={0} />
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
-						populatePatients={this.populatePatients} 
+						populatePatients={this.populatePatients}
+						displayLoading={this.displayLoading} 
 					/>
 					<TableHeader 
 						pageSize={pageSize}
@@ -54,11 +63,11 @@ class SearchStep extends React.Component {
 					/>
 					<Table 
 						data={patients}
-						// data={data}
-						pageSize={pageSize} 
+						pageSize={pageSize}
+						loading={loading} 
 					/>
 				</div>
-				<Navigation />
+				<Navigation dataLength={patients.length} />
 			</div>
 		);
 	}

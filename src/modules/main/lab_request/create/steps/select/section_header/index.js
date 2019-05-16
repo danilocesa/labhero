@@ -7,7 +7,7 @@ import {
 	SECTION_CHEM, 
 	SECTION_IMMU, 
 	SECTION_MICR 
-} from '../constants';
+} from '../../constants';
 
 import './section_header.css';
 
