@@ -11,7 +11,7 @@
 }
 
 .iresultTable .clickRowStyl{
-  background-color: #8478c2;
+  background-color: #8478c2 !important;
 }
 
 .ant-table-tbody>.clickRowStyl:hover>td{

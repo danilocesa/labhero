@@ -1,69 +1,111 @@
 import React from 'react';
 import { Row, Form, Icon, Input, Button, Layout, Col } from 'antd';
 import { Link } from 'react-router-dom';
+import axiosCall from 'services/axiosCall';
 
-// import 'antd/dist/antd.css';
 import './login.css';
 
 import { CompanyLogo } from '../../images';
+import { STATUS_CODES } from 'http';
 
 const { Header, Content } = Layout;
 
 class Login extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  };
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Layout>
-        <Header style={{ 'border-bottom': 'none' }}>
-          <Row>
-            <Col span={24}>
-              <Icon type="left" />
-              <Link to="/" className="redirect-home">
-                Go back to homepage
-              </Link>
-            </Col>
-          </Row>
-        </Header>
-        <Content>
-          <Row type="flex" align="middle">
-            <div className="login-form">
-              <Row type="flex" justify="center" align="center">
-                <img src={CompanyLogo} alt="logo" style={{ height: 45 }} />
-              </Row>
-              <Row style={{ height: 10 }} />
-              <Row>
-                <Form onSubmit={this.handleSubmit}>
-                  <Form.Item label="Username">
-                    {getFieldDecorator('userName', {
-                      rules: [{ required: true, message: 'Please input your username!' }],
-                    })(<Input />)}
-                  </Form.Item>
-                  <Form.Item label="Password">
-                    {getFieldDecorator('password', {
-                      rules: [{ required: true, message: 'Please input your Password!' }],
-                    })(<Input.Password placeholder="input password" type="password" />)}
-                  </Form.Item>
-                  <Form.Item>
-                    <Button type="primary" htmlType="submit" className="login-form-button" block>
-                      SIGN IN TO MY ACCOUNT
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </Row>
-            </div>
-          </Row>
-        </Content>
-      </Layout>
-    );
-  }
+  constructor(props) {
+		super(props);
+		this.handleUsernameChange=this.handleUsernameChange.bind(this);
+		this.handlePasswordChange=this.handlePasswordChange.bind(this);
+		this.handleSubmit=this.handleSubmit.bind(this);
+    this.state={
+      username: '',
+      password: ''
+		}
+		this.userState={
+			username: 'guest',
+			password: '123'
+		}
+	}
+	
+	handleUsernameChange=(event)=>{
+		this.setState({username:event.target.value});
+	}
+
+	handlePasswordChange=(event)=>{
+		this.setState({password:event.target.value});
+	}
+
+	handleSubmit=(event)=>{
+		// if(this.state.username===this.userState.username && this.state.password===this.userState.password){
+			event.preventDefault();
+			this.props.form.validateFields((err, values) => {
+				if (!err) {
+				 	console.log('Received values of form: ', values);
+					axiosCall({
+							method: 'POST',
+							url: 'LogIn',
+							data: {
+							 userName: this.state.username,
+							 password: this.state.password,
+							},
+							headers: {
+								'content-type': 'application/json',
+								'authorization': 'Bearer superSecretKey@345'
+							}
+					}).then((resp) => {
+						 	console.log(resp.data);
+						});
+				 	}
+			});
+	}
+
+	
+  
+		render() {
+		const { getFieldDecorator } = this.props.form;
+		return (
+			<Layout>
+				<Header style={{ borderBottom: 'none' }}>
+					<Row>
+						<Col span={24}>
+							<Icon type="left" />
+							<Link to="/" className="redirect-home">
+								Go back to homepage
+							</Link>
+						</Col>
+					</Row>
+				</Header>
+				<Content>
+					<Row type="flex" align="middle">
+						<div className="login-form">
+							<Row type="flex" justify="center" align="center">
+								<img src={CompanyLogo} alt="logo" style={{ height: 45 }} />
+							</Row>
+							<Row style={{ height: 10 }} />
+							<Row>
+								<Form onSubmit={this.handleSubmit}>
+									<Form.Item label="Username">
+										{getFieldDecorator('userName', {
+											rules: [{ required: true, message: 'Please input your username!' }],
+										})(<Input onChange={this.handleUsernameChange} />)}
+									</Form.Item>
+									<Form.Item label="Password">
+										{getFieldDecorator('password', {
+											rules: [{ required: true, message: 'Please input your Password!' }],
+										})(<Input.Password onChange={this.handlePasswordChange} placeholder="input password" type="password" />)}
+									</Form.Item>
+									<Form.Item>
+										<Button type="primary" htmlType="submit" className="login-form-button" block>
+											SIGN IN TO MY ACCOUNT
+										</Button>
+									</Form.Item>
+								</Form>
+							</Row>
+						</div>
+					</Row>
+				</Content>
+			</Layout>
+		);
+	}
 }
 
 const LoginForm = Form.create({ name: 'normal_login' })(Login);
