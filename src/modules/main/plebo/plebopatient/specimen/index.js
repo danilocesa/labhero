@@ -1,9 +1,10 @@
 import React from 'react';
-import { Table, Radio } from 'antd';
+import { Table, Radio, Col } from 'antd';
 
 import './specimen.css';
 
 const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 function onChange(e) {
   console.log(`radio checked:${e.target.value}`);
@@ -48,23 +49,34 @@ class SpecimenList extends React.Component {
     },
     { 
       title: 'STATUS',
-      dataIndex: 'StatusPending', 
+      dataIndex: 'Status', 
       key: 'Status',
-      render: button => <RadioButton onClick={onChange} style={{ float: 'right' }}>{button}PENDING</RadioButton>,
+      render: 
+        button => 
+        <Col style={{ paddingLeft: 245 }}>
+          <RadioGroup buttonStyle="solid"> 
+            <RadioButton onClick={onChange}
+                         value="a"
+            >
+            PENDING
+            </RadioButton>
+            <RadioButton onClick={onChange} 
+                         value="b"
+            >
+            EXTACTED
+            {button}
+            </RadioButton>
+          </RadioGroup>
+        </Col>,
     },
-      {
-        dataIndex: 'StatusExtracted', 
-        key: 'Status',
-        render: button => <RadioButton onClick={onChange}>{button}EXTRACTED</RadioButton>,
-      } 
   ];
     const data = [];
     const testspecimen = ['Blood', 'Serum'];
-    for (let i = 1; i < 15; i+=1) {
-        data.push({
-        Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
-      });
-    }
+      for (let i = 1; i < 6; i+=1) {
+          data.push({  
+          Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
+        });
+      }
   return (
 	<div>
 		<Table
