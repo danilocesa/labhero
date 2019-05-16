@@ -1,5 +1,5 @@
 import React from 'react';
-import Test from 'services/api';
+import LabApi from 'services/api';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col, message } from 'antd';
 
@@ -16,11 +16,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 1 },
-		lg: { span: 1 },
-		style: {
-			textAlign: 'center',
-			marginTop: 30
-		}
+		lg: { span: 1 }
 	},
 	{
 		xs: { span: 24 },
@@ -36,10 +32,9 @@ const formItemLayout = [
 	},
 ];
 
-// eslint-disable-next-line react/prefer-stateless-function
 class SearchForm extends React.Component {
 	state = {
-		patientId: '',
+		patientID: '',
 		patientName: ''
 	};
 	
@@ -51,45 +46,54 @@ class SearchForm extends React.Component {
 
 	handleSubmit = async (event) => {
 		event.preventDefault();
-		const { patientName } = this.state;
+		const { patientName, patientID } = this.state;
 		const { populatePatients } = this.props;
 
-		try {
-			// const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6InJvb3QiLCJleHAiOjE1NTc4MjEzMjIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQzODciLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQ0Mzg3In0.fbIB7Kxc087zQfkD-Hgln__Plr3VwPrEHo1lQCAWlgY`;
-			const headers = {
-				// Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json'
-			};
-			const url = `----------lab/Patient/name/${patientName}`;
-			// const url = `----------lab/Patient/name/a`;
-			const response = await Test.get(url, headers);
-			const data = await response.json();
+		const patients = await this.fetchPatients(patientName, patientID) 
 
-			populatePatients(data);
+		if(patients.length > 0)
+			populatePatients(patients);
+		else
+			message.info('No results found');
+	}
+
+	fetchPatients = async (name, id) => {
+		let patients = [];
+		
+		try {
+			const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+			const byIdURL = `----------lab/Patient/id/${id}`;
+			const byNameURL = `----------lab/Patient/name/${name}`;
+			const response = await LabApi.get(PROXY_URL + (id ? byIdURL : byNameURL));
+			const { data } = await response;
+		
+			patients = data ? data.patient : [];
 		}
 		catch(error) {
 			message.error(`Something went wrong, Please try again.`);
 		}
-	}
 
+		return patients;
+	}
+	
 	clearInputs = () => {
 		this.setState({
-			patientId: '',
+			patientID: '',
 			patientName: ''
 		});
 	}
 
 	handleFocus = (event) => {
-		if(event.target.name === 'patientId')
+		if(event.target.name === 'patientID')
 			this.setState({ patientName: '' });
 		
 		if(event.target.name === 'patientName')	
-			this.setState({ patientId: '' });
+			this.setState({ patientID: '' });
 	}
 
 	render() {
-		const { patientId, patientName } = this.state;
-		const disabled = !(patientId || patientName);
+		const { patientID, patientName } = this.state;
+		const disabled = !(patientID || patientName);
 
 		return (
 			<Form onSubmit={this.handleSubmit}>
@@ -98,14 +102,17 @@ class SearchForm extends React.Component {
 						<Form.Item label="PATIENT ID">
 							<Input 
 								allowClear
-								name="patientId" 
-								value={patientId} 
+								name="patientID" 
+								value={patientID} 
 								onChange={this.handleInputChange}
 								onFocus={this.handleFocus}
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[1]}>
+					<Col 
+						{...formItemLayout[1]} 
+						style={{textAlign: 'center', marginTop: 30}}
+					>
 						OR
 					</Col>
 					<Col {...formItemLayout[2]}>
