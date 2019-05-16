@@ -67,7 +67,7 @@ class SearchStep extends React.Component {
 						loading={loading} 
 					/>
 				</div>
-				<Navigation dataLength={patients.length} />
+				{/* <Navigation dataLength={patients.length} /> */}
 			</div>
 		);
 	}
