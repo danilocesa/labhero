@@ -21,6 +21,7 @@ class App extends React.Component {
     }
   }
 
+
 	render() {
 		// COLUMN HEADER
 		const columnHeader = [
@@ -122,8 +123,9 @@ class App extends React.Component {
         },
 			]
 		}
-		];
-	
+    ];
+    
+  
 		
 		
 		// EMPTY DATA
@@ -136,7 +138,7 @@ class App extends React.Component {
               onClick: () => {
                 this.setState({
                   selected: tableDataSource.key,
-                  selectedRowKeys: [...Array(10).keys()], 
+                  selectedRowKeys: [(tableDataSource.key)], 
                 });
               },
 						};
