@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Table as AntTable } from 'antd';
+import { Table as AntTable, Spin } from 'antd';
 
 import './table.css';
 
@@ -53,23 +53,25 @@ class Table extends React.Component {
 	}
 	
 	render() {
-		const { data, pageSize } = this.props;
+		const { data, pageSize, loading } = this.props;
 
 		return (
-			<div className="search-patient-table">
-				<AntTable 
-					pagination={{pageSize}} 
-					columns={columns} 
-					dataSource={data} 
-					scroll={{ y: 260 }}
-					rowKey={record => record.patientID}
-					onRow={(record) => {
-						return { 
-							onDoubleClick: () => this.handleDoubleClick(record)
-						};
-					}}
-				/>
-			</div>
+			<Spin spinning={loading} tip="Loading...">
+				<div className="search-patient-table">
+					<AntTable 
+						pagination={{pageSize}} 
+						columns={columns} 
+						dataSource={data} 
+						scroll={{ y: 260 }}
+						rowKey={record => record.patientID}
+						onRow={(record) => {
+							return { 
+								onDoubleClick: () => this.handleDoubleClick(record)
+							};
+						}}
+					/>
+				</div>
+			</Spin>
 		);
 	}
 }
@@ -83,7 +85,8 @@ Table.propTypes = {
 		dateOfBirth: PropTypes.string.isRequired,
 		sex: PropTypes.string.isRequired
 	})).isRequired,
-	pageSize: PropTypes.number.isRequired
+	pageSize: PropTypes.number.isRequired,
+	loading: PropTypes.bool.isRequired
 };
 
 export default withRouter(Table);

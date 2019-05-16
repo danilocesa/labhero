@@ -13,8 +13,9 @@ import {
 	SECTION_HEMA, 
 	SECTION_CHEM, 
 	SECTION_IMMU, 
-	SECTION_MICR 
-} from './constants';
+	SECTION_MICR,
+	CLR_TESTS 
+} from '../constants';
 
 const ColLayout = {
 	sm: { span: 24 },
@@ -30,7 +31,7 @@ class SelectStep extends React.Component {
 	};
 
 	componentDidMount() {
-		const tests = sessionStorage.getItem('create_lab_request_tests');
+		const tests = sessionStorage.getItem(CLR_TESTS);
 
 		if(tests) {
 			this.setState({ selectedTests: JSON.parse(tests) });

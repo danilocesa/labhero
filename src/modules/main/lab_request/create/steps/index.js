@@ -5,7 +5,6 @@ import SearchStep from './search';
 import FillupStep from './fillup';
 import SelectStep from './select';
 import SummaryStep from './summary';
-// import SummaryStep2 from './summary_v2';
 
 class StepsPage extends React.Component {
 	render() {
@@ -15,7 +14,6 @@ class StepsPage extends React.Component {
 				<Route path="/request/create/step/2" component={FillupStep} />
 				<Route path="/request/create/step/3" component={SelectStep} />
 				<Route path="/request/create/step/4" component={SummaryStep} />
-				{/* <Route path="/request/create/step/4" component={SummaryStep2} /> */}
 			</div>
 		);
 	}
