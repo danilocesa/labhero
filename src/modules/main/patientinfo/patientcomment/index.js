@@ -13,7 +13,7 @@ class PatientComment extends React.Component {
     return (
 	<div className="patient-comment">
 		<p>COMMENT</p>
-		<TextArea colspan={2} />
+		<TextArea rows={2} />
 	</div>
     );
   }
