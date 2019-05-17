@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { Row, Col, Table, Drawer, Typography   } from 'antd';
 
@@ -12,25 +13,29 @@ class PleboTable extends React.Component {
     super(props);
     this.state = {
       showPleboPatientResult: false,
-      showLoading: true,
     };
-    this._onSampleIDClick = this._onSampleIDClick.bind(this);
+    this.onSampleIDClick = this.onSampleIDClick.bind(this);
   }
-  _onSampleIDClick() {
+
+  onSampleIDClick() {
     this.setState({
       showPleboPatientResult: true,
+      // eslint-disable-next-line react/no-unused-state
+      showLoading: true,
     });
   }
-  _onClosePleboPatientResultDrawer = () => {
+  
+  onClosePleboPatientResultDrawer = () => {
     this.setState({
       showPleboPatientResult:false,
     });
   }
 
-  //React lifecycle
+  // eslint-disable-next-line react/sort-comp
   componentDidMount() 
   {
     this.setState({
+      // eslint-disable-next-line react/no-unused-state
       showLoading: false
     });
   } 
@@ -42,8 +47,7 @@ class PleboTable extends React.Component {
           dataIndex: 'PatientID', 
           key: 'PatientID',
           sorter: (a, b) => a.PatientID - b.PatientID, 
-          // eslint-disable-next-line no-underscore-dangle
-          render: text =>  <Text onClick={this._onSampleIDClick} className="samplePatientID">{text}</Text>
+          render: text =>  <Text onClick={this.onSampleIDClick} className="samplePatientID">{text}</Text>
         },
         { title: 'LAST NAME', 
           dataIndex: 'LastName', 
@@ -70,6 +74,11 @@ class PleboTable extends React.Component {
           key: 'Address',
           sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
         },
+        { title: 'STATUS', 
+        dataIndex: 'Status', 
+        key: 'Status',
+        sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
+        },
         ];
         
     const data = [];
@@ -77,6 +86,7 @@ class PleboTable extends React.Component {
     const testgender = ['M', 'F'];
     const testcityaddress = ['Pasig', 'Pasay', 'Manila'];
     const testlastname = ['Doe','Taylor','Green'];
+    const teststatus = ['Pending'];
     // eslint-disable-next-line no-plusplus
     for (let i = 1; i < 30; ++i) {
         data.push({
@@ -86,37 +96,37 @@ class PleboTable extends React.Component {
         DateOfBirth: '01/01/1990',
         Gender: testgender[Math.floor(Math.random()*testgender.length)],
         Address: testcityaddress[Math.floor(Math.random()*testcityaddress.length)],
-        });
+        Status: teststatus[Math.floor(Math.random()*teststatus.length)],  
+      });
     }
 
-    return (
-      <div>
-        <Row type="flex">
-          <Col lg={24} xs={24}>
-            <Table
-              className="components-table-demo-nested"
-              columns={columns}
-              dataSource={data}
-              size="small"
-              scroll={{ y: 200 }}
-            />
-          </Col>
-        </Row>
-        {
+  return (
+	<div>
+		<Row type="flex">
+			<Col lg={24} xs={24} className="plebo-table">
+				<Table
+					columns={columns}
+					dataSource={data}
+					size="small"
+					scroll={{ y: 200 }}
+				/>
+			</Col>
+		</Row>
+		{
         // eslint-disable-next-line react/destructuring-assignment
-        this.state.showPleboPatientResult ?
-          <Drawer
-          title="Patient information" 
-          onClose={this._onClosePleboPatientResultDrawer}
-          width="80%"
-          visible={this.state.showPleboPatientResult}
-        >
-          <PleboPatientResult /> 
-        </Drawer>
-        :
+        this.state.showPleboPatientResult ? (
+	<Drawer
+		title="Patient information" 
+		onClose={this.onClosePleboPatientResultDrawer}
+		width="80%"
+		visible={this.state.showPleboPatientResult}
+	>
+		<PleboPatientResult /> 
+	</Drawer>
+):
         null
       }
-      </div>
+	</div>
     );
   }
 }
