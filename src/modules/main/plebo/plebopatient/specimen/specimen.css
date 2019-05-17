@@ -1,7 +1,3 @@
 .child-no-header-table .ant-table-thead {
   display: none;
 }
-
-.ant-table-thead {
-  width: 380px;
-}
