@@ -1,5 +1,7 @@
 import React from 'react';
-import { Table as AntTable, Row, Col } from 'antd';
+import { Table, Row, Col } from 'antd';
+
+import { CLR_TESTS } from '../../constants';
 
 import './table.css';
 
@@ -13,76 +15,13 @@ const columns = [
 		title: 'EXAM NAME',
 		dataIndex: 'exam',
 		width: '33%',
-		align: 'center',
+		// align: 'center',
 	},
 	{
 		title: 'SPECIMEN',
 		dataIndex: 'specimen',
 		width: '33%',
-		align: 'center',
-	},
-];
-
-const data = [
-	{
-		key: '1',
-		section: 'HEMATHOLOGY',
-		exam: 'CBC',
-		specimen: 'BLOOD',
-	},
-	{
-		key: '2',
-		section: 'HEMATHOLOGY',
-		exam: 'PROTHROMBIN TIME',
-		specimen: 'SERUM',
-	},
-	{
-		key: '3',
-		section: 'HEMATHOLOGY',
-		exam: 'EXPANDED APTT',
-		specimen: 'SERUM',
-	},
-	{
-		key: '4',
-		section: 'CHEMISTRY',
-		exam: 'BUN',
-		specimen: 'SERUM',
-	},
-	{
-		key: '5',
-		section: 'CHEMISTRY',
-		exam: 'POTASSIUM',
-		specimen: 'SERUM',
-	},
-	{
-		key: '6',
-		section: 'HEMATHOLOGY',
-		exam: 'CBC',
-		specimen: 'BLOOD',
-	},
-	{
-		key: '7',
-		section: 'HEMATHOLOGY',
-		exam: 'PROTHROMBIN TIME',
-		specimen: 'SERUM',
-	},
-	{
-		key: '8',
-		section: 'HEMATHOLOGY',
-		exam: 'EXPANDED APTT',
-		specimen: 'SERUM',
-	},
-	{
-		key: '9',
-		section: 'CHEMISTRY',
-		exam: 'BUN',
-		specimen: 'SERUM',
-	},
-	{
-		key: '10',
-		section: 'CHEMISTRY',
-		exam: 'POTASSIUM',
-		specimen: 'SERUM',
+		// align: 'center',
 	},
 ];
 
@@ -92,7 +31,7 @@ class SummaryTable extends React.Component {
 	}
 	
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem('create_lab_request_tests'));
+		const tests = JSON.parse(sessionStorage.getItem(CLR_TESTS));
 
 		this.setState({ tests });
 	}
@@ -104,10 +43,10 @@ class SummaryTable extends React.Component {
 			<Row style={{ marginTop: 20 }}>
 				<Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
 					<div className="summary-step-table">
-						<AntTable 
+						<Table 
+							dataSource={tests} 
 							columns={columns} 
 							pagination={false} 
-							dataSource={tests} 
 							scroll={{ y: 260 }} 
 						/>
 					</div>

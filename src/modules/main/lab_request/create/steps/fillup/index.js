@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
+import { CLR_TESTS } from '../constants';
+
 import Tracker from '../../tracker';
 import FillupForm from './form';
 import Navigation from './navigation';
@@ -10,6 +12,7 @@ class FillupStep extends React.Component {
 	state = {
 		caseNumber: '',
 		givenName: '',
+		nameSuffix: '',
 		lastName: '',
 		middleName: '',
 		dateOfBirth: '',
@@ -25,7 +28,7 @@ class FillupStep extends React.Component {
 	onClickNext = () => {
 		const { history } = this.props;
 		
-		sessionStorage.setItem('create_lab_request_fields', JSON.stringify(this.state));
+		sessionStorage.setItem(CLR_TESTS, JSON.stringify(this.state));
 
 		history.push('/request/create/step/3');
 	}

@@ -1,3 +1,7 @@
+export const CLR_TESTS = 'CLR_TEST';
+export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
+export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
+
 export const SECTION_ALL = 'ALL';
 export const SECTION_HEMA = 'HEMA';
 export const SECTION_CHEM = 'CHEM';

@@ -5,13 +5,15 @@ import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
+import { CLR_TESTS } from '../constants';
+
 class SummaryStep extends React.Component {
 	state = {
 		tests: []
 	}
 	
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem('create_lab_request_tests'));
+		const tests = JSON.parse(sessionStorage.getItem(CLR_TESTS));
 
 		this.setState({ tests });
 	}

@@ -2,10 +2,10 @@
 import React from 'react';
 import { Row, Form, Input, Button, Col, Select, Radio, DatePicker } from 'antd';
 import { withRouter } from 'react-router-dom';
-import ReactDatePicker from '../../../../shared_components/DatePicker';
+import ReactDatePicker from '../../../../shared_components/date_picker';
 
 // CUSTOM MODULES
-import PageTitle from '../../../../shared_components/PageTitle';
+import PageTitle from '../../../../shared_components/page_title';
 
 // CSS
 import './searchform.css';
