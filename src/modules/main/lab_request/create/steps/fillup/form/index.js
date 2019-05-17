@@ -5,6 +5,8 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider } from 'antd';
 
+import { CLR_TESTS } from '../../constants';
+
 import './form.css';
 
 const { Text } = Typography;
@@ -13,7 +15,7 @@ const { TextArea } = Input;
 class FillupForm extends React.Component {  
 	componentWillMount() {
 		const { location, updateState } = this.props;
-		const sessionFields = sessionStorage.getItem('create_lab_request_fields');
+		const sessionFields = sessionStorage.getItem(CLR_TESTS);
 
 		if(location.state) {
 			const age = this.computeAge(location.state.record.dateOfBirth);
@@ -55,6 +57,7 @@ class FillupForm extends React.Component {
 		const { 
 			caseNumber, 
 			givenName, 
+			nameSuffix,
 			lastName, 
 			middleName, 
 			dateOfBirth, 
@@ -85,13 +88,6 @@ class FillupForm extends React.Component {
 										value={caseNumber}
 									/>
 								</Form.Item>
-								<Form.Item label="LAST NAME">
-									<Input 
-										name="lastName" 
-										onChange={this.onInputChange} 
-										value={lastName}
-									/>
-								</Form.Item>
 								<Form.Item label="FIRST NAME">
 									<Input 
 										name="givenName" 
@@ -106,6 +102,26 @@ class FillupForm extends React.Component {
 										value={middleName}
 									/>
 								</Form.Item>
+								<Row gutter={12}>
+									<Col span={18}>
+										<Form.Item label="LAST NAME">
+											<Input 
+												name="lastName" 
+												onChange={this.onInputChange} 
+												value={lastName}
+											/>
+										</Form.Item>
+									</Col>
+									<Col span={6}>
+										<Form.Item label="SUFFIX">
+											<Input 
+												name="suffix" 
+												onChange={this.onInputChange} 
+												value={nameSuffix}
+											/>
+										</Form.Item>
+									</Col>
+								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
 										<Form.Item label="DATE OF BIRTH">
@@ -207,6 +223,7 @@ FillupForm.propTypes = {
 		caseNumber: PropTypes.string.isRequired, 
 		givenName: PropTypes.string.isRequired, 
 		lastName: PropTypes.string.isRequired, 
+		nameSuffix: PropTypes.string.isRequired,
 		middleName: PropTypes.string.isRequired, 
 		dateOfBirth: PropTypes.any.isRequired,
 		age: PropTypes.any.isRequired,

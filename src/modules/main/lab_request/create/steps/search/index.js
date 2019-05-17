@@ -38,6 +38,7 @@ class SearchStep extends React.Component {
 	}
 
 	populatePatients = (patients) => {
+		console.log(patients);
 		this.setState({ patients });
 	}
 
@@ -67,7 +68,7 @@ class SearchStep extends React.Component {
 						loading={loading} 
 					/>
 				</div>
-				{/* <Navigation dataLength={patients.length} /> */}
+				<Navigation dataLength={patients.length} />
 			</div>
 		);
 	}
