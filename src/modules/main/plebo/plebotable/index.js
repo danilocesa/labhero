@@ -9,6 +9,11 @@ import './plebotable.css'
 const { Text } = Typography;
 
 class PleboTable extends React.Component {
+  
+  status = {
+    status: "PENDING"
+  }
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -41,6 +46,7 @@ class PleboTable extends React.Component {
   } 
 
   render() {  
+
     const columns = [
         { 
           title: 'PATIENT ID', 

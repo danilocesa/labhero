@@ -7,13 +7,13 @@ import PleboTable from './plebotable';
 class Plebo extends React.Component {
     render() {
       return (
-        <div>
-          <div style={{ marginTop: 50 }}>
-            <WrappedPleboSearch />
-            <PleboHeader />
-            <PleboTable />
-          </div>
-        </div>
+	<div>
+		<div style={{ marginTop: 50 }}>
+			<WrappedPleboSearch />
+			<PleboHeader />
+			<PleboTable />
+		</div>
+	</div>
       );
     }
 }
