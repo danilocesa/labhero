@@ -12,6 +12,7 @@ import PleboSearch from '../../../modules/main/plebo'
 import Iresults from '../../../modules/main/iresults';
 import PleboPatientResult from '../../../modules/main/plebo/plebopatient'
 import ErrorPage from '../../../modules/error_page';
+import SearchPatient from '../../../modules/main/search_patients'
 
 // CONSTANTS
 const { Content: Antcontent } = Layout;
@@ -36,6 +37,8 @@ const Content = () => (
 			{/* Plebo route */}
 			<Route path="/pleboresult" component={PleboSearch} />
 			<Route path="/plebopatient" component={PleboPatientResult} />
+			{/* Search patients route */}
+			<Route path="/searchpatient" component={SearchPatient} />
 			{/* 404 page route */}
 			<Route component={ErrorPage} />
 		</Switch>

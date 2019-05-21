@@ -6,6 +6,7 @@ import { ReactComponent as HomeIcon } from '../../../icons/home.svg';
 import { ReactComponent as AddIcon } from '../../../icons/add.svg';
 import { ReactComponent as SearchIcon } from '../../../icons/search.svg';
 import { ReactComponent as PleboIcon } from '../../../icons/syringe.svg';
+import { ReactComponent as SearchPatientIcon } from '../../../icons/searchpatient.svg';
 
 import './sider.css';
 
@@ -46,6 +47,12 @@ class Sider extends React.Component {
             <Link to="/pleboresult">
               <Icon component={PleboIcon} />
               <span>PLEBO</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="5">
+            <Link to="/searchpatient">
+              <Icon component={SearchPatientIcon} />
+              <span>SEARCH PATIENT</span>
             </Link>
           </Menu.Item>
         </Menu>

@@ -12,7 +12,7 @@ class MachinesInstalled extends React.Component {
 					<Button className="gutter-box" type="primary">DXH01(-00026)</Button>
 					<Button className="gutter-box">Machine #2</Button>
 				</Col>
-			</Row>
+			</Row> 
 		);
 	}
 }
