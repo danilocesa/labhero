@@ -3,7 +3,6 @@ import React from 'react';
 import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton } from 'antd';
 
 // CUSTOM MODULES
-import axiosCall from 'services/axiosCall';
 import PatientInfo from '../../patientinfo';
 
 
@@ -170,7 +169,7 @@ class WrapperSearchLabTestResultList extends React.Component {
 	    <div>
 		    <Row style={{ paddingBottom: '0.5em' }} type="flex">
 			    <Col md={12} className="gutter-row">
-				    <Text strong> Search result </Text>
+				    <Text strong> Search Lab Result </Text>
 				    <br />
 				    <Text> Showing <b>0</b> items out of <b>0</b> results </Text>
 			    </Col>

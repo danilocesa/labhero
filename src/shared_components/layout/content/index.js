@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import { Layout } from 'antd';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 // CUSTOM MODULES
 import DashboardPage from '../../../modules/main/dashboard';
@@ -30,7 +30,8 @@ const Content = () => (
 			{/* Lab request route */}
 			<Route path="/request/create" component={CreateRequestPage} />
 			{/* Search lab result route */}
-			<Route path="/searchlabresult" component={SearchLabTestResult} />
+			<PrivateRoute path="/searchlabresult" component={SearchLabTestResult} />
+			{/* <Route path="/searchlabresult" component={SearchLabTestResult} /> */}
 			<Route path="/patientinfo" component={PatientInfo} />
 			<Route path="/iresults" component={Iresults} />
 			{/* Plebo route */}
@@ -38,8 +39,35 @@ const Content = () => (
 			<Route path="/plebopatient" component={PleboPatientResult} />
 			{/* 404 page route */}
 			<Route component={ErrorPage} />
+			
 		</Switch>
 	</Antcontent>
 );
+
+const checkAuth = {
+  isAuthenticated: false,
+  authenticate(cb) {
+    this.isAuthenticated = true;
+    setTimeout(cb, 100); // fake async
+  },
+  signout(cb) {
+    this.isAuthenticated = false;
+    setTimeout(cb, 100);
+  }
+};
+
+function PrivateRoute({ component: Component, ...rest }) {
+  return (
+	<Route
+		{...rest}
+		render={
+			props =>
+    	checkAuth.isAuthenticated ? ( <Component {...props} />) 
+			: 
+			( <Redirect to={{pathname: "/login", state: { from: props.location }}} /> )
+  	}
+	/>
+  );
+}
 
 export default withRouter(Content);
