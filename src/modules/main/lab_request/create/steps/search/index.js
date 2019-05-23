@@ -30,7 +30,7 @@ class SearchStep extends React.Component {
 	state = { 
 		patients: [],
 		pageSize: 10,
-		loading: false 
+		loading: false,
 	}
 	
 	handleChangeSize = (pageSize) => {

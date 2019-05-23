@@ -47,12 +47,18 @@ const columns = [
 	},
 ];
 
-
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record,redirect) => {
 		const { history } = this.props;
-		history.push(redirect, { record });
+		if(redirect){
+			history.push(redirect, { record })
+		} else {
+			this.props.drawer(record);
+		}
+		
 	}
+
+
 	
 	render() {
 		const { data, pageSize, loading, redirectUrl } = this.props;
@@ -68,7 +74,9 @@ class SearchPatientTable extends React.Component {
 						rowKey={record => record.patientID}
 						onRow={(record) => {
 							return { 
-								onDoubleClick: () => this.handleDoubleClick(record,redirectUrl)
+								onDoubleClick: () => {
+									this.handleDoubleClick(record,redirectUrl)
+								}
 							};
 						}}
 					/>
@@ -89,7 +97,7 @@ SearchPatientTable.propTypes = {
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,
-	redirectUrl:PropTypes.bool.isRequired
+	redirectUrl:PropTypes.string.isRequired,
 };
 
 export default withRouter(SearchPatientTable);

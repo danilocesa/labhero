@@ -38,4 +38,4 @@ SearchForm.propTypes = {
 };
 
 
-export default withRouter(SearchPatientForm);
+export default withRouter(SearchForm);
