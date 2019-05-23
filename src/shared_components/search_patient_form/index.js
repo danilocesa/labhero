@@ -1,11 +1,17 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col } from 'antd';
-import LabApi from 'services/api';
-import Message from 'shared_components/message';
 
+// CUSTOM MODULES
+import axiosCall from 'services/axiosCall';
+import Message from 'shared_components/message';
+import {apiUrlPatientByID, apiUrlPatientByName} from 'shared_components/constant-global'
+
+// CSS
 import './search_patient_form.css';
 
+// CONSTANTS
 const formItemLayout = [
 	{
 		xs: { span: 24 },
@@ -88,12 +94,12 @@ class SearchPatientForm extends React.Component {
 
 	fetchPatients = async (patientName, patientID) => {
 		let patients = [];
-
+		
 		try{
-			const PROXY_URL = `https://cors-anywhere.herokuapp.com/`;
-			const byIdURL = `----------lab/Patient/id/${patientID}`;
-			const byNameURL = `----------lab/Patient/name/${patientName}`;
-			const response = await LabApi.get(PROXY_URL + (patientID ? byIdURL : byNameURL));
+			const response = await axiosCall({
+        method: 'GET',
+        url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
+      });
 			const { data } = await response;
 
 			patients = data ? data.patient : [];
