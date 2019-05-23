@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Form, Icon, Input, Button, Layout, Col, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
+import checkAuth from 'shared_components/auth';
 
 import './login.css';
 
@@ -38,7 +39,7 @@ class Login extends React.Component {
           const userId = response.data.userID;
           localStorage.setItem('userName',username);
           localStorage.setItem('userID', userId);
-         
+          checkAuth.authenticate();
           message
             .success('You are now successfully logged in!', 1.5)
             .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);

@@ -13,6 +13,7 @@ import Iresults from '../../../modules/main/iresults';
 import PleboPatientResult from '../../../modules/main/plebo/plebopatient'
 import ErrorPage from '../../../modules/error_page';
 import SearchPatient from '../../../modules/main/search_patients'
+import checkAuth from '../../auth'
 
 // CONSTANTS
 const { Content: Antcontent } = Layout;
@@ -47,17 +48,6 @@ const Content = () => (
 	</Antcontent>
 );
 
-const checkAuth = {
-  isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb) {
-    this.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
 
 function PrivateRoute({ component: Component, ...rest }) {
   return (
