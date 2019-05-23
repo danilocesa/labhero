@@ -66,6 +66,7 @@ class SearchStep extends React.Component {
 						data={patients}
 						pageSize={pageSize}
 						loading={loading} 
+						redirectUrl="/request/create/step/2"
 					/>
 				</div>
 				<Navigation dataLength={patients.length} />
