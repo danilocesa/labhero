@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Typography, Select, Row, Col, Drawer } from 'antd';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import EditProfile from '../../edit_patient_info';
 import './search_table.css';
 
@@ -84,7 +84,8 @@ const dataSource = [
 
 class SearchTableResults extends React.Component {
   render() {
-    const { visible } = this.props;
+
+    const { visible, onClose, onRow } = this.props;
 
     return(
 	<div className="search-result-table">
@@ -110,7 +111,7 @@ class SearchTableResults extends React.Component {
 		<Table 
 			onRow={() => {
         return {
-          onClick: this.props.onClickShowDrawer
+          onClick: onRow
         }
       }}
       
@@ -126,7 +127,7 @@ class SearchTableResults extends React.Component {
 			(
 				<Drawer
 					title="Edit Patient Profile"
-					onClose={this.props.onClose}
+					onClose={onClose}
 					width="35%"
 					visible={visible}
 				>
@@ -140,12 +141,12 @@ class SearchTableResults extends React.Component {
   }
 }
 
-SearchTableResults.propTypes={
-  state: PropTypes.bool
-};
+// SearchTableResults.propTypes={
+//   state: PropTypes.bool.isRequired
+// };
 
-SearchTableResults.defaultProps={
-  state: false
-}
+// SearchTableResults.defaultProps={
+//   state: false
+// }
 
 export default SearchTableResults;

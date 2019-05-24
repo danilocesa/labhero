@@ -1,6 +1,7 @@
 import React from 'react';
 import { Typography, Row, Col } from 'antd';
 
+import PropTypes from 'prop-types';
 import Search from './search_form';
 import SearchTableResults from './search_table_results'
 
@@ -10,6 +11,7 @@ class SearchPatient extends React.Component {
 	constructor(props) {
     super(props);
     this.state = { visible: false }
+    this.onClickShowDrawer = this.onClickShowDrawer.bind(this);
   }
 
   onClickShowDrawer = () => {
@@ -23,7 +25,9 @@ class SearchPatient extends React.Component {
     this.setState({
       visible: false,
     });
+    console.log(this.state.visible);
   };
+
 	
   render() {
     return(
@@ -43,5 +47,15 @@ class SearchPatient extends React.Component {
     );
   }
 }
+
+
+SearchTableResults.propTypes={
+  state: PropTypes.bool.isRequired
+};
+
+SearchTableResults.defaultProps={
+  state: false
+}
+
 
 export default SearchPatient;
