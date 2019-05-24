@@ -7,6 +7,24 @@ import SearchTableResults from './search_table_results'
 const { Title } = Typography;
 
 class SearchPatient extends React.Component {
+	constructor(props) {
+    super(props);
+    this.state = { visible: false }
+  }
+
+  onClickShowDrawer = () => {
+    this.setState({
+      visible: true,
+    });
+    console.log("hi");
+  };
+
+  onClose = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+	
   render() {
     return(
 	<div>
@@ -18,7 +36,7 @@ class SearchPatient extends React.Component {
 				<Search />
 			</Col>
 			<Col span={24}>
-				<SearchTableResults />
+				<SearchTableResults visible={this.state.visible} onClose={this.onClose} onRow={this.onClickShowDrawer} />
 			</Col>
 		</Row>
 	</div>

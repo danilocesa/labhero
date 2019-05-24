@@ -21,7 +21,7 @@ const formItemLayout = [
 	},
 	{
 		xs: { span: 24 },
-		sm: { span: 24 },
+		sm: { span: 24 },      
 		md: { span: 6 },
 		lg: { span: 8 },
 	},

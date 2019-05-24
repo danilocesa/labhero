@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd';
 
 import './editprofile.css'; 
 
@@ -16,11 +16,16 @@ class EditProfile extends React.Component {
 			lastname: 'DOE',
 			firstname: 'JOHN',
 			middlename: 'E',
+			c_address: 'Taguig City',
 		}
 	}
 
 	onChangePatientInfo = (event) => {
 		this.setState({[event.target.name]: event.target.value})
+	}
+
+	onSubmit = () => {
+		message.success('Changes successfully saved!');
 	}
  
 	render() {
@@ -73,10 +78,16 @@ class EditProfile extends React.Component {
 								</Col>
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Age">
-										<Input disabled />
+										<Input value="22" disabled />
 									</Form.Item>
 								</Col>
 							</Row>
+						</Col>
+
+						<Col xs={24} sm={24} md={24} lg={24}>
+							<Form.Item label="ADDRESS" className="gutter-box">
+								<Input name="c_address" value={this.state.c_address} onChange={this.onChangePatientInfo} />
+							</Form.Item>
 						</Col>
 						
 					</Row>
@@ -96,7 +107,7 @@ class EditProfile extends React.Component {
 					<Button style={{ marginRight: 8 }}>
               Cancel
 					</Button>
-					<Button type="primary">
+					<Button type="primary" onClick={this.onSubmit}>
               Submit
 					</Button>
 				</div>
