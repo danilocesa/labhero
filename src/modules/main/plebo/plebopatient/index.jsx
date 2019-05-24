@@ -1,11 +1,11 @@
+// LIBRARY
 import React from 'react';
 import { Row, Col } from 'antd';
 
+// CUSTOM MODULES
 import PleboPatientInfo from './info';
 import PatientName from './name';
 import SpecimenList from './specimen';
-import ActionButton from  './actions';
-
 
 class PleboPatientResult extends React.Component {
   render() {
@@ -30,7 +30,6 @@ class PleboPatientResult extends React.Component {
 		>
 			<PatientName />
 			<SpecimenList />
-			<ActionButton />
 		</Col>
 	</Row>
     );

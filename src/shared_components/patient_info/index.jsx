@@ -90,8 +90,7 @@ class PatientInfo extends React.Component {
 								COMMENT
 							</Col>
 							<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }}>
-								On windows you will need to download and install git-flow. After installing git-flow
-								you can use it in your project by executing git flow init.
+								This is sample comment
 							</Col>
 						</div>
 					</Row>

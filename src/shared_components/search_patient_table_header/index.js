@@ -1,12 +1,16 @@
-import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
+// LIBRARY
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Typography, Select } from 'antd';
 
-<<<<<<< HEAD
+// CSS
 import './table_header.css';
 
+// CONSTANTS
 const { Text } = Typography;
 const { Option } = Select;
 
-class TableHeader extends React.Component {
+class SearchPatientTableHeader extends React.Component {
 	render() {
 		const { pageSize, pageTotal, handleChangeSize } = this.props;
 		const items = pageTotal > pageSize ? pageSize : pageTotal;
@@ -40,14 +44,10 @@ class TableHeader extends React.Component {
 	}
 }
 
-TableHeader.propTypes = {
+SearchPatientTableHeader.propTypes = {
 	handleChangeSize: PropTypes.func.isRequired,
 	pageTotal: PropTypes.number.isRequired,
 	pageSize: PropTypes.number.isRequired
 };
 
-export default TableHeader;
-   
-=======
 export default SearchPatientTableHeader;
->>>>>>> cff19113763f536f6174d9c53f83fc3fdb5ecf98

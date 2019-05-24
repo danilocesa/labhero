@@ -1,6 +1,8 @@
+// LIBRARY
 import React from 'react';
 import { Table, Radio, Col } from 'antd';
 
+// CSS
 import './specimen.css';
 
 const RadioButton = Radio.Button;
@@ -45,7 +47,12 @@ class SpecimenList extends React.Component {
 		{ 
 			title: 'SPECIMEN', 
 			dataIndex: 'Specimen', 
-			key: 'Specimen',
+			key: 'PhleboSpecimen',
+		},
+		{ 
+			title: 'SECTION', 
+			dataIndex: 'Section', 
+			key: 'PhleboSection',
 		},
 		{ 
 			title: 'STATUS',
@@ -53,19 +60,13 @@ class SpecimenList extends React.Component {
 			key: 'Status',
 			render: 
 				button => (
-					<Col style={{ paddingLeft: 245 }}>
+					<Col style={{ paddingLeft: 245, alignText: 'center' }}>
 						<RadioGroup buttonStyle="solid"> 
-							<RadioButton 
-								onClick={onChange}
-								value="a"
-							>
-							PENDING
-							</RadioButton>
 							<RadioButton 
 								onClick={onChange} 
 								value="b"
 							>
-							EXTACTED
+							EXTRACTED
 								{button}
 							</RadioButton>
 						</RadioGroup>
@@ -79,11 +80,13 @@ class SpecimenList extends React.Component {
 			for (let i = 1; i < 6; i+=1) {
 					data.push({  
 					Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
+					Section: "Hema"
 				});
 			}
 	return (
 		<div>
 			<Table
+				className="phlebotable"
 				columns={columns}
 				expandedRowRender={this.expandedRowRender}
 				dataSource={data}
