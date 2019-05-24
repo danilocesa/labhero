@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Typography, Select, Row, Col, Drawer } from 'antd';
 
 // import PropTypes from 'prop-types';
-import EditProfile from '../../edit_patient_info';
+import EditProfile from '../edit_patient_info';
 import './search_table.css';
 
 
@@ -131,7 +131,7 @@ class SearchTableResults extends React.Component {
 					width="35%"
 					visible={visible}
 				>
-					<EditProfile />
+					<EditProfile onClose={onClose} />
 				</Drawer>
 			)
 		}

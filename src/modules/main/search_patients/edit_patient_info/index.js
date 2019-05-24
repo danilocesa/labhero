@@ -1,8 +1,10 @@
+// @ts-nocheck
 import React from 'react';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
 import './editprofile.css'; 
 
+const TreeNode = TreeSelect.TreeNode;
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
@@ -16,7 +18,7 @@ class EditProfile extends React.Component {
 			lastname: 'DOE',
 			firstname: 'JOHN',
 			middlename: 'E',
-			c_address: 'Taguig City',
+			value: undefined,
 		}
 	}
 
@@ -27,8 +29,16 @@ class EditProfile extends React.Component {
 	onSubmit = () => {
 		message.success('Changes successfully saved!');
 	}
+
+	onChangeTreeSelect = value => {
+		console.log(value);
+		this.setState({ value });
+	  };
  
 	render() {
+		const onClose  = this.props;
+
+
 		return(
 			<div>
 				<Form>
@@ -86,7 +96,28 @@ class EditProfile extends React.Component {
 
 						<Col xs={24} sm={24} md={24} lg={24}>
 							<Form.Item label="ADDRESS" className="gutter-box">
-								<Input name="c_address" value={this.state.c_address} onChange={this.onChangePatientInfo} />
+								<div className="treeselect-address">
+									<TreeSelect
+										showSearch
+										style={{ width: 300 }}
+										value={this.state.value}
+										dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+										placeholder="Please select"
+										allowClear
+										treeDefaultExpandAll
+										onChange={this.onChangeTreeSelect}
+									>
+										<TreeNode value="parent 1" title="parent 1" key="0-1">
+											<TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
+												<TreeNode value="leaf1" title="my leaf" key="random" />
+												<TreeNode value="leaf2" title="your leaf" key="random1" />
+											</TreeNode>
+											<TreeNode value="parent 1-1" title="parent 1-1" key="random2">
+												<TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
+											</TreeNode>
+										</TreeNode>
+									</TreeSelect>
+								</div>
 							</Form.Item>
 						</Col>
 						
@@ -104,7 +135,7 @@ class EditProfile extends React.Component {
               textAlign: 'right',
             }}
 				>
-					<Button style={{ marginRight: 8 }}>
+					<Button onClick={onClose} style={{ marginRight: 8 }}>
               Cancel
 					</Button>
 					<Button type="primary" onClick={this.onSubmit}>

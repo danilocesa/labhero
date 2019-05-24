@@ -4,7 +4,7 @@ import { Row, Col, Button, Drawer, Icon } from 'antd';
 
 // CUSTOM MODULES
 import Iresults from '../../iresults';
-import EditProfile from '../../edit_patient_info';
+import EditProfile from '../../search_patients/edit_patient_info';
 
 // IMAGES
 import { PrintLogo, IResultsIcon } from '../../../../images';

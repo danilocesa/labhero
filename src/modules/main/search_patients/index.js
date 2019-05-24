@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { Typography, Row, Col } from 'antd';
 
@@ -18,7 +19,6 @@ class SearchPatient extends React.Component {
     this.setState({
       visible: true,
     });
-    console.log("hi");
   };
 
   onClose = () => {

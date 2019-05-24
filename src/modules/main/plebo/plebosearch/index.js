@@ -13,7 +13,7 @@ class SearchForm extends React.Component {
 			sessionStorage.setItem(CLR_SEARCHED_NAME, patientName);
 			sessionStorage.setItem(CLR_SEARCHED_ID, patientID);
 		}
-	}
+	} 
 	
 	render() {
 		const { populatePatients, displayLoading } = this.props;
