@@ -1,12 +1,17 @@
 const checkAuth = {
-	isAuthenticated: false,
-  authenticate(cb) {
-    this.isAuthenticated = true;
-    setTimeout(cb, 100);
+	isAuthenticated: !!sessionStorage.getItem("userData"),
+
+  authenticate() {
+    if(sessionStorage.getItem("userData")){
+      this.isAuthenticated = true;
+    } else {
+      this.isAuthenticated = false;
+    }
   },
-  signout(cb) {
+
+  signout() {
     this.isAuthenticated = false;
-    setTimeout(cb, 100);
+    sessionStorage.clear();
   }
 };
 
