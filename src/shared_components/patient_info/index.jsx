@@ -1,24 +1,26 @@
+/* eslint-disable react/jsx-closing-tag-location */
+/* eslint-disable react/jsx-indent */
 // LIBRARY
 import React from "react";
 import { Row, Col } from 'antd';
 
 // IMAGES
-import { PatientImgPlaceholder } from '../../images';
+import { PatientImgPlaceholder } from 'images';
 
 // CSS
 import './patient_info.css';
 
 class PatientInfo extends React.Component {
   render() {
+		const { patientInfo } = this.props; 
     return (
 	    <div>
 		    {/* Patient Image Placeholder */}
-		    <div className="patient-img">
+		  	<div className="patient-img">
 			    <img src={PatientImgPlaceholder} className="image-placeholder" alt="patient" />
       	</div>
 
 				{/* Personal Information */}
-				
 				<div className="info-container">
 					<span className="main-title">Personal Information</span>
 					<Row>
@@ -27,7 +29,7 @@ class PatientInfo extends React.Component {
 											BIRTHDATE
 							</Col>
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											05/01/1998
+											{patientInfo.dateOfBirth}
 							</Col>
 						</div>
 						<div className="info-item">
@@ -43,7 +45,7 @@ class PatientInfo extends React.Component {
 											GENDER
 							</Col>
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											MALE
+											{patientInfo.sex}
 							</Col>
 						</div>
 					</Row>
