@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // CONSTANTS
-import { apiURL } from '../shared_components/constant-global';
+import { apiURL } from 'shared_components/constant-global';
 
 
 

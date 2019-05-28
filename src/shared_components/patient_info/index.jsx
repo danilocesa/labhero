@@ -29,7 +29,7 @@ class PatientInfo extends React.Component {
 											BIRTHDATE
 							</Col>
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											{patientInfo.dateOfBirth}
+											test
 							</Col>
 						</div>
 						<div className="info-item">
@@ -45,7 +45,7 @@ class PatientInfo extends React.Component {
 											GENDER
 							</Col>
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											{patientInfo.sex}
+											male
 							</Col>
 						</div>
 					</Row>
