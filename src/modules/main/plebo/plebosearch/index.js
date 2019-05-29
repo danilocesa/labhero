@@ -27,6 +27,7 @@ class SearchForm extends React.Component {
 				displayLoading={displayLoading}
 				sessionPatientId={sessionPatientId}
 				sessionPatientName={sessionPatientName}
+				apiProfile="phlebo"
 			/>
 		);
 	}
