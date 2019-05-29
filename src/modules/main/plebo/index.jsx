@@ -13,7 +13,8 @@ class Plebo extends React.Component {
 		patients: [], 
 		pageSize: 10,
 		loading: false,
-		showDrawer:false 
+		showDrawer:false,
+		patientInfo: null,
 	}
 
 	handleChangeSize = (pageSize) => {
@@ -28,8 +29,12 @@ class Plebo extends React.Component {
 		this.setState({ loading: isLoading });
 	}
 
-	displayDrawer = () => {
-		this.setState({ showDrawer: true });
+	displayDrawer = (patientRecord) => {
+    console.log("TCL: Plebo -> displayDrawer -> patientRecord", patientRecord)
+		this.setState({ 
+			showDrawer: true,
+			patientInfo: patientRecord
+		});
 	}
 
 	onClosePleboPatientResultDrawer = () => {
@@ -39,7 +44,7 @@ class Plebo extends React.Component {
   }
 
   render() {
-		const { patients, pageSize, loading, showDrawer } = this.state;
+		const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
     return ( 
 			<div>
 				<div style={{ marginTop: 50 }}>
@@ -67,7 +72,7 @@ class Plebo extends React.Component {
 							width="80%"
 							visible={showDrawer}
 						>
-							<PleboPatientResult />
+							<PleboPatientResult patientInfo={patientInfo} />
 						</Drawer>
 					)
 					:

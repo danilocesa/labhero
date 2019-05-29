@@ -18,7 +18,7 @@ class PleboPatientResult extends React.Component {
 			lg={5} 
 			xl={5}
 		>
-			<PleboPatientInfo />
+			<PleboPatientInfo patientInfo={this.props.patientInfo} />
 		</Col>
 		<Col 
 			xs={24} 
@@ -28,7 +28,7 @@ class PleboPatientResult extends React.Component {
 			xl={19} 
 			style={{ padding: 25 }}
 		>
-			<PatientName />
+			<PatientName patientInfo={this.props.patientInfo} />
 			<SpecimenList />
 		</Col>
 	</Row>

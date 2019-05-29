@@ -31,14 +31,12 @@ class Login extends React.Component {
     
     const { username, password, userid } = this.state;
 
-    this.props.form.validateFields(async (err, values) => {
+    this.props.form.validateFields(async (err) => {
       if (!err) {
         const response = await this.login(username, password, userid);
 
         if(response && response.status === 200) {
-          const userId = response.data.userID;
-          localStorage.setItem('userName',username);
-          localStorage.setItem('userID', userId);
+          sessionStorage.setItem('userData',JSON.stringify(response.data));
           checkAuth.authenticate();
           message
             .success('You are now successfully logged in!', 1.5)
@@ -65,11 +63,10 @@ class Login extends React.Component {
           'authorization': 'Bearer superSecretKey@345'
         }
       });
-      console.log(response);
       data = response;
     }
     catch(e) {
-      console.log('has error');
+   		console.log("TCL: login -> e", e)
     }
 
     return data;
@@ -77,6 +74,7 @@ class Login extends React.Component {
 	
   
   render() {
+		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Layout>
