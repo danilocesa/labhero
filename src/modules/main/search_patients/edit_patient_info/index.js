@@ -2,24 +2,77 @@
 import React from 'react';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
+import axiosCall from 'services/axiosCall';
+import Message from 'shared_components/message';
 import './editprofile.css'; 
-
-const TreeNode = TreeSelect.TreeNode;
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+
+const treeData = [
+	{
+	  title: 'Node1',
+	  value: '0-0',
+	  key: '0-0',
+	  children: [
+		{
+		  title: 'Child Node1',
+		  value: '0-0-1',
+		  key: '0-0-1',
+		},
+		{
+		  title: 'Child Node2',
+		  value: '0-0-2',
+		  key: '0-0-2',
+		},
+	  ],
+	},
+	{
+	  title: 'Node2',
+	  value: '0-1',
+	  key: '0-1',
+	},
+  ];
 
 class EditProfile extends React.Component {
 	
 	constructor(props) {
 		super(props);
 		this.state = {
-			casenum: '0006',
-			lastname: 'DOE',
-			firstname: 'JOHN',
-			middlename: 'E',
-			value: undefined,
+			casenum: '',
+			lastname: '',
+			firstname: '',
+			middlename: '',
 		}
+	}
+
+	async componentDidMount() {
+		const address = await this.fetchAddress;
+		console.log(address);
+
+		const addressList=address.map((item.province_list) => console.log(addressItem));
+		return (
+			
+		)
+	}
+
+	fetchAddress = async () => {
+		let patientAddress = [];
+
+		try {
+			const response = await axiosCall ({
+				method: 'GET',
+				// eslint-disable-next-line max-len
+				url: 'https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019.json'
+			});
+			const { data } = await response;
+			console.log(response);
+			patientAddress = data || [];
+		}
+		catch(error) {
+			Message.error();
+		}
+		return patientAddress;
 	}
 
 	onChangePatientInfo = (event) => {
@@ -30,10 +83,14 @@ class EditProfile extends React.Component {
 		message.success('Changes successfully saved!');
 	}
 
-	onChangeTreeSelect = value => {
-		console.log(value);
-		this.setState({ value });
+	onChangeTreeSelect = async () => {
+		let address = [];
+		address = await this.fetchAddress(); 
+		return address;
 	  };
+	
+
+
  
 	render() {
 		const onClose  = this.props;
@@ -99,24 +156,14 @@ class EditProfile extends React.Component {
 								<div className="treeselect-address">
 									<TreeSelect
 										showSearch
+										treeData={treeData}
 										style={{ width: 300 }}
-										value={this.state.value}
 										dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
 										placeholder="Please select"
 										allowClear
 										treeDefaultExpandAll
 										onChange={this.onChangeTreeSelect}
-									>
-										<TreeNode value="parent 1" title="parent 1" key="0-1">
-											<TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-												<TreeNode value="leaf1" title="my leaf" key="random" />
-												<TreeNode value="leaf2" title="your leaf" key="random1" />
-											</TreeNode>
-											<TreeNode value="parent 1-1" title="parent 1-1" key="random2">
-												<TreeNode value="sss" title={<b style={{ color: '#08c' }}>sss</b>} key="random3" />
-											</TreeNode>
-										</TreeNode>
-									</TreeSelect>
+									/>
 								</div>
 							</Form.Item>
 						</Col>

@@ -24,7 +24,7 @@ const formItemLayout = [
 		sm: { span: 24 },
 		md: { span: 1 },
 		lg: { span: 1 }
-	},
+	},  
 	{
 		xs: { span: 24 },
 		sm: { span: 24 },      
@@ -74,7 +74,7 @@ class SearchPatientForm extends React.Component {
 		});
 	}
 
-	handleSubmit = async (event) => {
+	handleSubmit = async (event) => {  
 		event.preventDefault();
 		const { patientName, patientID } = this.state;
 		const { populatePatients, storeSearchedVal } = this.props;

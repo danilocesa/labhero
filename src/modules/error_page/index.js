@@ -1,6 +1,6 @@
 //LIBRARY
 import React from 'react';
-import { Row, Col, Typography } from 'antd';
+import { Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 
 //IMAGES
@@ -10,8 +10,6 @@ import { ErrorIcon } from '../../images' ;
 import './error.css';
 
 //CONSTANTS
-const { Text } = Typography;
-
 
 function ErrorPage() {
 

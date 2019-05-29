@@ -1,10 +1,9 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Button, Drawer, Icon } from 'antd';
+import { Row, Col, Button, Drawer } from 'antd';
 
 // CUSTOM MODULES
 import Iresults from '../../iresults';
-import EditProfile from '../../search_patients/edit_patient_info';
 
 // IMAGES
 import { PrintLogo, IResultsIcon } from '../../../../images';
