@@ -1,3 +1,6 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable func-names */
+/* eslint-disable array-callback-return */
 // @ts-nocheck
 import React from 'react';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
@@ -8,6 +11,8 @@ import './editprofile.css';
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+
+// const axios = require('axios');
 
 const treeData = [
 	{
@@ -45,15 +50,40 @@ class EditProfile extends React.Component {
 			middlename: '',
 		}
 	}
+	
+	// 	async componentDidMount() {
+	// 	eslint-disable-next-line max-len
+	// 	return fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019.json')
+	// 	.then((response) => response.json())
+	// 	.then((responseJson) => {
+	// 		this.setState({
+	// 			treeData:responseJson.region_name,
+	// 		}, function list(){
+
+	// 		});
+	// 	})
+	// 	.catch((error) => {
+	// 		console.log(error);
+	// 	})
+	// }
+
 
 	async componentDidMount() {
-		const address = await this.fetchAddress;
-		console.log(address);
-
-		const addressList=address.map((item.province_list) => console.log(addressItem));
-		return (
-			
-		)
+		const address = await this.fetchAddress();
+        console.log("TCL: EditProfile -> componentDidMount -> address", address)
+		const regions = [];
+		const province = [];
+        
+		// for (const keyAddress of Object.keys(address)) {s
+		// 	console.log(address.province_list);
+		// 	for (const keyProvince of Object.keys(address.province_list)) {
+		// 		province[keyProvince] = { "title": address.province_list[keyProvince].key, value: '0-0',key: '0-0'} 
+		// 	}
+		// 	regions[keyAddress] = { "title": address[keyAddress].region_name, value: '0-0',key: '0-0'} 
+		// }
+		
+		// console.log("TCL: EditProfile -> componentDidMount -> regions", regions)
+		// console.log("TCL: EditProfile -> componentDidMount -> province", province)
 	}
 
 	fetchAddress = async () => {
@@ -61,12 +91,13 @@ class EditProfile extends React.Component {
 
 		try {
 			const response = await axiosCall ({
+                
 				method: 'GET',
 				// eslint-disable-next-line max-len
 				url: 'https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019.json'
 			});
 			const { data } = await response;
-			console.log(response);
+            console.log("TCL: EditProfile -> fetchAddress -> data", data)
 			patientAddress = data || [];
 		}
 		catch(error) {
@@ -93,8 +124,7 @@ class EditProfile extends React.Component {
 
  
 	render() {
-		const onClose  = this.props;
-
+		// const onClose  = this.props;
 
 		return(
 			<div>
@@ -155,7 +185,7 @@ class EditProfile extends React.Component {
 							<Form.Item label="ADDRESS" className="gutter-box">
 								<div className="treeselect-address">
 									<TreeSelect
-										showSearch
+										// showSearch
 										treeData={treeData}
 										style={{ width: 300 }}
 										dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -182,7 +212,7 @@ class EditProfile extends React.Component {
               textAlign: 'right',
             }}
 				>
-					<Button onClick={onClose} style={{ marginRight: 8 }}>
+					<Button style={{ marginRight: 8 }}>
               Cancel
 					</Button>
 					<Button type="primary" onClick={this.onSubmit}>

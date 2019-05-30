@@ -12,7 +12,7 @@ import './patient_info.css';
 
 class PatientInfo extends React.Component {
   render() {
-		const { patientInfo } = this.props; 
+		// const { patientInfo } = this.props; 
     return (
 	    <div>
 		    {/* Patient Image Placeholder */}
