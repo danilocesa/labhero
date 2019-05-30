@@ -3,14 +3,26 @@
 /* eslint-disable array-callback-return */
 // @ts-nocheck
 import React from 'react';
+import moment from 'moment';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
+// CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
+import computeAge from 'shared_components/age_computation';
+
+// CSS
 import './editprofile.css'; 
+
+// OTHER FILES
+// eslint-disable-next-line camelcase
+import province_list from 'assets/address.json';
+
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
+
+const dateFormat = 'YYYY/MM/DD';
 
 // const axios = require('axios');
 
@@ -50,27 +62,11 @@ class EditProfile extends React.Component {
 			middlename: '',
 		}
 	}
-	
-	// 	async componentDidMount() {
-	// 	eslint-disable-next-line max-len
-	// 	return fetch('https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019.json')
-	// 	.then((response) => response.json())
-	// 	.then((responseJson) => {
-	// 		this.setState({
-	// 			treeData:responseJson.region_name,
-	// 		}, function list(){
-
-	// 		});
-	// 	})
-	// 	.catch((error) => {
-	// 		console.log(error);
-	// 	})
-	// }
-
 
 	async componentDidMount() {
+		console.log("TCL: addressData", province_list);
 		const address = await this.fetchAddress();
-        console.log("TCL: EditProfile -> componentDidMount -> address", address)
+    console.log("TCL: EditProfile -> componentDidMount -> address", address)
 		const regions = [];
 		const province = [];
         
@@ -106,6 +102,10 @@ class EditProfile extends React.Component {
 		return patientAddress;
 	}
 
+	addressData = () => {
+			
+	}
+
 	onChangePatientInfo = (event) => {
 		this.setState({[event.target.name]: event.target.value})
 	}
@@ -119,39 +119,30 @@ class EditProfile extends React.Component {
 		address = await this.fetchAddress(); 
 		return address;
 	  };
-	
-
-
  
 	render() {
+
 		// const onClose  = this.props;
 
 		return(
 			<div>
 				<Form>
 					<Row gutter={8}>
-						
-						<Col xs={24} sm={24} md={24} lg={24}>
-							<Form.Item label="Case No.">
-								<Input name="casenum" value={this.state.casenum} onChange={this.onChangePatientInfo} />
-							</Form.Item>
-						</Col>
-
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="Last Name">
-								<Input name="lastname" value={this.state.lastname} onChange={this.onChangePatientInfo} />
+								<Input name="lastname" value={this.props.patientInfo.lastName} onChange={this.onChangePatientInfo} />
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="First Name">
-								<Input name="firstname" value={this.state.firstname} onChange={this.onChangePatientInfo} />
+								<Input name="firstname" value={this.props.patientInfo.givenName} onChange={this.onChangePatientInfo} />
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="Middle Name">
-								<Input name="middlename" value={this.state.middlename} onChange={this.onChangePatientInfo} />
+								<Input name="middlename" value={this.props.patientInfo.middleName} onChange={this.onChangePatientInfo} />
 							</Form.Item>
 						</Col>
 
@@ -169,13 +160,13 @@ class EditProfile extends React.Component {
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Date of Birth">
 										<div className="customDatePickerWidth">
-											<DatePicker />
+											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth, dateFormat)} format={dateFormat}/>
 										</div>
 									</Form.Item>
 								</Col>
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Age">
-										<Input value="22" disabled />
+										<Input value={computeAge(this.props.patientInfo.dateOfBirth)} disabled />
 									</Form.Item>
 								</Col>
 							</Row>

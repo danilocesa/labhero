@@ -1,56 +1,41 @@
+// LIBRARY
 import React from 'react';
-import { Input, Button, Row, Col, Form } from 'antd'
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
+// CUSTOM MODULES
+import SearchPatientForm from 'shared_components/search_patient_form'
+import { CLR_SEARCHED_NAME, CLR_SEARCHED_ID } from 'shared_components/constant-global';
 
 class Search extends React.Component {
-  render() {
-    return(
-	<div className="search-patients-form">
-		<Form>
-			<Row gutter={12}>
-				<Col span={5}>
-					<Form.Item label="Patient ID">
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col style={{ textAlign:'center', marginTop:'30px' }} span={1}>
-					OR
-				</Col>
-				<Col span={12}>
-					<Form.Item label="Patient Name">
-						<Input />
-					</Form.Item>
-				</Col>
-				<Col span={6}>
-					<Form.Item style={{ marginTop: 22 }}>
-						<Row gutter={12}>
-							<Col span={12}>
-								<Button 
-									className="search-btn" 
-									shape="round" 
-									block
-								>
-									CLEAR
-								</Button>
-							</Col>
-							<Col span={12}>
-								<Button 
-									className="search-btn" 
-									shape="round" 
-									type="primary" 
-									block
-								>
-									SEARCH
-								</Button>
-							</Col>
-						</Row>
-					</Form.Item>
-				</Col>
-			</Row>
-		</Form>
-	</div>
-    );
-  }
+	storeSearchedVal = (patientName, patientID) => {
+		if(patientID || patientName) {
+			sessionStorage.setItem(CLR_SEARCHED_NAME, patientName);
+			sessionStorage.setItem(CLR_SEARCHED_ID, patientID);
+		}
+	} 
+	
+	render() {
+		const { populatePatients, displayLoading } = this.props;
+		const sessionPatientId = sessionStorage.getItem(CLR_SEARCHED_ID);
+		const sessionPatientName = sessionStorage.getItem(CLR_SEARCHED_NAME);
+
+		return (
+			<SearchPatientForm 
+				populatePatients={populatePatients}
+				storeSearchedVal={this.storeSearchedVal}
+				displayLoading={displayLoading}
+				sessionPatientId={sessionPatientId}
+				sessionPatientName={sessionPatientName}
+			/>
+		);
+	}
 }
 
-export default Search;
+Search.propTypes = {
+	populatePatients: PropTypes.func.isRequired,
+	displayLoading: PropTypes.func.isRequired
+};
+
+
+export default withRouter(Search);

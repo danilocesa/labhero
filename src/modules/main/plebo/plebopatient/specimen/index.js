@@ -42,7 +42,6 @@ class SpecimenList extends React.Component {
 				}
 			});
 		});
-		console.log("TCL: SpecimenList -> componentDidMount -> parentLevel", parentLevel)
 		this.setState({  patientSectionList: parentLevel });
 	}
 

@@ -7,7 +7,7 @@ import { Form, Input, Button, Row, Col } from 'antd';
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import {apiURL, apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
+import {apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
 
 // CSS
 import './search_patient_form.css';
@@ -102,7 +102,7 @@ class SearchPatientForm extends React.Component {
 		try{
 			const response = await axiosCall({
         method: 'GET',
-        url: apiURL+(patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
+        url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
       });
 			const { data } = await response;
 			if(apiProfile === "phlebo"){ // Check if module is phlebo

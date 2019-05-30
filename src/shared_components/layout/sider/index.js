@@ -14,22 +14,31 @@ const { Sider: AntSider } = Layout;
 
 
 class Sider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentKey: '',
-    }
-    this.handleMenuClick = this.handleMenuClick.bind(this);
+  state = {
+    currentKey: '',
   }
 
-  handleMenuClick = (event) => {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     currentKey: '',
+  //   }
+  //   this.handleMenuClick = this.handleMenuClick.bind(this);
+  // }
+
+  handleMenuClick = (e) => {
+    // console.log("TCL: Sider -> handleMenuClick -> event", e)
+    const menuKey = e.key;
     // const keys = ['1','2','3','4','5'];
-    this.setState({
-      currentKey: event.key
-    });
-    sessionStorage.setItem("currentKey", "");
-    console.log(sessionStorage.setItem("currentKey", ""))
+    this.setState({ currentKey: menuKey},() => {
+      this.setState({ currentKey: this.state.currentKey})
+      console.log("callback ng set: "+this.state.currentKey) // Mustkeom
+    })
+    // sessionStorage.setItem("currentKey", "");
+    console.log("ito yung na set na: "+this.state.currentKey);
+    // console.log(sessionStorage.setItem("currentKey", ""))
   }
+
 
   render() {
     return (
@@ -44,7 +53,7 @@ class Sider extends React.Component {
         <Menu
               className="side-menu" 
               mode="inline" 
-              defaultSelectedKeys={[this.state.currentKey]}
+             
               onClick={this.handleMenuClick}
         >
           <Menu.Item onClick="sessionStorage.setItem('key',1)" key="1">
