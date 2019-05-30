@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -6,7 +7,7 @@ import { Form, Input, Button, Row, Col } from 'antd';
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import {apiUrlPatientByID, apiUrlPatientByName} from 'shared_components/constant-global'
+import {apiURL, apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
 
 // CSS
 import './search_patient_form.css';
@@ -94,19 +95,32 @@ class SearchPatientForm extends React.Component {
 
 	fetchPatients = async (patientName, patientID) => {
 		let patients = [];
+		const { apiProfile} = this.props;
+		const apiUrlPatientID = (apiProfile === "phlebo" ? apiUrlPhleboPatientByID : apiUrlPatientByID);
+		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
 		
 		try{
 			const response = await axiosCall({
         method: 'GET',
-        url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
+        url: apiURL+(patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
       });
 			const { data } = await response;
-
-			patients = data ? data.patient : [];
+			if(apiProfile === "phlebo"){ // Check if module is phlebo
+				if(patientID){ // Fix problem for patientID object reponse
+					patients = data ? [data] : [];
+				} else {
+					patients = data || [];
+				}
+			} else {
+				patients = data ? data.patient : [];
+			}
+			
 		}
 		catch(error) {
 			Message.error();
 		}
+
+
 
 		return patients;
 	}
@@ -195,14 +209,16 @@ SearchPatientForm.propTypes = {
 	storeSearchedVal: PropTypes.func,
 	displayLoading: PropTypes.func,
 	sessionPatientName: PropTypes.string, 
-	sessionPatientID: PropTypes.string
+	sessionPatientID: PropTypes.string,
+	apiProfile: PropTypes.string
 };
 
 SearchPatientForm.defaultProps = {
 	storeSearchedVal() { return null; },
 	displayLoading() { return null; },
 	sessionPatientName: '',
-	sessionPatientID: ''
+	sessionPatientID: '',
+	apiProfile: ''
 }
 
 export default SearchPatientForm;
