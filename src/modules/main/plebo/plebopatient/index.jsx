@@ -1,6 +1,7 @@
 // LIBRARY
 import React from 'react';
 import { Row, Col } from 'antd';
+import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
 import PleboPatientInfo from './info';
@@ -29,10 +30,20 @@ class PleboPatientResult extends React.Component {
 			style={{ padding: 25 }}
 		>
 			<PatientName patientInfo={this.props.patientInfo} />
-			<SpecimenList />
+			<SpecimenList patientInfo={this.props.patientInfo} />
 		</Col>
 	</Row>
     );
   }
 }
+
+PleboPatientResult.propTypes = {
+	patientInfo: PropTypes.object
+};
+
+PleboPatientResult.defaultProps = {
+	patientInfo() { return null; }
+}
+
+
 export default PleboPatientResult;

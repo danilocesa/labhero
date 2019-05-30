@@ -30,7 +30,6 @@ class Plebo extends React.Component {
 	}
 
 	displayDrawer = (patientRecord) => {
-    console.log("TCL: Plebo -> displayDrawer -> patientRecord", patientRecord)
 		this.setState({ 
 			showDrawer: true,
 			patientInfo: patientRecord
