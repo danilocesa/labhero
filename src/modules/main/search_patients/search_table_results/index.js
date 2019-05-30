@@ -1,7 +1,10 @@
 import React from 'react';
 import { Table, Typography, Select, Row, Col, Drawer } from 'antd';
 
-import EditProfile from '../../edit_patient_info';
+// import PropTypes from 'prop-types';
+import EditProfile from '../edit_patient_info';
+import './search_table.css';
+
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -33,7 +36,7 @@ const columns = [
     key: 'gender',
   },
   {
-    title: 'CITY ADDRESS',
+    title: 'ADDRESS',
     dataIndex: 'c_address',
     key: 'c_address',
   }
@@ -80,25 +83,10 @@ const dataSource = [
 
 
 class SearchTableResults extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { visible: false }
-  }
-
-  onClickShowDrawer = () => {
-    this.setState({
-      visible: true,
-    });
-    // console.log("hi");
-  };
-
-  onClose = () => {
-    this.setState({
-      visible: false,
-    });
-  };
-
   render() {
+
+    const { visible, onClose, onRow } = this.props;
+
     return(
 	<div className="search-result-table">
 		<Row>
@@ -121,12 +109,13 @@ class SearchTableResults extends React.Component {
 		</Row>
 		
 		<Table 
-			onRow={dataSource=>{
+			onRow={() => {
         return {
-          onClick: () => this.onClickShowDrawer
+          onClick: onRow
         }
       }}
-
+      
+			rowClassName={() => 'row-pointer-cursor'}
 			dataSource={dataSource} 
 			columns={columns} 
 			pagination={false}
@@ -135,24 +124,29 @@ class SearchTableResults extends React.Component {
 		/>
 
 		{
-			this.state.visible ?
 			(
 				<Drawer
 					title="Edit Patient Profile"
-					onClose={this.onClose}
+					onClose={onClose}
 					width="35%"
-					visible={this.state.visible}
+					visible={visible}
 				>
-					<EditProfile />
+					<EditProfile onClose={onClose} />
 				</Drawer>
 			)
-				:
-				null
 		}
 
 	</div>
     );
   }
 }
+
+// SearchTableResults.propTypes={
+//   state: PropTypes.bool.isRequired
+// };
+
+// SearchTableResults.defaultProps={
+//   state: false
+// }
 
 export default SearchTableResults;

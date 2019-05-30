@@ -44,6 +44,10 @@ class PatientInfo extends React.Component {
 	}
 
   render() {
+<<<<<<< HEAD
+=======
+		// const { patientInfo } = this.props; 
+>>>>>>> 32eb74c494779df4a7ee8de411c4257efd93e275
     return (
 	    <div>
 		    {/* Patient Image Placeholder */}

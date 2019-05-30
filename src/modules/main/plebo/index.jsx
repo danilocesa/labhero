@@ -10,7 +10,7 @@ import PleboPatientResult from './plebopatient';
 
 class Plebo extends React.Component {
 	state = { 
-		patients: [],
+		patients: [], 
 		pageSize: 10,
 		loading: false,
 		showDrawer:false,

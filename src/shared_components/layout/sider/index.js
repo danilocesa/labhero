@@ -12,7 +12,25 @@ import './sider.css';
 
 const { Sider: AntSider } = Layout;
 
+
 class Sider extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentKey: '',
+    }
+    this.handleMenuClick = this.handleMenuClick.bind(this);
+  }
+
+  handleMenuClick = (event) => {
+    // const keys = ['1','2','3','4','5'];
+    this.setState({
+      currentKey: event.key
+    });
+    sessionStorage.setItem("currentKey", "");
+    console.log(sessionStorage.setItem("currentKey", ""))
+  }
+
   render() {
     return (
 	    <AntSider
@@ -21,10 +39,15 @@ class Sider extends React.Component {
         trigger={null}
         collapsible
         collapsed={this.props.collapsed}
-      >
+	    >
         <div className="logo" />
-        <Menu className="side-menu" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
+        <Menu
+              className="side-menu" 
+              mode="inline" 
+              defaultSelectedKeys={[this.state.currentKey]}
+              onClick={this.handleMenuClick}
+        >
+          <Menu.Item onClick="sessionStorage.setItem('key',1)" key="1">
             <Link to="/dashboard">
               <Icon component={HomeIcon} />
               <span>DASHBOARD</span>
@@ -56,7 +79,7 @@ class Sider extends React.Component {
             </Link>
           </Menu.Item>
         </Menu>
-      </AntSider>
+     </AntSider>
     );
   }
 }

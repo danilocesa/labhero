@@ -1,3 +1,7 @@
 .customDatePickerWidth .ant-calendar-picker-input{
    padding: 4px 35px;
 }
+
+.treeselect-address .ant-select {
+   width: 100% !important;
+}
