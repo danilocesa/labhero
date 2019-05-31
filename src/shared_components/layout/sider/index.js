@@ -28,19 +28,15 @@ class Sider extends React.Component {
         currentKey: event.key
       }, function keys(){
         console.log(this.state.currentKey);
-        const setSessionKey = sessionStorage.setItem("currentKey", this.state.currentKey);
-        const currentSelectedKey = sessionStorage.getItem("currentKey");
-        console.log(currentSelectedKey);
+       sessionStorage.setItem("currentKey", this.state.currentKey);
+       sessionStorage.getItem("currentKey");
       });
     }
   }
 
-
   render() {
     return (
 	    <AntSider
-        // breakpoint="lg"
-        // collapsedWidth="0"
         trigger={null}
         collapsible
         collapsed={this.props.collapsed}
@@ -49,7 +45,9 @@ class Sider extends React.Component {
         <Menu
               className="side-menu" 
               mode="inline" 
-             
+              defaultSelectedKeys={[
+                (sessionStorage.getItem("currentKey") ?sessionStorage.getItem("currentKey") : '1' )
+              ]}
               onClick={this.handleMenuClick}
         >
           <Menu.Item key="1">
