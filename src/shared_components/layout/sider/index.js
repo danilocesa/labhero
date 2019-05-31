@@ -19,17 +19,22 @@ class Sider extends React.Component {
     this.state = {
       currentKey: '',
     }
-    this.handleMenuClick = this.handleMenuClick.bind(this);
+    // this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-  handleMenuClick = (event) => {
-    // const keys = ['1','2','3','4','5'];
-    this.setState({
-      currentKey: event.key
-    });
-    sessionStorage.setItem("currentKey", "");
-    console.log(sessionStorage.setItem("currentKey", ""))
+  componentWillMount() {
+    this.handleMenuClick = (event) => {
+      this.setState({
+        currentKey: event.key
+      }, function keys(){
+        console.log(this.state.currentKey);
+        const setSessionKey = sessionStorage.setItem("currentKey", this.state.currentKey);
+        const currentSelectedKey = sessionStorage.getItem("currentKey");
+        console.log(currentSelectedKey);
+      });
+    }
   }
+
 
   render() {
     return (
@@ -47,7 +52,7 @@ class Sider extends React.Component {
               defaultSelectedKeys={[this.state.currentKey]}
               onClick={this.handleMenuClick}
         >
-          <Menu.Item onClick="sessionStorage.setItem('key',1)" key="1">
+          <Menu.Item key="1">
             <Link to="/dashboard">
               <Icon component={HomeIcon} />
               <span>DASHBOARD</span>
