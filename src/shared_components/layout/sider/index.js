@@ -14,37 +14,29 @@ const { Sider: AntSider } = Layout;
 
 
 class Sider extends React.Component {
-  state = {
-    currentKey: '',
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentKey: '',
+    }
+    // this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     currentKey: '',
-  //   }
-  //   this.handleMenuClick = this.handleMenuClick.bind(this);
-  // }
-
-  handleMenuClick = (e) => {
-    // console.log("TCL: Sider -> handleMenuClick -> event", e)
-    const menuKey = e.key;
-    // const keys = ['1','2','3','4','5'];
-    this.setState({ currentKey: menuKey},() => {
-      this.setState({ currentKey: this.state.currentKey})
-      console.log("callback ng set: "+this.state.currentKey) // Mustkeom
-    })
-    // sessionStorage.setItem("currentKey", "");
-    console.log("ito yung na set na: "+this.state.currentKey);
-    // console.log(sessionStorage.setItem("currentKey", ""))
+  componentWillMount() {
+    this.handleMenuClick = (event) => {
+      this.setState({
+        currentKey: event.key
+      }, function keys(){
+        console.log(this.state.currentKey);
+       sessionStorage.setItem("currentKey", this.state.currentKey);
+       sessionStorage.getItem("currentKey");
+      });
+    }
   }
-
 
   render() {
     return (
 	    <AntSider
-        // breakpoint="lg"
-        // collapsedWidth="0"
         trigger={null}
         collapsible
         collapsed={this.props.collapsed}
@@ -53,10 +45,12 @@ class Sider extends React.Component {
         <Menu
               className="side-menu" 
               mode="inline" 
-             
+              defaultSelectedKeys={[
+                (sessionStorage.getItem("currentKey") ?sessionStorage.getItem("currentKey") : '1' )
+              ]}
               onClick={this.handleMenuClick}
         >
-          <Menu.Item onClick="sessionStorage.setItem('key',1)" key="1">
+          <Menu.Item key="1">
             <Link to="/dashboard">
               <Icon component={HomeIcon} />
               <span>DASHBOARD</span>
