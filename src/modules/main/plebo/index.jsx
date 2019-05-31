@@ -3,6 +3,7 @@ import React from 'react';
 import { Drawer } from 'antd';
 
 // CUSTOM MODULES
+import PageTitle from 'shared_components/page_title';
 import SearchForm from './plebosearch';
 import SearchPatientTableHeader from './pleboheader';
 import SearchPatientTable from './plebotable';
@@ -30,7 +31,6 @@ class Plebo extends React.Component {
 	}
 
 	displayDrawer = (patientRecord) => {
-    console.log("TCL: Plebo -> displayDrawer -> patientRecord", patientRecord)
 		this.setState({ 
 			showDrawer: true,
 			patientInfo: patientRecord
@@ -48,6 +48,7 @@ class Plebo extends React.Component {
     return ( 
 			<div>
 				<div style={{ marginTop: 50 }}>
+					<PageTitle pageTitle="PHLEBO" />
 					<SearchForm 
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 

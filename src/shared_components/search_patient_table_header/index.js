@@ -13,6 +13,7 @@ const { Option } = Select;
 class SearchPatientTableHeader extends React.Component {
 	render() {
 		const { pageSize, pageTotal, handleChangeSize } = this.props;
+		
 		const items = pageTotal > pageSize ? pageSize : pageTotal;
 
 		return (

@@ -49,7 +49,7 @@ class Sider extends React.Component {
         <Menu
               className="side-menu" 
               mode="inline" 
-              defaultSelectedKeys={[this.state.currentKey]}
+             
               onClick={this.handleMenuClick}
         >
           <Menu.Item key="1">
