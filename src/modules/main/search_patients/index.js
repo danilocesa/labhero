@@ -1,24 +1,27 @@
-// LiBRARY
+// @ts-nocheck
+// LIBRARY
 import React from 'react';
 import { Drawer } from 'antd';
+import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import SearchForm from './plebosearch';
-import SearchPatientTableHeader from './pleboheader';
-import SearchPatientTable from './plebotable';
-import PleboPatientResult from './plebopatient';
+import Search from './search_form';
+import SearchPatientTableHeader from './table_header'
+import SearchPatientTable from './search_table_results'
+import EditProfile from './edit_patient_info'
 
-class Plebo extends React.Component {
-	state = { 
+
+class SearchPatient extends React.Component {
+  state = { 
 		patients: [], 
 		pageSize: 10,
 		loading: false,
 		showDrawer:false,
 		patientInfo: null,
-	}
-
-	handleChangeSize = (pageSize) => {
+  }
+  
+  handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
 	}
 
@@ -37,19 +40,19 @@ class Plebo extends React.Component {
 		});
 	}
 
-	onClosePleboPatientResultDrawer = () => {
+	onClosePatientResultDrawer = () => {
     this.setState({
       showDrawer:false,
     });
   }
 
   render() {
-		const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
-    return ( 
-			<div>
+    const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
+    return(
+	    <div>
 				<div style={{ marginTop: 50 }}>
-					<PageTitle pageTitle="PHLEBO" />
-					<SearchForm 
+					<PageTitle pageTitle="SEARCH PATIENT" />
+					<Search
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
 					/>
@@ -68,12 +71,14 @@ class Plebo extends React.Component {
 					{
 					showDrawer ? (
 						<Drawer
-							title="Patient information" 
-							onClose={this.onClosePleboPatientResultDrawer}
-							width="80%"
+							title="Update Patient information" 
+							onClose={this.onClosePatientResultDrawer}
+							width="50%"
 							visible={showDrawer}
 						>
-							<PleboPatientResult patientInfo={patientInfo} />
+              <EditProfile patientInfo={patientInfo} />
+
+							{/* <PleboPatientResult patientInfo={patientInfo} /> */}
 						</Drawer>
 					)
 					:
@@ -85,4 +90,14 @@ class Plebo extends React.Component {
   }
 }
 
-export default Plebo;
+
+SearchPatientTable.propTypes={
+  state: PropTypes.bool.isRequired
+};
+
+SearchPatientTable.defaultProps={
+  state: false
+}
+
+
+export default SearchPatient;

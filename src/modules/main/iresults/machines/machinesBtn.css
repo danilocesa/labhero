@@ -19,3 +19,7 @@
     background: #615de0 !important;
     color: white !important;
 }
+
+.gutter-row .gutter-box {
+    margin-right: 15px;
+}

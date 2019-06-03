@@ -134,13 +134,13 @@ class App extends React.Component {
 			<div className="iresultTable">
 				<Table
 					onRow={tableDataSource=>{
-            return {
-              onClick: () => {
-                this.setState({
-                  selected: tableDataSource.key,
-                  selectedRowKeys: [(tableDataSource.key)], 
-                });
-              },
+						return {
+							onClick: () => {
+								this.setState({
+								selected: tableDataSource.key,
+								selectedRowKeys: [(tableDataSource.key)], 
+								});
+							},
 						};
 					}}
 						

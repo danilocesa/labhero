@@ -31,7 +31,7 @@ class SearchStep extends React.Component {
 	state = { 
 		patients: [],
 		pageSize: 10,
-		loading: false 
+		loading: false,
 	}
 	
 	handleChangeSize = (pageSize) => {
@@ -67,6 +67,7 @@ class SearchStep extends React.Component {
 						data={patients}
 						pageSize={pageSize}
 						loading={loading} 
+						redirectUrl="/request/create/step/2"
 					/>
 				</div>
 				<Navigation dataLength={patients.length} />

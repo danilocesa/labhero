@@ -1,12 +1,12 @@
 import React from 'react';
-import { Row, Form, Icon, Input, Button, Layout, Col } from 'antd';
+import { Row, Form, Icon, Input, Button, Layout, Col, message } from 'antd';
 import { Link } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
+import checkAuth from 'shared_components/auth';
 
 import './login.css';
 
 import { CompanyLogo } from '../../images';
-import { STATUS_CODES } from 'http';
 
 const { Header, Content } = Layout;
 
@@ -16,14 +16,6 @@ class Login extends React.Component {
 		this.handleUsernameChange=this.handleUsernameChange.bind(this);
 		this.handlePasswordChange=this.handlePasswordChange.bind(this);
 		this.handleSubmit=this.handleSubmit.bind(this);
-    this.state={
-      username: '',
-      password: ''
-		}
-		this.userState={
-			username: 'guest',
-			password: '123'
-		}
 	}
 	
 	handleUsernameChange=(event)=>{
@@ -34,33 +26,55 @@ class Login extends React.Component {
 		this.setState({password:event.target.value});
 	}
 
-	handleSubmit=(event)=>{
-		// if(this.state.username===this.userState.username && this.state.password===this.userState.password){
-			event.preventDefault();
-			this.props.form.validateFields((err, values) => {
-				if (!err) {
-				 	console.log('Received values of form: ', values);
-					axiosCall({
-							method: 'POST',
-							url: 'LogIn',
-							data: {
-							 userName: this.state.username,
-							 password: this.state.password,
-							},
-							headers: {
-								'content-type': 'application/json',
-								'authorization': 'Bearer superSecretKey@345'
-							}
-					}).then((resp) => {
-						 	console.log(resp.data);
-						});
-				 	}
-			});
+	handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const { username, password, userid } = this.state;
+
+    this.props.form.validateFields(async (err) => {
+      if (!err) {
+        const response = await this.login(username, password, userid);
+
+        if(response && response.status === 200) {
+          sessionStorage.setItem('userData',JSON.stringify(response.data));
+          checkAuth.authenticate();
+          message
+            .success('You are now successfully logged in!', 1.5)
+            .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
+        } 
+        else {
+          message.error('Incorrect Username/Password');
+        }
+      }  
+    });
 	}
 
+  login = async (userName, password, userID) => {
+    let data = null;
+    
+    try{
+      const body = { userName, password, userID };
+      const response = await axiosCall({
+        method: 'POST',
+        url: 'LogIn',
+        data: body,
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'Bearer superSecretKey@345'
+        }
+      });
+      data = response;
+    }
+    catch(e) {
+   		console.log("TCL: login -> e", e)
+    }
+
+    return data;
+  }
 	
   
-		render() {
+  render() {
+		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<Layout>
@@ -77,13 +91,12 @@ class Login extends React.Component {
 				<Content>
 					<Row type="flex" align="middle">
 						<div className="login-form">
-							<Row type="flex" justify="center" align="center">
-								<img src={CompanyLogo} alt="logo" style={{ height: 45 }} />
+							<Row type="flex" justify="center" align="middle">
+								<img src={CompanyLogo} alt="logo" className="login-logo-image" />
 							</Row>
-							<Row style={{ height: 10 }} />
 							<Row>
 								<Form onSubmit={this.handleSubmit}>
-									<Form.Item label="Username">
+									<Form.Item label="Username" className="login-input font12">
 										{getFieldDecorator('userName', {
 											rules: [{ required: true, message: 'Please input your username!' }],
 										})(<Input onChange={this.handleUsernameChange} />)}
@@ -93,7 +106,7 @@ class Login extends React.Component {
 											rules: [{ required: true, message: 'Please input your Password!' }],
 										})(<Input.Password onChange={this.handlePasswordChange} placeholder="input password" type="password" />)}
 									</Form.Item>
-									<Form.Item>
+									<Form.Item style={{marginBottom:'0px'}}>
 										<Button type="primary" htmlType="submit" className="login-form-button" block>
 											SIGN IN TO MY ACCOUNT
 										</Button>

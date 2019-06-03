@@ -1,11 +1,21 @@
+/* eslint-disable func-names */
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col } from 'antd';
+<<<<<<< HEAD
+=======
+
+// CUSTOM MODULES
+>>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
+import {apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
 
+// CSS
 import './search_patient_form.css';
 
+// CONSTANTS
 const formItemLayout = [
 	{
 		xs: { span: 24 },
@@ -18,10 +28,10 @@ const formItemLayout = [
 		sm: { span: 24 },
 		md: { span: 1 },
 		lg: { span: 1 }
-	},
+	},  
 	{
 		xs: { span: 24 },
-		sm: { span: 24 },
+		sm: { span: 24 },      
 		md: { span: 6 },
 		lg: { span: 8 },
 	},
@@ -68,7 +78,7 @@ class SearchPatientForm extends React.Component {
 		});
 	}
 
-	handleSubmit = async (event) => {
+	handleSubmit = async (event) => {  
 		event.preventDefault();
 		const { patientName, patientID } = this.state;
 		const { populatePatients, storeSearchedVal } = this.props;
@@ -88,8 +98,12 @@ class SearchPatientForm extends React.Component {
 
 	fetchPatients = async (patientName, patientID) => {
 		let patients = [];
-
+		const { apiProfile} = this.props;
+		const apiUrlPatientID = (apiProfile === "phlebo" ? apiUrlPhleboPatientByID : apiUrlPatientByID);
+		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
+		
 		try{
+<<<<<<< HEAD
 			const byIdURL = `/Patient/id/${patientID}`;
 			const byNameURL = `/Patient/name/${patientName}`;
 
@@ -100,12 +114,33 @@ class SearchPatientForm extends React.Component {
 			const { data } = await response;
 			
 			patients = data ? data.patient : [];
+=======
+			const response = await axiosCall({
+        method: 'GET',
+        url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
+      });
+			const { data } = await response;
+			if(apiProfile === "phlebo"){ // Check if module is phlebo
+				if(patientID){ // Fix problem for patientID object reponse
+					patients = data ? [data] : [];
+				} else {
+					patients = data || [];
+				}
+			} else {
+				patients = data ? data.patient : [];
+			}
+			
+>>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 		}
 		catch(error) {
 			Message.error();
 		}
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 		return patients;
 	}
 
@@ -193,14 +228,16 @@ SearchPatientForm.propTypes = {
 	storeSearchedVal: PropTypes.func,
 	displayLoading: PropTypes.func,
 	sessionPatientName: PropTypes.string, 
-	sessionPatientID: PropTypes.string
+	sessionPatientID: PropTypes.string,
+	apiProfile: PropTypes.string
 };
 
 SearchPatientForm.defaultProps = {
 	storeSearchedVal() { return null; },
 	displayLoading() { return null; },
 	sessionPatientName: '',
-	sessionPatientID: ''
+	sessionPatientID: '',
+	apiProfile: ''
 }
 
 export default SearchPatientForm;

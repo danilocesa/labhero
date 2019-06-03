@@ -1,13 +1,14 @@
-<<<<<<< HEAD
+// LIBRARY
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
-import moment from 'moment';
 
+// CSS
 import './table.css';
 
+// CONSTANTS
 const columns = [
 	{
 		title: 'LAST NAME',
@@ -38,19 +39,29 @@ const columns = [
 		dataIndex: 'sex',
 		sorter: (a, b) => a.sex.localeCompare(b.sex),
 		width: '8%'
-	}
+	},
+	{
+		title: 'ADDRESS',
+		dataIndex: 'address',
+		sorter: (a, b) => a.address.localeCompare(b.address),
+	},
 ];
 
-
-class Table extends React.Component {
-	handleDoubleClick = (record) => {
+class SearchPatientTable extends React.Component {
+	handleDoubleClick = (record,redirect) => {
 		const { history } = this.props;
-
-		history.push('/request/create/step/2', { record });
+		if(redirect){
+			history.push(redirect, { record })
+		} else {
+			this.props.drawer(record);
+		}
+		
 	}
+
+
 	
 	render() {
-		const { data, pageSize, loading } = this.props;
+		const { data, pageSize, loading, redirectUrl } = this.props;
 
 		return (
 			<Spin spinning={loading} tip="Loading...">
@@ -63,7 +74,9 @@ class Table extends React.Component {
 						rowKey={record => record.patientID}
 						onRow={(record) => {
 							return { 
-								onDoubleClick: () => this.handleDoubleClick(record)
+								onDoubleClick: () => {
+									this.handleDoubleClick(record,redirectUrl)
+								}
 							};
 						}}
 					/>
@@ -73,7 +86,7 @@ class Table extends React.Component {
 	}
 }
 
-Table.propTypes = {
+SearchPatientTable.propTypes = {
 	history: ReactRouterPropTypes.history.isRequired,
 	data: PropTypes.arrayOf(PropTypes.shape({
 		givenName: PropTypes.string.isRequired,
@@ -83,12 +96,8 @@ Table.propTypes = {
 		sex: PropTypes.string.isRequired
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
-	loading: PropTypes.bool.isRequired
+	loading: PropTypes.bool.isRequired,
+	redirectUrl:PropTypes.string.isRequired,
 };
 
-export default withRouter(Table);
-=======
-import SearchPatientTable from 'shared_components/search_patient_table';
-
-export default SearchPatientTable;
->>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
+export default withRouter(SearchPatientTable);

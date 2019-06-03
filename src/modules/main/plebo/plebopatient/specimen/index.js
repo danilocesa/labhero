@@ -1,93 +1,104 @@
+/* eslint-disable func-names */
+/* eslint-disable array-callback-return */
+// LIBRARY
 import React from 'react';
 import { Table, Radio, Col } from 'antd';
+import PropTypes from 'prop-types';
 
+// CUSTOM MODULES
+import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
+
+// CSS
 import './specimen.css';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 function onChange(e) {
-  console.log(`radio checked:${e.target.value}`);
+	console.log(`radio checked:${e.target.value}`);
 }
 
 class SpecimenList extends React.Component {
-  expandedRowRender = () => {
-    const columns = [
-      {
-        dataIndex: 'SpecimenList',
-        key: 'SpecimenList',
-        width:'25%',
-      },
-    ];
-    const data = [];
-    const testspecimenlist = ['CBC', 'Hemoglobin', 'Hematocrit'];
-    for (let i = 1; i < 4; i+=1) {
-      data.push({
-        SpecimenList: testspecimenlist[Math.floor(Math.random() * testspecimenlist.length)],
-      });
-    }
+	state = {
+		patientSectionList: null
+	}
 
-    return (
-	<div className="child-no-header-table">
-		<Table
-			columns={columns}
-			dataSource={data}
-			pagination={false}
-			size="small"
-		/>
-	</div>
-    );
-  };
+	async componentDidMount(){
+		const {patientInfo} = this.props;
+		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+		const parentLevel = [];
+		
+    
+		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
+			keySection.specimens.map(function(keySpecimen){ // Get specimens
+				parentLevel[indexSection] = {
+					"key": Math.random(),
+					"phlebo_section_col": keySection.sectionName, 
+					"phlebo_specimen_col": keySpecimen.specimenName,
+					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
+					{
+						return {"key":indexExams,"phlebo_section_col": keyExams, "phlebo_specimen_col": ''};
+					})
+				}
+			});
+		});
+		this.setState({  patientSectionList: parentLevel });
+	}
 
+	render() {  
+		const columns = [
+		{ 
+			title: 'SECTION', 
+			dataIndex: 'phlebo_section_col', 
+			key: 'phlebo_section_col',
+		},
+		{ 
+			title: 'SPECIMEN', 
+			dataIndex: 'phlebo_specimen_col', 
+			key: 'phlebo_specimen_col',
+		},
+		{ 
+			title: 'STATUS',
+			dataIndex: 'phlebo_status_col', 
+			key: 'phlebo_status_col',
+			render:button => 
+			(
+					<Col style={{ paddingLeft: 245, alignText: 'center' }} className="phlebo_exams_extract">
+						<RadioGroup buttonStyle="solid"> 
+							<RadioButton 
+								onClick={onChange} 
+								value="b"
+							>
+							EXTRACTED
+								{button}
+							</RadioButton>
+						</RadioGroup>
+					</Col>
+				)
+				,
+		},
+	];
 
-  render() {  
-    const columns = [
-    { 
-      title: 'SPECIMEN', 
-      dataIndex: 'Specimen', 
-      key: 'Specimen',
-    },
-    { 
-      title: 'STATUS',
-      dataIndex: 'Status', 
-      key: 'Status',
-      render: 
-        button => 
-        <Col style={{ paddingLeft: 245 }}>
-          <RadioGroup buttonStyle="solid"> 
-            <RadioButton onClick={onChange}
-                         value="a"
-            >
-            PENDING
-            </RadioButton>
-            <RadioButton onClick={onChange} 
-                         value="b"
-            >
-            EXTACTED
-            {button}
-            </RadioButton>
-          </RadioGroup>
-        </Col>,
-    },
-  ];
-    const data = [];
-    const testspecimen = ['Blood', 'Serum'];
-      for (let i = 1; i < 6; i+=1) {
-          data.push({  
-          Specimen: testspecimen[Math.floor(Math.random() * testspecimen.length)],
-        });
-      }
-  return (
-	<div>
-		<Table
-			columns={columns}
-			expandedRowRender={this.expandedRowRender}
-			dataSource={data}
-			size="small"
-			scroll={{ y: 300 }}
-		/>
-	</div>
-    );
-  }
+	return (
+		<div>
+			<Table
+				className="phlebotable"
+				columns={columns}
+				dataSource={this.state.patientSectionList}
+				size="small"
+				scroll={{ y: 300 }}
+			/>
+		</div>
+		);
+	}
 }
+
+SpecimenList.propTypes = {
+	patientInfo: PropTypes.object
+};
+
+SpecimenList.defaultProps = {
+	patientInfo() { return null; }
+}
+
 export default SpecimenList;

@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 import SearchPatientForm from 'shared_components/search_patient_form'
 import { CLR_SEARCHED_NAME, CLR_SEARCHED_ID } from 'shared_components/constant-global';
 
-class SearchForm extends React.Component {
+class Search extends React.Component {
 	storeSearchedVal = (patientName, patientID) => {
 		if(patientID || patientName) {
 			sessionStorage.setItem(CLR_SEARCHED_NAME, patientName);
@@ -27,16 +27,15 @@ class SearchForm extends React.Component {
 				displayLoading={displayLoading}
 				sessionPatientId={sessionPatientId}
 				sessionPatientName={sessionPatientName}
-				apiProfile="phlebo"
 			/>
 		);
 	}
 }
 
-SearchForm.propTypes = {
+Search.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func.isRequired
 };
 
 
-export default withRouter(SearchForm);
+export default withRouter(Search);
