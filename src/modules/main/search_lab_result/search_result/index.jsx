@@ -30,7 +30,7 @@ class WrapperSearchLabTestResultList extends React.Component {
     //   return showMods
     // })
   }  
-
+ 
   componentDidMount() 
   {
     this.setState({
