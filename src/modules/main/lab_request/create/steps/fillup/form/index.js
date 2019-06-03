@@ -9,6 +9,9 @@ import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select }
 import hospitalLocationAPI from 'services/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
 import { CLR_TESTS } from '../../constants';
+import FIELD_RULES from './constant';
+
+import FormButtons from './form_buttons';
 
 // CSS
 import './form.css';
@@ -18,278 +21,260 @@ const { Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
-class FillupForm extends React.Component { 
+class BaseForm extends React.Component { 	
 	state = {
-		hospitalLocationList : [],
-		hospitalPhysicianList : []
+		hospitalLocationList: [],
+		hospitalPhysicianList: []
+	};
+	
+	componentDidMount() {
+		this.populatePersonalInfo();
+		this.populateLocation();
+		this.populatePhysician();
 	}
 
-	componentWillMount() {
-		const { location, updateState } = this.props;
+	populatePersonalInfo = () => {
+		const { location } = this.props;
 		const sessionFields = sessionStorage.getItem(CLR_TESTS);
 
 		if(location.state) {
-			const age = this.computeAge(location.state.record.dateOfBirth);
+			// eslint-disable-next-line react/prop-types
+			const { setFieldsValue } = this.props.form;
+			const { dateOfBirth } = location.state.record;
+			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
+			const age = this.computeAge(formattedDOB);
 
-			updateState({ ...location.state.record, age });
+			setFieldsValue({ 
+				...location.state.record, 
+				age,
+				dateOfBirth: formattedDOB
+			});
 		}
 
 		else if(sessionFields) {
-			updateState({ ...JSON.parse(sessionFields) });
+			// eslint-disable-next-line react/prop-types
+			const { setFieldsValue } = this.props.form;
+			const sessFields = JSON.parse(sessionFields); 
+			sessFields.dateOfBirth = moment(sessFields.dateOfBirth, 'MM-DD-YYYY');
+			setFieldsValue(sessFields);
 		}
-
 	}
 
-	async componentDidMount() {
+	populateLocation = async () => {
 		const hospitalLocAPI = await hospitalLocationAPI;
-		const hospitalPhyAPI = await hospitalPhysiciansAPI;
 		
 		this.setState({ 
-			hospitalLocationList : hospitalLocAPI.data,
+			hospitalLocationList : hospitalLocAPI.data
+		})
+	}
+
+	populatePhysician = async () => {
+		const hospitalPhyAPI = await hospitalPhysiciansAPI;
+
+		this.setState({ 
 			hospitalPhysicianList : hospitalPhyAPI.data
 		})
-		console.log( this.state.hospitalLocationList);
-	}
-
-	onInputChange = (event) => {
-		const { updateState } = this.props;
-		
-		updateState({
-			[event.target.name]: event.target.value
-		});
-	}
-
-	onDateChange = (date) => {
-		const { updateState } = this.props;
-		const age = this.computeAge(date);
-
-		updateState({ dateOfBirth: date, age });
 	}
 
 	computeAge = (date) => {
-		const formattedDate = moment(date, 'MM-DD-YYYY');
-		const years = Math.floor(moment().diff(formattedDate, 'years', true));
+		const years = Math.floor(moment().diff(date, 'years', true));
 		const age = years > 0 ? years : '-----';
-
+	
 		return age;
 	}
 
+	onDateChange = (date) => {
+		// eslint-disable-next-line react/prop-types
+		const { setFieldsValue } = this.props.form;
+		const age = this.computeAge(date);
+
+		setFieldsValue({ age });
+	}
+
+	onSubmit = (event) => {
+		event.preventDefault();
+
+		const { handleSubmit } = this.props;
+		// eslint-disable-next-line react/prop-types
+		const { getFieldsValue, validateFields } = this.props.form;
+
+		validateFields((err) => {
+			if (!err) {
+				const fields = getFieldsValue();
+				handleSubmit(fields);
+			}
+		});
+	}
+
 	render() {
-		const { fields } = this.props;
-		const { 
-			hospitalID, 
-			patientID,
-			givenName, 
-			nameSuffix,
-			lastName, 
-			middleName, 
-			dateOfBirth, 
-			age, 
-			sex, 
-			contactNo,
-			emailAddress,
-			address,
-			visit,
-			chargeSlip,
-			officialReceipt,
-			bed,
-			comment
-		} = fields;
+		// eslint-disable-next-line react/prop-types
+		const { getFieldDecorator } = this.props.form;
+		const { hospitalPhysicianList, hospitalLocationList } = this.state;
 
-		const dob = dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null;
+		const LocationList = hospitalLocationList.map((item) => (
+			<Option value={item.locationID} key={item.locationID}>
+				{item.name}
+			</Option>
+		));
 
-		const LocationList = (
-			this.state.hospitalLocationList.map((item) => (
-					<Option value={item.locationID} key={item.locationID}>{item.name}</Option>
-			))
-		);
-
-		const PhysicianList = (
-			this.state.hospitalPhysicianList.map((item) => (
-					<Option value={item.physicianID} key={item.physicianID}>{`${item.givenName} ${item.lastName}`}</Option>
-			))
-		);
+		const PhysicianList = hospitalPhysicianList.map((item) => (
+			<Option value={item.physicianID} key={item.physicianID}>
+				{`${item.givenName} ${item.lastName}`}
+			</Option>
+		));
 
 		return (
 			<div style={{ marginTop: 50 }}>
-				<Form className="fillup-form">
+				<Form className="fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={12}>
 						<Col sm={12} md={11}>
 							<div className="left-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>PERSONAL INFORMATION</Text>
 								</div>
-								<Form.Item label="HOSPITAL ID">
-									<Input 
-										name="hospitalID" 
-										onChange={this.onInputChange} 
-										value={hospitalID}
-									/>
-								</Form.Item>
-								<Form.Item label="PATIENT ID">
-									<Input 
-										name="patientID" 
-										disabled
-										onChange={this.onInputChange} 
-										value={patientID}
-									/>
+								<Row gutter={12}>
+									<Col span={12}>
+										<Form.Item label="HOSPITAL ID">
+											{getFieldDecorator('hospitalID', { rules: FIELD_RULES.hospitalID })(
+												<Input />
+											)}
+										</Form.Item>
+									</Col>
+									<Col span={12}>
+										<Form.Item label="PATIENT ID">
+											{getFieldDecorator('patientID', { rules: FIELD_RULES.givenName })(
+												<Input disabled />
+											)}
+										</Form.Item>
+									</Col>
+								</Row>
+								<Form.Item label="EMAIL">
+									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.email })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="FIRST NAME">
-									<Input 
-										name="givenName" 
-										onChange={this.onInputChange} 
-										value={givenName}
-									/>
+									{getFieldDecorator('givenName', { rules: FIELD_RULES.givenName })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="MIDDLE NAME">
-									<Input 
-										name="middleName" 
-										onChange={this.onInputChange} 
-										value={middleName}
-									/>
+									{getFieldDecorator('middleName', { rules: FIELD_RULES.middleName })(
+										<Input />
+									)}
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
 										<Form.Item label="LAST NAME">
-											<Input 
-												name="lastName" 
-												onChange={this.onInputChange} 
-												value={lastName}
-											/>
+											{getFieldDecorator('lastName', { rules: FIELD_RULES.lastName })(
+												<Input />
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={6}>
 										<Form.Item label="SUFFIX">
-											<Input 
-												name="suffix" 
-												onChange={this.onInputChange} 
-												value={nameSuffix}
-											/>
+											{getFieldDecorator('nameSuffix', { rules: FIELD_RULES.suffix })(
+												<Input />
+											)}
 										</Form.Item>
 									</Col>
 								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
 										<Form.Item label="DATE OF BIRTH">
-											<DatePicker 
-												name="dateOfBirth" 
-												value={dob}
-												onChange={this.onDateChange} 
-												format="MM-DD-YYYY"
-												style={{ width: '100%' }}
-											/>
+											{getFieldDecorator('dateOfBirth', { 
+												rules: FIELD_RULES.caseNumber
+											})(
+												<DatePicker 
+													format="MM-DD-YYYY"
+													style={{ width: '100%' }}
+													onChange={this.onDateChange}
+												/>
+											)}
 										</Form.Item>
 									</Col>
 									<Col span={6}>
 										<Form.Item label="AGE">
-											<Input
-												name="age" 
-												value={age} 
-												disabled
-												style={{ textAlign: 'center' }}
-											/>
+											{getFieldDecorator('age', { 
+												rules: FIELD_RULES.age
+											})(
+												<Input disabled style={{ textAlign: 'center' }} />
+											)}
 										</Form.Item>
 									</Col>
 								</Row>
-								<Row>
-									<Form.Item label="PATIENT'S GENDER">
-										<Radio.Group 
-											defaultValue={sex} 
-											buttonStyle="solid"
-											name="sex" 
-											onChange={this.onInputChange} 
-											value={sex}
-										>
+								<Form.Item label="ADDRESS">
+									{getFieldDecorator('address', { rules: FIELD_RULES.address })(
+										<Input />
+									)}
+								</Form.Item>
+								<Form.Item label="CONTACT NUMBER">
+									{getFieldDecorator('contactNo', { rules: FIELD_RULES.contactNo })(
+										<Input />
+									)}
+								</Form.Item>
+								<Form.Item label="PATIENT'S GENDER">
+									{getFieldDecorator('sex', { rules: FIELD_RULES.gender })(
+										<Radio.Group buttonStyle="solid">
 											<Radio.Button value="MALE">MALE</Radio.Button>
 											<Radio.Button value="FEMALE">FEMALE</Radio.Button>
 										</Radio.Group>
-									</Form.Item>
-								</Row>
-								<Row>
-									<Form.Item label="CONTACT NO.">
-										<Input 
-											name="contactNo" 
-											onChange={this.onInputChange} 
-											value={contactNo}
-										/>
-									</Form.Item>
-								</Row>
-								<Row>
-									<Form.Item label="EMAIL ADDRESS">
-										<Input 
-											name="emailAddress" 
-											onChange={this.onInputChange} 
-											value={emailAddress}
-										/>
-									</Form.Item>
-								</Row>
-								<Row>
-									<Form.Item label="ADDRESS">
-										<Input 
-											name="address" 
-											onChange={this.onInputChange} 
-											value={address}
-										/>
-									</Form.Item>
-								</Row>
+									)}
+								</Form.Item>
 							</div>
 						</Col>
-						<Col md={{ span: 2 }} style={{ textAlign: 'center' }}>
-							<Divider className="divider" type="vertical" style={{ height: 620 }} />
+						<Col md={2} style={{ textAlign: 'center' }}>
+							<Divider className="divider" type="vertical" style={{ height: 420 }} />
 						</Col>
-						<Col sm={{ span: 12 }} md={{ span: 11 }}>
+						<Col sm={12} md={11}>
 							<div className="right-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
 								<Form.Item label="LOCATION">
-									<Select placeholder="Select a location" allowClear>
-										{LocationList}
-									</Select>
+									{getFieldDecorator('location', { rules: FIELD_RULES.location })(
+										<Select placeholder="Select a location" allowClear>
+											{LocationList}
+										</Select>
+									)}
 								</Form.Item>
 								<Form.Item label="PHYSICIAN ID">
-									<Select placeholder="Select a physician" allowClear>
-										{PhysicianList}
-									</Select>
+									{getFieldDecorator('phisycianId', { rules: FIELD_RULES.phisycianId })(
+										<Select placeholder="Select a physician" allowClear>
+											{PhysicianList}
+										</Select>
+									)}
 								</Form.Item>
 								<Form.Item label="VISIT">
-									<Input 
-										name="visit" 
-										onChange={this.onInputChange} 
-										value={visit}
-									/>
+									{getFieldDecorator('visit', { rules: FIELD_RULES.age })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="CHARGE SLIP">
-									<Input 
-										name="chargeSlip" 
-										onChange={this.onInputChange} 
-										value={chargeSlip}
-									/>
+									{getFieldDecorator('chargeSlip', { rules: FIELD_RULES.chargeSlip })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="OFFICIAL RECEIPT">
-									<Input 
-										name="officialReceipt" 
-										onChange={this.onInputChange} 
-										value={officialReceipt}
-									/>
+									{getFieldDecorator('officialReceipt', { rules: FIELD_RULES.officialReceipt })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="BED">
-									<Input 
-										name="bed" 
-										onChange={this.onInputChange} 
-										value={bed}
-									/>
+									{getFieldDecorator('bed', { rules: FIELD_RULES.bed })(
+										<Input />
+									)}
 								</Form.Item>
 								<Form.Item label="COMMENT">
-									<TextArea 
-										rows={3} 
-										name="comment" 
-										onChange={this.onInputChange} 
-										value={comment}
-									/>
+									{getFieldDecorator('comment', { rules: FIELD_RULES.comment })(
+										<TextArea rows={3} />
+									)}
 								</Form.Item>
 							</div>
 						</Col>
+					</Row>
+					<Row>
+						<FormButtons />
 					</Row>
 				</Form>
 			</div>
@@ -297,31 +282,12 @@ class FillupForm extends React.Component {
 	}
 }
 
-FillupForm.propTypes = {
-	fields: PropTypes.shape({
-		// hospitalID: PropTypes.string.isRequired, 
-		// patientID: PropTypes.string.isRequired,
-		givenName: PropTypes.string.isRequired, 
-		lastName: PropTypes.string.isRequired, 
-		nameSuffix: PropTypes.string.isRequired,
-		middleName: PropTypes.string.isRequired, 
-		dateOfBirth: PropTypes.any.isRequired,
-		age: PropTypes.any.isRequired,
-		sex: PropTypes.string.isRequired, 
-		// contactNo: PropTypes.string.isRequired,
-		// emailAddress: PropTypes.string.isRequired,
-		// address: PropTypes.string.isRequired,
-		// location: PropTypes.string.isRequired, 
-		physicianId: PropTypes.string.isRequired, 
-		// visit: PropTypes.string.isRequired,
-		// chargeSlip: PropTypes.string.isRequired,
-		// officialReceipt: PropTypes.string.isRequired,
-		// bed: PropTypes.string.isRequired,
-		comment: PropTypes.string.isRequired, 
-	}).isRequired,
-	updateState: PropTypes.func.isRequired,
+BaseForm.propTypes = {
+	handleSubmit: PropTypes.func.isRequired,
 	location: ReactRouterPropTypes.location.isRequired
 };
 
+const FillupForm = Form.create()(withRouter(BaseForm));
 
-export default withRouter(FillupForm);
+
+export default FillupForm;

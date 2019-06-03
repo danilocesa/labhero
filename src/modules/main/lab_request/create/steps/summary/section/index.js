@@ -1,6 +1,8 @@
 import React from 'react';
 import { Row, Col, Typography } from 'antd';
 
+import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
+
 import './section.css';
 
 const { Text } = Typography;
@@ -12,14 +14,17 @@ const sectionLayout = {
 
 class SummarySection extends React.Component {
 	state = {
-		fields: {
+		personalInfo: {
 			caseNumber: '',
-			firstname: '',
-			lastname: '',
-			middlename: '',
-			birthday: '',
+			givenName: '',
+			nameSuffix: '',
+			lastName: '',
+			middleName: '',
+			dateOfBirth: '',
 			age: '',
-			gender: '',
+			sex: '',
+		},
+		otherInfo: {
 			ward: '',
 			physicianId: '',
 			classType: '',
@@ -29,31 +34,35 @@ class SummarySection extends React.Component {
 	}
 
 	componentWillMount() {
-		const fields = JSON.parse(sessionStorage.getItem('create_lab_request_fields'));
-		
-		Object.keys(fields).forEach(item => {
-			return fields[item] = fields[item] ? fields[item] : '----';
-		});
-
-		this.setState({ fields });
+		const { personalInfo, otherInfo } = this.state;
+		const sessPersInfo = JSON.parse(sessionStorage.getItem(CLR_PERSONAL_INFO)) || personalInfo;
+		const sessOtherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO)) || otherInfo;
+	
+		this.setState(() => ({ 
+			personalInfo: sessPersInfo,
+			otherInfo: sessOtherInfo
+		}));
 	}
 
 	render() {
-		const { fields } = this.state;
 		const {
 			caseNumber,
-			firstname,
-			lastname,
-			middlename,
-			birthday,
+			givenName,
+			nameSuffix,
+			lastName,
+			middleName,
+			dateOfBirth,
 			age,
-			gender,
+			sex
+		} = this.state.personalInfo;
+		
+		const {
 			ward,
 			physicianId,
 			classType,
 			comment,
 			amount
-		} = fields;
+		} = this.state.otherInfo;
 
 		return (
 			<div className="request-summary">
@@ -69,21 +78,21 @@ class SummarySection extends React.Component {
 								<div className="section">
 									<Text strong>PATIENT NAME</Text>
 									<br />
-									<Text>{`${firstname} ${middlename}. ${lastname}`}</Text>
+									<Text>{`${givenName} ${middleName}. ${lastName} ${nameSuffix}`}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>DATE OF BIRTH</Text>
 									<br />
-									<Text>{`${birthday} - ${age}`}</Text>
+									<Text>{`${dateOfBirth} - ${age}`}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>GENDER</Text>
 									<br />
-									<Text>{gender}</Text>
+									<Text>{sex}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>

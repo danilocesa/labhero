@@ -7,7 +7,12 @@ import { Form, Input, Button, Row, Col } from 'antd';
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import {apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
+import { 
+	apiUrlPatientByID, 
+	apiUrlPatientByName, 
+	apiUrlPhleboPatientByID, 
+	apiUrlPhleboPatientByName
+} from 'shared_components/constant-global'
 
 // CSS
 import './search_patient_form.css';
@@ -77,6 +82,7 @@ class SearchPatientForm extends React.Component {
 
 	handleSubmit = async (event) => {  
 		event.preventDefault();
+
 		const { patientName, patientID } = this.state;
 		const { populatePatients, storeSearchedVal } = this.props;
 		let patients = [];
@@ -119,7 +125,6 @@ class SearchPatientForm extends React.Component {
 		catch(error) {
 			Message.error();
 		}
-
 
 
 		return patients;

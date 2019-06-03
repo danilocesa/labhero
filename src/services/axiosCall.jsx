@@ -1,13 +1,8 @@
 // LIBRARY
 import axios from 'axios';
 
-// CONSTANTS
-import { apiURL } from 'shared_components/constant-global';
-
-
-
 export default function axiosCall(config) {
-	axios.defaults.baseURL = apiURL;
+	axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
 
 	return axios({
 		method: config.method,

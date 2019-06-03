@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
 
 import ConfirmationModal from '../../confirmation/modal';
@@ -7,54 +8,62 @@ import ConfirmationModal from '../../confirmation/modal';
 const { Text } = Typography;
 
 class Navigation extends React.Component {
-  state = {
-    displayModal: false,
-  };
+	state = {
+		displayModal: false,
+	};
 
-  showModal = () => {
-    this.setState({
-      displayModal: true,
-    });
-  };
+	showModal = () => {
+		this.setState({
+			displayModal: true,
+		});
+	};
 
-  closeModal = () => {
-    this.setState({
-      displayModal: false,
-    });
-  };
+	closeModal = () => {
+		const { history } = this.props;
 
-  render() {
-    const { displayModal } = this.state;
+		this.setState({
+			displayModal: false,
+		});
 
-    const Prompt = !displayModal ? null : (
-      <ConfirmationModal visible={displayModal} closeModal={this.closeModal} />
-    );
+		history.push('/request/create/step/1');
+	};
 
-    return (
-      <div>
-        <Row type="flex" justify="end">
-          <Col>
-            <Link to="/request/create/step/3">
-              <Text>
-                <u>BACK</u>
-              </Text>
-            </Link>
-            <Tooltip title="Print and Save">
-              <Button
-                className="nav-btn-round"
-                type="primary"
-                onClick={this.showModal}
-                style={{ marginLeft: 20 }}
-              >
-                PRINT
-              </Button>
-            </Tooltip>
-          </Col>
-        </Row>
-        {Prompt}
-      </div>
-    );
-  }
+	render() {
+		const { displayModal } = this.state;
+
+		const Prompt = !displayModal ? null : (
+			<ConfirmationModal visible={displayModal} closeModal={this.closeModal} />
+		);
+
+		return (
+			<div>
+				<Row type="flex" justify="end">
+					<Col>
+						<Link to="/request/create/step/3">
+							<Text>
+								<u>BACK</u>
+							</Text>
+						</Link>
+						<Tooltip title="Print and Save">
+							<Button
+								className="nav-btn-round"
+								type="primary"
+								onClick={this.showModal}
+								style={{ marginLeft: 20 }}
+							>
+								PRINT
+							</Button>
+						</Tooltip>
+					</Col>
+				</Row>
+				{Prompt}
+			</div>
+		);
+	}
 }
 
-export default Navigation;
+Navigation.propTypes = {
+	history: ReactRouterPropTypes.history.isRequired
+};
+
+export default withRouter(Navigation);

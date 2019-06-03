@@ -1,4 +1,6 @@
-export const CLR_TESTS = 'CLR_TEST';
+export const CLR_TESTS = 'CLR_TESTS';
+export const CLR_PERSONAL_INFO = 'CLR_PERSONAL_INFO';
+export const CLR_OTHER_INFO = 'CLR_OTHER_INFO';
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
 export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
 

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
+import axiosCall from 'services/axiosCall';
+import Message from 'shared_components/message';
+import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SectionHeader from './section_header';
 import SectionContent from './section_content';
@@ -36,6 +39,8 @@ class SelectStep extends React.Component {
 		if(tests) {
 			this.setState({ selectedTests: JSON.parse(tests) });
 		}
+
+		this.fetchPanelExam();
 	}
 
 	onChangeHeader = (section) => {
@@ -97,11 +102,26 @@ class SelectStep extends React.Component {
 		});
 	}
 
+	fetchPanelExam = async () => {
+		try {
+			const url = `/PanelExamRequesting`;
+
+			const response = await axiosCall({ method: 'GET', url });
+			const { data } = await response;
+
+			console.log('data', data);
+		}
+		catch(e) {
+			Message.error();
+		}
+	}
+
 	render() {
 		const { displayedTests, selectedTests } = this.state;
 
 		return (
 			<div>
+				<PageTitle />
 				<Tracker active={2} />
 				<Row gutter={48} style={{ marginTop: 50 }}>
 					<Col {...ColLayout}>

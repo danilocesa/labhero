@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
+import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SearchForm from './form';
 import TableHeader from './table_header';
@@ -38,7 +39,6 @@ class SearchStep extends React.Component {
 	}
 
 	populatePatients = (patients) => {
-		console.log(patients);
 		this.setState({ patients });
 	}
 
@@ -51,6 +51,7 @@ class SearchStep extends React.Component {
 
 		return (
 			<div>
+				<PageTitle />
 				<Tracker active={0} />
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
