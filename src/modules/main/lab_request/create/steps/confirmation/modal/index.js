@@ -4,15 +4,14 @@ import { Modal, Row, Col } from 'antd';
 import { CheckIcon } from '../../../../../../../images';
 
 class ConfirmationModal extends React.Component {
-	constructor() {
-		super();
+	constructor(args) {
+		super(args);
 
 		this.timer = null;
 		this.countdownTime = 3000;
 	}
 
 	componentDidMount() {
-		console.log('did mount');
 		this.timer = setTimeout(() => {
 			this.props.closeModal();
 		}, this.countdownTime);

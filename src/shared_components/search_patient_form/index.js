@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col } from 'antd';
-import LabApi from 'services/api';
+import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
 
 import './search_patient_form.css';
@@ -90,17 +90,21 @@ class SearchPatientForm extends React.Component {
 		let patients = [];
 
 		try{
-			const PROXY_URL = `https://cors-anywhere.herokuapp.com/`;
-			const byIdURL = `----------lab/Patient/id/${patientID}`;
-			const byNameURL = `----------lab/Patient/name/${patientName}`;
-			const response = await LabApi.get(PROXY_URL + (patientID ? byIdURL : byNameURL));
-			const { data } = await response;
+			const byIdURL = `/Patient/id/${patientID}`;
+			const byNameURL = `/Patient/name/${patientName}`;
 
+			const response = await axiosCall({ 
+				method: 'GET', 
+				url: (patientID ? byIdURL : byNameURL) 
+			});
+			const { data } = await response;
+			
 			patients = data ? data.patient : [];
 		}
 		catch(error) {
 			Message.error();
 		}
+
 
 		return patients;
 	}

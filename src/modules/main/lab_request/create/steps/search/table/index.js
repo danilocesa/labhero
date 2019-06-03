@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
+import moment from 'moment';
 
 import './table.css';
 
@@ -36,12 +37,7 @@ const columns = [
 		dataIndex: 'sex',
 		sorter: (a, b) => a.sex.localeCompare(b.sex),
 		width: '8%'
-	},
-	{
-		title: 'CITY ADDRESS',
-		dataIndex: 'address',
-		sorter: (a, b) => a.address.localeCompare(b.address),
-	},
+	}
 ];
 
 

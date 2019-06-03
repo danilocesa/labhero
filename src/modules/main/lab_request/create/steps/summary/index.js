@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
@@ -23,6 +24,7 @@ class SummaryStep extends React.Component {
 
 		return (
 			<div>
+				<PageTitle />
 				<Tracker active={3} />
 				<SummarySection />
 				<SummaryTable tests={tests} />
