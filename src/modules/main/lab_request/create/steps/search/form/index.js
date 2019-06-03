@@ -51,15 +51,17 @@ class SearchForm extends React.Component {
 
 		try {
 			// const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VybmFtZSI6InJvb3QiLCJleHAiOjE1NTc4MjEzMjIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDQzODciLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjQ0Mzg3In0.fbIB7Kxc087zQfkD-Hgln__Plr3VwPrEHo1lQCAWlgY`;
-			
-			const url = `/lab/Patient/name/${patientName}`;
-			const response = await LabApi.get(url);
+			const PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+			const url = `----------lab/Patient/name/${patientName}`;
+			const headers = { 'Content-Type': `application/json` };
+			const response = await LabApi.get(PROXY_URL + url);
 			const data = await response;
 
 			console.log(data);
 			populatePatients(data);
 		}
 		catch(error) {
+			console.log(error);
 			message.error(`Something went wrong, Please try again.`);
 		}
 	}
