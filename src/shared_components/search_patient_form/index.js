@@ -3,14 +3,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Row, Col } from 'antd';
-<<<<<<< HEAD
-=======
 
 // CUSTOM MODULES
->>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import {apiUrlPatientByID, apiUrlPatientByName, apiUrlPhleboPatientByID, apiUrlPhleboPatientByName} from 'shared_components/constant-global'
+import { 
+	apiUrlPatientByID, 
+	apiUrlPatientByName, 
+	apiUrlPhleboPatientByID, 
+	apiUrlPhleboPatientByName
+} from 'shared_components/constant-global'
 
 // CSS
 import './search_patient_form.css';
@@ -80,6 +82,7 @@ class SearchPatientForm extends React.Component {
 
 	handleSubmit = async (event) => {  
 		event.preventDefault();
+
 		const { patientName, patientID } = this.state;
 		const { populatePatients, storeSearchedVal } = this.props;
 		let patients = [];
@@ -103,18 +106,6 @@ class SearchPatientForm extends React.Component {
 		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
 		
 		try{
-<<<<<<< HEAD
-			const byIdURL = `/Patient/id/${patientID}`;
-			const byNameURL = `/Patient/name/${patientName}`;
-
-			const response = await axiosCall({ 
-				method: 'GET', 
-				url: (patientID ? byIdURL : byNameURL) 
-			});
-			const { data } = await response;
-			
-			patients = data ? data.patient : [];
-=======
 			const response = await axiosCall({
         method: 'GET',
         url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
@@ -130,17 +121,12 @@ class SearchPatientForm extends React.Component {
 				patients = data ? data.patient : [];
 			}
 			
->>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 		}
 		catch(error) {
 			Message.error();
 		}
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
 		return patients;
 	}
 

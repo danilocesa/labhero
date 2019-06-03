@@ -1,6 +1,9 @@
 const FIELD_RULES = {
-  caseNumber: [
+  hospitalID: [
     { required: true, message: 'This field is required..' }
+	],
+	email: [
+    { required: true, message: 'This field is required.' }
 	],
 	givenName: [
     { required: true, message: 'This field is required.' }
@@ -17,27 +20,37 @@ const FIELD_RULES = {
 	dateOfBirth: [
     { required: true, message: 'This field is required.' }
 	],
-	age: [
-    // { required: true, message: 'This field is required.' }
+	address: [
+    { required: true, message: 'This field is required.' }
+	],
+	contactNo: [
+    { required: true, message: 'This field is required.' }
 	],
 	gender: [
     { required: true, message: 'Please select gender' }
 	],
-	ward: [
+	location: [
     { required: true, message: 'This field is required.' }
 	],
 	physicianId: [
     { required: true, message: 'This field is required.' }
 	],
-	class: [
+	visit: [
+    { required: true, message: 'This field is required.' }
+	],
+	chargeSlip: [
+    { required: true, message: 'This field is required.' }
+	],
+	officialReceipt: [
+    { required: true, message: 'This field is required.' }
+	],
+	bed: [
     { required: true, message: 'This field is required.' }
 	],
 	comment: [
-    { required: true, message: 'This field is required.' }
+    
 	],
-	amount: [
-    { required: true, message: 'This field is required.' }
-	],
+	
 };
 
 export default FIELD_RULES;

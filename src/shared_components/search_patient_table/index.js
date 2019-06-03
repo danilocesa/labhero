@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 // LIBRARY
 import React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -48,20 +50,23 @@ const columns = [
 ];
 
 class SearchPatientTable extends React.Component {
-	handleDoubleClick = (record,redirect) => {
-		const { history } = this.props;
-		if(redirect){
-			history.push(redirect, { record })
-		} else {
-			this.props.drawer(record);
+	handleDoubleClick = (record, redirect) => {
+		const { history, drawer } = this.props;
+		if(redirect) {
+			// Strip some properties in the record object coz we dont need it
+			delete record.dateCreated;
+			delete record.addressID;
+			history.push(redirect, { record });
 		}
-		
+		else  {
+			drawer(record);
+		}
 	}
-
-
 	
 	render() {
 		const { data, pageSize, loading, redirectUrl } = this.props;
+
+		console.log(data);
 
 		return (
 			<Spin spinning={loading} tip="Loading...">

@@ -1,8 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 
-<<<<<<< HEAD
-export const apiURL = '----------lab/';
-=======
 // API's
 export const apiURL = '----------lab/'
 export const apiUrlPatientByID = "Patient/id/"
@@ -16,4 +13,3 @@ export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
 export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
 
 // export const userData = sessionStorage.userData ? JSON.parse(sessionStorage.userData) : null;
->>>>>>> c3f05084b33c286391e7218d25895d8d68c3bfef
