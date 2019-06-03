@@ -27,7 +27,6 @@ class Sider extends React.Component {
       this.setState({
         currentKey: event.key
       }, function keys(){
-        console.log(this.state.currentKey);
        sessionStorage.setItem("currentKey", this.state.currentKey);
        sessionStorage.getItem("currentKey");
       });

@@ -4,6 +4,7 @@
 // @ts-nocheck
 import React from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
 // CUSTOM MODULES
@@ -42,7 +43,7 @@ class EditProfile extends React.Component {
 	getMunicipality = (array) => {
 		const municipalityArr = [];
 		let a = 0;
-		for (const [keyMunicipality, valueMunicipality] of Object.entries(array)) {
+		for (const [keyMunicipality] of Object.entries(array)) {
 			municipalityArr.push(
 				{
 				"title": keyMunicipality,
@@ -59,7 +60,7 @@ class EditProfile extends React.Component {
     
 		const barangayArr = [];
 		let a = 0;
-		array.map(function(key,value){
+		array.map(function(key){
 			barangayArr.push(
 				{
 				"title": key,
@@ -126,7 +127,7 @@ class EditProfile extends React.Component {
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Date of Birth">
 										<div className="customDatePickerWidth">
-											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth, dateFormat)} format={dateFormat}/>
+											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth, dateFormat)} format={dateFormat} />
 										</div>
 									</Form.Item>
 								</Col>
@@ -143,7 +144,6 @@ class EditProfile extends React.Component {
 								<div className="treeselect-address">
 									<TreeSelect
 										showSearch
-										// eslint-disable-next-line camelcase
 										treeData={this.state.addressArr}
 										filterTreeNode={this.searchAddress}
 										style={{ width: 300 }}
@@ -179,6 +179,14 @@ class EditProfile extends React.Component {
 			</div>
 		);
 	}
+}
+
+EditProfile.propTypes = {
+	patientInfo: PropTypes.object
+};
+
+EditProfile.defaultProps = {
+	patientInfo() { return null; }
 }
 
 export default EditProfile;

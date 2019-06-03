@@ -7,6 +7,7 @@ export const apiUrlPatientByName = "Patient/name/"
 export const apiUrlPhleboPatientByID = "SpecimenTracking/phlebo/patientid/"
 export const apiUrlPhleboPatientByName = "SpecimenTracking/phlebo/patientname/"
 export const apiUrlPhleboRequestID = "SpecimenTracking/phlebo/requestid/"
+export const apiUrlCheckInSpecimen = "SpecimenTracking/phlebo/checkinspecimen"
 
 
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
