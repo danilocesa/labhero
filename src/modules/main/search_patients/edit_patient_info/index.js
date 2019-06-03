@@ -7,8 +7,6 @@ import moment from 'moment';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
 // CUSTOM MODULES
-import axiosCall from 'services/axiosCall';
-import Message from 'shared_components/message';
 import computeAge from 'shared_components/age_computation';
 
 // CSS
@@ -16,94 +14,71 @@ import './editprofile.css';
 
 // OTHER FILES
 // eslint-disable-next-line camelcase
-import province_list from 'assets/address.json';
-
+import addressData from 'assets/address.json';
 
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
 const dateFormat = 'YYYY/MM/DD';
 
-// const axios = require('axios');
-
-const treeData = [
-	{
-	  title: 'Node1',
-	  value: '0-0',
-	  key: '0-0',
-	  children: [
-		{
-		  title: 'Child Node1',
-		  value: '0-0-1',
-		  key: '0-0-1',
-		},
-		{
-		  title: 'Child Node2',
-		  value: '0-0-2',
-		  key: '0-0-2',
-		},
-	  ],
-	},
-	{
-	  title: 'Node2',
-	  value: '0-1',
-	  key: '0-1',
-	},
-  ];
-
 class EditProfile extends React.Component {
-	
-	constructor(props) {
-		super(props);
-		this.state = {
-			casenum: '',
-			lastname: '',
-			firstname: '',
-			middlename: '',
-		}
+	state = {
+		"addressArr" : []
 	}
 
-	async componentDidMount() {
-		console.log("TCL: addressData", province_list);
-		const address = await this.fetchAddress();
-    console.log("TCL: EditProfile -> componentDidMount -> address", address)
-		// const regions = [];
-		// const province = [];
-        
-		// for (const keyAddress of Object.keys(address)) {s
-		// 	console.log(address.province_list);
-		// 	for (const keyProvince of Object.keys(address.province_list)) {
-		// 		province[keyProvince] = { "title": address.province_list[keyProvince].key, value: '0-0',key: '0-0'} 
-		// 	}
-		// 	regions[keyAddress] = { "title": address[keyAddress].region_name, value: '0-0',key: '0-0'} 
-		// }
-		
-		// console.log("TCL: EditProfile -> componentDidMount -> regions", regions)
-		// console.log("TCL: EditProfile -> componentDidMount -> province", province)
+	componentDidMount(){
+		const addressArr = [];
+		let a = 0; 
+		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
+			addressArr.push({"title":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a}`});
+			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
+			a +=1;
+		}
+		this.setState({
+			addressArr
+		})
 	}
 
-	fetchAddress = async () => {
-		let patientAddress = [];
-
-		try {
-			const response = await axiosCall ({
-                
-				method: 'GET',
-				// eslint-disable-next-line max-len
-				url: 'https://raw.githubusercontent.com/flores-jacob/philippine-regions-provinces-cities-municipalities-barangays/master/philippine_provinces_cities_municipalities_and_barangays_2019.json'
-			});
-			const { data } = await response;
-            console.log("TCL: EditProfile -> fetchAddress -> data", data)
-			patientAddress = data || [];
+	getMunicipality = (array) => {
+		const municipalityArr = [];
+		let a = 0;
+		for (const [keyMunicipality, valueMunicipality] of Object.entries(array)) {
+			municipalityArr.push(
+				{
+				"title": keyMunicipality,
+				"value": `${keyMunicipality}L2-L2-${a}`,
+				"key": `${keyMunicipality}L2-L2-${a}`
+				}
+			)
+			a +=1;
 		}
-		catch(error) {
-			Message.error();
-		}
-		return patientAddress;
+		return municipalityArr;
 	}
 
-	addressData = () => {
-			
+	getBarangay = (array) => {
+    
+		const barangayArr = [];
+		let a = 0;
+		array.map(function(key,value){
+			barangayArr.push(
+				{
+				"title": key,
+				"value": `${key}L3-L3-${a}`,
+				"key": `${key}L3-L3-${a}`
+				}
+			)
+			a +=1;
+		});
+		return barangayArr;
+    
+	}
+
+	searchAddress = (input,treenode) => {
+		const searchText = treenode.props.title.search(input.toUpperCase())
+		if(searchText < 0){
+			return false; 
+		}
+		return true;
 	}
 
 	onChangePatientInfo = (event) => {
@@ -113,17 +88,8 @@ class EditProfile extends React.Component {
 	onSubmit = () => {
 		message.success('Changes successfully saved!');
 	}
-
-	onChangeTreeSelect = async () => {
-		let address = [];
-		address = await this.fetchAddress(); 
-		return address;
-	  };
  
 	render() {
-
-		// const onClose  = this.props;
-
 		return(
 			<div>
 				<Form>
@@ -176,14 +142,14 @@ class EditProfile extends React.Component {
 							<Form.Item label="ADDRESS" className="gutter-box">
 								<div className="treeselect-address">
 									<TreeSelect
-										// showSearch
-										treeData={treeData}
+										showSearch
+										// eslint-disable-next-line camelcase
+										treeData={this.state.addressArr}
+										filterTreeNode={this.searchAddress}
 										style={{ width: 300 }}
-										dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+										dropdownStyle={{ maxHeight: 500 }}
 										placeholder="Please select"
 										allowClear
-										treeDefaultExpandAll
-										onChange={this.onChangeTreeSelect}
 									/>
 								</div>
 							</Form.Item>
