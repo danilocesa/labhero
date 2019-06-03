@@ -67,8 +67,8 @@ class EditProfile extends React.Component {
 		console.log("TCL: addressData", province_list);
 		const address = await this.fetchAddress();
     console.log("TCL: EditProfile -> componentDidMount -> address", address)
-		const regions = [];
-		const province = [];
+		// const regions = [];
+		// const province = [];
         
 		// for (const keyAddress of Object.keys(address)) {s
 		// 	console.log(address.province_list);

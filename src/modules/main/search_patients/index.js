@@ -23,7 +23,7 @@ class SearchPatient extends React.Component {
   
   handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
-	}
+	} 
 
 	populatePatients = (patients) => {
 		this.setState({ patients });
@@ -85,7 +85,7 @@ class SearchPatient extends React.Component {
 					null
 				}
 				</div>
-			</div>
+     </div>
     );
   }
 }
