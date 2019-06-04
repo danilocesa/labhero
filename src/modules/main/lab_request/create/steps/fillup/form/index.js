@@ -8,7 +8,7 @@ import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select }
 // CUSTOM MODULES
 import hospitalLocationAPI from 'services/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
-import { CLR_TESTS } from '../../constants';
+import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 import FIELD_RULES from './constant';
 
 import FormButtons from './form_buttons';
@@ -35,28 +35,34 @@ class BaseForm extends React.Component {
 
 	populatePersonalInfo = () => {
 		const { location } = this.props;
-		const sessionFields = sessionStorage.getItem(CLR_TESTS);
+		const sessPersoInfo = sessionStorage.getItem(CLR_PERSONAL_INFO);
+		const sessOtherInfo = sessionStorage.getItem(CLR_OTHER_INFO);
 
+		// If user came from step 1
 		if(location.state) {
 			// eslint-disable-next-line react/prop-types
 			const { setFieldsValue } = this.props.form;
 			const { dateOfBirth } = location.state.record;
 			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
-			const age = this.computeAge(formattedDOB);
+			const patientAge = this.computeAge(formattedDOB);
 
 			setFieldsValue({ 
 				...location.state.record, 
-				age,
+				patientAge,
 				dateOfBirth: formattedDOB
 			});
 		}
 
-		else if(sessionFields) {
+		// Else if user has pressed back button
+		else if(sessPersoInfo && sessOtherInfo) {
 			// eslint-disable-next-line react/prop-types
 			const { setFieldsValue } = this.props.form;
-			const sessFields = JSON.parse(sessionFields); 
-			sessFields.dateOfBirth = moment(sessFields.dateOfBirth, 'MM-DD-YYYY');
-			setFieldsValue(sessFields);
+			const personalInfo = JSON.parse(sessPersoInfo); 
+			const otherInfo = JSON.parse(sessOtherInfo); 
+
+			personalInfo.dateOfBirth = moment(personalInfo.dateOfBirth, 'MM-DD-YYYY');
+			setFieldsValue(personalInfo);
+			setFieldsValue(otherInfo);
 		}
 	}
 
@@ -86,9 +92,9 @@ class BaseForm extends React.Component {
 	onDateChange = (date) => {
 		// eslint-disable-next-line react/prop-types
 		const { setFieldsValue } = this.props.form;
-		const age = this.computeAge(date);
+		const patientAge = this.computeAge(date);
 
-		setFieldsValue({ age });
+		setFieldsValue({ patientAge });
 	}
 
 	onSubmit = (event) => {
@@ -96,11 +102,13 @@ class BaseForm extends React.Component {
 
 		const { handleSubmit } = this.props;
 		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFields } = this.props.form;
+		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
 
-		validateFields((err) => {
+		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
+				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
+				
 				handleSubmit(fields);
 			}
 		});
@@ -142,7 +150,7 @@ class BaseForm extends React.Component {
 									</Col>
 									<Col span={12}>
 										<Form.Item label="PATIENT ID">
-											{getFieldDecorator('patientID', { rules: FIELD_RULES.givenName })(
+											{getFieldDecorator('patientID')(
 												<Input disabled />
 											)}
 										</Form.Item>
@@ -195,7 +203,7 @@ class BaseForm extends React.Component {
 									</Col>
 									<Col span={6}>
 										<Form.Item label="AGE">
-											{getFieldDecorator('age', { 
+											{getFieldDecorator('patientAge', { 
 												rules: FIELD_RULES.age
 											})(
 												<Input disabled style={{ textAlign: 'center' }} />
@@ -210,7 +218,7 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Form.Item label="CONTACT NUMBER">
 									{getFieldDecorator('contactNo', { rules: FIELD_RULES.contactNo })(
-										<Input addonBefore="+ 63" maxLength={9} />
+										<Input addonBefore="+ 63" maxLength={10} />
 									)}
 								</Form.Item>
 								<Form.Item label="PATIENT'S GENDER">
@@ -232,21 +240,21 @@ class BaseForm extends React.Component {
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
 								<Form.Item label="LOCATION">
-									{getFieldDecorator('location', { rules: FIELD_RULES.location })(
+									{getFieldDecorator('locationID', { rules: FIELD_RULES.location })(
 										<Select placeholder="Select a location" allowClear>
 											{LocationList}
 										</Select>
 									)}
 								</Form.Item>
 								<Form.Item label="PHYSICIAN ID">
-									{getFieldDecorator('phisycianId', { rules: FIELD_RULES.phisycianId })(
+									{getFieldDecorator('physicianID', { rules: FIELD_RULES.phisycianId })(
 										<Select placeholder="Select a physician" allowClear>
 											{PhysicianList}
 										</Select>
 									)}
 								</Form.Item>
 								<Form.Item label="VISIT">
-									{getFieldDecorator('visit', { rules: FIELD_RULES.age })(
+									{getFieldDecorator('visit', { rules: FIELD_RULES.visit })(
 										<Input />
 									)}
 								</Form.Item>
