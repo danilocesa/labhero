@@ -5,7 +5,12 @@ import { pick } from 'lodash';
 
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import { CLR_PERSONAL_INFO, CLR_OTHER_INFO, CLR_REQUEST_ID, CLR_STEP_PROGRESS } from '../constants';
+import { 
+	CLR_PERSONAL_INFO, 
+	CLR_OTHER_INFO, 
+	CLR_REQUEST_ID, 
+	CLR_STEP_PROGRESS 
+} from '../constants';
 
 import Restriction from '../clr_restriction';
 

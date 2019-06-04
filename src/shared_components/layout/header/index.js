@@ -8,7 +8,7 @@ import './header.css';
 const { Header: AntHeader } = Layout;
 
 const Header = () => (
-  <AntHeader>
+  <AntHeader className="main-header">
     <div>
       <div style={{ display: 'inline-block', width: 250 }}>
         <Row>

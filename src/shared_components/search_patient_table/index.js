@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
 
+import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constants'; 
+
 // CSS
 import './table.css';
 
@@ -51,11 +53,14 @@ const columns = [
 
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record, redirect) => {
+		// eslint-disable-next-line react/prop-types
 		const { history, drawer } = this.props;
 		if(redirect) {
 			// Strip some properties in the record object coz we dont need it
 			delete record.dateCreated;
 			delete record.addressID;
+
+			sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
 			history.push(redirect, { record });
 		}
 		else  {
@@ -65,8 +70,6 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading, redirectUrl } = this.props;
-
-		console.log(data);
 
 		return (
 			<Spin spinning={loading} tip="Loading...">
