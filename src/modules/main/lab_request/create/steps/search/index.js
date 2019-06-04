@@ -1,31 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Icon } from 'antd';
-import { Link,  } from 'react-router-dom';
+
 
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
+import ButtonLink from './link';
 
-const Navigation = ({dataLength}) => {
-	if(dataLength > 0)
-		return null;
-
-	return (
-		<div style={{ textAlign: 'center', marginTop: 15 }}>
-			<Link to="/request/create/step/2">
-				<Icon type="plus" />
-				<span style={{ marginLeft: 5 }}>CREATE REQUEST</span>
-			</Link>
-		</div>
-	);
-};
-
-Navigation.propTypes = { 
-	dataLength: PropTypes.number.isRequired
-}
 
 class SearchStep extends React.Component {
 	state = { 
@@ -70,7 +52,7 @@ class SearchStep extends React.Component {
 						redirectUrl="/request/create/step/2"
 					/>
 				</div>
-				<Navigation dataLength={patients.length} />
+				<ButtonLink dataLength={patients.length} />
 			</div>
 		);
 	}
