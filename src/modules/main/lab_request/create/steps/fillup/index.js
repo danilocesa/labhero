@@ -19,21 +19,6 @@ class FillupStep extends React.Component {
 		this.storeSessionVariables(personalInfo, otherInfo);
 		this.goToNextPage();
 	}
-	// onFieldChange = (changedField) => {
-	// 	const { personalInfo, otherInfo } = this.state;
-	// 	const fieldName = Object.keys(changedField)[0]; 
-	// 	const fieldValue = changedField[fieldName].value;
-	// 	const field = { [fieldName]: fieldValue };
-	// 	// Check if the fieldname is in state.personInfo
-	// 	const isInPersInfoObj = Object.keys(personalInfo).some(item => item === fieldName);
-	
-	// 	// Pass field value to respective obj to be updated. <otherinfo or personalInfo>
-	// 	const ObjToBeUpdated = isInPersInfoObj 
-	// 		? { personalInfo: { ...personalInfo, ...field } } 
-	// 		: { otherInfo: { ...otherInfo, ...field } };
-
-	// 	this.setState(ObjToBeUpdated);
-	// }
 
 	goToNextPage = () => {
 		const { history } = this.props;

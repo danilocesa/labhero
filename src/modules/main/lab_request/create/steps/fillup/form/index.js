@@ -174,7 +174,7 @@ class BaseForm extends React.Component {
 									<Col span={6}>
 										<Form.Item label="SUFFIX">
 											{getFieldDecorator('nameSuffix', { rules: FIELD_RULES.suffix })(
-												<Input />
+												<Input maxLength={1} />
 											)}
 										</Form.Item>
 									</Col>
@@ -210,7 +210,7 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Form.Item label="CONTACT NUMBER">
 									{getFieldDecorator('contactNo', { rules: FIELD_RULES.contactNo })(
-										<Input />
+										<Input addonBefore="+ 63" maxLength={9} />
 									)}
 								</Form.Item>
 								<Form.Item label="PATIENT'S GENDER">

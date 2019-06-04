@@ -3,7 +3,8 @@ const FIELD_RULES = {
     { required: true, message: 'This field is required..' }
 	],
 	email: [
-    { required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ type: 'email', message: 'Please input valid email.' }
 	],
 	givenName: [
     { required: true, message: 'This field is required.' }
@@ -24,7 +25,8 @@ const FIELD_RULES = {
     { required: true, message: 'This field is required.' }
 	],
 	contactNo: [
-    { required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ pattern: /^[9]\d{9}/, message: 'Please input valid contact number.' }
 	],
 	gender: [
     { required: true, message: 'Please select gender' }
