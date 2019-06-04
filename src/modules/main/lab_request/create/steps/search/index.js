@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
 
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
