@@ -68,7 +68,7 @@ class Plebo extends React.Component {
 					{
 					showDrawer ? (
 						<Drawer
-							title="Patient information" 
+							title="Check-in specimen" 
 							onClose={this.onClosePleboPatientResultDrawer}
 							width="80%"
 							visible={showDrawer}
