@@ -45,7 +45,7 @@ class Sider extends React.Component {
               className="side-menu" 
               mode="inline" 
               defaultSelectedKeys={[
-                (sessionStorage.getItem("currentKey") ?sessionStorage.getItem("currentKey") : '1' )
+                (sessionStorage.getItem("currentKey") ? sessionStorage.getItem("currentKey") : '1' )
               ]}
               onClick={this.handleMenuClick}
         >

@@ -132,8 +132,8 @@ class SearchPatientForm extends React.Component {
 
 	clearInputs = () => {
 		this.setState({
-			patientID: '',
-			patientName: ''
+			patientID: "",
+			patientName: ""
 		});
 	}
 
@@ -155,7 +155,7 @@ class SearchPatientForm extends React.Component {
 					<Col {...formItemLayout[0]}>
 						<Form.Item label="PATIENT ID">
 							<Input 
-								allowClear
+								// allowClear
 								name="patientID" 
 								value={patientID} 
 								onChange={this.handleInputChange}
@@ -172,7 +172,7 @@ class SearchPatientForm extends React.Component {
 					<Col {...formItemLayout[2]}>
 						<Form.Item label="PATIENT NAME">
 							<Input 
-								allowClear
+								// allowClear
 								name="patientName" 
 								value={patientName} 
 								onChange={this.handleInputChange} 

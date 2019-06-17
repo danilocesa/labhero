@@ -39,12 +39,13 @@ class Login extends React.Component {
           sessionStorage.setItem('userData',JSON.stringify(response.data));
           checkAuth.authenticate();
           message
-            .success('You are now successfully logged in!', 1.5)
-            .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
+            .success('You are now successfully logged in!', 1.5);
+						// .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
+						this.props.history.push("/");
         } 
         else {
           message.error('Incorrect Username/Password');
-        }
+				}
       }  
     });
 	}
@@ -98,12 +99,12 @@ class Login extends React.Component {
 								<Form onSubmit={this.handleSubmit}>
 									<Form.Item label="Username" className="login-input font12">
 										{getFieldDecorator('userName', {
-											rules: [{ required: true, message: 'Please input your username!' }],
+											rules: [{ required: true, message: 'Please enter your username!' }],
 										})(<Input onChange={this.handleUsernameChange} />)}
 									</Form.Item>
 									<Form.Item label="Password">
 										{getFieldDecorator('password', {
-											rules: [{ required: true, message: 'Please input your Password!' }],
+											rules: [{ required: true, message: 'Please enter your password!' }],
 										})(<Input.Password onChange={this.handlePasswordChange} placeholder="input password" type="password" />)}
 									</Form.Item>
 									<Form.Item style={{marginBottom:'0px'}}>

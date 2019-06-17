@@ -2,14 +2,15 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Dropdown, Menu, Icon, Typography, Avatar } from 'antd';
+import { Link } from 'react-router-dom';
+import { Dropdown, Menu, Icon, Typography, Avatar, Button } from 'antd';
 
 
 // CUSTOM MODULES
 import checkAuth from 'shared_components/auth';
 // import {userData} from 'shared_components/constant-global';
 // CSS
-import './menu.css';
+import './menu.css';  
 
 const { Text } = Typography;
 
@@ -22,7 +23,7 @@ href="#"
 	onClick={() => {
           checkAuth.signout();
           }}
-      >
+	>
         Logout
  </a>
     </Menu.Item>
@@ -34,6 +35,8 @@ class UserMenu extends React.Component {
     const userData = sessionStorage.userData ? JSON.parse(sessionStorage.userData) : null;
     if(userData){
       return (
+      <Dropdown overlay={menu} trigger={['click']}>
+        <a className="ant-dropdown-link" href="">
         <div className="user-menu">
           <div className="user-menu-text">
             <Text strong>{`${userData.givenName} ${userData.lastName}`}</Text>
@@ -43,20 +46,18 @@ class UserMenu extends React.Component {
             <Avatar>{`${userData.givenName.charAt(0)}${userData.lastName.charAt(0)}`}</Avatar>
           </div>
           <div className="user-menu-icon">
-            <Dropdown overlay={menu} trigger={['click']}>
-              <a className="ant-dropdown-link" href="">
                 <Icon type="down" />
-              </a>
-            </Dropdown>
           </div>
         </div>
+        </a>
+      </Dropdown>
       );
     } 
-    else{
-      return(<div></div>);
-    }
-    
-    
+    return (
+      <Link to="/login">
+        <Button className="ant-btn ant-btn-round login-btn">Login</Button>
+      </Link>
+    )
   }
 }
 
