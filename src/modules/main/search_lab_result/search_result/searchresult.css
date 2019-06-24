@@ -2,3 +2,7 @@
   cursor:pointer;
   color:#1E90FF;
 }
+
+.ant-table-thead > tr > th {
+  border-bottom: none;
+}

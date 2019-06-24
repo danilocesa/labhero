@@ -36,20 +36,20 @@ class UserMenu extends React.Component {
     if(userData){
       return (
       <Dropdown overlay={menu} trigger={['click']}>
-        <a className="ant-dropdown-link" href="">
-        <div className="user-menu">
-          <div className="user-menu-text">
-            <Text strong>{`${userData.givenName} ${userData.lastName}`}</Text>
-            <Text>{`${userData.loginTypeName}`}</Text>
+        <Button type="link" className="ant-dropdown-link">
+          <div className="user-menu">
+            <div className="user-menu-text">
+              <Text strong>{`${userData.givenName} ${userData.lastName}`}</Text>
+              <Text>{`${userData.loginTypeName}`}</Text>
+            </div>
+            <div className="user-menu-avatar">
+              <Avatar>{`${userData.givenName.charAt(0)}${userData.lastName.charAt(0)}`}</Avatar>
+            </div>
+            <div className="user-menu-icon">
+                  <Icon type="down" />
+            </div>
           </div>
-          <div className="user-menu-avatar">
-            <Avatar>{`${userData.givenName.charAt(0)}${userData.lastName.charAt(0)}`}</Avatar>
-          </div>
-          <div className="user-menu-icon">
-                <Icon type="down" />
-          </div>
-        </div>
-        </a>
+        </Button>
       </Dropdown>
       );
     } 

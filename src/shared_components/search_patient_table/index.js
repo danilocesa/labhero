@@ -31,7 +31,7 @@ const columns = [
 		dataIndex: 'middleName',
 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
 		width: '12%'
-	},
+	}, 
 	{
 		title: 'DATE OF BIRTH',
 		dataIndex: 'dateOfBirth',

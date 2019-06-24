@@ -32,36 +32,55 @@ class Login extends React.Component {
     const { username, password, userid } = this.state;
 
     this.props.form.validateFields(async (err) => {
-      if (!err) {
+      	if (!err) {
         const response = await this.login(username, password, userid);
-
-        if(response && response.status === 200) {
-          sessionStorage.setItem('userData',JSON.stringify(response.data));
-          checkAuth.authenticate();
-          message
-            .success('You are now successfully logged in!', 1.5);
+        	if(response && response.status === 200) {
+          		sessionStorage.setItem('userData',JSON.stringify(response.data));
+          		checkAuth.authenticate();
+          		message
+            	.success('You are now successfully logged in!', 1.5);
 						// .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
-						this.props.history.push("/");
-        } 
-        else {
-          message.error('Incorrect Username/Password');
-				}
-      }  
-    });
+						// this.props.history.push("/pleboresult");
+
+						// if(sessionStorage.currentKey === 1) {
+						// 	this.props.history.push("/");
+						// } 
+
+						// eslint-disable-next-line default-case
+					switch(sessionStorage.currentKey) {
+						case '1':
+							return this.props.history.push("/");
+						case '2':
+							return this.props.history.push("/request/create/step/1");
+						case '3':
+							return this.props.history.push("/searchlabresult");
+						case '4':
+							return this.props.history.push("/pleboresult");
+						case '5':
+							return this.props.history.push("/searchpatient");
+						default : 
+							return this.props.history.push("/");
+					}
+        	} 
+        	else {
+          		message.error('Incorrect Username/Password');
+			}
+      	}  
+	});
 	}
 
   login = async (userName, password, userID) => {
     let data = null;
     
     try{
-      const body = { userName, password, userID };
-      const response = await axiosCall({
-        method: 'POST',
-        url: 'LogIn',
-        data: body,
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer superSecretKey@345'
+      	const body = { userName, password, userID };
+      	const response = await axiosCall({
+			method: 'POST',
+			url: 'LogIn',
+			data: body,
+			headers: {
+			'content-type': 'application/json',
+			'authorization': 'Bearer superSecretKey@345'
         }
       });
       data = response;

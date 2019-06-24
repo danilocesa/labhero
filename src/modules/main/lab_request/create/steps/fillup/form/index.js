@@ -84,7 +84,7 @@ class BaseForm extends React.Component {
 
 	computeAge = (date) => {
 		const years = Math.floor(moment().diff(date, 'years', true));
-		const age = years > 0 ? years : '-----';
+		const age = years > 0 ? years : '---';
 	
 		return age;
 	}

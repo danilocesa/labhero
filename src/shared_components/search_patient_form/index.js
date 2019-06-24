@@ -41,7 +41,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 6 },
-		lg: { span: 5 },
+		lg: { span: 5 }, 
 	},
 ];
 
@@ -130,11 +130,12 @@ class SearchPatientForm extends React.Component {
 		return patients;
 	}
 
-	clearInputs = () => {
+	clearInputs = async (event) => {
 		this.setState({
 			patientID: "",
 			patientName: ""
 		});
+
 	}
 
 	handleFocus = (event) => {
@@ -160,7 +161,7 @@ class SearchPatientForm extends React.Component {
 								value={patientID} 
 								onChange={this.handleInputChange}
 								onFocus={this.handleFocus}
-							/>
+							/> 
 						</Form.Item>
 					</Col>
 					<Col 
