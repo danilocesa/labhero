@@ -2,9 +2,9 @@ import React from 'react';
 import { Typography } from 'antd';
  
 const { Text } = Typography;
-
+ 
 const DashboardHeader = (props) => {
-  console.log(props);
+  // console.log(props);
   return (
     <div style={{ fontSize: 16 }}>
       <Text style={{ textTransform: "capitalize" }} className="userName" strong>Welcome {props.user || 'Guest'}, </Text>

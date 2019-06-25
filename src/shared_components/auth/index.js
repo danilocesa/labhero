@@ -1,8 +1,8 @@
 const checkAuth = {
-	isAuthenticated: !! sessionStorage.getItem("userData"),
+	isAuthenticated: !! sessionStorage.getItem("LOGGEDIN_USER_DATA"),
 
   authenticate() {
-    if(sessionStorage.getItem("userData")){
+    if(sessionStorage.getItem("LOGGEDIN_USER_DATA")){
       this.isAuthenticated = true;
     } else {
       this.isAuthenticated = false;
@@ -11,8 +11,8 @@ const checkAuth = {
 
   signout() {
     this.isAuthenticated = false;
-    sessionStorage.removeItem("userData");
-    sessionStorage.removeItem("currentKey");
+    sessionStorage.removeItem("LOGGEDIN_USER_DATA");
+    sessionStorage.removeItem("SELECTED_SIDER_KEY");
     // window.location.reload();
   }
 };
