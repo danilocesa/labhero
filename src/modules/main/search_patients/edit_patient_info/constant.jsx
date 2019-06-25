@@ -14,7 +14,10 @@ const FIELD_RULES = {
   ],
   address: [
 		{ required: true, message: REQUIRED_MESSAGE}
-  ]
+  ],
+  gender: [
+		{ required: true, message: REQUIRED_MESSAGE}
+  ],
 }
 
 export default FIELD_RULES;

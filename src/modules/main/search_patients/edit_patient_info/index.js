@@ -30,6 +30,7 @@ class EditProfile extends React.Component {
 	}
 
 	componentDidMount(){
+		console.log(this.props.patientInfo.sex === "MALE");
 		const addressArr = [];
 		let a = 0; 
 		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
@@ -93,34 +94,37 @@ class EditProfile extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
 		validateFieldsAndScroll((err) => {
-			
 			if (!err) {
 				const fields = getFieldsValue();
-        console.log("TCL: EditProfile -> onSubmit -> fields", fields)
+				const userID = JSON.parse(sessionStorage.getItem('userData'));
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
+				try{
+					console.log("TCL: EditProfile -> updatePatient -> fields", fields);
+					console.log("TCL: EditProfile -> onSubmit -> this.props.patientInfo.patientID", this.props.patientInfo.patientID);
+		
+					axiosCall({
+						method: 'PUT',
+						url: `Patient/${this.props.patientInfo.patientID}`,
+						data: {
+							"userID": userID.userID,
+							"lastName": fields.lastname,
+							"givenName": fields.firstname,
+							"middleName": fields.middlename,
+							"sex": fields.gender,
+							"dateOfBirth": fields.dateOfBirth,
+							"address": fields.address
+						}
+					});
+					message.success('Changes successfully saved!');
+					window.location.reload();
+				}
+				catch(error){
+					Message.error();
+				}
 			}
 		});
 
-		try{
-			console.log("TCL: EditProfile -> updatePatient -> getFieldsValue", getFieldsValue);
-			const updatePatient = await axiosCall({
-				method: 'PUT',
-				url: `Patient/${this.props.patientInfo.patientID}`,
-				data: {
-					"userID": 5,
-					"lastName": "tets",
-					"givenName": "test",
-					"middleName": "test",
-					"sex": "m",
-					"dateOfBirth": "01/01/1990"
-				}
-			});
-      console.log("TCL: EditProfile -> onSubmit -> update_patient", updatePatient)
-		}
-		catch(error){
-			Message.error();
-		}
-		message.success('Changes successfully saved!');
+	
 	}
 
 	onClickDatePicker = () => {
@@ -169,10 +173,15 @@ class EditProfile extends React.Component {
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="GENDER" className="gutter-box">
-								<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
-									<RadioButton style={{ width:'50%' }} value="m" checked={this.props.patientInfo.sex === "MALE"}>MALE</RadioButton>
-									<RadioButton style={{ width:'50%' }} value="f" checked={this.props.patientInfo.sex === "FEMALE"}>FEMALE</RadioButton>
-								</RadioGroup>
+								{getFieldDecorator('gender', {
+									initialValue: this.props.patientInfo.sex,
+									rules: FIELD_RULES.gender,
+								})(
+									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
+										<RadioButton style={{ width:'50%' }} value="MALE" checked={this.props.patientInfo.sex === "MALE"}>MALE</RadioButton>
+										<RadioButton style={{ width:'50%' }} value="FEMALE" checked={this.props.patientInfo.sex === "FEMALE"}>FEMALE</RadioButton>
+									</RadioGroup>
+								)}
 							</Form.Item>
 						</Col>
 
