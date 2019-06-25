@@ -5,21 +5,23 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
 // CUSTOM MODULES
+import addressData from 'assets/address.json';
+import Message from 'shared_components/message';
+import axiosCall from 'services/axiosCall';
 import computeAge from 'shared_components/age_computation';
+import FIELD_RULES from './constant';
 
 // CSS
 import './editprofile.css'; 
 
 // OTHER FILES
 // eslint-disable-next-line camelcase
-import addressData from 'assets/address.json';
-
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-
 const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
@@ -28,10 +30,11 @@ class EditProfile extends React.Component {
 	}
 
 	componentDidMount(){
+		console.log(this.props.patientInfo.sex === "MALE");
 		const addressArr = [];
 		let a = 0; 
 		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
-			addressArr.push({"title":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a}`});
+			addressArr.push({"title":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
 			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
 			a +=1;
 		}
@@ -47,8 +50,8 @@ class EditProfile extends React.Component {
 			municipalityArr.push(
 				{
 				"title": keyMunicipality,
-				"value": `${keyMunicipality}L2-L2-${a}`,
-				"key": `${keyMunicipality}L2-L2-${a}`
+				"value": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`,
+				"key": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`
 				}
 			)
 			a +=1;
@@ -85,9 +88,43 @@ class EditProfile extends React.Component {
 	onChangePatientInfo = (event) => {
 		this.setState({[event.target.name]: event.target.value})
 	}
+	
+	onSubmit = async (e) => {
+		e.preventDefault();
+		// eslint-disable-next-line react/prop-types
+		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
+		validateFieldsAndScroll((err) => {
+			if (!err) {
+				const fields = getFieldsValue();
+				const userID = JSON.parse(sessionStorage.getItem('userData'));
+				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
+				try{
+					console.log("TCL: EditProfile -> updatePatient -> fields", fields);
+					console.log("TCL: EditProfile -> onSubmit -> this.props.patientInfo.patientID", this.props.patientInfo.patientID);
+		
+					axiosCall({
+						method: 'PUT',
+						url: `Patient/${this.props.patientInfo.patientID}`,
+						data: {
+							"userID": userID.userID,
+							"lastName": fields.lastname,
+							"givenName": fields.firstname,
+							"middleName": fields.middlename,
+							"sex": fields.gender,
+							"dateOfBirth": fields.dateOfBirth,
+							"address": fields.address
+						}
+					});
+					message.success('Changes successfully saved!');
+					window.location.reload();
+				}
+				catch(error){
+					Message.error();
+				}
+			}
+		});
 
-	onSubmit = () => {
-		message.success('Changes successfully saved!');
+	
 	}
 
 	onClickDatePicker = () => {
@@ -95,34 +132,56 @@ class EditProfile extends React.Component {
 	}
  
 	render() {
+		// eslint-disable-next-line react/prop-types
+		const { getFieldDecorator } = this.props.form;
 		return(
 			<div>
-				<Form>
+				<Form className="fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={8}>
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="Last Name">
-								<Input name="lastname" value={this.props.patientInfo.lastName} onChange={this.onChangePatientInfo} />
+							{getFieldDecorator('lastname', {
+								initialValue: this.props.patientInfo.lastName,
+								rules: FIELD_RULES.lastname ,
+							})(
+								<Input />
+							)}
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="First Name">
-								<Input name="firstname" value={this.props.patientInfo.givenName} onChange={this.onChangePatientInfo} />
+								{getFieldDecorator('firstname', {
+									initialValue: this.props.patientInfo.givenName,
+									rules: FIELD_RULES.firstname,
+								})(
+									<Input onChange={this.onChangePatientInfo} />
+								)}
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="Middle Name">
-								<Input name="middlename" value={this.props.patientInfo.middleName} onChange={this.onChangePatientInfo} />
+								{getFieldDecorator('middlename', {
+									initialValue: this.props.patientInfo.middleName,
+									rules: FIELD_RULES.middlename,
+								})(
+									<Input onChange={this.onChangePatientInfo} />
+								)}
 							</Form.Item>
 						</Col>
 
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label="GENDER" className="gutter-box">
-								<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
-									<RadioButton style={{ width:'50%' }} value="a">MALE</RadioButton>
-									<RadioButton style={{ width:'50%' }} value="b">FEMALE</RadioButton>
-								</RadioGroup>
+								{getFieldDecorator('gender', {
+									initialValue: this.props.patientInfo.sex,
+									rules: FIELD_RULES.gender,
+								})(
+									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
+										<RadioButton style={{ width:'50%' }} value="MALE" checked={this.props.patientInfo.sex === "MALE"}>MALE</RadioButton>
+										<RadioButton style={{ width:'50%' }} value="FEMALE" checked={this.props.patientInfo.sex === "FEMALE"}>FEMALE</RadioButton>
+									</RadioGroup>
+								)}
 							</Form.Item>
 						</Col>
 
@@ -131,7 +190,16 @@ class EditProfile extends React.Component {
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Date of Birth">
 										<div className="customDatePickerWidth">
-											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth)} onChange={this.onClickDatePicker} format={dateFormat} />
+											{getFieldDecorator('dateOfBirth', { 
+												initialValue: this.props.patientInfo.dateOfBirth ? moment(this.props.patientInfo.dateOfBirth, 'MM-DD-YYYY') : null,
+												rules: FIELD_RULES.dateOfBirth
+											})(
+												<DatePicker 
+													format={dateFormat}
+													style={{ width: '100%' }}
+													onChange={this.onDateChange}
+												/>
+											)}
 										</div>
 									</Form.Item>
 								</Col>
@@ -146,22 +214,24 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={24} md={24} lg={24}>
 							<Form.Item label="ADDRESS" className="gutter-box">
 								<div className="treeselect-address">
-									<TreeSelect
-										showSearch
-										treeData={this.state.addressArr}
-										filterTreeNode={this.searchAddress}
-										style={{ width: 300 }}
-										dropdownStyle={{ maxHeight: 500 }}
-										placeholder="Please select"
-										allowClear
-									/>
+									{getFieldDecorator('address', { 
+										rules: FIELD_RULES.address
+									})(
+										<TreeSelect
+											showSearch
+											treeData={this.state.addressArr}
+											filterTreeNode={this.searchAddress}
+											style={{ width: 300 }}
+											dropdownStyle={{ maxHeight: 500 }}
+											placeholder="Please select"
+											allowClear
+										/>
+									)}
 								</div>
 							</Form.Item>
 						</Col>
-						
 					</Row>
-				</Form>
-				<div
+					<div
 					style={{
               position: 'absolute',
               left: 0,
@@ -172,14 +242,16 @@ class EditProfile extends React.Component {
               background: '#fff',
               textAlign: 'right',
             }}
-				>
-					<Button style={{ marginRight: 8 }}>
-              Cancel
-					</Button>
-					<Button type="primary" onClick={this.onSubmit}>
-              Submit
-					</Button>
-				</div>
+					>
+						<Button style={{ marginRight: 8 }}>
+							Cancel
+						</Button>
+						<Button type="primary" htmlType="submit">
+							Submit
+						</Button>
+					</div>
+				</Form>
+			
 			</div>
 		);
 	}
@@ -193,4 +265,6 @@ EditProfile.defaultProps = {
 	patientInfo() { return null; }
 }
 
-export default EditProfile;
+const UpdatePatientForm = Form.create()(withRouter(EditProfile));
+
+export default UpdatePatientForm;

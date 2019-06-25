@@ -1,0 +1,19 @@
+.clr-step3-tag-disabled {
+	background-color: #f5f5f5;
+	border-color: #BBADFF !important;
+	color: rgba(0, 0, 0, 0.25);
+	cursor: not-allowed !important;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	touch-action: manipulation
+}
+
+.clr-step3-tag-disabled:hover {
+	color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.clr-step3-tag-disabled:active {
+	background-color: #f5f5f5;
+}
