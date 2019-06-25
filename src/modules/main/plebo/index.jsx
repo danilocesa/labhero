@@ -47,7 +47,7 @@ class Plebo extends React.Component {
 		const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
     return ( 
 			<div>
-				<div style={{ marginTop: 50 }}>
+				<div>
 					<PageTitle pageTitle="PHLEBO" />
 					<SearchForm 
 						populatePatients={this.populatePatients}

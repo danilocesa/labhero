@@ -45,8 +45,8 @@ class Name extends React.Component {
 	    <Row>
 		    <Col span={12}>
 			    <div style={{ marginBottom: '30px' }}>
-				    <h1 style={{ marginBottom: '0', fontWeight: 'bold', letterSpacing: '1px', fontSize: '20px', }}>
-              DOE, JOHN 
+				    <h1 style={{ marginBottom: '0', fontWeight: 'bold', letterSpacing: '1px', fontSize: '20px', textTransform:'uppercase' }}>
+              doe, john
 				    </h1>
 				    <p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
               Patient ID 00001

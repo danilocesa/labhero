@@ -1,5 +1,5 @@
 const checkAuth = {
-	isAuthenticated: !!sessionStorage.getItem("userData"),
+	isAuthenticated: !! sessionStorage.getItem("userData"),
 
   authenticate() {
     if(sessionStorage.getItem("userData")){
@@ -11,7 +11,9 @@ const checkAuth = {
 
   signout() {
     this.isAuthenticated = false;
-    sessionStorage.clear();
+    sessionStorage.removeItem("userData");
+    sessionStorage.removeItem("currentKey");
+    // window.location.reload();
   }
 };
 

@@ -5,8 +5,8 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
-import computeAge from 'shared_components/age_computation';
-import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
+// import computeAge from 'shared_components/age_computation';
+// import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
 
 
 // IMAGES
@@ -17,29 +17,30 @@ import './patient_info.css';
 
 class PatientInfo extends React.Component {
 
-	state = {
-		hospitalID: '',
-		physicianID: '',
-		bed: '',
-		visit: '',
-		chargeSlip: '',
-		receipt: '',
-		comment: '',
-		location: ''
-	};
+	// state = {
+	// 	hospitalID: '',
+	// 	physicianID: '',
+	// 	bed: '',
+	// 	visit: '',
+	// 	chargeSlip: '',
+	// 	receipt: '',
+	// 	comment: '',
+	// 	location: ''
+	// };
+
 
 	async componentDidMount(){
-		const {patientInfo} = this.props
-		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID)
+		// const {patientInfo} = this.props
+		// const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID)
 		this.setState({
-			hospitalID: patientInfoValue.hospitalRequestID,
-			physicianID: patientInfoValue.physician.physicianID,
-			bed: patientInfoValue.bed,
-			visit: patientInfoValue.visit,
-			chargeSlip: patientInfoValue.chargeSlip,
-			receipt: patientInfoValue.officialReceipt,
-			comment: patientInfoValue.comment,
-			location: patientInfoValue.location.name
+			// hospitalID: patientInfoValue.hospitalRequestID,
+			// physicianID: patientInfoValue.physician.physicianID,
+			// bed: patientInfoValue.bed,
+			// visit: patientInfoValue.visit,
+			// chargeSlip: patientInfoValue.chargeSlip,
+			// receipt: patientInfoValue.officialReceipt,
+			// comment: patientInfoValue.comment,
+			// location: patientInfoValue.location.name
 		});
 	}
 
@@ -59,24 +60,28 @@ class PatientInfo extends React.Component {
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 											BIRTHDATE
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											{this.props.patientInfo.dateOfBirth}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+											{/* {this.props.patientInfo.dateOfBirth} */}1
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 											AGE
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											{computeAge(this.props.patientInfo.dateOfBirth)}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+											{/* {computeAge(this.props.patientInfo.dateOfBirth)} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 											GENDER
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-											{this.props.patientInfo.sex}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+											{/* {this.props.patientInfo.sex} */}3
 							</Col>
 						</div>
 					</Row>
@@ -89,65 +94,78 @@ class PatientInfo extends React.Component {
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								HOSPITAL ID
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.hospitalID}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.hospitalID} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								PHYSICIAN ID
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-							{this.state.physicianID}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+							{/* {this.state.physicianID} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								LOCATION
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.location}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.location} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								BED
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.bed}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.bed} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								VISIT
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.visit}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.visit} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								CHARGE SLIP
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.chargeSlip}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.chargeSlip} */}
 							</Col>
 						</div>
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
 								RECEIPT
 							</Col>
-							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }}>
-								{this.state.receipt}
+							<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
+								{/* {this.state.receipt} */}
 							</Col>
 						</div>
-						<br />
+					</Row>
+					<Row>
 						<div className="info-item">
 							<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} className="info-title">
 								COMMENT
 							</Col>
 							<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }}>
-								{this.state.comment}
+								{/* {this.state.comment} */}
 							</Col>
 						</div>
 					</Row>

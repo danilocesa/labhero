@@ -21,8 +21,12 @@ class SearchLabTestForm extends React.Component {
 		super(props);
 		this.state = {
 			enableDateRange: false,
+			patientID: "",
+			patientName: ""
 		};
 		this.onClickClear = this.onClickClear.bind(this);
+		this.handlePatientIdChange=this.handlePatientIdChange.bind(this);
+		this.handlePatientNameChange=this.handlePatientNameChange.bind(this);
 	}
     
 	onClickSubmit = (e) => {
@@ -40,18 +44,40 @@ class SearchLabTestForm extends React.Component {
 		});
 	}
 
+	
 	onClickClear = () => {
-		document.getElementById("searchlabtestresultform").reset();
+		// console.log("Clear form");
+		// document.getElementById("searchlabtestresultform").reset();
+		// this.setState({
+		// 	patientID: "",
+		// 	patientName: ""
+		// });
+		this.setState({ 
+			patientID: "",
+			patientName: ""
+		// eslint-disable-next-line func-names
+		}, function() { console.log("setState completed", this.state) })
 	}
-
+	
 	onClickDateCategory = () => {
 		this.setState({
 			enableDateRange: true
 		});
 	}
 
+	handlePatientIdChange = (event) => {
+		this.setState({patientID : event.target.value});
+		console.log(this.state.patientID);
+	}
+
+	handlePatientNameChange = (event) => {
+		this.setState({patientName : event.target.value});
+		console.log(this.state.patientName);
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		// const { patientID, patientName } = this.state;
 		return(
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
 				<Col sm={22} xs={24}> 
@@ -69,14 +95,14 @@ class SearchLabTestForm extends React.Component {
 							</Col>
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="FROM DATE - TO DATE" className="gutter-box">
-									<RangePicker disabled={!this.state.enableDateRange} allowClear="true" style={{ width:'100%' }} />
+									<RangePicker disabled={!this.state.enableDateRange} allowClear style={{ width:'100%' }} />
 								</Form.Item>
 							</Col> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
 								<Form.Item label="STATUS" hasFeedback className="gutter-box">
 									<Select placeholder="Please select a status" style={{ width: "100%" }} allowClear>
-										<Option value="" />
-										<Option value="" />
+										<Option value="Status 1" />
+										<Option value="Status 2" />
 									</Select>
 								</Form.Item>
 							</Col>
@@ -84,7 +110,15 @@ class SearchLabTestForm extends React.Component {
 						<Row type="flex" align="top" gutter={24}>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
 								<Form.Item label="PATIENT ID" className="gutter-box">
-									<Input allowClear />
+									{getFieldDecorator('PatientID', {
+										rules: [
+											{ pattern: '^[0-9]+$',
+												message: 'Numbers only!'
+											}
+										],
+									})(
+										<Input name="patientID" onChange={this.handlePatientIdChange} allowClear />
+									)}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24}>
@@ -98,8 +132,9 @@ class SearchLabTestForm extends React.Component {
 										}
 									],
 									})(
-										<Input id="PatientName" allowClear />
+										<Input name="patientName" onChange={this.handlePatientNameChange} id="PatientName" allowClear />
 									)}
+									{/* <Input name="patientName" onChange={this.handleChange} value={patientName} id="PatientName" allowClear /> */}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
@@ -138,7 +173,7 @@ class SearchLabTestForm extends React.Component {
 								<Row gutter={6} type="flex" justify="end">
 									<Col className="gutter-row">
 										<Form.Item>
-											<Button shape="round" onClick={this.onClickClear}> CLEAR </Button>
+											<Button id="resetBtn" shape="round" onClick={this.onClickClear}> CLEAR </Button>
 										</Form.Item>
 									</Col>
 									<Col className="gutter-row">

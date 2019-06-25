@@ -20,7 +20,7 @@ import addressData from 'assets/address.json';
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
 	state = {
@@ -89,6 +89,10 @@ class EditProfile extends React.Component {
 	onSubmit = () => {
 		message.success('Changes successfully saved!');
 	}
+
+	onClickDatePicker = () => {
+		console.log(this.props.patientInfo.dateOfBirth);
+	}
  
 	render() {
 		return(
@@ -127,7 +131,7 @@ class EditProfile extends React.Component {
 								<Col xs={24} sm={12} md={12} lg={12}>
 									<Form.Item label="Date of Birth">
 										<div className="customDatePickerWidth">
-											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth, dateFormat)} format={dateFormat} />
+											<DatePicker defaultValue={moment(this.props.patientInfo.dateOfBirth)} onChange={this.onClickDatePicker} format={dateFormat} />
 										</div>
 									</Form.Item>
 								</Col>
