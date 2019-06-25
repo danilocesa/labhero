@@ -9,7 +9,7 @@ import PageTitle from 'shared_components/page_title';
 import Search from './search_form';
 import SearchPatientTableHeader from './table_header'
 import SearchPatientTable from './search_table_results'
-import EditProfile from './edit_patient_info'
+import UpdatePatientForm from './edit_patient_info'
 
 
 class SearchPatient extends React.Component {
@@ -76,7 +76,7 @@ class SearchPatient extends React.Component {
 							width="50%"
 							visible={showDrawer}
 						>
-              <EditProfile patientInfo={patientInfo} />
+              <UpdatePatientForm patientInfo={patientInfo} />
 
 							{/* <PleboPatientResult patientInfo={patientInfo} /> */}
 						</Drawer>
