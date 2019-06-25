@@ -7,47 +7,75 @@ import './table.css';
 const createColumns = handleRemove => {
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
-			<Button type="primary" size="small" icon="delete" onClick={handleRemove} />
+			{/* <Button type="primary" size="small" icon="delete" onClick={handleRemove} /> */}
+			<Button type="primary" size="small" onClick={handleRemove}>
+				CLEAR
+			</Button>
 		</Tooltip>
 	);
 
 	return [
 		{
 			title: 'SECTION',
-			dataIndex: 'section',
-			width: 170,
+			dataIndex: 'selectedSection.sectionName',
+			width: 135,
+			sorter: (a, b) => a.selectedSection.sectionName.localeCompare(b.selectedSection.sectionName),
 		},
 		{
-			title: 'EXAM NAME',
-			dataIndex: 'exam',
+			title: 'EXAM',
+			dataIndex: 'examName',
 			width: 170,
+			sorter: (a, b) => a.examName.localeCompare(b.examName),
 		},
 		{
 			title: 'SPECIMEN',
-			dataIndex: 'specimen',
-			width: 170,
+			dataIndex: 'selectedSpecimen.specimenName',
+			width: 135,
+			sorter: (a, b) => a.selectedSpecimen.specimenName.localeCompare(b.selectedSpecimen.specimenName),
+		},
+		{
+			title: 'PANEL',
+			dataIndex: 'selectedPanel.panelName',
+			width: 135,
+			sorter: (a, b) => {
+				const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
+				const bPanelName = b.selectedPanel ? b.selectedPanel.panelName : '';
+					
+				return aPanelName.localeCompare(bPanelName);
+			},
 		},
 		{
 			title: RemoveBtn,
 			dataIndex: 'action',
-			width: 170,
+			width: 135,
 		},
 	];
 };
 
 class SelectTable extends React.Component {
+	shouldComponentUpdate(nextProps) {
+		return this.props.selectedExams !== nextProps.selectedExams;
+  }
+	
+	componentDidUpdate() {
+		const { populatePanels } = this.props;
+
+		populatePanels();
+	}
+
 	render() {
-		const { tests, removeTest, removeAllTest } = this.props; 
-		const TableCols = createColumns(removeAllTest);
-		const TableData = tests.map(item => ({ 
-			...item, 
-			action: (
+		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
+		const TableCols = createColumns(removeAllExams);
+		const TableData = selectedExams.map(selectedExam => ({ 
+			key: selectedExam.examID,
+			...selectedExam,
+			action: selectedExam.isDisabled ? null : (
 				<Button 
 					type="dashed" 
 					icon="close" 
 					size="small" 
 					style={{ fontSize: 10 }}
-					onClick={() => removeTest(item.key)}
+					onClick={() => removeSelectedExamByExam(selectedExam)}
 				/> 
 			)
 		}));
@@ -66,13 +94,26 @@ class SelectTable extends React.Component {
 }
 
 SelectTable.propTypes = {
-	tests: PropTypes.arrayOf(PropTypes.shape({
-		key: PropTypes.string.isRequired,
-		section: PropTypes.string.isRequired,
-		exam: PropTypes.string.isRequired
+	selectedExams: PropTypes.arrayOf(PropTypes.shape({
+		examID: PropTypes.number.isRequired,
+		examName: PropTypes.string.isRequired,
+		selectedSection: PropTypes.shape({
+			sectionID: PropTypes.number.isRequired,
+			sectionName: PropTypes.string.isRequired,
+		}).isRequired,
+		selectedSpecimen: PropTypes.shape({
+			specimenID: PropTypes.number.isRequired,
+			specimenName: PropTypes.string.isRequired
+		}).isRequired,
+		selectedPanel: PropTypes.shape({
+			panelID: PropTypes.number,
+			panelName: PropTypes.string,
+			panelCode: PropTypes.string
+		})
 	})).isRequired,
-	removeTest: PropTypes.func.isRequired,
-	removeAllTest: PropTypes.func.isRequired
+	removeSelectedExamByExam: PropTypes.func.isRequired,
+	removeAllExams: PropTypes.func.isRequired,
+	populatePanels: PropTypes.func.isRequired,
 };
 
 export default SelectTable;

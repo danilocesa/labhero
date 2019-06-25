@@ -3,8 +3,8 @@
 } */
 
 .search-patient-table .ant-table-thead > tr > th {
-  background: #8a73f9 !important;
-  color: white !important;
+  /* background: #8a73f9 !important; */
+  /* color: white !important; */
   padding: 4px 16px;
 }
 

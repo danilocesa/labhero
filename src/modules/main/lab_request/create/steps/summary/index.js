@@ -7,7 +7,7 @@ import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
-import { CLR_TESTS } from '../constants';
+import { CLR_SEL_EXAMS } from '../constants';
 
 class SummaryStep extends React.Component {
 	state = {
@@ -22,7 +22,7 @@ class SummaryStep extends React.Component {
 	}
 
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem(CLR_TESTS));
+		const tests = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
 
 		this.setState({ tests });
 	}

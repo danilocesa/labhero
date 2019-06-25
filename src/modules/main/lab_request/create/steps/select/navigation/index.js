@@ -4,13 +4,16 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { Row, Col, Button, Typography } from 'antd';
 
+import { CLR_STEP_PROGRESS, CLR_SEL_EXAMS } from 'modules/main/lab_request/create/steps/constants';
+
 const { Text } = Typography;
 
 class Navigation extends React.Component {
 	onClickNext = () => {
-		const { history, tests } = this.props;
+		const { history, selectedExams } = this.props;
 
-		sessionStorage.setItem('create_lab_request_tests', JSON.stringify(tests));
+		sessionStorage.setItem(CLR_SEL_EXAMS, JSON.stringify(selectedExams));
+		sessionStorage.setItem(CLR_STEP_PROGRESS, String(4));
 
 		history.push('/request/create/step/4');
 	}
@@ -19,7 +22,7 @@ class Navigation extends React.Component {
 		const { disabled } = this.props;
 
 		return (
-			<Row>
+			<Row style={{ marginTop: 20 }}>
 				<Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
 					<Link to="/request/create/step/2">
 						<Text>
@@ -44,10 +47,17 @@ class Navigation extends React.Component {
 Navigation.propTypes = {
 	history: ReactRouterPropTypes.history.isRequired,
 	disabled: PropTypes.bool.isRequired,
-	tests: PropTypes.arrayOf(PropTypes.shape({
-		key: PropTypes.string.isRequired,
-		section: PropTypes.string.isRequired,
-		exam: PropTypes.string.isRequired
+	selectedExams: PropTypes.arrayOf(PropTypes.shape({
+		examID: PropTypes.number.isRequired,
+		examName: PropTypes.string.isRequired,
+		selectedSection: PropTypes.shape({
+			sectionID: PropTypes.number.isRequired,
+			sectionName: PropTypes.string.isRequired,
+		}).isRequired,
+		selectedSpecimen: PropTypes.shape({
+			specimenID: PropTypes.number.isRequired,
+			specimenName: PropTypes.string.isRequired
+		}).isRequired
 	})).isRequired
 };
 
