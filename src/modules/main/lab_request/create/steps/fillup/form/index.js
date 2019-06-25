@@ -24,7 +24,7 @@ const { Option } = Select;
 class BaseForm extends React.Component { 	
 	state = {
 		hospitalLocationList: [],
-		hospitalPhysicianList: []
+		hospitalPhysicianList: [],
 	};
 	
 	componentDidMount() {
@@ -71,7 +71,7 @@ class BaseForm extends React.Component {
 		
 		this.setState({ 
 			hospitalLocationList : hospitalLocAPI.data
-		})
+		});
 	}
 
 	populatePhysician = async () => {
@@ -79,7 +79,7 @@ class BaseForm extends React.Component {
 
 		this.setState({ 
 			hospitalPhysicianList : hospitalPhyAPI.data
-		})
+		});
 	}
 
 	computeAge = (date) => {
@@ -100,6 +100,7 @@ class BaseForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 
+		const { hospitalPhysicianList, hospitalLocationList } = this.state; 
 		const { handleSubmit } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
@@ -107,8 +108,16 @@ class BaseForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
+				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
+				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
+
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
-				
+				fields.physicianName = `${physician.namePrefix} `;
+				fields.physicianName +=	`${physician.givenName} `; 
+				fields.physicianName +=	`${physician.middleName}. `;
+				fields.physicianName +=	`${physician.lastName}`;
+				fields.locationName = location.name;
+
 				handleSubmit(fields);
 			}
 		});
@@ -232,7 +241,7 @@ class BaseForm extends React.Component {
 							</div>
 						</Col>
 						<Col md={2} style={{ textAlign: 'center' }}>
-							<Divider className="divider" type="vertical" style={{ height: 420 }} />
+							<Divider className="divider" type="vertical" style={{ height: 650 }} />
 						</Col>
 						<Col sm={12} md={11}>
 							<div className="right-form">
@@ -248,7 +257,10 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Form.Item label="PHYSICIAN ID">
 									{getFieldDecorator('physicianID', { rules: FIELD_RULES.phisycianId })(
-										<Select placeholder="Select a physician" allowClear>
+										<Select 
+											placeholder="Select a physician" 
+											allowClear
+										>
 											{PhysicianList}
 										</Select>
 									)}
@@ -296,6 +308,5 @@ BaseForm.propTypes = {
 };
 
 const FillupForm = Form.create()(withRouter(BaseForm));
-
 
 export default FillupForm;

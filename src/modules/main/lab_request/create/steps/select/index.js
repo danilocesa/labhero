@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Spin } from 'antd';
 
-import Restriction from '../clr_restriction';
+import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SectionHeader from './section_header';

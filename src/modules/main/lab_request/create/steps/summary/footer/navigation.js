@@ -1,6 +1,5 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
 
 import ConfirmationModal from '../../confirmation/modal';
@@ -19,13 +18,9 @@ class Navigation extends React.Component {
 	};
 
 	closeModal = () => {
-		const { history } = this.props;
-
 		this.setState({
 			displayModal: false,
 		});
-
-		history.push('/request/create/step/1');
 	};
 
 	render() {
@@ -62,8 +57,4 @@ class Navigation extends React.Component {
 	}
 }
 
-Navigation.propTypes = {
-	history: ReactRouterPropTypes.history.isRequired
-};
-
-export default withRouter(Navigation);
+export default Navigation;

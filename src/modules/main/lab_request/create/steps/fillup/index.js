@@ -12,7 +12,7 @@ import {
 	CLR_STEP_PROGRESS 
 } from '../constants';
 
-import Restriction from '../clr_restriction';
+import Restriction from '../clr_restriction/restriction';
 
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
@@ -38,10 +38,12 @@ const otherInfoKeys = [
 	'comment',
 	'hospitalRequestID',
 	'locationID',
+	'locationName',
 	'officialReceipt',
 	'patientAge',
 	'patientID',
 	'physicianID',
+	'physicianName',
 	'requestID',
 	'visit'
 ];
@@ -61,6 +63,7 @@ class FillupStep extends React.Component {
 		const personalInfo = pick(fields, personalInfoKeys);
 		let { patientID } = fields;
 
+		console.log(personalInfo);
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
 			const createdPatient = await this.createPatientInfo(personalInfo);

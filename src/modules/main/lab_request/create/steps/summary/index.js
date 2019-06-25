@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Restriction from '../clr_restriction';
+import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SummarySection from './section';
@@ -11,7 +11,7 @@ import { CLR_SEL_EXAMS } from '../constants';
 
 class SummaryStep extends React.Component {
 	state = {
-		tests: []
+		exams: []
 	}
 	
 	constructor(props) {
@@ -22,13 +22,13 @@ class SummaryStep extends React.Component {
 	}
 
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
 
-		this.setState({ tests });
+		this.setState({ exams });
 	}
 
 	render() {
-		const { tests } = this.state;
+		const { exams } = this.state;
 		const { restriction } = this;
 
 		if(restriction.hasAccess) {
@@ -37,7 +37,7 @@ class SummaryStep extends React.Component {
 					<PageTitle />
 					<Tracker active={3} />
 					<SummarySection />
-					<SummaryTable tests={tests} />
+					<SummaryTable exams={exams} />
 					<br />
 					<SummaryFooter />
 				</div>
