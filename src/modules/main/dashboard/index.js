@@ -10,11 +10,11 @@ import {
   MetricCheckLogo,
   MetricAddLogo,
   MetricHistoryLogo,
-} from '../../../images/';
+} from "../../../images";
 
 import './dashboard.css';
 
-const metrics_data = [
+const metricsData = [
   {
     image: MetricRefreshLogo,
     value: 12,
@@ -32,17 +32,18 @@ const metrics_data = [
   },
   {
     image: MetricCheckLogo,
-    value: 1028,
+    value: 1028, 
     label: 'Veritifed Status',
   },
 ]; 
 
 // const userNameLoggedIn = sessionStorage.ge;
-const userNameLoggedIn = JSON.parse(sessionStorage.getItem('userData'));
+const userNameLoggedIn = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
+console.log(userNameLoggedIn);
 
 class DashboardPage extends React.Component {
   render() {
-    const MetricList = metrics_data.map((item, index) => (
+    const MetricList = metricsData.map((item, index) => (
       <Metrics key={index} image={item.image} value={item.value} label={item.label} />
     ));
 
@@ -56,7 +57,7 @@ class DashboardPage extends React.Component {
           <Col className="right-pane">
             <LineChart />
           </Col>
-        </Row>
+        </Row>`
       </div>
     );
   }

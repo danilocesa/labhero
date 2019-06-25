@@ -8,6 +8,8 @@ import { ReactComponent as SearchIcon } from '../../../icons/search.svg';
 import { ReactComponent as PleboIcon } from '../../../icons/syringe.svg';
 import { ReactComponent as SearchPatientIcon } from '../../../icons/searchpatient.svg';
 
+import { SELECTED_SIDER_KEY } from '../../constant-global';
+
 import './sider.css';
 
 const { Sider: AntSider } = Layout;
@@ -17,7 +19,7 @@ class Sider extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentKey: '',
+      SELECTED_SIDER_KEY: '',
     }
     // this.handleMenuClick = this.handleMenuClick.bind(this);
   }
@@ -25,10 +27,10 @@ class Sider extends React.Component {
   componentWillMount() {
     this.handleMenuClick = (event) => {
       this.setState({
-        currentKey: event.key
+        SELECTED_SIDER_KEY: event.key
       }, function keys(){
-       sessionStorage.setItem("currentKey", this.state.currentKey);
-       sessionStorage.getItem("currentKey");
+       sessionStorage.setItem(SELECTED_SIDER_KEY, this.state.SELECTED_SIDER_KEY);
+       sessionStorage.getItem(SELECTED_SIDER_KEY);
       });
     }
   }
@@ -45,7 +47,7 @@ class Sider extends React.Component {
               className="side-menu" 
               mode="inline" 
               defaultSelectedKeys={[
-                (sessionStorage.getItem("currentKey") ? sessionStorage.getItem("currentKey") : "1" )
+                (sessionStorage.getItem(SELECTED_SIDER_KEY) ? sessionStorage.getItem(SELECTED_SIDER_KEY) : "1" )
               ]}
               // defaultSelectedKeys={['1']}
               onClick={this.handleMenuClick}

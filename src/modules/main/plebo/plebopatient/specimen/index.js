@@ -57,7 +57,7 @@ class SpecimenList extends React.Component {
 		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
 		const requestID = e.target.attributes.getNamedItem('data-requestid').value;
 		const inputID = e.target.id;
-		const userDataSession = sessionStorage.getItem("userData");
+		const userDataSession = sessionStorage.getItem("LOGGEDIN_USER_DATA");
     
 		this.setState({ loading: true});
 		const saveExtraction = await this.checkIn(requestID, sectionID, specimenID, JSON.parse(userDataSession).userID);

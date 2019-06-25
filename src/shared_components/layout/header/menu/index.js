@@ -32,18 +32,18 @@ href="#"
 
 class UserMenu extends React.Component {
   render() {
-    const userData = sessionStorage.userData ? JSON.parse(sessionStorage.userData) : null;
-    if(userData){
+    const LOGGEDIN_USER_DATA = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+    if(LOGGEDIN_USER_DATA){
       return (
       <Dropdown overlay={menu} trigger={['click']}>
         <Button type="link" className="ant-dropdown-link">
           <div className="user-menu">
             <div className="user-menu-text">
-              <Text strong>{`${userData.givenName} ${userData.lastName}`}</Text>
-              <Text>{`${userData.loginTypeName}`}</Text>
+              <Text strong>{`${LOGGEDIN_USER_DATA.givenName} ${LOGGEDIN_USER_DATA.lastName}`}</Text>
+              <Text>{`${LOGGEDIN_USER_DATA.loginTypeName}`}</Text>
             </div>
             <div className="user-menu-avatar">
-              <Avatar>{`${userData.givenName.charAt(0)}${userData.lastName.charAt(0)}`}</Avatar>
+              <Avatar>{`${LOGGEDIN_USER_DATA.givenName.charAt(0)}${LOGGEDIN_USER_DATA.lastName.charAt(0)}`}</Avatar>
             </div>
             <div className="user-menu-icon">
                   <Icon type="down" />
