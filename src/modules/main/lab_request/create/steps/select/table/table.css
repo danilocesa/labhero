@@ -20,7 +20,7 @@
 
 .select-step-table .ant-table-thead > tr > th:last-child,
 .select-step-table .ant-table-tbody > tr > td:last-child {
-  text-align: right;
+  text-align: center;
 }
 
 .select-step-table .ant-empty {

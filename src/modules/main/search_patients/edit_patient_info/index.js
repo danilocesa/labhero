@@ -9,6 +9,9 @@ import { withRouter } from 'react-router-dom';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
 
 // CUSTOM MODULES
+import addressData from 'assets/address.json';
+import Message from 'shared_components/message';
+import axiosCall from 'services/axiosCall';
 import computeAge from 'shared_components/age_computation';
 import FIELD_RULES from './constant';
 
@@ -17,14 +20,9 @@ import './editprofile.css';
 
 // OTHER FILES
 // eslint-disable-next-line camelcase
-import addressData from 'assets/address.json';
-import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
-
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
 	state = {
@@ -123,6 +121,10 @@ class EditProfile extends React.Component {
 			Message.error();
 		}
 		message.success('Changes successfully saved!');
+	}
+
+	onClickDatePicker = () => {
+		console.log(this.props.patientInfo.dateOfBirth);
 	}
  
 	render() {

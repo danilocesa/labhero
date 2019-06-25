@@ -41,7 +41,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 6 },
-		lg: { span: 5 },
+		lg: { span: 5 }, 
 	},
 ];
 
@@ -130,11 +130,12 @@ class SearchPatientForm extends React.Component {
 		return patients;
 	}
 
-	clearInputs = () => {
+	clearInputs = async (event) => {
 		this.setState({
-			patientID: '',
-			patientName: ''
+			patientID: "",
+			patientName: ""
 		});
+
 	}
 
 	handleFocus = (event) => {
@@ -155,12 +156,12 @@ class SearchPatientForm extends React.Component {
 					<Col {...formItemLayout[0]}>
 						<Form.Item label="PATIENT ID">
 							<Input 
-								allowClear
+								// allowClear
 								name="patientID" 
 								value={patientID} 
 								onChange={this.handleInputChange}
 								onFocus={this.handleFocus}
-							/>
+							/> 
 						</Form.Item>
 					</Col>
 					<Col 
@@ -172,7 +173,7 @@ class SearchPatientForm extends React.Component {
 					<Col {...formItemLayout[2]}>
 						<Form.Item label="PATIENT NAME">
 							<Input 
-								allowClear
+								// allowClear
 								name="patientName" 
 								value={patientName} 
 								onChange={this.handleInputChange} 

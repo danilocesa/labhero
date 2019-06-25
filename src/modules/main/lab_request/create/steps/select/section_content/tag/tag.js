@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tag as AntTag, Tooltip } from 'antd';
 
+import './tag.css';
+
 const { CheckableTag } = AntTag;
 
 const TagStyle = {
@@ -19,32 +21,20 @@ const TagStyle = {
 };
 
 class Tag extends React.Component {
-	state = { checked: false };
-	
-	handleChange = (checked) => {
-		const { title, id, addTest, removeTest } = this.props;
-
-		this.setState({ checked });
-
-		if(checked) 
-			addTest({id, exam: title});
-		else 
-			removeTest(id);
-	};
-
 	render() {
-		const { title, id } = this.props;
-		const { checked } = this.state;
+		const { tagKey, tagLabel, isSelected, isDisabled, onChange } = this.props;
+		const disabledClassName = isDisabled ? 'clr-step3-tag-disabled' : '';
 
 		return (
-			<Tooltip title={title}>
+			<Tooltip title={tagLabel}>
 				<CheckableTag
 					{...TagStyle}
-					key={id}
-					checked={checked}
-					onChange={this.handleChange}
+					key={tagKey}
+					checked={isSelected}
+					onChange={onChange}
+					className={disabledClassName}
 				>
-					{title}
+					{tagLabel}
 				</CheckableTag>
 			</Tooltip>
 		);
@@ -52,10 +42,11 @@ class Tag extends React.Component {
 }
 
 Tag.propTypes = {
-	id: PropTypes.string.isRequired,
-	title: PropTypes.string.isRequired,
-	addTest: PropTypes.func.isRequired,
-	removeTest: PropTypes.func.isRequired
+	tagKey: PropTypes.number.isRequired,
+	tagLabel: PropTypes.string.isRequired,
+	isSelected: PropTypes.bool.isRequired,
+	isDisabled: PropTypes.bool.isRequired,
+	onChange: PropTypes.func.isRequired
 };
 
 export default Tag;

@@ -10,3 +10,7 @@
 .plebo-table .ant-table-small > .ant-table-content > .ant-table-scroll > .ant-table-header > table > .ant-table-thead > tr > th.ant-table-column-sort {
   background: #8a74f9;
 }
+
+div.ant-table-header {
+  overflow-y: auto !important;
+}

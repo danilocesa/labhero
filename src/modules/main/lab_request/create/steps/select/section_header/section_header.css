@@ -1,12 +1,19 @@
 .section-group .ant-radio-group {
   width: 100%;
-  padding: 0;
+	padding: 0;
 }
 
 .section-group .ant-radio-group .ant-radio-button-wrapper {
-  width: 20%;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
+
+/* .section-group .section-list .ant-radio-button-wrapper {
+	width: calc(100%/8);
+} */
+
+/* .section-group .specimen-list .ant-radio-button-wrapper {
+	width: calc(100%/6);
+} */

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Row, Col } from 'antd';
 
-import { CLR_TESTS } from '../../constants';
+import { CLR_SEL_EXAMS } from '../../constants';
 
 import './table.css';
 
@@ -31,7 +31,7 @@ class SummaryTable extends React.Component {
 	}
 	
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem(CLR_TESTS));
+		const tests = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
 
 		this.setState({ tests });
 	}

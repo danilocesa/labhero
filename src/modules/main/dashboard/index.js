@@ -35,7 +35,10 @@ const metrics_data = [
     value: 1028,
     label: 'Veritifed Status',
   },
-];
+]; 
+
+// const userNameLoggedIn = sessionStorage.ge;
+const userNameLoggedIn = JSON.parse(sessionStorage.getItem('userData'));
 
 class DashboardPage extends React.Component {
   render() {
@@ -46,7 +49,7 @@ class DashboardPage extends React.Component {
     return (
       <div>
         <Row>
-          <DashboardHeader />
+          <DashboardHeader user={userNameLoggedIn ? userNameLoggedIn.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>
           <Col className="left-pane">{MetricList}</Col>
