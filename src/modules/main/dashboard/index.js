@@ -37,20 +37,33 @@ const metricsData = [
   },
 ]; 
 
-// const userNameLoggedIn = sessionStorage.ge;
-const userNameLoggedIn = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
-console.log(userNameLoggedIn);
+// const userNameLoggedIn = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
+// console.log(userNameLoggedIn);
 
 class DashboardPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userNameLoggedIn: ''
+    }
+  }
+
+  componentDidMount = () => {
+    const userName = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
+    this.setState({ userNameLoggedIn: userName });
+  }
+
   render() {
     const MetricList = metricsData.map((item, index) => (
       <Metrics key={index} image={item.image} value={item.value} label={item.label} />
     ));
 
+    const userNameInfo = this.state.userNameLoggedIn
+
     return (
       <div>
         <Row>
-          <DashboardHeader user={userNameLoggedIn ? userNameLoggedIn.givenName : null} />
+          <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>
           <Col className="left-pane">{MetricList}</Col>

@@ -13,7 +13,7 @@ const checkAuth = {
     this.isAuthenticated = false;
     sessionStorage.removeItem("LOGGEDIN_USER_DATA");
     sessionStorage.removeItem("SELECTED_SIDER_KEY");
-    // window.location.reload();
+    window.location.reload();
   }
 };
 
