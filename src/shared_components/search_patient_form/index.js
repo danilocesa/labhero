@@ -104,10 +104,13 @@ class SearchPatientForm extends React.Component {
 		const { apiProfile} = this.props;
 		const apiUrlPatientID = (apiProfile === "phlebo" ? apiUrlPhleboPatientByID : apiUrlPatientByID);
 		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
-		
+	
 		try{
 			const response = await axiosCall({
-        method: 'GET',
+				method: 'GET',
+				headers: {
+					'authorization': `Bearer ${JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA')).token}`
+				},
         url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
       });
 			const { data } = await response;
