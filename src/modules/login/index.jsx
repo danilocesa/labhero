@@ -98,9 +98,9 @@ class Login extends React.Component {
 			url: 'LogIn',
 			data: body,
 			headers: {
-			'content-type': 'application/json',
-			'authorization': 'Bearer superSecretKey@345'
-        }
+				'content-type': 'application/json',
+				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
+      }
       });
       data = response;
     }

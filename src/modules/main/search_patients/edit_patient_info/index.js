@@ -96,7 +96,7 @@ class EditProfile extends React.Component {
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
-				const userID = JSON.parse(sessionStorage.getItem('userData'));
+				const userID = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
 				try{
 					console.log("TCL: EditProfile -> updatePatient -> fields", fields);
