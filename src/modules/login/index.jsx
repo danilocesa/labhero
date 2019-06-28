@@ -35,54 +35,52 @@ class Login extends React.Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault();
-		
+
 		this.setState({loading: true});
 		// console.log(this.state.loading);
 
 		const { username, password, userid } = this.state;
 
 		this.props.form.validateFields(async (err) => {
-			if (!err) {
-				const response = await this.login(username, password, userid);
-				if(response && response.status === 200) {
-					sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
-					// window.location.reload();
-					checkAuth.authenticate();
-					message
-					.success('You are now successfully logged in!', 1.5);
-					// .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
-					// this.props.history.push("/pleboresult");
 
-					// if(sessionStorage.currentKey === 1) {
-					// 	this.props.history.push("/");
-					// } 
-					
-					
-					switch(sessionStorage.SELECTED_SIDER_KEY) {
-						case '1':
-							this.props.history.push("/");
-							break;
-						case '2':
-							this.props.history.push("/request/create/step/1");
-							break;
-						case '3':
-							this.props.history.push("/searchlabresult");
-							break;
-						case '4':
-							this.props.history.push("/pleboresult");
-							break;
-						case '5':
-							this.props.history.push("/searchpatient");
-							break;
-						default : 
-							this.props.history.push("/");
-							break;	
+			if (username !== '' && password!== '') {
+				if (!err) {
+					const response = await this.login(username, password, userid);
+					if(response && response.status === 200) {
+						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
+						checkAuth.authenticate();
+						message
+						.success('You are now successfully logged in!', 1.5);
+						
+						switch(sessionStorage.SELECTED_SIDER_KEY) {
+							case '1':
+								this.props.history.push("/");
+								break;
+							case '2':
+								this.props.history.push("/request/create/step/1");
+								break;
+							case '3':
+								this.props.history.push("/searchlabresult");
+								break;
+							case '4':
+								this.props.history.push("/pleboresult");
+								break;
+							case '5':
+								this.props.history.push("/searchpatient");
+								break;
+							default : 
+								this.props.history.push("/");
+								break;	
+						}
+					} 
+					else {
+						this.setState({loading: false});
+						message.error('Incorrect Username/Password');
 					}
-				} 
-				else {
-					this.setState({loading: false});
-					message.error('Incorrect Username/Password');
 				}
+			} else {
+				this.setState({loading: false});
+				message.error('Enter Valid Username/Password');
 			}
 		});
 
@@ -115,6 +113,7 @@ class Login extends React.Component {
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
+	
 		return (
 			<Layout>
 				<Spin spinning={this.state.loading}>
