@@ -114,17 +114,17 @@ class SpecimenList extends React.Component {
 				const {loading } = this.state;
 				return(
 					<Col style={{ paddingLeft: 245, alignText: 'center' }} className="phlebo_exams_extract">
-							<Button 
-								id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
-								onClick={this.onChange} 
-								data-sectionid={value.phlebo_sectionID} 
-								data-specimenid={value.phlebo_specimenID} 
-								data-requestid={value.phlebo_requestID}
-								loading={loading}
-								disabled={value.phlebo_sampleSpecimenID}
-							>
-								EXTRACTED
-							</Button>
+						<Button 
+							id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
+							onClick={this.onChange} 
+							data-sectionid={value.phlebo_sectionID} 
+							data-specimenid={value.phlebo_specimenID} 
+							data-requestid={value.phlebo_requestID}
+							loading={loading}
+							disabled={value.phlebo_sampleSpecimenID}
+						>
+							EXTRACT
+						</Button>
 					</Col>
 				)
 			}

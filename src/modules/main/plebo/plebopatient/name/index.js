@@ -12,6 +12,7 @@ class PatientName extends React.Component {
 						fontWeight: 'bold',
 						letterSpacing: '1px',
 						fontSize: '20px',
+						textTransform: 'capitalize'
 					}}
 				>
 				{patientInfo.lastName} , {patientInfo.givenName} {patientInfo.middleName}

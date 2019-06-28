@@ -20,6 +20,7 @@ class Sider extends React.Component {
     super(props);
     this.state = {
       SELECTED_SIDER_KEY: '',
+      CLEAR_SEARCHED_NAME: ''
     }
     // this.handleMenuClick = this.handleMenuClick.bind(this);
   }
@@ -27,7 +28,8 @@ class Sider extends React.Component {
   componentWillMount() {
     this.handleMenuClick = (event) => {
       this.setState({
-        SELECTED_SIDER_KEY: event.key
+        SELECTED_SIDER_KEY: event.key,
+        
       }, function keys(){
        sessionStorage.setItem(SELECTED_SIDER_KEY, this.state.SELECTED_SIDER_KEY);
        sessionStorage.getItem(SELECTED_SIDER_KEY);
