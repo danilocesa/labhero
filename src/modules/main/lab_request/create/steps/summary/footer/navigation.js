@@ -12,12 +12,11 @@ class Navigation extends React.Component {
 		isVisible: false,
 	};
 
-	onClickPrint = () => {
+	onClickPrint = async () => {
 		const { saveExams } = this.props;
+		const isSuccess = await saveExams();
 
-		saveExams();
-
-		this.showModal();
+		if(isSuccess) this.showModal();
 	}
 
 	showModal = () => {

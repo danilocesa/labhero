@@ -3,6 +3,8 @@ import { Row, Form, Icon, Input, Button, Layout, Col, message, Spin } from 'antd
 import { Link } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
 import checkAuth from 'shared_components/auth';
+import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import './login.css';
 
@@ -32,72 +34,72 @@ class Login extends React.Component {
 	}
 
 	handleSubmit = (event) => {
-    event.preventDefault();
-	
-	this.setState({loading: true});
-	// console.log(this.state.loading);
+		event.preventDefault();
 
-    const { username, password, userid } = this.state;
+		this.setState({loading: true});
+		// console.log(this.state.loading);
+
+		const { username, password, userid } = this.state;
 
 		this.props.form.validateFields(async (err) => {
-		
-			if (username !== '' && password !== '') {	
+
+			if (username !== '' && password!== '') {
 				if (!err) {
 					const response = await this.login(username, password, userid);
-						if(response && response.status === 200) {
-							sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
-							checkAuth.authenticate();
-							message
-							.success('You are now successfully logged in!', 1.5);
-							// .then(() =>  message.info('Redirecting to your Dashboard', 1.5), null);
-							// this.props.history.push("/pleboresult");
-
-							// if(sessionStorage.currentKey === 1) {
-							// 	this.props.history.push("/");
-							// } 
-
-							// eslint-disable-next-line default-case
-							switch(sessionStorage.SELECTED_SIDER_KEY) {
-								case '1':
-									return this.props.history.push("/");
-								case '2':
-									return this.props.history.push("/request/create/step/1");
-								case '3':
-									return this.props.history.push("/searchlabresult");
-								case '4':
-									return this.props.history.push("/pleboresult");
-								case '5':
-									return this.props.history.push("/searchpatient");
-								default : 
-									return this.props.history.push("/");
-							}
-
-						} 
-						else {
-						message.error('Incorrect Username/Password');
+					if(response && response.status === 200) {
+						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
+						checkAuth.authenticate();
+						message
+						.success('You are now successfully logged in!', 1.5);
+						
+						switch(sessionStorage.SELECTED_SIDER_KEY) {
+							case '1':
+								this.props.history.push("/");
+								break;
+							case '2':
+								this.props.history.push("/request/create/step/1");
+								break;
+							case '3':
+								this.props.history.push("/searchlabresult");
+								break;
+							case '4':
+								this.props.history.push("/pleboresult");
+								break;
+							case '5':
+								this.props.history.push("/searchpatient");
+								break;
+							default : 
+								this.props.history.push("/");
+								break;	
 						}
+					} 
+					else {
+						this.setState({loading: false});
+						message.error('Incorrect Username/Password');
+					}
 				}
 			} else {
-				message.error('Enter Username/Password');
+				this.setState({loading: false});
+				message.error('Enter Valid Username/Password');
 			}
 		});
+
 	}
 
   login = async (userName, password, userID) => {
     let data = null;
     
     try{
-			const body = { userName, password, userID };
-			const response = await axiosCall({
-				method: 'POST',
-				url: 'LogIn',
-				data: body,
-				headers: {
-					'content-type': 'application/json',
-					'authorization': 'Bearer superSecretKey@345'
-				}
-			});
-			
+      	const body = { userName, password, userID };
+      	const response = await axiosCall({
+			method: 'POST',
+			url: 'LogIn',
+			data: body,
+			headers: {
+				'content-type': 'application/json',
+				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
+      }
+      });
       data = response;
     }
     catch(e) {
@@ -111,9 +113,10 @@ class Login extends React.Component {
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
+	
 		return (
 			<Layout>
-				<Spin tip="Redirecting ..." spinning={this.state.loading}>
+				<Spin spinning={this.state.loading}>
 					<Header style={{ borderBottom: 'none' }}>
 						<Row>
 							<Col span={24}>
@@ -156,6 +159,15 @@ class Login extends React.Component {
 			</Layout>
 		);
 	}
+}
+
+Login.propTypes = {
+	history:ReactRouterPropTypes.history.isRequired,
+	form: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
+}
+
+Login.defaultProps = {
+	form: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 }
 
 const LoginForm = Form.create({ name: 'normal_login' })(Login);

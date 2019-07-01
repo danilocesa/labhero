@@ -1,6 +1,7 @@
 import React from 'react';
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
@@ -8,11 +9,13 @@ import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
-import { CLR_SEL_EXAMS } from '../constants';
+import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
 
 class SummaryStep extends React.Component {
 	state = {
-		exams: []
+		exams: [],
+		otherInfo: {},
+		user: {}
 	}
 	
 	constructor(props) {
@@ -24,14 +27,26 @@ class SummaryStep extends React.Component {
 
 	componentWillMount() {
 		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const otherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO));
+		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
-		this.setState({ exams });
+		this.setState({ exams, otherInfo, user });
 	}
 
 	saveExams = async () => {
-		console.log('test');
 		let isSuccess = false;
-		const payload = {};
+		const { otherInfo, exams, user } = this.state;
+		const payloadExams = exams.map(exam => ({
+			examID: exam.examID,
+			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
+			priority: ''
+		}));
+
+		const payload = {
+			...otherInfo,
+			userID: user.userID,
+			exams: payloadExams,
+		};
 
 		try {
 			const response = await axiosCall({ 
@@ -41,11 +56,13 @@ class SummaryStep extends React.Component {
 			 });
 
 			const { data } = await response;
+			
+			console.log(data);
 
-			// eslint-disable-next-line prefer-destructuring
-			isSuccess = data.isSuccess;
+			isSuccess = true;
 		} catch (e) {
 			Message.error();
+			isSuccess = false;
 		}
 
 		return isSuccess;

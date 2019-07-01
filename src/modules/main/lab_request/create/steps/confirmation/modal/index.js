@@ -10,7 +10,6 @@ import {
 	CLR_SEL_EXAMS,
 	CLR_PERSONAL_INFO,
 	CLR_OTHER_INFO,
-	CLR_REQUEST_ID,
 	CLR_STEP_PROGRESS
 } from '../../constants';
 
@@ -34,7 +33,6 @@ class ConfirmationModal extends React.Component {
 		sessionStorage.removeItem(CLR_SEL_EXAMS);
 		sessionStorage.removeItem(CLR_PERSONAL_INFO);
 		sessionStorage.removeItem(CLR_OTHER_INFO);
-		sessionStorage.removeItem(CLR_REQUEST_ID);
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(1));
 
 		clearTimeout(this.timer);

@@ -86,7 +86,7 @@ class SelectTable extends React.Component {
 					columns={TableCols}
 					pagination={false}
 					dataSource={TableData}
-					scroll={{ y: 260 }}
+					scroll={{ y: 285 }}
 				/>
 			</div>
 		);

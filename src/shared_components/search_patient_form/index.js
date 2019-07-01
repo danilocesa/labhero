@@ -104,15 +104,14 @@ class SearchPatientForm extends React.Component {
 		const { apiProfile} = this.props;
 		const apiUrlPatientID = (apiProfile === "phlebo" ? apiUrlPhleboPatientByID : apiUrlPatientByID);
 		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
-		
+	
 		try{
 			const response = await axiosCall({
-        method: 'GET',
-				url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`),
+				method: 'GET',
 				headers: {
-					'content-type': 'application/json',
-					'authorization': 'Bearer superSecretKey@345'
-				}
+					'authorization': `Bearer ${JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA')).token}`
+				},
+        url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
       });
 			const { data } = await response;
 			if(apiProfile === "phlebo"){ // Check if module is phlebo

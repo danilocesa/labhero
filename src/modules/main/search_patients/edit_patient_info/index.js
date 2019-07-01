@@ -89,34 +89,16 @@ class EditProfile extends React.Component {
 		this.setState({[event.target.name]: event.target.value})
 	}
 	
-	onSubmit = async (e) => {
+	onSubmit = (e) => {
 		e.preventDefault();
 		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
-				const userID = JSON.parse(sessionStorage.getItem('userData'));
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
 				try{
-					console.log("TCL: EditProfile -> updatePatient -> fields", fields);
-					console.log("TCL: EditProfile -> onSubmit -> this.props.patientInfo.patientID", this.props.patientInfo.patientID);
-		
-					axiosCall({
-						method: 'PUT',
-						url: `Patient/${this.props.patientInfo.patientID}`,
-						data: {
-							"userID": userID.userID,
-							"lastName": fields.lastname,
-							"givenName": fields.firstname,
-							"middleName": fields.middlename,
-							"sex": fields.gender,
-							"dateOfBirth": fields.dateOfBirth,
-							"address": fields.address
-						}
-					});
-					message.success('Changes successfully saved!');
-					window.location.reload();
+					this.submitUpdatePatient(fields);
 				}
 				catch(error){
 					Message.error();
@@ -125,6 +107,32 @@ class EditProfile extends React.Component {
 		});
 
 	
+	}
+
+	submitUpdatePatient = async (fields) => {
+		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
+		const response = await axiosCall({
+			method: 'PUT',
+			url: `Patient/${this.props.patientInfo.patientID}`,
+			headers: {
+				'authorization': `Bearer ${loggedUserData.token}`
+			},
+			data: {
+				"userID": loggedUserData.userID,
+				"lastName": fields.lastname,
+				"givenName": fields.firstname,
+				"middleName": fields.middlename,
+				"sex": fields.gender,
+				"dateOfBirth": fields.dateOfBirth,
+				"address": fields.address
+			}
+		});
+		if(response.status === 200){
+			message.success('Changes successfully saved!');
+			window.location.reload();
+		} else {
+			Message.error();
+		}
 	}
 
 	onClickDatePicker = () => {

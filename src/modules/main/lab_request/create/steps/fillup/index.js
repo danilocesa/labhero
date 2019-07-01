@@ -13,9 +13,9 @@ import FillupForm from './form';
 import { 
 	CLR_PERSONAL_INFO, 
 	CLR_OTHER_INFO, 
-	CLR_REQUEST_ID, 
 	CLR_STEP_PROGRESS 
 } from '../constants';
+
 
 const personalInfoKeys = [
 	'hospitalID',
@@ -61,7 +61,6 @@ class FillupStep extends React.Component {
 		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
-		let { patientID } = fields;
 		
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
@@ -73,18 +72,16 @@ class FillupStep extends React.Component {
 			// If createPatient has an error, stop the function
 			if(!createdPatient) return;
 
-			// eslint-disable-next-line prefer-destructuring
-			patientID = createdPatient.patientID;
+			otherInfo.patientID = createdPatient.patientID;
 		}
 		
-		const createdOtherInfo = await this.createOtherInfo({ ...otherInfo, patientID });
+		const createdOtherInfo = await this.createOtherInfo({ ...otherInfo });
 
 		// If createOtherInfo has an error, stop the function
 		if(!createdOtherInfo) return;
 
 		sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 		sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
-		sessionStorage.setItem(CLR_REQUEST_ID, createdOtherInfo.requestID);
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
 
 		this.goToNextPage();
@@ -98,13 +95,16 @@ class FillupStep extends React.Component {
 
 	createPatientInfo = async (personalInfo) => {
 		let createdPatient;
-		
+		const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
 		try{
 			const content = {
 				method: 'POST',
 				url: '/Patient',
 				data: personalInfo,
-				headers: { 'content-type': 'application/json' }
+				headers: { 
+					'authorization': `Bearer ${userData.token}`
+				}
 			}
 
 			const response = await axiosCall(content);

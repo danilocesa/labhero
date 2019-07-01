@@ -243,11 +243,11 @@ class SelectStep extends React.Component {
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
 		const { selectedExams } = this.state
+		
 		const filteredExams = selectedExams.filter(item => {
-			if(item.selectedPanel && item.selectedPanel.panelID !== panelID)
-				return true;
-
-			return false;
+			if(item.selectedPanel == null) return true;
+			
+			return !(item.selectedPanel && item.selectedPanel.panelID === panelID); 
 		});
 
 		this.setState({ selectedExams: filteredExams });
