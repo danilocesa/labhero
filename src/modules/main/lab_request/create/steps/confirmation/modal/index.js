@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import { Modal, Row, Col } from 'antd';
+// @ts-ignore
 import { CheckIcon } from 'images';
 
 import {

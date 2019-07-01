@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
+import PropTypes from 'prop-types';
 
 import ConfirmationModal from '../../confirmation/modal';
 
@@ -8,26 +9,34 @@ const { Text } = Typography;
 
 class Navigation extends React.Component {
 	state = {
-		displayModal: false,
+		isVisible: false,
 	};
+
+	onClickPrint = () => {
+		const { saveExams } = this.props;
+
+		saveExams();
+
+		this.showModal();
+	}
 
 	showModal = () => {
 		this.setState({
-			displayModal: true,
+			isVisible: true,
 		});
 	};
 
 	closeModal = () => {
 		this.setState({
-			displayModal: false,
+			isVisible: false,
 		});
 	};
 
 	render() {
-		const { displayModal } = this.state;
+		const { isVisible } = this.state;
 
-		const Prompt = !displayModal ? null : (
-			<ConfirmationModal visible={displayModal} closeModal={this.closeModal} />
+		const Prompt = !isVisible ? null : (
+			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
 		);
 
 		return (
@@ -43,7 +52,7 @@ class Navigation extends React.Component {
 							<Button
 								className="nav-btn-round"
 								type="primary"
-								onClick={this.showModal}
+								onClick={this.onClickPrint}
 								style={{ marginLeft: 20 }}
 							>
 								PRINT
@@ -55,6 +64,10 @@ class Navigation extends React.Component {
 			</div>
 		);
 	}
+}
+
+Navigation.propTypes = {
+	saveExams: PropTypes.func.isRequired
 }
 
 export default Navigation;

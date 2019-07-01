@@ -87,16 +87,17 @@ class Login extends React.Component {
     let data = null;
     
     try{
-      	const body = { userName, password, userID };
-      	const response = await axiosCall({
-			method: 'POST',
-			url: 'LogIn',
-			data: body,
-			headers: {
-			'content-type': 'application/json',
-			'authorization': 'Bearer superSecretKey@345'
-        }
-      });
+			const body = { userName, password, userID };
+			const response = await axiosCall({
+				method: 'POST',
+				url: 'LogIn',
+				data: body,
+				headers: {
+					'content-type': 'application/json',
+					'authorization': 'Bearer superSecretKey@345'
+				}
+			});
+			
       data = response;
     }
     catch(e) {

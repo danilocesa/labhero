@@ -1,5 +1,6 @@
 import React from 'react';
-
+import axiosCall from 'services/axiosCall';
+import Message from 'shared_components/message';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
@@ -27,6 +28,29 @@ class SummaryStep extends React.Component {
 		this.setState({ exams });
 	}
 
+	saveExams = async () => {
+		console.log('test');
+		let isSuccess = false;
+		const payload = {};
+
+		try {
+			const response = await axiosCall({ 
+				method: 'POST', 
+				url: '/Request',
+				data: payload
+			 });
+
+			const { data } = await response;
+
+			// eslint-disable-next-line prefer-destructuring
+			isSuccess = data.isSuccess;
+		} catch (e) {
+			Message.error();
+		}
+
+		return isSuccess;
+	}
+
 	render() {
 		const { exams } = this.state;
 		const { restriction } = this;
@@ -39,7 +63,7 @@ class SummaryStep extends React.Component {
 					<SummarySection />
 					<SummaryTable exams={exams} />
 					<br />
-					<SummaryFooter />
+					<SummaryFooter saveExams={this.saveExams} />
 				</div>
 			);
 		}

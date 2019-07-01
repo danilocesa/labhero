@@ -108,7 +108,11 @@ class SearchPatientForm extends React.Component {
 		try{
 			const response = await axiosCall({
         method: 'GET',
-        url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
+				url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`),
+				headers: {
+					'content-type': 'application/json',
+					'authorization': 'Bearer superSecretKey@345'
+				}
       });
 			const { data } = await response;
 			if(apiProfile === "phlebo"){ // Check if module is phlebo
@@ -130,12 +134,11 @@ class SearchPatientForm extends React.Component {
 		return patients;
 	}
 
-	clearInputs = async (event) => {
+	clearInputs = async () => {
 		this.setState({
 			patientID: "",
 			patientName: ""
 		});
-
 	}
 
 	handleFocus = (event) => {

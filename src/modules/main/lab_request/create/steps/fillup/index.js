@@ -2,21 +2,20 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
-
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import Restriction from '../clr_restriction/restriction';
+import PageTitle from '../../title';
+import Tracker from '../../tracker';
+import FillupForm from './form';
+
 import { 
 	CLR_PERSONAL_INFO, 
 	CLR_OTHER_INFO, 
 	CLR_REQUEST_ID, 
 	CLR_STEP_PROGRESS 
 } from '../constants';
-
-import Restriction from '../clr_restriction/restriction';
-
-import PageTitle from '../../title';
-import Tracker from '../../tracker';
-import FillupForm from './form';
 
 const personalInfoKeys = [
 	'hospitalID',
@@ -59,14 +58,17 @@ class FillupStep extends React.Component {
 	}
 
 	handleSubmit = async (fields) => {
+		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		let { patientID } = fields;
-
-		console.log(personalInfo);
+		
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
-			const createdPatient = await this.createPatientInfo(personalInfo);
+			const createdPatient = await this.createPatientInfo({
+				userID: userSession.userID,
+				...personalInfo
+			});
 			
 			// If createPatient has an error, stop the function
 			if(!createdPatient) return;
