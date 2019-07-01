@@ -133,12 +133,11 @@ class SearchPatientForm extends React.Component {
 		return patients;
 	}
 
-	clearInputs = async (event) => {
+	clearInputs = async () => {
 		this.setState({
 			patientID: "",
 			patientName: ""
 		});
-
 	}
 
 	handleFocus = (event) => {

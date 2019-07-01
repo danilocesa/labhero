@@ -2,21 +2,20 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
-
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import { 
-	CLR_PERSONAL_INFO, 
-	CLR_OTHER_INFO, 
-	CLR_REQUEST_ID, 
-	CLR_STEP_PROGRESS 
-} from '../constants';
-
-import Restriction from '../clr_restriction';
-
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import FillupForm from './form';
+
+import { 
+	CLR_PERSONAL_INFO, 
+	CLR_OTHER_INFO, 
+	CLR_STEP_PROGRESS 
+} from '../constants';
+
 
 const personalInfoKeys = [
 	'hospitalID',
@@ -38,10 +37,12 @@ const otherInfoKeys = [
 	'comment',
 	'hospitalRequestID',
 	'locationID',
+	'locationName',
 	'officialReceipt',
 	'patientAge',
 	'patientID',
 	'physicianID',
+	'physicianName',
 	'requestID',
 	'visit'
 ];
@@ -57,29 +58,30 @@ class FillupStep extends React.Component {
 	}
 
 	handleSubmit = async (fields) => {
+		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
-		let { patientID } = fields;
-
+		
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
-			const createdPatient = await this.createPatientInfo(personalInfo);
+			const createdPatient = await this.createPatientInfo({
+				userID: userSession.userID,
+				...personalInfo
+			});
 			
 			// If createPatient has an error, stop the function
 			if(!createdPatient) return;
 
-			// eslint-disable-next-line prefer-destructuring
-			patientID = createdPatient.patientID;
+			otherInfo.patientID = createdPatient.patientID;
 		}
 		
-		const createdOtherInfo = await this.createOtherInfo({ ...otherInfo, patientID });
+		const createdOtherInfo = await this.createOtherInfo({ ...otherInfo });
 
 		// If createOtherInfo has an error, stop the function
 		if(!createdOtherInfo) return;
 
 		sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 		sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
-		sessionStorage.setItem(CLR_REQUEST_ID, createdOtherInfo.requestID);
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
 
 		this.goToNextPage();
@@ -93,13 +95,16 @@ class FillupStep extends React.Component {
 
 	createPatientInfo = async (personalInfo) => {
 		let createdPatient;
-		
+		const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
 		try{
 			const content = {
 				method: 'POST',
 				url: '/Patient',
 				data: personalInfo,
-				headers: { 'content-type': 'application/json' }
+				headers: { 
+					'authorization': `Bearer ${userData.token}`
+				}
 			}
 
 			const response = await axiosCall(content);

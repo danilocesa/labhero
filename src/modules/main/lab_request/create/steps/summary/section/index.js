@@ -15,21 +15,25 @@ const sectionLayout = {
 class SummarySection extends React.Component {
 	state = {
 		personalInfo: {
-			caseNumber: '',
 			givenName: '',
 			nameSuffix: '',
 			lastName: '',
 			middleName: '',
 			dateOfBirth: '',
-			age: '',
 			sex: '',
 		},
 		otherInfo: {
-			ward: '',
-			physicianId: '',
-			classType: '',
+			bed: '',
+			chargeSlip: '',
 			comment: '',
-			amount: ''
+			locationID: '',
+			locationName: '',
+			officialReceipt: '',
+			patientAge: '',
+			patientID: '',
+			physicianID: '',
+			physicianName: '',
+			visit: ''
 		}
 	}
 
@@ -46,22 +50,22 @@ class SummarySection extends React.Component {
 
 	render() {
 		const {
-			caseNumber,
 			givenName,
 			nameSuffix,
 			lastName,
 			middleName,
 			dateOfBirth,
-			age,
 			sex
 		} = this.state.personalInfo;
 		
 		const {
-			ward,
-			physicianId,
-			classType,
+			bed,
+			chargeSlip,
 			comment,
-			amount
+			locationName,
+			patientAge,
+			physicianName,
+			visit
 		} = this.state.otherInfo;
 
 		return (
@@ -85,7 +89,7 @@ class SummarySection extends React.Component {
 								<div className="section">
 									<Text strong>DATE OF BIRTH</Text>
 									<br />
-									<Text>{`${dateOfBirth} - ${age}`}</Text>
+									<Text>{`${dateOfBirth} - ${patientAge}`}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
@@ -97,39 +101,39 @@ class SummarySection extends React.Component {
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
-									<Text strong>CASE NO.</Text>
+									<Text strong>LOCATION</Text>
 									<br />
-									<Text>{caseNumber}</Text>
+									<Text>{locationName}</Text>
 								</div>
 							</Col>
 						</Row>
 						<Row style={{ marginTop: 10 }}>
 							<Col {...sectionLayout}>
 								<div className="section">
-									<Text strong>PHYSICIAN ID</Text>
+									<Text strong>PHYSICIAN</Text>
 									<br />
-									<Text>{physicianId}</Text>
+									<Text>{physicianName}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
-									<Text strong>WARD</Text>
+									<Text strong>BED</Text>
 									<br />
-									<Text>{ward}</Text>
+									<Text>{bed}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
-									<Text strong>CLASS</Text>
+									<Text strong>VISIT</Text>
 									<br />
-									<Text>{classType}</Text>
+									<Text>{visit}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>AMOUNT</Text>
 									<br />
-									<Text>{amount}</Text>
+									<Text>{chargeSlip}</Text>
 								</div>
 							</Col>
 						</Row>

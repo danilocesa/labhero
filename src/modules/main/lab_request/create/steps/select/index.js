@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Spin } from 'antd';
 
-import Restriction from '../clr_restriction';
+import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SectionHeader from './section_header';
@@ -243,11 +243,11 @@ class SelectStep extends React.Component {
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
 		const { selectedExams } = this.state
+		
 		const filteredExams = selectedExams.filter(item => {
-			if(item.selectedPanel && item.selectedPanel.panelID !== panelID)
-				return true;
-
-			return false;
+			if(item.selectedPanel == null) return true;
+			
+			return !(item.selectedPanel && item.selectedPanel.panelID === panelID); 
 		});
 
 		this.setState({ selectedExams: filteredExams });
