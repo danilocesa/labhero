@@ -21,7 +21,9 @@ import './specimen.css';
 class SpecimenList extends React.Component {
 	state = {
 		patientSectionList: null,
-		loading: false
+		loading: false,
+		disabled: false,
+		btnState: 'EXTRACT'
 	}
 
 	async componentDidMount(){
@@ -61,6 +63,10 @@ class SpecimenList extends React.Component {
     
 		this.setState({ loading: true});
 		const saveExtraction = await this.checkIn(requestID, sectionID, specimenID, JSON.parse(userDataSession).userID);
+		this.setState({ 
+			btnState : 'EXTRACTED',
+			disabled : true
+		  });
 		this.setState({ loading: false });
 		
 		if(saveExtraction){
@@ -113,7 +119,7 @@ class SpecimenList extends React.Component {
 			render:(button,value) => {
 				const {loading } = this.state;
 				return(
-					<Col style={{ paddingLeft: 245, alignText: 'center' }} className="phlebo_exams_extract">
+					<Col style={{ paddingLeft: 245 }} className="phlebo_exams_extract">
 						<Button 
 							id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
 							onClick={this.onChange} 
@@ -121,9 +127,9 @@ class SpecimenList extends React.Component {
 							data-specimenid={value.phlebo_specimenID} 
 							data-requestid={value.phlebo_requestID}
 							loading={loading}
-							disabled={value.phlebo_sampleSpecimenID}
+							disabled={this.state.disabled}
 						>
-							EXTRACT
+							{this.state.btnState}
 						</Button>
 					</Col>
 				)

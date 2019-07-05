@@ -36,6 +36,7 @@
     "flow-bin": "^0.96.0",
     "history": "4.7.2",
     "immutable": "^3.8.2",
+    "jwt-decode": "^2.2.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "loadable-components": "2.2.3",

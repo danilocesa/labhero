@@ -18,8 +18,8 @@ const menu = (
 	<Menu>
     <Menu.Item>
 	<a
-rel="noopener noreferrer"
-href="#"
+  rel="noopener noreferrer"
+  href="#"
 	onClick={() => {
           checkAuth.signout();
           }}

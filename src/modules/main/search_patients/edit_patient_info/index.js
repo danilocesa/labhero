@@ -6,7 +6,7 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, message, TreeSelect } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, message, Cascader } from 'antd';
 
 // CUSTOM MODULES
 import addressData from 'assets/address.json';
@@ -34,7 +34,7 @@ class EditProfile extends React.Component {
 		const addressArr = [];
 		let a = 0; 
 		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
-			addressArr.push({"title":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
+			addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
 			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
 			a +=1;
 		}
@@ -49,7 +49,7 @@ class EditProfile extends React.Component {
 		for (const [keyMunicipality] of Object.entries(array)) {
 			municipalityArr.push(
 				{
-				"title": keyMunicipality,
+				"label": keyMunicipality,
 				"value": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`,
 				"key": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`
 				}
@@ -138,10 +138,16 @@ class EditProfile extends React.Component {
 	onClickDatePicker = () => {
 		console.log(this.props.patientInfo.dateOfBirth);
 	}
- 
+	
+	filter = (inputValue, path) => {
+		return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+	}
+
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
+
+
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -225,17 +231,40 @@ class EditProfile extends React.Component {
 									{getFieldDecorator('address', { 
 										rules: FIELD_RULES.address
 									})(
-										<TreeSelect
+										// <TreeSelect
+										// 	showSearch
+										// 	treeData={this.state.addressArr}
+										// 	filterTreeNode={this.searchAddress}
+										// 	style={{ width: 300 }}
+										// 	dropdownStyle={{ maxHeight: 500 }}
+										// 	placeholder="Please select"
+										// 	allowClear
+										// />
+										<Cascader 
 											showSearch
-											treeData={this.state.addressArr}
+											options={this.state.addressArr}
 											filterTreeNode={this.searchAddress}
-											style={{ width: 300 }}
+											style={{ width: '100%' }}
 											dropdownStyle={{ maxHeight: 500 }}
 											placeholder="Please select"
+											// eslint-disable-next-line react/jsx-no-duplicate-props
+											showSearch={this.filter}
 											allowClear
 										/>
 									)}
 								</div>
+							</Form.Item>
+						</Col>
+
+						<Col xs={24} sm={12} md={24} lg={24}>
+							<Form.Item label="House No./Unit/Floor No., Bldg Name, Blk or Lot No.">
+							{/* {getFieldDecorator('lastname', {
+								// initialValue: this.props.patientInfo.lastName,
+								// rules: FIELD_RULES.lastname ,
+							})(
+								<Input />
+							)} */}
+							<Input />
 							</Form.Item>
 						</Col>
 					</Row>
