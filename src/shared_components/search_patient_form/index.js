@@ -154,7 +154,6 @@ class SearchPatientForm extends React.Component {
 			patientID: "",
 			patientName: ""
 		});
-
 	}
 
 	handleFocus = (event) => {

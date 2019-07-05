@@ -7,44 +7,51 @@ import './table.css';
 
 const columns = [
 	{
+		title: 'PANEL',
+		dataIndex: 'selectedPanel.panelName',
+		width: '25%',
+		// align: 'center',
+	},
+	{
 		title: 'SECTION',
-		dataIndex: 'section',
-		width: '33%',
+		dataIndex: 'selectedSection.sectionName',
+		width: '25%',
 	},
 	{
 		title: 'EXAM NAME',
-		dataIndex: 'exam',
-		width: '33%',
+		dataIndex: 'examName',
+		width: '25%',
 		// align: 'center',
 	},
 	{
 		title: 'SPECIMEN',
-		dataIndex: 'specimen',
-		width: '33%',
+		dataIndex: 'selectedSpecimen.specimenName',
+		width: '25%',
 		// align: 'center',
-	},
+	}
 ];
 
 class SummaryTable extends React.Component {
 	state = {
-		tests: []
+		exams: []
 	}
 	
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const cachedExams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const exams = cachedExams.map(cachedExam => ({ ...cachedExam, key: cachedExam.examID }));
 
-		this.setState({ tests });
+		this.setState({ exams });
 	}
 	
 	render() {
-		const { tests } = this.state;
+		const { exams } = this.state;
 
 		return (
 			<Row style={{ marginTop: 20 }}>
 				<Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
 					<div className="summary-step-table">
 						<Table 
-							dataSource={tests} 
+							dataSource={exams} 
 							columns={columns} 
 							pagination={false} 
 							scroll={{ y: 260 }} 

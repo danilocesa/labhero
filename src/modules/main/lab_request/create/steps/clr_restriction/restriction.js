@@ -11,8 +11,6 @@ class Restriction {
       if(stepNumber <= this.stepProgress)
         this.hasAccess = true;
     }
-
-    console.log(this.stepProgress);
   }
 
   redirect = () => (

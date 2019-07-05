@@ -1,17 +1,21 @@
 import React from 'react';
-
-import Restriction from '../clr_restriction';
+import axiosCall from 'services/axiosCall';
+import Message from 'shared_components/message';
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
-import { CLR_SEL_EXAMS } from '../constants';
+import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
 
 class SummaryStep extends React.Component {
 	state = {
-		tests: []
+		exams: [],
+		otherInfo: {},
+		user: {}
 	}
 	
 	constructor(props) {
@@ -22,13 +26,50 @@ class SummaryStep extends React.Component {
 	}
 
 	componentWillMount() {
-		const tests = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const otherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO));
+		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
-		this.setState({ tests });
+		this.setState({ exams, otherInfo, user });
+	}
+
+	saveExams = async () => {
+		let isSuccess = false;
+		const { otherInfo, exams, user } = this.state;
+		const payloadExams = exams.map(exam => ({
+			examID: exam.examID,
+			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
+			priority: ''
+		}));
+
+		const payload = {
+			...otherInfo,
+			userID: user.userID,
+			exams: payloadExams,
+		};
+
+		try {
+			const response = await axiosCall({ 
+				method: 'POST', 
+				url: '/Request',
+				data: payload
+			 });
+
+			const { data } = await response;
+			
+			console.log(data);
+
+			isSuccess = true;
+		} catch (e) {
+			Message.error();
+			isSuccess = false;
+		}
+
+		return isSuccess;
 	}
 
 	render() {
-		const { tests } = this.state;
+		const { exams } = this.state;
 		const { restriction } = this;
 
 		if(restriction.hasAccess) {
@@ -37,9 +78,9 @@ class SummaryStep extends React.Component {
 					<PageTitle />
 					<Tracker active={3} />
 					<SummarySection />
-					<SummaryTable tests={tests} />
+					<SummaryTable exams={exams} />
 					<br />
-					<SummaryFooter />
+					<SummaryFooter saveExams={this.saveExams} />
 				</div>
 			);
 		}

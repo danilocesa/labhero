@@ -1,7 +1,7 @@
 import React from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
+import PropTypes from 'prop-types';
 
 import ConfirmationModal from '../../confirmation/modal';
 
@@ -9,30 +9,33 @@ const { Text } = Typography;
 
 class Navigation extends React.Component {
 	state = {
-		displayModal: false,
+		isVisible: false,
 	};
+
+	onClickPrint = async () => {
+		const { saveExams } = this.props;
+		const isSuccess = await saveExams();
+
+		if(isSuccess) this.showModal();
+	}
 
 	showModal = () => {
 		this.setState({
-			displayModal: true,
+			isVisible: true,
 		});
 	};
 
 	closeModal = () => {
-		const { history } = this.props;
-
 		this.setState({
-			displayModal: false,
+			isVisible: false,
 		});
-
-		history.push('/request/create/step/1');
 	};
 
 	render() {
-		const { displayModal } = this.state;
+		const { isVisible } = this.state;
 
-		const Prompt = !displayModal ? null : (
-			<ConfirmationModal visible={displayModal} closeModal={this.closeModal} />
+		const Prompt = !isVisible ? null : (
+			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
 		);
 
 		return (
@@ -48,7 +51,7 @@ class Navigation extends React.Component {
 							<Button
 								className="nav-btn-round"
 								type="primary"
-								onClick={this.showModal}
+								onClick={this.onClickPrint}
 								style={{ marginLeft: 20 }}
 							>
 								PRINT
@@ -63,7 +66,7 @@ class Navigation extends React.Component {
 }
 
 Navigation.propTypes = {
-	history: ReactRouterPropTypes.history.isRequired
-};
+	saveExams: PropTypes.func.isRequired
+}
 
-export default withRouter(Navigation);
+export default Navigation;

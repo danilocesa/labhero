@@ -1,7 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 import { Modal, Row, Col } from 'antd';
-import { CheckIcon } from '../../../../../../../images';
+// @ts-ignore
+import { CheckIcon } from 'images';
+
+import {
+	CLR_SEL_EXAMS,
+	CLR_PERSONAL_INFO,
+	CLR_OTHER_INFO,
+	CLR_STEP_PROGRESS
+} from '../../constants';
 
 class ConfirmationModal extends React.Component {
 	constructor(args) {
@@ -18,7 +28,16 @@ class ConfirmationModal extends React.Component {
 	}
 
 	componentWillUnmount() {
+		const { history } = this.props;
+
+		sessionStorage.removeItem(CLR_SEL_EXAMS);
+		sessionStorage.removeItem(CLR_PERSONAL_INFO);
+		sessionStorage.removeItem(CLR_OTHER_INFO);
+		sessionStorage.setItem(CLR_STEP_PROGRESS, String(1));
+
 		clearTimeout(this.timer);
+
+		history.push('/request/create/step/1');
 	}
 
 	render() {
@@ -48,7 +67,8 @@ class ConfirmationModal extends React.Component {
 
 ConfirmationModal.propTypes = {
 	closeModal: PropTypes.func.isRequired,
-	visible: PropTypes.bool.isRequired
+	visible: PropTypes.bool.isRequired,
+	history: ReactRouterPropTypes.history.isRequired
 };
 
-export default ConfirmationModal;
+export default withRouter(ConfirmationModal);
