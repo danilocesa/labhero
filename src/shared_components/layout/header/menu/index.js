@@ -7,7 +7,7 @@ import { Dropdown, Menu, Icon, Typography, Avatar, Button } from 'antd';
 
 
 // CUSTOM MODULES
-import checkAuth from 'shared_components/auth';
+import auth from 'services/auth';
 // import {userData} from 'shared_components/constant-global';
 // CSS
 import './menu.css';  
@@ -17,15 +17,13 @@ const { Text } = Typography;
 const menu = (
 	<Menu>
     <Menu.Item>
-	<a
-  rel="noopener noreferrer"
-  href="#"
-	onClick={() => {
-          checkAuth.signout();
-          }}
-	>
-        Logout
- </a>
+			<a
+				rel="noopener noreferrer"
+				href="#"
+				onClick={() => {auth.signout();}}
+			>
+						Logout
+			</a>
     </Menu.Item>
   </Menu>
 );

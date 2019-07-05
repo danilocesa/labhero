@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout, Button, Row, Col } from 'antd';
+import { CompanyLogo } from 'images';
 import UserMenu from './menu';
-import { CompanyLogo } from '../../../images';
 
 import './header.css';
 
