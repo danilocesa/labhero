@@ -22,7 +22,8 @@ export default function axiosCall(axiosConfig) {
 		const urls = ['LogIn']; // Add api path here that you want to blacklist
 		const inBackLists = urls.findIndex(url => config.url === url) !== -1;
 
-		if(config.method.toLowerCase() === 'post' && !inBackLists) {
+		// config.method.toLowerCase() === 'post' && 
+		if(!inBackLists) {
 			const token = jwtDecode(LoggedinUserData.token);
 			const currentTimestamp = Math.round(new Date().getTime()/1000);
 			

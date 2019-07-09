@@ -2,9 +2,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import jwtDecode from 'jwt-decode';
-import auth from 'services/auth';
-import { Form, Input, Button, Row, Col, message } from 'antd';
+import { Form, Input, Button, Row, Col } from 'antd';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -76,15 +74,6 @@ class SearchPatientForm extends React.Component {
 			
 			populatePatients(patients);
 		}
-
-		// const checkToken = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA')).token;
-		
-		// const decoded = jwtDecode(checkToken);
-		
-		// if (decoded.exp < (Date.now()/1000)) {
-		// 	message.loading('Session Expired, Signing out', 2.5);
-		// 	auth.signout();
-		// }
 	}
 
 
@@ -149,6 +138,15 @@ class SearchPatientForm extends React.Component {
 			patientID: "",
 			patientName: ""
 		});
+
+		const { populatePatients } = this.props;
+		let patients = [];
+		
+		this.setState({ loading: true });
+		patients = []; 
+		this.setState({ loading: false });
+
+		populatePatients(patients);
 	}
 
 	handleFocus = (event) => {
@@ -198,7 +196,11 @@ class SearchPatientForm extends React.Component {
 						<Form.Item style={{ marginTop: 22 }}>
 							<Row gutter={12}>
 								<Col span={12}>
-									<Button block shape="round" onClick={this.clearInputs}>
+									<Button 
+										block 
+										shape="round" 
+										onClick={this.clearInputs} 
+									>
 										CLEAR
 									</Button>
 								</Col>

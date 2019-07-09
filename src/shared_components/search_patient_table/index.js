@@ -30,19 +30,19 @@ const columns = [
 		title: 'MIDDLE NAME',
 		dataIndex: 'middleName',
 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
-		width: '12%'
+		width: '15%'
 	}, 
 	{
 		title: 'DATE OF BIRTH',
 		dataIndex: 'dateOfBirth',
 		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
-		width: '15%'
+		width: '14%'
 	},
 	{
 		title: 'GENDER',
 		dataIndex: 'sex',
 		sorter: (a, b) => a.sex.localeCompare(b.sex),
-		width: '8%'
+		width: '12%'
 	},
 	{
 		title: 'ADDRESS',
@@ -66,7 +66,7 @@ class SearchPatientTable extends React.Component {
 		else  {
 			drawer(record);
 		}
-	}
+	} 
 	
 	render() {
 		const { data, pageSize, loading, redirectUrl } = this.props;
