@@ -1,5 +1,4 @@
 // LIBRARY
-import React from 'react';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import auth from 'services/auth';

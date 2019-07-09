@@ -30,12 +30,17 @@ class EditProfile extends React.Component {
 	}
 
 	componentDidMount(){
-		console.log(this.props.patientInfo.sex === "MALE");
 		const addressArr = [];
 		let a = 0; 
 		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
 			addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
 			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
+			
+			for(const [keyMunicipality, valueMunicipality] of Object.entries(valueprovince.municipality_list)){
+				for( const [key, value] of  Object.entries(addressArr[a].children) ){
+					value.children = this.getBarangay(valueMunicipality.barangay_list)
+				}
+			}
 			a +=1;
 		}
 		this.setState({
@@ -60,21 +65,19 @@ class EditProfile extends React.Component {
 	}
 
 	getBarangay = (array) => {
-    
 		const barangayArr = [];
 		let a = 0;
-		array.map(function(key){
+		for (const [keyBarangay, valueBarangay] of Object.entries(array)) {
 			barangayArr.push(
 				{
-				"title": key,
-				"value": `${key}L3-L3-${a}`,
-				"key": `${key}L3-L3-${a}`
+				"label": valueBarangay,
+				"value": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`,
+				"key": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`
 				}
 			)
 			a +=1;
-		});
+		}
 		return barangayArr;
-    
 	}
 
 	searchAddress = (input,treenode) => {
@@ -124,7 +127,7 @@ class EditProfile extends React.Component {
 				"middleName": fields.middlename,
 				"sex": fields.gender,
 				"dateOfBirth": fields.dateOfBirth,
-				"address": fields.address
+				"address": fields.address +  fields.homeAddress
 			}
 		});
 		if(response.status === 200){
@@ -138,15 +141,10 @@ class EditProfile extends React.Component {
 	onClickDatePicker = () => {
 		console.log(this.props.patientInfo.dateOfBirth);
 	}
-	
-	filter = (inputValue, path) => {
-		return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-	}
 
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
-
 
 		return(
 			<div>
@@ -241,15 +239,11 @@ class EditProfile extends React.Component {
 										// 	allowClear
 										// />
 										<Cascader 
-											showSearch
 											options={this.state.addressArr}
-											filterTreeNode={this.searchAddress}
 											style={{ width: '100%' }}
-											dropdownStyle={{ maxHeight: 500 }}
+											dropdownstyle={{ maxHeight: 500 }}
 											placeholder="Please select"
-											// eslint-disable-next-line react/jsx-no-duplicate-props
-											showSearch={this.filter}
-											allowClear
+											allowclear
 										/>
 									)}
 								</div>
@@ -258,13 +252,12 @@ class EditProfile extends React.Component {
 
 						<Col xs={24} sm={12} md={24} lg={24}>
 							<Form.Item label="House No./Unit/Floor No., Bldg Name, Blk or Lot No.">
-							{/* {getFieldDecorator('lastname', {
+							{getFieldDecorator('homeAddress', {
 								// initialValue: this.props.patientInfo.lastName,
-								// rules: FIELD_RULES.lastname ,
+								rules: FIELD_RULES.homeAddress ,
 							})(
 								<Input />
-							)} */}
-							<Input />
+							)}
 							</Form.Item>
 						</Col>
 					</Row>
