@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Form, Icon, Input, Button, Layout, Col, message, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
-import checkAuth from 'shared_components/auth';
+import auth from 'services/auth';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
@@ -48,7 +48,7 @@ class Login extends React.Component {
 					const response = await this.login(username, password, userid);
 					if(response && response.status === 200) {
 						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
-						checkAuth.authenticate();
+						auth.authenticate();
 						message
 						.success('You are now successfully logged in!', 1.5);
 						

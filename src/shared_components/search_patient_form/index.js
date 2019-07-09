@@ -2,7 +2,9 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Row, Col } from 'antd';
+import jwtDecode from 'jwt-decode';
+import auth from 'services/auth';
+import { Form, Input, Button, Row, Col, message } from 'antd';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -12,10 +14,11 @@ import {
 	apiUrlPatientByName, 
 	apiUrlPhleboPatientByID, 
 	apiUrlPhleboPatientByName
-} from 'shared_components/constant-global'
+} from 'shared_components/constant-global';
 
 // CSS
 import './search_patient_form.css';
+
 
 // CONSTANTS
 const formItemLayout = [
@@ -52,6 +55,7 @@ class SearchPatientForm extends React.Component {
 		loading: false
 	};
 
+	
 	async componentDidMount() {
 		const { 
 			sessionPatientID, 
@@ -72,7 +76,17 @@ class SearchPatientForm extends React.Component {
 			
 			populatePatients(patients);
 		}
+
+		// const checkToken = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA')).token;
+		
+		// const decoded = jwtDecode(checkToken);
+		
+		// if (decoded.exp < (Date.now()/1000)) {
+		// 	message.loading('Session Expired, Signing out', 2.5);
+		// 	auth.signout();
+		// }
 	}
+
 
 	handleInputChange = (event) => {
 		this.setState({
@@ -108,9 +122,6 @@ class SearchPatientForm extends React.Component {
 		try{
 			const response = await axiosCall({
 				method: 'GET',
-				headers: {
-					'authorization': `Bearer ${JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA')).token}`
-				},
         url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
       });
 			const { data } = await response;

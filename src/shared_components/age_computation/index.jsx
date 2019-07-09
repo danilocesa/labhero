@@ -6,4 +6,4 @@ export default function computeAge(dateOfBirth){
 		const age = years > 0 ? years : '---';
 
 		return age;
-}
+};

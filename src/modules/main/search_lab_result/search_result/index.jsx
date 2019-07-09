@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton } from 'antd';
+import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton, Spin } from 'antd';
 
 // CUSTOM MODULES
 import PatientInfo from '../../patientinfo';
@@ -8,20 +8,18 @@ import PatientInfo from '../../patientinfo';
 
 // CSS
 import './searchresult.css';
+import axiosCall from 'services/axiosCall';
 
 // CONSTANTS
 const { Option } = Select;
 const { Text } = Typography;
 
 class WrapperSearchLabTestResultList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showPatientInfo: false,
-      showLoading: true,
-    };
-    this.onSampleIDClick = this.onSampleIDClick.bind(this);
-  }
+  state = {
+		showPatientInfo: false,
+		showLoading: true,
+		isLoading: false
+	};
 
   // React lifecycle
   componentWillMount() {
@@ -43,7 +41,7 @@ class WrapperSearchLabTestResultList extends React.Component {
 
 
   // Custom function
-  onSampleIDClick() {
+  onSampleIDClick = () => {
     this.setState({
       showPatientInfo: true,
     });
@@ -55,33 +53,33 @@ class WrapperSearchLabTestResultList extends React.Component {
     });
   }
 
-  expandedRowRender = () => {
-    const columns = [
-      {
-        title: 'REQUEST DATE',
-        dataIndex: 'RequestDate',
-        key: 'RequestDate',
-        align: 'center',
-        width:'25%',
-      },
-      {
-        title: 'SAMPLE ID',
-        dataIndex: 'SampleId',
-        key: 'SampleId',
-        render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
-        width:'25%',
-      },
-      { title: 'STATUS', 
-        dataIndex: 'Status', 
-        key: 'Status',
-        width:'25%',
-      },
-      { title: 'HISLINK', 
-        dataIndex: 'HisLink', 
-        key: 'HisLink',
-        width:'25%',
-      },
-    ];
+  expandedRowRender = async (record) => {
+    // const columns = [
+    //   {
+    //     title: 'REQUEST DATE',
+    //     dataIndex: 'RequestDate',
+    //     key: 'RequestDate',
+    //     align: 'center',
+    //     width:'25%',
+    //   },
+    //   {
+    //     title: 'SAMPLE ID',
+    //     dataIndex: 'SampleId',
+    //     key: 'SampleId',
+    //     render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
+    //     width:'25%',
+    //   },
+    //   { title: 'STATUS', 
+    //     dataIndex: 'Status', 
+    //     key: 'Status',
+    //     width:'25%',
+    //   },
+    //   { title: 'HISLINK', 
+    //     dataIndex: 'HisLink', 
+    //     key: 'HisLink',
+    //     width:'25%',
+    //   },
+    // ];
     const data = [];
     const teststatus = ['On-going', 'Verified', 'Cancelled'];
     for (let i = 1; i < 20; i+=1) {
@@ -92,19 +90,52 @@ class WrapperSearchLabTestResultList extends React.Component {
         Status: teststatus[Math.floor(Math.random() * teststatus.length)],
         HisLink: `190411200i${i}`,
       });
-    }
+		}
+		
+		const exams = await this.fetchExams();
+		const columns = [
+      {
+        title: 'sectionID',
+        dataIndex: 'sectionID',
+        key: 'RequestDate',
+        align: 'center',
+        width:'25%',
+      },
+      {
+        title: 'sectionName',
+        dataIndex: 'sectionName',
+        key: 'SampleId',
+        render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
+        width:'25%',
+      },
+      { title: 'sectionCode', 
+        dataIndex: 'sectionCode', 
+        key: 'Status',
+        width:'25%',
+      },
+    ];
+		
+		console.log(exams);
+
     return (
 	    <Table
 		    columns={columns}
-		    dataSource={data}
+		    dataSource={exams}
 		    pagination={false}
 		    size="small"
 		    scroll={{ y: 200 }}
 	    />
-    );
+		);
   };
 
+	fetchExams = async () => {
+		const response = await axiosCall({
+			method: 'GET',
+			url: 'Section',
+		});
 
+		return response.data;
+	}
 
   render() {  
     const columns = [
@@ -151,7 +182,9 @@ class WrapperSearchLabTestResultList extends React.Component {
     const testfirstname = ['Dante', 'Matthew', 'Maria'];
     const testgender = ['M', 'F'];
     const testcityaddress = ['Pasig', 'Pasay', 'Manila'];
-    const testlastname = ['Doe','Taylor','Green'];
+		const testlastname = ['Doe','Taylor','Green'];
+		const { isLoading } = this.state;
+		
     for (let i = 1; i < 1500; i += 1) {
         data.push({
         key: i*2000,
@@ -189,34 +222,26 @@ class WrapperSearchLabTestResultList extends React.Component {
 		    </Row>
 		    <Row type="flex">
 			    <Col lg={24} xs={24}>
-				    { this.state.showLoading ?
-					    <Skeleton /> 
-            : (
-	              <Table
-		              className="searchLabTestResultTable"
-		              columns={columns}
-		              expandedRowRender={this.expandedRowRender}
-		              dataSource={data || emptyTableData}
-		              size="small"
-		              scroll={{ y: 300 }}
-	              />
-              )}
+						<Table
+							className="searchLabTestResultTable"
+							columns={columns}
+							expandedRowRender={this.expandedRowRender}
+							dataSource={data || emptyTableData}
+							size="small"
+							scroll={{ y: 300 }}
+							loading={isLoading}
+							onExpand={(exapanded, record) => { console.log('onexpand'); }}
+						/>
 			    </Col>
 		    </Row>
-		      {this.state.showPatientInfo ? 
-            (
-	            <Drawer
-		            title="Patient information"
-		            onClose={this.onClosePatientInfoDrawer}
-		            width="80%"
-		            visible={this.state.showPatientInfo}
-	            >
-		          <PatientInfo /> 
-	            </Drawer>
-            )
-            :
-          null
-        }
+					<Drawer
+						title="Patient information"
+						onClose={this.onClosePatientInfoDrawer}
+						width="80%"
+						visible={this.state.showPatientInfo}
+					>
+					<PatientInfo /> 
+					</Drawer>
 	    </div>
     );
   }

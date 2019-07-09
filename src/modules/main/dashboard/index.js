@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 
 import DashboardHeader from './header';
 import Metrics from './metric';
@@ -44,13 +44,23 @@ class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userNameLoggedIn: ''
+      userNameLoggedIn: '',
+      disabled: false,
+      btnState: 'EXTRACT'
     }
   }
 
   componentDidMount = () => {
     const userName = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
     this.setState({ userNameLoggedIn: userName });
+  }
+  
+  sampleOnClickButton = () => {
+    console.log('hello');
+    this.setState({ 
+      btnState : 'EXTRACTED',
+      disabled : true
+    });
   }
 
   render() {
@@ -63,6 +73,7 @@ class DashboardPage extends React.Component {
     return (
       <div>
         <Row>
+          <Button onClick={this.sampleOnClickButton} disabled={this.state.disabled}>{this.state.btnState}</Button>
           <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>

@@ -95,16 +95,12 @@ class FillupStep extends React.Component {
 
 	createPatientInfo = async (personalInfo) => {
 		let createdPatient;
-		const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		try{
 			const content = {
 				method: 'POST',
 				url: '/Patient',
-				data: personalInfo,
-				headers: { 
-					'authorization': `Bearer ${userData.token}`
-				}
+				data: personalInfo
 			}
 
 			const response = await axiosCall(content);
@@ -114,8 +110,10 @@ class FillupStep extends React.Component {
 			createdPatient = data;
 		}
 		catch(error) {
-			const { errors } = error.response.data;
-			Object.keys(errors).forEach(key => { Message.error(errors[key]); });
+			if(error && error.response && error.response.data) {
+				const { errors } = error.response.data;
+				Object.keys(errors).forEach(key => { Message.error(errors[key]); });
+			}
 
 			createdPatient = null;
 		}
@@ -130,8 +128,7 @@ class FillupStep extends React.Component {
 			const content = {
 				method: 'POST',
 				url: '/RequestHeader',
-				data: otherInfo,
-				headers: { 'content-type': 'application/json' }
+				data: otherInfo
 			}
 
 			const response = await axiosCall(content);
@@ -141,8 +138,10 @@ class FillupStep extends React.Component {
 			createdOtherInfo = data;
 		}
 		catch(error) {
-			const { errors } = error.response.data;
-			Object.keys(errors).forEach(key => { Message.error(errors[key]); });
+			if(error && error.response && error.response.data) {
+				const { errors } = error.response.data;
+				Object.keys(errors).forEach(key => { Message.error(errors[key]); });
+			}
 
 			createdOtherInfo = null;
 		}

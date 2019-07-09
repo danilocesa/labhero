@@ -5,16 +5,16 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 // CUSTOM MODULES
 import Login from 'modules/login';
-import DashboardPage from '../../../modules/main/dashboard';
-import CreateRequestPage from '../../../modules/main/lab_request/create';
-import SearchLabTestResult from '../../../modules/main/search_lab_result';
-import PatientInfo from '../../../modules/main/patientinfo';
-import PleboSearch from '../../../modules/main/plebo'
-import Iresults from '../../../modules/main/iresults';
-import PleboPatientResult from '../../../modules/main/plebo/plebopatient'
-import ErrorPage from '../../../modules/error_page';
-import SearchPatient from '../../../modules/main/search_patients';
-import checkAuth from '../../auth';
+import DashboardPage from 'modules/main/dashboard';
+import CreateRequestPage from 'modules/main/lab_request/create';
+import SearchLabTestResult from 'modules/main/search_lab_result';
+import PatientInfo from 'modules/main/patientinfo';
+import PleboSearch from 'modules/main/plebo'
+import Iresults from 'modules/main/iresults';
+import PleboPatientResult from 'modules/main/plebo/plebopatient'
+import ErrorPage from 'modules/error_page';
+import SearchPatient from 'modules/main/search_patients';
+import auth from 'services/auth';
 
 // CONSTANTS
 const { Content: Antcontent } = Layout;
@@ -58,7 +58,7 @@ function PrivateRoute({ component: Component, ...rest }) {
 		{...rest}
 		render={
 			props =>
-    	checkAuth.isAuthenticated ? ( <Component {...props} />) 
+    	auth.isAuthenticated ? ( <Component {...props} />) 
 			: 
 			( <Redirect to={{pathname: "/login", state: { from: props.location }}} /> )
   	}

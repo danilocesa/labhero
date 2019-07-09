@@ -57,7 +57,6 @@ class SummaryStep extends React.Component {
 
 			const { data } = await response;
 			
-			console.log(data);
 
 			isSuccess = true;
 		} catch (e) {
