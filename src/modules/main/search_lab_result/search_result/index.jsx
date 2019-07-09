@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Select, Drawer, Typography, Empty, Card, Skeleton, Spin } from 'antd';
+import { Row, Col, Table, Select, Drawer, Typography, Empty, Card } from 'antd';
 
 // CUSTOM MODULES
 import PatientInfo from '../../patientinfo';

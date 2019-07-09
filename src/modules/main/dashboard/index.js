@@ -45,8 +45,7 @@ class DashboardPage extends React.Component {
     super(props);
     this.state = {
       userNameLoggedIn: '',
-      disabled: false,
-      btnState: 'EXTRACT'
+      // loading: false,
     }
   }
 
@@ -54,26 +53,28 @@ class DashboardPage extends React.Component {
     const userName = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
     this.setState({ userNameLoggedIn: userName });
   }
-  
-  sampleOnClickButton = () => {
-    console.log('hello');
-    this.setState({ 
-      btnState : 'EXTRACTED',
-      disabled : true
-    });
-  }
 
+  // onClickBtn = () => {
+  //   this.setState({ loading: true});
+  //   const extractBtn = true;
+  //   this.setState({ loading: false});
+
+  //   if(extractBtn) {
+  //     document.getElementById("btnTesting").innerHTML = "EXTRACTED";
+  //     document.getElementById("btnTesting").setAttribute("disabled","true");
+  //   }
+  // }
+  
   render() {
     const MetricList = metricsData.map((item, index) => (
       <Metrics key={index} image={item.image} value={item.value} label={item.label} />
     ));
 
     const userNameInfo = this.state.userNameLoggedIn
-
     return (
       <div>
         <Row>
-          <Button onClick={this.sampleOnClickButton} disabled={this.state.disabled}>{this.state.btnState}</Button>
+          {/* <Button id="btnTesting" onClick={this.onClickBtn}>EXTRACT</Button> */}
           <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>

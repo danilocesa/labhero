@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable func-names */
 /* eslint-disable array-callback-return */
 // LIBRARY
@@ -22,8 +23,7 @@ class SpecimenList extends React.Component {
 	state = {
 		patientSectionList: null,
 		loading: false,
-		disabled: false,
-		btnState: 'EXTRACT'
+		// btnState: 'EXTRACT'
 	}
 
 	async componentDidMount(){
@@ -63,14 +63,12 @@ class SpecimenList extends React.Component {
     
 		this.setState({ loading: true});
 		const saveExtraction = await this.checkIn(requestID, sectionID, specimenID, JSON.parse(userDataSession).userID);
-		this.setState({ 
-			btnState : 'EXTRACTED',
-			disabled : true
-		  });
 		this.setState({ loading: false });
 		
 		if(saveExtraction){
 			document.getElementById(inputID).setAttribute("disabled","");
+			document.getElementById(inputID).setAttribute("loading", true);
+			document.getElementById(inputID).innerHTML = "EXTRACTED";
 			Message.info(`Success! Sample specimen ID: ${ saveExtraction.sampleSpecimenID}`);
 		} else{
 			Message.error("Something went wrong!");
@@ -117,6 +115,7 @@ class SpecimenList extends React.Component {
 			dataIndex: 'phlebo_status_col', 
 			key: 'phlebo_status_col',
 			render:(button,value) => {
+				console.log(value);
 				const {loading } = this.state;
 				return(
 					<Col style={{ paddingLeft: 245 }} className="phlebo_exams_extract">
@@ -126,15 +125,14 @@ class SpecimenList extends React.Component {
 							data-sectionid={value.phlebo_sectionID} 
 							data-specimenid={value.phlebo_specimenID} 
 							data-requestid={value.phlebo_requestID}
-							loading={loading}
-							disabled={this.state.disabled}
+							disabled={value.phlebo_sampleSpecimenID}
 						>
-							{this.state.btnState}
+							{value.phlebo_sampleSpecimenID ? 'EXTRACTED' : 'EXTRACT'} 
 						</Button>
 					</Col>
 				)
 			}
-				,
+			
 		},
 	];
 
