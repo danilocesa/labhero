@@ -14,6 +14,7 @@ import Iresults from 'modules/main/iresults';
 import PleboPatientResult from 'modules/main/plebo/plebopatient'
 import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/search_patients';
+import Settings from 'modules/main/settings';
 import auth from 'services/auth';
 
 // CONSTANTS
@@ -44,6 +45,7 @@ const Content = () => (
 			<PrivateRoute path="/plebopatient" component={PleboPatientResult} />
 			{/* Search patients route */}
 			<PrivateRoute path="/searchpatient" component={SearchPatient} />
+			<PrivateRoute path="/settings" component={Settings} />
 			{/* 404 page route */}
 			<Route component={ErrorPage} />
 		</Switch>

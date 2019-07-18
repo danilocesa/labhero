@@ -7,6 +7,7 @@ import { ReactComponent as AddIcon } from '../../../icons/add.svg';
 import { ReactComponent as SearchIcon } from '../../../icons/search.svg';
 import { ReactComponent as PleboIcon } from '../../../icons/syringe.svg';
 import { ReactComponent as SearchPatientIcon } from '../../../icons/searchpatient.svg';
+import { ReactComponent as SettingsIcon } from '../../../icons/settings.svg';
 
 import { SELECTED_SIDER_KEY } from '../../constant-global';
 
@@ -83,6 +84,12 @@ class Sider extends React.Component {
             <Link to="/searchpatient">
               <Icon component={SearchPatientIcon} />
               <span>SEARCH PATIENT</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="6">
+            <Link to="/settings">
+              <Icon component={SettingsIcon} />
+              <span>SETTINGS</span>
             </Link>
           </Menu.Item>
         </Menu>

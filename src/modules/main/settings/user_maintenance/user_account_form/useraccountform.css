@@ -1,0 +1,30 @@
+
+.user-form {
+    padding: 25px;
+    margin-top: 15px;
+}
+
+.user-form .ant-form-item-label {
+    margin:  15px 0;
+    padding-right: 15px;
+}
+
+.user-form .form-title {
+    margin-bottom: 15px;
+}
+
+.user-form .ant-form-item-label {
+    font-weight: lighter;
+}
+
+.user-form .ant-form label {
+    font-size: 13px;
+}
+
+.user-form .personalInfo .checkboxUser {
+    margin-bottom: 0px;
+}
+
+.user-table .ant-table-thead > tr > th {
+    padding: 4px 16px !important;
+}

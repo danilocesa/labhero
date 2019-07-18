@@ -19,8 +19,10 @@ const menu = (
     <Menu.Item>
 			<a
 				rel="noopener noreferrer"
-				href="#"
-				onClick={() => {auth.signout();}}
+        onClick={() => {auth.signout();}}
+        role="button"
+        onKeyDown={() => {auth.signout();}}
+        tabIndex={0}
 			>
 						Logout
 			</a>

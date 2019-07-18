@@ -13,43 +13,47 @@ import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constan
 import './table.css';
 
 // CONSTANTS
-const columns = [
-	{
-		title: 'LAST NAME',
-		dataIndex: 'lastName',
-		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-		width: '15%'
-	},
-	{
-		title: 'FIRST NAME',
-		dataIndex: 'givenName',
-		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
-		width: '15%'
-	},
-	{
-		title: 'MIDDLE NAME',
-		dataIndex: 'middleName',
-		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
-		width: '15%'
-	}, 
-	{
-		title: 'DATE OF BIRTH',
-		dataIndex: 'dateOfBirth',
-		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
-		width: '14%'
-	},
-	{
-		title: 'GENDER',
-		dataIndex: 'sex',
-		sorter: (a, b) => a.sex.localeCompare(b.sex),
-		width: '12%'
-	},
-	{
-		title: 'ADDRESS',
-		dataIndex: 'address',
-		sorter: (a, b) => a.address.localeCompare(b.address),
-	},
-];
+// const columns = [
+// 	{
+// 		title: 'LAST NAME',
+// 		dataIndex: 'lastName',
+// 		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
+// 		width: '15%'
+// 	},
+// 	{
+// 		title: 'FIRST NAME',
+// 		dataIndex: 'givenName',
+// 		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
+// 		width: '15%'
+// 	},
+// 	{
+// 		title: 'MIDDLE NAME',
+// 		dataIndex: 'middleName',
+// 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
+// 		width: '15%'
+// 	}, 
+// 	{
+// 		title: 'DATE OF BIRTH',
+// 		dataIndex: 'dateOfBirth',
+// 		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
+// 		width: '14%'
+// 	},
+// 	{
+// 		title: 'GENDER',
+// 		dataIndex: 'sex',
+// 		sorter: (a, b) => a.sex.localeCompare(b.sex),
+// 		width: '12%'
+// 	},
+// 	{
+// 		title: 'ADDRESS',
+// 		dataIndex: 'address',
+// 		sorter: (a, b) => a.address.localeCompare(b.address),
+// 	},
+// ];
+
+// console.log(columns[0]);
+
+// getSorter = (data) => data.length > 0 ? (a, b) => a.lastName.localeCompare(b.lastName) : false;
 
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record, redirect) => {
@@ -70,6 +74,58 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading, redirectUrl } = this.props;
+
+		const getSorter = (myDataSource, columnName) => {
+			if(myDataSource.length > 0) {
+				const columnSorter = (a, b) => {
+					if(a[columnName] !== null) {
+						return a[columnName].localeCompare(b[columnName])
+					}
+					return 1;
+				};
+				return columnSorter;
+			} 
+			return false;
+		};
+
+		// CONSTANTS
+		const columns = [
+			{
+				title: 'LAST NAME',
+				dataIndex: 'lastName',
+				sorter: getSorter(data, 'lastName'),
+				width: '15%'
+			},
+			{
+				title: 'FIRST NAME',
+				dataIndex: 'givenName',
+				sorter: getSorter(data, 'givenName'),
+				width: '15%'
+			},
+			{
+				title: 'MIDDLE NAME',
+				dataIndex: 'middleName',
+				sorter: getSorter(data, 'middleName'),
+				width: '15%'
+			}, 
+			{
+				title: 'DATE OF BIRTH',
+				dataIndex: 'dateOfBirth',
+				sorter:  getSorter(data, 'dateOfBirth'),
+				width: '14%'
+			},
+			{
+				title: 'GENDER',
+				dataIndex: 'sex',
+				sorter:  getSorter(data, 'sex'),
+				width: '12%'
+			},
+			{
+				title: 'ADDRESS',
+				dataIndex: 'address',
+				sorter:  getSorter(data, 'address'),
+			},
+		];
 
 		return (
 			<Spin spinning={loading} tip="Loading...">

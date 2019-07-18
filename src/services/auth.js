@@ -14,7 +14,8 @@ const auth = {
   signout() {
     this.isAuthenticated = false;
     sessionStorage.removeItem(LOGGEDIN_USER_DATA);
-    sessionStorage.removeItem(SELECTED_SIDER_KEY);
+    // sessionStorage.removeItem(SELECTED_SIDER_KEY);
+    sessionStorage.setItem(SELECTED_SIDER_KEY, '1');
     window.location.reload();
   }
 };

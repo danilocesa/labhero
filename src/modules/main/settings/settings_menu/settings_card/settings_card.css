@@ -1,0 +1,16 @@
+
+
+.settings-item-card {
+    width: 200px;
+    height: 180px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FAFAFC;
+}
+
+img {
+    height: 45px;
+    width: auto;
+}

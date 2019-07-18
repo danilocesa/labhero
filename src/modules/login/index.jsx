@@ -68,6 +68,9 @@ class Login extends React.Component {
 							case '5':
 								this.props.history.push("/searchpatient");
 								break;
+							case '6':
+								this.props.history.push("/settings");
+								break;
 							default : 
 								this.props.history.push("/");
 								break;	
@@ -120,10 +123,10 @@ class Login extends React.Component {
 					<Header style={{ borderBottom: 'none' }}>
 						<Row>
 							<Col span={24}>
-								<Icon type="left" />
-								<Link to="/" className="redirect-home">
+								{/* <Icon type="left" /> */}
+								{/* <Link to="/" className="redirect-home">
 									Go back to homepage
-								</Link>
+								</Link> */}
 							</Col>
 						</Row>
 					</Header>

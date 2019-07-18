@@ -23,7 +23,7 @@ export default function axiosCall(axiosConfig) {
 		const inBackLists = urls.findIndex(url => config.url === url) !== -1;
 
 		// config.method.toLowerCase() === 'post' && 
-		if(!inBackLists) {
+		if(LoggedinUserData && !inBackLists) {
 			const token = jwtDecode(LoggedinUserData.token);
 			const currentTimestamp = Math.round(new Date().getTime()/1000);
 			

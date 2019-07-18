@@ -44,8 +44,16 @@ class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userNameLoggedIn: '',
-      // loading: false,
+      btnTesting1: {
+          loading: false,
+          buttonText: "EXTRACT",
+          isDisabled: false
+        },
+        btnTesting2: {
+          loading: false,
+          buttonText: "EXTRACT",
+          isDisabled: false
+        }
     }
   }
 
@@ -56,14 +64,28 @@ class DashboardPage extends React.Component {
 
   // onClickBtn = () => {
   //   this.setState({ loading: true});
-  //   const extractBtn = true;
-  //   this.setState({ loading: false});
-
-  //   if(extractBtn) {
-  //     document.getElementById("btnTesting").innerHTML = "EXTRACTED";
-  //     document.getElementById("btnTesting").setAttribute("disabled","true");
-  //   }
+  //   document.getElementById("btnTesting").innerHTML = "EXTRACTED";
+  //   document.getElementById("btnTesting").setAttribute("disabled","true");
   // }
+
+  onClickBtn = evt => {
+    const buttonId = evt.target.id;
+    this.setState({
+      [buttonId]: {
+        loading: true
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        [buttonId]: {
+          buttonText: "EXTRACTED",
+          isDisabled: true,
+          loading: false
+        }
+      });
+    }, 2000);
+    console.log(buttonId);
+  };
   
   render() {
     const MetricList = metricsData.map((item, index) => (
@@ -74,7 +96,23 @@ class DashboardPage extends React.Component {
     return (
       <div>
         <Row>
-          {/* <Button id="btnTesting" onClick={this.onClickBtn}>EXTRACT</Button> */}
+          {/* <Button 
+          id="btnTesting1" 
+          onClick={this.onClickBtn}
+          loading={this.state.btnTesting1.loading}
+          disabled={this.state.btnTesting1.isDisabled}
+          >
+            {this.state.btnTesting1.buttonText}
+          </Button>
+          <Button 
+          id="btnTesting2" 
+          onClick={this.onClickBtn}
+          loading={this.state.btnTesting2.loading}
+          disabled={this.state.btnTesting2.isDisabled}
+          >
+            {this.state.btnTesting2.buttonText}
+          </Button> */}
+          {/* <Button onClick={this.onClickBtn} loading={this.state.loading} disabled={this.state.disabled}>{this.state.buttonText}</Button> */}
           <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>
