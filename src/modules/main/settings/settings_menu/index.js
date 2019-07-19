@@ -32,7 +32,7 @@ const settingsItemData = [
     },
     {
         image: LabExamRequestIcon,
-        link: '/user_maintenance',
+        link: '../settings/panel-exam',
         label: 'Panel Exam',
         col: '4'
     },

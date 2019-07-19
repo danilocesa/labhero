@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Button, Row, Col } from 'antd';
-import { CompanyLogo } from 'images';
+import { PatientImgPlaceholder } from 'images';
 import UserMenu from './menu';
 
 import './header.css';
@@ -13,11 +13,11 @@ const Header = () => (
       <div style={{ display: 'inline-block', width: 250 }}>
         <Row>
           <Col span={6} style={{ textAlign: 'center' }}>
-            <img src={CompanyLogo} alt="logo" style={{ height: 35, width: 40 }} />
+            <img src={PatientImgPlaceholder} alt="logo" style={{ height: 40, width: 40, borderRadius:'50%' }} />
           </Col>
           <Col className="logo-pane">
-            <h1>LABHERO</h1>
-            <p>MEDICAL CENTER</p>
+            <h1>COMPANY NAME</h1>
+            <p>COMPANY NAME</p>
           </Col>
         </Row>
       </div>

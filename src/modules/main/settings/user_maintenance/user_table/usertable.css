@@ -1,16 +1,17 @@
 
-.user-table {
+.user-table-options .user-table {
     margin-top: 15px;
 }
 
-.user-table .ant-table-thead > tr > th {
+.user-table-options .user-table .ant-table-thead > tr > th {
     padding: 4px 16px !important;
 }
 
-.user-table .ant-table-tbody > tr > td {
+.user-table-options .user-table .ant-table-tbody > tr > td {
     padding: 7px 15px !important;
 }
 
 .user-table-options {
     text-align: right;
 }
+
