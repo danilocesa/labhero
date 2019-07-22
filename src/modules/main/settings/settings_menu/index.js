@@ -3,12 +3,12 @@ import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
+import {
+	LabExamRequestIcon,
+	UserMaintenanceIcon
+} from "images";
 import SettingsCard from './settings_card'
 
-import {
-    LabExamRequestIcon,
-    UserMaintenanceIcon
-} from "../../../../images";
 
 const settingsItemData = [
     {
@@ -20,7 +20,7 @@ const settingsItemData = [
     },
     {
         image: LabExamRequestIcon,
-        link: '#',
+        link: '/settings/profile-exam',
         label: 'Profile Exam',
         col: '4'
     },
@@ -38,7 +38,7 @@ const settingsItemData = [
     },
     {
         image: UserMaintenanceIcon,
-        link: '../settings/user-maintenance',
+        link: '/settings/user-maintenance',
         label: 'User Maintenance',
         col: '4'
     },

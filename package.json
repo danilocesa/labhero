@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@antv/data-set": "^0.10.2",
+    "@emotion/core": "^10.0.14",
     "antd": "^3.16.2",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
