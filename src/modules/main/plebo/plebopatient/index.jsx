@@ -3,7 +3,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
-// CUSTOM MODULES
+// CUSTOM MODULES     
 import PleboPatientInfo from './info';
 import PatientName from './name';
 import SpecimenList from './specimen';

@@ -66,12 +66,19 @@ const dataSource = [
 class UserTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { visible: false }
+        this.state = { 
+            visible: false,
+            drawerTitle: '',
+            drawerButton: '',
+            patientInfo: [], 
+        }
     }
 
     showDrawer = () => {
         this.setState({
           visible: true,
+          drawerTitle: 'Add User Account',
+          drawerButton: 'Add'
         });
     };
 
@@ -80,6 +87,15 @@ class UserTable extends React.Component {
           visible: false,
         });
     };
+
+    displayDrawerUpdate = (record) => {
+        this.setState({
+            visible: true,
+            drawerTitle: 'Update User Account',
+            drawerButton: 'Update',
+        });
+        console.log(record);
+    }
 
     render() {
         return(
@@ -103,15 +119,30 @@ class UserTable extends React.Component {
                     </Select>
                 </div>
                 <div className="user-table">
-                    <Table columns={columns} dataSource={dataSource} />
-                </div>
+                    <Table 
+                    columns={columns} 
+                    dataSource={dataSource}
+                    rowKey={record => record.key}
+                    onRow={(record) => {
+                        return {     
+                            onDoubleClick: () => {
+                                this.displayDrawerUpdate(record);
+                            }
+                        }
+                    }}
+                    />
+                </div>    
+
+                {/* DRAWER */}
                 <Drawer
-                title="Add User Account"
-                width={1100}
-                visible={this.state.visible}
-                onClose={this.onClose}
+                    title={this.state.drawerTitle}
+                    width={1100}
+                    visible={this.state.visible}
+                    onClose={this.onClose}
                 >
-                    <UserAccountForm />
+                    <UserAccountForm 
+                        drawerButton={this.state.drawerButton} 
+                    />
                 </Drawer>
             </div>
         )

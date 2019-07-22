@@ -1,0 +1,8 @@
+.user-table .ant-table-thead > tr > th {
+    padding: 4px 16px !important;
+}
+
+.user-table .panel-table-options {
+    text-align: right;
+    margin-bottom: 15px;
+}
