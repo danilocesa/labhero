@@ -189,6 +189,7 @@ class SearchPatientForm extends React.Component {
 								value={patientName} 
 								onChange={this.handleInputChange} 
 								onFocus={this.handleFocus}
+								placeholder="Lastname,Firstname"
 							/>
 						</Form.Item>
 					</Col>
