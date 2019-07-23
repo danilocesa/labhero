@@ -68,7 +68,7 @@ class ProfileExam extends React.Component {
 		this.setState({ data: newData });
 	} 
 
-	onFormClose = () => {
+	onCloseForm = () => {
 		this.setState({ isShowUpdateForm: false, isShowAddForm: false });
 	}
 
@@ -83,6 +83,7 @@ class ProfileExam extends React.Component {
 				</div>
 				<div style={{ textAlign: 'right', marginTop: 50 }}>
 					<Button 
+						shape="round"
 						type="primary" 
 						style={{ marginRight: 10 }}
 						onClick={this.onClickAdd}
@@ -101,11 +102,11 @@ class ProfileExam extends React.Component {
 				<UpdateForm 
 					data={selectedData}
 					visible={isShowUpdateForm}
-					onClose={this.onFormClose}
+					onClose={this.onCloseForm}
 				/>
 				<AddForm 
 					visible={isShowAddForm}
-					onClose={this.onFormClose}
+					onClose={this.onCloseForm}
 				/>
 			</div>
 		);

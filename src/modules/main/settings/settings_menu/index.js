@@ -13,7 +13,7 @@ import SettingsCard from './settings_card'
 const settingsItemData = [
     {
         image: LabExamRequestIcon,
-        link: '#',
+        link: '/settings/exam-request',
         label: 'Exam Request Item',
         col: '4',
         offset: '2'
@@ -26,7 +26,7 @@ const settingsItemData = [
     },
     {
         image: LabExamRequestIcon,
-        link: '#',
+        link: '/settings/lab-exam-request',
         label: 'Lab Exam Request',
         col: '4',
     },
