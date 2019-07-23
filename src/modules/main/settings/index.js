@@ -6,6 +6,7 @@ import UserMaintenance from './user_maintenance'
 import PanelExam from './panel_exam'
 import ProfileExam from './profile_exam';
 import ExamRequest from './exam_request';
+import LabExamRequest from './lab_exam_request';
 
 class Settings extends React.Component {
     render() {
@@ -16,6 +17,7 @@ class Settings extends React.Component {
                 <Route exact path="/settings/panel-exam" component={PanelExam} />
 								<Route exact path="/settings/profile-exam" component={ProfileExam} />
 								<Route exact path="/settings/exam-request" component={ExamRequest} />
+								<Route exact path="/settings/lab-exam-request" component={LabExamRequest} />
             </Switch>
         )
     }

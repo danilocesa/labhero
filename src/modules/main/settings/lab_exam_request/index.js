@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button, Icon, Row, Col } from 'antd';
+import { Row, Col, Typography, Button, Icon, Input } from 'antd';
 import TablePager from 'shared_components/table_pager';
-import DropDown from './dropdown';
 import ExamTable from './table';
+import DropDown from './dropdown';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 
@@ -20,12 +20,43 @@ const SecondarySection = (props) => (
 	</Row>
 );
 
-class ExamRequest extends React.Component {
+class LabExamRequest extends React.Component {
 	state = {
+		pageSize: 5,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		pageSize: 5,
-		tableData: [],
+		tableData: [
+			{
+				requestID: '1',
+				examRequestName: 'ALBUMIN CODE 1',
+				iCode: '1',
+				type: 'T',
+				specimen: 'SERUM',
+				a: 'TRUE',
+				c: 'TRUE',
+				s: '1'
+			},
+			{
+				requestID: '2',
+				examRequestName: 'ALBUMIN CODE 2',
+				iCode: '2',
+				type: 'T',
+				specimen: 'SERUM',
+				a: 'TRUE',
+				c: 'TRUE',
+				s: '1'
+			},
+			{
+				requestID: '3',
+				examRequestName: 'ALBUMIN CODE 3',
+				iCode: '3',
+				type: 'T',
+				specimen: 'SERUM',
+				a: 'TRUE',
+				c: 'TRUE',
+				s: '1'
+			},
+		],
 		dropDownContent: [
 			{ label: 'CHEM', value: 'CHEM' },
 			{ label: 'HEMA', value: 'HEMA' },
@@ -36,6 +67,10 @@ class ExamRequest extends React.Component {
 		]
 	}
 	
+	onDblClickTableRow = () => {
+		this.setState({ isShowUpdateForm: true });
+	}
+
 	onClickAdd = () => {
 		this.setState({ isShowAddForm: true });
 	}
@@ -44,26 +79,29 @@ class ExamRequest extends React.Component {
 		this.setState({ pageSize });
 	}
 
-	onDblClickTableRow = () => {
-		this.setState({ isShowUpdateForm: true });
-	}
-
 	onCloseForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
 	}
 
 	render() {
-		const { pageSize, tableData, dropDownContent, filterContent, isShowAddForm, isShowUpdateForm } = this.state;
+		const { pageSize, tableData, dropDownContent, isShowAddForm, isShowUpdateForm } = this.state;
 
 		const leftSection = (
-			<>
-				<DropDown 
-					size="small"
-					placeholder="Filter by SERUM"
-					content={filterContent} 
-					disabled 
-				/>
-			</>
+			<Row gutter={24}>
+				<Col span={14}>
+					<Input 
+						prefix={<Icon type="search" />}
+						placeholder="Search Exam Request Name"
+					/>
+				</Col>
+				<Col span={10}>
+					<DropDown 
+						size="small"
+						placeholder="Filter by SERUM"
+						content={dropDownContent} 
+					/>
+				</Col>
+			</Row>
 			
 		);
 
@@ -75,7 +113,7 @@ class ExamRequest extends React.Component {
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
 				>
-					<Icon type="plus" /> Add Profile
+					<Icon type="plus" /> Add Exam Request
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -84,17 +122,11 @@ class ExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Lab Exam</Title>
+					<Title level={3}>Lab Exam Request</Title>
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="TEMPLATE" 
-							placeholder="Select Template"
-							content={dropDownContent} 
-						/>
-						<div style={{ display: 'inline-block', marginLeft: 30 }} />
-						<DropDown 
 							label="INSTRUMENT" 
-							placeholder="Select Intrument"
+							placeholder="Select Template"
 							content={dropDownContent} 
 						/>
 					</Row>
@@ -109,17 +141,23 @@ class ExamRequest extends React.Component {
 					loading={false}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
-				<AddForm visible={isShowAddForm} onClose={this.onCloseForm} />
-				<UpdateForm visible={isShowUpdateForm} onClose={this.onCloseForm} />
+				<AddForm 
+					visible={isShowAddForm}
+					onClose={this.onCloseForm}
+				/>
+				<UpdateForm
+					visible={isShowUpdateForm}
+					onClose={this.onCloseForm}
+				/>
 			</div>
 		);
 	}
 }
-
 
 SecondarySection.propTypes = {
 	leftContent: PropTypes.node.isRequired,
 	rightContent: PropTypes.node.isRequired
 };
 
-export default ExamRequest;
+
+export default LabExamRequest;

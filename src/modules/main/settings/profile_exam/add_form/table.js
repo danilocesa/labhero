@@ -36,12 +36,13 @@ const columns = [
 
 class ExamTable extends React.Component {
 	render() {
-		const { data, pageSize, loading = false } = this.props;
+		const { data, loading = false } = this.props;
 
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
+						size="small"
 						pagination={false} 
 						columns={columns} 
 						dataSource={data} 
@@ -62,7 +63,6 @@ ExamTable.propTypes = {
 		status: PropTypes.string.isRequired,
 		template: PropTypes.string.isRequired,
 	})).isRequired,
-	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired
 };
 

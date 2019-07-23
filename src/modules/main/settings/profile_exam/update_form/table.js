@@ -42,6 +42,7 @@ class ExamTable extends React.Component {
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
+						size="small"
 						pagination={false} 
 						columns={columns} 
 						dataSource={data} 
