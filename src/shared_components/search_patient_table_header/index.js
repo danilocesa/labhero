@@ -1,14 +1,15 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Select } from 'antd';
+import { Typography } from 'antd';
+import TablePager from 'shared_components/table_pager';
 
 // CSS
 import './table_header.css';
 
 // CONSTANTS
 const { Text } = Typography;
-const { Option } = Select;
+
 
 class SearchPatientTableHeader extends React.Component {
 	render() {
@@ -26,18 +27,7 @@ class SearchPatientTableHeader extends React.Component {
 						<Text>{`Showing ${items} items out of ${pageTotal} results`}</Text>
 					</div>
 					<div className="right">
-						<Text>Display per page</Text>
-						<Select 
-							size="small" 
-							defaultValue="10" 
-							style={{ marginLeft: 10 }} 
-							onChange={handleChangeSize}
-						>
-							<Option value={5}>5</Option>
-							<Option value={10}>10</Option>
-							<Option value={15}>15</Option>
-							<Option value={20}>20</Option>
-						</Select>
+						<TablePager handleChange={handleChangeSize} />
 					</div>
 				</div>
 			</div>

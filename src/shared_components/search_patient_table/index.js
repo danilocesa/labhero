@@ -83,6 +83,7 @@ class SearchPatientTable extends React.Component {
 					}
 					return 1;
 				};
+				
 				return columnSorter;
 			} 
 			return false;
