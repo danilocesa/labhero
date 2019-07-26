@@ -116,7 +116,7 @@ class SpecimenList extends React.Component {
 			key: 'phlebo_status_col',
 			render:(button,value) => {
 				console.log(value);
-				const {loading } = this.state;
+				// const {loading } = this.state;
 				return(
 					<Col style={{ paddingLeft: 245 }} className="phlebo_exams_extract">
 						<Button 

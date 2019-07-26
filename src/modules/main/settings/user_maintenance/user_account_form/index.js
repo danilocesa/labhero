@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Switch, Typography, Form, Input, Select, Checkbox, Table, Icon, Button } from 'antd';
+import PropTypes from 'prop-types';
 
 import './useraccountform.css';
 
@@ -93,30 +94,30 @@ class UserAccountForm extends React.Component {
                 <Row gutter={40}>
                     <Col span={24} style={{ textAlign: "right" }}>
                         <Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-                        <Switch />
+                        <Switch defaultChecked  />
                     </Col>
                     <div className="user-form">
                         <Form {...formItemLayout}>
                             <Col span={12}>
-                                {/* PERSOANL INFORMATION */}
+                                {/* PERSONAL INFORMATION */}
                                 <div className="personalInfo">
                                     <div className="form-title">
                                         <Text strong>Personal Information</Text>
                                     </div>
                                     <Form.Item label="USERID">
-                                        <Input />
+                                        <Input value={this.props.patientInfo.userID} />
                                     </Form.Item>
 
                                     <Form.Item label="FIRST NAME">
-                                        <Input />
+                                        <Input value={this.props.patientInfo.firstName} />
                                     </Form.Item>
 
                                     <Form.Item label="MIDDLE NAME">
-                                        <Input />
+                                        <Input value={this.props.patientInfo.middleName} />
                                     </Form.Item>
 
                                     <Form.Item label="LAST NAME">
-                                        <Input />
+                                        <Input value={this.props.patientInfo.lastName} />
                                     </Form.Item>
                                 </div>
 
@@ -127,15 +128,15 @@ class UserAccountForm extends React.Component {
                                     </div>
 
                                     <Form.Item label="USERNAME">
-                                        <Input />
+                                        <Input value={this.props.patientInfo.userName} />
                                     </Form.Item>
 
                                     <Form.Item label="PASSWORD">
-                                        <Input />
+                                        <Input.Password />
                                     </Form.Item>
 
                                     <Form.Item label="REPEAT PASSWORD">
-                                        <Input />
+                                        <Input.Password />
                                     </Form.Item>
                                 </div>
                             </Col>
@@ -206,6 +207,11 @@ class UserAccountForm extends React.Component {
             </div>
         );
     }
+}
+
+UserAccountForm.propTypes = {
+    patientInfo: PropTypes.array.isRequired,
+    drawerButton: PropTypes.string.isRequired
 }
 
 export default UserAccountForm;

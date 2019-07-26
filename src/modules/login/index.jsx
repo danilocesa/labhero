@@ -1,6 +1,6 @@
 import React from 'react';
-import { Row, Form, Icon, Input, Button, Layout, Col, message, Spin } from 'antd';
-import { Link } from 'react-router-dom';
+import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
+// import { Link } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
 import auth from 'services/auth';
 import PropTypes from 'prop-types';

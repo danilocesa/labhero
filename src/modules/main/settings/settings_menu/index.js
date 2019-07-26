@@ -16,7 +16,7 @@ const settingsItemData = [
         link: '#',
         label: 'Exam Request Item',
         col: '4',
-        offset: '2'
+        offset: 2
     },
     {
         image: LabExamRequestIcon,
