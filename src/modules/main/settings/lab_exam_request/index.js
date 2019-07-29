@@ -22,6 +22,7 @@ const SecondarySection = (props) => (
 
 class LabExamRequest extends React.Component {
 	state = {
+		selectedInstrument: null,
 		pageSize: 5,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
@@ -67,6 +68,10 @@ class LabExamRequest extends React.Component {
 		]
 	}
 	
+	onChangeInstrument = (value) => {
+		this.setState({ selectedInstrument: value })
+	}
+
 	onDblClickTableRow = () => {
 		this.setState({ isShowUpdateForm: true });
 	}
@@ -84,7 +89,14 @@ class LabExamRequest extends React.Component {
 	}
 
 	render() {
-		const { pageSize, tableData, dropDownContent, isShowAddForm, isShowUpdateForm } = this.state;
+		const { 
+			pageSize, 
+			tableData, 
+			dropDownContent, 
+			isShowAddForm, 
+			isShowUpdateForm,
+			selectedInstrument
+		} = this.state;
 
 		const leftSection = (
 			<Row gutter={24}>
@@ -92,6 +104,7 @@ class LabExamRequest extends React.Component {
 					<Input 
 						prefix={<Icon type="search" />}
 						placeholder="Search Exam Request Name"
+						disabled={selectedInstrument == null}
 					/>
 				</Col>
 				<Col span={10}>
@@ -99,6 +112,7 @@ class LabExamRequest extends React.Component {
 						size="small"
 						placeholder="Filter by SERUM"
 						content={dropDownContent} 
+						disabled={selectedInstrument == null}
 					/>
 				</Col>
 			</Row>
@@ -112,6 +126,7 @@ class LabExamRequest extends React.Component {
 					type="primary" 
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
+					disabled={selectedInstrument == null}
 				>
 					<Icon type="plus" /> Add Exam Request
 				</Button>
@@ -128,6 +143,7 @@ class LabExamRequest extends React.Component {
 							label="INSTRUMENT" 
 							placeholder="Select Template"
 							content={dropDownContent} 
+							onChange={this.onChangeInstrument}
 						/>
 					</Row>
 				</section>

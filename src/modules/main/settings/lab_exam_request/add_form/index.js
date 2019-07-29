@@ -22,7 +22,7 @@ class AddForm extends React.Component {
 		return (
 			<Drawer
 				title="Add Exam Request"
-				width={800}
+				width="60%"
 				placement="right"
 				closable
 				onClose={onClose}

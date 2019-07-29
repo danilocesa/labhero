@@ -18,7 +18,7 @@ const Label = (props) => {
 
 class Dropdown extends React.Component {
 	render(){
-		const { label, content, disabled, size, placeholder } = this.props;
+		const { label, content, disabled, size, placeholder, onChange } = this.props;
 		const width = size === 'small' ? 200 : 300;
 		const Options = content.map(section => (
 			<Option value={section.value} key={section.value}>
@@ -29,7 +29,12 @@ class Dropdown extends React.Component {
 		return (
 			<>
 				<Label text={label} />
-				<Select style={{ width }} disabled={disabled} placeholder={placeholder}>
+				<Select 
+					onChange={onChange}
+					style={{ width }} 
+					disabled={disabled} 
+					placeholder={placeholder}
+				>
 					{Options}
 				</Select>
 			</>
@@ -45,7 +50,8 @@ Dropdown.propTypes = {
 	})),
 	disabled: PropTypes.bool,
 	size: PropTypes.string,
-	placeholder: PropTypes.string
+	placeholder: PropTypes.string,
+	onChange: PropTypes.func.isRequired
 };
 
 Dropdown.defaultProps = {

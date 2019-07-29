@@ -22,7 +22,7 @@ class UpdateForm extends React.Component {
 		return (
 			<Drawer
 				title="Update Exam Request"
-				width={800}
+				width="60%"
 				placement="right"
 				closable
 				onClose={onClose}
