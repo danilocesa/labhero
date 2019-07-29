@@ -6,6 +6,7 @@ import DropDown from './dropdown';
 import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
+import SectionDropdown from './sectionDropdown';
 
 const { Title } = Typography;
 
@@ -48,7 +49,7 @@ class ExamRequest extends React.Component {
 		this.setState({ isShowUpdateForm: true });
 	}
 
-	onCloseForm = () => {
+	onExitForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
 	}
 
@@ -85,18 +86,8 @@ class ExamRequest extends React.Component {
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
 					<Title level={3}>Lab Exam</Title>
-					<Row style={{ marginTop: 50 }}>
-						<DropDown 
-							label="TEMPLATE" 
-							placeholder="Select Template"
-							content={dropDownContent} 
-						/>
-						<div style={{ display: 'inline-block', marginLeft: 30 }} />
-						<DropDown 
-							label="INSTRUMENT" 
-							placeholder="Select Intrument"
-							content={dropDownContent} 
-						/>
+					<Row>
+						<SectionDropdown />
 					</Row>
 				</section>
 				<SecondarySection 
@@ -109,8 +100,8 @@ class ExamRequest extends React.Component {
 					loading={false}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
-				<AddForm visible={isShowAddForm} onClose={this.onCloseForm} />
-				<UpdateForm visible={isShowUpdateForm} onClose={this.onCloseForm} />
+				<AddForm visible={isShowAddForm} onClose={this.onExitForm} />
+				<UpdateForm visible={isShowUpdateForm} onClose={this.onExitForm} />
 			</div>
 		);
 	}
