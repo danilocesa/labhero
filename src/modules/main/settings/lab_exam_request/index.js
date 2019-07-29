@@ -122,11 +122,11 @@ class LabExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Lab Exam Request</Title>
+					<Title level={3}>Exam Request</Title>
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="INSTRUMENT" 
-							placeholder="Select Template"
+							label="SECTION" 
+							placeholder="Select Section"
 							content={dropDownContent} 
 						/>
 					</Row>

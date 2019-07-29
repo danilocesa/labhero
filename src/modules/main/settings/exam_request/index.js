@@ -84,19 +84,19 @@ class ExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Lab Exam</Title>
+					<Title level={3}>Exam Items</Title>
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="TEMPLATE" 
-							placeholder="Select Template"
+							label="Section" 
+							placeholder="Select Section"
 							content={dropDownContent} 
 						/>
 						<div style={{ display: 'inline-block', marginLeft: 30 }} />
-						<DropDown 
+						{/* <DropDown 
 							label="INSTRUMENT" 
 							placeholder="Select Intrument"
 							content={dropDownContent} 
-						/>
+						/> */}
 					</Row>
 				</section>
 				<SecondarySection 
