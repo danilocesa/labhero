@@ -4,44 +4,32 @@ import { Spin, Table } from 'antd';
 
 const columns = [
 	{ 
-		title: 'REQUEST ID',
-		dataIndex: 'requestID',
-		width: '10%'
+		title: 'CODE',
+		dataIndex: 'code',
 	},
 	{ 
-		title: 'EXAM REQUEST NAME',
-		dataIndex: 'examRequestName',
-		width: '25%'
+		title: 'EXAM',
+		dataIndex: 'profile',
 	},
 	{ 
-		title: 'I. CODE',
-		dataIndex: 'iCode',
-		width: '10%'
+		title: 'INTRUMENT EXAM',
+		dataIndex: 'instExam',
 	},
 	{ 
-		title: 'TYPE',
-		dataIndex: 'type',
-		width: '10%'
+		title: 'EXAM CODE',
+		dataIndex: 'examCode',
 	},
 	{ 
-		title: 'SPECIMEN',
-		dataIndex: 'specimen',
-		width: '15%'
+		title: 'RESULT CODE',
+		dataIndex: 'resultCode',
 	},
 	{ 
-		title: 'A',
-		dataIndex: 'a',
-		width: '5%'
+		title: 'ACTIVE',
+		dataIndex: 'active',
 	},
 	{ 
-		title: 'C',
-		dataIndex: 'c',
-		width: '5%'
-	},
-	{ 
-		title: 'S',
-		dataIndex: 's',
-		width: '5%'
+		title: 'DIFF',
+		dataIndex: 'diff',
 	}
 ];
 
@@ -59,7 +47,7 @@ class ExamTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
-						rowKey={record => record.requestID}
+						rowKey={record => record.code}
 						onRow={() => {
 							return {
 								onDoubleClick: () => onRowDblClick()
@@ -75,14 +63,10 @@ class ExamTable extends React.Component {
 
 ExamTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		requestID: PropTypes.string.isRequired,
-		examRequestName: PropTypes.string.isRequired,
-		iCode: PropTypes.string.isRequired,
-		type: PropTypes.string.isRequired,
-		specimen: PropTypes.string.isRequired,
-		a: PropTypes.string.isRequired,
-		s: PropTypes.string.isRequired,
-		c: PropTypes.string.isRequired,
+		code: PropTypes.string.isRequired,
+		profile: PropTypes.string.isRequired,
+		status: PropTypes.string.isRequired,
+		template: PropTypes.string.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

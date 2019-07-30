@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Typography, Button, Icon, Input } from 'antd';
+import { Typography, Button, Icon, Row, Col } from 'antd';
 import TablePager from 'shared_components/table_pager';
-import ExamTable from './table';
+import PageTitle from 'shared_components/page_title';
 import DropDown from './dropdown';
+import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 
@@ -20,43 +21,12 @@ const SecondarySection = (props) => (
 	</Row>
 );
 
-class LabExamRequest extends React.Component {
+class ExamRequest extends React.Component {
 	state = {
-		pageSize: 5,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		tableData: [
-			{
-				requestID: '1',
-				examRequestName: 'ALBUMIN CODE 1',
-				iCode: '1',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-			{
-				requestID: '2',
-				examRequestName: 'ALBUMIN CODE 2',
-				iCode: '2',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-			{
-				requestID: '3',
-				examRequestName: 'ALBUMIN CODE 3',
-				iCode: '3',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-		],
+		pageSize: 5,
+		tableData: [],
 		dropDownContent: [
 			{ label: 'CHEM', value: 'CHEM' },
 			{ label: 'HEMA', value: 'HEMA' },
@@ -67,10 +37,6 @@ class LabExamRequest extends React.Component {
 		]
 	}
 	
-	onDblClickTableRow = () => {
-		this.setState({ isShowUpdateForm: true });
-	}
-
 	onClickAdd = () => {
 		this.setState({ isShowAddForm: true });
 	}
@@ -79,29 +45,26 @@ class LabExamRequest extends React.Component {
 		this.setState({ pageSize });
 	}
 
+	onDblClickTableRow = () => {
+		this.setState({ isShowUpdateForm: true });
+	}
+
 	onCloseForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
 	}
 
 	render() {
-		const { pageSize, tableData, dropDownContent, isShowAddForm, isShowUpdateForm } = this.state;
+		const { pageSize, tableData, dropDownContent, filterContent, isShowAddForm, isShowUpdateForm } = this.state;
 
 		const leftSection = (
-			<Row gutter={24}>
-				<Col span={14}>
-					<Input 
-						prefix={<Icon type="search" />}
-						placeholder="Search Exam Request Name"
-					/>
-				</Col>
-				<Col span={10}>
-					<DropDown 
-						size="small"
-						placeholder="Filter by SERUM"
-						content={dropDownContent} 
-					/>
-				</Col>
-			</Row>
+			<>
+				<DropDown 
+					size="small"
+					placeholder="Filter by SERUM"
+					content={filterContent} 
+					disabled 
+				/>
+			</>
 			
 		);
 
@@ -113,7 +76,7 @@ class LabExamRequest extends React.Component {
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
 				>
-					<Icon type="plus" /> Add Exam Request
+					<Icon type="plus" /> Add Profile
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -121,14 +84,21 @@ class LabExamRequest extends React.Component {
 
 		return (
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Exam Request</Title>
-					<Row style={{ marginTop: 50 }}>
+				<section style={{ textAlign: 'center' }}>
+					{/* <Title level={3}>Exam Items</Title> */}
+					<PageTitle pageTitle="EXAM ITEMS" />
+					<Row style={{ marginTop: 35 }}>
 						<DropDown 
-							label="SECTION" 
+							label="Section" 
 							placeholder="Select Section"
 							content={dropDownContent} 
 						/>
+						<div style={{ display: 'inline-block', marginLeft: 30 }} />
+						{/* <DropDown 
+							label="INSTRUMENT" 
+							placeholder="Select Intrument"
+							content={dropDownContent} 
+						/> */}
 					</Row>
 				</section>
 				<SecondarySection 
@@ -141,23 +111,17 @@ class LabExamRequest extends React.Component {
 					loading={false}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
-				<AddForm 
-					visible={isShowAddForm}
-					onClose={this.onCloseForm}
-				/>
-				<UpdateForm
-					visible={isShowUpdateForm}
-					onClose={this.onCloseForm}
-				/>
+				<AddForm visible={isShowAddForm} onClose={this.onCloseForm} />
+				<UpdateForm visible={isShowUpdateForm} onClose={this.onCloseForm} />
 			</div>
 		);
 	}
 }
+
 
 SecondarySection.propTypes = {
 	leftContent: PropTypes.node.isRequired,
 	rightContent: PropTypes.node.isRequired
 };
 
-
-export default LabExamRequest;
+export default ExamRequest;

@@ -11,7 +11,7 @@ class UserMaintenance extends React.Component {
                 <UserTable />
             </div>
         );
-    }
+    } 
 }
 
 export default UserMaintenance;

@@ -14,77 +14,43 @@ import './setting-menu.css';
 
 const settingsItemData = [
     {
-        settingsCategory: 'Exam',
-        settingsCategoryItems: [
-            {
-                image: LabExamRequestIcon,
-                link: '/settings/exam-request',
-                label: 'Exam Items',
-                col: '7',
-                // offset: 4
-            },
-            {
-                image: LabExamRequestIcon,
-                link: '/settings/exam-request',
-                label: 'Exam Request',
-                col: '7',
-            }
-        ]
+        image: LabExamRequestIcon,
+        link: '/settings/exam-items',
+        label: 'Exam Items',
+        col: '4',
+        offset: 4
     },
     {
-        settingsCategory: 'Others',
-        settingsCategoryItems: [
-            {
-                image: LabExamRequestIcon,
-                link: '../settings/panel-exam',
-                label: 'Panel Exam',
-                col: '7'
-            },
-            {
-                image: UserMaintenanceIcon,
-                link: '/settings/user-maintenance',
-                label: 'User Maintenance',
-                col: '7'
-            }
-        ]
+        image: LabExamRequestIcon,
+        link: '/settings/exam-request',
+        label: 'Exam Request',
+        col: '4',
+    },
+    {
+        image: LabExamRequestIcon,
+        link: '../settings/panel-exam',
+        label: 'Panel Exam',
+        col: '4'
+    },
+    {
+        image: UserMaintenanceIcon,
+        link: '/settings/user-maintenance',
+        label: 'User Maintenance',
+        col: '4'
     }
 ]
 
 class SettingsMenu extends React.Component {
     render() {
-        const rowItems = settingsItemData.map((outerItem) => {
-            const menuItems = outerItem.settingsCategoryItems.map(el => {
-                return (
-                    <div
-                        style={{
-                            padding: '20px',
-                            margin: '5px 5px',
-                            display: 'inline-block',
-                            textAlign: 'center'
-                        }}
-                    >
-                        <SettingsCard 
-                            image={el.image} 
-                            link={el.link} 
-                            label={el.label} 
-                            col={el.col}
-                        />
-                    </div>
-                )
-            })
+        const rowItems = settingsItemData.map((el) => {
             return (
-                <div>
-                    <Row>
-                        <Col span={24} className="setting-category">
-                            <p>{outerItem.settingsCategory}</p>
-                        </Col>
-                    </Row>
-                    <Row style={{textAlign:'center'}}>
-                        <Col span={24}>
-                            {menuItems}
-                        </Col>
-                    </Row>
-                </div>
+                <SettingsCard 
+                    image={el.image} 
+                    link={el.link} 
+                    label={el.label} 
+                    col={el.col}
+                    offset={el.offset}
+                />
             );
         });
 

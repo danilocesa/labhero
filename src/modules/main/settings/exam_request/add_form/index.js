@@ -21,8 +21,8 @@ class AddForm extends React.Component {
 
 		return (
 			<Drawer
-				title="Add Exam"
-				width={400}
+				title="Add Exam Request"
+				width={800}
 				placement="right"
 				closable
 				onClose={onClose}
@@ -30,18 +30,71 @@ class AddForm extends React.Component {
 			>
 				<section style={{ marginBottom: 50 }}>
 					<Form>
-						<Form.Item label="Result Name">
-							<Input />
-						</Form.Item>
-						<Form.Item label="Result General Name">
-							<Input />
-						</Form.Item>
-						<Form.Item label="Result Type">
-							<Input />
-						</Form.Item>
-						<Form.Item label="Integration Code">
-							<Input />
-						</Form.Item>
+						<div style={{ margin: '0px 50px' }}>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="INSTRUMENT ID">
+										{getFieldDecorator('instrumentID', { initialValue: "1" })(
+											<Input disabled />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST ID">
+										{getFieldDecorator('examRequestID')(
+											<Input disabled />
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST NAME">
+										{getFieldDecorator('instrumentID', { initialValue: "1" })(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={12}>
+									<Form.Item label="SPECIMEN">
+										{getFieldDecorator('specimen')(
+											<Select disabled>
+												<Option key="1">1</Option>
+											</Select>
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="LAB EXAM / PROFILE NAME">
+										{getFieldDecorator('profileName')(
+											<Select disabled>
+												<Option key="1">1</Option>
+											</Select>
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={12}>
+									<Form.Item label="LAB EXAM / PROFILE CODE">
+										{getFieldDecorator('profileCode')(
+											<Select disabled>
+												<Option key="1">1</Option>
+											</Select>
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="HIS REQUEST ID">
+										{getFieldDecorator('hisRequestID', { initialValue: "1" })(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+						</div>
 					</Form>
 				</section>
 				<section style={footerStyle}>
