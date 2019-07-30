@@ -5,3 +5,8 @@
 .ant-table-row-level-1 .phlebo_exams_extract{
   display:none;
 }
+
+.ant-table-row-level-0 .phlebo_examreq_alignment{
+  float:right;
+  margin-right:20%;
+}

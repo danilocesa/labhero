@@ -31,11 +31,11 @@ class SpecimenList extends React.Component {
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
 		// eslint-disable-next-line prefer-destructuring
 		const requestID = patientSpecimensAPI.requestID;
-		const parentLevel = [];
+		const requestExams = [];
 
 		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
-				parentLevel[indexSection] = {
+				requestExams[indexSection] = {
 					"key": `${keySection.sectionName}${keySection.sectionID}`,
 					"phlebo_sectionID": keySection.sectionID,
 					"phlebo_section_col": keySection.sectionName, 
@@ -43,14 +43,18 @@ class SpecimenList extends React.Component {
 					"phlebo_specimen_col": keySpecimen.specimenName,
 					"phlebo_requestID": requestID,
 					"phlebo_sampleSpecimenID": keySpecimen.sampleSpecimenID,
+					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID,
 					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
 					{
-						return {"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,"phlebo_section_col": keyExams, "phlebo_specimen_col": ''};
+						return {
+							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
+							"phlebo_section_col": keyExams
+						};
 					})
 				}
 			});
 		});
-		this.setState({  patientSectionList: parentLevel });
+		this.setState({  patientSectionList: requestExams });
 		
 	}
 
@@ -111,14 +115,19 @@ class SpecimenList extends React.Component {
 			key: 'phlebo_specimen_col',
 		},
 		{ 
+			title: 'SAMPLE ID', 
+			dataIndex: 'phlebo_sampleid_col', 
+			key: 'phlebo_sampleid_col',
+		},
+		{ 
 			title: 'STATUS',
 			dataIndex: 'phlebo_status_col', 
 			key: 'phlebo_status_col',
 			render:(button,value) => {
-				console.log(value);
+      console.log("TCL: SpecimenList -> render -> value", value)
 				const {loading } = this.state;
 				return(
-					<Col style={{ paddingLeft: 245 }} className="phlebo_exams_extract">
+					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
 						<Button 
 							id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
 							onClick={this.onChange} 
