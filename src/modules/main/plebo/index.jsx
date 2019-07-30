@@ -1,6 +1,6 @@
 // LiBRARY
 import React from 'react';
-import { Drawer as AntDrawer, Tabs as AntTabs, Typography} from 'antd';
+import { Drawer as AntDrawer, Tabs as AntTabs} from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
@@ -11,7 +11,6 @@ import PleboPatientResult from './plebopatient';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
-const { Title } = Typography;
 
 class Plebo extends React.Component {
 	state = { 

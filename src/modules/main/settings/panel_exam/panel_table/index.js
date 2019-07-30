@@ -128,7 +128,7 @@ const expandedRowPanelData = () => {
 
     const data = [
         {
-            key: '1',
+            key: 'p1',
             code: '1',
             exam_name: 'CHLORIDE',
             inst_exam_name: '04A',
@@ -141,7 +141,7 @@ const expandedRowPanelData = () => {
             extra_col_3: 'col3'
         },
         {
-            key: '2',
+            key: 'p2',
             code: '2',
             exam_name: 'POTASSIUM',
             inst_exam_name: '01B',
@@ -154,7 +154,7 @@ const expandedRowPanelData = () => {
             extra_col_3: 'col3'
         },
         {
-            key: '3',
+            key: 'p3',
             code: '3',
             exam_name: 'SODIUM',
             inst_exam_name: '01A',
@@ -178,7 +178,8 @@ class PanelTable extends React.Component {
         this.state = {
             visible: false,
             drawerTitle: '',
-            drawerButton: ''
+            drawerButton: '',
+            panelInfo: []
         }
     }
 
@@ -186,7 +187,8 @@ class PanelTable extends React.Component {
         this.setState({
             visible: true,
             drawerTitle: 'Update Panel',
-            drawerButton: 'Update'
+            drawerButton: 'Update',
+            panelInfo: record
         });
         console.log(record);
     }
@@ -201,7 +203,8 @@ class PanelTable extends React.Component {
         this.setState({
             visible: true,
             drawerTitle: 'Add Panel',
-            drawerButton: 'Add'
+            drawerButton: 'Add',
+            panelInfo: ''
         })
     }
 
@@ -246,7 +249,10 @@ class PanelTable extends React.Component {
                     onClose={this.onClose}
                     width={300}
                 >
-                    <PanelForm drawerButton={this.state.drawerButton} />
+                    <PanelForm 
+                        drawerButton={this.state.drawerButton} 
+                        panelInfo={this.state.panelInfo}
+                    />
                 </Drawer>
             </div>
 

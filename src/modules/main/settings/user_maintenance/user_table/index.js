@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Row, Col, Select, Typography, Button, Icon, Drawer } from 'antd';
+import { Table, Select, Typography, Button, Icon, Drawer } from 'antd';
 
 import UserAccountForm from '../user_account_form';
 import './usertable.css';
@@ -78,7 +78,8 @@ class UserTable extends React.Component {
         this.setState({
           visible: true,
           drawerTitle: 'Add User Account',
-          drawerButton: 'Add'
+          drawerButton: 'Add',
+          patientInfo: ''
         });
     };
 
@@ -93,6 +94,7 @@ class UserTable extends React.Component {
             visible: true,
             drawerTitle: 'Update User Account',
             drawerButton: 'Update',
+            patientInfo: record
         });
         console.log(record);
     }
@@ -142,6 +144,7 @@ class UserTable extends React.Component {
                 >
                     <UserAccountForm 
                         drawerButton={this.state.drawerButton} 
+                        patientInfo={this.state.patientInfo}
                     />
                 </Drawer>
             </div>

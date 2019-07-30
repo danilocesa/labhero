@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row } from 'antd';
+import { Row, Col } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
@@ -9,58 +9,90 @@ import {
 } from "images";
 import SettingsCard from './settings_card'
 
+import './setting-menu.css';
+
 
 const settingsItemData = [
     {
-        image: LabExamRequestIcon,
-        link: '/settings/exam-request',
-        label: 'Exam Request Item',
-        col: '4',
-        offset: '2'
+        settingsCategory: 'Exam',
+        settingsCategoryItems: [
+            {
+                image: LabExamRequestIcon,
+                link: '/settings/exam-request',
+                label: 'Exam Items',
+                col: '7',
+                // offset: 4
+            },
+            {
+                image: LabExamRequestIcon,
+                link: '/settings/exam-request',
+                label: 'Exam Request',
+                col: '7',
+            }
+        ]
     },
     {
-        image: LabExamRequestIcon,
-        link: '/settings/profile-exam',
-        label: 'Profile Exam',
-        col: '4'
-    },
-    {
-        image: LabExamRequestIcon,
-        link: '/settings/lab-exam-request',
-        label: 'Lab Exam Request',
-        col: '4',
-    },
-    {
-        image: LabExamRequestIcon,
-        link: '../settings/panel-exam',
-        label: 'Panel Exam',
-        col: '4'
-    },
-    {
-        image: UserMaintenanceIcon,
-        link: '/settings/user-maintenance',
-        label: 'User Maintenance',
-        col: '4'
-    },
+        settingsCategory: 'Others',
+        settingsCategoryItems: [
+            {
+                image: LabExamRequestIcon,
+                link: '../settings/panel-exam',
+                label: 'Panel Exam',
+                col: '7'
+            },
+            {
+                image: UserMaintenanceIcon,
+                link: '/settings/user-maintenance',
+                label: 'User Maintenance',
+                col: '7'
+            }
+        ]
+    }
 ]
 
 class SettingsMenu extends React.Component {
     render() {
-        const Items = settingsItemData.map((item) => (
-            <SettingsCard 
-                classMarginBottom={item.classMarginBottom}
-                image={item.image} 
-                link={item.link} 
-                label={item.label} 
-                offset={item.offset} 
-                col={4} 
-            />
-        ))
+        const rowItems = settingsItemData.map((outerItem) => {
+            const menuItems = outerItem.settingsCategoryItems.map(el => {
+                return (
+                    <div
+                        style={{
+                            padding: '20px',
+                            margin: '5px 5px',
+                            display: 'inline-block',
+                            textAlign: 'center'
+                        }}
+                    >
+                        <SettingsCard 
+                            image={el.image} 
+                            link={el.link} 
+                            label={el.label} 
+                            col={el.col}
+                        />
+                    </div>
+                )
+            })
+            return (
+                <div>
+                    <Row>
+                        <Col span={24} className="setting-category">
+                            <p>{outerItem.settingsCategory}</p>
+                        </Col>
+                    </Row>
+                    <Row style={{textAlign:'center'}}>
+                        <Col span={24}>
+                            {menuItems}
+                        </Col>
+                    </Row>
+                </div>
+            );
+        });
+
         return(
             <div>
                 <PageTitle pageTitle="SETTINGS" />
-                <Row gutter={40} style={{paddingTop: '20px'}}>
-                    {Items}
+                <Row gutter={30} style={{paddingTop: '20px'}}>
+                    {rowItems}
                 </Row>
             </div>
         );

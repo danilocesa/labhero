@@ -15,9 +15,9 @@ class Settings extends React.Component {
                 <Route exact path="/settings" component={SettingsMenu} />
                 <Route exact path="/settings/user-maintenance" component={UserMaintenance} />
                 <Route exact path="/settings/panel-exam" component={PanelExam} />
-								<Route exact path="/settings/profile-exam" component={ProfileExam} />
-								<Route exact path="/settings/exam-request" component={ExamRequest} />
-								<Route exact path="/settings/lab-exam-request" component={LabExamRequest} />
+								{/* <Route exact path="/settings/profile-exam" component={ProfileExam} /> */}
+								<Route exact path="/settings/exam-items" component={ExamRequest} />
+								<Route exact path="/settings/exam-request" component={LabExamRequest} />
             </Switch>
         )
     }
