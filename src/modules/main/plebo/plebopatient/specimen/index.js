@@ -50,7 +50,6 @@ class SpecimenList extends React.Component {
 						return {
 							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
 							"phlebo_section_col": keyExams,
-							// "colSpan": 3
 						};
 					})
 				}
