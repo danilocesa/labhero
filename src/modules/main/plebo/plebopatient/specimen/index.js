@@ -19,6 +19,7 @@ import './specimen.css';
 // const RadioButton = Radio.Button;
 // const RadioGroup = Radio.Group;
 
+
 class SpecimenList extends React.Component {
 	state = {
 		patientSectionList: null,
@@ -48,7 +49,8 @@ class SpecimenList extends React.Component {
 					{
 						return {
 							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
-							"phlebo_section_col": keyExams
+							"phlebo_section_col": keyExams,
+							// "colSpan": 3
 						};
 					})
 				}
@@ -108,16 +110,19 @@ class SpecimenList extends React.Component {
 			title: 'SECTION', 
 			dataIndex: 'phlebo_section_col', 
 			key: 'phlebo_section_col',
+			width: 190
 		},
 		{ 
 			title: 'SPECIMEN', 
 			dataIndex: 'phlebo_specimen_col', 
 			key: 'phlebo_specimen_col',
+			width: 165
 		},
 		{ 
 			title: 'SAMPLE ID', 
 			dataIndex: 'phlebo_sampleid_col', 
 			key: 'phlebo_sampleid_col',
+			width: 165
 		},
 		{ 
 			title: 'STATUS',
@@ -135,6 +140,7 @@ class SpecimenList extends React.Component {
 							data-specimenid={value.phlebo_specimenID} 
 							data-requestid={value.phlebo_requestID}
 							disabled={value.phlebo_sampleSpecimenID}
+							className="extract-phlebo-btn"
 						>
 							{value.phlebo_sampleSpecimenID ? 'EXTRACTED' : 'EXTRACT'} 
 						</Button>
@@ -146,7 +152,7 @@ class SpecimenList extends React.Component {
 	];
 
 	return (
-		<div>
+		<div className="phlebotable-container">
 			<Table
 				className="phlebotable"
 				columns={columns}

@@ -10,3 +10,32 @@
   float:right;
   margin-right:20%;
 }
+
+/* 
+.phlebotable-container td {
+  width: 165px;
+}
+
+.phlebotable-container th {
+  width: 165px;
+} */
+
+/* .phlebotable-container td:nth-child(2) {
+  width: 191px;
+} */
+
+.phlebotable-container .extract-phlebo-btn {
+  margin-right: 25px;
+}
+
+/* .phlebotable-container .ant-table-row-level-1 td {
+  width: 100%; */
+/* } */
+
+/* .phlebotable-container .ant-table-row-level-0 td:first-child {
+  width: px !important;
+}
+
+.phlebotable-container .ant-table-row-level-1 td:first-child {
+  width: 350px !important;
+} */
