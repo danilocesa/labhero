@@ -33,63 +33,41 @@ class AddForm extends React.Component {
 						<div style={{ margin: '0px 50px' }}>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="INSTRUMENT ID">
-										{getFieldDecorator('instrumentID', { initialValue: "1" })(
-											<Input disabled />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST ID">
-										{getFieldDecorator('examRequestID')(
-											<Input disabled />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
 									<Form.Item label="EXAM REQUEST NAME">
-										{getFieldDecorator('instrumentID', { initialValue: "1" })(
-											<Input />
+										{getFieldDecorator('instrumentID')(
+											<Input placeholder="examRequestName" />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="SPECIMEN">
-										{getFieldDecorator('specimen')(
-											<Select disabled>
-												<Option key="1">1</Option>
-											</Select>
+									<Form.Item label="EXAM REQUEST CODE">
+										{getFieldDecorator('examRequestID')(
+											<Input placeholder="examRequestCode" />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="LAB EXAM / PROFILE NAME">
+									<Form.Item label="LOINC">
 										{getFieldDecorator('profileName')(
-											<Select disabled>
-												<Option key="1">1</Option>
-											</Select>
+											<Input placeholder="examRequestLoinc" />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="LAB EXAM / PROFILE CODE">
+									<Form.Item label="INTEGRATION CODE">
 										{getFieldDecorator('profileCode')(
-											<Select disabled>
-												<Option key="1">1</Option>
-											</Select>
+											<Input placeholder="examRequestIntegrationCode" />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="HIS REQUEST ID">
-										{getFieldDecorator('hisRequestID', { initialValue: "1" })(
-											<Input />
+									<Form.Item label="EXAM REQUEST SORT">
+										{getFieldDecorator('hisRequestID')(
+											<Input placeholder="examRequestSort" />
 										)}
 									</Form.Item>
 								</Col>

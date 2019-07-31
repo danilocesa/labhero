@@ -30,17 +30,17 @@ class UpdateForm extends React.Component {
 			>
 				<section style={{ marginBottom: 50 }}>
 					<Form>
-						<Form.Item label="Result Name">
-							<Input />
+						<Form.Item label="Exam Item Name">
+							<Input placeholder="examItemName" />
 						</Form.Item>
-						<Form.Item label="Result General Name">
-							<Input />
+						<Form.Item label="Exam Item General Name">
+							<Input placeholder="examItemGeneralName" />
 						</Form.Item>
 						<Form.Item label="Result Type">
-							<Input />
+							<Input placeholder="examItemResultType"/>
 						</Form.Item>
 						<Form.Item label="Integration Code">
-							<Input />
+							<Input placeholder="examItemIntegrationCode" />
 						</Form.Item>
 					</Form>
 				</section>
