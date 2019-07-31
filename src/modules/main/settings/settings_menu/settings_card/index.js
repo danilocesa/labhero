@@ -19,7 +19,7 @@ class SettingsCard extends React.Component {
                         </Row>
                         <Row>
                             <Col 
-                            span="24" 
+                            span={24} 
                             style={{ 
                                 marginTop:'10px', 
                                 fontWeight: "bold", 

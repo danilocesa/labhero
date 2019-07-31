@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 
 import DashboardHeader from './header';
 import Metrics from './metric';
@@ -44,16 +44,17 @@ class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      btnTesting1: {
-          loading: false,
-          buttonText: "EXTRACT",
-          isDisabled: false
-        },
-        btnTesting2: {
-          loading: false,
-          buttonText: "EXTRACT",
-          isDisabled: false
-        }
+      // btnTesting1: {
+      //     loading: false,
+      //     buttonText: "EXTRACT",
+      //     isDisabled: false
+      //   },
+      //   btnTesting2: {
+      //     loading: false,
+      //     buttonText: "EXTRACT",
+      //     isDisabled: false
+      //   },
+      userNameLoggedIn: ''
     }
   }
 

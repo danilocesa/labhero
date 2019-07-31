@@ -14,6 +14,10 @@ class Message {
 	static warning = (message) => {
 		AntMessage.warning(message || defaultMessage);
 	}
+
+	static success = (message) => {
+		AntMessage.success(message || defaultMessage);
+	}
 }
 
 export default Message;

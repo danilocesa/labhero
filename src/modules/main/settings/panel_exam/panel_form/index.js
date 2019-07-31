@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Form, Select, Button } from 'antd';
+import PropTypes from 'prop-types';
 
 import './panel_form.css';
 
@@ -12,10 +13,10 @@ class PanelForm extends React.Component {
                 
                 <Form>
                     <Form.Item label="PANEL ID">
-                        <Input />
+                        <Input value={this.props.panelInfo.code} />
                     </Form.Item>
                     <Form.Item label="PANEL EXAM">
-                        <Input />
+                        <Input value={this.props.panelInfo.panel_name} />
                     </Form.Item>
                     <Form.Item label="TEMPLATE">
                         <Select placeholder="Select a template">
@@ -25,7 +26,7 @@ class PanelForm extends React.Component {
                         </Select>
                     </Form.Item>
                     <Form.Item label="STATUS">
-                        <Input />
+                        <Input value={this.props.panelInfo.status} />
                     </Form.Item>
 
                     <div
@@ -40,10 +41,10 @@ class PanelForm extends React.Component {
                             textAlign: 'right',
                         }}
                     >
-                        <Button onClick={this.onClose} style={{ marginRight: 8 }}>
+                        <Button style={{ marginRight: 8 }}>
                             Cancel
                         </Button>
-                        <Button onClick={this.onClose} type="primary">
+                        <Button type="primary">
                             {this.props.drawerButton}
                         </Button>
                     </div>
@@ -51,6 +52,11 @@ class PanelForm extends React.Component {
             </div>
         );
     }
+}
+
+PanelForm.propTypes = {
+    panelInfo: PropTypes.object.isRequired,
+    drawerButton: PropTypes.bool.isRequired
 }
 
 export default PanelForm;

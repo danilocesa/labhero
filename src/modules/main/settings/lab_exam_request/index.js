@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Typography, Button, Icon, Input } from 'antd';
+import axiosCall from 'services/axiosCall';
 import TablePager from 'shared_components/table_pager';
+import Message from 'shared_components/message';
+
 import ExamTable from './table';
-import DropDown from './dropdown';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
+import DropDown from '../shared/dropdown';
 
 const { Title } = Typography;
 
@@ -22,54 +25,86 @@ const SecondarySection = (props) => (
 
 class LabExamRequest extends React.Component {
 	state = {
-		selectedInstrument: null,
+		selectedSecCode: null,
+		isLoading: false,
 		pageSize: 5,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		tableData: [
-			{
-				requestID: '1',
-				examRequestName: 'ALBUMIN CODE 1',
-				iCode: '1',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-			{
-				requestID: '2',
-				examRequestName: 'ALBUMIN CODE 2',
-				iCode: '2',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-			{
-				requestID: '3',
-				examRequestName: 'ALBUMIN CODE 3',
-				iCode: '3',
-				type: 'T',
-				specimen: 'SERUM',
-				a: 'TRUE',
-				c: 'TRUE',
-				s: '1'
-			},
-		],
-		dropDownContent: [
-			{ label: 'CHEM', value: 'CHEM' },
-			{ label: 'HEMA', value: 'HEMA' },
-			{ label: 'IMMU', value: 'IMMU' },
-			{ label: 'MCBRO', value: 'MCBRO' },
-			{ label: 'MCRO', value: 'MCRO' },
-			{ label: 'RECEP', value: 'RECEP' },
-		]
+		examReqSource: [],
+		examRequests: [],
+		sections: [],
+		ddSectionCodes: [],
+		ddSpecimenNames: []
+	}
+
+	async componentDidMount() {
+		const ddSpecimenNames = [];
+		const sections = await this.fetchSection()
+		const ddSectionCodes = sections.map(section => ({
+			label: section.sectionCode,
+			value: section.sectionID
+		}));
+
+		sections.forEach(section => {
+			section.specimens.forEach(specimen => {
+				const isExisting = ddSpecimenNames.find(specName => specName.value === specimen.specimenID);
+				
+				if(isExisting) return;
+				
+				ddSpecimenNames.push({
+					label: specimen.specimenName,
+					value: specimen.specimenID
+				});
+			});
+		});
+
+		ddSpecimenNames.unshift({ label: 'CLEAR FILTER', value: -1 });
+
+		this.setState({ sections, ddSectionCodes, ddSpecimenNames });
 	}
 	
-	onChangeInstrument = (value) => {
-		this.setState({ selectedInstrument: value })
+	onSuccessCreateExamReq = () => {
+		this.setState({ isShowAddForm: false });
+		Message.success('Exam request successfully created.');
+	}
+
+	onChangeSectionCode = async(sectionId, sectionCode) => {
+		this.setState({ isLoading: true, selectedSecCode: sectionCode });
+
+		const apiResponse = await this.fetchExamReqById(sectionId);
+		const examRequests = [];
+		
+		apiResponse.forEach(item => {
+			item.perSpecimen.forEach(perSpecimen => {
+				perSpecimen.exams.forEach(exam => {
+					examRequests.push({ 
+						examID: exam.examID,
+						examName: exam.examName,
+						examCode: exam.examCode
+					});
+				});
+			});
+		}); 
+		
+		this.setState({ 
+			examRequests, 
+			examReqSource: examRequests,
+			isLoading: false
+		});
+	}
+
+	onChangeSectionName = (sectionID) => {
+		const { examReqSource } = this.state;
+
+		console.log(examReqSource);
+
+		if(sectionID === -1) {
+			this.setState({ examRequests: [...examReqSource] });
+		}
+		else {
+			const examRequests = examReqSource.filter(examReq => examReq.sectionID === sectionID);
+			this.setState({ examRequests });
+		}
 	}
 
 	onDblClickTableRow = () => {
@@ -88,14 +123,50 @@ class LabExamRequest extends React.Component {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
 	}
 
+	fetchSection = async() => {
+		let sections = [];
+
+		try {
+			const url = `/ExamResult`;
+
+			const response = await axiosCall({ method: 'GET', url });
+			const { data } = await response;
+
+			sections = data;
+		} catch (e) {
+			Message.error();
+		}
+
+		return sections;
+	}
+
+	fetchExamReqById = async(ids) => {
+		let examRequests = [];
+
+		try {
+			const url = `/ExamRequest/ids/${ids}`;
+
+			const response = await axiosCall({ method: 'GET', url });
+			const { data } = await response;
+
+			examRequests = data;
+		} catch (e) {
+			Message.error();
+		}
+
+		return examRequests;
+	}
+
 	render() {
 		const { 
 			pageSize, 
-			tableData, 
-			dropDownContent, 
+			examRequests, 
+			ddSpecimenNames, 
+			ddSectionCodes, 
 			isShowAddForm, 
 			isShowUpdateForm,
-			selectedInstrument
+			isLoading,
+			selectedSecCode
 		} = this.state;
 
 		const leftSection = (
@@ -104,15 +175,16 @@ class LabExamRequest extends React.Component {
 					<Input 
 						prefix={<Icon type="search" />}
 						placeholder="Search Exam Request Name"
-						disabled={selectedInstrument == null}
+						disabled={selectedSecCode == null}
 					/>
 				</Col>
 				<Col span={10}>
 					<DropDown 
 						size="small"
 						placeholder="Filter by SERUM"
-						content={dropDownContent} 
-						disabled={selectedInstrument == null}
+						content={ddSpecimenNames} 
+						disabled={selectedSecCode == null}
+						onChange={this.onChangeSectionName}
 					/>
 				</Col>
 			</Row>
@@ -126,7 +198,7 @@ class LabExamRequest extends React.Component {
 					type="primary" 
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
-					disabled={selectedInstrument == null}
+					disabled={selectedSecCode == null}
 				>
 					<Icon type="plus" /> Add Exam Request
 				</Button>
@@ -137,13 +209,13 @@ class LabExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Lab Exam Request</Title>
+					<Title level={3}>Exam Request</Title>
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="INSTRUMENT" 
-							placeholder="Select Template"
-							content={dropDownContent} 
-							onChange={this.onChangeInstrument}
+							label="SECTION" 
+							placeholder="Select Section"
+							content={ddSectionCodes} 
+							onChange={this.onChangeSectionCode}
 						/>
 					</Row>
 				</section>
@@ -152,14 +224,15 @@ class LabExamRequest extends React.Component {
 					rightContent={rightSection}
 				/>
 				<ExamTable 
-					data={tableData}
+					data={examRequests}
 					pageSize={pageSize}
-					loading={false}
+					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
 				<AddForm 
 					visible={isShowAddForm}
 					onClose={this.onCloseForm}
+					onSuccess={this.onSuccessCreateExamReq}
 				/>
 				<UpdateForm
 					visible={isShowUpdateForm}

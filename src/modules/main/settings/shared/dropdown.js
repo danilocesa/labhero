@@ -45,7 +45,7 @@ class Dropdown extends React.Component {
 Dropdown.propTypes = {
 	label: PropTypes.string,
 	content: PropTypes.arrayOf(PropTypes.shape({
-		value: PropTypes.string.isRequired,
+		value: PropTypes.any.isRequired,
 		label: PropTypes.string.isRequired
 	})),
 	disabled: PropTypes.bool,
