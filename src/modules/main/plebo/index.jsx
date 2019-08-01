@@ -1,6 +1,6 @@
 // LiBRARY
 import React from 'react';
-import { Drawer } from 'antd';
+import { Drawer as AntDrawer, Tabs as AntTabs} from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
@@ -8,6 +8,9 @@ import SearchForm from './plebosearch';
 import SearchPatientTableHeader from './pleboheader';
 import SearchPatientTable from './plebotable';
 import PleboPatientResult from './plebopatient';
+
+//  CONSTANTS
+const { TabPane } = AntTabs;
 
 class Plebo extends React.Component {
 	state = { 
@@ -53,32 +56,119 @@ class Plebo extends React.Component {
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
 					/>
-					<SearchPatientTableHeader 
-						pageSize={pageSize}
-						pageTotal={patients.length} 
-						handleChangeSize={this.handleChangeSize} 
-					/>
-					<SearchPatientTable 
-						data={patients}
-						pageSize={pageSize}
-						loading={loading} 
-						redirectUrl=""
-						drawer={this.displayDrawer}
-					/>
-					{
-					showDrawer ? (
-						<Drawer
-							title="Check-in specimen" 
-							onClose={this.onClosePleboPatientResultDrawer}
-							width="80%"
-							visible={showDrawer}
+					<br />
+					<AntTabs defaultActiveKey="1">
+						<TabPane
+							tab={(
+								<span>
+									For Extraction
+								</span>
+							)}
+							key="1"
 						>
-							<PleboPatientResult patientInfo={patientInfo} />
-						</Drawer>
-					)
-					:
-					null
-				}
+					
+						<SearchPatientTableHeader 
+							pageSize={pageSize}
+							pageTotal={patients.length} 
+							handleChangeSize={this.handleChangeSize} 
+						/>
+
+						<SearchPatientTable 
+							data={patients}
+							pageSize={pageSize}
+							loading={loading} 
+							redirectUrl=""
+							drawer={this.displayDrawer}
+						/>
+						{
+							showDrawer ? (
+								<AntDrawer
+									title="Check-in specimen" 
+									onClose={this.onClosePleboPatientResultDrawer}
+									width="80%"
+									visible={showDrawer}
+								>
+									<PleboPatientResult patientInfo={patientInfo} />
+								</AntDrawer>
+							)
+							:
+							null
+						}
+						</TabPane>
+						<TabPane
+							tab={(
+								<span>
+									Cancelled
+								</span>
+							)}
+							key="2"
+						>
+							<SearchPatientTableHeader 
+								pageSize={pageSize}
+								pageTotal={patients.length} 
+								handleChangeSize={this.handleChangeSize} 
+							/>
+
+							<SearchPatientTable 
+								data={patients}
+								pageSize={pageSize}
+								loading={loading} 
+								redirectUrl=""
+								drawer={this.displayDrawer}
+							/>
+							{
+								showDrawer ? (
+									<AntDrawer
+										title="Check-in specimen" 
+										onClose={this.onClosePleboPatientResultDrawer}
+										width="80%"
+										visible={showDrawer}
+									>
+										<PleboPatientResult patientInfo={patientInfo} />
+									</AntDrawer>
+								)
+								:
+								null
+							}
+						</TabPane>
+						<TabPane
+							tab={(
+								<span>
+									Extracted
+								</span>
+							)}
+							key="3"
+						>
+							<SearchPatientTableHeader 
+								pageSize={pageSize}
+								pageTotal={patients.length} 
+								handleChangeSize={this.handleChangeSize} 
+							/>
+
+							<SearchPatientTable 
+								data={patients}
+								pageSize={pageSize}
+								loading={loading} 
+								redirectUrl=""
+								drawer={this.displayDrawer}
+							/>
+							{
+								showDrawer ? (
+									<AntDrawer
+										title="Check-in specimen" 
+										onClose={this.onClosePleboPatientResultDrawer}
+										width="80%"
+										visible={showDrawer}
+									>
+										<PleboPatientResult patientInfo={patientInfo} />
+									</AntDrawer>
+								)
+								:
+								null
+							}
+						</TabPane>
+					</AntTabs>
+					
 				</div>
 			</div>
     );

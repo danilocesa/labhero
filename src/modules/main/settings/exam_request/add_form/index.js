@@ -33,6 +33,7 @@ class AddForm extends React.Component {
 						<div style={{ margin: '0px 50px' }}>
 							<Row gutter={64}>
 								<Col span={12}>
+<<<<<<< HEAD
 									<Form.Item label="INSTRUMENT ID">
 										{getFieldDecorator('instrumentID', { initialValue: "1" })(
 											<Input disabled />
@@ -52,44 +53,73 @@ class AddForm extends React.Component {
 									<Form.Item label="EXAM REQUEST NAME">
 										{getFieldDecorator('instrumentID', { initialValue: "1" })(
 											<Input />
+=======
+									<Form.Item label="EXAM REQUEST NAME">
+										{getFieldDecorator('instrumentID')(
+											<Input placeholder="examRequestName" />
+>>>>>>> 257cf40d03ee51ae45fc5e76cf255df74ab7f556
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
+<<<<<<< HEAD
 									<Form.Item label="SPECIMEN">
 										{getFieldDecorator('specimen')(
 											<Select disabled>
 												<Option key="1">1</Option>
 											</Select>
+=======
+									<Form.Item label="EXAM REQUEST CODE">
+										{getFieldDecorator('examRequestID')(
+											<Input placeholder="examRequestCode" />
+>>>>>>> 257cf40d03ee51ae45fc5e76cf255df74ab7f556
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
+<<<<<<< HEAD
 									<Form.Item label="LAB EXAM / PROFILE NAME">
 										{getFieldDecorator('profileName')(
 											<Select disabled>
 												<Option key="1">1</Option>
 											</Select>
+=======
+									<Form.Item label="LOINC">
+										{getFieldDecorator('profileName')(
+											<Input placeholder="examRequestLoinc" />
+>>>>>>> 257cf40d03ee51ae45fc5e76cf255df74ab7f556
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
+<<<<<<< HEAD
 									<Form.Item label="LAB EXAM / PROFILE CODE">
 										{getFieldDecorator('profileCode')(
 											<Select disabled>
 												<Option key="1">1</Option>
 											</Select>
+=======
+									<Form.Item label="INTEGRATION CODE">
+										{getFieldDecorator('profileCode')(
+											<Input placeholder="examRequestIntegrationCode" />
+>>>>>>> 257cf40d03ee51ae45fc5e76cf255df74ab7f556
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
+<<<<<<< HEAD
 									<Form.Item label="HIS REQUEST ID">
 										{getFieldDecorator('hisRequestID', { initialValue: "1" })(
 											<Input />
+=======
+									<Form.Item label="EXAM REQUEST SORT">
+										{getFieldDecorator('hisRequestID')(
+											<Input placeholder="examRequestSort" />
+>>>>>>> 257cf40d03ee51ae45fc5e76cf255df74ab7f556
 										)}
 									</Form.Item>
 								</Col>
