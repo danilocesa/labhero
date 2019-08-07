@@ -37,8 +37,8 @@ class SummaryStep extends React.Component {
 		let isSuccess = false;
 		const { otherInfo, exams, user } = this.state;
 		const payloadExams = exams.map(exam => ({
-			examID: exam.examID,
 			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
+			examID: exam.examID,
 			priority: ''
 		}));
 
@@ -47,7 +47,7 @@ class SummaryStep extends React.Component {
 			userID: user.userID,
 			exams: payloadExams,
 		};
-
+		
 		try {
 			const response = await axiosCall({ 
 				method: 'POST', 

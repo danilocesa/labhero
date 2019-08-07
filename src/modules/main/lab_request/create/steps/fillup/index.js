@@ -32,19 +32,16 @@ const personalInfoKeys = [
 ];
 
 const otherInfoKeys = [
-	'bed',
-	'chargeSlip',
-	'comment',
-	'hospitalRequestID',
-	'locationID',
-	'locationName',
-	'officialReceipt',
-	'patientAge',
 	'patientID',
+	'visit',
+	'chargeSlip',
+	'officialReceipt',
+	'hospitalRequestID',
+	'patientAge',
+	'locationID',
+	'bed',
 	'physicianID',
-	'physicianName',
-	'requestID',
-	'visit'
+	'comment'
 ];
 
 
@@ -74,11 +71,6 @@ class FillupStep extends React.Component {
 
 			otherInfo.patientID = createdPatient.patientID;
 		}
-		
-		const createdOtherInfo = await this.createOtherInfo({ ...otherInfo });
-
-		// If createOtherInfo has an error, stop the function
-		if(!createdOtherInfo) return;
 
 		sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 		sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
@@ -121,33 +113,6 @@ class FillupStep extends React.Component {
 		return createdPatient;
 	}
 
-	createOtherInfo = async (otherInfo) => {
-		let createdOtherInfo;
-		
-		try{
-			const content = {
-				method: 'POST',
-				url: '/RequestHeader',
-				data: otherInfo
-			}
-
-			const response = await axiosCall(content);
-			const { data } = await response;
-
-			// eslint-disable-next-line no-unneeded-ternary
-			createdOtherInfo = data;
-		}
-		catch(error) {
-			if(error && error.response && error.response.data) {
-				const { errors } = error.response.data;
-				Object.keys(errors).forEach(key => { Message.error(errors[key]); });
-			}
-
-			createdOtherInfo = null;
-		}
-
-		return createdOtherInfo;
-	}
 
 	render() {
 		const { restriction } = this;
