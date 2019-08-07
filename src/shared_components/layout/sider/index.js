@@ -69,7 +69,7 @@ class Sider extends React.Component {
             </Link>
           </Menu.Item>
           <Menu.Item key="4">
-            <Link to="/pleboresult">
+            <Link to="/phleboresult">
               <Icon component={PleboIcon} />
               <span>PHLEBO</span>
             </Link>

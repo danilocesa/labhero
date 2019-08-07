@@ -23,8 +23,7 @@ import './specimen.css';
 class SpecimenList extends React.Component {
 	state = {
 		patientSectionList: null,
-		loading: false,
-		// btnState: 'EXTRACT'
+		loading: false
 	}
 
 	async componentDidMount(){
@@ -121,6 +120,18 @@ class SpecimenList extends React.Component {
 			title: 'SAMPLE ID', 
 			dataIndex: 'phlebo_sampleid_col', 
 			key: 'phlebo_sampleid_col',
+			width: 165
+		},
+		{ 
+			title: 'USER', 
+			dataIndex: 'phlebo_user_col', 
+			key: 'phlebo_user_col',
+			width: 165
+		},
+		{ 
+			title: 'DATE EXTRACTED', 
+			dataIndex: 'phlebo_dateExtracted_col', 
+			key: 'phlebo_dateExtracted_col',
 			width: 165
 		},
 		{ 

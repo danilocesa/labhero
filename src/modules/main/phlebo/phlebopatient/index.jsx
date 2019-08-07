@@ -4,11 +4,11 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES     
-import PleboPatientInfo from './info';
+import PhleboPatientInfo from './info';
 import PatientName from './name';
 import SpecimenList from './specimen';
 
-class PleboPatientResult extends React.Component {
+class PhleboPatientResult extends React.Component {
   render() {
   return (
 	<Row>
@@ -19,7 +19,7 @@ class PleboPatientResult extends React.Component {
 			lg={6} 
 			xl={6}
 		>
-			<PleboPatientInfo patientInfo={this.props.patientInfo} />
+			<PhleboPatientInfo patientInfo={this.props.patientInfo} />
 		</Col>
 		<Col 
 			xs={24} 
@@ -37,13 +37,13 @@ class PleboPatientResult extends React.Component {
   }
 }
 
-PleboPatientResult.propTypes = {
+PhleboPatientResult.propTypes = {
 	patientInfo: PropTypes.object
 };
 
-PleboPatientResult.defaultProps = {
+PhleboPatientResult.defaultProps = {
 	patientInfo() { return null; }
 }
 
 
-export default PleboPatientResult;
+export default PhleboPatientResult;

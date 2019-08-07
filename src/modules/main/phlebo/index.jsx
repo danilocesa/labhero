@@ -4,15 +4,15 @@ import { Drawer as AntDrawer, Tabs as AntTabs} from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import SearchForm from './plebosearch';
-import SearchPatientTableHeader from './pleboheader';
-import SearchPatientTable from './plebotable';
-import PleboPatientResult from './plebopatient';
+import SearchPhleboForm from './phlebosearch';
+import SearchPatientTableHeader from './phleboheader';
+import SearchPatientTable from './phlebotable';
+import PhleboPatientResult from './phlebopatient';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
 
-class Plebo extends React.Component {
+class Phlebo extends React.Component {
 	state = { 
 		patients: [], 
 		pageSize: 10,   
@@ -40,7 +40,7 @@ class Plebo extends React.Component {
 		});
 	}
 
-	onClosePleboPatientResultDrawer = () => {
+	onClosePhleboPatientResultDrawer = () => {
     this.setState({
       showDrawer:false,
     });
@@ -52,7 +52,7 @@ class Plebo extends React.Component {
 			<div>
 				<div>
 					<PageTitle pageTitle="PHLEBO" />
-					<SearchForm 
+					<SearchPhleboForm 
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
 					/>
@@ -84,11 +84,11 @@ class Plebo extends React.Component {
 							showDrawer ? (
 								<AntDrawer
 									title="Check-in specimen" 
-									onClose={this.onClosePleboPatientResultDrawer}
+									onClose={this.onClosePhleboPatientResultDrawer}
 									width="80%"
 									visible={showDrawer}
 								>
-									<PleboPatientResult patientInfo={patientInfo} />
+									<PhleboPatientResult patientInfo={patientInfo} />
 								</AntDrawer>
 							)
 							:
@@ -98,7 +98,7 @@ class Plebo extends React.Component {
 						<TabPane
 							tab={(
 								<span>
-									Cancelled
+									Extracted
 								</span>
 							)}
 							key="2"
@@ -120,47 +120,11 @@ class Plebo extends React.Component {
 								showDrawer ? (
 									<AntDrawer
 										title="Check-in specimen" 
-										onClose={this.onClosePleboPatientResultDrawer}
+										onClose={this.onClosePhleboPatientResultDrawer}
 										width="80%"
 										visible={showDrawer}
 									>
-										<PleboPatientResult patientInfo={patientInfo} />
-									</AntDrawer>
-								)
-								:
-								null
-							}
-						</TabPane>
-						<TabPane
-							tab={(
-								<span>
-									Extracted
-								</span>
-							)}
-							key="3"
-						>
-							<SearchPatientTableHeader 
-								pageSize={pageSize}
-								pageTotal={patients.length} 
-								handleChangeSize={this.handleChangeSize} 
-							/>
-
-							<SearchPatientTable 
-								data={patients}
-								pageSize={pageSize}
-								loading={loading} 
-								redirectUrl=""
-								drawer={this.displayDrawer}
-							/>
-							{
-								showDrawer ? (
-									<AntDrawer
-										title="Check-in specimen" 
-										onClose={this.onClosePleboPatientResultDrawer}
-										width="80%"
-										visible={showDrawer}
-									>
-										<PleboPatientResult patientInfo={patientInfo} />
+										<PhleboPatientResult patientInfo={patientInfo} />
 									</AntDrawer>
 								)
 								:
@@ -175,4 +139,4 @@ class Plebo extends React.Component {
   }
 }
 
-export default Plebo;
+export default Phlebo;

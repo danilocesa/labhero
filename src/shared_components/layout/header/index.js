@@ -16,8 +16,8 @@ const Header = () => (
             <img src={PatientImgPlaceholder} alt="logo" style={{ height: 40, width: 40, borderRadius:'50%' }} />
           </Col>
           <Col className="logo-pane">
-            <h1>HOSPITAL NAME</h1>
-            <p>HOSPITAL NAME</p>
+            <h1>HOSPITAL/LAB NAME</h1>
+            <p>HOSPITAL/LAB NAME</p>
           </Col>
         </Row>
       </div>

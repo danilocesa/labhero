@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 // CUSTOM MODULES
 import SearchPatientForm from 'shared_components/search_patient_form'
 
-class SearchForm extends React.Component {
+class SearchPhleboForm extends React.Component {
 	
 	render() {
 		const { populatePatients, displayLoading } = this.props;
@@ -21,10 +21,10 @@ class SearchForm extends React.Component {
 	}
 }
 
-SearchForm.propTypes = {
+SearchPhleboForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func.isRequired
 };
 
 
-export default withRouter(SearchForm);
+export default withRouter(SearchPhleboForm);

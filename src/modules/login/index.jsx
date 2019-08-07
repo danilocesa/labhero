@@ -63,7 +63,7 @@ class Login extends React.Component {
 								this.props.history.push("/searchlabresult");
 								break;
 							case '4':
-								this.props.history.push("/pleboresult");
+								this.props.history.push("/phleboresult");
 								break;
 							case '5':
 								this.props.history.push("/searchpatient");

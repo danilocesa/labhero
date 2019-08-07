@@ -9,9 +9,9 @@ import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
 import SearchLabTestResult from 'modules/main/search_lab_result';
 import PatientInfo from 'modules/main/patientinfo';
-import PleboSearch from 'modules/main/plebo'
+import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
-import PleboPatientResult from 'modules/main/plebo/plebopatient'
+import PhleboPatientResult from 'modules/main/phlebo/phlebopatient'
 import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/search_patients';
 import Settings from 'modules/main/settings';
@@ -42,8 +42,8 @@ const Content = () => (
 			<PrivateRoute path="/patientinfo" component={PatientInfo} />
 			<PrivateRoute path="/iresults" component={Iresults} />
 			{/* Phlebo route */}
-			<PrivateRoute path="/pleboresult" component={PleboSearch} />
-			<PrivateRoute path="/plebopatient" component={PleboPatientResult} />
+			<PrivateRoute path="/phleboresult" component={PhleboSearch} />
+			<PrivateRoute path="/phlebopatient" component={PhleboPatientResult} />
 			{/* Search patients route */}
 			<PrivateRoute path="/searchpatient" component={SearchPatient} />
 			<PrivateRoute path="/settings" component={Settings} />
