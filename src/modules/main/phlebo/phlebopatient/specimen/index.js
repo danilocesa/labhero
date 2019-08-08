@@ -22,7 +22,7 @@ import './specimen.css';
 
 class SpecimenList extends React.Component {
 	state = {
-		patientSectionList: null,
+		patientRequestSpecimen: null,
 		loading: false
 	}
 
@@ -43,10 +43,15 @@ class SpecimenList extends React.Component {
 					"phlebo_specimen_col": keySpecimen.specimenName,
 					"phlebo_requestID": requestID,
 					"phlebo_sampleSpecimenID": keySpecimen.sampleSpecimenID,
-					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID,
+					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID ? keySpecimen.sampleSpecimenID : "N/A",
+					"phlebo_user_col" : "N/A",
+					"phlebo_dateExtracted_col" : "N/A",
 					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
 					{
 						return {
+							props: {
+								colSpan: 5,
+							},
 							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
 							"phlebo_section_col": keyExams,
 						};
@@ -54,7 +59,9 @@ class SpecimenList extends React.Component {
 				}
 			});
 		});
-		this.setState({  patientSectionList: requestExams });
+		this.setState({  
+			patientRequestSpecimen: requestExams
+		});
 		
 	}
 
@@ -90,7 +97,7 @@ class SpecimenList extends React.Component {
 				data: body,
 				headers: {
 					'content-type': 'application/json',
-					'authorization': 'Bearer superSecretKey@345'
+					'authorization': 'Bearer superSecretKey@345' // Change to env
 				}
 			});
 			data = response;
@@ -108,39 +115,38 @@ class SpecimenList extends React.Component {
 			title: 'SECTION', 
 			dataIndex: 'phlebo_section_col', 
 			key: 'phlebo_section_col',
-			width: 190
+			width: "16%"
 		},
 		{ 
 			title: 'SPECIMEN', 
 			dataIndex: 'phlebo_specimen_col', 
 			key: 'phlebo_specimen_col',
-			width: 165
+			width: "16%"
 		},
 		{ 
 			title: 'SAMPLE ID', 
 			dataIndex: 'phlebo_sampleid_col', 
 			key: 'phlebo_sampleid_col',
-			width: 165
+			width: "16%"
 		},
 		{ 
-			title: 'USER', 
+			title: 'EXTRACTED BY', 
 			dataIndex: 'phlebo_user_col', 
 			key: 'phlebo_user_col',
-			width: 165
+			width: "16%"
 		},
 		{ 
 			title: 'DATE EXTRACTED', 
 			dataIndex: 'phlebo_dateExtracted_col', 
 			key: 'phlebo_dateExtracted_col',
-			width: 165
+			width: "16%"
 		},
 		{ 
 			title: 'STATUS',
 			dataIndex: 'phlebo_status_col', 
 			key: 'phlebo_status_col',
+			width: "16%",
 			render:(button,value) => {
-      console.log("TCL: SpecimenList -> render -> value", value)
-				const {loading } = this.state;
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
 						<Button 
@@ -160,13 +166,13 @@ class SpecimenList extends React.Component {
 			
 		},
 	];
-
+	
 	return (
 		<div className="phlebotable-container">
 			<Table
 				className="phlebotable"
 				columns={columns}
-				dataSource={this.state.patientSectionList}
+				dataSource={this.state.patientRequestSpecimen}
 				size="small"
 				scroll={{ y: 300 }}
 			/>

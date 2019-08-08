@@ -85,7 +85,7 @@ class Phlebo extends React.Component {
 								<AntDrawer
 									title="Check-in specimen" 
 									onClose={this.onClosePhleboPatientResultDrawer}
-									width="80%"
+									width="90%"
 									visible={showDrawer}
 								>
 									<PhleboPatientResult patientInfo={patientInfo} />
@@ -121,7 +121,7 @@ class Phlebo extends React.Component {
 									<AntDrawer
 										title="Check-in specimen" 
 										onClose={this.onClosePhleboPatientResultDrawer}
-										width="80%"
+										width="90%"
 										visible={showDrawer}
 									>
 										<PhleboPatientResult patientInfo={patientInfo} />

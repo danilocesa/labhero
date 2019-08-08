@@ -14,19 +14,19 @@ class PhleboPatientResult extends React.Component {
 	<Row>
 		<Col 
 			xs={24} 
-			sm={7} 
-			md={7} 
-			lg={6} 
-			xl={6}
+			sm={6} 
+			md={6} 
+			lg={5} 
+			xl={5}
 		>
 			<PhleboPatientInfo patientInfo={this.props.patientInfo} />
 		</Col>
 		<Col 
 			xs={24} 
-			sm={17} 
-			md={17} 
-			lg={18} 
-			xl={18} 
+			sm={18} 
+			md={18} 
+			lg={19} 
+			xl={19} 
 			style={{ padding: 25 }}
 		>
 			<PatientName patientInfo={this.props.patientInfo} />
