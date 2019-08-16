@@ -4,8 +4,8 @@ import { Drawer as AntDrawer, Tabs as AntTabs} from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import SearchPhleboForm from './phlebosearch';
-import SearchPatientTableHeader from './phleboheader';
+import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
+import SearchPatientHeaderForm from './search_patient/header_input'; // Search form input
 import SearchPatientTable from './phlebotable';
 import PhleboPatientResult from './phlebopatient';
 
@@ -13,7 +13,7 @@ import PhleboPatientResult from './phlebopatient';
 const { TabPane } = AntTabs;
 
 class Phlebo extends React.Component {
-	state = { 
+	state = {   
 		patients: [], 
 		pageSize: 10,   
 		loading: false,
@@ -52,7 +52,7 @@ class Phlebo extends React.Component {
 			<div>
 				<div>
 					<PageTitle pageTitle="PHLEBO" />
-					<SearchPhleboForm 
+					<SearchPatientHeaderForm 
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
 					/>

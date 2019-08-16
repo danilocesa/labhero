@@ -1,0 +1,11 @@
+.search-patient-form .ant-form-item {
+  margin-bottom: 0 !important;
+}
+
+.search-patient-form .ant-form-item-label {
+  line-height: 10px !important;
+}
+
+.search-patient-form .ant-form-item-label > label {
+  color: inherit !important;
+}

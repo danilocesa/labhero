@@ -62,13 +62,7 @@ class DashboardPage extends React.Component {
     const userName = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
     this.setState({ userNameLoggedIn: userName });
   }
-
-  // onClickBtn = () => {
-  //   this.setState({ loading: true});
-  //   document.getElementById("btnTesting").innerHTML = "EXTRACTED";
-  //   document.getElementById("btnTesting").setAttribute("disabled","true");
-  // }
-
+  
   onClickBtn = evt => {
     const buttonId = evt.target.id;
     this.setState({
