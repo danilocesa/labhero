@@ -1,5 +1,7 @@
+// LIBRARY
 import React from 'react';
 
+// CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import PanelTable from './panel_table'
 

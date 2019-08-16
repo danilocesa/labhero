@@ -1,13 +1,16 @@
+// LIBRARY
 import React from 'react';
-import { Table, Drawer, Typography, Icon, Select, Button } from 'antd';
+import { Table as AntTable, Drawer as AntDrawer, Typography as AntTypography, Icon as AntIcon, Select as AntSelect, Button as AntButton } from 'antd';
 
+// CUSTOM MODULES
 import PanelForm from '../panel_form';
 
+// CSS
 import './paneltable.css'
 
-const { Text } = Typography;
-const { Option } = Select;
-
+// CONSTANTS
+const { Text } = AntTypography;
+const { Option } = AntSelect;
 const columns = [
     {
         title: 'CODE',
@@ -25,7 +28,6 @@ const columns = [
         key: 'status'
     },
 ]
-
 const dataSource = [
     {
         key: '1',
@@ -70,7 +72,6 @@ const dataSource = [
         status: '1'
     }
 ]
-
 const expandedRowPanelData = () => {
     const columnsData = [
         {
@@ -168,7 +169,7 @@ const expandedRowPanelData = () => {
         }
     ]
 
-    return <Table columns={columnsData} dataSource={data} scroll={{ x: 100 }} pagination={false} />;
+    return <AntTable columns={columnsData} dataSource={data} scroll={{ x: 100 }} pagination={false} />;
 }
 
 
@@ -176,16 +177,20 @@ class PanelTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
+            isDrawerVisible: false,
             drawerTitle: '',
             drawerButton: '',
             panelInfo: []
         }
     }
 
+    componentDidMount = () => {
+        
+    }
+
     displayDrawerUpdate = (record) => {
         this.setState({
-            visible: true,
+            isDrawerVisible: true,
             drawerTitle: 'Update Panel',
             drawerButton: 'Update',
             panelInfo: record
@@ -195,13 +200,13 @@ class PanelTable extends React.Component {
 
     onClose = () => {
         this.setState({
-          visible: false,
+            isDrawerVisible: false,
         });
     };
 
     showDrawer = () => {
         this.setState({
-            visible: true,
+            isDrawerVisible: true,
             drawerTitle: 'Add Panel',
             drawerButton: 'Add',
             panelInfo: ''
@@ -212,40 +217,40 @@ class PanelTable extends React.Component {
         return(
             <div className="user-table">
                 <div className="panel-table-options">
-                    <Button 
-                    type="primary" 
-                    shape="round" 
-                    style={{ marginRight: '15px' }} 
-                    onClick={this.showDrawer}
+                    <AntButton 
+                        type="primary" 
+                        shape="round" 
+                        style={{ marginRight: '15px' }} 
+                        onClick={this.showDrawer}
                     >
-                        <Icon type="plus" />
-                        Add Panel
-                    </Button>
+                        <AntIcon type="plus" />
+                            Add Panel
+                    </AntButton>
                     <Text>Display per page</Text>
-                    <Select defaultValue="5" style={{ width: 120, marginLeft: '8px' }}>
+                    <AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }}>
                         <Option value="5">5</Option>
                         <Option value="10">10</Option>
                         <Option value="15">15</Option>
                         <Option value="20">20</Option>
-                    </Select>
+                    </AntSelect>
                 </div>
-                <Table 
-                dataSource={dataSource} 
-                columns={columns} 
-                expandedRowRender={expandedRowPanelData}
-                rowKey={record => record.key}
-                onRow={(record) => {
-                    return {
-                        onDoubleClick: () => {
-                            this.displayDrawerUpdate(record);
+                <AntTable 
+                    dataSource={dataSource} 
+                    columns={columns} 
+                    expandedRowRender={expandedRowPanelData}
+                    rowKey={record => record.key}
+                    onRow={(record) => {
+                        return {
+                            onDoubleClick: () => {
+                                this.displayDrawerUpdate(record);
                         }
                     }
                 }}
                 />
 
-                <Drawer 
+                <AntDrawer 
                     title={this.state.drawerTitle}
-                    visible={this.state.visible}
+                    visible={this.state.isDrawerVisible}
                     onClose={this.onClose}
                     width={300}
                 >
@@ -253,7 +258,7 @@ class PanelTable extends React.Component {
                         drawerButton={this.state.drawerButton} 
                         panelInfo={this.state.panelInfo}
                     />
-                </Drawer>
+                </AntDrawer>
             </div>
 
         );
