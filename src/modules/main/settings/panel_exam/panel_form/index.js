@@ -1,34 +1,54 @@
+// LIBRARY
 import React from 'react';
-import { Input, Form, Select, Button } from 'antd';
+import { 
+    Input as AntInput, 
+    Form as AntForm, 
+    Button as AntButton,
+    Switch as AntSwitch,
+    List as AntList,
+    Checkbox as AntCheckbox
+} from 'antd';
 import PropTypes from 'prop-types';
 
+// CSS
 import './panel_form.css';
 
-const { Option } = Select;
-
+// CONSTANTS
+const data = [
+    'Racing car sprays burning fuel into crowd.',
+    'Japanese princess to wed commoner.',
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.',
+    'Los Angeles battles huge wildfires.',
+  ];
+  
 class PanelForm extends React.Component {
+    selectedExamRequest = (e) => {
+        console.log(e.target.checked);
+    }
+
     render() {
         return(
-            <div className="panel-form">
-                
-                <Form>
-                    <Form.Item label="PANEL ID">
-                        <Input value={this.props.panelInfo.code} />
-                    </Form.Item>
-                    <Form.Item label="PANEL EXAM">
-                        <Input value={this.props.panelInfo.panel_name} />
-                    </Form.Item>
-                    <Form.Item label="TEMPLATE">
-                        <Select placeholder="Select a template">
-                            <Option value="1">1</Option>
-                            <Option value="2">2</Option>
-                            <Option value="3">3</Option>
-                        </Select>
-                    </Form.Item>
-                    <Form.Item label="STATUS">
-                        <Input value={this.props.panelInfo.status} />
-                    </Form.Item>
-
+            <div className="panel-form"> 
+                <AntForm>
+                    <AntForm.Item label="PANEL ID">
+                        <AntInput value={this.props.panelInfo.code} />
+                    </AntForm.Item>
+                    <AntForm.Item label="PANEL EXAM">
+                        <AntInput value={this.props.panelInfo.panel_name} />
+                    </AntForm.Item>
+                    <AntForm.Item label="STATUS">
+                        <AntSwitch checkedChildren="Enable" unCheckedChildren="Disable" defaultChecked />
+                    </AntForm.Item>
+                    <AntForm.Item label="EXAM REQUESTS">
+                        <AntList 
+                            size="small" 
+                            bordered 
+                            dataSource={data} 
+                            renderItem={
+                                item => <AntList.Item> <AntCheckbox onChange={this.selectedExamRequest}>{item}</AntCheckbox></AntList.Item>} 
+                        />
+                    </AntForm.Item> 
                     <div
                         style={{
                             position: 'absolute',
@@ -40,15 +60,15 @@ class PanelForm extends React.Component {
                             background: '#fff',
                             textAlign: 'right',
                         }}
-                    >
-                        <Button style={{ marginRight: 8 }}>
+                    >   
+                        <AntButton style={{ marginRight: 8 }}>
                             Cancel
-                        </Button>
-                        <Button type="primary">
+                        </AntButton>
+                        <AntButton type="primary">
                             {this.props.drawerButton}
-                        </Button>
+                        </AntButton>
                     </div>
-                </Form>
+                </AntForm>
             </div>
         );
     }
