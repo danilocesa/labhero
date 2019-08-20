@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Form, Input, Row, Col, Button } from 'antd';
+import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
@@ -26,7 +26,8 @@ class AddForm extends React.Component {
 		event.preventDefault();
 
 		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll, onSuccess } = this.props.form;
+		const { onSuccess, form } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll(async(err) => {
 			if (!err) {
@@ -36,14 +37,15 @@ class AddForm extends React.Component {
 				const createdExamRequest = await this.createExamRequest(fields);
 				this.setState({ isLoading: false });
 
-				console.log(createdExamRequest);
-				onSuccess();
+				if(createdExamRequest){
+					onSuccess();
+				}
 			}
 		});
 	}
 	
 	createExamRequest = async (examItem) => {
-		let createdExamItem;
+		let createdExamItem = null;
 
 		try{
 			const content = {
@@ -117,14 +119,14 @@ class AddForm extends React.Component {
 								<Col span={12}>
 									<Form.Item label="EXAM SORT">
 										{getFieldDecorator('examSort', { rules: FIELD_RULES.examSort })(
-											<Input />
+											<InputNumber style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
 									<Form.Item label="SECTION ID">
 										{getFieldDecorator('sectionId', { rules: FIELD_RULES.sectionID })(
-											<Input />
+											<InputNumber style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
@@ -133,7 +135,7 @@ class AddForm extends React.Component {
 								<Col span={12}>
 									<Form.Item label="SPECIMEN ID">
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
-											<Input />
+											<InputNumber style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>

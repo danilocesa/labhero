@@ -19,7 +19,7 @@ const styles = {
 
 class UpdateForm extends React.Component {
 	state = { isLoading: false }
-	
+
 	onSubmit = (event) => {
 		event.preventDefault();
 
@@ -34,9 +34,9 @@ class UpdateForm extends React.Component {
 	
 	render() {
 		const { isLoading } = this.state;
-		const { getFieldDecorator } = this.props.form;
-		const { onClose, visible } = this.props;
-
+		const { onClose, visible, form } = this.props;
+		const { getFieldDecorator } = form;
+		
 		return (
 			<Drawer
 				title="Update Exam Request"
@@ -136,7 +136,28 @@ class UpdateForm extends React.Component {
 
 UpdateForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
-	visible: PropTypes.bool.isRequired
+	visible: PropTypes.bool.isRequired,
+	examRequest: PropTypes.shape({
+		examName: PropTypes.string,
+		examCode: PropTypes.string,
+		loinc: PropTypes.string,
+		integrationCode: PropTypes.string,
+		examSort: PropTypes.string,
+		sectionID: PropTypes.any,
+		specimenID: PropTypes.any,
+	}).isRequired
 };
 
-export default Form.create()(UpdateForm);
+export default Form.create({
+	mapPropsToFields(props) {
+    return {
+			examName: Form.createFormField({ value: props.examRequest.examName }),
+			examCode: Form.createFormField({ value: props.examRequest.examCode }),
+			loinc: Form.createFormField({ value: props.examRequest.loinc }),
+			integrationCode: Form.createFormField({ value: props.examRequest.integrationCode }),
+			examSort: Form.createFormField({ value: props.examRequest.examSort }),
+			sectionID: Form.createFormField({ value: props.examRequest.sectionID }),
+			specimenID: Form.createFormField({ value: props.examRequest.specimenID })
+    };
+  },
+})(UpdateForm);

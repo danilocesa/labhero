@@ -85,7 +85,14 @@ class UpdateForm extends React.Component {
 
 UpdateForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
-	visible: PropTypes.bool.isRequired
+	visible: PropTypes.bool.isRequired,
+	examItem: PropTypes.shape({
+		resultID: PropTypes.any.isRequired,
+		resultName: PropTypes.string.isRequired,
+		resultGeneralName: PropTypes.string.isRequired,
+		resultType: PropTypes.string.isRequired,
+		integrationCode: PropTypes.string.isRequired
+	}).isRequired
 };
 
 export default Form.create()(UpdateForm);

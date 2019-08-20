@@ -35,9 +35,9 @@ class ExamTable extends React.Component {
 						dataSource={data} 
 						scroll={{ y: 260 }}
 						rowKey={record => record.examID}
-						onRow={() => {
+						onRow={(record) => {
 							return {
-								onDoubleClick: () => onRowDblClick()
+								onDoubleClick: () => onRowDblClick(record)
 							};
 						}}
 					/>

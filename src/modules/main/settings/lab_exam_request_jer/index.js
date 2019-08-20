@@ -34,7 +34,8 @@ class LabExamRequest extends React.Component {
 		examRequests: [],
 		sections: [],
 		ddSectionCodes: [],
-		ddSpecimenNames: []
+		ddSpecimenNames: [],
+		selectedExamRequest: {}
 	}
 
 	async componentDidMount() {
@@ -107,8 +108,8 @@ class LabExamRequest extends React.Component {
 		}
 	}
 
-	onDblClickTableRow = () => {
-		this.setState({ isShowUpdateForm: true });
+	onDblClickTableRow = (selectedExamRequest) => {
+		this.setState({ selectedExamRequest, isShowUpdateForm: true });
 	}
 
 	onClickAdd = () => {
@@ -131,7 +132,7 @@ class LabExamRequest extends React.Component {
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
-
+			console.log(data);
 			sections = data;
 		} catch (e) {
 			Message.error();
@@ -166,8 +167,12 @@ class LabExamRequest extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm,
 			isLoading,
-			selectedSecCode
+			selectedSecCode,
+			selectedExamRequest,
+			sections
 		} = this.state;
+
+		console.log(sections);
 
 		const leftSection = (
 			<Row gutter={24}>
@@ -235,6 +240,7 @@ class LabExamRequest extends React.Component {
 					onSuccess={this.onSuccessCreateExamReq}
 				/>
 				<UpdateForm
+					examRequest={selectedExamRequest}
 					visible={isShowUpdateForm}
 					onClose={this.onCloseForm}
 				/>

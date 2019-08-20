@@ -33,7 +33,8 @@ class ExamItems extends React.Component {
 		examItems: [],
 		sections: [],
 		ddSectionCodes: [],
-		ddSectionNames: []
+		ddSectionNames: [],
+		selectedExamItem: {}
 	}
 	
 	async componentDidMount() {
@@ -88,8 +89,9 @@ class ExamItems extends React.Component {
 		this.setState({ examItems });
 	}
 
-	onDblClickTableRow = () => {
-		this.setState({ isShowUpdateForm: true });
+	onDblClickTableRow = (selectedExamItem) => {
+		
+		this.setState({ selectedExamItem, isShowUpdateForm: true });
 	}
 
 	onExitForm = () => {
@@ -140,7 +142,8 @@ class ExamItems extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm ,
 			sections,
-			isLoading
+			isLoading,
+			selectedExamItem
 		} = this.state;
 
 		const leftSection = (
@@ -162,7 +165,7 @@ class ExamItems extends React.Component {
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
 				>
-					<Icon type="plus" /> Add Profile
+					<Icon type="plus" /> Add Exam Items
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -192,7 +195,11 @@ class ExamItems extends React.Component {
 					onRowDblClick={this.onDblClickTableRow}
 				/>
 				<AddForm visible={isShowAddForm} onClose={this.onExitForm} />
-				<UpdateForm visible={isShowUpdateForm} onClose={this.onExitForm} />
+				<UpdateForm 
+					examItem={selectedExamItem}
+					visible={isShowUpdateForm} 
+					onClose={this.onExitForm} 
+				/>
 			</div>
 		);
 	}
