@@ -149,13 +149,13 @@ class AddForm extends React.Component {
 			>
 				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
 					<section style={{ marginBottom: 50 }}>
-						<Form.Item label="Result Name">
-							{getFieldDecorator('resultName', { rules: FIELD_RULES.resultName })(
+						<Form.Item label="Exam Item Name">
+							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="Result General Name">
-							{getFieldDecorator('resultGeneralName', { rules: FIELD_RULES.resultGeneralName })(
+						<Form.Item label="Exam Item General Name">
+							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
 								<Input />
 							)}
 						</Form.Item>

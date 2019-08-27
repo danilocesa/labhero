@@ -1,8 +1,8 @@
 const FIELD_RULES = {
-	resultName: [
+	examItemName: [
     { required: true, message: 'This field is required.' }
 	],
-	resultGeneralName: [
+	examItemGeneralName: [
     { required: true, message: 'This field is required.' }
 	],
 	resultType: [

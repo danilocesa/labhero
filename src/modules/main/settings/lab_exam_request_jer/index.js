@@ -25,43 +25,39 @@ const SecondarySection = (props) => (
 
 class LabExamRequest extends React.Component {
 	state = {
-		selectedSecCode: null,
+		selectedSectionId: null,
+		selectedSpecimenId: null,
+		isInitializing: true,
 		isLoading: false,
 		pageSize: 5,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		examReqSource: [],
 		examRequests: [],
-		sections: [],
-		ddSectionCodes: [],
-		ddSpecimenNames: [],
-		selectedExamRequest: {}
+		ddSections: [],
+		ddSpecimens: [],
+		selectedExamRequest: {},
 	}
 
 	async componentDidMount() {
-		const ddSpecimenNames = [];
-		const sections = await this.fetchSection()
-		const ddSectionCodes = sections.map(section => ({
+		const sections = await this.fetchSection();
+		const specimens = await this.fetchSpecimens();
+
+		const ddSections = sections.map(section => ({
 			label: section.sectionCode,
 			value: section.sectionID
 		}));
 
-		sections.forEach(section => {
-			section.specimens.forEach(specimen => {
-				const isExisting = ddSpecimenNames.find(specName => specName.value === specimen.specimenID);
-				
-				if(isExisting) return;
-				
-				ddSpecimenNames.push({
-					label: specimen.specimenName,
-					value: specimen.specimenID
-				});
-			});
+		const ddSpecimens = specimens.map(specimen => ({
+			label: specimen.specimenName,
+			value: specimen.specimenID
+		}));
+
+		this.setState({ 
+			ddSections, 
+			ddSpecimens, 
+			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
+			isInitializing: false 
 		});
-
-		ddSpecimenNames.unshift({ label: 'CLEAR FILTER', value: -1 });
-
-		this.setState({ sections, ddSectionCodes, ddSpecimenNames });
 	}
 	
 	onSuccessCreateExamReq = () => {
@@ -69,43 +65,27 @@ class LabExamRequest extends React.Component {
 		Message.success('Exam request successfully created.');
 	}
 
-	onChangeSectionCode = async(sectionId, sectionCode) => {
-		this.setState({ isLoading: true, selectedSecCode: sectionCode });
-
-		const apiResponse = await this.fetchExamReqById(sectionId);
-		const examRequests = [];
-		
-		apiResponse.forEach(item => {
-			item.perSpecimen.forEach(perSpecimen => {
-				perSpecimen.exams.forEach(exam => {
-					examRequests.push({ 
-						examID: exam.examID,
-						examName: exam.examName,
-						examCode: exam.examCode
-					});
-				});
+	onChangeSection = async(sectionId) => {
+		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
+			const examRequests = await this.fetchExamRequest();		
+			console.log(examRequests);
+			this.setState({ 
+				examRequests, 
+				selectedSectionId: sectionId,
+				isLoading: false
 			});
-		}); 
-		
-		this.setState({ 
-			examRequests, 
-			examReqSource: examRequests,
-			isLoading: false
 		});
 	}
 
-	onChangeSectionName = (sectionID) => {
-		const { examReqSource } = this.state;
-
-		console.log(examReqSource);
-
-		if(sectionID === -1) {
-			this.setState({ examRequests: [...examReqSource] });
-		}
-		else {
-			const examRequests = examReqSource.filter(examReq => examReq.sectionID === sectionID);
-			this.setState({ examRequests });
-		}
+	onChangeSpecimen = (specimenId) => {
+		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
+			const examRequests = await this.fetchExamRequest();
+			
+			this.setState({ 
+				examRequests,
+				selectedSpecimenId: specimenId,
+			});
+		});
 	}
 
 	onDblClickTableRow = (selectedExamRequest) => {
@@ -128,11 +108,11 @@ class LabExamRequest extends React.Component {
 		let sections = [];
 
 		try {
-			const url = `/ExamResult`;
+			const url = `/Section`;
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
-			console.log(data);
+			
 			sections = data;
 		} catch (e) {
 			Message.error();
@@ -141,11 +121,32 @@ class LabExamRequest extends React.Component {
 		return sections;
 	}
 
-	fetchExamReqById = async(ids) => {
+	fetchSpecimens = async() => {
+		let specimens = [];
+
+		try {
+			const url = `/Specimen`;
+
+			const response = await axiosCall({ method: 'GET', url });
+			const { data } = await response;
+
+			specimens = data;
+		} catch (e) {
+			Message.error();
+		}
+
+		return specimens;
+	}
+
+	fetchExamRequest = async() => {
 		let examRequests = [];
 
 		try {
-			const url = `/ExamRequest/ids/${ids}`;
+			const { 
+				selectedSectionId: sectionId, 
+				selectedSpecimenId: specimenId 
+			} = this.state;
+			const url = `/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
@@ -162,17 +163,16 @@ class LabExamRequest extends React.Component {
 		const { 
 			pageSize, 
 			examRequests, 
-			ddSpecimenNames, 
-			ddSectionCodes, 
+			ddSpecimens, 
+			ddSections, 
 			isShowAddForm, 
 			isShowUpdateForm,
 			isLoading,
-			selectedSecCode,
-			selectedExamRequest,
-			sections
+			isInitializing,
+			selectedSectionId,
+			selectedSpecimenId,
+			selectedExamRequest
 		} = this.state;
-
-		console.log(sections);
 
 		const leftSection = (
 			<Row gutter={24}>
@@ -180,16 +180,18 @@ class LabExamRequest extends React.Component {
 					<Input 
 						prefix={<Icon type="search" />}
 						placeholder="Search Exam Request Name"
-						disabled={selectedSecCode == null}
+						disabled={selectedSectionId == null}
 					/>
 				</Col>
 				<Col span={10}>
 					<DropDown 
 						size="small"
-						placeholder="Filter by SERUM"
-						content={ddSpecimenNames} 
-						disabled={selectedSecCode == null}
-						onChange={this.onChangeSectionName}
+						placeholder="Filter by Specimen"
+						content={ddSpecimens} 
+						disabled={selectedSectionId == null}
+						onChange={this.onChangeSpecimen}
+						loading={isInitializing}
+						value={selectedSpecimenId}
 					/>
 				</Col>
 			</Row>
@@ -203,7 +205,7 @@ class LabExamRequest extends React.Component {
 					type="primary" 
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
-					disabled={selectedSecCode == null}
+					disabled={selectedSectionId == null}
 				>
 					<Icon type="plus" /> Add Exam Request
 				</Button>
@@ -219,8 +221,10 @@ class LabExamRequest extends React.Component {
 						<DropDown 
 							label="SECTION" 
 							placeholder="Select Section"
-							content={ddSectionCodes} 
-							onChange={this.onChangeSectionCode}
+							content={ddSections} 
+							onChange={this.onChangeSection}
+							value={selectedSectionId}
+							loading={isInitializing}
 						/>
 					</Row>
 				</section>

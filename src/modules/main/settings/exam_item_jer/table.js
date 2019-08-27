@@ -5,27 +5,27 @@ import { Spin, Table } from 'antd';
 const columns = [
 	{ 
 		title: 'EXAM ITEM ID',
-		dataIndex: 'resultID',
+		dataIndex: 'examItemID',
 		width: '20%'
 	},
 	{ 
 		title: 'EXAM ITEM NAME',
-		dataIndex: 'resultName',
+		dataIndex: 'examItemName',
 		width: '20%'
 	},
 	{ 
 		title: 'EXAM ITEM GENERAL NAME',
-		dataIndex: 'resultGeneralName',
+		dataIndex: 'examItemGeneralName',
 		width: '20%'
 	},
 	{ 
 		title: 'EXAM ITEM TYPE',
-		dataIndex: 'resultType',
+		dataIndex: 'examItemTypeCode',
 		width: '20%'
 	},
 	{ 
 		title: 'INTEGRATION CODE',
-		dataIndex: 'integrationCode',
+		dataIndex: 'examItemUnitCode',
 		width: '20%'
 	}
 ];
@@ -44,7 +44,7 @@ class ExamTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
-						rowKey={record => record.resultID}
+						rowKey={record => record.examItemID}
 						onRow={(record) => {
 							return {
 								onDoubleClick: () => onRowDblClick(record)
@@ -60,10 +60,11 @@ class ExamTable extends React.Component {
 
 ExamTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		resultID: PropTypes.number.isRequired,
-		resultName: PropTypes.string.isRequired,
-		resultGeneralName: PropTypes.string.isRequired,
-		integrationCode: PropTypes.string.isRequired,
+		examItemID: PropTypes.number.isRequired,
+		examItemName: PropTypes.string.isRequired,
+		examItemGeneralName: PropTypes.string.isRequired,
+		examItemTypeCode: PropTypes.string.isRequired,
+		examItemUnitCode: PropTypes.string.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,
