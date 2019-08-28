@@ -4,19 +4,34 @@ import { Spin, Table } from 'antd';
 
 const columns = [
 	{ 
-		title: 'EXAM ID',
-		dataIndex: 'examID',
+		title: 'ID',
+		dataIndex: 'examRequestID',
+		width: '10%'
+	},
+	{ 
+		title: 'Exam Request Name',
+		dataIndex: 'examRequestName',
 		width: '30%'
 	},
 	{ 
-		title: 'EXAM CODE',
-		dataIndex: 'examCode',
-		width: '40%'
+		title: 'Exam Request Code',
+		dataIndex: 'examRequestCode',
+		width: '15%'
 	},
 	{ 
-		title: 'EXAM NAME',
-		dataIndex: 'examName',
-		width: '30%'
+		title: 'Loinc',
+		dataIndex: 'examRequestLoinc',
+		width: '20%'
+	},
+	{ 
+		title: 'Integration Code',
+		dataIndex: 'examRequestIntegrationCode',
+		width: '15%'
+	},
+	{ 
+		title: 'Sort',
+		dataIndex: 'examRequestSort',
+		width: '10%'
 	}
 ];
 
@@ -34,7 +49,7 @@ class ExamTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
-						rowKey={record => record.examID}
+						rowKey={record => record.examRequestID}
 						onRow={(record) => {
 							return {
 								onDoubleClick: () => onRowDblClick(record)
@@ -50,9 +65,12 @@ class ExamTable extends React.Component {
 
 ExamTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		examID: PropTypes.any.isRequired,
-		examCode: PropTypes.string.isRequired,
-		examName: PropTypes.string.isRequired,
+		examRequestID: PropTypes.any.isRequired,
+		examRequestName: PropTypes.string.isRequired,
+		examRequestCode: PropTypes.string.isRequired,
+		examRequestLoinc: PropTypes.string.isRequired,
+		examRequestIntegrationCode: PropTypes.string.isRequired,
+		examRequestSort: PropTypes.any.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

@@ -1,11 +1,16 @@
 import React from 'react';
-import { Drawer, Form, Input, Row, Col, Button } from 'antd';
+import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
+import Message from 'shared_components/message';
+import axiosCall from 'services/axiosCall';
 
 import FIELD_RULES from './constant';
 
-/** @type {{footer: React.CSSProperties}} */
+/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties }} */
 const styles = { 
+	fullWidth: {
+		width: '100%'
+	},
 	footer: {
 		position: 'absolute', 
 		width: '100%', 
@@ -24,14 +29,47 @@ class UpdateForm extends React.Component {
 		event.preventDefault();
 
 		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
+		const { examRequest, form, onSuccess } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+		const { examRequestID, examRequestActive } = examRequest;
 
 		validateFieldsAndScroll(async(err) => {
-			getFieldsValue();
-			console.log(err);
+			if(!err) {
+				const updatedExamRequest = await this.updateExamRequest({ 
+					examRequestID,
+					examRequestActive,
+					...getFieldsValue()
+				});
+
+				if(updatedExamRequest) {
+					onSuccess();
+				}
+			}
 		});
 	}
 	
+	updateExamRequest = async (examRequest) => {
+		let updatedExamRequest = null;
+
+		try{
+			const content = {
+				method: 'PUT',
+				url: '/ExamRequest',
+				data: { ...examRequest }
+			}
+
+			const response = await axiosCall(content);
+			const { data } = await response;
+
+			updatedExamRequest = data;
+		}
+		catch(error) {
+			Message.error();
+		}
+
+		return updatedExamRequest;
+	}
+
 	render() {
 		const { isLoading } = this.state;
 		const { onClose, visible, form } = this.props;
@@ -51,31 +89,15 @@ class UpdateForm extends React.Component {
 						<div style={{ margin: '0px 50px' }}>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="EXAM NAME">
-										{getFieldDecorator('examName', { rules: FIELD_RULES.examName })(
+									<Form.Item label="EXAM REQUEST NAME">
+										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="EXAM CODE">
-										{getFieldDecorator('examCode', { rules: FIELD_RULES.examCode })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="LOINC">
-										{getFieldDecorator('loinc', { rules: FIELD_RULES.loinc })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={12}>
-									<Form.Item label="INTEGRATION CODE">
-										{getFieldDecorator('integrationCode', { rules: FIELD_RULES.integrationCode })(
+									<Form.Item label="EXAM REQUEST CODE">
+										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
@@ -83,15 +105,15 @@ class UpdateForm extends React.Component {
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="EXAM SORT">
-										{getFieldDecorator('examSort', { rules: FIELD_RULES.examSort })(
+									<Form.Item label="EXAM REQUEST LOINC">
+										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="SECTION ID">
-										{getFieldDecorator('sectionId', { rules: FIELD_RULES.sectionID })(
+									<Form.Item label="EXAM REQUEST INTEGRATION CODE">
+										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
 											<Input />
 										)}
 									</Form.Item>
@@ -99,9 +121,25 @@ class UpdateForm extends React.Component {
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="SPECIMEN ID">
+									<Form.Item label="EXAM REQUEST SORT">
+										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
+											<InputNumber style={styles.fullWidth} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST SECTION ID">
+										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
+											<InputNumber style={styles.fullWidth} />
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST SPECIMEN ID">
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
-											<Input />
+											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
@@ -136,27 +174,36 @@ class UpdateForm extends React.Component {
 
 UpdateForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
+	onSuccess: PropTypes.func.isRequired,
 	visible: PropTypes.bool.isRequired,
 	examRequest: PropTypes.shape({
-		examName: PropTypes.string,
-		examCode: PropTypes.string,
-		loinc: PropTypes.string,
-		integrationCode: PropTypes.string,
-		examSort: PropTypes.string,
-		sectionID: PropTypes.any,
-		specimenID: PropTypes.any,
+		examRequestID: PropTypes.number,
+		examRequestName: PropTypes.string,
+		examRequestCode: PropTypes.string,
+		examRequestLoinc: PropTypes.string,
+		examRequestIntegrationCode: PropTypes.string,
+		examRequestSort: PropTypes.number,
+		sectionID: PropTypes.number,
+		specimenID: PropTypes.number,
 	}).isRequired
 };
 
 export default Form.create({
 	mapPropsToFields(props) {
     return {
-			examName: Form.createFormField({ value: props.examRequest.examName }),
-			examCode: Form.createFormField({ value: props.examRequest.examCode }),
-			loinc: Form.createFormField({ value: props.examRequest.loinc }),
-			integrationCode: Form.createFormField({ value: props.examRequest.integrationCode }),
-			examSort: Form.createFormField({ value: props.examRequest.examSort }),
+			// @ts-ignore
+			examRequestName: Form.createFormField({ value: props.examRequest.examRequestName }),
+			// @ts-ignore
+			examRequestCode: Form.createFormField({ value: props.examRequest.examRequestCode }),
+			// @ts-ignore
+			examRequestLoinc: Form.createFormField({ value: props.examRequest.examRequestLoinc }),
+			// @ts-ignore
+			examRequestIntegrationCode: Form.createFormField({ value: props.examRequest.examRequestIntegrationCode }),
+			// @ts-ignore
+			examRequestSort: Form.createFormField({ value: props.examRequest.examRequestSort }),
+			// @ts-ignore
 			sectionID: Form.createFormField({ value: props.examRequest.sectionID }),
+			// @ts-ignore
 			specimenID: Form.createFormField({ value: props.examRequest.specimenID })
     };
   },
