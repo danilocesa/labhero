@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -34,13 +34,19 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },      
 		md: { span: 6 },
-		lg: { span: 8 },
+		lg: { span: 6 },
+	},
+	{
+		xs: { span: 24 },
+		sm: { span: 24 },      
+		md: { span: 4 },
+		lg: { span: 4 },
 	},
 	{
 		xs: { span: 24 },
 		sm: { span: 24 },
-		md: { span: 6 },
-		lg: { span: 5 }, 
+		md: { span: 4 },
+		lg: { span: 4 }, 
 	},
 ];
 
@@ -81,8 +87,8 @@ class SearchPatientHeaderForm extends React.Component {
 		try{
 			const response = await axiosCall({
 				method: 'GET',
-        		url: (patientID ? `${apiUrlPhleboPatientByID}${patientID}` : `${apiUrlPhleboPatientByName}${patientName}`)
-      		});
+					url: (patientID ? `${apiUrlPhleboPatientByID}${patientID}` : `${apiUrlPhleboPatientByName}${patientName}`)
+				});
 			const { data } = await response;
 			if(patientID){ // Fix problem for patientID object reponse
 				patients = data ? [data] : [];
@@ -158,6 +164,11 @@ class SearchPatientHeaderForm extends React.Component {
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[3]}>
+						<Form.Item label="SELECT A DATE">
+							<AntDatePicker />
+						</Form.Item>
+					</Col>
+					<Col {...formItemLayout[4]}>
 						<Form.Item style={{ marginTop: 22 }}>
 							<Row gutter={12}>
 								<Col span={12}>
