@@ -65,12 +65,17 @@ class LabExamRequest extends React.Component {
 		Message.success('Exam request successfully created.');
 	}
 
+	onSuccessUpdateExamReq = () => {
+		this.setState({ isShowUpdateForm: false });
+		Message.success('Exam request successfully updated.');
+	}
+
 	onChangeSection = async(sectionId) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
 			const examRequests = await this.fetchExamRequest();		
-			console.log(examRequests);
+			
 			this.setState({ 
-				examRequests, 
+				examRequests: examRequests || [], 
 				selectedSectionId: sectionId,
 				isLoading: false
 			});
@@ -80,10 +85,11 @@ class LabExamRequest extends React.Component {
 	onChangeSpecimen = (specimenId) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
 			const examRequests = await this.fetchExamRequest();
-			
+
 			this.setState({ 
 				examRequests,
 				selectedSpecimenId: specimenId,
+				isLoading: false
 			});
 		});
 	}
@@ -150,7 +156,7 @@ class LabExamRequest extends React.Component {
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
-
+			console.log(response);
 			examRequests = data;
 		} catch (e) {
 			Message.error();
@@ -247,6 +253,7 @@ class LabExamRequest extends React.Component {
 					examRequest={selectedExamRequest}
 					visible={isShowUpdateForm}
 					onClose={this.onCloseForm}
+					onSuccess={this.onSuccessUpdateExamReq}
 				/>
 			</div>
 		);

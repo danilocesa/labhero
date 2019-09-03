@@ -6,8 +6,11 @@ import axiosCall from 'services/axiosCall';
 
 import FIELD_RULES from './constant';
 
-/** @type {{footer: React.CSSProperties}} */
+/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties}} */
 const styles = {
+	fullWidth: {
+		width: '100%'
+	},
 	footer: { 
 		position: 'absolute', 
 		width: '100%', 
@@ -27,7 +30,7 @@ class AddForm extends React.Component {
 
 		// eslint-disable-next-line react/prop-types
 		const { onSuccess, form } = this.props;
-		const { getFieldsValue, validateFieldsAndScroll } = form;
+		const { resetFields, getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll(async(err) => {
 			if (!err) {
@@ -39,6 +42,7 @@ class AddForm extends React.Component {
 
 				if(createdExamRequest){
 					onSuccess();
+					resetFields();
 				}
 			}
 		});
@@ -51,7 +55,7 @@ class AddForm extends React.Component {
 			const content = {
 				method: 'POST',
 				url: '/ExamRequest',
-				data: { ...examItem, sectionID: 0, specimenID: 0 }
+				data: { ...examItem }
 			}
 
 			const response = await axiosCall(content);
@@ -85,31 +89,15 @@ class AddForm extends React.Component {
 						<div style={{ margin: '0px 50px' }}>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="EXAM NAME">
-										{getFieldDecorator('examName', { rules: FIELD_RULES.examName })(
+									<Form.Item label="EXAM REQUEST NAME">
+										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="EXAM CODE">
-										{getFieldDecorator('examCode', { rules: FIELD_RULES.examCode })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="LOINC">
-										{getFieldDecorator('loinc', { rules: FIELD_RULES.loinc })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={12}>
-									<Form.Item label="INTEGRATION CODE">
-										{getFieldDecorator('integrationCode', { rules: FIELD_RULES.integrationCode })(
+									<Form.Item label="EXAM REQUEST CODE">
+										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
@@ -117,25 +105,41 @@ class AddForm extends React.Component {
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="EXAM SORT">
-										{getFieldDecorator('examSort', { rules: FIELD_RULES.examSort })(
-											<InputNumber style={{ width: '100%' }} />
+									<Form.Item label="EXAM REQUEST LOINC">
+										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
+											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={12}>
-									<Form.Item label="SECTION ID">
-										{getFieldDecorator('sectionId', { rules: FIELD_RULES.sectionID })(
-											<InputNumber style={{ width: '100%' }} />
+									<Form.Item label="EXAM REQUEST INTEGRATION CODE">
+										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+											<Input />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={64}>
 								<Col span={12}>
-									<Form.Item label="SPECIMEN ID">
+									<Form.Item label="EXAM REQUEST EXAM SORT">
+										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
+											<InputNumber style={styles.fullWidth} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST SECTION ID">
+										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
+											<InputNumber style={styles.fullWidth} />
+										)}
+									</Form.Item>
+								</Col>
+							</Row>
+							<Row gutter={64}>
+								<Col span={12}>
+									<Form.Item label="EXAM REQUEST SPECIMEN ID">
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
-											<InputNumber style={{ width: '100%' }} />
+											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
