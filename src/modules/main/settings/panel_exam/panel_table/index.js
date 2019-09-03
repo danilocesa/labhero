@@ -22,28 +22,31 @@ import './paneltable.css'
 // CONSTANTS
 const { Text } = AntTypography;
 const { Option } = AntSelect;
-const popoverContent = (data = []) => (
-	<AntTable 
-		dataSource={data}
-		columns={[
-			{ title: 'CODE', dataIndex: 'code' },
-			{ title: 'EXAM NAME', dataIndex: 'exam' }
-		]}
-		pagination={false}
-		rowKey={record => record.code}
-	/>
-);
-const rowItem = (item) => (    
-	<AntPopover 
-		content={popoverContent(item.subcontent)} 
-		trigger="hover"
-		visible={item.active}
-	>
-		<div>
-			{item.code}
-		</div>
-	</AntPopover>
-);
+// const popoverContent = (data = []) => (
+// 	<div>
+// 	<AntTable 
+// 		dataSource={data}
+// 		columns={[
+// 			{ title: 'CODE', dataIndex: 'code' },
+// 			{ title: 'EXAM NAME', dataIndex: 'exam' }
+// 		]}
+// 		pagination={false}
+// 		rowKey={record => record.code}
+// 	/>
+// 	{console.log(data)}
+// 	</div>
+
+// );
+// const popover = (item) => (  
+// 	<AntPopover 
+// 		content={popoverContent(item)} 
+// 		trigger="hover"
+// 	>
+// 		<div>
+// 			{item.panel_name}
+// 		</div>
+// 	</AntPopover>
+// );
 const columns = [
     {
         title: 'CODE',
@@ -54,7 +57,7 @@ const columns = [
         title: 'PANEL NAME',
         dataIndex: 'panel_name',
         key: 'panel_name',
-        render: (text, record) => rowItem(record),
+        // render: (text, record) => popover(record),
     },
     {   
         title: 'INTEGRATION CODE',
@@ -155,9 +158,9 @@ class PanelTable extends React.Component {
 							return {
 								onDoubleClick: () => {
 									this.displayDrawerUpdate(record);
+								}
 							}
-						}
-					}}
+						}}
 					/>
 					<AntDrawer 
 						title={this.state.drawerTitle}
