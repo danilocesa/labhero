@@ -25,33 +25,38 @@ const ActionSection = (props) => (
 
 class ExamItems extends React.Component {
 	state = {
+		isInitializing: true,
 		isLoading: false,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
 		pageSize: 5,
-		examItemsSource: [],
 		examItems: [],
-		sections: [],
-		ddSectionCodes: [],
-		ddSectionNames: [],
-		selectedExamItem: {}
+		ddSections: [],
+		ddSpecimens: [],
+		selectedExamItem: {},
+		selectedSection: null,
+		selectedSpecimen: null
 	}
 	
 	async componentDidMount() {
-		const sections = await this.fetchSection()
-		const ddSectionCodes = sections.map(section => ({
+		const sections = await this.fetchSections();
+		const specimens = await this.fetchSpecimens();
+		const ddSections = sections.map(section => ({
 			label: section.sectionCode,
 			value: section.sectionID
 		}));
 
-		const ddSectionNames = sections.map(section => ({
-			label: section.sectionName,
-			value: section.sectionID
+		const ddSpecimens = specimens.map(specimen => ({
+			label: specimen.specimenName.toUpperCase(),
+			value: specimen.specimenID
 		}));
 
-		ddSectionNames.unshift({ label: 'CLEAR FILTER', value: -1 });
-
-		this.setState({ sections, ddSectionCodes, ddSectionNames });
+		this.setState({ 
+			ddSections, 
+			ddSpecimens, 
+			selectedSpecimen: specimens[0].specimenID ? specimens[0].specimenID : null,
+			isInitializing: false, 
+		});
 	}
 	
 	onClickAdd = () => {
@@ -62,31 +67,20 @@ class ExamItems extends React.Component {
 		this.setState({ pageSize });
 	}
 
-	onChangeSectionCode = async(sectionId) => {
-		this.setState({ isLoading: true });
+	onChangeSectionCode = (sectionId) => {
+		this.setState({ isLoading: true, selectedSection: sectionId }, async () => {
+			const examItems = await this.fetchExamitems();
 
-		const apiResponse = await this.fetchExamitemsById(sectionId);
-		const examItems = [];
-
-		apiResponse.specimens.forEach(specimen => {
-			specimen.results.forEach(result => {
-				examItems.push({ ...result, sectionID: apiResponse.sectionID });
-			});
-		}); 
-		
-		this.setState({ 
-			examItems, 
-			examItemsSource: examItems,
-			isLoading: false
+			this.setState({ examItems, isLoading: false });
 		});
 	}
 
-	onChangeSectionName = (sectionID) => {
-		const { examItemsSource } = this.state;
+	onChangeSpecimen = (specimenID) => {
+		this.setState({ isLoading: true, selectedSpecimen: specimenID }, async () => {
+			const examItems = await this.fetchExamitems();
 
-		const examItems = examItemsSource.filter(examItem => examItem.sectionID === sectionID);
-
-		this.setState({ examItems });
+			this.setState({ examItems, isLoading: false });
+		});
 	}
 
 	onDblClickTableRow = (selectedExamItem) => {
@@ -99,11 +93,11 @@ class ExamItems extends React.Component {
 	}
 
 	
-	fetchSection = async() => {
+	fetchSections = async() => {
 		let sections = [];
 
 		try {
-			const url = `/ExamResult`;
+			const url = `/Section`;
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
@@ -116,11 +110,29 @@ class ExamItems extends React.Component {
 		return sections;
 	}
 
-	fetchExamitemsById = async(id) => {
+	fetchSpecimens = async() => {
+		let specimens = [];
+
+		try {
+			const url = `/Specimen`;
+
+			const response = await axiosCall({ method: 'GET', url });
+			const { data } = await response;
+
+			specimens = data;
+		} catch (e) {
+			Message.error();
+		}
+
+		return specimens;
+	}
+
+	fetchExamitems = async() => {
+		const { selectedSection: sectionId, selectedSpecimen: specimenId } = this.state;
 		let examItems = [];
 
 		try {
-			const url = `/ExamResult/id/${id}`;
+			const url = `/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`; 
 
 			const response = await axiosCall({ method: 'GET', url });
 			const { data } = await response;
@@ -137,22 +149,26 @@ class ExamItems extends React.Component {
 		const { 
 			pageSize, 
 			examItems, 
-			ddSectionNames, 
-			ddSectionCodes,
+			ddSpecimens, 
+			ddSections,
+			isInitializing,
 			isShowAddForm, 
 			isShowUpdateForm ,
-			sections,
 			isLoading,
-			selectedExamItem
+			selectedExamItem,
+			selectedSpecimen,
+			selectedSection
 		} = this.state;
 
 		const leftSection = (
 			<>
 				<DropDown 
 					size="small"
-					placeholder="Filter by SERUM"
-					content={ddSectionNames} 
-					onChange={this.onChangeSectionName}
+					placeholder="Filter by Specimen"
+					content={ddSpecimens} 
+					onChange={this.onChangeSpecimen}
+					loading={isInitializing}
+					value={selectedSpecimen}
 				/>
 			</>
 		);
@@ -179,8 +195,10 @@ class ExamItems extends React.Component {
 					<DropDown 
 						label="SECTION"
 						placeholder="Select Section"
-						content={ddSectionCodes} 
+						content={ddSections} 
 						onChange={this.onChangeSectionCode}
+						loading={isInitializing}
+						value={selectedSection}
 					/>
 					</Row>
 				</section>

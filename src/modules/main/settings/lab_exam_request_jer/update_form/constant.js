@@ -12,13 +12,16 @@ const FIELD_RULES = {
     { required: true, message: 'This field is required.' }
 	],
 	examSort: [
-    { required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ type: 'number', message: 'This field is for numbers only.'}
 	],
 	sectionID: [
-    { required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ type: 'number', message: 'This field is for numbers only.'}
 	],
 	specimenID: [
-    { required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ type: 'number', message: 'This field is for numbers only.'}
 	],
 };
 

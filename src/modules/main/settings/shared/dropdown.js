@@ -18,7 +18,7 @@ const Label = (props) => {
 
 class Dropdown extends React.Component {
 	render(){
-		const { label, content, disabled, size, placeholder, onChange } = this.props;
+		const { label, content, disabled, loading, size, placeholder, onChange, value } = this.props;
 		const width = size === 'small' ? 200 : 300;
 		const Options = content.map(section => (
 			<Option value={section.value} key={section.value}>
@@ -34,6 +34,8 @@ class Dropdown extends React.Component {
 					style={{ width }} 
 					disabled={disabled} 
 					placeholder={placeholder}
+					loading={loading}
+					value={value}
 				>
 					{Options}
 				</Select>
@@ -44,11 +46,13 @@ class Dropdown extends React.Component {
 
 Dropdown.propTypes = {
 	label: PropTypes.string,
+	value: PropTypes.any,
 	content: PropTypes.arrayOf(PropTypes.shape({
 		value: PropTypes.any.isRequired,
 		label: PropTypes.string.isRequired
 	})),
 	disabled: PropTypes.bool,
+	loading: PropTypes.bool,
 	size: PropTypes.string,
 	placeholder: PropTypes.string,
 	onChange: PropTypes.func.isRequired
@@ -56,8 +60,10 @@ Dropdown.propTypes = {
 
 Dropdown.defaultProps = {
 	label: null,
+	value: null,
 	content: [],
 	disabled: false,
+	loading: false,
 	size: 'default',
 	placeholder: ''
 }
