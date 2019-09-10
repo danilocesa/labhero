@@ -75,7 +75,10 @@ class PanelTable extends React.Component {
 			drawerButton: '',
 			loading: false,
 			panelInfo: [],
-			panelListState: []
+			panelListState: [],
+			pagination: {
+				pageSize: 5,
+			}
 		}
 	}
 
@@ -128,6 +131,13 @@ class PanelTable extends React.Component {
 		})
 	}
 
+	handleSelectChange = (value) => {
+		const pagination = {...this.state.pagination};
+		console.log(pagination);
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+	};
+
 	render() {
 		return(
 			<div className="user-table">
@@ -142,7 +152,7 @@ class PanelTable extends React.Component {
 						Add Panel
 					</AntButton>
 					<Text>Display per page</Text>
-					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }}>
+					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
 						<Option value="5">5</Option>
 						<Option value="10">10</Option>
 						<Option value="15">15</Option>
@@ -151,6 +161,7 @@ class PanelTable extends React.Component {
 				</div>
 					<AntTable 
 						dataSource={this.state.panelListState}
+						pagination={this.state.pagination}
 						loading={this.state.loading} 
 						columns={columns}
 						rowKey={record => record.key}
