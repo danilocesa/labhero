@@ -1,0 +1,7 @@
+.selected-table {
+	margin-bottom: 0px;
+}
+
+.selected-table .ant-form-explain {
+	display: none;
+}

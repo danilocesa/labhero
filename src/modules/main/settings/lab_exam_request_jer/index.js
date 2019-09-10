@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Typography, Button, Icon, Input } from 'antd';
-import axiosCall from 'services/axiosCall';
+import { Row, Col, Typography, Button, Icon } from 'antd';
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 
@@ -9,6 +8,8 @@ import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
+
+import { fetchSection, fetchSpecimens, fetchExamRequest } from './api_repo';
 
 const { Title } = Typography;
 
@@ -39,8 +40,8 @@ class LabExamRequest extends React.Component {
 	}
 
 	async componentDidMount() {
-		const sections = await this.fetchSection();
-		const specimens = await this.fetchSpecimens();
+		const sections = await fetchSection();
+		const specimens = await fetchSpecimens();
 
 		const ddSections = sections.map(section => ({
 			label: section.sectionCode,
@@ -72,7 +73,8 @@ class LabExamRequest extends React.Component {
 
 	onChangeSection = async(sectionId) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
-			const examRequests = await this.fetchExamRequest();		
+			const { selectedSpecimenId: specimenId } = this.state;
+			const examRequests = await fetchExamRequest(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -84,8 +86,9 @@ class LabExamRequest extends React.Component {
 
 	onChangeSpecimen = (specimenId) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
-			const examRequests = await this.fetchExamRequest();
-
+			const { selectedSectionId: sectionId } = this.state;
+			const examRequests = await fetchExamRequest(sectionId, specimenId);
+			
 			this.setState({ 
 				examRequests,
 				selectedSpecimenId: specimenId,
@@ -106,63 +109,8 @@ class LabExamRequest extends React.Component {
 		this.setState({ pageSize });
 	}
 
-	onCloseForm = () => {
+	closeForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
-	}
-
-	fetchSection = async() => {
-		let sections = [];
-
-		try {
-			const url = `/Section`;
-
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-			
-			sections = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return sections;
-	}
-
-	fetchSpecimens = async() => {
-		let specimens = [];
-
-		try {
-			const url = `/Specimen`;
-
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-
-			specimens = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return specimens;
-	}
-
-	fetchExamRequest = async() => {
-		let examRequests = [];
-
-		try {
-			const { 
-				selectedSectionId: sectionId, 
-				selectedSpecimenId: specimenId 
-			} = this.state;
-			const url = `/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
-
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-			console.log(response);
-			examRequests = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return examRequests;
 	}
 
 	render() {
@@ -182,13 +130,6 @@ class LabExamRequest extends React.Component {
 
 		const leftSection = (
 			<Row gutter={24}>
-				<Col span={14}>
-					<Input 
-						prefix={<Icon type="search" />}
-						placeholder="Search Exam Request Name"
-						disabled={selectedSectionId == null}
-					/>
-				</Col>
 				<Col span={10}>
 					<DropDown 
 						size="small"
@@ -246,14 +187,19 @@ class LabExamRequest extends React.Component {
 				/>
 				<AddForm 
 					visible={isShowAddForm}
-					onClose={this.onCloseForm}
+					closeForm={this.closeForm}
 					onSuccess={this.onSuccessCreateExamReq}
+					sectionId={selectedSectionId}
+					specimenId={selectedSpecimenId}
 				/>
 				<UpdateForm
 					examRequest={selectedExamRequest}
 					visible={isShowUpdateForm}
-					onClose={this.onCloseForm}
+					closeForm={this.closeForm}
 					onSuccess={this.onSuccessUpdateExamReq}
+					sectionId={selectedSectionId}
+					specimenId={selectedSpecimenId}
+					examRequestId={selectedExamRequest.examRequestID}
 				/>
 			</div>
 		);

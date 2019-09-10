@@ -1,11 +1,14 @@
 import React from 'react';
 import { Table, Select, Typography, Button, Icon, Drawer } from 'antd';
-
 import UserAccountForm from '../user_account_form';
 import './usertable.css';
+// import TablePager from 'shared_components/table_pager';
+import axiosCall from 'services/axiosCall';
+
 
 const { Text } = Typography;
 const { Option } = Select;
+
 
 const columns = [
     {
@@ -25,9 +28,9 @@ const columns = [
         key: 'lastName',
     },
     {
-        title: 'FIRSTNAME',
-        dataIndex: 'firstName',
-        key: 'firstName',
+        title: 'GIVENNAME',
+        dataIndex: 'givenName',
+        key: 'givenName',
     },
     {
         title: 'MIDDLENAME',
@@ -63,30 +66,37 @@ const dataSource = [
     },
 ]
 
+
 class UserTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             visible: false,
             drawerTitle: '',
             drawerButton: '',
             patientInfo: [], 
+            users: [],
+            pagination: {
+                pageSize: 5,
+            },
+            loading: false,
         }
     }
-
     showDrawer = () => {
         this.setState({
           visible: true,
           drawerTitle: 'Add User Account',
           drawerButton: 'Add',
-          patientInfo: ''
+          patientInfo: [],
         });
     };
 
     onClose = () => {
         this.setState({
           visible: false,
+          patientInfo: [],
         });
+        console.log('onClose state', this.state);
     };
 
     displayDrawerUpdate = (record) => {
@@ -96,7 +106,49 @@ class UserTable extends React.Component {
             drawerButton: 'Update',
             patientInfo: record
         });
-        console.log(record);
+    }
+
+    fetchUsers = (params = {}) => {
+		axiosCall({
+			method: 'GET',
+            url: 'UserAccount',
+        }).then(users =>{
+            const pagination = { ...this.state.pagination };
+            users.data.forEach(e =>{
+                e.key = e.userID;
+            });
+            this.setState({
+                users: users.data,
+                pagination,
+            });
+        });
+    }
+    
+    handleTableChange = (pagination, filters, sorter) => {
+        const pager = { ...this.state.pagination };
+        pager.current = pagination.current;
+        this.setState({
+          pagination: pager,
+        });
+        this.fetchUsers({
+          results: pagination.pageSize,
+          page: pagination.current,
+          sortField: sorter.field,
+          sortOrder: sorter.order,
+          ...filters,
+        });
+      };
+
+    handleSelectChange = (value) => {
+        const pagination = {...this.state.pagination};
+        pagination.pageSize = parseInt(value);
+        this.setState({ pagination });
+    };
+
+
+    async componentDidMount(){
+        this.setState({loading:true});
+        await this.fetchUsers();
     }
 
     render() {
@@ -113,7 +165,7 @@ class UserTable extends React.Component {
                         Add User
                     </Button>
                     <Text>Display per page</Text>
-                    <Select defaultValue="5" style={{ width: 120, marginLeft: '8px' }}>
+                    <Select defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
                         <Option value="5">5</Option>
                         <Option value="10">10</Option>
                         <Option value="15">15</Option>
@@ -123,12 +175,17 @@ class UserTable extends React.Component {
                 <div className="user-table">
                     <Table 
                     columns={columns} 
-                    dataSource={dataSource}
+                    dataSource={this.state.users || dataSource}
+                    pagination={this.state.pagination}
                     rowKey={record => record.key}
                     onRow={(record) => {
                         return {     
                             onDoubleClick: () => {
-                                this.displayDrawerUpdate(record);
+                                const rec = [];
+                                for(let [key, value] of Object.entries(record)){
+                                    rec[key] = value;
+                                }
+                                this.displayDrawerUpdate(rec);
                             }
                         }
                     }}

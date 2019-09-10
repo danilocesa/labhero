@@ -1,8 +1,10 @@
 import React from 'react';
 import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
-import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+
+import { fetchExamList, fetchSelectedExamList, updateExamRequest } from './api_repo';
+import SelectionTable from '../selection_table';
+import SelectedTable from '../selected_table';
 
 import FIELD_RULES from './constant';
 
@@ -23,135 +25,220 @@ const styles = {
 };
 
 class UpdateForm extends React.Component {
-	state = { isLoading: false }
+	constructor(props) {
+		super(props);
+
+		this.state = { 
+			isLoading: false, 
+			isFetchingData: false,
+			examList: [],
+			selectedExams: []
+		}
+	
+		this.selectedTable = React.createRef();
+	}
+	
+	async componentDidUpdate(prevProps) {
+		const { 
+			sectionId: secId, 
+			specimenId: specId,
+			examRequestId: erId 
+		} = this.props;
+
+		const { 
+			sectionId: prevSecId, 
+			specimenId: prevSpecId,
+			examRequestId: prevErId 
+		} = prevProps;
+
+		const propsHasChanged = secId !== prevSecId || specId !== prevSpecId || erId !== prevErId;
+		const propsIsNotNull = secId !== null && specId !== null && erId !== null;
+		
+		if (propsHasChanged && propsIsNotNull) {
+			
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ isFetchingData: true }, async () => {
+				const { sectionId, specimenId, examRequestId } = this.props;
+				const selectedExams = await fetchSelectedExamList(sectionId, specimenId, examRequestId);
+				const examList = await fetchExamList(sectionId, specimenId);
+				
+				this.setState({ 
+					examList: examList || [],
+					selectedExams,
+					isFetchingData: false
+				});
+			});
+		}
+	}
 
 	onSubmit = (event) => {
 		event.preventDefault();
 
+		const { selectedExams } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { examRequest, form, onSuccess } = this.props;
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 		const { examRequestID, examRequestActive } = examRequest;
 
-		validateFieldsAndScroll(async(err) => {
-			if(!err) {
-				const updatedExamRequest = await this.updateExamRequest({ 
-					examRequestID,
-					examRequestActive,
-					...getFieldsValue()
-				});
+		validateFieldsAndScroll((err) => {
+			// @ts-ignore
+			const isSelExamValidated = this.selectedTable.triggerValidation();
+			console.log(isSelExamValidated);
+			if(!err && isSelExamValidated) {
+				this.setState({ isLoading: true}, async() => {
+					const updatedExamRequest = await updateExamRequest({ 
+						examRequestID,
+						examRequestActive,
+						...getFieldsValue(),
+						examItems: selectedExams
+					});
+					
+					this.setState({ isLoading: false });
 
-				if(updatedExamRequest) {
-					onSuccess();
-				}
+					if(updatedExamRequest) {
+						onSuccess();
+					}
+				});
 			}
 		});
 	}
 	
-	updateExamRequest = async (examRequest) => {
-		let updatedExamRequest = null;
+	onSelectSelectionTable = (selectedExam) => {
+		const { selectedExams } = this.state;
+		const newSelectedExams = [ ...selectedExams, selectedExam ];
 
-		try{
-			const content = {
-				method: 'PUT',
-				url: '/ExamRequest',
-				data: { ...examRequest }
-			}
+		this.setState({ selectedExams: newSelectedExams });
+	}
 
-			const response = await axiosCall(content);
-			const { data } = await response;
+	onDeselectSelectionTable = (selectedExam) => {
+		const { selectedExams } = this.state;
+		const newSelectedExams = selectedExams.filter(exam => exam.examItemID !== selectedExam.examItemID);
 
-			updatedExamRequest = data;
-		}
-		catch(error) {
-			Message.error();
-		}
+		this.setState({ selectedExams: newSelectedExams });
+	}
 
-		return updatedExamRequest;
+	onSelectAllSelectionTable = (selectedExams) => {
+		this.setState({ selectedExams });
+	}
+
+	onChangeSelectedTable = (examItemID, examData) => {
+		const { selectedExams } = this.state;
+		const updatedSelectedExams = selectedExams.map(item => {
+			if(item.examItemID === examItemID) 
+				return Object.assign(item, examData);
+			
+			return item;
+		});
+
+		this.setState({ selectedExams: updatedSelectedExams })
+	}
+
+	closeFormDrawer = () => {
+		const { closeForm } = this.props;
+
+		this.setState({ selectedExams: [] });
+		closeForm();
 	}
 
 	render() {
-		const { isLoading } = this.state;
-		const { onClose, visible, form } = this.props;
+		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
+		// eslint-disable-next-line react/prop-types
+		const { visible, form } = this.props;
 		const { getFieldDecorator } = form;
-		
+
 		return (
 			<Drawer
 				title="Update Exam Request"
 				width="60%"
 				placement="right"
 				closable
-				onClose={onClose}
+				onClose={this.closeFormDrawer}
 				visible={visible}
 			>
 				<Form onSubmit={this.onSubmit}>
 					<section style={{ marginBottom: 50 }}>
-						<div style={{ margin: '0px 50px' }}>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST NAME">
+						<div style={{ margin: '0px 10px' }}>
+							<Row gutter={12}>
+								<Col span={10}>
+									<Form.Item label="NAME">
 										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST CODE">
+								<Col span={6}>
+									<Form.Item label="CODE">
 										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
-							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST LOINC">
-										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST INTEGRATION CODE">
-										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST SORT">
-										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
+								<Col span={4}>
+									<Form.Item label="SPECIMEN ID">
+										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST SECTION ID">
+								<Col span={4}>
+									<Form.Item label="SECTION ID">
 										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
-							<Row gutter={64}>
-								<Col span={12}>
-									<Form.Item label="EXAM REQUEST SPECIMEN ID">
-										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
+							<Row gutter={12}>
+								<Col span={10}>
+									<Form.Item label="LOINC">
+										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={10}>
+									<Form.Item label="INTEGRATION CODE">
+										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={4}>
+									<Form.Item label="EXAM SORT">
+										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
-						</div>
-				
+							<Row gutter={12}>
+								<Col span={12}>
+									<SelectionTable 
+										data={examList}
+										loading={isFetchingData} 
+										onSelect={this.onSelectSelectionTable}
+										onDeselect={this.onDeselectSelectionTable}
+										onSelectAll={this.onSelectAllSelectionTable}
+										selectedRowKeys={selectedExams.map(exam => exam ? exam.examItemID : null )}
+									/>		
+								</Col>
+								<Col span={12}>
+									<SelectedTable 
+										wrappedComponentRef={(inst) => this.selectedTable = inst}
+										data={selectedExams}
+										loading={false}
+										onChange={this.onChangeSelectedTable}
+									/>		
+								</Col>
+							</Row>
+						</div>					
 					</section>
 					<section style={styles.footer}>
 						<div>
 							<Button 
 								shape="round" 
 								style={{ margin: 10, width: 100 }}
+								onClick={this.closeFormDrawer}
 							>
 								CANCEL
 							</Button>
@@ -173,7 +260,10 @@ class UpdateForm extends React.Component {
 }
 
 UpdateForm.propTypes = {
-	onClose: PropTypes.func.isRequired,
+	sectionId: PropTypes.number, 
+	specimenId: PropTypes.number,
+	examRequestId: PropTypes.number,
+	closeForm: PropTypes.func.isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	visible: PropTypes.bool.isRequired,
 	examRequest: PropTypes.shape({
@@ -187,6 +277,12 @@ UpdateForm.propTypes = {
 		specimenID: PropTypes.number,
 	}).isRequired
 };
+
+UpdateForm.defaultProps = {
+	sectionId: null,
+	specimenId: null,
+	examRequestId: null
+}
 
 export default Form.create({
 	mapPropsToFields(props) {
