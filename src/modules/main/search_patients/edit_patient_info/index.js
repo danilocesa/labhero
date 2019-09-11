@@ -35,9 +35,12 @@ class EditProfile extends React.Component {
 		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
 			addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
 			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
-			
-			for(const [valueMunicipality] of Object.entries(valueprovince.municipality_list)){
-				for( const [value] of  Object.entries(addressArr[a].children) ){
+			for(const [keyMunicipality, valueMunicipality] of Object.entries(valueprovince.municipality_list)){
+        console.log("TCL: EditProfile -> componentDidMount -> valueMunicipality", valueMunicipality)
+        console.log("TCL: EditProfile -> componentDidMount -> keyMunicipality", keyMunicipality)
+        // console.log("TCL: EditProfile -> componentDidMount -> valueprovince.municipality_list", valueprovince.municipality_list)
+				for( const [value] of  Object.entries(valueMunicipality) ){
+          console.log("TCL: EditProfile -> componentDidMount -> value", value)
 					value.children = this.getBarangay(valueMunicipality.barangay_list)
 				}
 			}
@@ -49,6 +52,7 @@ class EditProfile extends React.Component {
 	}
 
 	getMunicipality = (array) => {
+    
 		const municipalityArr = [];
 		let a = 0;
 		for (const [keyMunicipality] of Object.entries(array)) {

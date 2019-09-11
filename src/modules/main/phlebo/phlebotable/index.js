@@ -2,7 +2,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin as AntSpin } from 'antd';
 
 // CSS
@@ -20,17 +19,13 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading } = this.props;
-
-		/**
-     * @param {{ length: number; }} myDataSource
-     * @param {string} columnName
-     */
 		const getSorter = (myDataSource, columnName) => {
+			// @ts-ignore
+			if(myDataSource == undefined || myDataSource.length == 0 ){
+				return false;
+			}
+			
 			if(myDataSource.length > 0) {
-				/**
-         * @param {{ [x: string]: { localeCompare: (arg0: any) => void; }; }} a
-         * @param {{ [x: string]: any; }} b
-         */
 				const columnSorter = (a, b) => {
 					if(a[columnName] !== null) {
 						return a[columnName].localeCompare(b[columnName])
@@ -87,6 +82,7 @@ class SearchPatientTable extends React.Component {
 				<div className="search-patient-table">
 					<AntTable 
 						pagination={{pageSize}} 
+						// @ts-ignore
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
@@ -94,6 +90,7 @@ class SearchPatientTable extends React.Component {
 						onRow={(record) => {
 							return { 
 								onDoubleClick: () => {
+									// @ts-ignore
 									this.handleDoubleClick(record)
 								}
 							};

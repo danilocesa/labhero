@@ -4,8 +4,8 @@
 export const apiURL = '----------lab/';
 export const apiUrlPatientByID = "Patient/id/";
 export const apiUrlPatientByName = "Patient/name/";
-export const apiUrlPhleboPatientByID = "SpecimenTracking/phlebo/patientid/";
-export const apiUrlPhleboPatientByName = "SpecimenTracking/phlebo/patientname/";
+export const apiUrlPhlebo = "SpecimenTracking/phlebo/"
+export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
 export const apiUrlPhleboRequestID = "SpecimenTracking/phlebo/requestid/";
 export const apiUrlCheckInSpecimen = "SpecimenTracking/phlebo/checkinspecimen";
 

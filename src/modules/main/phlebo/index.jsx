@@ -1,6 +1,6 @@
 // LiBRARY
 import React from 'react';
-import { Drawer as AntDrawer, Tabs as AntTabs} from 'antd';
+import { Drawer as AntDrawer, Tabs as AntTabs, Badge as AntBadge} from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
@@ -14,7 +14,8 @@ const { TabPane } = AntTabs;
 
 class Phlebo extends React.Component {
 	state = {   
-		patients: [], 
+		extractedPatients: [], 
+		forExtractionPatients: [], 
 		pageSize: 10,   
 		loading: false,
 		showDrawer:false,
@@ -25,8 +26,12 @@ class Phlebo extends React.Component {
 		this.setState({pageSize});
 	}
 
-	populatePatients = (patients) => {
-		this.setState({ patients });
+	populateExtractedPatients = (extractedPatients) => {
+		this.setState({ extractedPatients });
+	}
+
+	populateForExtractionPatients = (forExtractionPatients) => {
+		this.setState({ forExtractionPatients });
 	}
 
 	displayLoading = (isLoading) => {
@@ -47,13 +52,29 @@ class Phlebo extends React.Component {
   }
 
   render() {
-		const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
+		const { extractedPatients, forExtractionPatients, pageSize, loading, showDrawer, patientInfo } = this.state;
+		const forExtrationPatientLength = (forExtractionPatients == undefined || forExtractionPatients.length == 0 ? 0 : forExtractionPatients.length );
+		const extractedPatientLength = (extractedPatients == undefined || extractedPatients.length == 0 ? 0 : extractedPatients.length );
+		const patientDrawer = (
+			<div>
+				<AntDrawer
+					title="Check-in specimen" 
+					onClose={this.onClosePhleboPatientResultDrawer}
+					width="90%"
+					visible={showDrawer}
+				>
+					<PhleboPatientResult patientInfo={patientInfo} />
+				</AntDrawer>
+			</div>
+		);
+
     return ( 
 			<div>
 				<div>
 					<PageTitle pageTitle="PHLEBO" />
 					<SearchPatientHeaderForm 
-						populatePatients={this.populatePatients}
+						populateExtractedPatients={this.populateExtractedPatients}
+						populateForExtractionPatients={this.populateForExtractionPatients}
 						displayLoading={this.displayLoading} 
 					/>
 					<br />
@@ -62,73 +83,54 @@ class Phlebo extends React.Component {
 							tab={(
 								<span>
 									For Extraction
+									<AntBadge count={forExtrationPatientLength} />
 								</span>
+								
 							)}
 							key="1"
 						>
 					
 						<SearchPatientTableHeader 
 							pageSize={pageSize}
-							pageTotal={patients.length} 
+							pageTotal={forExtrationPatientLength} 
 							handleChangeSize={this.handleChangeSize} 
 						/>
 
 						<SearchPatientTable 
-							data={patients}
+							data={forExtractionPatients}
 							pageSize={pageSize}
 							loading={loading} 
 							redirectUrl=""
 							drawer={this.displayDrawer}
 						/>
 						{
-							showDrawer ? (
-								<AntDrawer
-									title="Check-in specimen" 
-									onClose={this.onClosePhleboPatientResultDrawer}
-									width="90%"
-									visible={showDrawer}
-								>
-									<PhleboPatientResult patientInfo={patientInfo} />
-								</AntDrawer>
-							)
-							:
-							null
+							showDrawer ? ( patientDrawer ) : null
 						}
 						</TabPane>
 						<TabPane
 							tab={(
 								<span>
 									Extracted
+									<AntBadge count={extractedPatientLength} />
 								</span>
 							)}
 							key="2"
 						>
 							<SearchPatientTableHeader 
 								pageSize={pageSize}
-								pageTotal={patients.length} 
+								pageTotal={extractedPatientLength} 
 								handleChangeSize={this.handleChangeSize} 
 							/>
 
 							<SearchPatientTable 
-								data={patients}
+								data={extractedPatients}
 								pageSize={pageSize}
 								loading={loading} 
 								redirectUrl=""
 								drawer={this.displayDrawer}
 							/>
 							{
-								showDrawer ? (
-									<AntDrawer
-										title="Check-in specimen" 
-										onClose={this.onClosePhleboPatientResultDrawer}
-										width="90%"
-										visible={showDrawer}
-									>
-										<PhleboPatientResult patientInfo={patientInfo} />
-									</AntDrawer>
-								)
-								:
-								null
+								showDrawer ? ( patientDrawer ) : null
 							}
 						</TabPane>
 					</AntTabs>

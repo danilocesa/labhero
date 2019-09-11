@@ -29,6 +29,7 @@ class SpecimenList extends React.Component {
 	async componentDidMount(){
 		const {patientInfo} = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
 		// eslint-disable-next-line prefer-destructuring
 		const requestID = patientSpecimensAPI.requestID;
 		const requestExams = [];

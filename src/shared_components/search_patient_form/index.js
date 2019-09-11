@@ -10,8 +10,6 @@ import Message from 'shared_components/message';
 import { 
 	apiUrlPatientByID, 
 	apiUrlPatientByName, 
-	apiUrlPhleboPatientByID, 
-	apiUrlPhleboPatientByName
 } from 'shared_components/constant-global';
 
 // CSS
@@ -104,25 +102,14 @@ class SearchPatientForm extends React.Component {
 
 	fetchPatients = async (patientName, patientID) => {
 		let patients = [];
-		const { apiProfile} = this.props;
-		const apiUrlPatientID = (apiProfile === "phlebo" ? apiUrlPhleboPatientByID : apiUrlPatientByID);
-		const apiUrlPatientName = (apiProfile === "phlebo" ? apiUrlPhleboPatientByName : apiUrlPatientByName);
-	
 		try{
 			const response = await axiosCall({
 				method: 'GET',
-        url: (patientID ? `${apiUrlPatientID}${patientID}` : `${apiUrlPatientName}${patientName}`)
+        url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
       });
 			const { data } = await response;
-			if(apiProfile === "phlebo"){ // Check if module is phlebo
-				if(patientID){ // Fix problem for patientID object reponse
-					patients = data ? [data] : [];
-				} else {
-					patients = data || [];
-				}
-			} else {
-				patients = data ? data.patient : [];
-			}
+	
+			patients = data ? data.patient : [];
 			
 		}
 		catch(error) {

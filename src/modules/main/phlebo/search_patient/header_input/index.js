@@ -2,19 +2,16 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { Form, Input, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import CustomMessage from 'shared_components/message';
-import { 
-	apiUrlPhleboPatientByID, 
-	apiUrlPhleboPatientByName
-} from 'shared_components/constant-global';
+import { apiUrlPhleboSearchPatient } from 'shared_components/constant-global';
 
 // CSS
 import './search_patient_form.css';
-
 
 // CONSTANTS
 const formItemLayout = [
@@ -54,7 +51,8 @@ class SearchPatientHeaderForm extends React.Component {
 	state = {
 		patientID: '',
 		patientName: '',
-		loading: false
+		loading: false,
+		selectedDateValue: moment().format("YYYYMMDD")
 	};
 
 	handleInputChange = (event) => {
@@ -67,14 +65,16 @@ class SearchPatientHeaderForm extends React.Component {
 		event.preventDefault();
 
 		const { patientName, patientID } = this.state;
-		const { populatePatients } = this.props;
+		const { populateExtractedPatients, populateForExtractionPatients } = this.props;
 		let patients = [];
 		
 		this.setState({ loading: true });
 		patients = await this.fetchPatients(patientName, patientID); 
+		// populate patient by extracted or for extraction
 		this.setState({ loading: false });
 
-		populatePatients(patients);
+		populateExtractedPatients(patients.extracted);
+		populateForExtractionPatients(patients.forExtraction);
 		
 		if(patients.length < 1)
 			CustomMessage.info('No results found');
@@ -82,31 +82,25 @@ class SearchPatientHeaderForm extends React.Component {
 	}
 
 	fetchPatients = async (patientName, patientID) => {
-		let patients = [];
-	
+		let apiResponse;
 		try{
-			const response = await axiosCall({
-				method: 'GET',
-					url: (patientID ? `${apiUrlPhleboPatientByID}${patientID}` : `${apiUrlPhleboPatientByName}${patientName}`)
-				});
-			const { data } = await response;
-			if(patientID){ // Fix problem for patientID object reponse
-				patients = data ? [data] : [];
-			} else {
-				patients = data || [];
-			}
+			// eslint-disable-next-line max-len
+			const apiBaseUrl = `${apiUrlPhleboSearchPatient}${this.state.selectedDateValue}`;
+			const apiUrl = (patientID ? `${apiBaseUrl}/patientid/${patientID}` : `${apiBaseUrl}/patientname/${patientName}`);
+			console.log(apiUrl);
+			apiResponse = await axiosCall({ method: 'GET', url: apiUrl });
 		}
 		catch(error) {
 			CustomMessage.error();
 		}
-
-		return patients;
+		return apiResponse.data;
 	}
 
 	clearInputs = async () => {
 		this.setState({
 			patientID: "",
-			patientName: ""
+			patientName: "",
+			selectedDateValue: moment().format("YYYYMMDD")
 		});
 
 		const { populatePatients } = this.props;
@@ -125,6 +119,10 @@ class SearchPatientHeaderForm extends React.Component {
 		
 		if(event.target.name === 'patientName')	
 			this.setState({ patientID: '' });
+	}
+
+	handleChangeDate = (value) => {
+		this.setState({ selectedDateValue: (value == null ? moment().format("YYYYMMDD") : value.format('YYYYMMDD') ) });
 	}
 
 	render() {
@@ -165,7 +163,12 @@ class SearchPatientHeaderForm extends React.Component {
 					</Col>
 					<Col {...formItemLayout[3]}>
 						<Form.Item label="SELECT A DATE">
-							<AntDatePicker />
+							<AntDatePicker 
+								allowClear={false}
+								// @ts-ignore
+								defaultValue={moment()} 
+								onChange={this.handleChangeDate} 
+								/>
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[4]}>
@@ -202,7 +205,8 @@ class SearchPatientHeaderForm extends React.Component {
 }
 
 SearchPatientHeaderForm.propTypes = {
-	populatePatients: PropTypes.func.isRequired,
+	populateExtractedPatients: PropTypes.func.isRequired,
+	populateForExtractionPatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func,
 	sessionPatientName: PropTypes.string, 
 	sessionPatientID: PropTypes.string
