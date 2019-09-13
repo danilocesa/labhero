@@ -31,58 +31,95 @@ class EditProfile extends React.Component {
 
 	componentDidMount(){
 		const addressArr = [];
+		const municipalityArr = [];
+		const barangayArr = [];
 		let a = 0; 
-		for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
-			addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
-			addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
-			for(const [keyMunicipality, valueMunicipality] of Object.entries(valueprovince.municipality_list)){
-        console.log("TCL: EditProfile -> componentDidMount -> valueMunicipality", valueMunicipality)
-        console.log("TCL: EditProfile -> componentDidMount -> keyMunicipality", keyMunicipality)
-        // console.log("TCL: EditProfile -> componentDidMount -> valueprovince.municipality_list", valueprovince.municipality_list)
-				for( const [value] of  Object.entries(valueMunicipality) ){
-          console.log("TCL: EditProfile -> componentDidMount -> value", value)
-					value.children = this.getBarangay(valueMunicipality.barangay_list)
-				}
-			}
-			a +=1;
-		}
+		let b = 0;
+		let c = 0;
+		console.log(addressData);
+		// Object.entries(addressData).forEach((addressTxt)=>{
+    // console.log("TCL: EditProfile -> componentDidMount -> addressTxt", addressTxt)
+		// 	addressArr.push({
+		// 		"label":addressTxt[0], 
+		// 		"value":`${addressTxt[0]}L1-L1-${a}`, 
+		// 		"key":`${addressTxt[0]}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`
+		// 	});
+		// 	// Get all municipality
+		// 	Object.entries(addressTxt[1].municipality_list).forEach((municipality)=>{
+		// 		municipalityArr.push({
+		// 			"label": municipality[0],
+		// 			"value": `${municipality[0]}L2-L2-${b+1*Math.floor(Math.random() * 9999999)}`,
+		// 			"key": `${municipality[0]}L2-L2-${b+1*Math.floor(Math.random() * 9999999)}`
+		// 		})
+		// 		b +=1;
+		// 	});
+		// 	addressArr[a].children = municipalityArr;
+		// 	// console.log(addressArr[a].children);
+		// 	// Get all barangay
+		// 	// Object.entries(addressArr[a].children).forEach((barangay)=>{
+		// 		// console.log(addressArr[a].children);
+		// 		// barangayArr.push({
+		// 		// 	"label": barangay[1].label,
+		// 		// 	"value": `${barangay[1].key}L3-L3-${c+1*Math.floor(Math.random() * 9999999)}`,
+		// 		// 	"key": `${barangay[1].key}L3-L3-${c+1*Math.floor(Math.random() * 9999999)}`
+		// 		// })
+		// 		// c +=1
+		// 	// });
+		// 	// addressArr[a].children = barangayArr
+			// a +=1;
+		// });
+
+
+		
+		// console.log(addressArr);
+		// for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
+		// 	addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
+		// 	addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
+		// 	for(const [, valueMunicipality] of Object.entries(valueprovince.municipality_list)){
+		// 		for( const [, value] of  Object.entries(valueMunicipality) ){
+		// 			// value.children = this.getBarangay(valueMunicipality.barangay_list)
+		// 		}
+		// 	}
+		// 	a +=1;
+		// }
 		this.setState({
 			addressArr
 		})
 	}
 
-	getMunicipality = (array) => {
+	// getMunicipality = (array) => {
     
-		const municipalityArr = [];
-		let a = 0;
-		for (const [keyMunicipality] of Object.entries(array)) {
-			municipalityArr.push(
-				{
-				"label": keyMunicipality,
-				"value": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`,
-				"key": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`
-				}
-			)
-			a +=1;
-		}
-		return municipalityArr;
-	}
+	// 	const municipalityArr = [];
+	// 	let a = 0;
+	// 	for (const [keyMunicipality] of Object.entries(array)) {
+	// 		municipalityArr.push(
+	// 			{
+	// 			"label": keyMunicipality,
+	// 			"value": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`,
+	// 			"key": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`
+	// 			}
+	// 		)
+	// 		a +=1;
+	// 	}
+	// 	return municipalityArr;
+	// }
 
-	getBarangay = (array) => {
-		const barangayArr = [];
-		let a = 0;
-		for (const [valueBarangay] of Object.entries(array)) {
-			barangayArr.push(
-				{
-				"label": valueBarangay,
-				"value": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`,
-				"key": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`
-				}
-			)
-			a +=1;
-		}
-		return barangayArr;
-	}
+	// getBarangay = (array) => {
+	// 	const barangayArr = [];
+	// 	let a = 0;
+	// 	for (const [valueBarangay] of Object.entries(array)) {
+	// 		console.log(valueBarangay);
+	// 		barangayArr.push(
+	// 			{
+	// 			"label": valueBarangay,
+	// 			"value": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`,
+	// 			"key": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`
+	// 			}
+	// 		)
+	// 		a +=1;
+	// 	}
+	// 	return barangayArr;
+	// }
 
 	searchAddress = (input,treenode) => {
 		const searchText = treenode.props.title.search(input.toUpperCase())
@@ -149,7 +186,9 @@ class EditProfile extends React.Component {
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
-
+		function filter(inputValue, path) {
+			return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+		}
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -233,21 +272,13 @@ class EditProfile extends React.Component {
 									{getFieldDecorator('address', { 
 										rules: FIELD_RULES.address
 									})(
-										// <TreeSelect
-										// 	showSearch
-										// 	treeData={this.state.addressArr}
-										// 	filterTreeNode={this.searchAddress}
-										// 	style={{ width: 300 }}
-										// 	dropdownStyle={{ maxHeight: 500 }}
-										// 	placeholder="Please select"
-										// 	allowClear
-										// />
 										<Cascader 
 											options={this.state.addressArr}
 											style={{ width: '100%' }}
 											dropdownstyle={{ maxHeight: 500 }}
 											placeholder="Please select"
 											allowclear
+											showSearch={{filter}}
 										/>
 									)}
 								</div>
