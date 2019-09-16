@@ -94,7 +94,7 @@ class Sider extends React.Component {
             </Link>
           </Menu.Item>
           <Menu.Item key="7">
-            <Link to="/inventory/notifications">
+            <Link to="/inventory">
               <Icon component={NotificationsIcon} />
               <span>NOTIFICATIONS</span>
             </Link>
