@@ -15,8 +15,7 @@ import PhleboPatientResult from 'modules/main/phlebo/phlebopatient'
 import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/search_patients';
 import Settings from 'modules/main/settings';
-import Notifications from 'modules/main/notifications';
-import Inventory from 'modules/main/inventory/settings/supplier';
+import Inventory from 'modules/main/inventory';
 import auth from 'services/auth';
 
 // CONSTANTS
@@ -49,7 +48,6 @@ const Content = () => (
 			{/* Settings route */}
 			<PrivateRoute path="/settings" component={Settings} />
 			{/* Inventory route */}
-			<PrivateRoute path="/notifications" component={Notifications} />
 			<PrivateRoute path="/inventory" component={Inventory} />
 			{/* 404 page route */}
 			<Route component={ErrorPage} />

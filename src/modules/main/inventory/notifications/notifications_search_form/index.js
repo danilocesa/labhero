@@ -1,13 +1,12 @@
 // LIBRARY
 import React from 'react';
-import { Row, Form, Input, Button, Col, Select, Radio, DatePicker, Modal } from 'antd';
+import { Row, Form, Input, Button, Col, Select, Radio, DatePicker } from 'antd';
 // import { withRouter } from 'react-router-dom';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 class NotificationsSearch extends React.Component{
-
     render(){
         return(
             <Row>
