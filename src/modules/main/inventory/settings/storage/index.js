@@ -12,54 +12,49 @@ import {
 
 // CUSTOM MODULES
 
-// import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
-// import SearchPatientHeaderForm from './search_patient/header_input'; // Search form input
-// import SearchPatientTable from './phlebotable';
-// import PhleboPatientResult from './phlebopatient';
-
 //  CONSTANTS
 const { Title } = Typography;
 const { TextArea } = AntInput;
 const columns = [
   {
-    title: 'Supplier ID',
-    dataIndex: 'supplier_id',
-    key: 'supplier_id'
+    title: 'STORAGE ID',
+    dataIndex: 'storage_id',
+    key: 'storage_id'
   },
   {
-    title: 'Supplier',
-    dataIndex: 'supplier',
-    key: 'supplier',
+    title: 'STORAGE NAME',
+    dataIndex: 'storage_name',
+    key: 'storage_name',
   },
   {
-    title: 'supplier details',
-    dataIndex: 'supplier_details',
-    key: 'supplier_details',
+    title: 'STORAGE DESCRIPTION',
+    dataIndex: 'storage_description',
+    key: 'storage_description',
   }
 ];
 
 const data = [
   {
     key: '1',
-    supplier_id: 1,
-    supplier: 'John Brown',
-    supplier_details: 'New York No. 1 Lake Park'
+    storage_id: 1,
+    storage_name: 'John Brown',
+    storage_description: 'New York No. 1 Lake Park'
   },
   {
     key: '2',
-    supplier_id: 2,
-    supplier: 'Jim Green',
-    supplier_details: 'London No. 1 Lake Park'
+    storage_id: 2,
+    storage_name: 'Jim Green',
+    storage_description: 'London No. 1 Lake Park'
   },
   {
     key: '3',
-    supplier_id: 3,
-    supplier: 'Joe Black',
-    supplier_details: 'Sidney No. 1 Lake Park'
+    storage_id: 3,
+    storage_name: 'Joe Black',
+    storage_description: 'Sidney No. 1 Lake Park'
   },
 ];
 
-class InventorySupplierTemplate extends React.Component {
+class InventoryStorageTemplate extends React.Component {
   state = { }
   
   handleSubmit = e => {
@@ -81,24 +76,24 @@ class InventorySupplierTemplate extends React.Component {
 			<div>
         <AntRow>
           <AntCol span={6}>
-            <Title level={4}>SUPPLIER SETUP</Title>
+            <Title level={4}>STORAGE SETUP</Title>
             <AntForm onSubmit={this.handleSubmit} >
-              <AntForm.Item label="SUPPLIER ID">
-                {getFieldDecorator('supplier_id', {
+              <AntForm.Item label="STORAGE ID">
+                {getFieldDecorator('storage_id', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
                   <AntInput />,
                 )}
               </AntForm.Item>
-              <AntForm.Item label="SUPPLIER">
-                {getFieldDecorator('supplier', {
+              <AntForm.Item label="STORAGE NAME">
+                {getFieldDecorator('storage_name', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
                   <AntInput />,
                 )}
               </AntForm.Item>
-              <AntForm.Item label="SUPPLIER DETAILS">
-                {getFieldDecorator('supplier_details', {
+              <AntForm.Item label="DESCRIPTION">
+                {getFieldDecorator('description', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
                   <TextArea rows={6} />,
@@ -107,10 +102,10 @@ class InventorySupplierTemplate extends React.Component {
               <AntRow>
                 <AntCol span={24} style={{ textAlign: 'right' }}>
                   <AntButton onClick={this.handleReset}>
-                    CLEAR
+                    Clear
                   </AntButton>
                   <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }}>
-                    ADD
+                    Add
                   </AntButton>
                 </AntCol>
               </AntRow>
@@ -126,6 +121,6 @@ class InventorySupplierTemplate extends React.Component {
   }
 }
 
-const InventorySupplier = AntForm.create()(InventorySupplierTemplate);
+const InventoryStorage = AntForm.create()(InventoryStorageTemplate);
 
-export default InventorySupplier;
+export default InventoryStorage;

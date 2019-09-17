@@ -12,54 +12,40 @@ import {
 
 // CUSTOM MODULES
 
-// import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
-// import SearchPatientHeaderForm from './search_patient/header_input'; // Search form input
-// import SearchPatientTable from './phlebotable';
-// import PhleboPatientResult from './phlebopatient';
-
 //  CONSTANTS
 const { Title } = Typography;
-const { TextArea } = AntInput;
 const columns = [
   {
-    title: 'Supplier ID',
-    dataIndex: 'supplier_id',
-    key: 'supplier_id'
+    title: 'SECTION ID',
+    dataIndex: 'section_id',
+    key: 'section_id'
   },
   {
-    title: 'Supplier',
-    dataIndex: 'supplier',
-    key: 'supplier',
-  },
-  {
-    title: 'supplier details',
-    dataIndex: 'supplier_details',
-    key: 'supplier_details',
+    title: 'SECTIOn',
+    dataIndex: 'section',
+    key: 'section',
   }
 ];
 
 const data = [
   {
     key: '1',
-    supplier_id: 1,
-    supplier: 'John Brown',
-    supplier_details: 'New York No. 1 Lake Park'
+    section_id: 1,
+    section: 'John Brown'
   },
   {
     key: '2',
-    supplier_id: 2,
-    supplier: 'Jim Green',
-    supplier_details: 'London No. 1 Lake Park'
+    section_id: 2,
+    section: 'Jim Green'
   },
   {
     key: '3',
-    supplier_id: 3,
-    supplier: 'Joe Black',
-    supplier_details: 'Sidney No. 1 Lake Park'
+    section_id: 3,
+    section: 'Joe Black'
   },
 ];
 
-class InventorySupplierTemplate extends React.Component {
+class InventorySectionTemplate extends React.Component {
   state = { }
   
   handleSubmit = e => {
@@ -81,27 +67,20 @@ class InventorySupplierTemplate extends React.Component {
 			<div>
         <AntRow>
           <AntCol span={6}>
-            <Title level={4}>SUPPLIER SETUP</Title>
+            <Title level={4}>SECTION SETUP</Title>
             <AntForm onSubmit={this.handleSubmit} >
-              <AntForm.Item label="SUPPLIER ID">
-                {getFieldDecorator('supplier_id', {
+              <AntForm.Item label="SECTION ID">
+                {getFieldDecorator('section_id', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
                   <AntInput />,
                 )}
               </AntForm.Item>
-              <AntForm.Item label="SUPPLIER">
-                {getFieldDecorator('supplier', {
+              <AntForm.Item label="SECTION">
+                {getFieldDecorator('section', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
                   <AntInput />,
-                )}
-              </AntForm.Item>
-              <AntForm.Item label="SUPPLIER DETAILS">
-                {getFieldDecorator('supplier_details', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <TextArea rows={6} />,
                 )}
               </AntForm.Item>
               <AntRow>
@@ -126,6 +105,6 @@ class InventorySupplierTemplate extends React.Component {
   }
 }
 
-const InventorySupplier = AntForm.create()(InventorySupplierTemplate);
+const InventorySection = AntForm.create()(InventorySectionTemplate);
 
-export default InventorySupplier;
+export default InventorySection;
