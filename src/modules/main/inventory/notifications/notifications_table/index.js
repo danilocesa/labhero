@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table as AntTable, Modal} from 'antd';
+import {Table as AntTable, Modal, Button, Row, Col} from 'antd';
 
 const columns = [
     {
@@ -46,6 +46,29 @@ const columns = [
         title: 'QUANTITY',
         dataIndex: 'quantity',
         key: 'quantity'
+    },
+];
+
+const modalColumns = [
+    {
+        title: 'DR No.',
+        dataIndex: 'drNumber',
+        key: 'drNumber',
+    },
+    {
+        title: 'ITEM',
+        dataIndex: 'item',
+        key: 'item',
+    },
+    {
+        title: 'ITEM DESCRIPTION',
+        dataIndex: 'itemDescription',
+        key: 'itemDescription',
+    },
+    {
+        title: 'EXPIRATION DATE',
+        dataIndex: 'expirationDate',
+        key: 'expirationDate',
     },
 ];
 
@@ -113,7 +136,14 @@ class NotificationsTable extends React.Component{
         this.showModal();
     }
 
+    handleApi =( {params} ) =>{
+
+    }
+
     handleDelete = () => {
+        var v_method = 'Update';
+        console.log('We don/t delete we ',v_method);
+        //code to delete here
         this.setState({ visible:false });
     }
 
@@ -135,13 +165,25 @@ class NotificationsTable extends React.Component{
                     />
                 </div>
                 <Modal
-                title="NOTIFICATION"
+                centered
                 visible={this.state.visible}
-                onOk={this.handleDelete}
-                onCancel={this.handleExit}>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                footer={[
+                    <Button key="back" onClick={this.handleExit}>
+                        Exit
+                    </Button>,
+                    <Button key="submit" type="danger" onClick={this.handleDelete}>
+                        Delete
+                    </Button>
+                ]}
+                >
+                    <Row>
+                        <Col></Col>
+                        <Col></Col>
+                    </Row>
+                    <Row></Row>
+                    <Row>
+                        <AntTable columns={modalColumns} />
+                    </Row>
                 </Modal>
             </div>
         );

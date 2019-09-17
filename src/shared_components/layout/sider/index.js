@@ -6,7 +6,7 @@ import { ReactComponent as HomeIcon } from '../../../icons/home.svg';
 import { ReactComponent as AddIcon } from '../../../icons/add.svg';
 import { ReactComponent as SearchIcon } from '../../../icons/search.svg';
 import { ReactComponent as PleboIcon } from '../../../icons/syringe.svg';
-import { ReactComponent as NotificationsIcon} from '../../../icons/bell.svg';
+import { ReactComponent as InventoryIcon} from '../../../icons/warehouse.svg';
 import { ReactComponent as SearchPatientIcon } from '../../../icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from '../../../icons/settings.svg';
 
@@ -94,8 +94,8 @@ class Sider extends React.Component {
             </Link>
           </Menu.Item>
           <Menu.Item key="7">
-            <Link to="/inventory/notifications">
-              <Icon component={NotificationsIcon} />
+            <Link to="/inventory">
+              <Icon component={InventoryIcon} />
               <span>NOTIFICATIONS</span>
             </Link>
           </Menu.Item>
