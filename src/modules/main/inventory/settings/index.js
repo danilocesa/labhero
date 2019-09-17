@@ -7,6 +7,7 @@ import InventoryPageCrumb from 'modules/main/inventory/settings/shared_component
 import InventorySupplier from 'modules/main/inventory/settings/supplier';
 import InventoryStorage from 'modules/main/inventory/settings/storage';
 import InventorySection from 'modules/main/inventory/settings/sections';
+import InventoryCategories from 'modules/main/inventory/settings/categories';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -43,7 +44,7 @@ class InventorySettings extends React.Component {
             <InventorySection />
           </TabPane>
           <TabPane tab="CATEGORIES" key="4">
-            Content of Tab Pane 4
+            <InventoryCategories />
           </TabPane>
         </AntTabs>
 			</div>
