@@ -1,8 +1,8 @@
 const FIELD_RULES = {
 	hospitalID: [
-    { required: true, message: 'This field is required..' }
+    { required: false, message: 'This field is required..' }
 	],
-	email: [
+	emailAdd: [
 		// { required: true, message: 'This field is required.' },
 		{ type: 'email', message: 'Please input valid email.' }
 	],

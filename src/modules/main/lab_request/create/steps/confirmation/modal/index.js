@@ -55,7 +55,7 @@ class ConfirmationModal extends React.Component {
 							/>
 						</Col>
 					</Row>
-					<p className="successful-msg">You have successfully saved a result!</p>
+					<p className="successful-msg">You have successfully saved a request!</p>
 					<p style={{ textAlign: 'center' }}>
 						A notification will be sent once the request has been verified.
 					</p>

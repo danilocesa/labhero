@@ -106,7 +106,7 @@ class SectionHeader extends React.Component {
 			let panels = [];
 
 			try {
-				const url = `/PanelExamRequesting`;
+				const url = `lab/PanelExamRequesting`;
 
 				const response = await axiosCall({ method: 'GET', url });
 				const { data } = await response;
@@ -123,7 +123,7 @@ class SectionHeader extends React.Component {
 			let sections = [];
 
 			try {
-				const url = `/Section`;
+				const url = `lab/Section`;
 
 				const response = await axiosCall({ method: 'GET', url });
 				const { data } = await response;
@@ -140,7 +140,7 @@ class SectionHeader extends React.Component {
 			let specimens = [];
 
 			try {
-				const url = `/ExamRequest/ids/${selectedSection}`;
+				const url = `lab/ExamRequest/ids/${selectedSection}`;
 
 				const response = await axiosCall({ method: 'GET', url });
 				const { data } = await response;
