@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table as AntTable, Modal, Button, Row, Col} from 'antd';
+import {Table as AntTable, Modal, Button} from 'antd';
 
 const columns = [
     {
@@ -129,6 +129,7 @@ class NotificationsTable extends React.Component{
 
         this.state = {
             visible: false,
+            loading: false,
         };
     }
 
@@ -156,6 +157,7 @@ class NotificationsTable extends React.Component{
     }
 
     render(){
+        const { visible } = this.state;
         return(
             <div>
                 <div>
@@ -165,26 +167,20 @@ class NotificationsTable extends React.Component{
                     />
                 </div>
                 <Modal
-                centered
-                visible={this.state.visible}
-                footer={[
-                    <Button key="back" onClick={this.handleExit}>
-                        Exit
-                    </Button>,
-                    <Button key="submit" type="danger" onClick={this.handleDelete}>
-                        Delete
-                    </Button>
-                ]}
+                    visible={visible}    
+                    footer={[
+                        <Button key="back" onClick={this.handleExit}>
+                            Exit
+                        </Button>,
+                        <Button key="submit" type="danger" onClick={this.handleDelete}>
+                            Delete
+                        </Button>
+                    ]}
                 >
-                    <Row>
-                        <Col></Col>
-                        <Col></Col>
-                    </Row>
-                    <Row></Row>
-                    <Row>
+                    <div>
                         <AntTable columns={modalColumns} />
-                    </Row>
-                </Modal>
+                    </div>
+                 </Modal>
             </div>
         );
     }
