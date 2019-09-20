@@ -22,28 +22,31 @@ import './paneltable.css'
 // CONSTANTS
 const { Text } = AntTypography;
 const { Option } = AntSelect;
-const popoverContent = (data = []) => (
-	<AntTable 
-		dataSource={data}
-		columns={[
-			{ title: 'CODE', dataIndex: 'code' },
-			{ title: 'EXAM NAME', dataIndex: 'exam' }
-		]}
-		pagination={false}
-		rowKey={record => record.code}
-	/>
-);
-const rowItem = (item) => (    
-	<AntPopover 
-		content={popoverContent(item.subcontent)} 
-		trigger="hover"
-		visible={item.active}
-	>
-		<div>
-			{item.code}
-		</div>
-	</AntPopover>
-);
+// const popoverContent = (data = []) => (
+// 	<div>
+// 	<AntTable 
+// 		dataSource={data}
+// 		columns={[
+// 			{ title: 'CODE', dataIndex: 'code' },
+// 			{ title: 'EXAM NAME', dataIndex: 'exam' }
+// 		]}
+// 		pagination={false}
+// 		rowKey={record => record.code}
+// 	/>
+// 	{console.log(data)}
+// 	</div>
+
+// );
+// const popover = (item) => (  
+// 	<AntPopover 
+// 		content={popoverContent(item)} 
+// 		trigger="hover"
+// 	>
+// 		<div>
+// 			{item.panel_name}
+// 		</div>
+// 	</AntPopover>
+// );
 const columns = [
     {
         title: 'CODE',
@@ -54,7 +57,7 @@ const columns = [
         title: 'PANEL NAME',
         dataIndex: 'panel_name',
         key: 'panel_name',
-        render: (text, record) => rowItem(record),
+        // render: (text, record) => popover(record),
     },
     {   
         title: 'INTEGRATION CODE',
@@ -72,7 +75,10 @@ class PanelTable extends React.Component {
 			drawerButton: '',
 			loading: false,
 			panelInfo: [],
-			panelListState: []
+			panelListState: [],
+			pagination: {
+				pageSize: 5,
+			}
 		}
 	}
 
@@ -125,6 +131,13 @@ class PanelTable extends React.Component {
 		})
 	}
 
+	handleSelectChange = (value) => {
+		const pagination = {...this.state.pagination};
+		console.log(pagination);
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+	};
+
 	render() {
 		return(
 			<div className="user-table">
@@ -139,7 +152,7 @@ class PanelTable extends React.Component {
 						Add Panel
 					</AntButton>
 					<Text>Display per page</Text>
-					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }}>
+					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
 						<Option value="5">5</Option>
 						<Option value="10">10</Option>
 						<Option value="15">15</Option>
@@ -148,6 +161,7 @@ class PanelTable extends React.Component {
 				</div>
 					<AntTable 
 						dataSource={this.state.panelListState}
+						pagination={this.state.pagination}
 						loading={this.state.loading} 
 						columns={columns}
 						rowKey={record => record.key}
@@ -155,9 +169,9 @@ class PanelTable extends React.Component {
 							return {
 								onDoubleClick: () => {
 									this.displayDrawerUpdate(record);
+								}
 							}
-						}
-					}}
+						}}
 					/>
 					<AntDrawer 
 						title={this.state.drawerTitle}

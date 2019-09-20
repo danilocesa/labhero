@@ -29,6 +29,7 @@ class SpecimenList extends React.Component {
 	async componentDidMount(){
 		const {patientInfo} = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
 		// eslint-disable-next-line prefer-destructuring
 		const requestID = patientSpecimensAPI.requestID;
 		const requestExams = [];
@@ -44,8 +45,8 @@ class SpecimenList extends React.Component {
 					"phlebo_requestID": requestID,
 					"phlebo_sampleSpecimenID": keySpecimen.sampleSpecimenID,
 					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID ? keySpecimen.sampleSpecimenID : "N/A",
-					"phlebo_user_col" : "N/A",
-					"phlebo_dateExtracted_col" : "N/A",
+					"phlebo_user_col" : keySpecimen.extractedBy,
+					"phlebo_dateExtracted_col" : keySpecimen.dateExtracted,
 					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
 					{
 						return {

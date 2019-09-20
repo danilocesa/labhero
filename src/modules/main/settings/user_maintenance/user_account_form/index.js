@@ -1,7 +1,8 @@
 import React from 'react';
 import { Row, Col, Switch, Typography, Form, Input, Select, Checkbox, Table, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
-
+import { withRouter } from 'react-router-dom';
+import axiosCall from 'services/axiosCall';
 import './useraccountform.css';
 
 const { Text } = Typography;
@@ -82,13 +83,110 @@ const dataSource = [
         sort: '',
         instrument: '',
         viewOnly: checkBoxViewOnly,
-        deleteRow: ''
+        deleteRow: '',
+        key: 0,
     }
 ]
 
-
 class UserAccountForm extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            confirmDirty: false,
+        };
+    }
+
+    componentWillUnmount(){
+        console.log('unmount');
+        this.props.form.resetFields();
+    }
+
+    async fetchUserTypes(){
+		await axiosCall({
+            url: 'UserType',
+            method: 'GET',
+        }).then(userType =>{
+            this.setState({
+                user_types: userType.data,
+            });
+        });
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        this.props.form.validateFields( (err, values) => {
+            var v_url = 'UserAccount';
+            var v_method = '';
+             if (!err) {
+                 const v_data = {
+                    userID : values.userID,
+                    userName : values.userName,
+                    userTypeID : values.userTypeID,
+                    givenName : values.givenName,
+                    lastName : values.lastName,
+                    middleName : values.middleName,
+                    password : values.password,
+                 };
+
+                 if(this.props.drawerButton === 'Add'){
+                    console.log('Add');
+                    v_method = 'POST';
+                    delete v_data.userID;
+                }else{
+                    v_method = 'PUT';
+                }
+                this.handleApi({method: v_method, url: v_url, data: v_data});
+             }else{
+                 console.log(err);
+             }
+          });
+    }
+
+    handleApi = async (param) => {
+        await axiosCall({
+            method: param.method,
+            url: param.url,
+            data: param.data,
+            headers: {
+                'content-type': 'application/json',
+                'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
+            }
+        }).finally(function(){
+            window.location.reload();
+        }).catch(e=>{
+            console.log(e);
+        });
+    }
+
+    compareToFirstPassword = (rule, value, callback) => {
+        const { form } = this.props;
+        if (value && value !== form.getFieldValue('password')) {
+          callback('Two passwords that you enter is inconsistent!');
+        } else {
+          callback();
+        }
+      };
+
+    validateToNextPassword = (rule, value, callback) => {
+        const { form } = this.props;
+        if (value && this.state.confirmDirty) {
+          form.validateFields(['repeat_password'], { force: true });
+        }
+        callback();
+      };
+
+    isUpdate = () =>{
+        console.log('this.props.drawerButton ', this.props.drawerButton);
+        if(this.props.drawerButton == "Update"){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     render() {
+        const { getFieldDecorator } = this.props.form;
         return(
             <div>
                 <Row gutter={40}>
@@ -97,7 +195,7 @@ class UserAccountForm extends React.Component {
                         <Switch defaultChecked  />
                     </Col>
                     <div className="user-form">
-                        <Form {...formItemLayout}>
+                        <Form {...formItemLayout} onSubmit={this.handleSubmit} >
                             <Col span={12}>
                                 {/* PERSONAL INFORMATION */}
                                 <div className="personalInfo">
@@ -105,19 +203,37 @@ class UserAccountForm extends React.Component {
                                         <Text strong>Personal Information</Text>
                                     </div>
                                     <Form.Item label="USERID">
-                                        <Input value={this.props.patientInfo.userID} />
+                                        {
+                                            getFieldDecorator('userID',{
+                                                initialValue: this.props.patientInfo.userID,
+                                            })(<Input disabled />)
+                                        }
                                     </Form.Item>
 
                                     <Form.Item label="FIRST NAME">
-                                        <Input value={this.props.patientInfo.firstName} />
+                                        {getFieldDecorator('givenName', {
+                                            initialValue: this.props.patientInfo.givenName,
+                                        	rules: [{ required: true, message: "This field is required" }]
+                                        })(
+                                        	<Input />
+                                        )}	
                                     </Form.Item>
 
                                     <Form.Item label="MIDDLE NAME">
-                                        <Input value={this.props.patientInfo.middleName} />
+                                        {
+                                            getFieldDecorator('middleName',{
+                                                initialValue: this.props.patientInfo.middleName,
+                                                rules: [{ required: true, message: "This field is required"}]
+                                            })(<Input />)
+                                        }
                                     </Form.Item>
-
                                     <Form.Item label="LAST NAME">
-                                        <Input value={this.props.patientInfo.lastName} />
+                                        {
+                                            getFieldDecorator('lastName',{
+                                                initialValue: this.props.patientInfo.lastName,
+                                                rules: [{ required: true, message: "This field is required"}]
+                                            })(<Input />)
+                                        }
                                     </Form.Item>
                                 </div>
 
@@ -128,15 +244,37 @@ class UserAccountForm extends React.Component {
                                     </div>
 
                                     <Form.Item label="USERNAME">
-                                        <Input value={this.props.patientInfo.userName} />
+                                        {
+                                            getFieldDecorator('userName',{
+                                                initialValue: this.props.patientInfo.userName,
+                                                rules: [{ required: true, message: "This field is required"}],
+                                            })(
+                                            <Input />)
+                                        }
                                     </Form.Item>
 
                                     <Form.Item label="PASSWORD">
-                                        <Input.Password />
+                                        {
+                                            getFieldDecorator('password',{
+                                                rules: [
+                                                    { required: true, message: "This field is required"},
+                                                    { validator: this.validateToNextPassword}
+                                                ]
+                                            })(
+                                            <Input.Password />)
+                                        }
                                     </Form.Item>
 
                                     <Form.Item label="REPEAT PASSWORD">
-                                        <Input.Password />
+                                        {
+                                            getFieldDecorator('repeat_password',{
+                                                rules:[
+                                                    { required: true, message: "This field is required" },
+                                                    { validator: this.compareToFirstPassword }
+                                                ]
+                                            })(
+                                            <Input.Password />)
+                                        }
                                     </Form.Item>
                                 </div>
                             </Col>
@@ -147,30 +285,54 @@ class UserAccountForm extends React.Component {
                                     </div>
 
                                     <Form.Item label="AUTOLOCK (MINUTES)">
-                                        <Input />
+                                        {
+                                            getFieldDecorator('autolock_min')(
+                                            <Input />)
+                                        }
                                     </Form.Item>
 
                                     <Form.Item label="REGISTRATION NO.">
-                                        <Input />
+                                        {
+                                            getFieldDecorator('registration_no')(
+                                            <Input />)
+                                        }
                                     </Form.Item>
 
                                     <Form.Item label="REGISTRATION VALIDITY">
-                                        <Input />
+                                        {
+                                            getFieldDecorator('registration_validity')(
+                                            <Input />)
+                                        }
                                     </Form.Item>
                                     <Form.Item label="USER RIGHTS">
-                                        <Select defaultValue="">
-                                            <Option value="admin">Admin</Option>
-                                        </Select>
+                                        {
+                                            getFieldDecorator('userTypeID',{ 
+                                                initialValue: this.props.patientInfo.userTypeID,
+                                                rules: [{ required: true, message: "This field is required"}],
+                                            })(<Select>
+                                                <Option value={1}>Admin</Option>
+                                                <Option value={2}>Lab Admin</Option>
+                                                <Option value={3}>Med Tech</Option>
+                                                <Option value={4}>Encoder</Option>
+                                                <Option value={5}>Guest</Option>
+                                                {/* {user_type_options} */}
+                                            </Select>)
+                                        }
                                     </Form.Item>
                                     <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        <Checkbox>
-                                            Allow to add and/or edit users
-                                        </Checkbox>
+                                        {
+                                            getFieldDecorator('allow_add_edit')(<Checkbox>
+                                                Allow to add and/or edit users
+                                            </Checkbox>)
+                                        }
                                     </Form.Item>
                                     <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        <Checkbox>
-                                            Allow printing
-                                        </Checkbox>
+                                        {
+                                            getFieldDecorator('allow_printing')(
+                                            <Checkbox>
+                                                Allow printing
+                                            </Checkbox>)
+                                        }
                                     </Form.Item>
                                 </div>
                             </Col>
@@ -197,7 +359,7 @@ class UserAccountForm extends React.Component {
                                 <Button shape="round" style={{ marginRight: 8 }}>
                                 Cancel
                                 </Button>
-                                <Button type="primary" shape="round" style={{ padding: '0px 20px' }}>
+                                <Button type="primary" shape="round" style={{ padding: '0px 20px' }} htmlType="submit">
                                 {this.props.drawerButton}
                                 </Button>
                             </div>
@@ -214,4 +376,7 @@ UserAccountForm.propTypes = {
     drawerButton: PropTypes.string.isRequired
 }
 
-export default UserAccountForm;
+const UserAccount = Form.create()(withRouter(UserAccountForm));
+// const UserAccount = Form.create()(UserAccountForm);
+
+export default UserAccount;
