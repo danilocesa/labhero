@@ -1,8 +1,8 @@
 import React from 'react';
-import { Row, Col, Drawer, Form, Input, Button, Select, Icon, Switch } from 'antd';
+import { Drawer, Form, Input, Button, Select, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
-import axiosCall from 'services/axiosCall';
-import Message from 'shared_components/message';
+import DynamicForm from '../dynamic_form';
+import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';
 
 import FIELD_RULES from './constant';
 
@@ -11,10 +11,17 @@ import './add_form.css';
 const { Option } = Select;
 const { TextArea } = Input;
 
-let id = 0;
+const DD_VAL_ALPHA_NUMERIC = 'an';
+const DD_VAL_NUMERIC = 'nu';
+const DD_VAL_CHECKBOX = 'cb';
+const DD_VAL_OPTION = 'op';
+const DD_VAL_TEXT_AREA = 'ta';
 
-/** @type {{footer: React.CSSProperties}} */
+/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties}} */
 const styles = { 
+	fullWidth: {
+		width: '100%'
+	},
 	footer: {
 		position: 'absolute', 
 		width: '100%', 
@@ -27,116 +34,93 @@ const styles = {
 };
 
 class AddForm extends React.Component {
-	state = {
-		isLoading: false,
-		selectedRsType: null
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLoading: false,
+			selectedRsType: null,
+			unitOfMeasures: [],
+			inputTypeCodes: []
+		}
+
+		this.dynamicForm = React.createRef();
 	}
 	
-	onChangeResultType = (resultType) => {
-		this.setState({ selectedRsType: resultType });
+	async componentDidMount() {
+		const unitOfMeasures = await getUnitOfMeasures();
+		const inputTypeCodes = await getInputTypeCode();
+		
+		this.setState({ unitOfMeasures, inputTypeCodes });
+	}
+
+	onChangeItemTypeCode = (itemTypeCode) => {
+		this.setState({ selectedRsType: itemTypeCode });
 	}
 
 	onSubmit = (event) => {
 		event.preventDefault();
-
+		
+		const { selectedRsType } = this.state;
 		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
+		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
 
-		validateFieldsAndScroll(async(err) => {
-			if (!err) {
+		validateFieldsAndScroll((err) => {
+			const dynaFormFields = selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX
+				// @ts-ignore	
+				? this.dynamicForm.getFormValues() 
+				: { hasError: false };
+
+			if (!err && !dynaFormFields.hasError) {
 				const fields = getFieldsValue();
-				
-				this.setState({ isLoading: true });
-				const test = await this.createExamItem(fields);
-				this.setState({ isLoading: false });
+				const payload = { 
+					...fields, 
+					examItemTypeItems: dynaFormFields.formValues, 
+					sectionID: selectedSectionId,
+					specimenID: selectedSpecimenId
+				};
 
-				console.log(test);
+				this.setState({ isLoading: true }, async () => {
+					const createdExamItem = await createExamItem(payload);
+					this.setState({ isLoading: false });
+					
+					if(createdExamItem) {
+						onSuccess();
+						this.resetForm();
+					}
+				});
+
 			}
 		});
 	}
-	
-	createExamItem = async (examItem) => {
-		let createdExamItem;
 
-		try{
-			const content = {
-				method: 'POST',
-				url: '/ExamResult',
-				data: { ...examItem, sectionID: 0, specimenID: 0 }
-			}
+	resetForm = () => {
+		// eslint-disable-next-line react/prop-types
+		const { resetFields } = this.props.form;
 
-			const response = await axiosCall(content);
-			const { data } = await response;
+		resetFields();
 
-			// eslint-disable-next-line no-unneeded-ternary
-			createdExamItem = data;
-		}
-		catch(error) {
-			Message.error();
-		}
-
-		return createdExamItem;
+		this.setState({ selectedRsType: null });
 	}
 
-	remove = k => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-
-    if (keys.length === 1) {
-      return;
-    }
-
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k),
-    });
-  };
-
-  add = () => {
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-		const nextKeys = keys.concat(id++);
-		
-    form.setFieldsValue({
-      keys: nextKeys,
-    });
-  };
-
 	render() {
-		const { isLoading, selectedRsType } = this.state;
+		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
+		// eslint-disable-next-line react/prop-types
 		const { onClose, visible, form } = this.props;
-		const { getFieldDecorator, getFieldValue } = form;
-		
-		getFieldDecorator('keys', { initialValue: [] });
-		const keys = getFieldValue('keys');
-    const OptionFormItems = keys.map((k, index) => (
-      <Form.Item
-        label={<span style={{ color: '#BFBFBF', fontWeight: 10 }}>Option Value {index + 1}</span>}
-        key={k}
-      >
-				<Row>
-					<Col span={4}><Switch /></Col>
-					<Col span={16}>
-						{getFieldDecorator(`names[${k}]`, {
-							validateTrigger: ['onChange', 'onBlur'],
-							rules: [
-								{
-									required: true,
-									whitespace: true,
-									message: 'This field is required'
-								},
-							],
-						})(<Input />)}
-					</Col>
-					<Col span={4}>
-						<Icon
-							className="dynamic-delete-button"
-							type="minus-circle-o"
-							onClick={() => this.remove(k)}
-						/>
-					</Col>
-				</Row>
-      </Form.Item>
-    ));
+		const { getFieldDecorator } = form;
+	
+		const UnitMeasureOptions = unitOfMeasures.map(unit => (
+			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
+				{unit.unitOfMesureBase}
+			</Option>
+		));
+
+		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
+			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
+				{typeCode.inputTypeName}
+			</Option>
+		));
 
 		return (
 			<Drawer
@@ -160,38 +144,47 @@ class AddForm extends React.Component {
 							)}
 						</Form.Item>
 						<Form.Item label="Exam Item Type">
-							{getFieldDecorator('resultType', { rules: FIELD_RULES.resultType })(
-								<Select onChange={this.onChangeResultType}>
-									<Option value={1}>Alpha Numeric</Option>
-									<Option value={2}>Numeric</Option>
-									<Option value={3}>Checkbox</Option>
-									<Option value={4}>Option</Option>
-									<Option value={5}>Text Area</Option>
+							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
+								<Select onChange={this.onChangeItemTypeCode}>
+									{InputTypeCodeOptions}
 								</Select>
 							)}
 						</Form.Item>
-						{ (selectedRsType === 1 || selectedRsType === 2) && (
+						{ selectedRsType === DD_VAL_ALPHA_NUMERIC && (
+							<>
+								<Form.Item label="Unit of Measures">
+									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
+										<Select>{UnitMeasureOptions}</Select>
+									)}
+								</Form.Item>
+								<Form.Item label="Default Value">
+									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+										<Input />
+									)}
+								</Form.Item>
+							</>
+						)}
+						{ (selectedRsType === DD_VAL_NUMERIC) && (
 							<Form.Item label="Default Value">
-								{getFieldDecorator('resultTypeDefault')(
-									<Input />
+								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									<InputNumber style={styles.fullWidth} />
 								)}
 							</Form.Item>
 						)}
-						{ (selectedRsType === 3 || selectedRsType === 4) && OptionFormItems }
-						{ (selectedRsType === 3 || selectedRsType === 4) && (
-							<Form.Item>
-								<Button type="dashed" onClick={this.add} style={{ width: '100%' }}>
-									<Icon type="plus" /> Add field
-								</Button>
-							</Form.Item>
+						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
+							<DynamicForm 
+								wrappedComponentRef={(inst) => this.dynamicForm = inst}
+							/> 
 						)}
-						{ selectedRsType === 5 && (
+						{ selectedRsType === DD_VAL_TEXT_AREA && (
 							<Form.Item label="Default Value">
-								<TextArea />
+								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									<TextArea />
+								)}
 							</Form.Item>
 						)}
 						<Form.Item label="Integration Code">
-							{getFieldDecorator('integrationCode', { rules: FIELD_RULES.integrationCode })(
+							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
 								<Input />
 							)}
 						</Form.Item>
@@ -223,7 +216,15 @@ class AddForm extends React.Component {
 
 AddForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
-	visible: PropTypes.bool.isRequired
+	visible: PropTypes.bool.isRequired,
+	onSuccess: PropTypes.func.isRequired,
+	selectedSectionId: PropTypes.number,
+	selectedSpecimenId: PropTypes.number
+};
+
+AddForm.defaultProps = {
+	selectedSectionId: null,
+	selectedSpecimenId: null
 };
 
 export default Form.create()(AddForm);

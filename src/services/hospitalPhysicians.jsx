@@ -5,7 +5,7 @@ async function hospitalPhysiciansAPI() {
   try{
     const resp = await axiosCall({
       method: 'GET',
-      url: 'HospitalPhysician'
+      url: 'lab/HospitalPhysician'
     });
     data = resp;
   } 

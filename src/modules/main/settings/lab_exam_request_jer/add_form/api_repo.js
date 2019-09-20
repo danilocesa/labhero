@@ -7,7 +7,7 @@ export async function fetchExamList(sectionId, specimenId) {
 	try{
 		const content = {
 			method: 'GET',
-			url: `/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
+			url: `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
 		}
 
 		const response = await axiosCall(content);
@@ -28,7 +28,7 @@ export async function createExamRequest(examItem) {
 	try{
 		const content = {
 			method: 'POST',
-			url: '/ExamRequest',
+			url: 'lab/ExamRequest',
 			data: { ...examItem }
 		}
 

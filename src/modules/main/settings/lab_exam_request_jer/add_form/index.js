@@ -69,7 +69,6 @@ class AddForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			// @ts-ignore
 			const isSelExamValidated = this.selectedTable.triggerValidation();
-			console.log(isSelExamValidated);
 			
 			if (!err && isSelExamValidated) {
 				const fields = getFieldsValue();
@@ -111,8 +110,6 @@ class AddForm extends React.Component {
 			this.setState({ selectedExams: newSelectedExams });
 		});
 	}
-
-
 		
 	onChangeSelectedTable = (examItemID, examData) => {
 		const { selectedExams } = this.state;

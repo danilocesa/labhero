@@ -91,7 +91,7 @@ class FillupStep extends React.Component {
 		try{
 			const content = {
 				method: 'POST',
-				url: '/Patient',
+				url: 'lab/Patient',
 				data: personalInfo
 			}
 

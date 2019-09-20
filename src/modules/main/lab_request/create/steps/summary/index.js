@@ -51,13 +51,12 @@ class SummaryStep extends React.Component {
 		try {
 			const response = await axiosCall({ 
 				method: 'POST', 
-				url: '/Request',
+				url: 'lab/Request',
 				data: payload
 			 });
 
+			// eslint-disable-next-line no-unused-vars
 			const { data } = await response;
-			console.log(data);
-			
 
 			isSuccess = true;
 		} catch (e) {

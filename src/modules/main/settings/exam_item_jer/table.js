@@ -25,7 +25,7 @@ const columns = [
 	},
 	{ 
 		title: 'INTEGRATION CODE',
-		dataIndex: 'examItemUnitCode',
+		dataIndex: 'examItemIntegrationCode',
 		width: '20%'
 	}
 ];
@@ -64,7 +64,7 @@ ExamTable.propTypes = {
 		examItemName: PropTypes.string.isRequired,
 		examItemGeneralName: PropTypes.string.isRequired,
 		examItemTypeCode: PropTypes.string.isRequired,
-		examItemUnitCode: PropTypes.string.isRequired,
+		examItemUnitCode: PropTypes.string,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

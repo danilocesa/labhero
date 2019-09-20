@@ -62,13 +62,31 @@ class LabExamRequest extends React.Component {
 	}
 	
 	onSuccessCreateExamReq = () => {
-		this.setState({ isShowAddForm: false });
-		Message.success('Exam request successfully created.');
+		Message.success({ message: 'Exam request successfully updated.' });
+
+		this.setState({ isLoading: true, isShowAddForm: false }, async() => {
+			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
+			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			
+			this.setState({ 
+				examRequests: examRequests || [], 
+				isLoading: false
+			});
+		});
 	}
 
 	onSuccessUpdateExamReq = () => {
-		this.setState({ isShowUpdateForm: false });
-		Message.success('Exam request successfully updated.');
+		Message.success({ message: 'Exam request successfully updated.' });
+
+		this.setState({ isLoading: true, isShowUpdateForm: false }, async() => {
+			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
+			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			
+			this.setState({ 
+				examRequests: examRequests || [], 
+				isLoading: false
+			});
+		});
 	}
 
 	onChangeSection = async(sectionId) => {
