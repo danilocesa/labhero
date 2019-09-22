@@ -6,6 +6,7 @@ import {
 	Form as AntForm, 
 	Button as AntButton,
 	Transfer as AntTransfer,
+	Table as AntTable,
 	Switch as AntSwitch,
 	Alert as AntAlert
 } from 'antd';
@@ -24,6 +25,10 @@ import './panel_form.css';
 // CONSTANTS
   
 class PanelFormTemplate extends React.Component {
+	constructor(props){
+		super(props);
+	}
+
 	state = {
     examRequestData: [],
 		selectedExamRequest: [],
@@ -32,12 +37,19 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	componentDidMount() {
-		this.getExamRequest();
 
-		// Get selected examrequest in db for update
-		if(this.props.panelInfo){ 
-			this.getSelectedExamRequest();
+		if(this.props.drawerButton === "Update"){
+
+			this.getExamRequest();
+
+			// Get selected examrequest in db for update
+			if(this.props.panelInfo){ 
+				this.getSelectedExamRequest();
+			}
+		
 		}
+		console.log('state => ', this.state);
+		console.log('props=>', this.props);
 	}
 
 	getExamRequest = async () => {
@@ -81,7 +93,7 @@ class PanelFormTemplate extends React.Component {
 			selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
 			return selectedExamRequest;
 		});
-
+		console.log(dataPanel);
 		this.setState({selectedExamRequest})
 	};
 	
@@ -98,7 +110,7 @@ class PanelFormTemplate extends React.Component {
 			if(err){ // Form validation error
 				return;
 			}
-    	if (this.state.selectedExamRequest === undefined || this.state.selectedExamRequest.length == 0) {
+    	if (this.state.selectedExamRequest === undefined || this.state.selectedExamRequest.length === 0) {
 				this.setState({examRequestValidation:true});
 				return;
 			}
@@ -179,6 +191,10 @@ class PanelFormTemplate extends React.Component {
 		
 	}
 
+	handleCancel = () =>{
+		console.log('close', this.props);
+	}
+
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
@@ -245,6 +261,11 @@ class PanelFormTemplate extends React.Component {
 							onChange={this.transferHandleChange}
 							render={item => item.title}
 						/>
+						{/* <AntTable 
+						columns=
+						>
+
+						</AntTable>						 */}
 					</AntForm.Item> 
 					<div
 						style={{
@@ -258,7 +279,7 @@ class PanelFormTemplate extends React.Component {
 							textAlign: 'right'
 						}}
 					>   
-						<AntButton style={{ marginRight: 8 }}>
+						<AntButton style={{ marginRight: 8 }} onClick={this.props.onCancel}>
 							Cancel
 						</AntButton>
 						<AntButton type="primary" htmlType="submit" loading={this.state.loading}>
