@@ -7,7 +7,7 @@ export async function fetchExamList(sectionId, specimenId) {
 	try{
 		const content = {
 			method: 'GET',
-			url: `/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
+			url: `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
 		}
 
 		const response = await axiosCall(content);
@@ -28,7 +28,7 @@ export async function fetchSelectedExamList(secID, specID, erID) {
 	try{
 		const content = {
 			method: 'GET',
-			url: `/ExamRequest/Settings/SectionID/${secID}/SpecimenID/${specID}/ExamRequestID/${erID}`,
+			url: `lab/ExamRequest/Settings/SectionID/${secID}/SpecimenID/${specID}/ExamRequestID/${erID}`,
 		}
 
 		const response = await axiosCall(content);
@@ -49,7 +49,7 @@ export async function	updateExamRequest(examRequest) {
 	try{
 		const content = {
 			method: 'PUT',
-			url: '/ExamRequest',
+			url: 'lab/ExamRequest',
 			data: examRequest
 		}
 

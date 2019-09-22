@@ -5,7 +5,7 @@ async function examRequestListAPI() {
   try{
     const resp = await axiosCall({
       method: 'GET',
-      url: 'ExamRequest/Settings/'
+      url: 'lab/ExamRequest/Settings/'
     });
     data = resp;
   } 

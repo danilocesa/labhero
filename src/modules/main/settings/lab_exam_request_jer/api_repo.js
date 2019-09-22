@@ -5,7 +5,7 @@ export async function fetchSection() {
 	let sections = [];
 
 	try {
-		const url = `/Section`;
+		const url = `lab/Section`;
 
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;
@@ -22,7 +22,7 @@ export async function fetchSpecimens() {
 	let specimens = [];
 
 	try {
-		const url = `/Specimen`;
+		const url = `lab/Specimen`;
 
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;
@@ -39,7 +39,7 @@ export async function fetchExamRequest(sectionId, specimenId) {
 	let examRequests = [];
 
 	try {
-		const url = `/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
+		const url = `lab/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
 		
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;

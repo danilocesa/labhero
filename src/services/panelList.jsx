@@ -5,7 +5,7 @@ async function panelListAPI() {
   try{
     const resp = await axiosCall({
       method: 'GET',
-      url: 'PanelExamRequesting/Settings/'
+      url: 'lab/PanelExamRequesting/Settings/'
     });
     data = resp;
   } 

@@ -5,7 +5,13 @@ const FIELD_RULES = {
 	examItemGeneralName: [
     { required: true, message: 'This field is required.' }
 	],
-	resultType: [
+	examItemType: [
+    { required: true, message: 'This field is required.' }
+	],
+	unitOfMeasure: [
+    { required: true, message: 'This field is required.' }
+	],
+	examItemTypeDefault: [
     { required: true, message: 'This field is required.' }
 	],
 	integrationCode: [

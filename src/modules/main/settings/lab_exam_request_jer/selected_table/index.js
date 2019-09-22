@@ -82,7 +82,7 @@ class SelectedTable extends React.Component {
 		const { validateFields } = this.props.form;
 		let hasNoError = false;
 
-		validateFields((err) => { console.log(err); hasNoError = err === null });
+		validateFields((err) => { hasNoError = err === null });
 		
 		return hasNoError;
 	}

@@ -42,15 +42,13 @@ class Login extends React.Component {
 		const { username, password, userid } = this.state;
 
 		this.props.form.validateFields(async (err) => {
-
 			if (username !== '' && password!== '') {
 				if (!err) {
 					const response = await this.login(username, password, userid);
 					if(response && response.status === 200) {
 						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
 						auth.authenticate();
-						message
-						.success('You are now successfully logged in!', 1.5);
+						message.success('You are now successfully logged in!', 1.5);
 						
 						switch(sessionStorage.SELECTED_SIDER_KEY) {
 							case '1':
@@ -93,17 +91,17 @@ class Login extends React.Component {
     let data = null;
     
     try{
-      	const body = { userName, password, userID };
-      	const response = await axiosCall({
-			method: 'POST',
-			url: 'LogIn',
-			data: body,
-			headers: {
-				'content-type': 'application/json',
-				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
-      }
-      });
-      data = response;
+			const body = { userName, password, userID };
+			const response = await axiosCall({
+				method: 'POST',
+				url: 'lab/LogIn',
+				data: body,
+				headers: {
+					'content-type': 'application/json',
+					'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
+				}
+			});
+			data = response;
     }
     catch(e) {
    		console.log("TCL: login -> e", e)

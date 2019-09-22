@@ -1,7 +1,7 @@
 import { message as AntMessage } from 'antd';
 
 const defaultMessage = 'Something went wrong, please try again.';
-const defaultDuration = 0;
+const defaultDuration = 3;
 
 class Message {
 	static info = (message) => {

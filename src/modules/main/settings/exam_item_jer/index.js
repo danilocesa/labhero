@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Typography, Button, Icon, Row, Col } from 'antd';
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
 
 import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
+
+import { fetchSections, fetchSpecimens, fetchExamitems } from './api_repo';
 
 const { Title } = Typography;
 
@@ -33,14 +34,14 @@ class ExamItems extends React.Component {
 		examItems: [],
 		ddSections: [],
 		ddSpecimens: [],
-		selectedExamItem: {},
-		selectedSection: null,
-		selectedSpecimen: null
+		selectedSectionId: null,
+		selectedSpecimenId: null,
+		selectedExamItemId: null
 	}
 	
 	async componentDidMount() {
-		const sections = await this.fetchSections();
-		const specimens = await this.fetchSpecimens();
+		const sections = await fetchSections();
+		const specimens = await fetchSpecimens();
 		const ddSections = sections.map(section => ({
 			label: section.sectionCode,
 			value: section.sectionID
@@ -54,7 +55,7 @@ class ExamItems extends React.Component {
 		this.setState({ 
 			ddSections, 
 			ddSpecimens, 
-			selectedSpecimen: specimens[0].specimenID ? specimens[0].specimenID : null,
+			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
 			isInitializing: false, 
 		});
 	}
@@ -68,81 +69,54 @@ class ExamItems extends React.Component {
 	}
 
 	onChangeSectionCode = (sectionId) => {
-		this.setState({ isLoading: true, selectedSection: sectionId }, async () => {
-			const examItems = await this.fetchExamitems();
-
+		this.setState({ isLoading: true, selectedSectionId: sectionId }, async () => {
+			const { selectedSpecimenId: specimenID } = this.state;
+			const examItems = await fetchExamitems(sectionId, specimenID);
+		
 			this.setState({ examItems, isLoading: false });
 		});
 	}
 
 	onChangeSpecimen = (specimenID) => {
-		this.setState({ isLoading: true, selectedSpecimen: specimenID }, async () => {
-			const examItems = await this.fetchExamitems();
+		this.setState({ isLoading: true, selectedSpecimenId: specimenID }, async () => {
+			const { selectedSectionId: sectionId } = this.state;
+			const examItems = await fetchExamitems(sectionId, specimenID);
 
 			this.setState({ examItems, isLoading: false });
 		});
 	}
 
 	onDblClickTableRow = (selectedExamItem) => {
-		
-		this.setState({ selectedExamItem, isShowUpdateForm: true });
+		this.setState({ 
+			isShowUpdateForm: true,
+			selectedExamItemId: selectedExamItem.examItemID
+		});
 	}
 
 	onExitForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
 	}
 
-	
-	fetchSections = async() => {
-		let sections = [];
+	onSuccessCreateExamItem = () => {
+		this.setState({ isLoading: true, isShowAddForm: false }, async () => {
+			const { selectedSectionId: sectionId, selectedSpecimenId: specimenId } = this.state;
+			const examItems = await fetchExamitems(sectionId, specimenId);
 
-		try {
-			const url = `/Section`;
+			this.setState({ examItems, isLoading: false });
+		});
 
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-
-			sections = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return sections;
+		Message.success({ message: 'Exam item successfully created.' });
 	}
 
-	fetchSpecimens = async() => {
-		let specimens = [];
+	onSuccessUpdateExamItem = () => {
+		this.setState({ isLoading: true, isShowUpdateForm: false }, async () => {
+			const { selectedSectionId: sectionId, selectedSpecimenId: specimenId } = this.state;
+			const examItems = await fetchExamitems(sectionId, specimenId);
 
-		try {
-			const url = `/Specimen`;
+			this.setState({ examItems, isLoading: false });
+		});
 
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-
-			specimens = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return specimens;
-	}
-
-	fetchExamitems = async() => {
-		const { selectedSection: sectionId, selectedSpecimen: specimenId } = this.state;
-		let examItems = [];
-
-		try {
-			const url = `/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`; 
-
-			const response = await axiosCall({ method: 'GET', url });
-			const { data } = await response;
-
-			examItems = data;
-		} catch (e) {
-			Message.error();
-		}
-
-		return examItems;
+		Message.success({ message: 'Exam item successfully updated.' });
 	}
 
 	render() {
@@ -155,9 +129,9 @@ class ExamItems extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm ,
 			isLoading,
-			selectedExamItem,
-			selectedSpecimen,
-			selectedSection
+			selectedSpecimenId,
+			selectedSectionId,
+			selectedExamItemId
 		} = this.state;
 
 		const leftSection = (
@@ -165,10 +139,11 @@ class ExamItems extends React.Component {
 				<DropDown 
 					size="small"
 					placeholder="Filter by Specimen"
+					disabled={selectedSectionId == null}
 					content={ddSpecimens} 
 					onChange={this.onChangeSpecimen}
 					loading={isInitializing}
-					value={selectedSpecimen}
+					value={selectedSpecimenId}
 				/>
 			</>
 		);
@@ -180,6 +155,7 @@ class ExamItems extends React.Component {
 					type="primary" 
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
+					disabled={selectedSectionId === null}
 				>
 					<Icon type="plus" /> Add Exam Items
 				</Button>
@@ -198,7 +174,7 @@ class ExamItems extends React.Component {
 						content={ddSections} 
 						onChange={this.onChangeSectionCode}
 						loading={isInitializing}
-						value={selectedSection}
+						value={selectedSectionId}
 					/>
 					</Row>
 				</section>
@@ -212,11 +188,20 @@ class ExamItems extends React.Component {
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
-				<AddForm visible={isShowAddForm} onClose={this.onExitForm} />
+				<AddForm 
+					visible={isShowAddForm} 
+					onClose={this.onExitForm} 
+					onSuccess={this.onSuccessCreateExamItem}
+					selectedSectionId={selectedSectionId}
+					selectedSpecimenId={selectedSpecimenId}
+				/>
 				<UpdateForm 
-					examItem={selectedExamItem}
 					visible={isShowUpdateForm} 
 					onClose={this.onExitForm} 
+					onSuccess={this.onSuccessUpdateExamItem}
+					selectedSectionId={selectedSectionId}
+					selectedSpecimenId={selectedSpecimenId}
+					selectedExamItemId={selectedExamItemId}
 				/>
 			</div>
 		);
