@@ -115,6 +115,7 @@ class PanelTable extends React.Component {
 	}
 
 	onClose = () => {
+		console.log('close');
 		this.setState({
 			isDrawerVisible: false,
 		});
@@ -126,7 +127,7 @@ class PanelTable extends React.Component {
 			isDrawerVisible: true,
 			drawerTitle: 'Add Panel',
 			drawerButton: 'Add',
-			panelInfo: '',
+			panelInfo: {},
 			loading:false
 		})
 	}
@@ -139,6 +140,8 @@ class PanelTable extends React.Component {
 	};
 
 	render() {
+
+		{console.log('panelInfo=>', this.state.panelInfo)}
 		return(
 			<div className="user-table">
 				<div className="panel-table-options">
@@ -183,6 +186,7 @@ class PanelTable extends React.Component {
 						<PanelForm 
 							drawerButton={this.state.drawerButton} 
 							panelInfo={this.state.panelInfo}
+							onCancel={this.onClose}
 						/>
 					</AntDrawer>
 			</div>

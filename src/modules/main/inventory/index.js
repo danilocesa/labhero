@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Notification from './notifications'
-import InventorySettings from './settings'
+import Notification from './notifications';
+import InventorySettings from './settings';
 
 class Inventory extends React.Component {
 	render() {

@@ -167,7 +167,8 @@ class NotificationsTable extends React.Component{
                     />
                 </div>
                 <Modal
-                    visible={visible}    
+                    visible={visible}   
+                    width={800} 
                     footer={[
                         <Button key="back" onClick={this.handleExit}>
                             Exit

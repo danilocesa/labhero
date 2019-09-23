@@ -178,7 +178,7 @@ class UserAccountForm extends React.Component {
 
     isUpdate = () =>{
         console.log('this.props.drawerButton ', this.props.drawerButton);
-        if(this.props.drawerButton == "Update"){
+        if(this.props.drawerButton === "Update"){
             return true;
         }else{
             return false;
