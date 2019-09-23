@@ -143,13 +143,13 @@ class UpdateForm extends React.Component {
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
 		// eslint-disable-next-line react/prop-types
-		const { visible, form } = this.props;
+		const { visible, form, sectionId , specimenId } = this.props;
 		const { getFieldDecorator } = form;
 
 		return (
 			<Drawer
 				title="Update Exam Request"
-				width="60%"
+				width="70%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}
@@ -166,21 +166,21 @@ class UpdateForm extends React.Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={6}>
+								<Col span={14}>
 									<Form.Item label="CODE">
 										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={4}>
+								<Col span={4} className="hide">
 									<Form.Item label="SPECIMEN ID">
-										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
+										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID})(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={4}>
+								<Col span={4} className="hide">
 									<Form.Item label="SECTION ID">
 										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
 											<InputNumber style={styles.fullWidth} />
@@ -206,13 +206,13 @@ class UpdateForm extends React.Component {
 								<Col span={4}>
 									<Form.Item label="EXAM SORT">
 										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
-											<InputNumber style={styles.fullWidth} />
+											<Input style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={12}>
-								<Col span={12}>
+								<Col span={7}>
 									<SelectionTable 
 										data={examList}
 										loading={isFetchingData} 
@@ -222,12 +222,12 @@ class UpdateForm extends React.Component {
 										selectedRowKeys={selectedExams.map(exam => exam ? exam.examItemID : null )}
 									/>		
 								</Col>
-								<Col span={12}>
+								<Col span={17}>
 									<SelectedTable 
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
 										loading={false}
-										onChange={this.onChangeSelectedTable}
+										// onChange={this.onChangeSelectedTable}
 									/>		
 								</Col>
 							</Row>

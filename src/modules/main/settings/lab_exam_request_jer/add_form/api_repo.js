@@ -23,6 +23,10 @@ export async function fetchExamList(sectionId, specimenId) {
 }
 
 export async function createExamRequest(examItem) {
+	console.log("TCL: createExamRequest -> examItem", examItem)
+	// eslint-disable-next-line no-throw-literal
+	// throw 'test';
+
 	let createdExamItem = null;
 
 	try{

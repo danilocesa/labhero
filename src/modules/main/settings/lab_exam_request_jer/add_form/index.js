@@ -72,8 +72,22 @@ class AddForm extends React.Component {
 			
 			if (!err && isSelExamValidated) {
 				const fields = getFieldsValue();
-				const payload = Object.assign(fields, {examItems: selectedExams}); 	
-
+        console.log("TCL: onSubmit -> fields", fields)
+				const examItems = [];
+				
+				// eslint-disable-next-line func-names
+				selectedExams.map(function(key){
+					examItems.push({
+						"examItemID": key.examItemID,
+						"examRequestItemGroup": 1, // To be fix
+						"examRequestItemFormula": 1,
+						"examRequestItemLock": 1,
+						"examRequestItemSort": 1
+					})
+					return examItems;
+				})
+				const payload = Object.assign(fields, {examItems}); 	
+        
 				this.setState({ isLoading: true }, async() => {
 					const createdExamRequest = await createExamRequest(payload);
 					this.setState({ isLoading: false });
@@ -135,6 +149,7 @@ class AddForm extends React.Component {
 
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
+		const { sectionId , specimenId} = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { visible, form } = this.props;
 		const { getFieldDecorator } = form;
@@ -160,23 +175,23 @@ class AddForm extends React.Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={6}>
+								<Col span={14}>
 									<Form.Item label="CODE">
 										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={4}>
+								<Col span={4} className="hide">
 									<Form.Item label="SPECIMEN ID">
-										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID })(
+										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID, initialValue: specimenId })(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={4}>
+								<Col span={4} className="hide">
 									<Form.Item label="SECTION ID">
-										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
+										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID, initialValue: sectionId })(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
@@ -200,13 +215,13 @@ class AddForm extends React.Component {
 								<Col span={4}>
 									<Form.Item label="EXAM SORT">
 										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
-											<InputNumber style={styles.fullWidth} />
+											<Input style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={12}>
-								<Col span={12}>
+								<Col span={7}>
 									<SelectionTable 
 										data={examList}
 										loading={isFetchingData} 
@@ -216,12 +231,12 @@ class AddForm extends React.Component {
 										selectedRowKeys={selectedExams.map(exam => exam.examItemID)}
 									/>		
 								</Col>
-								<Col span={12}>
+								<Col span={17}>
 									<SelectedTable 
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
 										loading={false}
-										onChange={this.onChangeSelectedTable}
+										// onChange={this.onChangeSelectedTable}
 									/>		
 								</Col>
 							</Row>
