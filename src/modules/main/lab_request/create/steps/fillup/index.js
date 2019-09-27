@@ -59,6 +59,8 @@ class FillupStep extends React.Component {
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
+		
+		
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
 			const createdPatient = await this.createPatientInfo({

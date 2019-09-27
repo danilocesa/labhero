@@ -1,13 +1,13 @@
 /* eslint-disable import/prefer-default-export */
 
 // API's
-export const apiURL = '----------lab/';
-export const apiUrlPatientByID = "Patient/id/";
-export const apiUrlPatientByName = "Patient/name/";
-export const apiUrlPhlebo = "SpecimenTracking/phlebo/"
+export const apiURL = '----------';
+export const apiUrlPatientByID = "lab/Patient/id/";
+export const apiUrlPatientByName = "lab/Patient/name/";
+export const apiUrlPhlebo = "lab/SpecimenTracking/phlebo/"
 export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
-export const apiUrlPhleboRequestID = "SpecimenTracking/phlebo/requestid/";
-export const apiUrlCheckInSpecimen = "SpecimenTracking/phlebo/checkinspecimen";
+export const apiUrlPhleboRequestID = "lab/SpecimenTracking/phlebo/requestid/";
+export const apiUrlCheckInSpecimen = "lab/SpecimenTracking/phlebo/checkinspecimen";
 
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
 export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';

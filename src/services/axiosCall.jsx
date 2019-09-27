@@ -15,7 +15,6 @@ const notifConfig = {
 export default function axiosCall(axiosConfig) {
 	// axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
 	axios.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API;
-
 	axios.interceptors.request.use(config => {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
@@ -42,7 +41,7 @@ export default function axiosCall(axiosConfig) {
 			authorization: LoggedinUserData ? `Bearer ${LoggedinUserData.token}` : undefined
 		}};
   });
-
+	
 	return axios({
 		method: axiosConfig.method,
 		url: axiosConfig.url,

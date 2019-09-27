@@ -5,7 +5,7 @@ import { Spin, Table } from 'antd';
 const columns = [
 	{ 
 		title: 'Exam',
-		dataIndex: 'examItemName',
+		dataIndex: 'examItemName'
 	},
 ];
 

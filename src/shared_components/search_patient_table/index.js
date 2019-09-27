@@ -144,6 +144,7 @@ class SearchPatientTable extends React.Component {
 								}
 							};
 						}}
+          
 					/>
 				</div>
 			</Spin>
@@ -158,7 +159,9 @@ SearchPatientTable.propTypes = {
 		lastName: PropTypes.string.isRequired,
 		middleName: PropTypes.string.isRequired,
 		dateOfBirth: PropTypes.string.isRequired,
-		sex: PropTypes.string.isRequired
+		sex: PropTypes.string.isRequired,
+		contactNo: PropTypes.string.isRequired,
+		emailAdd: PropTypes.string.isRequired
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

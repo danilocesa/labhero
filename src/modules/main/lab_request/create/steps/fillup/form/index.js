@@ -108,7 +108,10 @@ class BaseForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
+        
+				
 				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
+        console.log("TCL: BaseForm -> onSubmit -> physician", physician)
 				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
@@ -117,7 +120,7 @@ class BaseForm extends React.Component {
 				fields.physicianName +=	`${physician.middleName}. `;
 				fields.physicianName +=	`${physician.lastName}`;
 				fields.locationName = location.name;
-
+				console.log("TCL: BaseForm -> onSubmit -> fields", fields)
 				handleSubmit(fields);
 			}
 		});

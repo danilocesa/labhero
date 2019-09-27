@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, InputNumber, Form } from 'antd';
+import { Spin, Table, Input, Form } from 'antd';
 
 import './selected_table.css';
 
@@ -11,22 +11,12 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: '40%'
-			},
-			{ 
-				title: 'Factor',
-				dataIndex: 'examRequestItemFormula', 
-				width: '20%',
-				render: (text, record) => this.createFormInput({
-					fieldName: 'examRequestItemFormula', 
-					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemFormula
-				})
+				width: '30%'
 			},
 			{ 
 				title: 'Group',
 				dataIndex: 'examRequestItemGroup',
-				width: '20%',
+				width: '17.5%',
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
@@ -34,9 +24,29 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
+				title: 'Formula',
+				dataIndex: 'examRequestItemFormula',
+				width: '17.5%',
+				render: (text, record) => this.createFormInput({
+					fieldName: 'examRequestItemFormula', 
+					examItemID: record.examItemID, 
+					initialValue: record.examRequestItemFormula
+				})
+			},
+			{ 
+				title: 'Lock',
+				dataIndex: 'examRequestItemlock',
+				width: '17.5%',
+				render: (text, record) => this.createFormInput({
+					fieldName: 'examRequestItemlock', 
+					examItemID: record.examItemID, 
+					initialValue: record.examRequestItemlock
+				})
+			},
+			{ 
 				title: 'Sort',
 				dataIndex: 'examRequestItemSort',
-				width: '20%',
+				width: '17.5%',
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemSort', 
 					examItemID: record.examItemID, 
@@ -47,15 +57,15 @@ class SelectedTable extends React.Component {
 		
 	}
 
-	onChange = (examItemId, examData) => {
-		const { onChange } = this.props;
+	// onChange = (examItemId, examData) => {
+	// 	const { onChange } = this.props;
 
-		onChange(examItemId, examData);
-	}
+	// 	onChange(examItemId, examData);
+	// }
 
 	createFormInput = ({ fieldName, examItemID, initialValue }) => {
 		// eslint-disable-next-line react/prop-types
-		const { onChange, form } = this.props;
+		const { form } = this.props;
 		const { getFieldDecorator } = form;
 
 		return (
@@ -64,12 +74,9 @@ class SelectedTable extends React.Component {
 					rules: [{ required: true }],
 					initialValue
 				})(
-					<InputNumber 
+					<Input
 						size="small"
-						style={{ width: 50 }}
-						onChange={(value) => {
-							onChange(examItemID, { examRequestItemFormula: value })
-						}} 
+						style={{ width: 100 }}
 					/>
 				)}
 				
@@ -86,6 +93,8 @@ class SelectedTable extends React.Component {
 		
 		return hasNoError;
 	}
+
+	
 
 	render() {
 		const { data, loading = false } = this.props;
@@ -113,7 +122,7 @@ SelectedTable.propTypes = {
 		examItemName: PropTypes.string.isRequired,
 	})).isRequired,
 	loading: PropTypes.bool.isRequired,
-	onChange: PropTypes.func.isRequired
+	// onChange: PropTypes.func.isRequired
 };
 
 export default Form.create()(SelectedTable);
