@@ -115,7 +115,6 @@ class PanelTable extends React.Component {
 	}
 
 	onClose = () => {
-		console.log('close');
 		this.setState({
 			isDrawerVisible: false,
 		});
@@ -140,8 +139,6 @@ class PanelTable extends React.Component {
 	};
 
 	render() {
-
-		{console.log('panelInfo=>', this.state.panelInfo)}
 		return(
 			<div className="user-table">
 				<div className="panel-table-options">

@@ -5,13 +5,15 @@ import {
 	Input as AntInput, 
 	Form as AntForm, 
 	Button as AntButton,
-	Transfer as AntTransfer,
-	Table as AntTable,
+	List as AntList,
+	Spin as AntSpin,
+	Checkbox as AntCheckbox,
 	Switch as AntSwitch,
 	Alert as AntAlert
 } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
 import examRequestListAPI from 'services/examRequestList';
@@ -30,26 +32,23 @@ class PanelFormTemplate extends React.Component {
 	}
 
 	state = {
-    examRequestData: [],
+    	examRequestData: [],
 		selectedExamRequest: [],
 		loading: false,
 		examRequestValidation: false,
 	};
 
 	componentDidMount() {
-
+		console.log()
+		this.getExamRequest();
+		
 		if(this.props.drawerButton === "Update"){
-
-			this.getExamRequest();
 
 			// Get selected examrequest in db for update
 			if(this.props.panelInfo){ 
-				this.getSelectedExamRequest();
+				this.getSelectedExamRequest(this.props.panelInfo.key);
 			}
-		
 		}
-		console.log('state => ', this.state);
-		console.log('props=>', this.props);
 	}
 
 	getExamRequest = async () => {
@@ -71,21 +70,24 @@ class PanelFormTemplate extends React.Component {
 			}
 			return examRequestData;
 		});
+		console.log('examRequestData typeof=>', examRequestData);
 		this.setState({ examRequestData });
 	};
 
-	getSelectedExamRequest = async () => { 
+	getSelectedExamRequest = async (i_key) => { 
 		let dataPanel = null;
+		let targetURL = 'lab/PanelExamRequesting/Settings/PanelID/'+i_key;
+		//`PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
 		try{
 			const resp = await axiosCall({
 				method: 'GET',
-				url: `PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
+				url: targetURL
 			});
 			dataPanel = resp;
 		} 
 		catch(e) {
 			CustomMessage.error(e);
-			console.log("TCL: panelRequestDetailsAPI -> e", e)
+			console.log("TCL: panelRequestDetailsAPI -> e", e);
 		}
 		const selectedExamRequest = [];
 		if(dataPanel.data.examRequests.length < 2 ){ return; } // Empty
@@ -93,31 +95,33 @@ class PanelFormTemplate extends React.Component {
 			selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
 			return selectedExamRequest;
 		});
-		console.log(dataPanel);
-		this.setState({selectedExamRequest})
+		this.setState({selectedExamRequest});
+		console.log('selectedExamRequest =>',selectedExamRequest);
 	};
 	
 	transferFilterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
 
-	transferHandleChange = selectedExamRequest => {
+	handleSelectedExams = selectedExamRequest => {
+	console.log('selected_exams =>' ,selectedExamRequest)
     this.setState({ selectedExamRequest });
   };
 
   onSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields( (err, values) => {
-    console.log("TCL: PanelFormTemplate -> onSubmit -> values", values)
 			if(err){ // Form validation error
 				return;
 			}
-    	if (this.state.selectedExamRequest === undefined || this.state.selectedExamRequest.length === 0) {
-				this.setState({examRequestValidation:true});
-				return;
+
+			if (this.state.selectedExamRequest === undefined || this.state.selectedExamRequest.length === 0) {
+					this.setState({examRequestValidation:true});
+					return;
 			}
 
 			try{
 				this.setState({ loading:true });
 				this.props.panelInfo ? this.updatePanel(values) : this.createPanel(values);
+				console.log('values=>', values);
 			}
 			catch(errCatch) {
 				console.log("TCL: onSubmit -> errCatch", errCatch)
@@ -137,7 +141,7 @@ class PanelFormTemplate extends React.Component {
 
 		const response = await axiosCall({
 			method: 'POST',
-			url: 'PanelExamRequesting/Settings',
+			url: 'lab/PanelExamRequesting/Settings',
 			data: apiBody,
 			headers: {
 				'content-type': 'application/json',
@@ -168,15 +172,19 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
+		console.log('apiBody', apiBody);
+
 		const response = await axiosCall({
 			method: 'PUT',
-			url: 'PanelExamRequesting/Settings',
+			url: 'lab/PanelExamRequesting/Settings',
 			data: apiBody,
 			headers: {
 				'content-type': 'application/json',
 				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
 			}
 		});
+
+		console.log('fieldValues =>', typeof(fieldValues));
 
 		if(response.status === 200){
 			this.setState({ loading:false });
@@ -191,13 +199,33 @@ class PanelFormTemplate extends React.Component {
 		
 	}
 
-	handleCancel = () =>{
-		console.log('close', this.props);
-	}
+	handleInfiniteOnLoad = () => {
+		let { data } = this.state;
+		this.setState({
+		  loading: true,
+		});
+		if (data.length > 14) {
+		  console.log('Infinite List loaded all');
+		  this.setState({
+			hasMore: false,
+			loading: false,
+		  });
+		  return;
+		}
+	  };
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
+		const rowSelection = {
+			onChange: (selectedRowKeys, selectedRows) => {
+			  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+			},
+			getCheckboxProps: record => ({
+			  name: record.requestName,
+			}),
+		  };
+
 		return(
 			<div className="panel-form"> 
 				<AntForm onSubmit={this.onSubmit}>
@@ -252,7 +280,7 @@ class PanelFormTemplate extends React.Component {
 							/> 
 							) : null
 						}
-						<AntTransfer
+						{/* <AntTransfer
 							dataSource={this.state.examRequestData}
 							titles={['Select', 'Selected']}
 							targetKeys={this.state.selectedExamRequest}
@@ -260,13 +288,36 @@ class PanelFormTemplate extends React.Component {
 							filterOption={this.transferFilterOption}
 							onChange={this.transferHandleChange}
 							render={item => item.title}
-						/>
-						{/* <AntTable 
-						columns=
-						>
-
-						</AntTable>						 */}
-					</AntForm.Item> 
+						/> */}
+							<div className="panel-infinite-container">
+							<InfiniteScroll 
+							initialLoad = {false}
+							loadMore={this.handleInfiniteOnLoad}
+							pageStart={0}
+							hasMore = {!this.state.loading && this.state.hasMore}
+							useWindow = {false}
+							>
+								<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
+									<AntList 
+									itemLayout="vertical" 
+									dataSource={this.state.examRequestData}
+									renderItem={item=>(
+										<AntList.Item key={item.key}>
+											<AntCheckbox value={item.key}>
+												{item.title}
+											</AntCheckbox>
+										</AntList.Item>
+									)}>
+										{this.state.loading && this.state.hasMore && (
+										<div className="panel-loading-container">
+											<AntSpin />
+										</div>
+										)}
+									</AntList>
+								</AntCheckbox.Group>
+							</InfiniteScroll>
+							</div>
+						</AntForm.Item>
 					<div
 						style={{
 							position: 'absolute',

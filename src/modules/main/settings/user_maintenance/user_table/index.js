@@ -108,10 +108,10 @@ class UserTable extends React.Component {
         });
     }
 
-    fetchUsers = (params = {}) => {
+    fetchUsers = () => {
 		axiosCall({
 			method: 'GET',
-            url: 'UserAccount',
+            url: 'lab/UserAccount',
         }).then(users =>{
             const pagination = { ...this.state.pagination };
             users.data.forEach(e =>{
