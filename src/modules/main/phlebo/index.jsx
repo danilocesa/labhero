@@ -58,7 +58,7 @@ class Phlebo extends React.Component {
 		const patientDrawer = (
 			<div>
 				<AntDrawer
-					title="Check-in specimen" 
+					title="Specimen Check-In" 
 					onClose={this.onClosePhleboPatientResultDrawer}
 					width="90%"
 					visible={showDrawer}

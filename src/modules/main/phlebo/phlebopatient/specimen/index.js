@@ -82,6 +82,7 @@ class SpecimenList extends React.Component {
 			document.getElementById(inputID).setAttribute("loading", true);
 			document.getElementById(inputID).innerHTML = "EXTRACTED";
 			Message.info(`Success! Sample specimen ID: ${ saveExtraction.sampleSpecimenID}`);
+			document.location.reload();
 		} else{
 			Message.error("Something went wrong!");
 		}
@@ -108,6 +109,10 @@ class SpecimenList extends React.Component {
     	console.log("TCL: SpecimenList -> checkIn -> e", e)
 		}
 		return data.data;
+	}
+
+	handlePrint = ({params}) =>{
+		console.log('TCL: Initiate printing funciton', params); 
 	}
 
 	render() {  
@@ -160,6 +165,26 @@ class SpecimenList extends React.Component {
 							className="extract-phlebo-btn"
 						>
 							{value.phlebo_sampleSpecimenID ? 'EXTRACTED' : 'EXTRACT'} 
+						</Button>
+					</Col>
+				)
+			}
+			
+		},
+		{ 
+			title: 'PRINT',
+			dataIndex: 'phlebo_print_col', 
+			key: 'phlebo_print_col',
+			width: "16%",
+			render:(button,value) => {
+				return(
+					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
+						<Button 
+							id={`phlebo_printButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
+							onClick={this.handlePrint} 
+							className="extract-phlebo-btn"
+						>
+							{'PRINT'} 
 						</Button>
 					</Col>
 				)
