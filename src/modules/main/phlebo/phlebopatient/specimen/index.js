@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 // CUSTOM MODULES
 import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
 import axiosCall from 'services/axiosCall';
-import { apiUrlCheckInSpecimen } from 'shared_components/constant-global';
+import { apiUrlCheckInSpecimen, apiPOSTMethod } from 'shared_components/constant-global';
 import Message from 'shared_components/message';
 
 // CSS
@@ -27,9 +27,9 @@ class SpecimenList extends React.Component {
 	}
 
 	async componentDidMount(){
-		const {patientInfo} = this.props;
+		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
+    	console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI);
 		// eslint-disable-next-line prefer-destructuring
 		const requestID = patientSpecimensAPI.requestID;
 		const requestExams = [];
@@ -72,6 +72,7 @@ class SpecimenList extends React.Component {
 		const requestID = e.target.attributes.getNamedItem('data-requestid').value;
 		const inputID = e.target.id;
 		const userDataSession = sessionStorage.getItem("LOGGEDIN_USER_DATA");
+		console.log('e ',e.target.attributes);
     
 		this.setState({ loading: true});
 		const saveExtraction = await this.checkIn(requestID, sectionID, specimenID, JSON.parse(userDataSession).userID);
@@ -82,7 +83,9 @@ class SpecimenList extends React.Component {
 			document.getElementById(inputID).setAttribute("loading", true);
 			document.getElementById(inputID).innerHTML = "EXTRACTED";
 			Message.info(`Success! Sample specimen ID: ${ saveExtraction.sampleSpecimenID}`);
-			document.location.reload();
+			// data = await patientPhleboSpecimensAPI(requestID);
+			// this.setState({patientRequestSpecimen:data});
+			this.forceUpdate();
 		} else{
 			Message.error("Something went wrong!");
 		}
@@ -94,7 +97,7 @@ class SpecimenList extends React.Component {
 		try{
 			const body = { requestID, sectionID, specimenID, userID };
 			const response = await axiosCall({
-				method: 'POST',
+				method: apiPOSTMethod,
 				url: apiUrlCheckInSpecimen,
 				data: body,
 				headers: {
@@ -109,6 +112,44 @@ class SpecimenList extends React.Component {
     	console.log("TCL: SpecimenList -> checkIn -> e", e)
 		}
 		return data.data;
+	}
+
+
+	componentDidUpdate = async () =>{
+		const { patientInfo } = this.props;
+		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+		const requestID = patientSpecimensAPI.requestID;
+		const requestExams = [];
+
+		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
+			keySection.specimens.map(function(keySpecimen){ // Get specimens
+				requestExams[indexSection] = {
+					"key": `${keySection.sectionName}${keySection.sectionID}`,
+					"phlebo_sectionID": keySection.sectionID,
+					"phlebo_section_col": keySection.sectionName, 
+					"phlebo_specimenID": keySpecimen.specimenID,
+					"phlebo_specimen_col": keySpecimen.specimenName,
+					"phlebo_requestID": requestID,
+					"phlebo_sampleSpecimenID": keySpecimen.sampleSpecimenID,
+					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID ? keySpecimen.sampleSpecimenID : "N/A",
+					"phlebo_user_col" : keySpecimen.extractedBy,
+					"phlebo_dateExtracted_col" : keySpecimen.dateExtracted,
+					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
+					{
+						return {
+							props: {
+								colSpan: 5,
+							},
+							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
+							"phlebo_section_col": keyExams,
+						};
+					})
+				}
+			});
+		});
+		this.setState({  
+			patientRequestSpecimen: requestExams
+		});
 	}
 
 	handlePrint = ({params}) =>{

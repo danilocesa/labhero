@@ -9,6 +9,7 @@ import PatientName from './name';
 import SpecimenList from './specimen';
 
 class PhleboPatientResult extends React.Component {
+
   render() {
   return (
 	<Row>
