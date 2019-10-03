@@ -1,5 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 
+
+// API Methods
+export const apiGetMethod = 'GET';
+export const apiPOSTMethod = 'POST';
+export const apiPUTMethod = 'PUT';
+
 // API's
 export const apiURL = '----------';
 export const apiUrlPatientByID = "lab/Patient/id/";
