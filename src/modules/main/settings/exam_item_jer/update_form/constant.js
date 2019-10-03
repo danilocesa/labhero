@@ -17,6 +17,9 @@ const FIELD_RULES = {
 	integrationCode: [
     { required: true, message: 'This field is required.' }
 	],
+	dynamicFieldLabel : [
+		{ required: true, message: 'This field is required.' }
+	]
 };
 
 export default FIELD_RULES;

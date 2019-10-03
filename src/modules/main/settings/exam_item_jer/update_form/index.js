@@ -42,7 +42,8 @@ class UpdateForm extends React.Component {
 			isFetchingData: false,
 			selectedItemTypeCode: null,
 			unitOfMeasures: [],
-			inputTypeCodes: []
+			inputTypeCodes: [],
+			examItemValue: []
 		}
 
 		this.dynamicForm = React.createRef();
@@ -80,8 +81,12 @@ class UpdateForm extends React.Component {
 				// eslint-disable-next-line react/prop-types
 				const { setFieldsValue } = this.props.form;
 				const examItem = await fetchExamItem(secId, specId, examItemId);
+				this.setState({ examItemValue: examItem.examItemValue});
+
+        console.log("TCL: UpdateForm -> componentDidUpdate -> examItem", examItem)
 				
 				if(examItem) {
+					
 					setFieldsValue({ 
 						examItemId: examItem.examItemID,
 						examItemName: examItem.examItemName,
@@ -91,13 +96,19 @@ class UpdateForm extends React.Component {
 					}, () => {
 						if(selectedItemTypeCode !== examItem.examItemTypeCode) {
 							this.setState({ selectedItemTypeCode: examItem.examItemTypeCode }, () => {
-								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) 
+								console.log(examItem.examItemTypeCode);
+
+								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
 									setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
+								}
+									
+								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
+									|| selectedItemTypeCode === DD_VAL_NUMERIC 
+									|| selectedItemTypeCode === DD_VAL_TEXT_AREA
+								){
+									setFieldsValue({ examItemTypeDefault: examItem.examItemValue[0].examItemValueLabel });
+								}
 								
-								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC || 
-									selectedItemTypeCode === DD_VAL_NUMERIC || 
-									selectedItemTypeCode === DD_VAL_TEXT_AREA)	
-									setFieldsValue({ examItemTypeDefault: examItem.examItemUnitCode });
 							});
 						}
 					});
@@ -153,7 +164,8 @@ class UpdateForm extends React.Component {
 			selectedItemTypeCode, 
 			unitOfMeasures, 
 			inputTypeCodes, 
-			isFetchingData 
+			isFetchingData,
+			examItemValue
 		} = this.state;
 
 		// eslint-disable-next-line react/prop-types
@@ -217,23 +229,29 @@ class UpdateForm extends React.Component {
 							</>
 						)}
 						{ (selectedItemTypeCode === DD_VAL_NUMERIC) && (
-							<Form.Item label="Default Value">
-								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-									<InputNumber style={styles.fullWidth} />
-								)}
-							</Form.Item>
+							<>
+								<Form.Item label="Default Value">
+									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+										<InputNumber style={styles.fullWidth} />
+									)}
+								</Form.Item>
+							</>	
 						)}
 						{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
-							<DynamicForm 
-								wrappedComponentRef={(inst) => this.dynamicForm = inst}
-							/> 
+								// @ts-ignore
+								<DynamicForm 
+									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
+									itemValue={examItemValue}
+								/> 
 						)}
 						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
-							<Form.Item label="Default Value">
-								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-									<TextArea />
-								)}
-							</Form.Item>
+							<>
+								<Form.Item label="Default Value">
+									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+										<TextArea />
+									)}
+								</Form.Item>
+							</>
 						)}
 						<Form.Item label="Integration Code">
 							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(

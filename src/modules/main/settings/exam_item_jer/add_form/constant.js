@@ -11,12 +11,12 @@ const FIELD_RULES = {
 	unitOfMeasure: [
     { required: true, message: 'This field is required.' }
 	],
-	examItemTypeDefault: [
-    { required: true, message: 'This field is required.' }
-	],
+	// examItemTypeDefault: [
+  //   { required: true, message: 'This field is required.' }
+	// ],
 	integrationCode: [
     { required: true, message: 'This field is required.' }
-	],
+	]
 };
 
 export default FIELD_RULES;
