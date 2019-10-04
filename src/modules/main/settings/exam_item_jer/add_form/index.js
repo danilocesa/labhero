@@ -67,20 +67,39 @@ class AddForm extends React.Component {
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
+		
 			const dynaFormFields = selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX
 				// @ts-ignore	
 				? this.dynamicForm.getFormValues() 
 				: { hasError: false };
-
+			
 			if (!err && !dynaFormFields.hasError) {
-				const fields = getFieldsValue();
+				let fields = getFieldsValue();
+				
+				if(selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX){  // If checkbox or option get default & label in dynamic form
+					const examItemValueParam = [];
+					dynaFormFields.formValues.map(value=> (
+						examItemValueParam.push({
+							"examItemValueDefault": value.isDefault ? 1 : 0,
+							"examItemValueLabel": value.label
+						})
+					));
+					fields = Object.assign({examItemValue: examItemValueParam},fields);
+				} else { // Assign default value
+					fields = Object.assign({examItemValue: [{
+						"examItemValueDefault": 1,
+						"examItemValueLabel": fields.examItemTypeDefault
+					}]},fields);
+				}
+				delete fields.examItemTypeDefault; // We don't need it
+
 				const payload = { 
 					...fields, 
 					examItemTypeItems: dynaFormFields.formValues, 
 					sectionID: selectedSectionId,
 					specimenID: selectedSpecimenId
 				};
-
+			
 				this.setState({ isLoading: true }, async () => {
 					const createdExamItem = await createExamItem(payload);
 					this.setState({ isLoading: false });
@@ -121,6 +140,8 @@ class AddForm extends React.Component {
 				{typeCode.inputTypeName}
 			</Option>
 		));
+		
+
 
 		return (
 			<Drawer
@@ -165,23 +186,29 @@ class AddForm extends React.Component {
 							</>
 						)}
 						{ (selectedRsType === DD_VAL_NUMERIC) && (
-							<Form.Item label="Default Value">
-								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-									<InputNumber style={styles.fullWidth} />
-								)}
-							</Form.Item>
+							<>
+								<Form.Item label="Default Value">
+									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+										<InputNumber style={styles.fullWidth} />
+									)}
+								</Form.Item>
+							</>	
 						)}
 						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
-							<DynamicForm 
-								wrappedComponentRef={(inst) => this.dynamicForm = inst}
-							/> 
+							<>
+								<DynamicForm 
+									wrappedComponentRef={(inst) => this.dynamicForm = inst}
+								/>
+							</>	 
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
-							<Form.Item label="Default Value">
-								{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-									<TextArea />
-								)}
-							</Form.Item>
+							<>
+								<Form.Item label="Default Value">
+									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+										<TextArea />
+									)}
+								</Form.Item>
+							</>	
 						)}
 						<Form.Item label="Integration Code">
 							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Input, Icon, Switch, Form, Button } from 'antd';
+import { Row, Col, Input, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
 
 import './dynamic_form.css';
 
@@ -29,7 +29,8 @@ class DynamicForm extends React.Component {
 			const fieldsValue = getFieldsValue();
 			const formValues = fieldsValue.keys.map(key => ({
 				isDefault: key === checkedIndex,
-				value: fieldsValue.names[key]
+				label: fieldsValue.names[key]
+
 			}));
 			
 			result = {
@@ -43,13 +44,15 @@ class DynamicForm extends React.Component {
 
 	remove = k => {
 		const { checkedIndex } = this.state;
+		// const { itemValue } = this.props;
+    
     // eslint-disable-next-line react/prop-types
     const { form } = this.props;
     const keys = form.getFieldValue('keys');
 
-    if (keys.length === 1) {
-      return;
-		}
+    // if (keys.length === 1 && itemValue.length === 1) {
+    //   return;
+		// }
 		
 		if(checkedIndex === k) {
 			this.setState({ checkedIndex: keys[0] });
@@ -79,49 +82,56 @@ class DynamicForm extends React.Component {
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldValue } = this.props.form;
+		const { itemValue } = this.props;
 		const { checkedIndex } = this.state;
-
 		getFieldDecorator('keys', { initialValue: [] });
 
-		const keys = getFieldValue('keys');
+		const keys = itemValue || getFieldValue('keys');
     const OptionFormItems = keys.map((key, index) => (
-      <Form.Item
-        label={<span style={{ color: '#BFBFBF', fontWeight: 10 }}>Option Value {index + 1}</span>}
-        key={key}
-      >
-				<Row>
-					<Col span={4}>
+      <Form.Item key={key}>
+				<AntCard 
+					size="small" 
+					title={`Option value ${index + 1}`} 
+					extra={(
+						<>
 						<Switch 
-							checked={checkedIndex === key} 
+							checkedChildren="Default"
+							checked={checkedIndex === key || key.examItemValueDefault === 1} 
 							onChange={(checked) => this.onSwitchChange(checked, key)}	
 						/>
-					</Col>
-					<Col span={16}>
-						{getFieldDecorator(`names[${key}]`, {
-							validateTrigger: ['onChange', 'onBlur'],
-							rules: [
-								{
-									required: true,
-									whitespace: true,
-									message: 'This field is required'
-								},
-							],
-						})(<Input />)}
-					</Col>
-					<Col span={4}>
 						<Icon
 							className="dynamic-delete-button"
 							type="minus-circle-o"
 							onClick={() => this.remove(key)}
 						/>
-					</Col>
-				</Row>
+						</>	
+					)}
+				>
+					<Row>
+						<Form.Item>
+						<Col span={24}>
+							{getFieldDecorator(`names[${key}]`, {
+								validateTrigger: ['onChange', 'onBlur'],
+								rules: [
+									{
+										required: true,
+										whitespace: true,
+										message: 'This field is required'
+									},
+								],
+								initialValue: key.examItemValueLabel,
+							})(<Input />)}
+						</Col>
+						</Form.Item>
+					</Row>
+				</AntCard>
       </Form.Item>
 		));
+    
 		
 		return (
 			<div className="exam-item-dyna-form">
-				{OptionFormItems}
+				{ OptionFormItems }
 				<Form.Item>
 					<Button type="dashed" onClick={this.add} style={{ width: '100%' }}>
 						<Icon type="plus" /> Add field
