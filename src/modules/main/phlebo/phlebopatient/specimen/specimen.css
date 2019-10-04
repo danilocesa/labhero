@@ -11,6 +11,10 @@
   margin-right:20%;
 }
 
+.ant-table-thead{
+  background-color: #8a73f9;
+}
+
 /* 
 .phlebotable-container td {
   width: 165px;

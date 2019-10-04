@@ -120,7 +120,10 @@ class SpecimenList extends React.Component {
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
 		const requestID = patientSpecimensAPI.requestID;
 		const requestExams = [];
-
+		// await this.fetchExams(patientSpecimensAPI);
+		// console.log('patientSpecimensAPI',patientSpecimensAPI);
+		// requestExams = this.mapExams({patientPhleboSpecimensAPI: patientPhleboSpecimensAPI, requestID: patientPhleboSpecimensAPI.requestID});
+		
 		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
 				requestExams[indexSection] = {
@@ -147,9 +150,16 @@ class SpecimenList extends React.Component {
 				}
 			});
 		});
+
+
 		this.setState({  
 			patientRequestSpecimen: requestExams
 		});
+	}
+
+	fetchExams = async ({params})=>{
+		console.log('params',params);
+
 	}
 
 	handlePrint = ({params}) =>{
@@ -162,37 +172,37 @@ class SpecimenList extends React.Component {
 			title: 'SECTION', 
 			dataIndex: 'phlebo_section_col', 
 			key: 'phlebo_section_col',
-			width: "16%"
+			width: "10%"
 		},
 		{ 
 			title: 'SPECIMEN', 
 			dataIndex: 'phlebo_specimen_col', 
 			key: 'phlebo_specimen_col',
-			width: "16%"
+			width: "10%"
 		},
 		{ 
 			title: 'SAMPLE ID', 
 			dataIndex: 'phlebo_sampleid_col', 
 			key: 'phlebo_sampleid_col',
-			width: "16%"
+			width: "10%"
 		},
 		{ 
 			title: 'EXTRACTED BY', 
 			dataIndex: 'phlebo_user_col', 
 			key: 'phlebo_user_col',
-			width: "16%"
+			width: "10%"
 		},
 		{ 
 			title: 'DATE EXTRACTED', 
 			dataIndex: 'phlebo_dateExtracted_col', 
 			key: 'phlebo_dateExtracted_col',
-			width: "16%"
+			width: "10%"
 		},
 		{ 
 			title: 'STATUS',
 			dataIndex: 'phlebo_status_col', 
 			key: 'phlebo_status_col',
-			width: "16%",
+			width: "10%",
 			render:(button,value) => {
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
@@ -216,7 +226,7 @@ class SpecimenList extends React.Component {
 			title: 'PRINT',
 			dataIndex: 'phlebo_print_col', 
 			key: 'phlebo_print_col',
-			width: "16%",
+			width: "10%",
 			render:(button,value) => {
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
