@@ -69,25 +69,33 @@ class AddForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			// @ts-ignore
 			const isSelExamValidated = this.selectedTable.triggerValidation();
-			
+
 			if (!err && isSelExamValidated) {
+				// @ts-ignore
+				const examItemsGroups = this.selectedTable.getInputFieldValue();
+				console.log("TCL: onSubmit -> examItemsGroups", examItemsGroups)
 				const fields = getFieldsValue();
-        console.log("TCL: onSubmit -> fields", fields)
 				const examItems = [];
-				
 				// eslint-disable-next-line func-names
-				selectedExams.map(function(key){
+				selectedExams.map(function(value,key){
+					console.log(examItemsGroups[`examRequestItemFormula${key+1}`])
+
 					examItems.push({
-						"examItemID": key.examItemID,
-						"examRequestItemGroup": 1, // To be fix
-						"examRequestItemFormula": 1,
-						"examRequestItemLock": 1,
-						"examRequestItemSort": 1
+						"examItemID": value.examItemID,
+						"examRequestItemGroup": examItemsGroups[`examRequestItemGroup${key+1}`],
+						"examRequestItemFormula": examItemsGroups[`examRequestItemFormula${key+1}`],
+						"examRequestItemLock":  examItemsGroups[`examRequestItemLock${key+1}`],
+						"examRequestItemSort": examItemsGroups[`examRequestItemSort${key+1}`]
 					})
+					// eslint-disable-next-line no-unused-expressions
+					console.log("TCL: onSubmit -> examItems", examItems)
 					return examItems;
-				})
+				});
+
+				console.log("TCL: onSubmit -> examItems", examItems)
 				const payload = Object.assign(fields, {examItems}); 	
-        
+				console.log("TCL: onSubmit -> payload", payload);
+				
 				this.setState({ isLoading: true }, async() => {
 					const createdExamRequest = await createExamRequest(payload);
 					this.setState({ isLoading: false });
@@ -127,7 +135,9 @@ class AddForm extends React.Component {
 		
 	onChangeSelectedTable = (examItemID, examData) => {
 		const { selectedExams } = this.state;
+    console.log("TCL: onChangeSelectedTable -> selectedExams", selectedExams)
 		const updatedSelectedExams = selectedExams.map(item => {
+    console.log("TCL: onChangeSelectedTable -> item", item)
 			if(item.examItemID === examItemID) 
 				return Object.assign(item, examData);
 			
@@ -236,7 +246,6 @@ class AddForm extends React.Component {
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
 										loading={false}
-										// onChange={this.onChangeSelectedTable}
 									/>		
 								</Col>
 							</Row>

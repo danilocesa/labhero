@@ -18,6 +18,7 @@ class SelectedTable extends React.Component {
 				dataIndex: 'examRequestItemGroup',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
+       
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
 					initialValue: record.examRequestItemGroup
@@ -35,12 +36,12 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Lock',
-				dataIndex: 'examRequestItemlock',
+				dataIndex: 'examRequestItemLock',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
-					fieldName: 'examRequestItemlock', 
+					fieldName: 'examRequestItemLock', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemlock
+					initialValue: record.examRequestItemLock
 				})
 			},
 			{ 
@@ -63,7 +64,14 @@ class SelectedTable extends React.Component {
 	// 	onChange(examItemId, examData);
 	// }
 
+	getInputFieldValue() {
+		const { getFieldsValue } = this.props.form;
+		const fieldsValue = getFieldsValue();
+		return fieldsValue;
+	}
+
 	createFormInput = ({ fieldName, examItemID, initialValue }) => {
+		
 		// eslint-disable-next-line react/prop-types
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
@@ -83,7 +91,7 @@ class SelectedTable extends React.Component {
 			</Form.Item>
 		)
 	}
-
+	
 	triggerValidation() {
 		// eslint-disable-next-line react/prop-types
 		const { validateFields } = this.props.form;
@@ -93,6 +101,8 @@ class SelectedTable extends React.Component {
 		
 		return hasNoError;
 	}
+
+	
 
 	
 
