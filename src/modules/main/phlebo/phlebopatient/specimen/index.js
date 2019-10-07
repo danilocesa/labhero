@@ -31,35 +31,8 @@ class SpecimenList extends React.Component {
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
     	console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI);
 		// eslint-disable-next-line prefer-destructuring
-		const requestID = patientSpecimensAPI.requestID;
-		const requestExams = [];
-
-		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
-			keySection.specimens.map(function(keySpecimen){ // Get specimens
-				requestExams[indexSection] = {
-					"key": `${keySection.sectionName}${keySection.sectionID}`,
-					"phlebo_sectionID": keySection.sectionID,
-					"phlebo_section_col": keySection.sectionName, 
-					"phlebo_specimenID": keySpecimen.specimenID,
-					"phlebo_specimen_col": keySpecimen.specimenName,
-					"phlebo_requestID": requestID,
-					"phlebo_sampleSpecimenID": keySpecimen.sampleSpecimenID,
-					"phlebo_sampleid_col" : keySpecimen.sampleSpecimenID ? keySpecimen.sampleSpecimenID : "N/A",
-					"phlebo_user_col" : keySpecimen.extractedBy,
-					"phlebo_dateExtracted_col" : keySpecimen.dateExtracted,
-					"children": keySpecimen.exams.map(function(keyExams,indexExams) // Push exams to existing array
-					{
-						return {
-							props: {
-								colSpan: 5,
-							},
-							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
-							"phlebo_section_col": keyExams,
-						};
-					})
-				}
-			});
-		});
+		let requestExams = [];
+		requestExams = this.mapExams(patientSpecimensAPI);
 		this.setState({  
 			patientRequestSpecimen: requestExams
 		});
@@ -118,15 +91,20 @@ class SpecimenList extends React.Component {
 	componentDidUpdate = async () =>{
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-		const requestID = patientSpecimensAPI.requestID;
-		const requestExams = [];
-		// await this.fetchExams(patientSpecimensAPI);
-		// console.log('patientSpecimensAPI',patientSpecimensAPI);
-		// requestExams = this.mapExams({patientPhleboSpecimensAPI: patientPhleboSpecimensAPI, requestID: patientPhleboSpecimensAPI.requestID});
-		
-		patientSpecimensAPI.sections.map(function(keySection,indexSection){ // Get sections
+		let requestExams = [];
+		requestExams = this.mapExams(patientSpecimensAPI);
+		this.setState({  
+			patientRequestSpecimen: requestExams
+		});
+	}
+
+	mapExams = (params) =>{
+
+		let returnArray = [];
+		let requestID = params.requestID;
+		params.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
-				requestExams[indexSection] = {
+				returnArray[indexSection] = {
 					"key": `${keySection.sectionName}${keySection.sectionID}`,
 					"phlebo_sectionID": keySection.sectionID,
 					"phlebo_section_col": keySection.sectionName, 
@@ -150,16 +128,7 @@ class SpecimenList extends React.Component {
 				}
 			});
 		});
-
-
-		this.setState({  
-			patientRequestSpecimen: requestExams
-		});
-	}
-
-	fetchExams = async ({params})=>{
-		console.log('params',params);
-
+		return returnArray;
 	}
 
 	handlePrint = ({params}) =>{
