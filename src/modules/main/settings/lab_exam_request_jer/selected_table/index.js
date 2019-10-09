@@ -79,7 +79,7 @@ class SelectedTable extends React.Component {
 		return (
 			<Form.Item className='selected-table'>
 				{ getFieldDecorator(`${fieldName}${examItemID}`, { 	
-					rules: [{ required: true }],
+					rules: [{ required: (!(fieldName === "examRequestItemLock" || fieldName === "examRequestItemSort")) }],
 					initialValue
 				})(
 					<Input
