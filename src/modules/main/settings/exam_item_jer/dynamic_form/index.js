@@ -43,24 +43,36 @@ class DynamicForm extends React.Component {
 	}
 
 	remove = k => {
+  	console.log("TCL: DynamicForm -> k", k)
 		const { checkedIndex } = this.state;
-		// const { itemValue } = this.props;
+    console.log("TCL: DynamicForm -> checkedIndex", checkedIndex)
+		const { itemValue, formType } = this.props;
+    console.log("TCL: DynamicForm -> formType", formType)
     
     // eslint-disable-next-line react/prop-types
     const { form } = this.props;
     const keys = form.getFieldValue('keys');
+    console.log("TCL: DynamicForm -> keys", keys)
 
-    // if (keys.length === 1 && itemValue.length === 1) {
-    //   return;
-		// }
-		
-		if(checkedIndex === k) {
-			this.setState({ checkedIndex: keys[0] });
+		if(formType === "add"){
+			if (keys.length === 1) {
+				return;
+			}
+			
+			if(checkedIndex === k) {
+				this.setState({ checkedIndex: keys[0] });
+			}
+	
+			form.setFieldsValue({
+				keys: keys.filter(key => key !== k),
+			});
+		} else {
+			if (keys.length === 1) {
+				return;
+			}
 		}
 
-    form.setFieldsValue({
-      keys: keys.filter(key => key !== k),
-    });
+    
   };
 
   add = () => {
@@ -82,11 +94,23 @@ class DynamicForm extends React.Component {
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldValue } = this.props.form;
-		const { itemValue } = this.props;
+		const { itemValue, formType } = this.props;
+    console.log("TCL: DynamicForm -> render -> itemValue", itemValue)
 		const { checkedIndex } = this.state;
 		getFieldDecorator('keys', { initialValue: [] });
+		
+		const arrayKeys = (keys) => {
+			const keyArrays = [];
+			for(const key in keys){
+				keyArrays.push(key);
+        
+			}
+			console.log("TCL: DynamicForm -> arrayKeys -> keyArrays", keyArrays)
+			return keyArrays;
+		}
 
-		const keys = itemValue || getFieldValue('keys');
+		const keys = (formType === "add") ? itemValue || getFieldValue('keys') : arrayKeys(itemValue);
+    console.log("TCL: DynamicForm -> render -> keys", keys)
     const OptionFormItems = keys.map((key, index) => (
       <Form.Item key={key}>
 				<AntCard 
@@ -96,7 +120,7 @@ class DynamicForm extends React.Component {
 						<>
 						<Switch 
 							checkedChildren="Default"
-							checked={checkedIndex === key || key.examItemValueDefault === 1} 
+							checked={checkedIndex === key || key.examItemValueDefault === 1}
 							onChange={(checked) => this.onSwitchChange(checked, key)}	
 						/>
 						<Icon
