@@ -6,7 +6,7 @@ import WrappedSearchLabTestForm from './search_form';
 import WrapperSearchLabTestResultList from './search_result';
 
 class SearchLabTestResult extends React.Component {
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.testApi()
 	}
 

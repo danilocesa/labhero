@@ -27,7 +27,7 @@ class Sider extends React.Component {
     // this.handleMenuClick = this.handleMenuClick.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.handleMenuClick = (event) => {
       this.setState({
         SELECTED_SIDER_KEY: event.key,

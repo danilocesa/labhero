@@ -22,7 +22,7 @@ class WrapperSearchLabTestResultList extends React.Component {
 	};
 
   // React lifecycle
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     // axiosCall({ method: 'get', url: 'waiverChecker', params: { waiver_id: 1, token: cookies.get('user_token') } }).then((resp) => {
     //   const showMods = resp.data.data.length !== 0 ? this.setState({ showModal: false }) : null
     //   return showMods
