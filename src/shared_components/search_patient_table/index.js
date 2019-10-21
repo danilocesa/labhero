@@ -12,49 +12,6 @@ import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constan
 // CSS
 import './table.css';
 
-// CONSTANTS
-// const columns = [
-// 	{
-// 		title: 'LAST NAME',
-// 		dataIndex: 'lastName',
-// 		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-// 		width: '15%'
-// 	},
-// 	{
-// 		title: 'FIRST NAME',
-// 		dataIndex: 'givenName',
-// 		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
-// 		width: '15%'
-// 	},
-// 	{
-// 		title: 'MIDDLE NAME',
-// 		dataIndex: 'middleName',
-// 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
-// 		width: '15%'
-// 	}, 
-// 	{
-// 		title: 'DATE OF BIRTH',
-// 		dataIndex: 'dateOfBirth',
-// 		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
-// 		width: '14%'
-// 	},
-// 	{
-// 		title: 'GENDER',
-// 		dataIndex: 'sex',
-// 		sorter: (a, b) => a.sex.localeCompare(b.sex),
-// 		width: '12%'
-// 	},
-// 	{
-// 		title: 'ADDRESS',
-// 		dataIndex: 'address',
-// 		sorter: (a, b) => a.address.localeCompare(b.address),
-// 	},
-// ];
-
-// console.log(columns[0]);
-
-// getSorter = (data) => data.length > 0 ? (a, b) => a.lastName.localeCompare(b.lastName) : false;
-
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record, redirect) => {
 		// eslint-disable-next-line react/prop-types
@@ -160,8 +117,8 @@ SearchPatientTable.propTypes = {
 		middleName: PropTypes.string.isRequired,
 		dateOfBirth: PropTypes.string.isRequired,
 		sex: PropTypes.string.isRequired,
-		contactNo: PropTypes.string.isRequired,
-		emailAdd: PropTypes.string.isRequired
+		contactNo: PropTypes.string,
+		emailAdd: PropTypes.string
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

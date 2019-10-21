@@ -6,7 +6,9 @@ async function hospitalLocationAPI() {
     const resp = await axiosCall({
       method: 'GET',
       url: 'lab/HospitalLocation'
-    });
+		});
+		
+		console.log(resp);
     data = resp;
   } 
   catch(e) {
@@ -15,4 +17,4 @@ async function hospitalLocationAPI() {
   return data;
 }
 
-export default hospitalLocationAPI();
+export default hospitalLocationAPI;

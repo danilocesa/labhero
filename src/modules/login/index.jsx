@@ -45,6 +45,7 @@ class Login extends React.Component {
 			if (username !== '' && password!== '') {
 				if (!err) {
 					const response = await this.login(username, password, userid);
+					
 					if(response && response.status === 200) {
 						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
 						auth.authenticate();

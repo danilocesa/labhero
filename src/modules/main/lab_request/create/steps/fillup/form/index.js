@@ -67,7 +67,7 @@ class BaseForm extends React.Component {
 	}
 
 	populateLocation = async () => {
-		const hospitalLocAPI = await hospitalLocationAPI;
+		const hospitalLocAPI = await hospitalLocationAPI();
 		
 		this.setState({ 
 			hospitalLocationList : hospitalLocAPI.data
@@ -75,7 +75,7 @@ class BaseForm extends React.Component {
 	}
 
 	populatePhysician = async () => {
-		const hospitalPhyAPI = await hospitalPhysiciansAPI;
+		const hospitalPhyAPI = await hospitalPhysiciansAPI();
 
 		this.setState({ 
 			hospitalPhysicianList : hospitalPhyAPI.data

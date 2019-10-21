@@ -7,7 +7,7 @@ async function hospitalPhysiciansAPI() {
       method: 'GET',
       url: 'lab/HospitalPhysician'
     });
-    data = resp;
+		data = resp;
   } 
   catch(e) {
     console.log("TCL: hospitalPhysiciansAPI -> e", e); 
@@ -15,4 +15,4 @@ async function hospitalPhysiciansAPI() {
   return data;
 }
 
-export default hospitalPhysiciansAPI();
+export default hospitalPhysiciansAPI;

@@ -1,13 +1,14 @@
 import 'react-app-polyfill/ie9';
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Provider } from 'react-redux';
+import { setupAxiosInterceptors } from 'services/axiosCall';
 
-// import store from './store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 import './index.css';
+
+setupAxiosInterceptors();
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
