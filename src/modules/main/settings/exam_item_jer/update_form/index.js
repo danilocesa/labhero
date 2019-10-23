@@ -242,6 +242,7 @@ class UpdateForm extends React.Component {
 								<DynamicForm 
 									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
 									itemValue={examItemValue}
+									formType="update"
 								/> 
 						)}
 						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (

@@ -195,11 +195,11 @@ class AddForm extends React.Component {
 							</>	
 						)}
 						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
-							<>
-								<DynamicForm 
-									wrappedComponentRef={(inst) => this.dynamicForm = inst}
-								/>
-							</>	 
+							// @ts-ignore
+							<DynamicForm 
+								wrappedComponentRef={(inst) => this.dynamicForm = inst}
+								formType="add"
+							/>
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
 							<>
