@@ -6,13 +6,20 @@ import { Icon } from 'antd';
 
 import './link.css';
 
-import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constants'; 
+import { 
+	CLR_STEP_PROGRESS,
+	CLR_SEARCHED_ID,
+	CLR_SEARCHED_NAME	
+} from 'modules/main/lab_request/create/steps/constants'; 
 
 class ButtonLink extends React.Component {
 	onClick = () => {
 		const { history } = this.props;
-		sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
 
+		sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
+		sessionStorage.removeItem(CLR_SEARCHED_ID);
+		sessionStorage.removeItem(CLR_SEARCHED_NAME);
+		
 		history.push('/request/create/step/2');
 	}
 

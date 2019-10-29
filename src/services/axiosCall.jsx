@@ -3,7 +3,7 @@
 // LIBRARY
 import axios from 'axios';
 import login from 'modules/login/api_repo';
-import jwtDecode from 'jwt-decode';
+// import jwtDecode from 'jwt-decode';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 
 
@@ -31,18 +31,20 @@ export function setupAxiosInterceptors() {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
 
-		if (err.response.status === 401 && 
-				err.response.config && 
-				!err.response.config.__isRetryRequest && 
-				LoggedinUserData
+		if((err.response.status === 403 || err.response.status === 401) &&
+			 err.response.config && 
+			 !err.response.config.__isRetryRequest && 
+			 LoggedinUserData
 			) {
-			const loginResponse = await login(LoggedinUserData.username, LoggedinUserData.password);
+
+			const loginResponse = await login(LoggedinUserData.userName, LoggedinUserData.password);
 			
+			// Login success
 			if(loginResponse.status === 200) {
 				// @ts-ignore
 				const updatedUserData = { ...LoggedinUserData, token: loginResponse.data.token };
 				sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(updatedUserData));
-
+				
 				// @ts-ignore
 				err.response.config.headers.Authorization = `Bearer ${updatedUserData.token}`; 
 				err.response.config.__isRetryRequest = true;

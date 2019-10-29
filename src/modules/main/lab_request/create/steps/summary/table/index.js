@@ -36,7 +36,7 @@ class SummaryTable extends React.Component {
 		exams: []
 	}
 	
-	UNSAFE_componentWillMount() {
+	componentDidMount() {
 		const cachedExams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
 		const exams = cachedExams.map(cachedExam => ({ ...cachedExam, key: cachedExam.examID }));
 

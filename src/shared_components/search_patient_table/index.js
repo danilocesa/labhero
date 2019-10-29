@@ -7,7 +7,11 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
 
-import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constants'; 
+import { 
+	CLR_STEP_PROGRESS, 
+	CLR_SEARCHED_ID,
+	CLR_SEARCHED_NAME 
+} from 'modules/main/lab_request/create/steps/constants'; 
 
 // CSS
 import './table.css';
@@ -15,13 +19,16 @@ import './table.css';
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record, redirect) => {
 		// eslint-disable-next-line react/prop-types
-		const { history, drawer } = this.props;
+		const { history, drawer, SearchedPatientId, SearchedPatientName } = this.props;
 		if(redirect) {
 			// Strip some properties in the record object coz we dont need it
 			delete record.dateCreated;
 			delete record.addressID;
 
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
+			sessionStorage.setItem(CLR_SEARCHED_ID, SearchedPatientId);
+			sessionStorage.setItem(CLR_SEARCHED_NAME, SearchedPatientName);
+			
 			history.push(redirect, { record });
 		}
 		else  {
@@ -101,7 +108,6 @@ class SearchPatientTable extends React.Component {
 								}
 							};
 						}}
-          
 					/>
 				</div>
 			</Spin>
@@ -122,7 +128,14 @@ SearchPatientTable.propTypes = {
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,
-	redirectUrl:PropTypes.string.isRequired,
+	redirectUrl: PropTypes.string.isRequired,
+	SearchedPatientId: PropTypes.string,
+	SearchedPatientName: PropTypes.string
 };
+
+SearchPatientTable.defaultProps = {
+	SearchedPatientId: '',
+	SearchedPatientName: ''
+}
 
 export default withRouter(SearchPatientTable);

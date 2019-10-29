@@ -1,6 +1,7 @@
 import React from 'react';
 import { Row, Col, Typography } from 'antd';
-
+import hospitalLocationAPI from 'services/hospitalLocation';
+import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 
 import './section.css';
@@ -37,14 +38,27 @@ class SummarySection extends React.Component {
 		}
 	}
 
-	UNSAFE_componentWillMount() {
+	
+	async componentDidMount() {
 		const { personalInfo, otherInfo } = this.state;
 		const sessPersInfo = JSON.parse(sessionStorage.getItem(CLR_PERSONAL_INFO)) || personalInfo;
 		const sessOtherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO)) || otherInfo;
-	
+		
+		const hospitalLocations = await hospitalLocationAPI();
+		const physicians = await hospitalPhysiciansAPI();
+		
+		const location = hospitalLocations.find(loc => loc.locationID === sessOtherInfo.locationID);
+		const physician = physicians.find(phys => phys.physicianID === sessOtherInfo.physicianID); 	
+		
 		this.setState(() => ({ 
 			personalInfo: sessPersInfo,
-			otherInfo: sessOtherInfo
+			otherInfo: { 
+				...sessOtherInfo, 
+				locationName: location ? location.name : '',
+				physicianName: physician 
+					? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`
+					: '' 
+			} 
 		}));
 	}
 
@@ -82,7 +96,7 @@ class SummarySection extends React.Component {
 								<div className="section">
 									<Text strong>PATIENT NAME</Text>
 									<br />
-									<Text>{`${givenName} ${middleName}. ${lastName} ${nameSuffix}`}</Text>
+									<Text>{`${givenName} ${middleName} ${lastName} ${nameSuffix || ''}`}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>

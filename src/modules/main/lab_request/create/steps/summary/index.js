@@ -9,6 +9,7 @@ import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
+
 import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
 
 class SummaryStep extends React.Component {
@@ -25,6 +26,14 @@ class SummaryStep extends React.Component {
 		this.restriction = new Restriction(4);
 	}
 
+	async componentDidMount() {
+		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
+		const otherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO));
+		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
+		this.setState({ exams, user, otherInfo });
+	}
+	
 	saveExams = async () => {
 		let isSuccess = false;
 		const { otherInfo, exams, user } = this.state;
@@ -57,14 +66,6 @@ class SummaryStep extends React.Component {
 		}
 
 		return isSuccess;
-	}
-
-	UNSAFE_componentWillMount() {
-		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
-		const otherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO));
-		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-
-		this.setState({ exams, otherInfo, user });
 	}
 
 	render() {

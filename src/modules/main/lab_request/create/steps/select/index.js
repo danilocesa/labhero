@@ -253,7 +253,7 @@ class SelectStep extends React.Component {
 		this.setState({ selectedExams: filteredExams });
 	}
 
-	// Note. This function is use for removing single exams 
+	// Note. This function is use for removing single exam 
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {

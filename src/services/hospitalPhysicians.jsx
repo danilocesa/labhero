@@ -1,18 +1,24 @@
+import Message from 'shared_components/message';
 import axiosCall from './axiosCall';
 
 async function hospitalPhysiciansAPI() {
-  let data = null;
+	let physicians = [];
+	
   try{
-    const resp = await axiosCall({
+    const response = await axiosCall({
       method: 'GET',
       url: 'lab/HospitalPhysician'
-    });
-		data = resp;
+		});
+		
+		const { data } = response;
+
+		physicians = data;
   } 
   catch(e) {
-    console.log("TCL: hospitalPhysiciansAPI -> e", e); 
-  }
-  return data;
+    Message.error();
+	}
+	
+  return physicians;
 }
 
 export default hospitalPhysiciansAPI;
