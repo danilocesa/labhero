@@ -78,10 +78,11 @@ class DynamicForm extends React.Component {
   add = () => {
     // eslint-disable-next-line react/prop-types
     const { form } = this.props;
-    const keys = form.getFieldValue('keys');
+	const keys = form.getFieldValue('keys');
+	console.log('keys =>', keys);
 		// eslint-disable-next-line no-plusplus
 		const nextKeys = keys.concat(id++);
-		
+	console.log('nextKeys =>', nextKeys);	
     form.setFieldsValue({
       keys: nextKeys,
     });
@@ -112,7 +113,7 @@ class DynamicForm extends React.Component {
 		const keys = (formType === "add") ? itemValue || getFieldValue('keys') : arrayKeys(itemValue);
     console.log("TCL: DynamicForm -> render -> keys", keys)
     const OptionFormItems = keys.map((key, index) => (
-      <Form.Item key={key}>
+      <Form.Item key={index}>
 				<AntCard 
 					size="small" 
 					title={`Option value ${index + 1}`} 
@@ -134,7 +135,7 @@ class DynamicForm extends React.Component {
 					<Row>
 						<Form.Item>
 						<Col span={24}>
-							{getFieldDecorator(`names[${key}]`, {
+							{getFieldDecorator(`names[${index}]`, {
 								validateTrigger: ['onChange', 'onBlur'],
 								rules: [
 									{
