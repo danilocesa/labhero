@@ -38,7 +38,7 @@ class IdleTimerComponent extends React.Component {
 				onIdle={this.onIdle}
 				onAction={this.onAction}
 				debounce={250}
-				timeout={600000} // 600 seconds
+				timeout={60 * 60 * 1000} // minutes - seconds - milliseconds
 			/>
     )
   }

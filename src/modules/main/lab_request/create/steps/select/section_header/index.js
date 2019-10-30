@@ -145,7 +145,6 @@ class SectionHeader extends React.Component {
 				const response = await axiosCall({ method: 'GET', url });
 				const { data } = await response;
 
-				console.log(data);
 				specimens = data[0].perSpecimen;
 			} catch (e) {
 				Message.error();
