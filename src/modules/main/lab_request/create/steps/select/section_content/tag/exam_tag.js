@@ -8,6 +8,7 @@ class ExamTag extends React.Component {
 			examName, 
 			examID, 
 			examCode, 
+			contents,
 			addSelectedExamByExam, 
 			removeSelectedExamByExam,
 			updateExam,
@@ -19,7 +20,7 @@ class ExamTag extends React.Component {
 		updateExam({ examID, isSelected: checked });
 
 		if(checked) 
-			addSelectedExamByExam({ examID, examName, examCode });
+			addSelectedExamByExam({ examID, examName, examCode, contents });
 		else 
 			removeSelectedExamByExam({ examID });
 	};
@@ -43,6 +44,7 @@ ExamTag.propTypes = {
 	examID: PropTypes.number.isRequired,
 	examName: PropTypes.string.isRequired,
 	examCode: PropTypes.string.isRequired,
+	contents: PropTypes.arrayOf(PropTypes.string).isRequired,
 	isSelected: PropTypes.bool.isRequired,
 	isDisabled: PropTypes.bool.isRequired,
 	addSelectedExamByExam: PropTypes.func.isRequired,

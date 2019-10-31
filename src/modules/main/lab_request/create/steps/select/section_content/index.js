@@ -22,7 +22,7 @@ class SectionContent extends React.Component {
 		} = this.props;
 
 		const { sectionCode } = selectedSection;
-
+		
 		const ExamList = (
 			exams.map((item) => (
 				<ExamTag 
@@ -30,6 +30,7 @@ class SectionContent extends React.Component {
 					examID={item.examID} 
 					examName={item.examName} 
 					examCode={item.examCode}
+					contents={item.contents}
 					isSelected={item.isSelected}
 					isDisabled={item.isDisabled}
 					addSelectedExamByExam={addSelectedExamByExam}
