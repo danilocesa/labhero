@@ -38,7 +38,7 @@ class BaseForm extends React.Component {
 		const sessPersoInfo = sessionStorage.getItem(CLR_PERSONAL_INFO);
 		const sessOtherInfo = sessionStorage.getItem(CLR_OTHER_INFO);
 
-		// If user came from step 1 with refe
+		// If user came from step 1 
 		if(location.state) {
 			// eslint-disable-next-line react/prop-types
 			const { setFieldsValue } = this.props.form;
@@ -166,7 +166,7 @@ class BaseForm extends React.Component {
 									</Col>
 								</Row>
 								<Form.Item label="EMAIL">
-									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.email })(
+									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.emailAdd })(
 										<Input />
 									)}
 								</Form.Item>
@@ -200,7 +200,7 @@ class BaseForm extends React.Component {
 									<Col span={18}>
 										<Form.Item label="DATE OF BIRTH">
 											{getFieldDecorator('dateOfBirth', { 
-												rules: FIELD_RULES.caseNumber
+												rules: FIELD_RULES.dateOfBirth
 											})(
 												<DatePicker 
 													format="MM-DD-YYYY"
@@ -226,7 +226,7 @@ class BaseForm extends React.Component {
 									)}
 								</Form.Item>
 								<Form.Item label="CONTACT NUMBER">
-									{getFieldDecorator('contactNo', { rules: FIELD_RULES.contactNo })(
+									{getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
 										<Input addonBefore="+ 63" maxLength={10} />
 									)}
 								</Form.Item>
@@ -256,7 +256,7 @@ class BaseForm extends React.Component {
 									)}
 								</Form.Item>
 								<Form.Item label="PHYSICIAN ID">
-									{getFieldDecorator('physicianID', { rules: FIELD_RULES.phisycianId })(
+									{getFieldDecorator('physicianID', { rules: FIELD_RULES.physicianId })(
 										<Select 
 											placeholder="Select a physician" 
 											allowClear

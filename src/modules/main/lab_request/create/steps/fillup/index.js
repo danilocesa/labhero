@@ -28,7 +28,7 @@ const personalInfoKeys = [
 	'dateOfBirth',
 	'sex',
 	'address',
-	'contactNo'
+	'contactNumber'
 ];
 
 const otherInfoKeys = [
@@ -59,15 +59,13 @@ class FillupStep extends React.Component {
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
-		
-		
 		// If patientid is null then create new patient
 		if(!fields.patientID) {
 			const createdPatient = await this.createPatientInfo({
 				userID: userSession.userID,
 				...personalInfo
 			});
-			
+
 			// If createPatient has an error, stop the function
 			if(!createdPatient) return;
 
@@ -100,7 +98,6 @@ class FillupStep extends React.Component {
 			const response = await axiosCall(content);
 			const { data } = await response;
 
-			// eslint-disable-next-line no-unneeded-ternary
 			createdPatient = data;
 		}
 		catch(error) {
