@@ -21,7 +21,7 @@ class SearchPatientTable extends React.Component {
 		const { data, pageSize, loading } = this.props;
 		const getSorter = (myDataSource, columnName) => {
 			// @ts-ignore
-			if(myDataSource == undefined || myDataSource.length == 0 ){
+			if(myDataSource === undefined || myDataSource.length === 0 ){
 				return false;
 			}
 			

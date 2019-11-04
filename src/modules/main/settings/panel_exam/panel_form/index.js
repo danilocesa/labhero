@@ -27,10 +27,6 @@ import './panel_form.css';
 // CONSTANTS
   
 class PanelFormTemplate extends React.Component {
-	constructor(props){
-		super(props);
-	}
-
 	state = {
     	examRequestData: [],
 		selectedExamRequest: [],
@@ -76,8 +72,8 @@ class PanelFormTemplate extends React.Component {
 
 	getSelectedExamRequest = async (i_key) => { 
 		let dataPanel = null;
-		let targetURL = 'lab/PanelExamRequesting/Settings/PanelID/'+i_key;
-		//`PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
+		const targetURL = `lab/PanelExamRequesting/Settings/PanelID/${i_key}`;
+		// `PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
 		try{
 			const resp = await axiosCall({
 				method: 'GET',
@@ -200,7 +196,7 @@ class PanelFormTemplate extends React.Component {
 	}
 
 	handleInfiniteOnLoad = () => {
-		let { data } = this.state;
+		const { data } = this.state;
 		this.setState({
 		  loading: true,
 		});
@@ -210,21 +206,21 @@ class PanelFormTemplate extends React.Component {
 			hasMore: false,
 			loading: false,
 		  });
-		  return;
+		  
 		}
 	  };
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
-		const rowSelection = {
-			onChange: (selectedRowKeys, selectedRows) => {
-			  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-			},
-			getCheckboxProps: record => ({
-			  name: record.requestName,
-			}),
-		  };
+		// const rowSelection = {
+		// 	onChange: (selectedRowKeys, selectedRows) => {
+		// 	  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+		// 	},
+		// 	getCheckboxProps: record => ({
+		// 	  name: record.requestName,
+		// 	}),
+		// };
 
 		return(
 			<div className="panel-form"> 
@@ -263,7 +259,7 @@ class PanelFormTemplate extends React.Component {
 					<AntForm.Item label="STATUS">
 						{getFieldDecorator('panel_status', {
 							valuePropName: 'checked',
-							initialValue: panelInfo ? ( panelInfo.status === 1 ? true : false ) : true
+							initialValue: panelInfo ? ( panelInfo.status === 1 ) : true
 						})(
 							<AntSwitch
 								checkedChildren="Enable"
@@ -291,11 +287,11 @@ class PanelFormTemplate extends React.Component {
 						/> */}
 							<div className="panel-infinite-container">
 							<InfiniteScroll 
-							initialLoad = {false}
+							initialLoad={false}
 							loadMore={this.handleInfiniteOnLoad}
 							pageStart={0}
-							hasMore = {!this.state.loading && this.state.hasMore}
-							useWindow = {false}
+							hasMore={!this.state.loading && this.state.hasMore}
+							useWindow={false}
 							>
 								<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
 									<AntList 
@@ -307,7 +303,8 @@ class PanelFormTemplate extends React.Component {
 												{item.title}
 											</AntCheckbox>
 										</AntList.Item>
-									)}>
+									)}
+									>
 										{this.state.loading && this.state.hasMore && (
 										<div className="panel-loading-container">
 											<AntSpin />
@@ -317,7 +314,7 @@ class PanelFormTemplate extends React.Component {
 								</AntCheckbox.Group>
 							</InfiniteScroll>
 							</div>
-						</AntForm.Item>
+     </AntForm.Item>
 					<div
 						style={{
 							position: 'absolute',

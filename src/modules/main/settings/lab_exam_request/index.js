@@ -145,7 +145,7 @@ class LabExamRequest extends React.Component {
 			selectedSpecimenId,
 			selectedExamRequest
 		} = this.state;
-
+		
 		const leftSection = (
 			<Row gutter={24}>
 				<Col span={10}>
