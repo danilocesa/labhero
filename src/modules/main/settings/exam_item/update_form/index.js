@@ -7,6 +7,7 @@ import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } fr
 import FIELD_RULES from './constant';
 
 import './update_form.css';
+import ExamItems from 'modules/main/settings/exam_item_jer';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -136,26 +137,69 @@ class UpdateForm extends React.Component {
 				// @ts-ignore	
 				? this.dynamicForm.getFormValues() 
 				: { hasError: false };
-
+				
 			if (!err && !dynaFormFields.hasError) {
-				const fields = getFieldsValue();
+				let fields = getFieldsValue();
+				let examItemValueParam = [];
+
+				if(selectedItemTypeCode === DD_VAL_OPTION || selectedItemTypeCode === DD_VAL_CHECKBOX){  // If checkbox or option get default & label in dynamic form
+					dynaFormFields.formValues.map(value=> (
+						examItemValueParam.push({
+							"examItemValueDefault": value.isDefault ? 1 : 0,
+							"examItemValueLabel": value.label
+						})
+					));
+					fields = Object.assign({examItemValue: examItemValueParam},fields);
+				
+				} else { // Assign default value
+					fields = Object.assign({examItemValue: [{
+						"examItemValueDefault": 1,
+						"examItemValueLabel": fields.examItemTypeDefault
+					}]},fields);
+				}
+
 				const payload = { 
 					...fields, 
-					examItemTypeItems: dynaFormFields.formValues, 
+					// examItemTypeItems: dynaFormFields.formValues, 
+					// examItemValue: dynaFormFields.formValues,
 					sectionID: selectedSectionId,
 					specimenID: selectedSpecimenId
 				};
-
+				console.log('TCL: Update form -> onSubmit -> payload', payload);
 				this.setState({ isLoading: true }, async () => {
-					const createdExamItem = await updateExamItem(payload);
+					const updatedExamItem = await updateExamItem(payload);
 					this.setState({ isLoading: false });
 					
-					if(createdExamItem) {
+					if(updatedExamItem) {
 						onSuccess();
+					}else{
+						console.log("TCL-> update form error =>",updatedExamItem);
 					}
 				});
 			}
 		});
+	}
+
+	onAddExamItem = () => {
+		// console.log('TCL : updateForm-> onAddExamItem -> ', param);
+		const { examItemValue } = this.state;
+
+		examItemValue.push({
+			"examItemValueDefault": 0,
+			"examItemValueLabel": null
+		});
+		this.setState({examItemValue});
+	}
+
+	onCancelItemVal = (index) =>{
+		const { examItemValue } = this.state;
+		let filteredExams =[];
+		// delete examItemValue[index];
+		filteredExams = examItemValue.filter(function(value, key){
+			return key != index;
+		});
+
+		this.setState({examItemValue: filteredExams});
 	}
 
 	render() {
@@ -243,6 +287,8 @@ class UpdateForm extends React.Component {
 									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
 									itemValue={examItemValue}
 									formType="update"
+									onCancelItemVal={this.onCancelItemVal}
+									addExamItem={this.onAddExamItem}
 								/> 
 						)}
 						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
