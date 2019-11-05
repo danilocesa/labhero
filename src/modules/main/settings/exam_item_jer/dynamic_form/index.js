@@ -7,7 +7,8 @@ let id = 0;
 
 class DynamicForm extends React.Component {
 	state = {
-		checkedIndex: 0
+		checkedIndex: 0,
+		addItem: false
 	}
 	
 	componentDidMount = () => {
@@ -27,11 +28,11 @@ class DynamicForm extends React.Component {
 
 		validateFieldsAndScroll(async(err) => {	
 			const fieldsValue = getFieldsValue();
-			const formValues = fieldsValue.keys.map(key => ({
-				isDefault: key === checkedIndex,
-				label: fieldsValue.names[key]
-
+			const formValues = fieldsValue.names.map(data => ({
+				isDefault: data.key === checkedIndex,
+				label: data
 			}));
+
 			
 			result = {
 				hasError: err !== null,
@@ -42,18 +43,14 @@ class DynamicForm extends React.Component {
 		return result;
 	}
 
-	remove = k => {
-  	console.log("TCL: DynamicForm -> k", k)
+	remove = (k, index) => {
 		const { checkedIndex } = this.state;
-    console.log("TCL: DynamicForm -> checkedIndex", checkedIndex)
 		const { itemValue, formType } = this.props;
-    console.log("TCL: DynamicForm -> formType", formType)
-    
-    // eslint-disable-next-line react/prop-types
-    const { form } = this.props;
-    const keys = form.getFieldValue('keys');
-    console.log("TCL: DynamicForm -> keys", keys)
 
+		// eslint-disable-next-line react/prop-types
+		const { form } = this.props;
+		const keys = form.getFieldValue('keys');
+    
 		if(formType === "add"){
 			if (keys.length === 1) {
 				return;
@@ -67,28 +64,38 @@ class DynamicForm extends React.Component {
 				keys: keys.filter(key => key !== k),
 			});
 		} else {
-			if (keys.length === 1) {
-				return;
-			}
+			this.props.onCancelItemVal(index);
 		}
 
     
   };
 
   add = () => {
-    // eslint-disable-next-line react/prop-types
-    const { form } = this.props;
-	const keys = form.getFieldValue('keys');
-	console.log('keys =>', keys);
+		// eslint-disable-next-line react/prop-types
+		const { form, formType, itemValue } = this.props;
+		const keys = form.getFieldValue('keys');
+		// const { addItem } = this.state;
+
 		// eslint-disable-next-line no-plusplus
 		const nextKeys = keys.concat(id++);
-	console.log('nextKeys =>', nextKeys);	
-    form.setFieldsValue({
-      keys: nextKeys,
-    });
+		form.setFieldsValue({
+			keys: nextKeys,
+		});
+
+		// if(formType ==="update"){
+		// 	console.log("TCL: dynamicForm -> form",form.getFieldValue('keys'));
+		// 	this.props.addExamItem();
+		// }else{
+
+		// }
+
+		console.log('TCL: => dynamicForm -> add -> form', form);
+		console.log('TCL: => dynamicForm -> add -> keys', keys);
+		console.log('TCL: => dynamicForm -> add -> itemValue', itemValue);
 	};
 	
 	onSwitchChange = (checked, index) => {
+		// console.log('checked, index', checked+'=>'+index);
 		if(checked) this.setState({ checkedIndex: index });
 	}
 
@@ -96,9 +103,10 @@ class DynamicForm extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldValue } = this.props.form;
 		const { itemValue, formType } = this.props;
-    console.log("TCL: DynamicForm -> render -> itemValue", itemValue)
 		const { checkedIndex } = this.state;
 		getFieldDecorator('keys', { initialValue: [] });
+		console.log('TCL: => getFieldValue =>', getFieldValue('keys'));
+		console.log("TCL: itemValue:",itemValue);
 		
 		const arrayKeys = (keys) => {
 			const keyArrays = [];
@@ -106,12 +114,11 @@ class DynamicForm extends React.Component {
 				keyArrays.push(key);
         
 			}
-			console.log("TCL: DynamicForm -> arrayKeys -> keyArrays", keyArrays)
 			return keyArrays;
 		}
 
-		const keys = (formType === "add") ? itemValue || getFieldValue('keys') : arrayKeys(itemValue);
-    console.log("TCL: DynamicForm -> render -> keys", keys)
+		const keys = (formType === "add") ? itemValue || getFieldValue('keys') : itemValue;
+		console.log('dynamicForm -> Keys ->',keys);
     const OptionFormItems = keys.map((key, index) => (
       <Form.Item key={index}>
 				<AntCard 
@@ -122,12 +129,12 @@ class DynamicForm extends React.Component {
 						<Switch 
 							checkedChildren="Default"
 							checked={checkedIndex === key || key.examItemValueDefault === 1}
-							onChange={(checked) => this.onSwitchChange(checked, key)}	
+							onChange={(checked) => this.onSwitchChange(checked, index)}	
 						/>
 						<Icon
 							className="dynamic-delete-button"
 							type="minus-circle-o"
-							onClick={() => this.remove(key)}
+							onClick={() => this.remove(key, index)}
 						/>
 						</>	
 					)}

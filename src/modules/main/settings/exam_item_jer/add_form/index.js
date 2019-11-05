@@ -99,7 +99,7 @@ class AddForm extends React.Component {
 					sectionID: selectedSectionId,
 					specimenID: selectedSpecimenId
 				};
-			
+				
 				this.setState({ isLoading: true }, async () => {
 					const createdExamItem = await createExamItem(payload);
 					this.setState({ isLoading: false });
