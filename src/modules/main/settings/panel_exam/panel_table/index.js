@@ -12,7 +12,7 @@ import {
 } from 'antd';
 
 // CUSTOM MODULES
-import panelListAPI from 'services/panelList';
+import panelListAPI from 'services/settings/panel/panelList';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import PanelForm from '../panel_form';
 
@@ -51,18 +51,21 @@ const columns = [
     {
         title: 'CODE',
         dataIndex: 'code',
-        key: 'code',
+				key: 'code',
+				sorter: (a, b) => a.code.length - b.code.length,
     },
     {
         title: 'PANEL NAME',
         dataIndex: 'panel_name',
-        key: 'panel_name',
+				key: 'panel_name',
+				sorter: (a, b) => a.panel_name.length - b.panel_name.length,
         // render: (text, record) => popover(record),
     },
     {   
         title: 'INTEGRATION CODE',
         dataIndex: 'integration_code',
-				key: 'integration_code'
+				key: 'integration_code',
+				sorter: (a, b) => a.integration_code.length - b.integration_code.length,
     },
 ]
 
@@ -88,7 +91,7 @@ class PanelTable extends React.Component {
 
 	populatePanelList = async () => {
 		this.setState({ loading: true });
-		const panelListData = await panelListAPI;
+		const panelListData = await panelListAPI();
 		HttpCodeMessage(panelListData.status);
 		const panelListArray = []; 
 		panelListData.data.map(function(valuePanel,indexPanel){ 
