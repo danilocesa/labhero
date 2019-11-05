@@ -16,10 +16,12 @@ import { withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
-import examRequestListAPI from 'services/examRequestList';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import CustomMessage from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import examRequestListAPI from 'services/examRequestList';
+import createdPanelAPI from 'services/settings/panel/createdPanel';
+import updatedPanelListAPI from 'services/settings/panel/updatePanelList';
+import getPanelInfo from 'services/settings/panel/getPanelInfo';
 
 // CSS
 import './panel_form.css';
@@ -27,15 +29,22 @@ import './panel_form.css';
 // CONSTANTS
   
 class PanelFormTemplate extends React.Component {
+<<<<<<< HEAD
+=======
+	// eslint-disable-next-line no-useless-constructor
+	constructor(props){
+		super(props);
+	}
+
+>>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 	state = {
-    	examRequestData: [],
+		examRequestData: [],
 		selectedExamRequest: [],
 		loading: false,
 		examRequestValidation: false,
 	};
 
 	componentDidMount() {
-		console.log()
 		this.getExamRequest();
 		
 		if(this.props.drawerButton === "Update"){
@@ -49,7 +58,7 @@ class PanelFormTemplate extends React.Component {
 
 	getExamRequest = async () => {
 		// Get all exam request
-		const examRequestListData = await examRequestListAPI; 
+		const examRequestListData = await examRequestListAPI(); 
 		if(examRequestListData.status !== 200){
 			HttpCodeMessage({
 				status: examRequestListData.status,
@@ -66,20 +75,18 @@ class PanelFormTemplate extends React.Component {
 			}
 			return examRequestData;
 		});
-		console.log('examRequestData typeof=>', examRequestData);
 		this.setState({ examRequestData });
 	};
 
 	getSelectedExamRequest = async (i_key) => { 
 		let dataPanel = null;
+<<<<<<< HEAD
 		const targetURL = `lab/PanelExamRequesting/Settings/PanelID/${i_key}`;
 		// `PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
+=======
+>>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 		try{
-			const resp = await axiosCall({
-				method: 'GET',
-				url: targetURL
-			});
-			dataPanel = resp;
+			dataPanel = await getPanelInfo(i_key); 
 		} 
 		catch(e) {
 			CustomMessage.error(e);
@@ -92,13 +99,11 @@ class PanelFormTemplate extends React.Component {
 			return selectedExamRequest;
 		});
 		this.setState({selectedExamRequest});
-		console.log('selectedExamRequest =>',selectedExamRequest);
 	};
 	
 	transferFilterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
 
 	handleSelectedExams = selectedExamRequest => {
-	console.log('selected_exams =>' ,selectedExamRequest)
     this.setState({ selectedExamRequest });
   };
 
@@ -116,9 +121,10 @@ class PanelFormTemplate extends React.Component {
 
 			try{
 				this.setState({ loading:true });
-				this.props.panelInfo ? this.updatePanel(values) : this.createPanel(values);
-				console.log('values=>', values);
-			}
+				console.log(`thisis panel:`, this.props.panelInfo);
+				// eslint-disable-next-line no-unused-expressions
+				this.props.drawerButton === "Update" ? this.updatePanel(values): this.createPanel(values);
+			}	
 			catch(errCatch) {
 				console.log("TCL: onSubmit -> errCatch", errCatch)
 			}
@@ -127,6 +133,7 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	createPanel = async (fieldValues) => {
+		console.log(1);
 		const apiBody = {
 			panelRequestName: fieldValues.panel_name,
 			panelRequestCode: fieldValues.panel_code,
@@ -135,27 +142,19 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
-		const response = await axiosCall({
-			method: 'POST',
-			url: 'lab/PanelExamRequesting/Settings',
-			data: apiBody,
-			headers: {
-				'content-type': 'application/json',
-				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
-			}
-		});
+		const response = await createdPanelAPI(apiBody);
+    console.log("TCL: PanelFormTemplate -> createPanel -> response", response)
 
 		if(response.status === 201){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
+				message: 'Successfully created! Reloading page...',
 				status: response.status,
 				duration: 3, 
 				onClose: () => window.location.reload() 
 			}
 			HttpCodeMessage(httpMessageConfig);
 		}
-
-		// return false;
 	}
 
 	updatePanel = async (fieldValues) => {
@@ -170,15 +169,7 @@ class PanelFormTemplate extends React.Component {
 
 		console.log('apiBody', apiBody);
 
-		const response = await axiosCall({
-			method: 'PUT',
-			url: 'lab/PanelExamRequesting/Settings',
-			data: apiBody,
-			headers: {
-				'content-type': 'application/json',
-				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
-			}
-		});
+		const response = await updatedPanelListAPI(apiBody);
 
 		console.log('fieldValues =>', typeof(fieldValues));
 
@@ -213,6 +204,7 @@ class PanelFormTemplate extends React.Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
+<<<<<<< HEAD
 		// const rowSelection = {
 		// 	onChange: (selectedRowKeys, selectedRows) => {
 		// 	  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -221,6 +213,8 @@ class PanelFormTemplate extends React.Component {
 		// 	  name: record.requestName,
 		// 	}),
 		// };
+=======
+>>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 
 		return(
 			<div className="panel-form"> 
