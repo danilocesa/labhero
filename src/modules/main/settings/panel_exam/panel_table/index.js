@@ -7,9 +7,7 @@ import {
 	Typography as AntTypography, 
 	Icon as AntIcon, 
 	Select as AntSelect, 
-	Button as AntButton,
-	Popover as AntPopover
-} from 'antd';
+	Button as AntButton} from 'antd';
 
 // CUSTOM MODULES
 import panelListAPI from 'services/settings/panel/panelList';
