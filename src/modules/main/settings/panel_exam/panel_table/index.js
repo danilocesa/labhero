@@ -50,20 +50,20 @@ const columns = [
         title: 'CODE',
         dataIndex: 'code',
 				key: 'code',
-				sorter: (a, b) => a.code.length - b.code.length,
+				sorter: (a, b) => { return a.code.localeCompare(b.code)}
     },
     {
         title: 'PANEL NAME',
         dataIndex: 'panel_name',
 				key: 'panel_name',
-				sorter: (a, b) => a.panel_name.length - b.panel_name.length,
+				sorter: (a, b) => { return a.panel_name.localeCompare(b.panel_name)}
         // render: (text, record) => popover(record),
     },
     {   
         title: 'INTEGRATION CODE',
         dataIndex: 'integration_code',
 				key: 'integration_code',
-				sorter: (a, b) => a.integration_code.length - b.integration_code.length,
+				sorter: (a, b) => { return a.integration_code.localeCompare(b.integration_code)}
     },
 ]
 

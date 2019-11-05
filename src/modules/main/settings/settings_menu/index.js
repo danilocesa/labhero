@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';

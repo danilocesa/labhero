@@ -29,6 +29,7 @@ import './panel_form.css';
 // CONSTANTS
   
 class PanelFormTemplate extends React.Component {
+	// eslint-disable-next-line no-useless-constructor
 	constructor(props){
 		super(props);
 	}
@@ -195,14 +196,6 @@ class PanelFormTemplate extends React.Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
-		const rowSelection = {
-			onChange: (selectedRowKeys, selectedRows) => {
-			  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-			},
-			getCheckboxProps: record => ({
-			  name: record.requestName,
-			}),
-		  };
 
 		return(
 			<div className="panel-form"> 
