@@ -1,39 +1,62 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Input, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
-
-import './dynamic_form.css';
 
 let id = 0;
 
 class DynamicForm extends React.Component {
 	state = {
-		checkedIndex: 0,
-		addItem: false
+		checkedKey: 0,
 	}
 	
-	componentDidMount = () => {
+	componentDidMount() {
 		this.add();
 	}
 
-	setFormValues = (formValues) => {
-		console.log(formValues);
+	componentDidUpdate(prevProps) {
+		const { examId, examItemValue, form } = this.props;
+		
+		// This will run only when the user select in update form.
+		// This will be disregarded in add form.
+		if(examId !== prevProps.examId && examItemValue) {
+			const fieldKeys = examItemValue.map((item, index) => ({ key: index }));
+			const fieldValues = examItemValue.map((item) => item.examItemValueLabel);
+			const selectedIndex = examItemValue.findIndex(item => item.examItemValueDefault === 1);
+
+			// Render fields
+			form.setFieldsValue({ fields: fieldKeys }, () => {
+				// Assign field Values
+				form.setFieldsValue({ names: fieldValues });
+
+				// Assign checked switch
+				this.setState({ checkedKey: selectedIndex });
+
+				// Update counter
+				id = examItemValue.length;
+			});
+		}
 	}
 
+	// This is use to get the values of this form up to its parent 
+	// component e.g(update/add form) to cancel the submitting of
+	// data once an error validation appears
 	getFormValues = () => {
-		const { checkedIndex } = this.state;
+		const { checkedKey } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { form } = this.props;
 		const { getFieldsValue, validateFieldsAndScroll } = form;
-		let result;
+		let result = null;
 
 		validateFieldsAndScroll(async(err) => {	
 			const fieldsValue = getFieldsValue();
-			const formValues = fieldsValue.names.map(data => ({
-				isDefault: data.key === checkedIndex,
-				label: data
-			}));
+			const formValues = fieldsValue.names.map((data, index) => { 
+				return {
+					isDefault: index === checkedKey,
+					label: data
+				};
+			});
 
-			
 			result = {
 				hasError: err !== null,
 				formValues
@@ -43,106 +66,77 @@ class DynamicForm extends React.Component {
 		return result;
 	}
 
-	remove = (k, index) => {
-		const { checkedIndex } = this.state;
-		const { itemValue, formType } = this.props;
-
-		// eslint-disable-next-line react/prop-types
+	// This is use to remove dynamic field which corresponds
+	// to given index parameters
+	remove = (k) => {
+		const { checkedKey } = this.state;
 		const { form } = this.props;
-		const keys = form.getFieldValue('keys');
+		const { getFieldValue } = form;
+		
+		const fields = getFieldValue('fields');
     
-		if(formType === "add"){
-			if (keys.length === 1) {
-				return;
-			}
-			
-			if(checkedIndex === k) {
-				this.setState({ checkedIndex: keys[0] });
-			}
-	
-			form.setFieldsValue({
-				keys: keys.filter(key => key !== k),
-			});
-		} else {
-			this.props.onCancelItemVal(index);
+		if (fields.length === 1) {
+			return;
+		}
+		
+		if(checkedKey === k) {
+			this.setState({ checkedKey: fields[0].key });
 		}
 
-    
+		form.setFieldsValue({
+			fields: fields.filter(field => field.key !== k),
+		});
   };
 
+
+	// This is use to add a dynamic field
   add = () => {
-		// eslint-disable-next-line react/prop-types
-		const { form, formType, itemValue } = this.props;
-		const keys = form.getFieldValue('keys');
-		// const { addItem } = this.state;
+		const { form } = this.props;
+		const fields = form.getFieldValue('fields');
 
 		// eslint-disable-next-line no-plusplus
-		const nextKeys = keys.concat(id++);
-		form.setFieldsValue({
-			keys: nextKeys,
-		});
-
-		// if(formType ==="update"){
-		// 	console.log("TCL: dynamicForm -> form",form.getFieldValue('keys'));
-		// 	this.props.addExamItem();
-		// }else{
-
-		// }
-
-		console.log('TCL: => dynamicForm -> add -> form', form);
-		console.log('TCL: => dynamicForm -> add -> keys', keys);
-		console.log('TCL: => dynamicForm -> add -> itemValue', itemValue);
+		const nextFields = fields.concat({ key: id++ });
+		form.setFieldsValue({ fields: nextFields });
 	};
 	
 	onSwitchChange = (checked, index) => {
-		// console.log('checked, index', checked+'=>'+index);
-		if(checked) this.setState({ checkedIndex: index });
+		if(checked) this.setState({ checkedKey: index });
 	}
 
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldValue } = this.props.form;
-		const { itemValue, formType } = this.props;
-		const { checkedIndex } = this.state;
-		getFieldDecorator('keys', { initialValue: [] });
-		console.log('TCL: => getFieldValue =>', getFieldValue('keys'));
-		console.log("TCL: itemValue:",itemValue);
-		
-		const arrayKeys = (keys) => {
-			const keyArrays = [];
-			for(const key in keys){
-				keyArrays.push(key);
-        
-			}
-			return keyArrays;
-		}
+		const { checkedKey } = this.state;
 
-		const keys = (formType === "add") ? itemValue || getFieldValue('keys') : itemValue;
-		console.log('dynamicForm -> Keys ->',keys);
-    const OptionFormItems = keys.map((key, index) => (
-      <Form.Item key={index}>
+		getFieldDecorator('fields', { initialValue: [] });
+
+		const fields = getFieldValue('fields');
+    const OptionFormItems = fields.map((field, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <Form.Item key={field.key}>
 				<AntCard 
 					size="small" 
 					title={`Option value ${index + 1}`} 
 					extra={(
 						<>
-						<Switch 
-							checkedChildren="Default"
-							checked={checkedIndex === key || key.examItemValueDefault === 1}
-							onChange={(checked) => this.onSwitchChange(checked, index)}	
-						/>
-						<Icon
-							className="dynamic-delete-button"
-							type="minus-circle-o"
-							onClick={() => this.remove(key, index)}
-						/>
+							<Switch 
+								checkedChildren="Default"
+								unCheckedChildren="Default"
+								checked={checkedKey === field.key || field.examItemValueDefault === 1}
+								onChange={(checked) => this.onSwitchChange(checked, field.key)}	
+							/>
+							<Icon
+								className="dynamic-delete-button"
+								type="minus-circle-o"
+								onClick={() => this.remove(field.key)}
+							/>
 						</>	
 					)}
 				>
 					<Row>
 						<Form.Item>
 						<Col span={24}>
-							{getFieldDecorator(`names[${index}]`, {
+							{getFieldDecorator(`names[${field.key}]`, {
 								validateTrigger: ['onChange', 'onBlur'],
 								rules: [
 									{
@@ -151,7 +145,7 @@ class DynamicForm extends React.Component {
 										message: 'This field is required'
 									},
 								],
-								initialValue: key.examItemValueLabel,
+								// initialValue: field.key.examItemValueLabel,
 							})(<Input />)}
 						</Col>
 						</Form.Item>
@@ -174,5 +168,17 @@ class DynamicForm extends React.Component {
 	}
 }
 
+DynamicForm.propTypes = {
+	examId: PropTypes.number,
+	examItemValue: PropTypes.arrayOf(PropTypes.shape({
+		examItemValueDefault: PropTypes.number.isRequired,
+		examItemValueLabel: PropTypes.string.isRequired
+	}))
+};
+
+DynamicForm.defaultProps = {
+	examId: null,
+	examItemValue: []
+}
 
 export default Form.create()(DynamicForm);;
