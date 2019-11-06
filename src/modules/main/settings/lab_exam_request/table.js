@@ -11,22 +11,26 @@ const columns = [
 	{ 
 		title: 'Exam Request Name',
 		dataIndex: 'examRequestName',
-		width: '30%'
+		width: '30%',
+		sorter: (a, b) => a.examRequestName.localeCompare(b.examRequestName)
 	},
 	{ 
 		title: 'Exam Request Code',
 		dataIndex: 'examRequestCode',
-		width: '15%'
+		width: '15%',
+		sorter: (a, b) => a.examRequestCode.localeCompare(b.examRequestCode)
 	},
 	{ 
 		title: 'Loinc',
 		dataIndex: 'examRequestLoinc',
-		width: '20%'
+		width: '20%',
+		sorter: (a, b) => a.examRequestLoinc.localeCompare(b.examRequestLoinc)
 	},
 	{ 
 		title: 'Integration Code',
 		dataIndex: 'examRequestIntegrationCode',
-		width: '15%'
+		width: '15%',
+		sorter: (a, b) => a.examRequestIntegrationCode.localeCompare(b.examRequestIntegrationCode)
 	},
 	{ 
 		title: 'Sort',

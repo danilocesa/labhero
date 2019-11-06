@@ -10,7 +10,7 @@ export async function fetchSection() {
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;
 		
-		sections = data;
+		sections = data || [];
 	} catch (e) {
 		Message.error();
 	}
@@ -27,7 +27,7 @@ export async function fetchSpecimens() {
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;
 
-		specimens = data;
+		specimens = data || [];
 	} catch (e) {
 		Message.error();
 	}
@@ -44,7 +44,7 @@ export async function fetchExamRequest(sectionId, specimenId) {
 		const response = await axiosCall({ method: 'GET', url });
 		const { data } = await response;
 		
-		examRequests = data;
+		examRequests = data || [];
 	} catch (e) {
 		Message.error();
 	}

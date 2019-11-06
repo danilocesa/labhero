@@ -108,9 +108,8 @@ class SearchPatientForm extends React.Component {
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
       });
 			const { data } = await response;
-	
-			patients = data ? data.patient : [];
 			
+			patients = data ? data.patient : [];
 		}
 		catch(error) {
 			Message.error();

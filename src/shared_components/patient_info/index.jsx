@@ -33,16 +33,18 @@ class PatientInfo extends React.Component {
 
 	async componentDidMount(){
 		const {patientInfo} = this.props
-		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID)
+		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID);
+    console.log("TCL: PatientInfo -> componentDidMount -> patientInfoValue", patientInfoValue);
+		
 		this.setState({
-			hospitalID: patientInfoValue.hospitalRequestID,
-			physicianID: patientInfoValue.physician.physicianID,
-			bed: patientInfoValue.bed,
-			visit: patientInfoValue.visit,
-			chargeSlip: patientInfoValue.chargeSlip,
-			receipt: patientInfoValue.officialReceipt,
-			comment: patientInfoValue.comment,
-			location: patientInfoValue.location.name
+			hospitalID: 	patientInfoValue ? patientInfoValue.hospitalRequestID : 0,
+			physicianID: 	patientInfoValue ? patientInfoValue.physician.physicianID : 0,
+			bed: 					patientInfoValue ? patientInfoValue.bed : 0,
+			visit: 				patientInfoValue ? patientInfoValue.visit : 0,
+			chargeSlip: 	patientInfoValue ? patientInfoValue.chargeSlip : 0,
+			receipt:      patientInfoValue ? patientInfoValue.officialReceipt : 0,
+			comment:      patientInfoValue ? patientInfoValue.comment : 0,
+			location: 		patientInfoValue ? patientInfoValue.location.name : 0
 		});
 	}
 

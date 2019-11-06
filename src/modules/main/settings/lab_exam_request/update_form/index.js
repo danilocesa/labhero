@@ -143,7 +143,7 @@ class UpdateForm extends React.Component {
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
 		// eslint-disable-next-line react/prop-types
-		const { visible, form, sectionId , specimenId } = this.props;
+		const { visible, form  } = this.props;
 		const { getFieldDecorator } = form;
 
 		return (

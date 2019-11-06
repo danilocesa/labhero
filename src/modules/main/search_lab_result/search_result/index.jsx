@@ -3,7 +3,6 @@ import React from 'react';
 import { Row as AntRow, Col as AntCol, Table, Select, Drawer as AntDrawer, Typography, Empty as AntEmpty, Card as AntCard} from 'antd';
 
 // CUSTOM MODULES
-import axiosCall from 'services/axiosCall';
 import PatientInfo from '../../patientinfo';
 
 // CSS
@@ -16,6 +15,7 @@ const { Text } = Typography;
 class WrapperSearchLabTestResultList extends React.Component {
   state = {
 		showPatientInfo: false,
+		// eslint-disable-next-line react/no-unused-state
 		showLoading: true,
 		isLoading: false
 	};
@@ -47,31 +47,43 @@ class WrapperSearchLabTestResultList extends React.Component {
     for (let i = 1; i < 20; i+=1) {
       data.push({
         key: i*1000,
-        RequestDate: '04/11/2019',
-        SampleId: `100${i}`,
-        Status: 'test',
-       // HisLink: `190411200i${i}`,
+        sectionID: `100${i}`,
+        sectionName: `section name ${i}`,
+        sectionCode: `scode${i}`,
+        samplespecimenID: `ssid${i}`,
+        specimenName: `specimen name ${i}`
       });
 		}
-		console.log(data);
 		const expandedtablecolumns = [
       {
-        title: 'sectionID',
+        title: 'Section ID',
         dataIndex: 'sectionID',
-        key: 'RequestDate',
+        key: 'sectionID',
         align: 'center',
-        width:'25%',
+        width:'20%',
       },
       {
-        title: 'sectionName',
+        title: 'Section Name',
         dataIndex: 'sectionName',
-        key: 'SampleId',
-        width:'25%',
+        key: 'sectionName',
+        width:'20%',
       },
-      { title: 'sectionCode', 
+      { title: 'Section Code', 
         dataIndex: 'sectionCode', 
-        key: 'Status',
-        width:'25%',
+        key: 'sectionCode',
+        width:'20%',
+      },
+      { 
+        title: 'Sample Specimen ID', 
+        dataIndex: 'samplespecimenID', 
+        key: 'samplespecimenID',
+        width:'20%',
+      },
+      { 
+        title: 'Specimen Name', 
+        dataIndex: 'specimenName', 
+        key: 'specimenName',
+        width:'20%',
       },
     ];
     
@@ -82,6 +94,15 @@ class WrapperSearchLabTestResultList extends React.Component {
 		    pagination={false}
 		    size="small"
 		    scroll={{ y: 200 }}
+        onRow={(record, rowIndex) => {
+          console.log("TCL: WrapperSearchLabTestResultList -> expandedRowRender -> rowIndex", rowIndex);
+           console.log("TCL: WrapperSearchLabTestResultList -> expandedRowRender -> record", record);
+          return {
+            onDoubleClick: this.onSampleIDClick, // double click row
+          };
+        }}
+        
+      
 	    />
 		);
   };
