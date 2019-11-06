@@ -3,6 +3,7 @@ import { Row, Col, Switch, Typography, Form, Input, Select, Checkbox, Table, Ico
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
+import { apiUserAccount, apiPOSTMethod, apiPutMethod, apiGetMethod } from 'shared_components/constant-global';
 import './useraccountform.css';
 
 const { Text } = Typography;
@@ -98,14 +99,14 @@ class UserAccountForm extends React.Component {
     }
 
     componentWillUnmount(){
-        console.log('unmount');
-        this.props.form.resetFields();
+        const { form } = this.props;
+        form.resetFields();
     }
 
     async fetchUserTypes(){
 		await axiosCall({
             url: 'UserType',
-            method: 'GET',
+            method: apiGetMethod,
         }).then(userType =>{
             this.setState({
                 user_types: userType.data,
@@ -114,13 +115,13 @@ class UserAccountForm extends React.Component {
     }
 
     handleSubmit = (event) => {
-        event.preventDefault();
-        this.props.form.validateFields( (err, values) => {
-            var v_url = 'UserAccount';
+        const { form } = this.props;
+
+        event.preventDefault();  
+        form.validateFields( (err, values) => {
             var v_method = '';
              if (!err) {
                  const v_data = {
-                    userID : values.userID,
                     userName : values.userName,
                     userTypeID : values.userTypeID,
                     givenName : values.givenName,
@@ -130,13 +131,11 @@ class UserAccountForm extends React.Component {
                  };
 
                  if(this.props.drawerButton === 'Add'){
-                    console.log('Add');
-                    v_method = 'POST';
-                    delete v_data.userID;
+                    v_method = apiPOSTMethod;
                 }else{
-                    v_method = 'PUT';
+                    v_method = apiPutMethod;
                 }
-                this.handleApi({method: v_method, url: v_url, data: v_data});
+                this.handleApi({method: v_method, url: apiUserAccount, data: v_data});
              }else{
                  console.log(err);
              }
@@ -144,6 +143,7 @@ class UserAccountForm extends React.Component {
     }
 
     handleApi = async (param) => {
+
         await axiosCall({
             method: param.method,
             url: param.url,
@@ -176,8 +176,7 @@ class UserAccountForm extends React.Component {
         callback();
       };
 
-    isUpdate = () =>{
-        console.log('this.props.drawerButton ', this.props.drawerButton);
+    isUpdated = () =>{
         if(this.props.drawerButton === "Update"){
             return true;
         }else{
@@ -187,6 +186,7 @@ class UserAccountForm extends React.Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { patientInfo } = this.props;
         return(
             <div>
                 <Row gutter={40}>
@@ -256,6 +256,7 @@ class UserAccountForm extends React.Component {
                                     <Form.Item label="PASSWORD">
                                         {
                                             getFieldDecorator('password',{
+                                                initialValue: patientInfo.password,
                                                 rules: [
                                                     { required: true, message: "This field is required"},
                                                     { validator: this.validateToNextPassword}
@@ -268,6 +269,7 @@ class UserAccountForm extends React.Component {
                                     <Form.Item label="REPEAT PASSWORD">
                                         {
                                             getFieldDecorator('repeat_password',{
+                                                initialValue: patientInfo.password,
                                                 rules:[
                                                     { required: true, message: "This field is required" },
                                                     { validator: this.compareToFirstPassword }

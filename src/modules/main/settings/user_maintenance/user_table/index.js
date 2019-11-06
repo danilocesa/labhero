@@ -4,6 +4,7 @@ import UserAccountForm from '../user_account_form';
 import './usertable.css';
 // import TablePager from 'shared_components/table_pager';
 import axiosCall from 'services/axiosCall';
+import { apiUserAccount, apiGetMethod } from 'shared_components/constant-global';
 
 
 const { Text } = Typography;
@@ -12,7 +13,7 @@ const { Option } = Select;
 
 const columns = [
     {
-        title: 'USERID',
+        title: 'USER ID',
         dataIndex: 'userID',
         key: 'userID',
         width: "10%",
@@ -23,17 +24,17 @@ const columns = [
         key: 'userName',
     },
     {
-        title: 'LASTNAME',
+        title: 'LAST NAME',
         dataIndex: 'lastName',
         key: 'lastName',
     },
     {
-        title: 'GIVENNAME',
+        title: 'FIRST NAME',
         dataIndex: 'givenName',
         key: 'givenName',
     },
     {
-        title: 'MIDDLENAME',
+        title: 'MIDDLE NAME',
         dataIndex: 'middleName',
         key: 'middleName',
     },
@@ -110,8 +111,8 @@ class UserTable extends React.Component {
 
     fetchUsers = () => {
 		axiosCall({
-			method: 'GET',
-            url: 'lab/UserAccount',
+			method: apiGetMethod,
+            url: apiUserAccount,
         }).then(users =>{
             const pagination = { ...this.state.pagination };
             users.data.forEach(e =>{

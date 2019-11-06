@@ -4,7 +4,7 @@
 // API Methods
 export const apiGetMethod = 'GET';
 export const apiPOSTMethod = 'POST';
-export const apiPUTMethod = 'PUT';
+export const apiPutMethod = 'PUT';
 
 // API's
 export const apiURL = '----------';
@@ -14,6 +14,8 @@ export const apiUrlPhlebo = "lab/SpecimenTracking/phlebo/"
 export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
 export const apiUrlPhleboRequestID = "lab/SpecimenTracking/phlebo/requestid/";
 export const apiUrlCheckInSpecimen = "lab/SpecimenTracking/phlebo/checkinspecimen";
+export const apiUserAccount = "lab/UserAccount";
+export const apiUserType = "lab/UserType";
 
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
 export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
