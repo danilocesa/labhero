@@ -29,14 +29,11 @@ import './panel_form.css';
 // CONSTANTS
   
 class PanelFormTemplate extends React.Component {
-<<<<<<< HEAD
-=======
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props){
 		super(props);
 	}
 
->>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 	state = {
 		examRequestData: [],
 		selectedExamRequest: [],
@@ -80,11 +77,6 @@ class PanelFormTemplate extends React.Component {
 
 	getSelectedExamRequest = async (i_key) => { 
 		let dataPanel = null;
-<<<<<<< HEAD
-		const targetURL = `lab/PanelExamRequesting/Settings/PanelID/${i_key}`;
-		// `PanelExamRequesting/Settings/PanelID/${this.props.panelInfo.key}`
-=======
->>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 		try{
 			dataPanel = await getPanelInfo(i_key); 
 		} 
@@ -204,17 +196,6 @@ class PanelFormTemplate extends React.Component {
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { panelInfo } = this.props;
-<<<<<<< HEAD
-		// const rowSelection = {
-		// 	onChange: (selectedRowKeys, selectedRows) => {
-		// 	  console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-		// 	},
-		// 	getCheckboxProps: record => ({
-		// 	  name: record.requestName,
-		// 	}),
-		// };
-=======
->>>>>>> a8c069ddb0a29deca2619b9601f82e5b41892d15
 
 		return(
 			<div className="panel-form"> 
