@@ -4,38 +4,43 @@ import UserAccountForm from '../user_account_form';
 import './usertable.css';
 // import TablePager from 'shared_components/table_pager';
 import axiosCall from 'services/axiosCall';
+import { apiUserAccount, apiGetMethod } from 'shared_components/constant-global';
 
 
 const { Text } = Typography;
 const { Option } = Select;
 
-
 const columns = [
     {
-        title: 'USERID',
+        title: 'USER ID',
         dataIndex: 'userID',
         key: 'userID',
         width: "10%",
+        sorter: (a, b) => a.userID - b.userID,
     },
     {
         title: 'USERNAME',
         dataIndex: 'userName',
         key: 'userName',
+        sorter: (a, b) => a.userName.length - b.userName.length,
     },
     {
-        title: 'LASTNAME',
+        title: 'LAST NAME',
         dataIndex: 'lastName',
         key: 'lastName',
+        sorter: (a, b) => a.lastName.length - b.lastName.length,
     },
     {
-        title: 'GIVENNAME',
+        title: 'FIRST NAME',
         dataIndex: 'givenName',
         key: 'givenName',
+        sorter: (a, b) => a.givenName.length - b.givenName.length,
     },
     {
-        title: 'MIDDLENAME',
+        title: 'MIDDLE NAME',
         dataIndex: 'middleName',
         key: 'middleName',
+        sorter: (a, b) => a.middleName.length - b.middleName.length,
     },
 ];
 
@@ -66,6 +71,8 @@ const dataSource = [
     },
 ]
 
+const defaultPageSize = 5;
+
 
 class UserTable extends React.Component {
     constructor(props) {
@@ -77,9 +84,10 @@ class UserTable extends React.Component {
             patientInfo: [], 
             users: [],
             pagination: {
-                pageSize: 5,
+                pageSize: defaultPageSize,
             },
             loading: false,
+            sortedInfo: null,
         }
     }
     showDrawer = () => {
@@ -96,7 +104,6 @@ class UserTable extends React.Component {
           visible: false,
           patientInfo: [],
         });
-        console.log('onClose state', this.state);
     };
 
     displayDrawerUpdate = (record) => {
@@ -110,8 +117,8 @@ class UserTable extends React.Component {
 
     fetchUsers = () => {
 		axiosCall({
-			method: 'GET',
-            url: 'lab/UserAccount',
+			method: apiGetMethod,
+            url: apiUserAccount,
         }).then(users =>{
             const pagination = { ...this.state.pagination };
             users.data.forEach(e =>{
@@ -123,21 +130,6 @@ class UserTable extends React.Component {
             });
         });
     }
-    
-    handleTableChange = (pagination, filters, sorter) => {
-        const pager = { ...this.state.pagination };
-        pager.current = pagination.current;
-        this.setState({
-          pagination: pager,
-        });
-        this.fetchUsers({
-          results: pagination.pageSize,
-          page: pagination.current,
-          sortField: sorter.field,
-          sortOrder: sorter.order,
-          ...filters,
-        });
-      };
 
     handleSelectChange = (value) => {
         const pagination = {...this.state.pagination};
@@ -152,6 +144,8 @@ class UserTable extends React.Component {
     }
 
     render() {
+        const { users, pagination, drawerButton, patientInfo, visible, drawerTitle } = this.state;
+
         return(
             <div className="user-table-options">
                 <div>
@@ -175,8 +169,8 @@ class UserTable extends React.Component {
                 <div className="user-table">
                     <Table 
                     columns={columns} 
-                    dataSource={this.state.users || dataSource}
-                    pagination={this.state.pagination}
+                    dataSource={users || dataSource}
+                    pagination={pagination}
                     rowKey={record => record.key}
                     onRow={(record) => {
                         return {     
@@ -194,14 +188,14 @@ class UserTable extends React.Component {
 
                 {/* DRAWER */}
                 <Drawer
-                    title={this.state.drawerTitle}
+                    title={drawerTitle}
                     width={1100}
-                    visible={this.state.visible}
+                    visible={visible}
                     onClose={this.onClose}
                 >
-                    <UserAccountForm 
-                        drawerButton={this.state.drawerButton} 
-                        patientInfo={this.state.patientInfo}
+                    <UserAccountForm
+                        drawerButton={drawerButton} 
+                        patientInfo={patientInfo}
                     />
                 </Drawer>
             </div>

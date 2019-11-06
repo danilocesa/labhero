@@ -4,7 +4,7 @@
 // API Methods
 export const apiGetMethod = 'GET';
 export const apiPOSTMethod = 'POST';
-export const apiPUTMethod = 'PUT';
+export const apiPutMethod = 'PUT';
 
 // API's
 export const apiURL = '----------';
@@ -17,6 +17,7 @@ export const apiUrlCheckInSpecimen = `${apiUrlPhlebo}checkinspecimen`;
 export const apiUrlPanelExamRequest = "lab/PanelExamRequesting/";
 export const apiUrlPanelExamRequestSettings = `${apiUrlPanelExamRequest}Settings/`;
 export const apiUrlGetPanelInfoByID = `${apiUrlPanelExamRequest}Settings/PanelID/`;
+export const apiUserAccount = 'lab/UserAccount';
 
 // Constants
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
