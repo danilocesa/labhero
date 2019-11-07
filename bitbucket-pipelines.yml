@@ -5,7 +5,27 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:10.15.1
 
-pipelines:          
+pipelines:   
+  tags:                         # add the 'tags' section
+    release-*:                  # specify the tag
+      - step:
+          name: Deploy For Testing
+          deployment: test
+          script:
+            - npm install
+            - npm run build
+            - pipe: atlassian/aws-s3-deploy:0.2.1
+              variables:
+                AWS_ACCESS_KEY_ID: "----------"
+                AWS_SECRET_ACCESS_KEY: "----------"
+                AWS_DEFAULT_REGION: "us-east-1"
+                S3_BUCKET: "hh-labhero-test"
+                LOCAL_PATH: "build"
+                ACL: "public-read"
+                CACHE_CONTROL: "max-age=3600"
+                EXTRA_ARGS: "--follow-symlinks"
+          artifacts:
+            - build/**             
   branches:        
     release:
       - step:
