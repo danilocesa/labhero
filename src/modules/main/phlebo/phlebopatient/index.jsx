@@ -20,7 +20,7 @@ class PhleboPatientResult extends React.Component {
 			lg={5} 
 			xl={5}
 		>
-			<PhleboPatientInfo patientInfo={this.props.patientInfo} />
+			<PhleboPatientInfo patientInfo={this.props.patientInfo} width="50%" />
 		</Col>
 		<Col 
 			xs={24} 
