@@ -10,4 +10,4 @@ export { default as CheckIcon } from './check_icon.png';
 export { default as ErrorIcon } from './error-404.png';
 export { default as CommentIcon } from './comment.png';
 export { default as LabExamRequestIcon } from './lab_exam_request.png';
-export { default as UserMaintenanceIcon } from './user_maintenance.png'
+export { default as UserMaintenanceIcon } from './user_maintenance.png';

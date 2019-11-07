@@ -1,14 +1,12 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Select, Drawer, Typography, Empty, Card } from 'antd';
+import { Row as AntRow, Col as AntCol, Table, Select, Drawer as AntDrawer, Typography, Empty as AntEmpty, Card as AntCard} from 'antd';
 
 // CUSTOM MODULES
 import PatientInfo from '../../patientinfo';
 
-
 // CSS
 import './searchresult.css';
-import axiosCall from 'services/axiosCall';
 
 // CONSTANTS
 const { Option } = Select;
@@ -17,17 +15,12 @@ const { Text } = Typography;
 class WrapperSearchLabTestResultList extends React.Component {
   state = {
 		showPatientInfo: false,
+		// eslint-disable-next-line react/no-unused-state
 		showLoading: true,
 		isLoading: false
 	};
 
   // React lifecycle
-  componentWillMount() {
-    // axiosCall({ method: 'get', url: 'waiverChecker', params: { waiver_id: 1, token: cookies.get('user_token') } }).then((resp) => {
-    //   const showMods = resp.data.data.length !== 0 ? this.setState({ showModal: false }) : null
-    //   return showMods
-    // })
-  }  
  
   componentDidMount() 
   {
@@ -35,10 +28,6 @@ class WrapperSearchLabTestResultList extends React.Component {
       showLoading: false
     });
   } 
-
- 
-
-
 
   // Custom function
   onSampleIDClick = () => {
@@ -53,129 +42,103 @@ class WrapperSearchLabTestResultList extends React.Component {
     });
   }
 
-  expandedRowRender = async (record) => {
-    // const columns = [
-    //   {
-    //     title: 'REQUEST DATE',
-    //     dataIndex: 'RequestDate',
-    //     key: 'RequestDate',
-    //     align: 'center',
-    //     width:'25%',
-    //   },
-    //   {
-    //     title: 'SAMPLE ID',
-    //     dataIndex: 'SampleId',
-    //     key: 'SampleId',
-    //     render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
-    //     width:'25%',
-    //   },
-    //   { title: 'STATUS', 
-    //     dataIndex: 'Status', 
-    //     key: 'Status',
-    //     width:'25%',
-    //   },
-    //   { title: 'HISLINK', 
-    //     dataIndex: 'HisLink', 
-    //     key: 'HisLink',
-    //     width:'25%',
-    //   },
-    // ];
+  expandedRowRender = () => {
     const data = [];
-    const teststatus = ['On-going', 'Verified', 'Cancelled'];
     for (let i = 1; i < 20; i+=1) {
       data.push({
         key: i*1000,
-        RequestDate: '04/11/2019',
-        SampleId: `100${i}`,
-        Status: teststatus[Math.floor(Math.random() * teststatus.length)],
-        HisLink: `190411200i${i}`,
+        sectionID: `100${i}`,
+        sectionName: `section name ${i}`,
+        sectionCode: `scode${i}`,
+        samplespecimenID: `ssid${i}`,
+        specimenName: `specimen name ${i}`
       });
 		}
-		
-		const exams = await this.fetchExams();
-		const columns = [
+		const expandedtablecolumns = [
       {
-        title: 'sectionID',
+        title: 'Section ID',
         dataIndex: 'sectionID',
-        key: 'RequestDate',
+        key: 'sectionID',
         align: 'center',
-        width:'25%',
+        width:'20%',
       },
       {
-        title: 'sectionName',
+        title: 'Section Name',
         dataIndex: 'sectionName',
-        key: 'SampleId',
-        render: text =>  <Text onClick={this.onSampleIDClick} className="sampleLabTestID">{text}</Text>,
-        width:'25%',
+        key: 'sectionName',
+        width:'20%',
       },
-      { title: 'sectionCode', 
+      { title: 'Section Code', 
         dataIndex: 'sectionCode', 
-        key: 'Status',
-        width:'25%',
+        key: 'sectionCode',
+        width:'20%',
+      },
+      { 
+        title: 'Sample Specimen ID', 
+        dataIndex: 'samplespecimenID', 
+        key: 'samplespecimenID',
+        width:'20%',
+      },
+      { 
+        title: 'Specimen Name', 
+        dataIndex: 'specimenName', 
+        key: 'specimenName',
+        width:'20%',
       },
     ];
-		
-		console.log(exams);
-
+    
     return (
 	    <Table
-		    columns={columns}
-		    dataSource={exams}
+		    columns={expandedtablecolumns}
+		    dataSource={data}
 		    pagination={false}
 		    size="small"
 		    scroll={{ y: 200 }}
+        onRow={(record, rowIndex) => {
+          console.log("TCL: WrapperSearchLabTestResultList -> expandedRowRender -> rowIndex", rowIndex);
+           console.log("TCL: WrapperSearchLabTestResultList -> expandedRowRender -> record", record);
+          return {
+            onDoubleClick: this.onSampleIDClick, // double click row
+          };
+        }}
+        
+      
 	    />
 		);
   };
-
-	fetchExams = async () => {
-		const response = await axiosCall({
-			method: 'GET',
-			url: 'Section',
-		});
-
-		return response.data;
-	}
 
   render() {  
     const columns = [
     { 
       title: 'PATIENT ID', 
       dataIndex: 'PatientID', 
-      key: 'PatientID',
-      sorter: (a, b) => a.PatientID - b.PatientID, 
+      key: 'PatientID' 
     },
     { 
       title: 'HOSPITAL ID', 
       dataIndex: 'HospitalID', 
-      key: 'HospitalID',
-      sorter: (a, b) => a.HospitalID - b.HospitalID, 
+      key: 'HospitalID'
     },
     { title: 'LAST NAME', 
       dataIndex: 'LastName', 
       key: 'LastName',
-      defaultSortOrder: 'ascend',
-      sorter: (a, b) => { return a.LastName.localeCompare(b.LastName)}, 
+      defaultSortOrder: 'ascend'
       },
     { title: 'FIRST NAME', 
       dataIndex: 'FirstName', 
-      key: 'FirstName',
-      sorter: (a, b) => { return a.FirstName.localeCompare(b.FirstName)},
+      key: 'FirstName'
       },
     { title: 'DATE OF BIRTH', 
       dataIndex: 'DateOfBirth', 
-      key: 'DateOfBirth',
-      sorter: (a, b) => a.DateOfBirth.length - b.DateOfBirth.length,
+      key: 'DateOfBirth'
     },
     { title: 'GENDER', 
       dataIndex: 'Gender', 
-      key: 'Gender',
-      sorter: (a, b) => { return a.Gender.localeCompare(b.Gender)},
+      key: 'Gender'
     },
     { title: 'ADDRESS', 
       dataIndex: 'Address', 
-      key: 'Address',
-      sorter: (a, b) => { return a.Address.localeCompare(b.Address)},
+      key: 'Address'
     },
     ];
     const data = [];
@@ -197,31 +160,31 @@ class WrapperSearchLabTestResultList extends React.Component {
         Address: testcityaddress[Math.floor(Math.random() * testcityaddress.length)],
       });
     }
-    const emptyTableData = <Card><Empty /></Card>
+    const emptyTableData = <AntCard><AntEmpty /></AntCard>
     return (
 	    <div>
-		    <Row style={{ paddingBottom: '0.5em' }} type="flex">
-			    <Col md={12} className="gutter-row">
+		    <AntRow style={{ paddingBottom: '0.5em' }} type="flex">
+			    <AntCol md={12} className="gutter-row">
 				    <Text strong> Search Lab Result </Text>
 				    <br />
 				    <Text> Showing <b>0</b> items out of <b>0</b> results </Text>
-			    </Col>
-			    <Col md={10} className="gutter-row" style={{ lineHeight : '2.5em'}}>
+			    </AntCol>
+			    <AntCol md={10} className="gutter-row" style={{ lineHeight : '2.5em'}}>
 				    <Text className="gutter-box" style={{ float:'right', marginRight:'1em' }}>
               Display per page 
 				    </Text>
-			    </Col>
-			    <Col className="gutter-row">
+			    </AntCol>
+			    <AntCol className="gutter-row">
 				    <Select defaultValue="10" style={{ width: '100%' }} className="gutter-box">
 					    <Option value="10">10</Option>
 					    <Option value="20">20</Option>
 					    <Option value="50">50</Option>
 					    <Option value="100">100</Option>
 				    </Select>
-			    </Col>
-		    </Row>
-		    <Row type="flex">
-			    <Col lg={24} xs={24}>
+			    </AntCol>
+		    </AntRow>
+		    <AntRow type="flex">
+			    <AntCol lg={24} xs={24}>
 						<Table
 							className="searchLabTestResultTable"
 							columns={columns}
@@ -230,18 +193,18 @@ class WrapperSearchLabTestResultList extends React.Component {
 							size="small"
 							scroll={{ y: 300 }}
 							loading={isLoading}
-							onExpand={(exapanded, record) => { console.log('onexpand'); }}
+							onExpand={() => { console.log('onexpand'); }}
 						/>
-			    </Col>
-		    </Row>
-					<Drawer
+			    </AntCol>
+		    </AntRow>
+					<AntDrawer
 						title="Patient information"
 						onClose={this.onClosePatientInfoDrawer}
 						width="80%"
 						visible={this.state.showPatientInfo}
 					>
 					<PatientInfo /> 
-					</Drawer>
+					</AntDrawer>
 	    </div>
     );
   }

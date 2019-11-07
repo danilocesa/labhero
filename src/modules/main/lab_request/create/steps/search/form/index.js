@@ -7,8 +7,9 @@ import { CLR_SEARCHED_NAME, CLR_SEARCHED_ID } from '../../constants';
 class SearchForm extends React.Component {
 	storeSearchedVal = (patientName, patientID) => {
 		if(patientID || patientName) {
-			sessionStorage.setItem(CLR_SEARCHED_NAME, patientName);
-			sessionStorage.setItem(CLR_SEARCHED_ID, patientID);
+			const { updateSearchedValue } = this.props;
+
+			updateSearchedValue(patientID, patientName);
 		}
 	}
 	
@@ -31,7 +32,9 @@ class SearchForm extends React.Component {
 
 SearchForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	displayLoading: PropTypes.func.isRequired
+	displayLoading: PropTypes.func.isRequired,
+	updateSearchedValue: PropTypes.func.isRequired
 };
+
 
 export default SearchForm;

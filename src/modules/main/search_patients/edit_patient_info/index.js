@@ -31,11 +31,11 @@ class EditProfile extends React.Component {
 
 	componentDidMount(){
 		const addressArr = [];
-		const municipalityArr = [];
-		const barangayArr = [];
-		let a = 0; 
-		let b = 0;
-		let c = 0;
+		// const municipalityArr = [];
+		// const barangayArr = [];
+		// let a = 0; 
+		// let b = 0;
+		// let c = 0;
 		console.log(addressData);
 		// Object.entries(addressData).forEach((addressTxt)=>{
     // console.log("TCL: EditProfile -> componentDidMount -> addressTxt", addressTxt)

@@ -153,7 +153,6 @@ class SectionHeader extends React.Component {
 			return specimens;
     }
 
-		
     render() {
 			const { sections, specimens, isLoading } = this.state;
 

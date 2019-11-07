@@ -38,7 +38,7 @@ class BaseForm extends React.Component {
 		const sessPersoInfo = sessionStorage.getItem(CLR_PERSONAL_INFO);
 		const sessOtherInfo = sessionStorage.getItem(CLR_OTHER_INFO);
 
-		// If user came from step 1
+		// If user came from step 1 
 		if(location.state) {
 			// eslint-disable-next-line react/prop-types
 			const { setFieldsValue } = this.props.form;
@@ -67,18 +67,18 @@ class BaseForm extends React.Component {
 	}
 
 	populateLocation = async () => {
-		const hospitalLocAPI = await hospitalLocationAPI;
+		const hospitalLocAPI = await hospitalLocationAPI();
 		
 		this.setState({ 
-			hospitalLocationList : hospitalLocAPI.data
+			hospitalLocationList : hospitalLocAPI
 		});
 	}
 
 	populatePhysician = async () => {
-		const hospitalPhyAPI = await hospitalPhysiciansAPI;
+		const hospitalPhyAPI = await hospitalPhysiciansAPI();
 
 		this.setState({ 
-			hospitalPhysicianList : hospitalPhyAPI.data
+			hospitalPhysicianList : hospitalPhyAPI
 		});
 	}
 
@@ -109,9 +109,7 @@ class BaseForm extends React.Component {
 			if (!err) {
 				const fields = getFieldsValue();
         
-				
 				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
-        console.log("TCL: BaseForm -> onSubmit -> physician", physician)
 				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
@@ -120,7 +118,6 @@ class BaseForm extends React.Component {
 				fields.physicianName +=	`${physician.middleName}. `;
 				fields.physicianName +=	`${physician.lastName}`;
 				fields.locationName = location.name;
-				console.log("TCL: BaseForm -> onSubmit -> fields", fields)
 				handleSubmit(fields);
 			}
 		});
@@ -169,7 +166,7 @@ class BaseForm extends React.Component {
 									</Col>
 								</Row>
 								<Form.Item label="EMAIL">
-									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.email })(
+									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.emailAdd })(
 										<Input />
 									)}
 								</Form.Item>
@@ -203,7 +200,7 @@ class BaseForm extends React.Component {
 									<Col span={18}>
 										<Form.Item label="DATE OF BIRTH">
 											{getFieldDecorator('dateOfBirth', { 
-												rules: FIELD_RULES.caseNumber
+												rules: FIELD_RULES.dateOfBirth
 											})(
 												<DatePicker 
 													format="MM-DD-YYYY"
@@ -229,7 +226,7 @@ class BaseForm extends React.Component {
 									)}
 								</Form.Item>
 								<Form.Item label="CONTACT NUMBER">
-									{getFieldDecorator('contactNo', { rules: FIELD_RULES.contactNo })(
+									{getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
 										<Input addonBefore="+ 63" maxLength={10} />
 									)}
 								</Form.Item>
@@ -259,7 +256,7 @@ class BaseForm extends React.Component {
 									)}
 								</Form.Item>
 								<Form.Item label="PHYSICIAN ID">
-									{getFieldDecorator('physicianID', { rules: FIELD_RULES.phisycianId })(
+									{getFieldDecorator('physicianID', { rules: FIELD_RULES.physicianId })(
 										<Select 
 											placeholder="Select a physician" 
 											allowClear

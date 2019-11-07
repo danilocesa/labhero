@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, InputNumber  } from 'antd';
+import { Drawer, Form, Input, Button, Select, InputNumber, Spin  } from 'antd';
 import PropTypes from 'prop-types';
 import DynamicForm from '../dynamic_form';
 import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
@@ -58,7 +59,6 @@ class UpdateForm extends React.Component {
 	}
 
 	async componentDidUpdate(prevProps) {
-		const { selectedItemTypeCode } = this.state;
 		const { 
 			selectedSectionId: secId, 
 			selectedSpecimenId: specId,
@@ -71,48 +71,57 @@ class UpdateForm extends React.Component {
 			selectedExamItemId: prevExamItemId 
 		} = prevProps;
 		
-
 		const propsHasChanged = secId !== prevSecId || specId !== prevSpecId || examItemId !== prevExamItemId;
 		const propsIsNotNull = secId !== null && specId !== null && examItemId !== null;
 		
+		// Note. This will run only when a prop has changed 
+		// for preventing an infinite rendering
 		if(propsHasChanged && propsIsNotNull) {
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ isFetchingData: true }, async() => {
-				// eslint-disable-next-line react/prop-types
-				const { setFieldsValue } = this.props.form;
 				const examItem = await fetchExamItem(secId, specId, examItemId);
-				this.setState({ examItemValue: examItem.examItemValue});
-
-        console.log("TCL: UpdateForm -> componentDidUpdate -> examItem", examItem)
 				
 				if(examItem) {
+					const { setFieldsValue } = this.props.form;
+					const { examItemTypeCode } = examItem;
+					const isOptnOrChbox = examItemTypeCode === DD_VAL_OPTION || examItemTypeCode === DD_VAL_CHECKBOX
+					const examItemValue = isOptnOrChbox ? examItem.examItemValue : [];
+
+					// First.
+					// Assign value to the dynamic form only if the selected 
+					// type code is option or checkbox
+					this.setState({ 
+						selectedItemTypeCode: examItemTypeCode,
+						examItemValue
+					});
 					
+					// Second. 
+					// Assign value to the fields that is always present on the form
 					setFieldsValue({ 
 						examItemId: examItem.examItemID,
 						examItemName: examItem.examItemName,
 						examItemGeneralName: examItem.examItemGeneralName,
-						examItemTypeCode: examItem.examItemTypeCode,
+						examItemTypeCode,
 						examItemIntegrationCode: examItem.examItemIntegrationCode
-					}, () => {
-						if(selectedItemTypeCode !== examItem.examItemTypeCode) {
-							this.setState({ selectedItemTypeCode: examItem.examItemTypeCode }, () => {
-								console.log(examItem.examItemTypeCode);
-
-								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
-									setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
-								}
-									
-								if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
-									|| selectedItemTypeCode === DD_VAL_NUMERIC 
-									|| selectedItemTypeCode === DD_VAL_TEXT_AREA
-								){
-									setFieldsValue({ examItemTypeDefault: examItem.examItemValue[0].examItemValueLabel });
-								}
-								
-							});
-						}
 					});
+
+					// Third. 
+					// Assign value to the fields that correspond to the selected
+					// item type code. E.g Alpha numeric, textarea, etc.
+					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
+						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
+					}
+					
+					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
+						|| examItem.examItemTypeCode === DD_VAL_NUMERIC 
+						|| examItem.examItemTypeCode === DD_VAL_TEXT_AREA
+					){
+						setFieldsValue({ examItemTypeDefault: '' });
+					}
+
 				}
+
+				this.setState({ isFetchingData: false });
 			});
 		}	
 
@@ -129,6 +138,7 @@ class UpdateForm extends React.Component {
 		const { selectedItemTypeCode } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
+		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
@@ -136,23 +146,34 @@ class UpdateForm extends React.Component {
 				// @ts-ignore	
 				? this.dynamicForm.getFormValues() 
 				: { hasError: false };
-
+				
 			if (!err && !dynaFormFields.hasError) {
 				const fields = getFieldsValue();
+				const examItemValueParam = [];
+
+				if(selectedItemTypeCode === DD_VAL_OPTION || selectedItemTypeCode === DD_VAL_CHECKBOX){  
+					dynaFormFields.formValues.map(value=> (
+						examItemValueParam.push({
+							examItemValueDefault: value.isDefault ? 1 : 0,
+							examItemValueLabel: value.label
+						})
+					));
+
+					fields.examItemValue = examItemValueParam;
+				} 
+
 				const payload = { 
 					...fields, 
-					examItemTypeItems: dynaFormFields.formValues, 
 					sectionID: selectedSectionId,
 					specimenID: selectedSpecimenId
 				};
 
 				this.setState({ isLoading: true }, async () => {
-					const createdExamItem = await updateExamItem(payload);
+					const updatedExamItem = await updateExamItem(payload);
 					this.setState({ isLoading: false });
 					
-					if(createdExamItem) {
+					if(updatedExamItem) 
 						onSuccess();
-					}
 				});
 			}
 		});
@@ -167,11 +188,12 @@ class UpdateForm extends React.Component {
 			isFetchingData,
 			examItemValue
 		} = this.state;
-
-		// eslint-disable-next-line react/prop-types
-		const { onClose, visible, form } = this.props;
-		const { getFieldDecorator } = form;
 	
+		const { onClose, visible, form } = this.props;
+		const { getFieldDecorator, getFieldsValue } = form;
+		
+		const fieldsValue = getFieldsValue();
+		
 		const UnitMeasureOptions = unitOfMeasures.map(unit => (
 			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
 				{unit.unitOfMesureBase}
@@ -195,8 +217,13 @@ class UpdateForm extends React.Component {
 				onClose={onClose}
 				visible={visible}
 			>
+				
 				<Form onSubmit={this.onSubmit} className="exam-item-update-form">
-					<section style={{ marginBottom: 50 }}>
+					<Spin 
+						tip="Loading..."
+						spinning={isFetchingData}
+					>
+						<section style={{ marginBottom: 60 }}>
 						<Form.Item label="Exam Item Name">
 							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
 								<Input />
@@ -241,8 +268,8 @@ class UpdateForm extends React.Component {
 								// @ts-ignore
 								<DynamicForm 
 									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
-									itemValue={examItemValue}
-									formType="update"
+									examItemValue={examItemValue}
+									examId={fieldsValue.examItemId}
 								/> 
 						)}
 						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
@@ -259,7 +286,8 @@ class UpdateForm extends React.Component {
 								<Input />
 							)}
 						</Form.Item>
-					</section>
+      </section>
+					</Spin>
 					<section style={styles.footer}>
 						<div>
 							<Button 

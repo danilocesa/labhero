@@ -7,64 +7,28 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
 
-import { CLR_STEP_PROGRESS } from 'modules/main/lab_request/create/steps/constants'; 
+import { 
+	CLR_STEP_PROGRESS, 
+	CLR_SEARCHED_ID,
+	CLR_SEARCHED_NAME 
+} from 'modules/main/lab_request/create/steps/constants'; 
 
 // CSS
 import './table.css';
 
-// CONSTANTS
-// const columns = [
-// 	{
-// 		title: 'LAST NAME',
-// 		dataIndex: 'lastName',
-// 		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
-// 		width: '15%'
-// 	},
-// 	{
-// 		title: 'FIRST NAME',
-// 		dataIndex: 'givenName',
-// 		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
-// 		width: '15%'
-// 	},
-// 	{
-// 		title: 'MIDDLE NAME',
-// 		dataIndex: 'middleName',
-// 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
-// 		width: '15%'
-// 	}, 
-// 	{
-// 		title: 'DATE OF BIRTH',
-// 		dataIndex: 'dateOfBirth',
-// 		sorter: (a, b) => a.dateOfBirth.localeCompare(b.dateOfBirth),
-// 		width: '14%'
-// 	},
-// 	{
-// 		title: 'GENDER',
-// 		dataIndex: 'sex',
-// 		sorter: (a, b) => a.sex.localeCompare(b.sex),
-// 		width: '12%'
-// 	},
-// 	{
-// 		title: 'ADDRESS',
-// 		dataIndex: 'address',
-// 		sorter: (a, b) => a.address.localeCompare(b.address),
-// 	},
-// ];
-
-// console.log(columns[0]);
-
-// getSorter = (data) => data.length > 0 ? (a, b) => a.lastName.localeCompare(b.lastName) : false;
-
 class SearchPatientTable extends React.Component {
 	handleDoubleClick = (record, redirect) => {
 		// eslint-disable-next-line react/prop-types
-		const { history, drawer } = this.props;
+		const { history, drawer, SearchedPatientId, SearchedPatientName } = this.props;
 		if(redirect) {
 			// Strip some properties in the record object coz we dont need it
 			delete record.dateCreated;
 			delete record.addressID;
 
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
+			sessionStorage.setItem(CLR_SEARCHED_ID, SearchedPatientId);
+			sessionStorage.setItem(CLR_SEARCHED_NAME, SearchedPatientName);
+			
 			history.push(redirect, { record });
 		}
 		else  {
@@ -144,7 +108,6 @@ class SearchPatientTable extends React.Component {
 								}
 							};
 						}}
-          
 					/>
 				</div>
 			</Spin>
@@ -160,12 +123,19 @@ SearchPatientTable.propTypes = {
 		middleName: PropTypes.string.isRequired,
 		dateOfBirth: PropTypes.string.isRequired,
 		sex: PropTypes.string.isRequired,
-		contactNo: PropTypes.string.isRequired,
-		emailAdd: PropTypes.string.isRequired
+		contactNo: PropTypes.string,
+		emailAdd: PropTypes.string
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,
-	redirectUrl:PropTypes.string.isRequired,
+	redirectUrl: PropTypes.string.isRequired,
+	SearchedPatientId: PropTypes.string,
+	SearchedPatientName: PropTypes.string
 };
+
+SearchPatientTable.defaultProps = {
+	SearchedPatientId: '',
+	SearchedPatientName: ''
+}
 
 export default withRouter(SearchPatientTable);

@@ -30,7 +30,7 @@ class ExamItems extends React.Component {
 		isLoading: false,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		pageSize: 5,
+		pageSize: 10,
 		examItems: [],
 		ddSections: [],
 		ddSpecimens: [],

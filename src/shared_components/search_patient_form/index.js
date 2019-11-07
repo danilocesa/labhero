@@ -53,25 +53,26 @@ class SearchPatientForm extends React.Component {
 
 	
 	async componentDidMount() {
-		const { 
-			sessionPatientID, 
-			sessionPatientName, 
-			populatePatients,
-			displayLoading 
-		} = this.props;
+		// const { 
+		// 	sessionPatientID, 
+		// 	sessionPatientName, 
+		// 	populatePatients,
+		// 	displayLoading 
+		// } = this.props;
 
-		if(sessionPatientID || sessionPatientName) {
-			this.setState({ 
-				patientID: sessionPatientID,
-				patientName: sessionPatientName
-			});
+		
+		// if(sessionPatientID || sessionPatientName) {
+		// 	this.setState({ 
+		// 		patientID: sessionPatientID,
+		// 		patientName: sessionPatientName
+		// 	});
 			
-			displayLoading(true);
-			const patients = await this.fetchPatients(sessionPatientName, sessionPatientID);
-			displayLoading(false);
+		// 	displayLoading(true);
+		// 	const patients = await this.fetchPatients(sessionPatientName, sessionPatientID);
+		// 	displayLoading(false);
 			
-			populatePatients(patients);
-		}
+		// 	populatePatients(patients);
+		// }
 	}
 
 
@@ -93,10 +94,9 @@ class SearchPatientForm extends React.Component {
 		this.setState({ loading: false });
 
 		populatePatients(patients);
-		
-		if(patients.length > 0) 
-			storeSearchedVal(patientName, patientID);
-		else
+		storeSearchedVal(patientName, patientID);
+
+		if(patients.length <= 0) 
 			Message.info('No results found');
 	}
 
@@ -108,9 +108,8 @@ class SearchPatientForm extends React.Component {
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
       });
 			const { data } = await response;
-	
-			patients = data ? data.patient : [];
 			
+			patients = data ? data.patient : [];
 		}
 		catch(error) {
 			Message.error();

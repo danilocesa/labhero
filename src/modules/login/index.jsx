@@ -36,8 +36,7 @@ class Login extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 
-		this.setState({loading: true});
-		// console.log(this.state.loading);
+		this.setState({ loading: true });
 
 		const { username, password, userid } = this.state;
 
@@ -45,8 +44,14 @@ class Login extends React.Component {
 			if (username !== '' && password!== '') {
 				if (!err) {
 					const response = await this.login(username, password, userid);
+					
 					if(response && response.status === 200) {
-						sessionStorage.setItem('LOGGEDIN_USER_DATA',JSON.stringify(response.data));
+						const loggedinUserData = {
+							...response.data,
+							password
+						};
+						
+						sessionStorage.setItem('LOGGEDIN_USER_DATA', JSON.stringify(loggedinUserData));
 						auth.authenticate();
 						message.success('You are now successfully logged in!', 1.5);
 						

@@ -35,6 +35,7 @@ class SelectStep extends React.Component {
 		},
 		selectedSpecimen: {},
 		selectedExams: [],
+		selectedContents: [],
 		exams: [], // holds the list of exam to be selected (left side)
 		panels: [], // holds the list of panel to be selected (left side)
 		panelRef: [], // holds the reconstructed panel object from raw response panel object
@@ -56,17 +57,23 @@ class SelectStep extends React.Component {
 	}
 
 	populateExams = (exams) => {
-		const { selectedExams } = this.state;
+		const { selectedExams, selectedContents } = this.state;
 
 		const processedExams = exams.map(exam => { 
 			const isSelected = selectedExams.some(item => exam.examCode === item.examCode);
 			const isDisabled = selectedExams.some(item => {
+				const isInContents = selectedContents.some(selContent => exam.contents.includes(selContent));
+
 				if(item.examID === exam.examID && item.selectedPanel !== null)
+					return true;
+
+				if(isInContents && !isSelected)
 					return true;
 
 				return false
 			});
 
+			
 			return { ...exam, isSelected, isDisabled };
 		});
 
@@ -205,27 +212,53 @@ class SelectStep extends React.Component {
 	// Note. This function is use to add the selected exam from list
 	// the list of exams table (left) into selected exams table (right).
 	// Used when selecting exam
-	addSelectedExamByExam = ({ examID, examName, examCode }) => {
-		const { selectedSection, selectedSpecimen } = this.state;
+	addSelectedExamByExam = ({ examID, examName, examCode, contents }) => {
+		const { selectedSection, selectedSpecimen, selectedContents } = this.state;
+		const existingContent = selectedContents.some(iContent => contents.includes(iContent));
+		const newSelectedContents = selectedContents.map(item => item); // Clone selectedContents
+		
+		// Add selectedContent to the array of selectedContent(s)
+		if(!existingContent)
+			newSelectedContents.push(...contents);
+
+		this.setState({ selectedContents: newSelectedContents }, () => {
+			// eslint-disable-next-line no-shadow
+			const { exams, selectedContents } = this.state;
+			
+			// Note. Disable exams that is in the selectedContents
+			const newExams = exams.map(exam => {
+				const isDisabled = selectedContents.some(item => {
+					return exam.contents.includes(item) && exam.examID !== examID && !exam.isSelected
+				});
+				
+				return { 
+					...exam, 
+					// Note. Do not enable if already disabled, This is for SelectByPanel Rule
+					isDisabled: exam.isDisabled ? exam.isDisabled : isDisabled  
+				};
+			});
+
+			this.setState({ exams: newExams });
+		});
 
 		this.addSingleExam({ examID, examName, examCode, selectedSection, selectedSpecimen });
 	}
 
-	// Note. This function is use append single exam to the exam state
+	// Note. This function is use to append single exam to the exam state
 	// Private function
 	addSingleExam = (exam) => {
 		const { examID, selectedPanel = null } = exam;
 		
-		// Note! DO NOT MUTATE THE STATE OBJECT!
+		// Note. DO NOT MUTATE THE STATE OBJECT!
 		// You will have a nightmare if you do.
 		this.setState(state => {
-			const { selectedExams } = state;
-			const existing = selectedExams.some(item => item.examID === examID);
-			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams));
-
-			if(!existing) 
+			const { selectedExams,  } = state;
+			const existingExam = selectedExams.some(iExam => iExam.examID === examID);
+			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
+			
+			if(!existingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });
-
+			
 			return { selectedExams: newSelectedExams };
 		});
 	}
@@ -253,14 +286,22 @@ class SelectStep extends React.Component {
 		this.setState({ selectedExams: filteredExams });
 	}
 
-	// Note. This function is use for removing single exams 
+	// Note. This function is use for removing single exam 
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
-		const { selectedExams, selectedSection } = this.state;
+		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
+		const targetExam = exams.find(exam => examID === exam.examID);
+
 		const newState = {
-			selectedExams: selectedExams.filter(item => item.examID !== examID)
+			selectedExams: selectedExams.filter(item => item.examID !== examID),
+			selectedContents: selectedContents.filter(item => {
+				if(targetExam)
+					return !targetExam.contents.includes(item);
+
+				return false;	
+			})
 		};
 
 		this.setState(newState, () => {
@@ -272,24 +313,35 @@ class SelectStep extends React.Component {
 	removeAllExams = () => {
 		const { exams } = this.state;
 
-		this.setState({ selectedExams: [] });
-
-		this.unselectExams(exams);
+		this.setState({ selectedExams: [], selectedContents: [] }, () => {
+			this.unselectExams(exams);
+		});
 	}
 
 	// Note. This function is use to unselect exam list table(left)
 	// when removing exam from selected exam table(right).
 	// Private function
 	unselectExams = (unselectedExams) => {
-		const { exams } = this.state;
+		const { exams, selectedContents, selectedExams } = this.state;
 
 		const processedExams = exams.map(exam => { 
 			// Check if current exam is in the unselected exams
-			const isExisting = unselectedExams.some(uexam => exam.examID === uexam.examID);
-			
-			if(isExisting) return { ...exam, isSelected: false };
+			const isExistInUExam = unselectedExams.some(uexam => exam.examID === uexam.examID);
+			const isExistInContents = selectedContents.some(selContent => {
+				return exam.contents.includes(selContent);
+			});
+			const isExisInSelExams = selectedExams.some(selExam => exam.examID === selExam.examID);
+			let isDisabled = false;
+		
+			if(!exam.isSelected && isExistInContents) 
+				isDisabled = true;
+			else if(isExisInSelExams && !isExistInContents)
+				isDisabled = true;
 
-			return exam;
+			if(isExistInUExam) 
+				return { ...exam, isSelected: false, isDisabled };
+
+			return { ...exam, isDisabled };
 		});
 
 		this.setState({ exams: processedExams });

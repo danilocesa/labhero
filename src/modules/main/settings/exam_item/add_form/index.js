@@ -64,6 +64,7 @@ class AddForm extends React.Component {
 		const { selectedRsType } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
+		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
@@ -74,23 +75,23 @@ class AddForm extends React.Component {
 				: { hasError: false };
 			
 			if (!err && !dynaFormFields.hasError) {
-				let fields = getFieldsValue();
+				// Define default values
+				const examItemValueDefault = [{ examItemValueDefault: 1, examItemValueLabel: "Default" }];
+				const fields = { ...getFieldsValue(), examItemValue: examItemValueDefault };
 				
-				if(selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX){  // If checkbox or option get default & label in dynamic form
+				// If checkbox or option get default & label in dynamic form
+				if(selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX){  
 					const examItemValueParam = [];
-					dynaFormFields.formValues.map(value=> (
+					dynaFormFields.formValues.forEach(value => (
 						examItemValueParam.push({
-							"examItemValueDefault": value.isDefault ? 1 : 0,
-							"examItemValueLabel": value.label
+							examItemValueDefault: value.isDefault ? 1 : 0,
+							examItemValueLabel: value.label
 						})
 					));
-					fields = Object.assign({examItemValue: examItemValueParam},fields);
-				} else { // Assign default value
-					fields = Object.assign({examItemValue: [{
-						"examItemValueDefault": 1,
-						"examItemValueLabel": fields.examItemTypeDefault
-					}]},fields);
-				}
+
+					fields.examItemValue = examItemValueParam;
+				} 
+
 				delete fields.examItemTypeDefault; // We don't need it
 
 				const payload = { 
@@ -99,7 +100,7 @@ class AddForm extends React.Component {
 					sectionID: selectedSectionId,
 					specimenID: selectedSpecimenId
 				};
-			
+				
 				this.setState({ isLoading: true }, async () => {
 					const createdExamItem = await createExamItem(payload);
 					this.setState({ isLoading: false });
@@ -127,6 +128,7 @@ class AddForm extends React.Component {
 		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { onClose, visible, form } = this.props;
+		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = form;
 	
 		const UnitMeasureOptions = unitOfMeasures.map(unit => (
@@ -196,10 +198,7 @@ class AddForm extends React.Component {
 						)}
 						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
 							// @ts-ignore
-							<DynamicForm 
-								wrappedComponentRef={(inst) => this.dynamicForm = inst}
-								formType="add"
-							/>
+							<DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
 							<>

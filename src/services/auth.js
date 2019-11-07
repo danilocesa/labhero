@@ -17,7 +17,7 @@ const auth = {
     // sessionStorage.removeItem(SELECTED_SIDER_KEY);
     sessionStorage.setItem(SELECTED_SIDER_KEY, '1');
     window.location.reload();
-  }
+	}
 };
 
 export default auth;

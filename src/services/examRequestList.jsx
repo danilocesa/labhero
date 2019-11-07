@@ -15,4 +15,4 @@ async function examRequestListAPI() {
   return data;
 }
 
-export default examRequestListAPI();
+export default examRequestListAPI;
