@@ -79,7 +79,6 @@ class SpecimenList extends React.Component {
 				}
 			});
 			data = response;
-			
 		}
 		catch(e) {
     	console.log("TCL: SpecimenList -> checkIn -> e", e)
@@ -119,7 +118,7 @@ class SpecimenList extends React.Component {
 					{
 						return {
 							props: {
-								colSpan: 5,
+								colSpan: '5',
 							},
 							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
 							"phlebo_section_col": keyExams,
@@ -138,46 +137,51 @@ class SpecimenList extends React.Component {
 	render() {  
 		const columns = [
 		{ 
+			title: '',
+			width: 50
+		},
+		{ 
 			title: 'SECTION', 
-			dataIndex: 'phlebo_section_col', 
+			dataIndex: 'phlebo_section_col',
 			key: 'phlebo_section_col',
-			width: "10%"
+			width: '15%'
 		},
 		{ 
 			title: 'SPECIMEN', 
-			dataIndex: 'phlebo_specimen_col', 
+			dataIndex: 'phlebo_specimen_col',
 			key: 'phlebo_specimen_col',
-			width: "10%"
+			width: '13%'
 		},
 		{ 
 			title: 'SAMPLE ID', 
-			dataIndex: 'phlebo_sampleid_col', 
+			dataIndex: 'phlebo_sampleid_col',
 			key: 'phlebo_sampleid_col',
-			width: "10%"
+			width: '10%'
 		},
 		{ 
 			title: 'EXTRACTED BY', 
-			dataIndex: 'phlebo_user_col', 
+			dataIndex: 'phlebo_user_col',
 			key: 'phlebo_user_col',
-			width: "10%"
+			width: '13%'
 		},
 		{ 
 			title: 'DATE EXTRACTED', 
-			dataIndex: 'phlebo_dateExtracted_col', 
+			dataIndex: 'phlebo_dateExtracted_col',
 			key: 'phlebo_dateExtracted_col',
-			width: "10%"
+			width: '15%'
 		},
 		{ 
 			title: 'STATUS',
-			dataIndex: 'phlebo_status_col', 
+			dataIndex: 'phlebo_status_col',
 			key: 'phlebo_status_col',
-			width: "10%",
+			width: '15%',
 			render:(button,value) => {
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
 						<Button 
 							id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
-							onClick={this.onChange} 
+							onClick={this.onChange}
+							loading={this.state.loading}
 							data-sectionid={value.phlebo_sectionID} 
 							data-specimenid={value.phlebo_specimenID} 
 							data-requestid={value.phlebo_requestID}
@@ -189,13 +193,12 @@ class SpecimenList extends React.Component {
 					</Col>
 				)
 			}
-			
 		},
 		{ 
-			title: 'PRINT',
-			dataIndex: 'phlebo_print_col', 
+			title: '',
+			dataIndex: 'phlebo_print_col',
 			key: 'phlebo_print_col',
-			width: "10%",
+			width: 100,
 			render:(button,value) => {
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
@@ -203,13 +206,13 @@ class SpecimenList extends React.Component {
 							id={`phlebo_printButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
 							onClick={this.handlePrint} 
 							className="extract-phlebo-btn"
+							icon="printer"
 						>
-							{'PRINT'} 
+							{''} 
 						</Button>
 					</Col>
 				)
 			}
-			
 		},
 	];
 	
