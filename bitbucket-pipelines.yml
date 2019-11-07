@@ -35,6 +35,7 @@ pipelines:
           caches:
             - node
           script:
+            - npm install react-app-rewired --save-dev
             - npm install
             - npm run build
           artifacts:
