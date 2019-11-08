@@ -84,8 +84,9 @@ class UpdateForm extends React.Component {
 				if(examItem) {
 					const { setFieldsValue } = this.props.form;
 					const { examItemTypeCode } = examItem;
-					const isOptnOrChbox = examItemTypeCode === DD_VAL_OPTION || examItemTypeCode === DD_VAL_CHECKBOX
-					const examItemValue = isOptnOrChbox ? examItem.examItemValue : [];
+					// const isOptnOrChbox = examItemTypeCode === DD_VAL_OPTION || examItemTypeCode === DD_VAL_CHECKBOX
+					// const examItemValue = isOptnOrChbox ? examItem.examItemValue : [];
+					const examItemValue = examItem.examItemValue || [];
 
 					// First.
 					// Assign value to the dynamic form only if the selected 
@@ -111,12 +112,14 @@ class UpdateForm extends React.Component {
 					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
 						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
 					}
-					
+
+					console.log(examItemValue);
 					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_TEXT_AREA
 					){
-						setFieldsValue({ examItemTypeDefault: '' });
+						const defaultVal = examItemValue.length > 0 ? examItemValue[0].examItemValueLabel : null;
+						setFieldsValue({ examItemTypeDefault: defaultVal });
 					}
 
 				}
@@ -161,6 +164,15 @@ class UpdateForm extends React.Component {
 
 					fields.examItemValue = examItemValueParam;
 				} 
+
+				if(selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || 
+					 selectedItemTypeCode === DD_VAL_NUMERIC || 
+					 selectedItemTypeCode === DD_VAL_TEXT_AREA ) {
+					 fields.examItemValue = [{ 
+						 examItemValueDefault: 0,
+						 examItemValueLabel: fields.examItemTypeDefault
+					 }];
+			 	}
 
 				const payload = { 
 					...fields, 
@@ -293,6 +305,7 @@ class UpdateForm extends React.Component {
 							<Button 
 								shape="round" 
 								style={{ margin: 10 }}
+								onClick={onClose}
 							>
 								CANCEL
 							</Button>
