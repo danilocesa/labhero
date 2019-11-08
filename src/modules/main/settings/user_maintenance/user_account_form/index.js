@@ -313,14 +313,14 @@ class UserAccountForm extends React.Component {
                                             </Select>)
                                         }
                                     </Form.Item>
-                                    <Form.Item className="checkboxUser" {...tailFormItemLayout}>
+                                    {/* <Form.Item className="checkboxUser" {...tailFormItemLayout}>
                                         {
                                             getFieldDecorator('allow_add_edit')(
                                             <Checkbox>
                                                 Allow to add and/or edit users
                                             </Checkbox>)
                                         }
-                                    </Form.Item>
+                                    </Form.Item> */}
                                     <Form.Item className="checkboxUser" {...tailFormItemLayout}>
                                         {
                                             getFieldDecorator('allow_printing')(
@@ -331,20 +331,21 @@ class UserAccountForm extends React.Component {
                                     </Form.Item>
                                 </div>
                             </Col>
-                            <Col span={24} style={{ marginTop: '25px' }}>
+                            {/* <Col span={24} style={{ marginTop: '25px' }}>
                                 <div className="form-title" style={{ paddingLeft: '25px' }}>
                                     <Text strong>User Department</Text>
                                 </div>
-                            </Col>
-                            <Col span={20} offset={2} className="user-table-drawer">
+                            </Col> */}
+                            {/* <Col span={20} offset={2} className="user-table-drawer">
                                 <Table columns={columns} dataSource={dataSource} pagination={false} />
-                            </Col>
+                            </Col> */}
                             <div
                                 style={{
-                                position: 'absolute',
+                                position: 'fixed',
                                 left: 0,
                                 bottom: 0,
                                 width: '100%',
+                                marginTop: '25px',
                                 borderTop: '1px solid #e9e9e9',
                                 padding: '10px 16px',
                                 background: '#fff',
