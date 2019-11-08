@@ -321,14 +321,14 @@ class UserAccountForm extends React.Component {
                                             </Checkbox>)
                                         }
                                     </Form.Item> */}
-                                    <Form.Item className="checkboxUser" {...tailFormItemLayout}>
+                                    {/* <Form.Item className="checkboxUser" {...tailFormItemLayout}>
                                         {
                                             getFieldDecorator('allow_printing')(
                                             <Checkbox>
                                                 Allow printing
                                             </Checkbox>)
                                         }
-                                    </Form.Item>
+                                    </Form.Item> */}
                                 </div>
                             </Col>
                             {/* <Col span={24} style={{ marginTop: '25px' }}>
