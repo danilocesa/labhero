@@ -22,25 +22,25 @@ const columns = [
         title: 'USERNAME',
         dataIndex: 'userName',
         key: 'userName',
-        sorter: (a, b) => a.userName.length - b.userName.length,
+        sorter: (a, b) => a.userName.localeCompare(b.userName),
     },
     {
         title: 'LAST NAME',
         dataIndex: 'lastName',
         key: 'lastName',
-        sorter: (a, b) => a.lastName.length - b.lastName.length,
+        sorter: (a, b) => a.lastName.localeCompare(b.lastName),
     },
     {
         title: 'FIRST NAME',
         dataIndex: 'givenName',
         key: 'givenName',
-        sorter: (a, b) => a.givenName.length - b.givenName.length,
+        sorter: (a, b) => a.givenName.localeCompare(b.givenName),
     },
     {
         title: 'MIDDLE NAME',
         dataIndex: 'middleName',
         key: 'middleName',
-        sorter: (a, b) => a.middleName.length - b.middleName.length,
+        sorter: (a, b) => a.middleName.localeCompare(b.middleName),
     },
 ];
 
