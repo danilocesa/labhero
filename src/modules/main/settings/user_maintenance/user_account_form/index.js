@@ -128,7 +128,15 @@ class UserAccountForm extends React.Component {
                     lastName : values.lastName,
                     middleName : values.middleName,
                     password : values.password,
+                    registryNumber : values.registration_no,
+                    registryValidityDate: values.registration_validity,
                  };
+
+                 if(drawerButton === 'Update'){
+                     v_data.userID = values.userID;
+                 }
+
+                
                 this.handleApi({method: v_method, url: apiUserAccount, data: v_data});
              }
           });
@@ -179,6 +187,7 @@ class UserAccountForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         const { patientInfo } = this.props;
+        console.log('PatientInfo ->',patientInfo);
         return(
             <div>
                 <Row gutter={40}>
@@ -277,24 +286,19 @@ class UserAccountForm extends React.Component {
                                     <div className="form-title">
                                         <Text strong>Other Information</Text>
                                     </div>
-
-                                    <Form.Item label="AUTOLOCK (MINUTES)">
-                                        {
-                                            getFieldDecorator('autolock_min')(
-                                            <Input />)
-                                        }
-                                    </Form.Item>
-
                                     <Form.Item label="REGISTRATION NO.">
                                         {
-                                            getFieldDecorator('registration_no')(
+                                            getFieldDecorator('registration_no',{
+                                                initialValue: patientInfo.registryNumber
+                                            })(
                                             <Input />)
                                         }
                                     </Form.Item>
-
                                     <Form.Item label="REGISTRATION VALIDITY">
                                         {
-                                            getFieldDecorator('registration_validity')(
+                                            getFieldDecorator('registration_validity',{
+                                                initialValue: patientInfo.registryValidityDate
+                                            })(
                                             <Input />)
                                         }
                                     </Form.Item>
@@ -313,22 +317,6 @@ class UserAccountForm extends React.Component {
                                             </Select>)
                                         }
                                     </Form.Item>
-                                    {/* <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        {
-                                            getFieldDecorator('allow_add_edit')(
-                                            <Checkbox>
-                                                Allow to add and/or edit users
-                                            </Checkbox>)
-                                        }
-                                    </Form.Item> */}
-                                    {/* <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        {
-                                            getFieldDecorator('allow_printing')(
-                                            <Checkbox>
-                                                Allow printing
-                                            </Checkbox>)
-                                        }
-                                    </Form.Item> */}
                                 </div>
                             </Col>
                             {/* <Col span={24} style={{ marginTop: '25px' }}>
