@@ -1,4 +1,5 @@
-const FIELD_RULES = {
+export const drawerTitle = 'ADD EXAM REQUEST';
+export const FIELD_RULES = {
 	examName: [
     { required: true, message: 'This field is required.' }
 	],
@@ -20,6 +21,16 @@ const FIELD_RULES = {
 	specimenID: [
 		{ required: false, message: 'This field is required.' },
 	],
+};
+
+export const FIELD_LABELS = {
+	examName : 'NAME*', 
+	examCode: 'CODE',
+	loinc: 'LOINC',
+	integrationCode: 'INTEGRATION CODE',
+	examSort: 'EXAM SORT',
+	sectionID : 'SECTION ID',
+	specimenID : 'SPECIMEN ID',
 };
 
 export default FIELD_RULES;

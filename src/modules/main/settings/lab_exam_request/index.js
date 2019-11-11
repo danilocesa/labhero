@@ -10,6 +10,8 @@ import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
 
 import { fetchSection, fetchSpecimens, fetchExamRequest } from './api_repo';
+import { moduleTitle, messages, buttons, placeHolders, labels } from './settings';
+// import { settings } from 'cluster';
 
 const { Title } = Typography;
 
@@ -62,7 +64,7 @@ class LabExamRequest extends React.Component {
 	}
 	
 	onSuccessCreateExamReq = () => {
-		Message.success({ message: 'Exam request successfully updated.' });
+		Message.success({ message: messages.updateSuccess });
 
 		this.setState({ isLoading: true, isShowAddForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
@@ -76,7 +78,7 @@ class LabExamRequest extends React.Component {
 	}
 
 	onSuccessUpdateExamReq = () => {
-		Message.success({ message: 'Exam request successfully updated.' });
+		Message.success({ message: messages.updateSuccess });
 
 		this.setState({ isLoading: true, isShowUpdateForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
@@ -151,7 +153,7 @@ class LabExamRequest extends React.Component {
 				<Col span={10}>
 					<DropDown 
 						size="small"
-						placeholder="Filter by Specimen"
+						placeholder={placeHolders.specimenDropdown}
 						content={ddSpecimens} 
 						disabled={selectedSectionId == null}
 						onChange={this.onChangeSpecimen}
@@ -172,7 +174,7 @@ class LabExamRequest extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId == null}
 				>
-					<Icon type="plus" /> Add Exam Request
+					<Icon type="plus" />{buttons.addExamButtonLabel}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -181,11 +183,11 @@ class LabExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Exam Request</Title>
+					<Title level={3}> { moduleTitle } </Title>
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="SECTION" 
-							placeholder="Select Section"
+							label={labels.sectionLabel} 
+							placeholder={placeHolders.sectionDropdown}
 							content={ddSections} 
 							onChange={this.onChangeSection}
 							value={selectedSectionId}
