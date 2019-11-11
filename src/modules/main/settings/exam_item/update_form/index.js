@@ -222,7 +222,7 @@ class UpdateForm extends React.Component {
 
 		return (
 			<Drawer
-				title="Update Exam"
+				title="UPDATE EXAM"
 				width="400"
 				placement="right"
 				closable
@@ -236,17 +236,17 @@ class UpdateForm extends React.Component {
 						spinning={isFetchingData}
 					>
 						<section style={{ marginBottom: 60 }}>
-						<Form.Item label="Exam Item Name">
+						<Form.Item label="EXAM ITEM NAME">
 							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="Exam Item General Name">
+						<Form.Item label="EXAM ITEM GENERAL NAME">
 							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="Exam Item Type">
+						<Form.Item label="EXAM ITEM TYPE">
 							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
@@ -255,12 +255,12 @@ class UpdateForm extends React.Component {
 						</Form.Item>
 						{ selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC && (
 							<>
-								<Form.Item label="Unit of Measures">
+								<Form.Item label="UNIT OF MEASURES">
 									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
 										<Select>{UnitMeasureOptions}</Select>
 									)}
 								</Form.Item>
-								<Form.Item label="Default Value">
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
 										<Input />
 									)}
@@ -269,7 +269,7 @@ class UpdateForm extends React.Component {
 						)}
 						{ (selectedItemTypeCode === DD_VAL_NUMERIC) && (
 							<>
-								<Form.Item label="Default Value">
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
 										<InputNumber style={styles.fullWidth} />
 									)}
@@ -286,14 +286,14 @@ class UpdateForm extends React.Component {
 						)}
 						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
 							<>
-								<Form.Item label="Default Value">
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
 										<TextArea />
 									)}
 								</Form.Item>
 							</>
 						)}
-						<Form.Item label="Integration Code">
+						<Form.Item label="INTEGRATION CODE">
 							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
 								<Input />
 							)}
