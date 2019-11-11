@@ -109,8 +109,8 @@ class PanelTable extends React.Component {
 	displayDrawerUpdate = (record) => {
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: 'Update Panel',
-			drawerButton: 'Update',
+			drawerTitle: 'UPDATE PANEL',
+			drawerButton: 'UPDATE',
 			panelInfo: record
 		});
 	}
@@ -125,8 +125,8 @@ class PanelTable extends React.Component {
 		this.setState({ loading:true });
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: 'Add Panel',
-			drawerButton: 'Add',
+			drawerTitle: 'ADD PANEL',
+			drawerButton: 'ADD',
 			panelInfo: {},
 			loading:false
 		})
@@ -150,7 +150,7 @@ class PanelTable extends React.Component {
 						onClick={this.showDrawer}
 					>
 						<AntIcon type="plus" />
-						Add Panel
+						ADD PANEL
 					</AntButton>
 					<Text>Display per page</Text>
 					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
