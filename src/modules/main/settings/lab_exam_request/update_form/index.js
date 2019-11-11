@@ -103,6 +103,10 @@ class UpdateForm extends React.Component {
 		});
 	}
 	
+	onDragAndDropRow = (selectedExams) => {
+		this.setState({ selectedExams });
+	}	
+
 	onSelectSelectionTable = (selectedExam) => {
 		const { selectedExams } = this.state;
 		const newSelectedExams = [ ...selectedExams, selectedExam ];
@@ -226,6 +230,7 @@ class UpdateForm extends React.Component {
 									<SelectedTable 
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
+										onDragAndDropRow={this.onDragAndDropRow}
 										loading={false}
 										// onChange={this.onChangeSelectedTable}
 									/>		

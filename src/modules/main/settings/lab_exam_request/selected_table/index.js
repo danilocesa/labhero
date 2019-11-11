@@ -1,6 +1,12 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form } from 'antd';
+import { Spin, Table, Input, Form, Checkbox } from 'antd';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
+
+import DragableBodyRow from './drag_and_drop';
 
 import './selected_table.css';
 
@@ -9,16 +15,19 @@ class SelectedTable extends React.Component {
 		super(props);
 		this.columns = [
 			{ 
+				title: 'Id',
+				dataIndex: 'examItemID',
+				render: (text, record, index) => this.createInvisibleKey(record.examItemID, index)
+			},
+			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: '30%'
+				width: '50%'
 			},
 			{ 
 				title: 'Group',
 				dataIndex: 'examRequestItemGroup',
-				width: '17.5%',
 				render: (text, record) => this.createFormInput({
-       
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
 					initialValue: record.examRequestItemGroup
@@ -27,7 +36,6 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Formula',
 				dataIndex: 'examRequestItemFormula',
-				width: '17.5%',
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
@@ -37,63 +45,85 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Lock',
 				dataIndex: 'examRequestItemLock',
-				width: '17.5%',
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemLock', 
 					examItemID: record.examItemID, 
 					initialValue: record.examRequestItemLock
 				})
 			},
-			{ 
-				title: 'Sort',
-				dataIndex: 'examRequestItemSort',
-				width: '17.5%',
-				render: (text, record) => this.createFormInput({
-					fieldName: 'examRequestItemSort', 
-					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemSort
-				})
-			}
 		];
 		
+		this.components = {
+			body: {
+				row: DragableBodyRow,
+			},
+		};
 	}
 
-	// onChange = (examItemId, examData) => {
-	// 	const { onChange } = this.props;
-
-	// 	onChange(examItemId, examData);
-	// }
-
-	getInputFieldValue() {
+	getSelectedExamItems = () => {
 		const { getFieldsValue } = this.props.form;
 		const fieldsValue = getFieldsValue();
-		return fieldsValue;
+		const { examRequestItemGroup, examRequestItemFormula, examRequestItemLock } = fieldsValue;
+		const examItems = [];
+
+		fieldsValue.keys.forEach((key, index) => {
+			examItems.push({
+				examItemID: key,
+				examRequestItemGroup: examRequestItemGroup[key],
+				examRequestItemFormula: examRequestItemFormula[key],
+				examRequestItemLock: examRequestItemLock[key] ? 1 : 0,
+				examRequestItemSort: index + 1
+			});
+		});
+
+		console.log(examItems);
+		return examItems;
 	}
 
+	moveRow = (dragIndex, hoverIndex) => {
+		const { onDragAndDropRow, data } = this.props;
+    const dragRow = data[dragIndex];
+
+		const updatedData = update(this.props, {
+			data: { $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]] }
+		})
+
+		onDragAndDropRow(updatedData.data);
+  };
+
 	createFormInput = ({ fieldName, examItemID, initialValue }) => {
-		
-		// eslint-disable-next-line react/prop-types
+		const { form } = this.props;
+		const { getFieldDecorator } = form;
+		const formField = fieldName === 'examRequestItemLock'
+										? <Checkbox />
+										: <Input size="small" width="80%" />;
+
+		console.log(initialValue);
+		return (
+			<Form.Item className='selected-table'>
+				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
+					rules: [{ required: !(fieldName === 'examRequestItemLock') }],
+					initialValue,
+					valuePropName: 'checked',
+				})(formField)}
+			</Form.Item>
+		)
+	}
+	
+	createInvisibleKey = (examItemID, index) => {
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
 
 		return (
 			<Form.Item className='selected-table'>
-				{ getFieldDecorator(`${fieldName}${examItemID}`, { 	
-					rules: [{ required: (!(fieldName === "examRequestItemLock" || fieldName === "examRequestItemSort")) }],
-					initialValue
-				})(
-					<Input
-						size="small"
-						style={{ width: 100 }}
-					/>
+				{ getFieldDecorator(`keys[${index}]`, { initialValue: examItemID })(
+					<span>{ examItemID }</span>
 				)}
-				
 			</Form.Item>
-		)
+		);
 	}
-	
+
 	triggerValidation() {
-		// eslint-disable-next-line react/prop-types
 		const { validateFields } = this.props.form;
 		let hasNoError = false;
 
@@ -102,24 +132,27 @@ class SelectedTable extends React.Component {
 		return hasNoError;
 	}
 
-	
-
-	
-
 	render() {
 		const { data, loading = false } = this.props;
-
+		
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
-					<Table 
-						size="small"
-						columns={this.columns} 
-						dataSource={data} 
-						scroll={{ y: 260 }}
-						rowKey={record => record.examItemID}
-						pagination={false}
-					/>
+					<DndProvider backend={HTML5Backend}>
+						<Table 
+							size="small"
+							columns={this.columns} 
+							dataSource={data}   
+							components={this.components}
+							onRow={(record, index) => ({
+								index,
+								moveRow: this.moveRow,
+							})}
+							scroll={{ y: 260 }}
+							rowKey={record => record.examItemID}
+							pagination={false}
+						/>
+					</DndProvider>
 				</Spin>
 			</div>
 		);
@@ -132,7 +165,7 @@ SelectedTable.propTypes = {
 		examItemName: PropTypes.string.isRequired,
 	})).isRequired,
 	loading: PropTypes.bool.isRequired,
-	// onChange: PropTypes.func.isRequired
+	onDragAndDropRow: PropTypes.func.isRequired
 };
 
 export default Form.create()(SelectedTable);
