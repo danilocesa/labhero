@@ -144,32 +144,7 @@ class SearchLabTestForm extends React.Component {
 							</Col>
 						</Row>
 						<Row gutter={24} type="flex" align="bottom">
-							<Col lg={8} md={8} sm={12} xs={24} className="gutter-row">   
-								<Form.Item label="ADDRESS" hasFeedback className="gutter-box">
-									<Select placeholder="Please select address" style={{ "width": "100%" }} allowClear>
-										<Option value="" />
-										<Option value="" />
-									</Select>
-								</Form.Item>
-							</Col>
-							<Col lg={8} md={8} sm={8} xs={24} className="gutter-row">
-								<Row type="flex" justify="space-between">
-									<Col className="gutter-row">
-										<Form.Item label="DATE OF BIRTH" className="gutter-box">
-											<ReactDatePicker />
-										</Form.Item>
-									</Col>    
-									<Col className="gutter-row">
-										<Form.Item label="GENDER" className="gutter-box">
-											<RadioGroup buttonStyle="solid">
-												<RadioButton value="a">MALE</RadioButton>
-												<RadioButton value="b">FEMALE</RadioButton>
-											</RadioGroup>
-										</Form.Item>
-									</Col>
-								</Row>    
-							</Col>
-							<Col lg={6} className="gutter-row">
+							<Col lg={24} className="gutter-row">
 								<Row gutter={6} type="flex" justify="end">
 									<Col className="gutter-row">
 										<Form.Item>

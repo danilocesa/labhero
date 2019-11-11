@@ -75,11 +75,10 @@ class SelectedTable extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
-
 		return (
 			<Form.Item className='selected-table'>
 				{ getFieldDecorator(`${fieldName}${examItemID}`, { 	
-					rules: [{ required: (!(fieldName === "examRequestItemLock" || fieldName === "examRequestItemSort")) }],
+					//rules: [{ required: (!(fieldName === "examRequestItemLock" || fieldName === "examRequestItemSort")) }],
 					initialValue
 				})(
 					<Input

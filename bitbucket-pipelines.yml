@@ -5,30 +5,15 @@
 # You can specify a custom docker image from Docker Hub as your build environment.
 image: node:10.15.1
 
-pipelines:          
-  default:
-    - step:
-        name: Build and Test
-        script:
-          - npm install
-          - npm test
-          - npm run build
-        artifacts:
-          - build/**
-  branches:        
-    develop:
+pipelines:   
+  tags:                         # add the 'tags' section
+    release-*:                  # specify the tag
       - step:
-          name: Clone to test
+          name: Deploy For Testing
+          deployment: test
           script:
             - npm install
             - npm run build
-          artifacts:
-            - build/**
-      - step:
-          name: Deploy to test
-          deployment: test
-          trigger: manual
-          script:
             - pipe: atlassian/aws-s3-deploy:0.2.1
               variables:
                 AWS_ACCESS_KEY_ID: "----------"
@@ -39,6 +24,9 @@ pipelines:
                 ACL: "public-read"
                 CACHE_CONTROL: "max-age=3600"
                 EXTRA_ARGS: "--follow-symlinks"
+          artifacts:
+            - build/**             
+  branches:        
     release:
       - step:
           name: Clone to release

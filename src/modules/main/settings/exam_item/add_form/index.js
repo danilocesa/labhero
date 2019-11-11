@@ -92,6 +92,15 @@ class AddForm extends React.Component {
 					fields.examItemValue = examItemValueParam;
 				} 
 
+				if(selectedRsType === DD_VAL_ALPHA_NUMERIC || 
+					 selectedRsType === DD_VAL_NUMERIC || 
+					 selectedRsType === DD_VAL_TEXT_AREA ) {
+						fields.examItemValue = [{ 
+							examItemValueDefault: 0,
+							examItemValueLabel: fields.examItemTypeDefault
+						}];
+				}
+
 				delete fields.examItemTypeDefault; // We don't need it
 
 				const payload = { 
@@ -143,7 +152,6 @@ class AddForm extends React.Component {
 			</Option>
 		));
 		
-
 
 		return (
 			<Drawer
@@ -220,6 +228,7 @@ class AddForm extends React.Component {
 							<Button 
 								shape="round" 
 								style={{ margin: 10 }}
+								onClick={onClose}
 							>
 								CANCEL
 							</Button>

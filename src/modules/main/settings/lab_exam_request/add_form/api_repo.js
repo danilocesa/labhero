@@ -1,12 +1,13 @@
 import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
+import { apiGetMethod, apiPOSTMethod } from 'shared_components/constant-global';
 
 export async function fetchExamList(sectionId, specimenId) {
 	let examList = null;
 
 	try{
 		const content = {
-			method: 'GET',
+			method: apiGetMethod,
 			url: `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
 		}
 
@@ -27,7 +28,7 @@ export async function createExamRequest(examItem) {
 
 	try{
 		const content = {
-			method: 'POST',
+			method: apiPOSTMethod,
 			url: 'lab/ExamRequest',
 			data: { ...examItem }
 		}
