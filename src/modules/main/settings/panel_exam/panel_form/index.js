@@ -44,7 +44,7 @@ class PanelFormTemplate extends React.Component {
 	componentDidMount() {
 		this.getExamRequest();
 		
-		if(this.props.drawerButton === "Update"){
+		if(this.props.drawerButton === "UPDATE"){
 
 			// Get selected examrequest in db for update
 			if(this.props.panelInfo){ 
@@ -113,9 +113,9 @@ class PanelFormTemplate extends React.Component {
 
 			try{
 				this.setState({ loading:true });
-				console.log(`thisis panel:`, this.props.panelInfo);
+				console.log(`this is panel:`, this.props.panelInfo);
 				// eslint-disable-next-line no-unused-expressions
-				this.props.drawerButton === "Update" ? this.updatePanel(values): this.createPanel(values);
+				this.props.drawerButton === "UPDATE" ? this.updatePanel(values): this.createPanel(values);
 			}	
 			catch(errCatch) {
 				console.log("TCL: onSubmit -> errCatch", errCatch)
@@ -237,8 +237,8 @@ class PanelFormTemplate extends React.Component {
 							initialValue: panelInfo ? ( panelInfo.status === 1 ) : true
 						})(
 							<AntSwitch
-								checkedChildren="Enable"
-								unCheckedChildren="Disable"
+								checkedChildren="ENABLE"
+								unCheckedChildren="DISABLE"
 								// checked={panelInfo ? panelInfo.status : true}
 							/>
 						)}	
@@ -303,7 +303,7 @@ class PanelFormTemplate extends React.Component {
 						}}
 					>   
 						<AntButton style={{ marginRight: 8 }} onClick={this.props.onCancel}>
-							Cancel
+							CANCEL
 						</AntButton>
 						<AntButton type="primary" htmlType="submit" loading={this.state.loading}>
 							{this.props.drawerButton}
