@@ -2,9 +2,9 @@ import React from 'react';
 import { Table, Select, Typography, Button, Icon, Drawer } from 'antd';
 import UserAccountForm from '../user_account_form';
 import './usertable.css';
-// import TablePager from 'shared_components/table_pager';
 import axiosCall from 'services/axiosCall';
 import { apiUserAccount, apiGetMethod } from 'shared_components/constant-global';
+import { drawerAdd, drawerUpdate, drawerUpdateTitle, drawerAddTitle, addUserButton, tableHeaders } from '../settings';
 
 
 const { Text } = Typography;
@@ -12,32 +12,32 @@ const { Option } = Select;
 
 const columns = [
     {
-        title: 'USER ID',
+        title: tableHeaders.userID,
         dataIndex: 'userID',
         key: 'userID',
         width: "10%",
         sorter: (a, b) => a.userID - b.userID,
     },
     {
-        title: 'USERNAME',
+        title: tableHeaders.userName,
         dataIndex: 'userName',
         key: 'userName',
         sorter: (a, b) => a.userName.localeCompare(b.userName),
     },
     {
-        title: 'LAST NAME',
+        title: tableHeaders.lastName,
         dataIndex: 'lastName',
         key: 'lastName',
         sorter: (a, b) => a.lastName.localeCompare(b.lastName),
     },
     {
-        title: 'FIRST NAME',
+        title: tableHeaders.firstName,
         dataIndex: 'givenName',
         key: 'givenName',
         sorter: (a, b) => a.givenName.localeCompare(b.givenName),
     },
     {
-        title: 'MIDDLE NAME',
+        title: tableHeaders.middleName,
         dataIndex: 'middleName',
         key: 'middleName',
         sorter: (a, b) => a.middleName.localeCompare(b.middleName),
@@ -93,8 +93,8 @@ class UserTable extends React.Component {
     showDrawer = () => {
         this.setState({
           visible: true,
-          drawerTitle: 'Add User Account',
-          drawerButton: 'Add',
+          drawerTitle: drawerAddTitle,
+          drawerButton: drawerAdd,
           patientInfo: [],
         });
     };
@@ -109,8 +109,8 @@ class UserTable extends React.Component {
     displayDrawerUpdate = (record) => {
         this.setState({
             visible: true,
-            drawerTitle: 'Update User Account',
-            drawerButton: 'Update',
+            drawerTitle: drawerUpdateTitle,
+            drawerButton: drawerUpdate,
             patientInfo: record
         });
     }
@@ -156,7 +156,7 @@ class UserTable extends React.Component {
                     onClick={this.showDrawer}
                     >
                         <Icon type="plus" />
-                        Add User
+                        { addUserButton }
                     </Button>
                     <Text>Display per page</Text>
                     <Select defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>

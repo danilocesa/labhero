@@ -18,6 +18,7 @@ export const apiUrlPanelExamRequest = "lab/PanelExamRequesting/";
 export const apiUrlPanelExamRequestSettings = `${apiUrlPanelExamRequest}Settings/`;
 export const apiUrlGetPanelInfoByID = `${apiUrlPanelExamRequest}Settings/PanelID/`;
 export const apiUserAccount = 'lab/UserAccount';
+export const apiUserType = 'lab/UserType';
 
 // Constants
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
