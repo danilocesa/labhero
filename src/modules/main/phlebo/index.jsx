@@ -58,7 +58,7 @@ class Phlebo extends React.Component {
 		const patientDrawer = (
 			<div>
 				<AntDrawer
-					title="Specimen Check-In" 
+					title="SPECIMEN CHECK-IN" 
 					onClose={this.onClosePhleboPatientResultDrawer}
 					width="95%"
 					visible={showDrawer}
@@ -82,7 +82,7 @@ class Phlebo extends React.Component {
 						<TabPane
 							tab={(
 								<span>
-									For Extraction
+									FOR EXTRACTION
 									<AntBadge count={forExtrationPatientLength} />
 								</span>
 								
@@ -110,7 +110,7 @@ class Phlebo extends React.Component {
 						<TabPane
 							tab={(
 								<span>
-									Extracted
+									EXTRACTED
 									<AntBadge count={extractedPatientLength} />
 								</span>
 							)}
