@@ -4,15 +4,22 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import { Row, Col, Button, Typography } from 'antd';
 
-import { CLR_STEP_PROGRESS, CLR_SEL_EXAMS } from 'modules/main/lab_request/create/steps/constants';
+import { 
+	CLR_STEP_PROGRESS, 
+	CLR_SEL_EXAMS,
+	CLR_SEL_CONTENTS,
+	CLR_SEL_PANEL_CONTENTS
+} from 'modules/main/lab_request/create/steps/constants';
 
 const { Text } = Typography;
 
 class Navigation extends React.Component {
 	onClickNext = () => {
-		const { history, selectedExams } = this.props;
+		const { history, selectedExams, selectedContents, selectedPanelContents } = this.props;
 
 		sessionStorage.setItem(CLR_SEL_EXAMS, JSON.stringify(selectedExams));
+		sessionStorage.setItem(CLR_SEL_CONTENTS, JSON.stringify(selectedContents));
+		sessionStorage.setItem(CLR_SEL_PANEL_CONTENTS, JSON.stringify(selectedPanelContents));
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(4));
 
 		history.push('/request/create/step/4');
@@ -58,7 +65,9 @@ Navigation.propTypes = {
 			specimenID: PropTypes.number.isRequired,
 			specimenName: PropTypes.string.isRequired
 		}).isRequired
-	})).isRequired
+	})).isRequired,
+	selectedContents: PropTypes.arrayOf(PropTypes.string).isRequired,
+	selectedPanelContents: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default withRouter(Navigation);
