@@ -18,7 +18,7 @@ class PatientName extends React.Component {
 				{patientInfo.lastName} , {patientInfo.givenName} {patientInfo.middleName}
     </h1>
 				<p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
-          Patient ID {patientInfo.patientID}
+          PATIENT ID {patientInfo.patientID}
     </p>
 			</div>
     );

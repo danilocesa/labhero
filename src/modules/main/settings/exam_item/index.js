@@ -157,7 +157,7 @@ class ExamItems extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<Icon type="plus" /> Add Exam Items
+					<Icon type="plus" /> ADD EXAM ITEMS
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>

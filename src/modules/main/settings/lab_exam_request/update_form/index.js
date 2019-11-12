@@ -6,7 +6,7 @@ import { fetchExamList, fetchSelectedExamList, updateExamRequest } from './api_r
 import SelectionTable from '../selection_table';
 import SelectedTable from '../selected_table';
 
-import FIELD_RULES from './constant';
+import { FIELD_RULES, FIELD_LABELS } from './constant';
 
 /** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties }} */
 const styles = { 
@@ -164,28 +164,28 @@ class UpdateForm extends React.Component {
 						<div style={{ margin: '0px 10px' }}>
 							<Row gutter={12}>
 								<Col span={10}>
-									<Form.Item label="NAME">
+									<Form.Item label={FIELD_LABELS.examName}>
 										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={14}>
-									<Form.Item label="CODE">
+									<Form.Item label={FIELD_LABELS.examCode}>
 										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={4} className="hide">
-									<Form.Item label="SPECIMEN ID">
+									<Form.Item label={FIELD_LABELS.specimenID}>
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID})(
 											<InputNumber style={styles.fullWidth} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={4} className="hide">
-									<Form.Item label="SECTION ID">
+									<Form.Item label={FIELD_LABELS.sectionID}>
 										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID })(
 											<InputNumber style={styles.fullWidth} />
 										)}
@@ -194,21 +194,21 @@ class UpdateForm extends React.Component {
 							</Row>
 							<Row gutter={12}>
 								<Col span={10}>
-									<Form.Item label="LOINC">
+									<Form.Item label={FIELD_LABELS.loinc}>
 										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={10}>
-									<Form.Item label="INTEGRATION CODE">
+									<Form.Item label={FIELD_LABELS.integrationCode}>
 										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
 											<Input />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={4}>
-									<Form.Item label="EXAM SORT">
+									<Form.Item label={FIELD_LABELS.examSort}>
 										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
 											<Input style={styles.fullWidth} />
 										)}

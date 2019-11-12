@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
 import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
+import printBarcodeSpecimenAPI from 'services/printBarcodeSpecimen';
 import axiosCall from 'services/axiosCall';
 import { apiUrlCheckInSpecimen, apiPOSTMethod } from 'shared_components/constant-global';
 import Message from 'shared_components/message';
@@ -130,8 +131,11 @@ class SpecimenList extends React.Component {
 		return returnArray;
 	}
 
-	handlePrint = ({params}) =>{
-		console.log('TCL: Initiate printing funciton', params); 
+	handlePrint = async (e) =>{
+		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
+		const printBarcode = await printBarcodeSpecimenAPI(specimenID);
+		// await printBarcodeSpecimenAPI(specimenID); 
+		console.log(1);
 	}
 
 	render() {  
@@ -206,7 +210,10 @@ class SpecimenList extends React.Component {
 							id={`phlebo_printButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
 							onClick={this.handlePrint} 
 							className="extract-phlebo-btn"
+							data-specimenid={value.phlebo_specimenID} 
 							icon="printer"
+							style={{ fontSize: '24px' }}
+							disabled={!value.phlebo_sampleSpecimenID}
 						>
 							{''} 
 						</Button>
