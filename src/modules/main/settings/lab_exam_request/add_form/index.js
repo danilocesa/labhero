@@ -43,9 +43,10 @@ class AddForm extends React.Component {
 		const { sectionId: currentSectionId, specimenId: currentSpecimenId } = this.props;
 		const { sectionId: prevSectionId, specimenId: prevSpecimenId } = prevProps;
 
+
 		if ((currentSectionId !== prevSectionId || currentSpecimenId !== prevSpecimenId) &&
 			(currentSectionId !== null && currentSpecimenId !== null)) {
-			
+
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ isFetchingData: true }, async () => {
 				const { sectionId, specimenId } = this.props;
@@ -161,7 +162,7 @@ class AddForm extends React.Component {
 						<div style={{ margin: '0px 10px' }}>
 							<Row gutter={12}>
 								<Col span={10}>
-									<Form.Item label={ FIELD_LABELS.examName }>
+									<Form.Item label={FIELD_LABELS.examName}>
 										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
@@ -175,7 +176,7 @@ class AddForm extends React.Component {
 									</Form.Item>
 								</Col>
 								<Col span={4} className="hide">
-									<Form.Item label={ FIELD_LABELS.specimenID}>
+									<Form.Item label={FIELD_LABELS.specimenID}>
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID, initialValue: specimenId })(
 											<InputNumber style={styles.fullWidth} />
 										)}
@@ -233,7 +234,6 @@ class AddForm extends React.Component {
 								</Col>
 							</Row>
 						</div>
-				
 					</section>
 					<section style={styles.footer}>
 						<div>

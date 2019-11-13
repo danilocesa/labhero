@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form, Checkbox } from 'antd';
+import { Spin, Table, Input, Form, Switch } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -15,18 +15,20 @@ class SelectedTable extends React.Component {
 		super(props);
 		this.columns = [
 			{ 
-				title: 'Id',
+				title: '',
 				dataIndex: 'examItemID',
+				width: 10,
 				render: (text, record, index) => this.createInvisibleKey(record.examItemID, index)
 			},
 			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: '50%'
+				width: 200,
 			},
 			{ 
 				title: 'Group',
 				dataIndex: 'examRequestItemGroup',
+				width: 120,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
@@ -36,6 +38,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Formula',
 				dataIndex: 'examRequestItemFormula',
+				width: 100,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
@@ -45,11 +48,16 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Lock',
 				dataIndex: 'examRequestItemLock',
-				render: (text, record) => this.createFormInput({
+				width: 60,
+				render: (text, record) => this.createFormSwitch({
 					fieldName: 'examRequestItemLock', 
 					examItemID: record.examItemID, 
 					initialValue: record.examRequestItemLock
 				})
+			},
+			{ 
+				title: 'Sort',
+				render: (text, record, index) => <Input size="small" disabled value={index + 1} />
 			},
 		];
 		
@@ -94,18 +102,31 @@ class SelectedTable extends React.Component {
 	createFormInput = ({ fieldName, examItemID, initialValue }) => {
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
-		const formField = fieldName === 'examRequestItemLock'
-										? <Checkbox />
-										: <Input size="small" width="80%" />;
 
-		console.log(initialValue);
 		return (
-			<Form.Item className='selected-table'>
+			<Form.Item className='selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
-					rules: [{ required: !(fieldName === 'examRequestItemLock') }],
+					rules: [{ required: true }],
 					initialValue,
+				})(
+					<Input size="small" />
+				)}
+			</Form.Item>
+		)
+	}
+
+	createFormSwitch = ({ fieldName, examItemID, initialValue }) => {
+		const { form } = this.props;
+		const { getFieldDecorator } = form;
+
+		return (
+			<Form.Item className='selected-table-row'>
+				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
+					initialValue:  initialValue === 1,
 					valuePropName: 'checked',
-				})(formField)}
+				})(
+					<Switch />
+				)}
 			</Form.Item>
 		)
 	}
@@ -115,10 +136,8 @@ class SelectedTable extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<Form.Item className='selected-table'>
-				{ getFieldDecorator(`keys[${index}]`, { initialValue: examItemID })(
-					<span>{ examItemID }</span>
-				)}
+			<Form.Item className='selected-table-row'>
+				{ getFieldDecorator(`keys[${index}]`, { initialValue: examItemID }) }
 			</Form.Item>
 		);
 	}
@@ -135,13 +154,16 @@ class SelectedTable extends React.Component {
 	render() {
 		const { data, loading = false } = this.props;
 		
+		console.log('SELECTED TABLE RENDERED');
+
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<DndProvider backend={HTML5Backend}>
 						<Table 
-							size="small"
 							columns={this.columns} 
+							className="selected-table"
+							size="small"
 							dataSource={data}   
 							components={this.components}
 							onRow={(record, index) => ({
