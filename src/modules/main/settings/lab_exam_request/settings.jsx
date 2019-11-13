@@ -19,3 +19,13 @@ export const placeHolders = {
 export const buttons = {
     addExamButtonLabel: "ADD EXAM REQUEST",
 };
+
+export const selectedTableConst = {
+    labels : {
+        examTitle : 'EXAM',
+        groupTitle : 'GROUP',
+        formulaTitle : 'FORMULA',
+        lockTitle : 'LOCK',
+        sortTitle : 'SORT',
+    }
+};

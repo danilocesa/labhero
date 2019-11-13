@@ -45,9 +45,31 @@ export async function fetchExamRequest(sectionId, specimenId) {
 		const { data } = await response;
 		
 		examRequests = data || [];
+		
 	} catch (e) {
 		Message.error();
 	}
 
 	return examRequests;
+}
+
+export async function fetchSelectedExamList(secID, specID, erID) {
+	let examList = null;
+
+	try{
+		const content = {
+			method: 'GET',
+			url: `lab/ExamRequest/Settings/SectionID/${secID}/SpecimenID/${specID}/ExamRequestID/${erID}`,
+		}
+
+		const response = await axiosCall(content);
+		const { data } = await response;
+		
+		examList = data.examRequestItems || [];
+	}
+	catch(error) {
+		Message.error();
+	}
+
+	return examList;
 }

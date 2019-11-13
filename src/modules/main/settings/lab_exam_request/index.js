@@ -136,7 +136,7 @@ class LabExamRequest extends React.Component {
 	render() {
 		const { 
 			pageSize, 
-			examRequests, 
+			examRequests,
 			ddSpecimens, 
 			ddSections, 
 			isShowAddForm, 

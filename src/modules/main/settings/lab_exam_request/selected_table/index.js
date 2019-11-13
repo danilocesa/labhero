@@ -9,6 +9,9 @@ import update from 'immutability-helper';
 import DragableBodyRow from './drag_and_drop';
 
 import './selected_table.css';
+import { selectedTableConst } from '../settings';
+
+const {labels} = selectedTableConst;
 
 class SelectedTable extends React.Component {
 	
@@ -27,7 +30,7 @@ class SelectedTable extends React.Component {
 				width: 240,
 			},
 			{ 
-				title: 'Group',
+				title: labels.groupTitle,
 				dataIndex: 'examRequestItemGroup',
 				width: 120,
 				render: (text, record) => this.createFormInput({
@@ -37,7 +40,7 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: 'Formula',
+				title: labels.formulaTitle,
 				dataIndex: 'examRequestItemFormula',
 				width: 100,
 				render: (text, record) => this.createFormInput({
@@ -47,7 +50,7 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: 'Lock',
+				title: labels.lockTitle,
 				dataIndex: 'examRequestItemLock',
 				width: 60,
 				render: (text, record) => this.createFormSwitch({
