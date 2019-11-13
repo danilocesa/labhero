@@ -52,31 +52,36 @@ class FillupStep extends React.Component {
 
 		// 2 is the stepnumber
 		this.restriction = new Restriction(2);
+		this.state = { isLoading: false };
 	}
 
-	handleSubmit = async (fields) => {
+	handleSubmit = (fields) => {
 		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
-		// If patientid is null then create new patient
-		if(!fields.patientID) {
-			const createdPatient = await this.createPatientInfo({
-				userID: userSession.userID,
-				...personalInfo
-			});
+		this.setState({ isLoading: true }, async() =>{
+			// If patientid is null then create new patient
+			if(!fields.patientID) {
+				const createdPatient = await this.createPatientInfo({
+					userID: userSession.userID,
+					...personalInfo
+				});
 
-			// If createPatient has an error, stop the function
-			if(!createdPatient) return;
+				// If createPatient has an error, stop the function
+				if(!createdPatient) return;
 
-			otherInfo.patientID = createdPatient.patientID;
-		}
+				otherInfo.patientID = createdPatient.patientID;
+			}
 
-		sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
-		sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
-		sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
+			this.setState({ isLoading: false });
 
-		this.goToNextPage();
+			sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
+			sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
+			sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
+
+			this.goToNextPage();
+		});
 	}
 
 	goToNextPage = () => {
@@ -115,13 +120,17 @@ class FillupStep extends React.Component {
 
 	render() {
 		const { restriction } = this;
-
+		const { isLoading } = this.state;
+		
 		if(restriction.hasAccess) {
 			return (
 				<div>
 					<PageTitle />
 					<Tracker active={1} />
-					<FillupForm handleSubmit={this.handleSubmit} />
+					<FillupForm 
+						handleSubmit={this.handleSubmit} 
+						isLoading={isLoading}
+					/>
 				</div>
 			);
 		}

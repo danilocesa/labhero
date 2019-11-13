@@ -11,20 +11,8 @@ const columns = [
 
 
 class SelectionTable extends React.Component {
-	state = {
-		selectedRowKeys: []
-	}
 	
-	componentDidUpdate(prevProps) {
-		const { selectedRowKeys } = this.props;
-
-		if(prevProps.selectedRowKeys !== selectedRowKeys) {
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ selectedRowKeys });
-		}
-	}
-	
-	onSelect = (record, selected, selectedRows) => {
+	onSelect = (record, selected) => {
 		const { onSelect, onDeselect } = this.props;
 
 		if(selected)
@@ -40,13 +28,15 @@ class SelectionTable extends React.Component {
 	};
 
 	render() {
-		const { selectedRowKeys } = this.state;
-		const { data, loading = false } = this.props;
+		// const { selectedRowKeys } = this.state;
+		const { data, loading = false, selectedRowKeys } = this.props;
 		const rowSelectionConfig = {
 			selectedRowKeys,
 			onSelect: this.onSelect,
 			onSelectAll: this.onSelectAll
 		};
+
+		console.log(data);
 
 		return (
 			<div style={{ marginTop: 20 }}>

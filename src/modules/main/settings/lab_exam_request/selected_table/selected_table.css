@@ -1,7 +1,13 @@
-.selected-table {
+.selected-table .ant-table-thead th,
+.selected-table .ant-table-tbody td {
+	text-align: center;
+}
+
+.selected-table-row {
 	margin-bottom: 0px;
 }
 
-.selected-table .ant-form-explain {
+.selected-table-row .ant-form-explain {
 	display: none;
 }
+

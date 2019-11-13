@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
@@ -14,6 +15,7 @@ const styles = {
 	},
 	footer: { 
 		position: 'absolute', 
+		zIndex: 1,
 		width: '100%', 
 		bottom: 0, 
 		left: 0,  
@@ -41,9 +43,10 @@ class AddForm extends React.Component {
 		const { sectionId: currentSectionId, specimenId: currentSpecimenId } = this.props;
 		const { sectionId: prevSectionId, specimenId: prevSpecimenId } = prevProps;
 
+
 		if ((currentSectionId !== prevSectionId || currentSpecimenId !== prevSpecimenId) &&
 			(currentSectionId !== null && currentSpecimenId !== null)) {
-			
+
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ isFetchingData: true }, async () => {
 				const { sectionId, specimenId } = this.props;
@@ -61,8 +64,6 @@ class AddForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 
-		const { selectedExams } = this.state;
-		// eslint-disable-next-line react/prop-types
 		const { onSuccess, form } = this.props;
 		const { resetFields, getFieldsValue, validateFieldsAndScroll } = form;
 
@@ -72,23 +73,10 @@ class AddForm extends React.Component {
 
 			if (!err && isSelExamValidated) {
 				// @ts-ignore
-				const examItemsGroups = this.selectedTable.getInputFieldValue();
+				const selectedExamItems = this.selectedTable.getSelectedExamItems();
 				const fields = getFieldsValue();
-				const examItems = [];
-				// eslint-disable-next-line func-names
-				selectedExams.map(function(value,key){
-					examItems.push({
-						"examItemID": value.examItemID,
-						"examRequestItemGroup": examItemsGroups[`examRequestItemGroup${key+1}`],
-						"examRequestItemFormula": examItemsGroups[`examRequestItemFormula${key+1}`],
-						"examRequestItemLock":  examItemsGroups[`examRequestItemLock${key+1}`],
-						"examRequestItemSort": examItemsGroups[`examRequestItemSort${key+1}`]
-					})
-					return examItems;
-				});
+				const payload = { ...fields,  examItems: selectedExamItems }; 
 
-				const payload = Object.assign(fields, {examItems}); 
-				
 				this.setState({ isLoading: true }, async() => {
 					const createdExamRequest = await createExamRequest(payload);
 					this.setState({ isLoading: false });
@@ -125,7 +113,11 @@ class AddForm extends React.Component {
 			this.setState({ selectedExams: newSelectedExams });
 		});
 	}
-		
+	
+	onDragAndDropRow = (selectedExams) => {
+		this.setState({ selectedExams });
+	}	
+
 	onChangeSelectedTable = (examItemID, examData) => {
 		const { selectedExams } = this.state;
 		const updatedSelectedExams = selectedExams.map(item => {
@@ -170,7 +162,7 @@ class AddForm extends React.Component {
 						<div style={{ margin: '0px 10px' }}>
 							<Row gutter={12}>
 								<Col span={10}>
-									<Form.Item label={ FIELD_LABELS.examName }>
+									<Form.Item label={FIELD_LABELS.examName}>
 										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
 											<Input />
 										)}
@@ -184,7 +176,7 @@ class AddForm extends React.Component {
 									</Form.Item>
 								</Col>
 								<Col span={4} className="hide">
-									<Form.Item label={ FIELD_LABELS.specimenID}>
+									<Form.Item label={FIELD_LABELS.specimenID}>
 										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID, initialValue: specimenId })(
 											<InputNumber style={styles.fullWidth} />
 										)}
@@ -236,12 +228,12 @@ class AddForm extends React.Component {
 									<SelectedTable 
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
+										onDragAndDropRow={this.onDragAndDropRow}
 										loading={false}
 									/>		
 								</Col>
 							</Row>
 						</div>
-				
 					</section>
 					<section style={styles.footer}>
 						<div>

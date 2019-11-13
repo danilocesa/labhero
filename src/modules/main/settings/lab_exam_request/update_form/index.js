@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
@@ -55,7 +56,8 @@ class UpdateForm extends React.Component {
 		const propsIsNotNull = secId !== null && specId !== null && erId !== null;
 		
 		if (propsHasChanged && propsIsNotNull) {
-			
+			console.log('UPDATE FORM DID UPDATE AND PASSED THROUGH');
+
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ isFetchingData: true }, async () => {
 				const { sectionId, specimenId, examRequestId } = this.props;
@@ -74,8 +76,6 @@ class UpdateForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 
-		const { selectedExams } = this.state;
-		// eslint-disable-next-line react/prop-types
 		const { examRequest, form, onSuccess } = this.props;
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 		const { examRequestID, examRequestActive } = examRequest;
@@ -83,16 +83,20 @@ class UpdateForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			// @ts-ignore
 			const isSelExamValidated = this.selectedTable.triggerValidation();
-			console.log(isSelExamValidated);
+			
 			if(!err && isSelExamValidated) {
+				// @ts-ignore
+				const selectedExamItems = this.selectedTable.getSelectedExamItems();
+				const fields = getFieldsValue();
+				const payload = { 
+					examRequestID,
+					examRequestActive,
+					...fields,  
+					examItems: selectedExamItems 
+				}; 
+
 				this.setState({ isLoading: true}, async() => {
-					const updatedExamRequest = await updateExamRequest({ 
-						examRequestID,
-						examRequestActive,
-						...getFieldsValue(),
-						examItems: selectedExams
-					});
-					
+					const updatedExamRequest = await updateExamRequest(payload);
 					this.setState({ isLoading: false });
 
 					if(updatedExamRequest) {
@@ -103,6 +107,10 @@ class UpdateForm extends React.Component {
 		});
 	}
 	
+	onDragAndDropRow = (selectedExams) => {
+		this.setState({ selectedExams });
+	}	
+
 	onSelectSelectionTable = (selectedExam) => {
 		const { selectedExams } = this.state;
 		const newSelectedExams = [ ...selectedExams, selectedExam ];
@@ -136,7 +144,7 @@ class UpdateForm extends React.Component {
 	closeFormDrawer = () => {
 		const { closeForm } = this.props;
 
-		this.setState({ selectedExams: [] });
+		// this.setState({ selectedExams: [] });
 		closeForm();
 	}
 
@@ -146,7 +154,9 @@ class UpdateForm extends React.Component {
 		const { visible, form  } = this.props;
 		const { getFieldDecorator } = form;
 
-		return (
+		console.log('selected exams in update form', selectedExams); 
+
+		return ( 
 			<Drawer
 				title="Update Exam Request"
 				width="70%"
@@ -226,6 +236,7 @@ class UpdateForm extends React.Component {
 									<SelectedTable 
 										wrappedComponentRef={(inst) => this.selectedTable = inst}
 										data={selectedExams}
+										onDragAndDropRow={this.onDragAndDropRow}
 										loading={false}
 										// onChange={this.onChangeSelectedTable}
 									/>		

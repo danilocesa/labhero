@@ -25,12 +25,15 @@ class BaseForm extends React.Component {
 	state = {
 		hospitalLocationList: [],
 		hospitalPhysicianList: [],
+		isDisabledPersoFields: false,
+		initialPersoValue: {}
 	};
-	
+
 	componentDidMount() {
-		this.populatePersonalInfo();
 		this.populateLocation();
 		this.populatePhysician();
+		this.populatePersonalInfo();
+		// setTimeout(() => this.populatePersonalInfo(), 3000);
 	}
 
 	populatePersonalInfo = () => {
@@ -40,17 +43,19 @@ class BaseForm extends React.Component {
 
 		// If user came from step 1 
 		if(location.state) {
-			// eslint-disable-next-line react/prop-types
-			const { setFieldsValue } = this.props.form;
-			const { dateOfBirth } = location.state.record;
+			const { dateOfBirth, patientID } = location.state.record;
 			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
 			const patientAge = this.computeAge(formattedDOB);
 
-			setFieldsValue({ 
-				...location.state.record, 
-				patientAge,
-				dateOfBirth: formattedDOB
+			this.setState({
+				initialPersoValue: { 
+					...location.state.record, 
+					patientAge,
+					dateOfBirth: formattedDOB
+				},
+				isDisabledPersoFields: patientID !== null
 			});
+
 		}
 
 		// Else if user has pressed back button
@@ -61,8 +66,8 @@ class BaseForm extends React.Component {
 			const otherInfo = JSON.parse(sessOtherInfo); 
 
 			personalInfo.dateOfBirth = moment(personalInfo.dateOfBirth, 'MM-DD-YYYY');
-			setFieldsValue(personalInfo);
-			setFieldsValue(otherInfo);
+			setFieldsValue({ ...personalInfo, ...otherInfo });
+			this.setState({ isDisabledPersoFields: personalInfo.patientID !== null });
 		}
 	}
 
@@ -113,17 +118,23 @@ class BaseForm extends React.Component {
 				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
 				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
-				fields.physicianName = `${physician.namePrefix} `;
-				fields.physicianName +=	`${physician.givenName} `; 
-				fields.physicianName +=	`${physician.middleName}. `;
-				fields.physicianName +=	`${physician.lastName}`;
 				fields.locationName = location.name;
+
+				if(physician) {
+					fields.physicianName = `${physician.namePrefix} `;
+					fields.physicianName +=	`${physician.givenName} `; 
+					fields.physicianName +=	`${physician.middleName}. `;
+					fields.physicianName +=	`${physician.lastName}`;
+				}
+
 				handleSubmit(fields);
 			}
 		});
 	}
 
 	render() {
+		const { isDisabledPersoFields, initialPersoValue } = this.state;
+		const { isLoading } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
 		const { hospitalPhysicianList, hospitalLocationList } = this.state;
@@ -152,60 +163,82 @@ class BaseForm extends React.Component {
 								<Row gutter={12}>
 									<Col span={12}>
 										<Form.Item label="HOSPITAL ID">
-											{getFieldDecorator('hospitalID', { rules: FIELD_RULES.hospitalID })(
-												<Input />
+											{getFieldDecorator('hospitalID', { 
+												rules: FIELD_RULES.hospitalID,
+												initialValue: initialPersoValue.hospitalID
+											})(
+												<Input disabled={isDisabledPersoFields} />
 											)}
 										</Form.Item>
 									</Col>
 									<Col span={12}>
 										<Form.Item label="PATIENT ID">
-											{getFieldDecorator('patientID')(
+											{getFieldDecorator('patientID', {
+												initialValue: initialPersoValue.patientID
+											})(
 												<Input disabled />
 											)}
 										</Form.Item>
 									</Col>
 								</Row>
 								<Form.Item label="EMAIL">
-									{getFieldDecorator('emailAdd', { rules: FIELD_RULES.emailAdd })(
-										<Input />
+									{getFieldDecorator('emailAdd', { 
+										rules: FIELD_RULES.emailAdd,
+										initialValue: initialPersoValue.emailAdd
+									})(
+										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="FIRST NAME">
-									{getFieldDecorator('givenName', { rules: FIELD_RULES.givenName })(
-										<Input />
+								<Form.Item label="FIRST NAME *">
+									{getFieldDecorator('givenName', { 
+										rules: FIELD_RULES.givenName, 
+										initialValue: initialPersoValue.givenName
+									})(
+										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="MIDDLE NAME">
-									{getFieldDecorator('middleName', { rules: FIELD_RULES.middleName })(
-										<Input />
+								<Form.Item label="MIDDLE NAME *">
+									{getFieldDecorator('middleName', { 
+										rules: FIELD_RULES.middleName,
+										initialValue: initialPersoValue.middleName
+									})(
+										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="LAST NAME">
-											{getFieldDecorator('lastName', { rules: FIELD_RULES.lastName })(
-												<Input />
+										<Form.Item label="LAST NAME *">
+											{getFieldDecorator('lastName', { 
+												rules: FIELD_RULES.lastName,
+												initialValue: initialPersoValue.lastName 
+											})(
+												<Input disabled={isDisabledPersoFields} />
 											)}
 										</Form.Item>
 									</Col>
 									<Col span={6}>
 										<Form.Item label="SUFFIX">
-											{getFieldDecorator('nameSuffix', { rules: FIELD_RULES.suffix })(
-												<Input maxLength={1} />
+											{getFieldDecorator('nameSuffix', { 
+												rules: FIELD_RULES.suffix, 
+												initialValue: initialPersoValue.suffix
+											})(
+												<Input maxLength={1} disabled={isDisabledPersoFields} />
 											)}
 										</Form.Item>
 									</Col>
 								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="DATE OF BIRTH">
+										<Form.Item label="DATE OF BIRTH *">
 											{getFieldDecorator('dateOfBirth', { 
-												rules: FIELD_RULES.dateOfBirth
+												rules: FIELD_RULES.dateOfBirth,
+												initialValue: initialPersoValue.dateOfBirth
 											})(
 												<DatePicker 
 													format="MM-DD-YYYY"
 													style={{ width: '100%' }}
 													onChange={this.onDateChange}
+													disabled={isDisabledPersoFields}
 												/>
 											)}
 										</Form.Item>
@@ -213,7 +246,8 @@ class BaseForm extends React.Component {
 									<Col span={6}>
 										<Form.Item label="AGE">
 											{getFieldDecorator('patientAge', { 
-												rules: FIELD_RULES.age
+												rules: FIELD_RULES.age,
+												initialValue: initialPersoValue.patientAge
 											})(
 												<Input disabled style={{ textAlign: 'center' }} />
 											)}
@@ -221,18 +255,31 @@ class BaseForm extends React.Component {
 									</Col>
 								</Row>
 								<Form.Item label="ADDRESS">
-									{getFieldDecorator('address', { rules: FIELD_RULES.address })(
-										<Input />
+									{getFieldDecorator('address', { 
+										rules: FIELD_RULES.address, 
+										initialValue: initialPersoValue.address
+									})(
+										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
 								<Form.Item label="CONTACT NUMBER">
-									{getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
-										<Input addonBefore="+ 63" maxLength={10} />
+									{getFieldDecorator('contactNumber', { 
+										rules: FIELD_RULES.contactNumber,
+										initialValue: initialPersoValue.contactNumber
+									})(
+										<Input 
+											addonBefore="+ 63" 
+											maxLength={10} 
+											disabled={isDisabledPersoFields}
+										/>
 									)}
 								</Form.Item>
-								<Form.Item label="PATIENT'S GENDER">
-									{getFieldDecorator('sex', { rules: FIELD_RULES.gender })(
-										<Radio.Group buttonStyle="solid">
+								<Form.Item label="PATIENT'S GENDER *">
+									{getFieldDecorator('sex', { 
+										rules: FIELD_RULES.gender, 
+										initialValue: initialPersoValue.sex
+									})(
+										<Radio.Group buttonStyle="solid" disabled={isDisabledPersoFields}>
 											<Radio.Button value="MALE">MALE</Radio.Button>
 											<Radio.Button value="FEMALE">FEMALE</Radio.Button>
 										</Radio.Group>
@@ -248,7 +295,7 @@ class BaseForm extends React.Component {
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
-								<Form.Item label="LOCATION">
+								<Form.Item label="LOCATION *">
 									{getFieldDecorator('locationID', { rules: FIELD_RULES.location })(
 										<Select placeholder="Select a location" allowClear>
 											{LocationList}
@@ -294,7 +341,7 @@ class BaseForm extends React.Component {
 						</Col>
 					</Row>
 					<Row>
-						<FormButtons />
+						<FormButtons isLoading={isLoading} />
 					</Row>
 				</Form>
 			</div>
@@ -304,7 +351,8 @@ class BaseForm extends React.Component {
 
 BaseForm.propTypes = {
 	handleSubmit: PropTypes.func.isRequired,
-	location: ReactRouterPropTypes.location.isRequired
+	location: ReactRouterPropTypes.location.isRequired,
+	isLoading: PropTypes.bool.isRequired
 };
 
 const FillupForm = Form.create()(withRouter(BaseForm));

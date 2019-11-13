@@ -16,6 +16,11 @@
 	margin-bottom: 7px;
 }
 
+.fillup-form .ant-input[disabled] {
+	color: rgba(0, 0, 0, 0.65);
+}
+
+
 @media only screen and (max-width: 800px) {
   .fillup-form .divider {
     display: none !important;

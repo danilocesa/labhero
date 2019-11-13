@@ -9,7 +9,7 @@ import SectionContent from './section_content';
 import SelectTable from './table';
 import Navigation from './navigation';
 
-import { CLR_SEL_EXAMS } from '../constants';
+import { CLR_SEL_EXAMS, CLR_SEL_CONTENTS, CLR_SEL_PANEL_CONTENTS } from '../constants';
 
 const ColLayout = {
 	sm: { span: 24 },
@@ -35,7 +35,8 @@ class SelectStep extends React.Component {
 		},
 		selectedSpecimen: {},
 		selectedExams: [],
-		selectedContents: [],
+		selectedContents: [], // holds all selected contents including panels and single exam
+		selectedContentsByPanel: [], // holds the selected contents of 1 panel only
 		exams: [], // holds the list of exam to be selected (left side)
 		panels: [], // holds the list of panel to be selected (left side)
 		panelRef: [], // holds the reconstructed panel object from raw response panel object
@@ -50,9 +51,15 @@ class SelectStep extends React.Component {
 
 	componentDidMount() {
 		const exams = sessionStorage.getItem(CLR_SEL_EXAMS);
+		const contents = sessionStorage.getItem(CLR_SEL_CONTENTS);
+		const panelContents = sessionStorage.getItem(CLR_SEL_PANEL_CONTENTS);
 
 		if(exams) {
-			this.setState({ selectedExams: JSON.parse(exams) });
+			this.setState({ 
+				selectedExams: JSON.parse(exams),
+				selectedContents: JSON.parse(contents),
+				selectedContentsByPanel: JSON.parse(panelContents)
+			});
 		}
 	}
 
@@ -83,6 +90,7 @@ class SelectStep extends React.Component {
 	populatePanelRef = (panels) => {
 		const panelRef = [];
 
+		console.log('PANELS', panels);
 		panels.forEach(panel => {
 			const panelModel = {
 				panelCode: panel.panelCode,
@@ -99,7 +107,8 @@ class SelectStep extends React.Component {
 							examName: exam2.examName, 
 							examCode: exam2.examCode, 
 							section: exam1.section,
-							specimen: perSpecimen.specimen
+							specimen: perSpecimen.specimen,
+							contents: exam2.contents
 						});
 					});
 				});
@@ -189,9 +198,12 @@ class SelectStep extends React.Component {
 	// the list of exams table (left) into selected exams table (right).
 	// Used when selecting panel
 	addSelectedExamByPanel = ({ panelID }) => {
-		const { panelRef } = this.state;
+		const { panelRef, selectedContents } = this.state;
 		const selectedPanel = panelRef.find(item => item.panelID === panelID);
-		
+		let newSelectedContents = []; 
+
+		console.log('THUNDER', newSelectedContents);
+
 		selectedPanel.exams.forEach(exam => {
 			this.addSingleExam({
 				examID: exam.examID, 
@@ -206,6 +218,14 @@ class SelectStep extends React.Component {
 				},
 				isDisabled: true
 			});
+			
+			// Append selectedContents into one array
+			newSelectedContents = newSelectedContents.concat(exam.contents);
+		});
+
+		this.setState({ 
+			selectedContents: newSelectedContents.concat(selectedContents), 
+			selectedContentsByPanel: newSelectedContents 
 		});
 	}
 
@@ -214,12 +234,13 @@ class SelectStep extends React.Component {
 	// Used when selecting exam
 	addSelectedExamByExam = ({ examID, examName, examCode, contents }) => {
 		const { selectedSection, selectedSpecimen, selectedContents } = this.state;
-		const existingContent = selectedContents.some(iContent => contents.includes(iContent));
+		const isExistingContent = selectedContents.some(iContent => contents.includes(iContent));
 		const newSelectedContents = selectedContents.map(item => item); // Clone selectedContents
 		
 		// Add selectedContent to the array of selectedContent(s)
-		if(!existingContent)
+		if(!isExistingContent)
 			newSelectedContents.push(...contents);
+
 
 		this.setState({ selectedContents: newSelectedContents }, () => {
 			// eslint-disable-next-line no-shadow
@@ -252,11 +273,13 @@ class SelectStep extends React.Component {
 		// Note. DO NOT MUTATE THE STATE OBJECT!
 		// You will have a nightmare if you do.
 		this.setState(state => {
-			const { selectedExams,  } = state;
-			const existingExam = selectedExams.some(iExam => iExam.examID === examID);
+			const { selectedExams } = state;
+			const isExistingExam = selectedExams.some(iExam => iExam.examID === examID);
 			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
 			
-			if(!existingExam) 
+			console.log('Adding to selected exams', exam);
+
+			if(!isExistingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });
 			
 			return { selectedExams: newSelectedExams };
@@ -275,7 +298,7 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
-		const { selectedExams } = this.state
+		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
 		const filteredExams = selectedExams.filter(item => {
 			if(item.selectedPanel == null) return true;
@@ -283,7 +306,18 @@ class SelectStep extends React.Component {
 			return !(item.selectedPanel && item.selectedPanel.panelID === panelID); 
 		});
 
-		this.setState({ selectedExams: filteredExams });
+		console.log(selectedContents, selectedContentsByPanel);
+		const filteredContents = selectedContents.filter(a => {
+			console.log(selectedContentsByPanel.some(b => a === b), a);
+			return !selectedContentsByPanel.some(b => a === b);
+		});
+
+		console.log(filteredContents);
+		this.setState({ 
+			selectedExams: filteredExams, 
+			selectedContents: filteredContents,
+			selectedContentsByPanel: []	
+		});
 	}
 
 	// Note. This function is use for removing single exam 
@@ -303,6 +337,9 @@ class SelectStep extends React.Component {
 				return false;	
 			})
 		};
+
+		console.log('New selected contents', newState);
+
 
 		this.setState(newState, () => {
 			if(sectionCode !== 'panel' && sectionCode !== null)
@@ -324,19 +361,19 @@ class SelectStep extends React.Component {
 	unselectExams = (unselectedExams) => {
 		const { exams, selectedContents, selectedExams } = this.state;
 
+		console.log('unselect exams', exams);
+
 		const processedExams = exams.map(exam => { 
 			// Check if current exam is in the unselected exams
 			const isExistInUExam = unselectedExams.some(uexam => exam.examID === uexam.examID);
 			const isExistInContents = selectedContents.some(selContent => {
 				return exam.contents.includes(selContent);
 			});
-			const isExisInSelExams = selectedExams.some(selExam => exam.examID === selExam.examID);
-			let isDisabled = false;
-		
-			if(!exam.isSelected && isExistInContents) 
-				isDisabled = true;
-			else if(isExisInSelExams && !isExistInContents)
-				isDisabled = true;
+			const isInSelectedPanel = selectedExams.some(selExam => {
+				return exam.examID === selExam.examID && selExam.selectedPanel !== null
+			});
+			const isSelectedExam = selectedExams.some(selExam => exam.examID === selExam.examID);
+			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel; 
 
 			if(isExistInUExam) 
 				return { ...exam, isSelected: false, isDisabled };
@@ -352,7 +389,15 @@ class SelectStep extends React.Component {
 	}
 
 	render() {
-		const { selectedExams, selectedSection, exams, panels, isLoading } = this.state;
+		const { 
+			selectedExams, 
+			selectedContents, 
+			selectedContentsByPanel,
+			selectedSection, 
+			exams, 
+			panels, 
+			isLoading 
+		} = this.state;
 		const { restriction } = this;
 
 		if(restriction.hasAccess) {
@@ -398,6 +443,8 @@ class SelectStep extends React.Component {
 					</div>
 					<Navigation 
 						selectedExams={selectedExams}
+						selectedContents={selectedContents}
+						selectedPanelContents={selectedContentsByPanel}
 						disabled={selectedExams.length === 0}
 					/>
 				</div>

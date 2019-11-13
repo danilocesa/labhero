@@ -126,28 +126,28 @@ class SummarySection extends React.Component {
 								<div className="section">
 									<Text strong>PHYSICIAN</Text>
 									<br />
-									<Text>{physicianName}</Text>
+									<Text>{physicianName || '----'}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>BED</Text>
 									<br />
-									<Text>{bed}</Text>
+									<Text>{bed || '----'}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>VISIT</Text>
 									<br />
-									<Text>{visit}</Text>
+									<Text>{visit || '----'}</Text>
 								</div>
 							</Col>
 							<Col {...sectionLayout}>
 								<div className="section">
 									<Text strong>AMOUNT</Text>
 									<br />
-									<Text>{chargeSlip}</Text>
+									<Text>{chargeSlip || '----'}</Text>
 								</div>
 							</Col>
 						</Row>
@@ -156,7 +156,7 @@ class SummarySection extends React.Component {
 								<div className="comment-section">
 									<Text strong>COMMENT</Text>
 									<br />
-									<Text>{comment}</Text>
+									<Text>{comment || '----'}</Text>
 								</div>
 							</Col>
 						</Row>

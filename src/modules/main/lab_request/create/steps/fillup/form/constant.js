@@ -1,9 +1,9 @@
 const FIELD_RULES = {
 	hospitalID: [
-    { required: true, message: 'This field is required..' }
+    // { required: true, message: 'This field is required..' }
 	],
 	emailAdd: [
-		{ required: true, message: 'This field is required.' },
+		// { required: true, message: 'This field is required.' },
 		{ type: 'email', message: 'Please input valid email.' }
 	],
 	givenName: [
@@ -22,10 +22,10 @@ const FIELD_RULES = {
 		{ required: true, message: 'This field is required.' }
 	],
 	address: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	contactNumber: [
-		{ required: true, message: 'This field is required.' },
+		// { required: true, message: 'This field is required.' },
 		{ pattern: /^[9]\d{9}/, message: 'Please input valid contact number.' }
 	],
 	gender: [
@@ -35,19 +35,19 @@ const FIELD_RULES = {
 		{ required: true, message: 'This field is required.' }
 	],
 	physicianId: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	visit: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	chargeSlip: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	officialReceipt: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	bed: [
-		{ required: true, message: 'This field is required.' }
+		// { required: true, message: 'This field is required.' }
 	],
 	comment: [
 

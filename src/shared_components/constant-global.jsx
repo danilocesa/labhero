@@ -14,6 +14,7 @@ export const apiUrlPhlebo = "lab/SpecimenTracking/phlebo/"
 export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
 export const apiUrlPhleboRequestID = `${apiUrlPhlebo}requestid/`;
 export const apiUrlCheckInSpecimen = `${apiUrlPhlebo}checkinspecimen`;
+export const apiUrlprintBarcodeSpecimen = "lab/BarcodeLabel/reprintlabel/";
 export const apiUrlPanelExamRequest = "lab/PanelExamRequesting/";
 export const apiUrlPanelExamRequestSettings = `${apiUrlPanelExamRequest}Settings/`;
 export const apiUrlGetPanelInfoByID = `${apiUrlPanelExamRequest}Settings/PanelID/`;
