@@ -7,15 +7,16 @@ import PropTypes from 'prop-types';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import Search from './search_form';
-import SearchPatientTableHeader from './table_header'
-import SearchPatientTable from './search_table_results'
-import UpdatePatientForm from './edit_patient_info'
+import SearchPatientTableHeader from './table_header';
+import SearchPatientTable from './search_table_results';
+import UpdatePatientForm from './edit_patient_info';
+import {moduleTitle, tablePageSize,drawerUpdateTitle} from './settings';
 
 
 class SearchPatient extends React.Component {
   state = { 
 		patients: [], 
-		pageSize: 10,
+		pageSize: tablePageSize,
 		loading: false,
 		showDrawer:false,
 		patientInfo: null,
@@ -51,7 +52,7 @@ class SearchPatient extends React.Component {
     return(
 	    <div>
 				<div>
-					<PageTitle pageTitle="SEARCH PATIENT" />
+					<PageTitle pageTitle={moduleTitle} />
 					<Search
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
@@ -71,14 +72,12 @@ class SearchPatient extends React.Component {
 					{
 					showDrawer ? (
 						<Drawer
-							title="Update Patient information" 
+							title={drawerUpdateTitle} 
 							onClose={this.onClosePatientResultDrawer}
 							width="50%"
 							visible={showDrawer}
 						>
               <UpdatePatientForm patientInfo={patientInfo} />
-
-							{/* <PleboPatientResult patientInfo={patientInfo} /> */}
 						</Drawer>
 					)
 					:

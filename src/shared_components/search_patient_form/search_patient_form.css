@@ -9,3 +9,7 @@
 .search-patient-form .ant-form-item-label > label {
   color: inherit !important;
 }
+
+.search-patient-form .ant-form-item-control-wrapper input{
+  text-transform: uppercase;
+}

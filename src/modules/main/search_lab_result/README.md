@@ -11,8 +11,6 @@ This module also includes printing of lab result.
   - Patient info modules
 
 ## List of libraries used
-  - Datepicker (https://reactdatepicker.com)
-      Allow user to input date while having datepicker
 
 ## Issues
   - API integration
