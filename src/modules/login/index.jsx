@@ -140,7 +140,7 @@ class Login extends React.Component {
 									<img src={CompanyLogo} alt="logo" className="login-logo-image" />
 								</Row>
 								<Row>
-									<Form onSubmit={this.handleSubmit} className="login-form">
+									<Form onSubmit={this.handleSubmit}>
 										<Form.Item label="Username" className="login-input font12">
 											{getFieldDecorator('userName', {
 												rules: [{ required: true, message: 'Please enter your username!' }],
