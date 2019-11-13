@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form } from 'antd';
+import { Spin, Table, Input, Form, Switch } from 'antd';
 
 import './selected_table.css';
+import { selectedTableConst } from '../settings';
+
+const {labels} = selectedTableConst;
 
 class SelectedTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.columns = [
 			{ 
-				title: 'Exam',
+				title: labels.examTitle,
 				dataIndex: 'examItemName',
 				width: '30%'
 			},
 			{ 
-				title: 'Group',
+				title: labels.groupTitle,
 				dataIndex: 'examRequestItemGroup',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
@@ -25,7 +28,7 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: 'Formula',
+				title: labels.formulaTitle,
 				dataIndex: 'examRequestItemFormula',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
@@ -35,7 +38,7 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: 'Lock',
+				title: labels.lockTitle,
 				dataIndex: 'examRequestItemLock',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
@@ -45,7 +48,7 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: 'Sort',
+				title: labels.sortTitle,
 				dataIndex: 'examRequestItemSort',
 				width: '17.5%',
 				render: (text, record) => this.createFormInput({
@@ -75,16 +78,30 @@ class SelectedTable extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
+		const field = fieldName.toUpperCase();
+		let fdProps = {};	
+		let fieldResponse = null;
+
+		if(field.indexOf(labels.lockTitle) < 0){
+			fdProps = {initialValue};
+			fieldResponse = (
+				<Input
+					size="small"
+					style={{ width: 100 }}
+				/>
+			);
+		}else{
+			fieldResponse = (
+				<Switch defaultChecked />
+			);
+		}
+		
 		return (
 			<Form.Item className='selected-table'>
-				{ getFieldDecorator(`${fieldName}${examItemID}`, { 	
-					//rules: [{ required: (!(fieldName === "examRequestItemLock" || fieldName === "examRequestItemSort")) }],
-					initialValue
-				})(
-					<Input
-						size="small"
-						style={{ width: 100 }}
-					/>
+				{ getFieldDecorator(`${fieldName}${examItemID}`, 
+					fdProps
+				)(
+					fieldResponse
 				)}
 				
 			</Form.Item>
@@ -107,7 +124,7 @@ class SelectedTable extends React.Component {
 
 	render() {
 		const { data, loading = false } = this.props;
-
+		console.log('TCL -> selected_table ->', data);
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
