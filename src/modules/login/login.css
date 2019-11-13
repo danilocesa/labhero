@@ -37,10 +37,10 @@
   font-weight: 600;
 }
 
-.ant-form-item-required::before {
+.login-form .ant-form-item-required::before {
   display: none;
 }
 
-.ant-form-item-label > label::after {
+.login-form .ant-form-item-label > label::after {
   display: none;
 }

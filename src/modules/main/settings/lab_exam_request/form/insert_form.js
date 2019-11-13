@@ -38,7 +38,7 @@ class InputForm extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<React.Fragment>
+			<div className="settings-exam-request-form">
 				<Row gutter={12}>
 					<Col span={10}>
 						<Form.Item label={FIELD_LABELS.examName}>
@@ -98,7 +98,7 @@ class InputForm extends React.Component {
 						</Form.Item>
 					</Col>
 				</Row>
-			</React.Fragment>
+			</div>
 		);
 	}
 }

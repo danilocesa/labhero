@@ -57,7 +57,7 @@ class BaseForm extends React.Component {
 			});
 
 		}
-
+		
 		// Else if user has pressed back button
 		else if(sessPersoInfo && sessOtherInfo) {
 			// eslint-disable-next-line react/prop-types
@@ -189,7 +189,7 @@ class BaseForm extends React.Component {
 										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="FIRST NAME *">
+								<Form.Item label="FIRST NAME">
 									{getFieldDecorator('givenName', { 
 										rules: FIELD_RULES.givenName, 
 										initialValue: initialPersoValue.givenName
@@ -197,7 +197,7 @@ class BaseForm extends React.Component {
 										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="MIDDLE NAME *">
+								<Form.Item label="MIDDLE NAME">
 									{getFieldDecorator('middleName', { 
 										rules: FIELD_RULES.middleName,
 										initialValue: initialPersoValue.middleName
@@ -207,7 +207,7 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="LAST NAME *">
+										<Form.Item label="LAST NAME">
 											{getFieldDecorator('lastName', { 
 												rules: FIELD_RULES.lastName,
 												initialValue: initialPersoValue.lastName 
@@ -229,7 +229,7 @@ class BaseForm extends React.Component {
 								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="DATE OF BIRTH *">
+										<Form.Item label="DATE OF BIRTH">
 											{getFieldDecorator('dateOfBirth', { 
 												rules: FIELD_RULES.dateOfBirth,
 												initialValue: initialPersoValue.dateOfBirth
@@ -274,7 +274,7 @@ class BaseForm extends React.Component {
 										/>
 									)}
 								</Form.Item>
-								<Form.Item label="PATIENT'S GENDER *">
+								<Form.Item label="PATIENT'S GENDER">
 									{getFieldDecorator('sex', { 
 										rules: FIELD_RULES.gender, 
 										initialValue: initialPersoValue.sex
@@ -295,7 +295,7 @@ class BaseForm extends React.Component {
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
-								<Form.Item label="LOCATION *">
+								<Form.Item label="LOCATION">
 									{getFieldDecorator('locationID', { rules: FIELD_RULES.location })(
 										<Select placeholder="Select a location" allowClear>
 											{LocationList}

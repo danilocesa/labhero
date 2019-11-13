@@ -24,7 +24,7 @@ export const FIELD_RULES = {
 };
 
 export const FIELD_LABELS = {
-	examName : 'NAME*', 
+	examName : 'NAME', 
 	examCode: 'CODE',
 	loinc: 'LOINC',
 	integrationCode: 'INTEGRATION CODE',
