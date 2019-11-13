@@ -71,9 +71,9 @@ ExamTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
 		examRequestID: PropTypes.any.isRequired,
 		examRequestName: PropTypes.string.isRequired,
-		examRequestCode: PropTypes.string.isRequired,
-		examRequestLoinc: PropTypes.string.isRequired,
-		examRequestIntegrationCode: PropTypes.string.isRequired,
+		examRequestCode: PropTypes.string,
+		examRequestLoinc: PropTypes.string,
+		examRequestIntegrationCode: PropTypes.string,
 		examRequestSort: PropTypes.any.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,

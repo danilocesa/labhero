@@ -5,8 +5,8 @@ import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 
 import ExamTable from './table';
-import AddForm from './add_form';
-import UpdateForm from './update_form';
+import AddForm from './add_panel';
+import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
 
 import { fetchSection, fetchSpecimens, fetchExamRequest } from './api_repo';
@@ -32,7 +32,7 @@ class LabExamRequest extends React.Component {
 		selectedSpecimenId: null,
 		isInitializing: true,
 		isLoading: false,
-		pageSize: 5,
+		pageSize: 10,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
 		examRequests: [],

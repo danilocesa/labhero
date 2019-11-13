@@ -36,8 +36,6 @@ class SelectionTable extends React.Component {
 			onSelectAll: this.onSelectAll
 		};
 
-		console.log(data);
-
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">

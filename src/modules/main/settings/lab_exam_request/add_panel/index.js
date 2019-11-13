@@ -1,18 +1,15 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Row, Col, Button, InputNumber } from 'antd';
+import { Drawer, Form, Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 import { fetchExamList, createExamRequest } from './api_repo';	 
+import InputForm from '../form/insert_form';
 import SelectionTable from '../selection_table';
 import SelectedTable from '../selected_table';
-import { FIELD_RULES, FIELD_LABELS, drawerTitle } from './constant';
 
-/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties}} */
+/** @type {{footer: React.CSSProperties}} */
 const styles = {
-	fullWidth: {
-		width: '100%'
-	},
 	footer: { 
 		position: 'absolute', 
 		zIndex: 1,
@@ -25,7 +22,7 @@ const styles = {
 	}
 };
 
-class AddForm extends React.Component {
+class AddPanel extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -37,6 +34,7 @@ class AddForm extends React.Component {
 		}
 
 		this.selectedTable = React.createRef();
+		this.formFields = React.createRef();
 	}
 
 	async componentDidUpdate(prevProps) {
@@ -64,18 +62,21 @@ class AddForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 
-		const { onSuccess, form } = this.props;
-		const { resetFields, getFieldsValue, validateFieldsAndScroll } = form;
+		const { onSuccess } = this.props;
 
-		validateFieldsAndScroll((err) => {
+		// @ts-ignore
+		const isFormFieldsValidated = this.formFields.triggerValidation();
+
+		if(isFormFieldsValidated) {
 			// @ts-ignore
 			const isSelExamValidated = this.selectedTable.triggerValidation();
 
-			if (!err && isSelExamValidated) {
+			if(isSelExamValidated) {
 				// @ts-ignore
 				const selectedExamItems = this.selectedTable.getSelectedExamItems();
-				const fields = getFieldsValue();
-				const payload = { ...fields,  examItems: selectedExamItems }; 
+				// @ts-ignore
+				const formFieldValues = this.formFields.getFormValues();
+				const payload = { ...formFieldValues,  examItems: selectedExamItems }; 
 
 				this.setState({ isLoading: true }, async() => {
 					const createdExamRequest = await createExamRequest(payload);
@@ -83,13 +84,13 @@ class AddForm extends React.Component {
 
 					if(createdExamRequest){
 						onSuccess();
-						resetFields();
+						// @ts-ignore
+						this.formFields.resetForm();
 						this.setState({ selectedExams: [] });
 					}
 				});
-				
 			}
-		});
+		}
 	}
 
 	onSelectSelectionTable = (selectedExam) => {
@@ -132,11 +133,11 @@ class AddForm extends React.Component {
 
 	closeFormDrawer = () => {
 		// eslint-disable-next-line react/prop-types
-		const { closeForm, form } = this.props;
-		const { resetFields } = form;
+		const { closeForm } = this.props;
 
 		this.setState({ selectedExams: [] });
-		resetFields();
+		// @ts-ignore
+		this.formFields.resetForm();
 		closeForm();
 	}
 
@@ -144,13 +145,11 @@ class AddForm extends React.Component {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
 		const { sectionId , specimenId} = this.props;
 		// eslint-disable-next-line react/prop-types
-		const { visible, form } = this.props;
-		const { getFieldDecorator } = form;
-		
+		const { visible } = this.props;
 
 		return (
 			<Drawer
-				title={drawerTitle}
+				title="ADD EXAM REQUEST"
 				width="70%"
 				placement="right"
 				closable
@@ -160,59 +159,11 @@ class AddForm extends React.Component {
 				<Form onSubmit={this.onSubmit}>
 					<section style={{ marginBottom: 50 }}>
 						<div style={{ margin: '0px 10px' }}>
-							<Row gutter={12}>
-								<Col span={10}>
-									<Form.Item label={FIELD_LABELS.examName}>
-										{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={14}>
-									<Form.Item label={FIELD_LABELS.examCode}>
-										{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={4} className="hide">
-									<Form.Item label={FIELD_LABELS.specimenID}>
-										{getFieldDecorator('specimenID', { rules: FIELD_RULES.specimenID, initialValue: specimenId })(
-											<InputNumber style={styles.fullWidth} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={4} className="hide">
-									<Form.Item label={FIELD_LABELS.sectionID}>
-										{getFieldDecorator('sectionID', { rules: FIELD_RULES.sectionID, initialValue: sectionId })(
-											<InputNumber style={styles.fullWidth} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={12}>
-								<Col span={10}>
-									<Form.Item label={FIELD_LABELS.loinc}>
-										{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={10}>
-									<Form.Item label={FIELD_LABELS.integrationCode}>
-										{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={4}>
-									<Form.Item label={FIELD_LABELS.examSort}>
-										{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
-											<Input style={styles.fullWidth} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
+							<InputForm 
+								wrappedComponentRef={(inst) => this.formFields = inst}
+								sectionId={sectionId}
+								specimenId={specimenId}
+							/>
 							<Row gutter={12}>
 								<Col span={7}>
 									<SelectionTable 
@@ -261,7 +212,7 @@ class AddForm extends React.Component {
 	}
 }
 
-AddForm.propTypes = {
+AddPanel.propTypes = {
 	sectionId: PropTypes.number, 
 	specimenId: PropTypes.number,
 	closeForm: PropTypes.func.isRequired,
@@ -269,9 +220,9 @@ AddForm.propTypes = {
 	onSuccess: PropTypes.func.isRequired
 };
 
-AddForm.defaultProps = {
+AddPanel.defaultProps = {
 	sectionId: null,
 	specimenId: null
 }
 
-export default Form.create()(AddForm);
+export default AddPanel;

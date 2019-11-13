@@ -11,6 +11,7 @@ import DragableBodyRow from './drag_and_drop';
 import './selected_table.css';
 
 class SelectedTable extends React.Component {
+	
 	constructor(props) {
 		super(props);
 		this.columns = [
@@ -23,7 +24,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: 200,
+				width: 240,
 			},
 			{ 
 				title: 'Group',
@@ -57,7 +58,9 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Sort',
-				render: (text, record, index) => <Input size="small" disabled value={index + 1} />
+				render: (text, record, index) => {
+					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center' }} />;
+				}
 			},
 		];
 		
@@ -84,7 +87,6 @@ class SelectedTable extends React.Component {
 			});
 		});
 
-		console.log(examItems);
 		return examItems;
 	}
 
@@ -135,11 +137,9 @@ class SelectedTable extends React.Component {
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
 
-		return (
-			<Form.Item className='selected-table-row'>
-				{ getFieldDecorator(`keys[${index}]`, { initialValue: examItemID }) }
-			</Form.Item>
-		);
+		getFieldDecorator(`keys[${index}]`, { initialValue: examItemID });
+
+		return '';
 	}
 
 	triggerValidation() {
@@ -153,17 +153,15 @@ class SelectedTable extends React.Component {
 
 	render() {
 		const { data, loading = false } = this.props;
-		
-		console.log('SELECTED TABLE RENDERED');
 
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<DndProvider backend={HTML5Backend}>
 						<Table 
-							columns={this.columns} 
 							className="selected-table"
 							size="small"
+							columns={this.columns} 
 							dataSource={data}   
 							components={this.components}
 							onRow={(record, index) => ({
@@ -191,3 +189,5 @@ SelectedTable.propTypes = {
 };
 
 export default Form.create()(SelectedTable);
+
+
