@@ -174,7 +174,7 @@ class UserAccountForm extends React.Component {
                                         }
                                     </Form.Item>
 
-                                    <Form.Item label="FIRST NAME*">
+                                    <Form.Item label="FIRST NAME">
                                         {getFieldDecorator('givenName', {
                                             initialValue: patientInfo.givenName,
                                         	rules: [{ required: true, message: errorMessages.requiredField }]
@@ -183,7 +183,7 @@ class UserAccountForm extends React.Component {
                                         )}	
                                     </Form.Item>
 
-                                    <Form.Item label="MIDDLE NAME*">
+                                    <Form.Item label="MIDDLE NAME">
                                         {
                                             getFieldDecorator('middleName',{
                                                 initialValue: patientInfo.middleName,
@@ -191,7 +191,7 @@ class UserAccountForm extends React.Component {
                                             })(<Input />)
                                         }
                                     </Form.Item>
-                                    <Form.Item label="LAST NAME*">
+                                    <Form.Item label="LAST NAME">
                                         {
                                             getFieldDecorator('lastName',{
                                                 initialValue: patientInfo.lastName,
@@ -207,7 +207,7 @@ class UserAccountForm extends React.Component {
                                         <Text strong>{g_labels.accountInfoLabel}</Text>
                                     </div>
 
-                                    <Form.Item label="USERNAME*">
+                                    <Form.Item label="USERNAME">
                                         {
                                             getFieldDecorator('userName',{
                                                 initialValue: patientInfo.userName,
@@ -217,7 +217,7 @@ class UserAccountForm extends React.Component {
                                         }
                                     </Form.Item>
 
-                                    <Form.Item label="PASSWORD*">
+                                    <Form.Item label="PASSWORD">
                                         {
                                             getFieldDecorator('password',{
                                                 initialValue: patientInfo.password,
@@ -230,7 +230,7 @@ class UserAccountForm extends React.Component {
                                         }
                                     </Form.Item>
 
-                                    <Form.Item label="REPEAT PASSWORD*">
+                                    <Form.Item label="REPEAT PASSWORD">
                                         {
                                             getFieldDecorator('repeat_password',{
                                                 initialValue: patientInfo.password,
@@ -265,7 +265,7 @@ class UserAccountForm extends React.Component {
                                             <Input />)
                                         }
                                     </Form.Item>
-                                    <Form.Item label="USER RIGHTS*">
+                                    <Form.Item label="USER RIGHTS">
                                         {
                                             getFieldDecorator('userTypeID',{ 
                                                 initialValue: patientInfo.userTypeID,

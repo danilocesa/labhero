@@ -24,7 +24,7 @@ export const formLabels = {
     contactNumber: 'MOBILE NO.',
     emailAddress: 'EMAIL ADDRESS'
 };
-export const selectDefaultOptions = "PLEASE SELECT"
+export const selectDefaultOptions = "PLEASE SELECT";
 export const genderOptions = {
     male: 'MALE',
     female: 'FEMALE'

@@ -4,11 +4,12 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA, apiPatient, apiPOSTMethod } from 'shared_components/constant-global';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
 import FillupForm from './form';
+
 
 import { 
 	CLR_PERSONAL_INFO, 
@@ -28,6 +29,7 @@ const personalInfoKeys = [
 	'dateOfBirth',
 	'sex',
 	'address',
+	'addressCode',
 	'contactNumber'
 ];
 
@@ -59,6 +61,10 @@ class FillupStep extends React.Component {
 		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
+		
+		personalInfo.addressCode = fields.town;
+		delete personalInfo.town;
+		delete personalInfo.patientID;
 		
 		this.setState({ isLoading: true }, async() =>{
 			// If patientid is null then create new patient
@@ -92,11 +98,10 @@ class FillupStep extends React.Component {
 
 	createPatientInfo = async (personalInfo) => {
 		let createdPatient;
-
 		try{
 			const content = {
-				method: 'POST',
-				url: 'lab/Patient',
+				method: apiPOSTMethod,
+				url: apiPatient.url,
 				data: personalInfo
 			}
 

@@ -8,8 +8,11 @@ import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select }
 // CUSTOM MODULES
 import hospitalLocationAPI from 'services/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
+import ProvinceList from 'shared_components/province_list';
+import CityList from 'shared_components/city_list';
+import TownList from 'shared_components/town_list';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
-import FIELD_RULES from './constant';
+import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
 
 import FormButtons from './form_buttons';
 
@@ -113,7 +116,7 @@ class BaseForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
-        
+
 				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
@@ -134,9 +137,9 @@ class BaseForm extends React.Component {
 
 	render() {
 		const { isDisabledPersoFields, initialPersoValue } = this.state;
-		const { isLoading } = this.props;
+		const { isLoading, form } = this.props;
 		// eslint-disable-next-line react/prop-types
-		const { getFieldDecorator } = this.props.form;
+		const { getFieldDecorator, getFieldsValue } = this.props.form;
 		const { hospitalPhysicianList, hospitalLocationList } = this.state;
 
 		const LocationList = hospitalLocationList.map((item) => (
@@ -151,6 +154,8 @@ class BaseForm extends React.Component {
 			</Option>
 		));
 
+		const dummyVal = '';
+
 		return (
 			<div style={{ marginTop: 50 }}>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -162,7 +167,7 @@ class BaseForm extends React.Component {
 								</div>
 								<Row gutter={12}>
 									<Col span={12}>
-										<Form.Item label="HOSPITAL ID">
+										<Form.Item label={formLabels.hospitalID}>
 											{getFieldDecorator('hospitalID', { 
 												rules: FIELD_RULES.hospitalID,
 												initialValue: initialPersoValue.hospitalID
@@ -172,7 +177,7 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 									<Col span={12}>
-										<Form.Item label="PATIENT ID">
+										<Form.Item label={formLabels.patientID}>
 											{getFieldDecorator('patientID', {
 												initialValue: initialPersoValue.patientID
 											})(
@@ -181,7 +186,7 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 								</Row>
-								<Form.Item label="EMAIL">
+								<Form.Item label={formLabels.email}>
 									{getFieldDecorator('emailAdd', { 
 										rules: FIELD_RULES.emailAdd,
 										initialValue: initialPersoValue.emailAdd
@@ -189,7 +194,7 @@ class BaseForm extends React.Component {
 										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="FIRST NAME">
+								<Form.Item label={formLabels.firstName}>
 									{getFieldDecorator('givenName', { 
 										rules: FIELD_RULES.givenName, 
 										initialValue: initialPersoValue.givenName
@@ -197,7 +202,7 @@ class BaseForm extends React.Component {
 										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="MIDDLE NAME">
+								<Form.Item label={formLabels.middleName}>
 									{getFieldDecorator('middleName', { 
 										rules: FIELD_RULES.middleName,
 										initialValue: initialPersoValue.middleName
@@ -207,7 +212,7 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="LAST NAME">
+										<Form.Item label={formLabels.lastName}>
 											{getFieldDecorator('lastName', { 
 												rules: FIELD_RULES.lastName,
 												initialValue: initialPersoValue.lastName 
@@ -217,7 +222,7 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 									<Col span={6}>
-										<Form.Item label="SUFFIX">
+										<Form.Item label={formLabels.suffix}>
 											{getFieldDecorator('nameSuffix', { 
 												rules: FIELD_RULES.suffix, 
 												initialValue: initialPersoValue.suffix
@@ -229,7 +234,7 @@ class BaseForm extends React.Component {
 								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label="DATE OF BIRTH">
+										<Form.Item label={formLabels.dateOfBirth}>
 											{getFieldDecorator('dateOfBirth', { 
 												rules: FIELD_RULES.dateOfBirth,
 												initialValue: initialPersoValue.dateOfBirth
@@ -244,7 +249,7 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 									<Col span={6}>
-										<Form.Item label="AGE">
+										<Form.Item label={formLabels.age}>
 											{getFieldDecorator('patientAge', { 
 												rules: FIELD_RULES.age,
 												initialValue: initialPersoValue.patientAge
@@ -254,7 +259,37 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 								</Row>
-								<Form.Item label="ADDRESS">
+								<Row gutter={12}>
+									<Col span={12}>
+										<ProvinceList 
+											form={form}
+											selectDefaultOptions={selectDefaultOptions}
+											selectedProvince={dummyVal}
+										/>
+									</Col>
+									<Col span={12}>
+										<CityList 
+											form={form}
+											selectDefaultOptions={selectDefaultOptions}
+											selectedCity={dummyVal}
+											provinceValue={getFieldsValue().provinces}
+										/>
+									</Col>
+								</Row>
+								
+								<Row gutter={12}>
+									<Col span={12}>
+										<TownList 
+											form={form}
+											selectDefaultOptions={selectDefaultOptions}
+											selectedTown={dummyVal}
+											cityValue={getFieldsValue().city}
+										/>
+									</Col>
+
+								</Row>
+
+								<Form.Item label={formLabels.unitFloorBldg}>
 									{getFieldDecorator('address', { 
 										rules: FIELD_RULES.address, 
 										initialValue: initialPersoValue.address
@@ -262,7 +297,8 @@ class BaseForm extends React.Component {
 										<Input disabled={isDisabledPersoFields} />
 									)}
 								</Form.Item>
-								<Form.Item label="CONTACT NUMBER">
+								
+								<Form.Item label={formLabels.contactNumber}>
 									{getFieldDecorator('contactNumber', { 
 										rules: FIELD_RULES.contactNumber,
 										initialValue: initialPersoValue.contactNumber
@@ -274,7 +310,7 @@ class BaseForm extends React.Component {
 										/>
 									)}
 								</Form.Item>
-								<Form.Item label="PATIENT'S GENDER">
+								<Form.Item label={formLabels.patientGender}>
 									{getFieldDecorator('sex', { 
 										rules: FIELD_RULES.gender, 
 										initialValue: initialPersoValue.sex
@@ -295,14 +331,14 @@ class BaseForm extends React.Component {
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
-								<Form.Item label="LOCATION">
+								<Form.Item label={formLabels.location}>
 									{getFieldDecorator('locationID', { rules: FIELD_RULES.location })(
 										<Select placeholder="Select a location" allowClear>
 											{LocationList}
 										</Select>
 									)}
 								</Form.Item>
-								<Form.Item label="PHYSICIAN ID">
+								<Form.Item label={formLabels.physicianID}>
 									{getFieldDecorator('physicianID', { rules: FIELD_RULES.physicianId })(
 										<Select 
 											placeholder="Select a physician" 
@@ -312,27 +348,27 @@ class BaseForm extends React.Component {
 										</Select>
 									)}
 								</Form.Item>
-								<Form.Item label="VISIT">
+								<Form.Item label={formLabels.visit}>
 									{getFieldDecorator('visit', { rules: FIELD_RULES.visit })(
 										<Input />
 									)}
 								</Form.Item>
-								<Form.Item label="CHARGE SLIP">
+								<Form.Item label={formLabels.chargeSlip}>
 									{getFieldDecorator('chargeSlip', { rules: FIELD_RULES.chargeSlip })(
 										<Input />
 									)}
 								</Form.Item>
-								<Form.Item label="OFFICIAL RECEIPT">
+								<Form.Item label={formLabels.officialReceipt}>
 									{getFieldDecorator('officialReceipt', { rules: FIELD_RULES.officialReceipt })(
 										<Input />
 									)}
 								</Form.Item>
-								<Form.Item label="BED">
+								<Form.Item label={formLabels.bed}>
 									{getFieldDecorator('bed', { rules: FIELD_RULES.bed })(
 										<Input />
 									)}
 								</Form.Item>
-								<Form.Item label="COMMENT">
+								<Form.Item label={formLabels.comment}>
 									{getFieldDecorator('comment', { rules: FIELD_RULES.comment })(
 										<TextArea rows={3} />
 									)}
