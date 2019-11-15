@@ -51,31 +51,6 @@ class SearchPatientForm extends React.Component {
 		loading: false
 	};
 
-	
-	async componentDidMount() {
-		// const { 
-		// 	sessionPatientID, 
-		// 	sessionPatientName, 
-		// 	populatePatients,
-		// 	displayLoading 
-		// } = this.props;
-
-		
-		// if(sessionPatientID || sessionPatientName) {
-		// 	this.setState({ 
-		// 		patientID: sessionPatientID,
-		// 		patientName: sessionPatientName
-		// 	});
-			
-		// 	displayLoading(true);
-		// 	const patients = await this.fetchPatients(sessionPatientName, sessionPatientID);
-		// 	displayLoading(false);
-			
-		// 	populatePatients(patients);
-		// }
-	}
-
-
 	handleInputChange = (event) => {
 		this.setState({
 			[event.target.name]: event.target.value
@@ -108,6 +83,7 @@ class SearchPatientForm extends React.Component {
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
       });
 			const { data } = await response;
+      console.log("TCL: SearchPatientForm -> fetchPatients -> data", data)
 			
 			patients = data ? data.patient : [];
 		}
@@ -175,7 +151,7 @@ class SearchPatientForm extends React.Component {
 								value={patientName} 
 								onChange={this.handleInputChange} 
 								onFocus={this.handleFocus}
-								placeholder="Lastname,Firstname"
+								placeholder="Lastname, Firstname"
 							/>
 						</Form.Item>
 					</Col>

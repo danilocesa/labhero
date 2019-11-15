@@ -15,7 +15,7 @@ const FIELD_RULES = {
   //   { required: true, message: 'This field is required.' }
 	// ],
 	integrationCode: [
-    { required: true, message: 'This field is required.' }
+    { required: false, message: 'This field is required.' }
 	]
 };
 

@@ -89,6 +89,7 @@ class SearchPatientTable extends React.Component {
 				title: 'ADDRESS',
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
+				render: (text,row) => <p>{`${text}, ${row.townName}, ${row.cityMunicipalityName}, ${row.provinceName}`}</p>
 			},
 		];
 

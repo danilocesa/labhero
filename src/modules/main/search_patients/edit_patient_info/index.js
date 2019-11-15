@@ -6,14 +6,17 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, message, Cascader } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd';
 
 // CUSTOM MODULES
-import addressData from 'assets/address.json';
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
-import computeAge from 'shared_components/age_computation';
+import updatePatientAPI from 'services/search_patient/updatePatient';
+import ProvinceList from 'shared_components/province_list';
+import CityList from 'shared_components/city_list';
+import TownList from 'shared_components/town_list';
 import FIELD_RULES from './constant';
+import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions} from '../settings';
+
 
 // CSS
 import './editprofile.css'; 
@@ -25,102 +28,6 @@ const RadioButton = Radio.Button;
 const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
-	state = {
-		"addressArr" : []
-	}
-
-	componentDidMount(){
-		const addressArr = [];
-		// const municipalityArr = [];
-		// const barangayArr = [];
-		// let a = 0; 
-		// let b = 0;
-		// let c = 0;
-		console.log(addressData);
-		// Object.entries(addressData).forEach((addressTxt)=>{
-    // console.log("TCL: EditProfile -> componentDidMount -> addressTxt", addressTxt)
-		// 	addressArr.push({
-		// 		"label":addressTxt[0], 
-		// 		"value":`${addressTxt[0]}L1-L1-${a}`, 
-		// 		"key":`${addressTxt[0]}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`
-		// 	});
-		// 	// Get all municipality
-		// 	Object.entries(addressTxt[1].municipality_list).forEach((municipality)=>{
-		// 		municipalityArr.push({
-		// 			"label": municipality[0],
-		// 			"value": `${municipality[0]}L2-L2-${b+1*Math.floor(Math.random() * 9999999)}`,
-		// 			"key": `${municipality[0]}L2-L2-${b+1*Math.floor(Math.random() * 9999999)}`
-		// 		})
-		// 		b +=1;
-		// 	});
-		// 	addressArr[a].children = municipalityArr;
-		// 	// console.log(addressArr[a].children);
-		// 	// Get all barangay
-		// 	// Object.entries(addressArr[a].children).forEach((barangay)=>{
-		// 		// console.log(addressArr[a].children);
-		// 		// barangayArr.push({
-		// 		// 	"label": barangay[1].label,
-		// 		// 	"value": `${barangay[1].key}L3-L3-${c+1*Math.floor(Math.random() * 9999999)}`,
-		// 		// 	"key": `${barangay[1].key}L3-L3-${c+1*Math.floor(Math.random() * 9999999)}`
-		// 		// })
-		// 		// c +=1
-		// 	// });
-		// 	// addressArr[a].children = barangayArr
-			// a +=1;
-		// });
-
-
-		
-		// console.log(addressArr);
-		// for (const [keyProvince, valueprovince] of Object.entries(addressData)) {
-		// 	addressArr.push({"label":keyProvince, "value":`${keyProvince}L1-L1-${a}`, "key":`${keyProvince}L1-L1-${a+1*Math.floor(Math.random() * 9999999)}`});
-		// 	addressArr[a].children = this.getMunicipality(valueprovince.municipality_list);
-		// 	for(const [, valueMunicipality] of Object.entries(valueprovince.municipality_list)){
-		// 		for( const [, value] of  Object.entries(valueMunicipality) ){
-		// 			// value.children = this.getBarangay(valueMunicipality.barangay_list)
-		// 		}
-		// 	}
-		// 	a +=1;
-		// }
-		this.setState({
-			addressArr
-		})
-	}
-
-	// getMunicipality = (array) => {
-    
-	// 	const municipalityArr = [];
-	// 	let a = 0;
-	// 	for (const [keyMunicipality] of Object.entries(array)) {
-	// 		municipalityArr.push(
-	// 			{
-	// 			"label": keyMunicipality,
-	// 			"value": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`,
-	// 			"key": `${keyMunicipality}L2-L2-${a+1*Math.floor(Math.random() * 9999999)}`
-	// 			}
-	// 		)
-	// 		a +=1;
-	// 	}
-	// 	return municipalityArr;
-	// }
-
-	// getBarangay = (array) => {
-	// 	const barangayArr = [];
-	// 	let a = 0;
-	// 	for (const [valueBarangay] of Object.entries(array)) {
-	// 		console.log(valueBarangay);
-	// 		barangayArr.push(
-	// 			{
-	// 			"label": valueBarangay,
-	// 			"value": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`,
-	// 			"key": `${valueBarangay}L3-L3-${a+1*Math.floor(Math.random() * 9999999)}`
-	// 			}
-	// 		)
-	// 		a +=1;
-	// 	}
-	// 	return barangayArr;
-	// }
-
 	searchAddress = (input,treenode) => {
 		const searchText = treenode.props.title.search(input.toUpperCase())
 		if(searchText < 0){
@@ -155,46 +62,38 @@ class EditProfile extends React.Component {
 
 	submitUpdatePatient = async (fields) => {
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
-		const response = await axiosCall({
-			method: 'PUT',
-			url: `Patient/${this.props.patientInfo.patientID}`,
-			headers: {
-				'authorization': `Bearer ${loggedUserData.token}`
-			},
-			data: {
-				"userID": loggedUserData.userID,
-				"lastName": fields.lastname,
-				"givenName": fields.firstname,
-				"middleName": fields.middlename,
-				"sex": fields.gender,
-				"dateOfBirth": fields.dateOfBirth,
-				"address": fields.address +  fields.homeAddress
-			}
-		});
+		const payload = {
+			"patientID": this.props.patientInfo.patientID,
+			"userID": loggedUserData.userID,
+			"lastName": fields.lastname,
+			"givenName": fields.firstname,
+			"middleName": fields.middlename,
+			"sex": fields.gender,
+			"dateOfBirth": fields.dateOfBirth,
+			"addressCode": fields.town,
+			"address": fields.unitNo
+		};
+		const response = await updatePatientAPI(payload);
+
 		if(response.status === 200){
-			message.success('Changes successfully saved!');
+			message.success(successMessages.update);
 			window.location.reload();
 		} else {
 			Message.error();
 		}
 	}
 
-	onClickDatePicker = () => {
-		console.log(this.props.patientInfo.dateOfBirth);
-	}
-
 	render() {
 		// eslint-disable-next-line react/prop-types
-		const { getFieldDecorator } = this.props.form;
-		function filter(inputValue, path) {
-			return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-		}
+		const { getFieldDecorator, getFieldsValue } = this.props.form;
+    console.log("TCL: EditProfile -> render -> getFieldsValue", getFieldsValue())
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={8}>
+						{/** Lastname */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label="Last Name">
+							<Form.Item label={formLabels.lastName}>
 							{getFieldDecorator('lastname', {
 								initialValue: this.props.patientInfo.lastName,
 								rules: FIELD_RULES.lastname ,
@@ -203,9 +102,9 @@ class EditProfile extends React.Component {
 							)}
 							</Form.Item>
 						</Col>
-
+						{/** Firstname */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label="First Name">
+							<Form.Item label={formLabels.firstName}>
 								{getFieldDecorator('firstname', {
 									initialValue: this.props.patientInfo.givenName,
 									rules: FIELD_RULES.firstname,
@@ -214,9 +113,9 @@ class EditProfile extends React.Component {
 								)}
 							</Form.Item>
 						</Col>
-
+						{/** Middlename */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label="Middle Name">
+							<Form.Item label={formLabels.middleName}>
 								{getFieldDecorator('middlename', {
 									initialValue: this.props.patientInfo.middleName,
 									rules: FIELD_RULES.middlename,
@@ -225,25 +124,48 @@ class EditProfile extends React.Component {
 								)}
 							</Form.Item>
 						</Col>
-
+						{/** Suffix */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label="GENDER" className="gutter-box">
+							<Form.Item label={formLabels.suffix}>
+								{getFieldDecorator('suffix', {
+									initialValue: this.props.patientInfo.suffix,
+									rules: FIELD_RULES.suffix,
+								})(
+									<Input onChange={this.onChangePatientInfo} />
+								)}
+							</Form.Item>
+						</Col>
+						{/** Gender */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<Form.Item label={formLabels.gender} className="gutter-box">
 								{getFieldDecorator('gender', {
 									initialValue: this.props.patientInfo.sex,
 									rules: FIELD_RULES.gender,
 								})(
 									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
-										<RadioButton style={{ width:'50%' }} value="MALE" checked={this.props.patientInfo.sex === "MALE"}>MALE</RadioButton>
-										<RadioButton style={{ width:'50%' }} value="FEMALE" checked={this.props.patientInfo.sex === "FEMALE"}>FEMALE</RadioButton>
+										<RadioButton 
+											style={{ width:'50%' }} 
+											value={genderOptions.male} 
+											checked={this.props.patientInfo.sex === genderOptions.male}
+										>
+											{genderOptions.male}
+										</RadioButton>
+										<RadioButton 
+											style={{ width:'50%' }} 
+											value={genderOptions.female} 
+											checked={this.props.patientInfo.sex === genderOptions.female}
+										>
+											{genderOptions.female}
+										</RadioButton>
 									</RadioGroup>
 								)}
 							</Form.Item>
 						</Col>
-
-						<Col xs={24} sm={24} md={24} lg={24}>
+						{/** Date of birth */}
+						<Col xs={24} sm={12} md={12} lg={12}>
 							<Row gutter={8}>
 								<Col xs={24} sm={12} md={12} lg={12}>
-									<Form.Item label="Date of Birth">
+									<Form.Item label={formLabels.dateOfBirth}>
 										<div className="customDatePickerWidth">
 											{getFieldDecorator('dateOfBirth', { 
 												initialValue: this.props.patientInfo.dateOfBirth ? moment(this.props.patientInfo.dateOfBirth, 'MM-DD-YYYY') : null,
@@ -258,43 +180,62 @@ class EditProfile extends React.Component {
 										</div>
 									</Form.Item>
 								</Col>
-								<Col xs={24} sm={12} md={12} lg={12}>
-									<Form.Item label="Age">
-										<Input value={computeAge(this.props.patientInfo.dateOfBirth)} disabled />
-									</Form.Item>
-								</Col>
 							</Row>
 						</Col>
-
-						<Col xs={24} sm={24} md={24} lg={24}>
-							<Form.Item label="ADDRESS" className="gutter-box">
-								<div className="treeselect-address">
-									{getFieldDecorator('address', { 
-										rules: FIELD_RULES.address
-									})(
-										<Cascader 
-											options={this.state.addressArr}
-											style={{ width: '100%' }}
-											dropdownstyle={{ maxHeight: 500 }}
-											placeholder="Please select"
-											allowclear
-											showSearch={{filter}}
-										/>
-									)}
-								</div>
-							</Form.Item>
+						{/** Province */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<ProvinceList
+								form={this.props.form}
+								selectDefaultOptions={selectDefaultOptions} 
+								selectedProvince={this.props.patientInfo.provinceCode}
+							/>
 						</Col>
-
-						<Col xs={24} sm={12} md={24} lg={24}>
-							<Form.Item label="House No./Unit/Floor No., Bldg Name, Blk or Lot No.">
-							{getFieldDecorator('homeAddress', {
-								// initialValue: this.props.patientInfo.lastName,
-								rules: FIELD_RULES.homeAddress ,
+						{/** City */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<CityList 
+								form={this.props.form}
+								selectDefaultOptions={selectDefaultOptions} 
+								provinceValue={getFieldsValue().provinces}
+								selectedcity={this.props.patientInfo.cityMunicipalityCode}
+							/>
+						</Col>
+						{/** Barangay */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<TownList 
+								form={this.props.form}
+								selectDefaultOptions={selectDefaultOptions} 
+								cityValue={getFieldsValue().city}
+							/>
+						</Col>
+						{/** Unit No. */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<Form.Item label={formLabels.unitNo}>
+							{getFieldDecorator('unitNo', {
+								rules: FIELD_RULES.unitNo ,
+								initialValue: this.props.patientInfo.address
 							})(
 								<Input />
 							)}
 							</Form.Item>
 						</Col>
+						{/** Contact No. */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<Form.Item label={formLabels.contactNumber}>
+								{getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
+									<Input addonBefore="+ 63" maxLength={10} />
+								)}
+							</Form.Item>
+						</Col>	
+						{/** Email address */}
+						<Col xs={24} sm={12} md={12} lg={12}>
+							<Form.Item label={formLabels.emailAddress}>
+							{getFieldDecorator('emailAddress', {
+								rules: FIELD_RULES.emailAddress ,
+							})(
+								<Input />
+							)}
+							</Form.Item>
+						</Col>	
 					</Row>
 					<div
 					style={{
@@ -309,10 +250,10 @@ class EditProfile extends React.Component {
             }}
 					>
 						<Button style={{ marginRight: 8 }}>
-							Cancel
+							{drawerCancelButton}
 						</Button>
 						<Button type="primary" htmlType="submit">
-							Submit
+							{drawerSubmitButton}
 						</Button>
 					</div>
 				</Form>
@@ -323,11 +264,15 @@ class EditProfile extends React.Component {
 }
 
 EditProfile.propTypes = {
-	patientInfo: PropTypes.object
+	patientInfo: PropTypes.object,
+	form: PropTypes.object,
+	provinceCode: PropTypes.string
 };
 
 EditProfile.defaultProps = {
-	patientInfo: {}
+	patientInfo() { return null; },
+	form() { return null; },
+	provinceCode: null
 }
 
 const UpdatePatientForm = Form.create()(withRouter(EditProfile));
