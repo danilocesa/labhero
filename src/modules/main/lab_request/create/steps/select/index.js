@@ -90,7 +90,6 @@ class SelectStep extends React.Component {
 	populatePanelRef = (panels) => {
 		const panelRef = [];
 
-		console.log('PANELS', panels);
 		panels.forEach(panel => {
 			const panelModel = {
 				panelCode: panel.panelCode,
@@ -202,8 +201,6 @@ class SelectStep extends React.Component {
 		const selectedPanel = panelRef.find(item => item.panelID === panelID);
 		let newSelectedContents = []; 
 
-		console.log('THUNDER', newSelectedContents);
-
 		selectedPanel.exams.forEach(exam => {
 			this.addSingleExam({
 				examID: exam.examID, 
@@ -277,8 +274,6 @@ class SelectStep extends React.Component {
 			const isExistingExam = selectedExams.some(iExam => iExam.examID === examID);
 			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
 			
-			console.log('Adding to selected exams', exam);
-
 			if(!isExistingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });
 			
@@ -306,13 +301,10 @@ class SelectStep extends React.Component {
 			return !(item.selectedPanel && item.selectedPanel.panelID === panelID); 
 		});
 
-		console.log(selectedContents, selectedContentsByPanel);
 		const filteredContents = selectedContents.filter(a => {
-			console.log(selectedContentsByPanel.some(b => a === b), a);
 			return !selectedContentsByPanel.some(b => a === b);
 		});
 
-		console.log(filteredContents);
 		this.setState({ 
 			selectedExams: filteredExams, 
 			selectedContents: filteredContents,
@@ -338,8 +330,6 @@ class SelectStep extends React.Component {
 			})
 		};
 
-		console.log('New selected contents', newState);
-
 
 		this.setState(newState, () => {
 			if(sectionCode !== 'panel' && sectionCode !== null)
@@ -360,8 +350,6 @@ class SelectStep extends React.Component {
 	// Private function
 	unselectExams = (unselectedExams) => {
 		const { exams, selectedContents, selectedExams } = this.state;
-
-		console.log('unselect exams', exams);
 
 		const processedExams = exams.map(exam => { 
 			// Check if current exam is in the unselected exams

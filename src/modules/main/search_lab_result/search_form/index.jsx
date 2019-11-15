@@ -22,7 +22,6 @@ class SearchLabTestForm extends React.Component {
 		this.state = {
 			enableDateRange: false,
 			isLoading: false,
-			isDisableSubmit: true
 		};
 	}
     
@@ -33,9 +32,15 @@ class SearchLabTestForm extends React.Component {
 
 		form.validateFieldsAndScroll((err, fieldsValue) => {
 			if (!err) {
+				const { dateSpan } = fieldsValue;
+
 				this.setState({ isLoading: true }, async() => {
-					console.log('Received values of form: ', fieldsValue);
-					const labResults = await fetchLabResult(fieldsValue);
+					const labResults = await fetchLabResult({
+						...fieldsValue,
+						fromDate: dateSpan[0].format('YYYYMMDD'),
+						toDate: dateSpan[1].format('YYYYMMDD')
+					});
+
 					console.log('labresults', labResults);
 
 					this.setState({ isLoading: false });
@@ -53,24 +58,9 @@ class SearchLabTestForm extends React.Component {
 		this.setState({ enableDateRange: true });
 	}
 
-	onChangeRequiredFields = () => {
-		const { getFieldsValue } = this.props.form;
-
-		const fieldsValue = getFieldsValue();
-
-		console.log(fieldsValue);
-
-		if(fieldsValue.dateCategory &&
-			 fieldsValue.dateSpan &&
-			 fieldsValue.status)
-			this.setState({ isDisableSubmit: false });
-		else
-			this.setState({ isDisableSubmit: true });
-	}
-
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { isLoading, isDisableSubmit } = this.state;
+		const { isLoading } = this.state;
 
 		return(
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
@@ -80,8 +70,8 @@ class SearchLabTestForm extends React.Component {
 						<Row type="flex" align="top" gutter={24}> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="DATE CATEGORY" className="gutter-box">
-									{getFieldDecorator('dateCategory')(
-										<RadioGroup buttonStyle="solid" onChange={this.onChangeRequiredFields}>
+									{getFieldDecorator('dateCategory', { rules: FIELD_RULES.dateCategory })(
+										<RadioGroup buttonStyle="solid">
 											<RadioButton value="a" onClick={this.onClickDateCategory}>
 												REQUEST
 											</RadioButton>
@@ -97,10 +87,9 @@ class SearchLabTestForm extends React.Component {
 							</Col>
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="FROM DATE - TO DATE" className="gutter-box">
-									{getFieldDecorator('dateSpan')(
+									{getFieldDecorator('dateSpan', { rules: FIELD_RULES.dateSpan })(
 										<RangePicker 
-											disabled={!this.state.enableDateRange} 
-											onChange={this.onChangeRequiredFields}
+											disabled={!this.state.enableDateRange}
 											allowClear 
 											style={{ width:'100%' }} 
 										/>
@@ -108,16 +97,20 @@ class SearchLabTestForm extends React.Component {
 								</Form.Item>
 							</Col> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
-								<Form.Item label="STATUS" hasFeedback className="gutter-box">
-									<Select 
-										onChange={this.onChangeRequiredFields}
-										placeholder="Please select a status" 
-										style={{ width: "100%" }} 
-										allowClear
-									>
-										<Option value="Status 1" />
-										<Option value="Status 2" />
-									</Select>
+								<Form.Item label="STATUS" className="gutter-box">
+									{getFieldDecorator('status', { rules: FIELD_RULES.status })(
+										<Select 
+											placeholder="Please select a status" 
+											style={{ width: "100%" }} 
+											allowClear
+										>
+											<Option value="All">All</Option> 
+											<Option value="Checked In">Checked In</Option> 
+											<Option value="Instrument Result">Instrument Result</Option>
+											<Option value="Preliminary">Preliminary</Option>
+											<Option value="Released">Released</Option>
+										</Select>
+									)}
 								</Form.Item>
 							</Col>
 						</Row>
@@ -161,7 +154,7 @@ class SearchLabTestForm extends React.Component {
 												shape="round" 
 												htmlType="submit"
 												loading={isLoading}
-												disabled={isDisableSubmit}
+												// disabled={isDisableSubmit}
 											> 
 												SEARCH 
 											</Button>
