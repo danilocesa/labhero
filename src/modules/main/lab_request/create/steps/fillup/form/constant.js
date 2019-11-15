@@ -1,4 +1,4 @@
-const FIELD_RULES = {
+export const FIELD_RULES = {
 	hospitalID: [
     // { required: true, message: 'This field is required..' }
 	],
@@ -54,5 +54,34 @@ const FIELD_RULES = {
 	],
 	
 };
+
+export const formLabels = {
+	hospitalID: "HOSPITAL ID",
+	patientID: "PATIENT ID",
+	email: "EMAIL",
+	firstName : "FIRST NAME",
+	middleName : "MIDDLE NAME",
+	lastName : "LAST NAME",
+	suffix : "SUFFIX",
+	dateOfBirth : "DATE OF BIRTH",
+	age : "AGE",
+	unitFloorBldg : "HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
+	contactNumber : "CONTACT NUMBER",
+	patientGender : "PATIENT'S GENDER",
+	location : "LOCATION",
+	physicianID : "PHYSICIAN ID",
+	visit : "VISIT",
+	chargeSlip : "CHARGE SLIP",
+	officialReceipt : "OFFICIAL RECEIPT",
+	bed : "BED",
+	comment : "COMMENT", 
+};
+
+export const formPlaceholders = {
+	phonePrefix : "+ 63",
+	physician : "Select a physician",
+}
+
+export const selectDefaultOptions = "PLEASE SELECT ONE";
 
 export default FIELD_RULES;
