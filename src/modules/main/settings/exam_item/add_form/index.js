@@ -140,11 +140,13 @@ class AddForm extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = form;
 	
-		const UnitMeasureOptions = unitOfMeasures.map(unit => (
-			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
-				{unit.unitOfMesureBase}
-			</Option>
-		));
+		const UnitMeasureOptions = unitOfMeasures.map(unit => {
+			return (
+				<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
+					{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
+				</Option>
+			);
+		});
 
 		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
 			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
@@ -181,41 +183,38 @@ class AddForm extends React.Component {
 								</Select>
 							)}
 						</Form.Item>
-						{ selectedRsType === DD_VAL_ALPHA_NUMERIC && (
-							<>
+						{ (selectedRsType === DD_VAL_ALPHA_NUMERIC || selectedRsType === DD_VAL_NUMERIC) && (
+							<React.Fragment>
 								<Form.Item label="UNIT OF MEASURES">
 									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
 										<Select>{UnitMeasureOptions}</Select>
 									)}
 								</Form.Item>
 								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: FIELD_RULES.examItemTypeDefault, 
+										initialValue: 1 
+									})(
 										<Input />
 									)}
 								</Form.Item>
-							</>
-						)}
-						{ (selectedRsType === DD_VAL_NUMERIC) && (
-							<>
-								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<InputNumber style={styles.fullWidth} />
-									)}
-								</Form.Item>
-							</>	
+							</React.Fragment>
 						)}
 						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
 							// @ts-ignore
 							<DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
-							<>
+							<React.Fragment>
 								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: FIELD_RULES.examItemTypeDefault,
+										initialValue: 1 
+									})(
 										<TextArea />
 									)}
 								</Form.Item>
-							</>	
+							</React.Fragment>	
 						)}
 						<Form.Item label="INTEGRATION CODE">
 							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
