@@ -3,7 +3,7 @@ import { Row, Col, Switch, Typography, Form, Input, Select, Checkbox, Table, Ico
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import axiosCall from 'services/axiosCall';
-import { apiUserAccount, apiUserType, apiPOSTMethod, apiPutMethod, apiGetMethod } from 'shared_components/constant-global';
+import { apiUserAccount, apiUserType, apiPostMethod, apiPutMethod, apiGetMethod } from 'shared_components/constant-global';
 import './useraccountform.css';
 import { drawerAdd, drawerUpdate, labels as g_labels, errorMessages } from '../settings';
 
@@ -83,7 +83,7 @@ class UserAccountForm extends React.Component {
 
     handleSubmit = (event) => {
         const { form, drawerButton } = this.props;
-        const v_method = (drawerButton === drawerAdd ) ? apiPOSTMethod : apiPutMethod;
+        const v_method = (drawerButton === drawerAdd ) ? apiPostMethod : apiPutMethod;
 
         event.preventDefault();
         form.validateFields( (err, values) => {
@@ -159,7 +159,7 @@ class UserAccountForm extends React.Component {
                         <Switch defaultChecked  />
                     </Col>
                     <div className="user-form">
-                        <Form {...formItemLayout} onSubmit={this.handleSubmit} >
+                        <Form {...formItemLayout} onSubmit={this.handleSubmit}>
                             <Col span={12}>
                                 {/* PERSONAL INFORMATION */}
                                 <div className="personalInfo">

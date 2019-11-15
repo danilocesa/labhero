@@ -3,29 +3,23 @@
 
 // API Methods
 export const apiGetMethod = 'GET';
-export const apiPOSTMethod = 'POST';
+export const apiPostMethod = 'POST';
 export const apiPutMethod = 'PUT';
 
 // API's
 export const apiURL = '----------';
-export const apiUrlPatientByID = "lab/Patient/id/";
-export const apiUrlPatientByName = "lab/Patient/name/";
-export const apiUrlPhlebo = "lab/SpecimenTracking/phlebo/"
+export const apiUrlPatientByID = 'lab/Patient/id/';
+export const apiUrlPatientByName = 'lab/Patient/name/';
+export const apiUrlPhlebo = 'lab/SpecimenTracking/phlebo/'
 export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
 export const apiUrlPhleboRequestID = `${apiUrlPhlebo}requestid/`;
 export const apiUrlCheckInSpecimen = `${apiUrlPhlebo}checkinspecimen`;
-export const apiUrlprintBarcodeSpecimen = "lab/BarcodeLabel/reprintlabel/";
-export const apiUrlPanelExamRequest = "lab/PanelExamRequesting/";
+export const apiUrlprintBarcodeSpecimen = 'lab/BarcodeLabel/reprintlabel/';
+export const apiUrlPanelExamRequest = 'lab/PanelExamRequesting/';
 export const apiUrlPanelExamRequestSettings = `${apiUrlPanelExamRequest}Settings/`;
 export const apiUrlGetPanelInfoByID = `${apiUrlPanelExamRequest}Settings/PanelID/`;
 export const apiUserAccount = 'lab/UserAccount';
 export const apiUserType = 'lab/UserType';
-
-export const apiExamRequest = {
-    getExamRequest : 'lab/ExamRequest/Settings',
-    putExamRequest : 'lab/ExamRequest',
-    postExamRequest : 'lab/ExamRequest',
-};
 
 // Constants
 export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';

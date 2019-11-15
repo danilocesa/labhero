@@ -327,7 +327,7 @@ EditProfile.propTypes = {
 };
 
 EditProfile.defaultProps = {
-	patientInfo() { return null; }
+	patientInfo: {}
 }
 
 const UpdatePatientForm = Form.create()(withRouter(EditProfile));

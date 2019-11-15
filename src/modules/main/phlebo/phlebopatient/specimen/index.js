@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
 import printBarcodeSpecimenAPI from 'services/printBarcodeSpecimen';
 import axiosCall from 'services/axiosCall';
-import { apiUrlCheckInSpecimen, apiPOSTMethod } from 'shared_components/constant-global';
+import { apiUrlCheckInSpecimen, apiPostMethod } from 'shared_components/constant-global';
 import Message from 'shared_components/message';
 
 // CSS
@@ -71,7 +71,7 @@ class SpecimenList extends React.Component {
 		try{
 			const body = { requestID, sectionID, specimenID, userID };
 			const response = await axiosCall({
-				method: apiPOSTMethod,
+				method: apiPostMethod,
 				url: apiUrlCheckInSpecimen,
 				data: body,
 				headers: {
@@ -100,8 +100,8 @@ class SpecimenList extends React.Component {
 
 	mapExams = (params) =>{
 
-		let returnArray = [];
-		let requestID = params.requestID;
+		const returnArray = [];
+		const requestID = params.requestID;
 		params.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
 				returnArray[indexSection] = {

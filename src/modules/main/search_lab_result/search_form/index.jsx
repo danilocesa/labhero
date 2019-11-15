@@ -1,16 +1,16 @@
+/* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
 import { Row, Form, Input, Button, Col, Select, Radio, DatePicker } from 'antd';
 import { withRouter } from 'react-router-dom';
-import ReactDatePicker from '../../../../shared_components/date_picker';
+import PageTitle from 'shared_components/page_title';
 
-// CUSTOM MODULES
-import PageTitle from '../../../../shared_components/page_title';
+import fetchLabResult from './api_repo';
+import FIELD_RULES from './constant';
 
-// CSS
 import './searchform.css';
 
-// CONSTANTS
+
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const RadioGroup = Radio.Group;
@@ -21,63 +21,57 @@ class SearchLabTestForm extends React.Component {
 		super(props);
 		this.state = {
 			enableDateRange: false,
-			patientID: "",
-			patientName: ""
+			isLoading: false,
+			isDisableSubmit: true
 		};
-		this.onClickClear = this.onClickClear.bind(this);
-		this.handlePatientIdChange=this.handlePatientIdChange.bind(this);
-		this.handlePatientNameChange=this.handlePatientNameChange.bind(this);
 	}
     
 	onClickSubmit = (e) => {
 		e.preventDefault();
-		this.props.form.validatesFields((err, fieldsValue) => {
+
+		const { form } = this.props;
+
+		form.validateFieldsAndScroll((err, fieldsValue) => {
 			if (!err) {
-				// this.props.history.push('/dashboard');
-				console.log('Received values of form: ', fieldsValue);
-				return;
+				this.setState({ isLoading: true }, async() => {
+					console.log('Received values of form: ', fieldsValue);
+					const labResults = await fetchLabResult(fieldsValue);
+					console.log('labresults', labResults);
+
+					this.setState({ isLoading: false });
+				});
 			}
-			const values = {
-				'date-picker': fieldsValue['date-picker'].format('YYYY-MM-DD'),
-			};
-			console.log('Received values of form: ', values);
 		});
 	}
 
 	
 	onClickClear = () => {
-		// console.log("Clear form");
-		// document.getElementById("searchlabtestresultform").reset();
-		// this.setState({
-		// 	patientID: "",
-		// 	patientName: ""
-		// });
-		this.setState({ 
-			patientID: "",
-			patientName: ""
-		// eslint-disable-next-line func-names
-		}, function() { console.log("setState completed", this.state) })
+		
 	}
 	
 	onClickDateCategory = () => {
-		this.setState({
-			enableDateRange: true
-		});
+		this.setState({ enableDateRange: true });
 	}
 
-	handlePatientIdChange = (event) => {
-		this.setState({patientID : event.target.value});
-		console.log(this.state.patientID);
-	}
+	onChangeRequiredFields = () => {
+		const { getFieldsValue } = this.props.form;
 
-	handlePatientNameChange = (event) => {
-		this.setState({patientName : event.target.value});
-		console.log(this.state.patientName);
+		const fieldsValue = getFieldsValue();
+
+		console.log(fieldsValue);
+
+		if(fieldsValue.dateCategory &&
+			 fieldsValue.dateSpan &&
+			 fieldsValue.status)
+			this.setState({ isDisableSubmit: false });
+		else
+			this.setState({ isDisableSubmit: true });
 	}
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		// const { patientID, patientName } = this.state;
+		const { isLoading, isDisableSubmit } = this.state;
+
 		return(
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
 				<Col sm={22} xs={24}> 
@@ -86,21 +80,41 @@ class SearchLabTestForm extends React.Component {
 						<Row type="flex" align="top" gutter={24}> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="DATE CATEGORY" className="gutter-box">
-									<RadioGroup buttonStyle="solid">
-										<RadioButton value="a" onClick={this.onClickDateCategory}>REQUEST</RadioButton>
-										<RadioButton value="b" onClick={this.onClickDateCategory}>VERIFY</RadioButton>
-										<RadioButton value="c" onClick={this.onClickDateCategory}>CHECK-IN</RadioButton>
-									</RadioGroup>
+									{getFieldDecorator('dateCategory')(
+										<RadioGroup buttonStyle="solid" onChange={this.onChangeRequiredFields}>
+											<RadioButton value="a" onClick={this.onClickDateCategory}>
+												REQUEST
+											</RadioButton>
+											<RadioButton value="b" onClick={this.onClickDateCategory}>
+												VERIFY
+											</RadioButton>
+											<RadioButton value="c" onClick={this.onClickDateCategory}>
+												CHECK-IN
+											</RadioButton>
+										</RadioGroup>
+									)}
 								</Form.Item>
 							</Col>
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="FROM DATE - TO DATE" className="gutter-box">
-									<RangePicker disabled={!this.state.enableDateRange} allowClear style={{ width:'100%' }} />
+									{getFieldDecorator('dateSpan')(
+										<RangePicker 
+											disabled={!this.state.enableDateRange} 
+											onChange={this.onChangeRequiredFields}
+											allowClear 
+											style={{ width:'100%' }} 
+										/>
+									)}
 								</Form.Item>
 							</Col> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
 								<Form.Item label="STATUS" hasFeedback className="gutter-box">
-									<Select placeholder="Please select a status" style={{ width: "100%" }} allowClear>
+									<Select 
+										onChange={this.onChangeRequiredFields}
+										placeholder="Please select a status" 
+										style={{ width: "100%" }} 
+										allowClear
+									>
 										<Option value="Status 1" />
 										<Option value="Status 2" />
 									</Select>
@@ -110,36 +124,23 @@ class SearchLabTestForm extends React.Component {
 						<Row type="flex" align="top" gutter={24}>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
 								<Form.Item label="PATIENT ID" className="gutter-box">
-									{getFieldDecorator('PatientID', {
-										rules: [
-											{ pattern: '^[0-9]+$',
-												message: 'Numbers only!'
-											}
-										],
-									})(
-										<Input name="patientID" onChange={this.handlePatientIdChange} allowClear />
+									{getFieldDecorator('patientID', { rules: FIELD_RULES.patientID })(
+										<Input allowClear />
 									)}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="PATIENT NAME" className="gutter-box">
-									{getFieldDecorator('PatientName', {
-									rules: [
-										{ max: 100, message: 'Less than 100 characters only!' },
-										{ pattern: 
-											'^[a-zA-Z0-9äöüÄÖÜ]*$', 
-											message: 'Special character not allowed!'
-										}
-									],
-									})(
-										<Input name="patientName" onChange={this.handlePatientNameChange} id="PatientName" allowClear />
+									{getFieldDecorator('patientName', { rules: FIELD_RULES.patientName })(
+										<Input allowClear />
 									)}
-									{/* <Input name="patientName" onChange={this.handleChange} value={patientName} id="PatientName" allowClear /> */}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
 								<Form.Item label="SAMPLE ID" className="gutter-box">
-									<Input allowClear />
+									{getFieldDecorator('sampleSpecimenID')(
+										<Input allowClear />
+									)}
 								</Form.Item>
 							</Col>
 						</Row>
@@ -148,12 +149,22 @@ class SearchLabTestForm extends React.Component {
 								<Row gutter={6} type="flex" justify="end">
 									<Col className="gutter-row">
 										<Form.Item>
-											<Button id="resetBtn" shape="round" onClick={this.onClickClear}> CLEAR </Button>
+											<Button shape="round" onClick={this.onClickClear}> 
+												CLEAR 
+											</Button>
 										</Form.Item>
 									</Col>
 									<Col className="gutter-row">
 										<Form.Item>
-											<Button type="primary" shape="round" htmlType="submit"> SEARCH </Button>
+											<Button 
+												type="primary" 
+												shape="round" 
+												htmlType="submit"
+												loading={isLoading}
+												disabled={isDisableSubmit}
+											> 
+												SEARCH 
+											</Button>
 										</Form.Item>
 									</Col>
 								</Row>
@@ -168,4 +179,4 @@ class SearchLabTestForm extends React.Component {
 
 const WrappedSearchLabTestForm = Form.create({ name: 'searchlabtestform' })(SearchLabTestForm);
 
-export default withRouter(WrappedSearchLabTestForm);
+export default WrappedSearchLabTestForm;
