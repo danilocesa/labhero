@@ -113,7 +113,6 @@ class UpdateForm extends React.Component {
 						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
 					}
 
-					console.log(examItemValue);
 					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_TEXT_AREA
@@ -208,7 +207,7 @@ class UpdateForm extends React.Component {
 		
 		const UnitMeasureOptions = unitOfMeasures.map(unit => (
 			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
-				{unit.unitOfMesureBase}
+				{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
 			</Option>
 		));
 
@@ -236,69 +235,60 @@ class UpdateForm extends React.Component {
 						spinning={isFetchingData}
 					>
 						<section style={{ marginBottom: 60 }}>
-						<Form.Item label="EXAM ITEM NAME">
-							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
-								<Input />
+							<Form.Item label="EXAM ITEM NAME">
+								{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
+									<Input />
+								)}
+							</Form.Item>
+							<Form.Item label="EXAM ITEM GENERAL NAME">
+								{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
+									<Input />
+								)}
+							</Form.Item>
+							<Form.Item label="EXAM ITEM TYPE">
+								{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
+									<Select onChange={this.onChangeItemTypeCode}>
+										{InputTypeCodeOptions}
+									</Select>
+								)}
+							</Form.Item>
+							{ (selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || selectedItemTypeCode === DD_VAL_NUMERIC) &&  (
+								<>
+									<Form.Item label="UNIT OF MEASURES">
+										{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
+											<Select>{UnitMeasureOptions}</Select>
+										)}
+									</Form.Item>
+									<Form.Item label="DEFAULT VALUE">
+										{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+											<Input />
+										)}
+									</Form.Item>
+								</>
 							)}
-						</Form.Item>
-						<Form.Item label="EXAM ITEM GENERAL NAME">
-							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
-								<Input />
+							{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
+									// @ts-ignore
+									<DynamicForm 
+										wrappedComponentRef={(inst) => this.dynamicForm = inst} 
+										examItemValue={examItemValue}
+										examId={fieldsValue.examItemId}
+									/> 
 							)}
-						</Form.Item>
-						<Form.Item label="EXAM ITEM TYPE">
-							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
-								<Select onChange={this.onChangeItemTypeCode}>
-									{InputTypeCodeOptions}
-								</Select>
+							{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
+								<>
+									<Form.Item label="DEFAULT VALUE">
+										{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+											<TextArea />
+										)}
+									</Form.Item>
+								</>
 							)}
-						</Form.Item>
-						{ selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC && (
-							<>
-								<Form.Item label="UNIT OF MEASURES">
-									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
-										<Select>{UnitMeasureOptions}</Select>
-									)}
-								</Form.Item>
-								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<Input />
-									)}
-								</Form.Item>
-							</>
-						)}
-						{ (selectedItemTypeCode === DD_VAL_NUMERIC) && (
-							<>
-								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<InputNumber style={styles.fullWidth} />
-									)}
-								</Form.Item>
-							</>	
-						)}
-						{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
-								// @ts-ignore
-								<DynamicForm 
-									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
-									examItemValue={examItemValue}
-									examId={fieldsValue.examItemId}
-								/> 
-						)}
-						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
-							<>
-								<Form.Item label="DEFAULT VALUE">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<TextArea />
-									)}
-								</Form.Item>
-							</>
-						)}
-						<Form.Item label="INTEGRATION CODE">
-							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
-								<Input />
-							)}
-						</Form.Item>
-      </section>
+							<Form.Item label="INTEGRATION CODE">
+								{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+									<Input />
+								)}
+							</Form.Item>
+						</section>
 					</Spin>
 					<section style={styles.footer}>
 						<div>

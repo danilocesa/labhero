@@ -3,7 +3,7 @@
 
 // API Methods
 export const apiGetMethod = 'GET';
-export const apiPOSTMethod = 'POST';
+export const apiPostMethod = 'POST';
 export const apiPutMethod = 'PUT';
 
 // API's
