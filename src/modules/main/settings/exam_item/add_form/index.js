@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, InputNumber } from 'antd';
+import { Drawer, Form, Input, Button, Select } from 'antd';
 import PropTypes from 'prop-types';
 import DynamicForm from '../dynamic_form';
 import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';

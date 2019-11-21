@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Typography, Button, Icon } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import TablePager from 'shared_components/search_pager/pager';
 import Message from 'shared_components/message';
 
-import ExamTable from './table';
+import ExamTable from './search_table';
 import AddForm from './add_panel';
 import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';

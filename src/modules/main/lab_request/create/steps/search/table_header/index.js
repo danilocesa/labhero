@@ -1,3 +1,3 @@
-import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
+import SearchPatientTableHeader from 'shared_components/search_pager';
 
 export default SearchPatientTableHeader;

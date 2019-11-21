@@ -17,8 +17,6 @@ export function setupAxiosInterceptors() {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
 
-		// if(LoggedinUserData) console.log(jwtDecode(LoggedinUserData.token));
-
     return { ...config, headers: { 
 			'content-type': 'application/json',	
 			authorization: LoggedinUserData ? `Bearer ${LoggedinUserData.token}` : undefined

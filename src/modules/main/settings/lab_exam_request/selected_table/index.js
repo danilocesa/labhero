@@ -162,7 +162,7 @@ class SelectedTable extends React.Component {
 				<Spin spinning={loading} tip="Loading...">
 					<DndProvider backend={HTML5Backend}>
 						<Table 
-							className="selected-table"
+							className="ser-selected-table"
 							size="small"
 							columns={this.columns} 
 							dataSource={data}   

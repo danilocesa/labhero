@@ -33,6 +33,7 @@ export const apiExamRequest = {
     putExamRequest : 'lab/ExamRequest',
     postExamRequest : 'lab/ExamRequest',
 };
+
 // Address
 export const apiAddress = {
     getProvince : 'lab/Address/Provinces',

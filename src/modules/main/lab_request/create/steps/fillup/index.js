@@ -4,7 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
 import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
-import { LOGGEDIN_USER_DATA, apiPatient, apiPOSTMethod } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA, apiPatient, apiPostMethod } from 'shared_components/constant-global';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
@@ -100,7 +100,7 @@ class FillupStep extends React.Component {
 		let createdPatient;
 		try{
 			const content = {
-				method: apiPOSTMethod,
+				method: apiPostMethod,
 				url: apiPatient.url,
 				data: personalInfo
 			}

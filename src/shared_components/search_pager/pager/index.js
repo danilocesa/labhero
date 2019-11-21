@@ -15,7 +15,7 @@ class TablePager extends React.Component {
 				<Select 
 					size="small" 
 					defaultValue="10" 
-					style={{ marginLeft: 10 }} 
+					style={{ marginLeft: 10 }}
 					onChange={handleChange}
 				>
 					<Option value={5}>5</Option>

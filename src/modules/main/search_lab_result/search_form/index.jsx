@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
-import { Row, Form, Input, Button, Col, Select, Radio, DatePicker } from 'antd';
-import { withRouter } from 'react-router-dom';
+import { Row, Form, Input, Button, Col, Select, Radio, DatePicker, message } from 'antd';
+import PropTypes from 'prop-types';
 import PageTitle from 'shared_components/page_title';
 
 import fetchLabResult from './api_repo';
@@ -28,7 +28,7 @@ class SearchLabTestForm extends React.Component {
 	onClickSubmit = (e) => {
 		e.preventDefault();
 
-		const { form } = this.props;
+		const { form, updateLabResults } = this.props;
 
 		form.validateFieldsAndScroll((err, fieldsValue) => {
 			if (!err) {
@@ -41,8 +41,14 @@ class SearchLabTestForm extends React.Component {
 						toDate: dateSpan[1].format('YYYYMMDD')
 					});
 
-					console.log('labresults', labResults);
-
+					if(labResults) {
+						if(labResults.length <= 0) 
+							message.info('No results found.');
+						
+						console.log(labResults);
+						updateLabResults(labResults);
+					}
+					
 					this.setState({ isLoading: false });
 				});
 			}
@@ -71,14 +77,14 @@ class SearchLabTestForm extends React.Component {
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="DATE CATEGORY" className="gutter-box">
 									{getFieldDecorator('dateCategory', { rules: FIELD_RULES.dateCategory })(
-										<RadioGroup buttonStyle="solid">
-											<RadioButton value="a" onClick={this.onClickDateCategory}>
+										<RadioGroup buttonStyle="solid" onChange={this.onClickDateCategory}>
+											<RadioButton value="Request">
 												REQUEST
 											</RadioButton>
-											<RadioButton value="b" onClick={this.onClickDateCategory}>
+											<RadioButton value="Released">
 												VERIFY
 											</RadioButton>
-											<RadioButton value="c" onClick={this.onClickDateCategory}>
+											<RadioButton value="Check In">
 												CHECK-IN
 											</RadioButton>
 										</RadioGroup>
@@ -117,21 +123,27 @@ class SearchLabTestForm extends React.Component {
 						<Row type="flex" align="top" gutter={24}>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
 								<Form.Item label="PATIENT ID" className="gutter-box">
-									{getFieldDecorator('patientID', { rules: FIELD_RULES.patientID })(
+									{getFieldDecorator('patientID', { 
+										rules: FIELD_RULES.patientID,
+										initialValue: '' 
+									})(
 										<Input allowClear />
 									)}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="PATIENT NAME" className="gutter-box">
-									{getFieldDecorator('patientName', { rules: FIELD_RULES.patientName })(
+									{getFieldDecorator('patientName', { 
+										rules: FIELD_RULES.patientName,
+										initialValue: ''
+									})(
 										<Input allowClear />
 									)}
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
 								<Form.Item label="SAMPLE ID" className="gutter-box">
-									{getFieldDecorator('sampleSpecimenID')(
+									{getFieldDecorator('sampleSpecimenID', { initialValue: '' })(
 										<Input allowClear />
 									)}
 								</Form.Item>
@@ -170,6 +182,8 @@ class SearchLabTestForm extends React.Component {
 	}
 }
 
-const WrappedSearchLabTestForm = Form.create({ name: 'searchlabtestform' })(SearchLabTestForm);
+SearchLabTestForm.propTypes = {
+	updateLabResults: PropTypes.func.isRequired
+};
 
-export default WrappedSearchLabTestForm;
+export default Form.create({ name: 'searchlabtestform' })(SearchLabTestForm);

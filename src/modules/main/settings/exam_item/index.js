@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Button, Icon, Row, Col } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import TablePager from 'shared_components/search_pager/pager';
 import Message from 'shared_components/message';
 
 import ExamTable from './table';

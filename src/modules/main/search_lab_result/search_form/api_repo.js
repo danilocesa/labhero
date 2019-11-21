@@ -3,8 +3,6 @@ import axiosCall from 'services/axiosCall';
 import { apiPostMethod } from 'shared_components/constant-global';
 
 export default async function fetchLabResult(payload) {
-	let labResults = null;
-
 	try{
 		const content = {
 			method: apiPostMethod,
@@ -15,12 +13,11 @@ export default async function fetchLabResult(payload) {
 		const response = await axiosCall(content);
 		const { data } = await response;
 
-		labResults = data;
+		return data || [];
 	}
 	catch(error) {
 		Message.error();
+		return false;
 	}
-
-	return labResults;
 }
 

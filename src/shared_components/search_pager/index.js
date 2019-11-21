@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import Pager from './pager';
 
 // CSS
 import './table_header.css';
@@ -11,7 +11,7 @@ import './table_header.css';
 const { Text } = Typography;
 
 
-class SearchPatientTableHeader extends React.Component {
+class SearchPager extends React.Component {
 	render() {
 		const { pageSize, pageTotal, handleChangeSize } = this.props;
 		
@@ -27,7 +27,7 @@ class SearchPatientTableHeader extends React.Component {
 						<Text>{`Showing ${items} items out of ${pageTotal} results`}</Text>
 					</div>
 					<div className="right">
-						<TablePager handleChange={handleChangeSize} />
+						<Pager handleChange={handleChangeSize} />
 					</div>
 				</div>
 			</div>
@@ -35,10 +35,10 @@ class SearchPatientTableHeader extends React.Component {
 	}
 }
 
-SearchPatientTableHeader.propTypes = {
+SearchPager.propTypes = {
 	handleChangeSize: PropTypes.func.isRequired,
 	pageTotal: PropTypes.number.isRequired,
 	pageSize: PropTypes.number.isRequired
 };
 
-export default SearchPatientTableHeader;
+export default SearchPager;
