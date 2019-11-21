@@ -4,8 +4,6 @@ import { Table } from 'antd';
 
 import ExpandedTable from '../expanded_table';
 
-import './main_table.css';
-
 const columns = [
 	{ 
 		title: 'PATIENT ID', 

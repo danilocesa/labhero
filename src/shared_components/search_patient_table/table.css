@@ -1,20 +1,15 @@
-/* .ant-table {
-  color: #000 !important;
+
+/* .search-patient-table .ant-table-thead > tr > th {
+  padding: 4px 16px;
 } */
 
-.search-patient-table .ant-table-thead > tr > th {
-  /* background: #8a73f9 !important;
-  color: white !important; */
-  padding: 4px 16px;
-}
-
-.search-patient-table .ant-table-thead > tr:first-child > th:first-child {
+/* .search-patient-table .ant-table-thead > tr:first-child > th:first-child {
   border-top-left-radius: 0px !important;
 }
 
 .search-patient-table .ant-table-thead > tr:first-child > th:last-child {
   border-top-right-radius: 0px !important;
-}
+} */
 
 .search-patient-table .ant-table-body {
   overflow-x: auto !important;

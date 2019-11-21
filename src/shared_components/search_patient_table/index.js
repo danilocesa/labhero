@@ -97,6 +97,7 @@ class SearchPatientTable extends React.Component {
 			<Spin spinning={loading} tip="Loading...">
 				<div className="search-patient-table">
 					<AntTable 
+						size="small"
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 

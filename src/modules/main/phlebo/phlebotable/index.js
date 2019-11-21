@@ -82,6 +82,7 @@ class SearchPatientTable extends React.Component {
 				<div className="search-patient-table">
 					<AntTable 
 						pagination={{pageSize}} 
+						size="small"
 						// @ts-ignore
 						columns={columns} 
 						dataSource={data} 

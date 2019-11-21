@@ -3,30 +3,27 @@ import { Table, Row, Col } from 'antd';
 
 import { CLR_SEL_EXAMS } from '../../constants';
 
-import './table.css';
-
 const columns = [
 	{
 		title: 'PANEL',
 		dataIndex: 'selectedPanel.panelName',
-		width: '25%',
+		width: 200,
 		// align: 'center',
 	},
 	{
 		title: 'SECTION',
 		dataIndex: 'selectedSection.sectionName',
-		width: '25%',
+		width: 200,
 	},
 	{
 		title: 'EXAM NAME',
 		dataIndex: 'examName',
-		width: '25%',
+		width: 300,
 		// align: 'center',
 	},
 	{
 		title: 'SPECIMEN',
 		dataIndex: 'selectedSpecimen.specimenName',
-		width: '25%',
 		// align: 'center',
 	}
 ];
@@ -51,6 +48,7 @@ class SummaryTable extends React.Component {
 				<Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
 					<div className="summary-step-table">
 						<Table 
+							size="small"
 							dataSource={exams} 
 							columns={columns} 
 							pagination={false} 

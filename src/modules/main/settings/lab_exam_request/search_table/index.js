@@ -6,36 +6,55 @@ const columns = [
 	{ 
 		title: 'ID',
 		dataIndex: 'examRequestID',
-		width: '10%'
+		width: 70
 	},
 	{ 
 		title: 'Exam Request Name',
 		dataIndex: 'examRequestName',
-		width: '30%',
-		sorter: (a, b) => a.examRequestName.localeCompare(b.examRequestName)
+		width: 300,
+		sorter: (a, b) => {
+			const prev = a.examRequestName || '';
+			const next = b.examRequestName || '';
+
+			return prev.localeCompare(next);
+		}
 	},
 	{ 
 		title: 'Exam Request Code',
 		dataIndex: 'examRequestCode',
-		width: '15%',
-		sorter: (a, b) => a.examRequestCode.localeCompare(b.examRequestCode)
+		width: 300,
+		sorter: (a, b) => {
+			const prev = a.examRequestCode || '';
+			const next = b.examRequestCode || '';
+
+			return prev.localeCompare(next);
+		}
 	},
 	{ 
 		title: 'Loinc',
 		dataIndex: 'examRequestLoinc',
-		width: '20%',
-		sorter: (a, b) => a.examRequestLoinc.localeCompare(b.examRequestLoinc)
+		width: 250,
+		sorter: (a, b) => {
+			const prev = a.examRequestLoinc || '';
+			const next = b.examRequestLoinc || '';
+
+			return prev.localeCompare(next);
+		}
 	},
 	{ 
 		title: 'Integration Code',
 		dataIndex: 'examRequestIntegrationCode',
-		width: '15%',
-		sorter: (a, b) => a.examRequestIntegrationCode.localeCompare(b.examRequestIntegrationCode)
+		width: 220,
+		sorter: (a, b) => {
+			const prev = a.examRequestIntegrationCode || '';
+			const next = b.examRequestIntegrationCode || '';
+
+			return prev.localeCompare(next);
+		}
 	},
 	{ 
 		title: 'Sort',
 		dataIndex: 'examRequestSort',
-		width: '10%'
 	}
 ];
 
