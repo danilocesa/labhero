@@ -251,16 +251,7 @@ class PanelFormTemplate extends React.Component {
 							/> 
 							) : null
 						}
-						{/* <AntTransfer
-							dataSource={this.state.examRequestData}
-							titles={['Select', 'Selected']}
-							targetKeys={this.state.selectedExamRequest}
-							showSearch
-							filterOption={this.transferFilterOption}
-							onChange={this.transferHandleChange}
-							render={item => item.title}
-						/> */}
-							<div className="panel-infinite-container">
+						<div className="panel-infinite-container">
 							<InfiniteScroll 
 							initialLoad={false}
 							loadMore={this.handleInfiniteOnLoad}
@@ -288,7 +279,7 @@ class PanelFormTemplate extends React.Component {
 									</AntList>
 								</AntCheckbox.Group>
 							</InfiniteScroll>
-							</div>
+						</div>
      </AntForm.Item>
 					<div
 						style={{

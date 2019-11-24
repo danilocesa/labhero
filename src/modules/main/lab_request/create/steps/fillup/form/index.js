@@ -288,26 +288,15 @@ class BaseForm extends React.Component {
 									</Col>
 
 								</Row>
-
-								{/* <Form.Item label={formLabels.unitFloorBldg}>
-									{getFieldDecorator('address', { 
-										rules: FIELD_RULES.address, 
-										initialValue: initialPersoValue.address
-									})(
-										<Input disabled={isDisabledPersoFields} />
-									)}
-								</Form.Item> */}
-								
-								<Form.Item>
-									<HouseAddress 
+																
+								<HouseAddress 
 									form={form}
 									townValue={getFieldsValue().town}
 									fieldLabel={formLabels.unitFloorBldg}
 									selectedValue={initialPersoValue.address}
 									fieldRules={FIELD_RULES.address}
 									/>
-								</Form.Item>
-								
+
 								<Form.Item label={formLabels.contactNumber}>
 									{getFieldDecorator('contactNumber', { 
 										rules: FIELD_RULES.contactNumber,
