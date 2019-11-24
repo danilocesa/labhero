@@ -11,6 +11,7 @@ import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
 import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
+import HouseAddress from 'shared_components/address';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
 
@@ -136,11 +137,10 @@ class BaseForm extends React.Component {
 	}
 
 	render() {
-		const { isDisabledPersoFields, initialPersoValue } = this.state;
+		const { isDisabledPersoFields, initialPersoValue, hospitalPhysicianList, hospitalLocationList } = this.state;
 		const { isLoading, form } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
-		const { hospitalPhysicianList, hospitalLocationList } = this.state;
 
 		const LocationList = hospitalLocationList.map((item) => (
 			<Option value={item.locationID} key={item.locationID}>
@@ -289,13 +289,23 @@ class BaseForm extends React.Component {
 
 								</Row>
 
-								<Form.Item label={formLabels.unitFloorBldg}>
+								{/* <Form.Item label={formLabels.unitFloorBldg}>
 									{getFieldDecorator('address', { 
 										rules: FIELD_RULES.address, 
 										initialValue: initialPersoValue.address
 									})(
 										<Input disabled={isDisabledPersoFields} />
 									)}
+								</Form.Item> */}
+								
+								<Form.Item>
+									<HouseAddress 
+									form={form}
+									townValue={getFieldsValue().town}
+									fieldLabel={formLabels.unitFloorBldg}
+									selectedValue={initialPersoValue.address}
+									fieldRules={FIELD_RULES.address}
+									/>
 								</Form.Item>
 								
 								<Form.Item label={formLabels.contactNumber}>
