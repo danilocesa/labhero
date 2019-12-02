@@ -3,11 +3,11 @@ import {globalTablePageSize} from 'shared_components/constant-global';
 // constant variables, titles strictly implemented and shared within the module.
 
 // SearchPatient Variables
-export const moduleTitle = 'SEARCH PATIENT';
+export const moduleTitle = 'EDIT PATIENT DEMOGRAPHICS';
 export const tablePageSize = globalTablePageSize;
 
 // SearchPatientForm variables
-export const drawerUpdateTitle = 'UPDATE PATIENT INFORMATION';
+export const drawerUpdateTitle = 'EDIT PATIENT DEMOGRAPHICS';
 export const drawerSubmitButton = 'SUBMIT';
 export const drawerCancelButton = 'CANCEL';
 export const formLabels = {

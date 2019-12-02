@@ -101,7 +101,7 @@ class Sider extends React.Component {
 							<Menu.Item key="5">
 								<Link to="/searchpatient">
 									<Icon component={SearchPatientIcon} />
-									<span>SEARCH PATIENT</span>
+									<span>PATIENT DEMOGRAPHICS</span>
 								</Link>
 							</Menu.Item>
 						)

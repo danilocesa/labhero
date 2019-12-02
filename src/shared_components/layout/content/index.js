@@ -13,7 +13,7 @@ import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
 import PhleboPatientResult from 'modules/main/phlebo/phlebopatient'
 import ErrorPage from 'modules/error_page';
-import SearchPatient from 'modules/main/search_patients';
+import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
 import Inventory from 'modules/main/inventory';
 import auth from 'services/auth';
