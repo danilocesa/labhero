@@ -21,6 +21,7 @@ function HttpCodeMessage(param) {
 			});
 		break;
 		default:
+			CustomMessage.error();
 	}
 
 }

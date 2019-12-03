@@ -16,7 +16,9 @@ import { withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
+// @ts-ignore
 import HttpCodeMessage from 'shared_components/message_http_status';
+// @ts-ignore
 import CustomMessage from 'shared_components/message';
 import examRequestListAPI from 'services/examRequestList';
 import createdPanelAPI from 'services/settings/panel/createdPanel';
@@ -75,17 +77,19 @@ class PanelFormTemplate extends React.Component {
 		this.setState({ examRequestData });
 	};
 
-	getSelectedExamRequest = async (i_key) => { 
+	getSelectedExamRequest = async (iKey) => { 
 		let dataPanel = null;
 		try{
-			dataPanel = await getPanelInfo(i_key); 
+			dataPanel = await getPanelInfo(iKey); 
 		} 
 		catch(e) {
 			CustomMessage.error(e);
 			console.log("TCL: panelRequestDetailsAPI -> e", e);
 		}
 		const selectedExamRequest = [];
+		// @ts-ignore
 		if(dataPanel.data.examRequests.length < 2 ){ return; } // Empty
+		// @ts-ignore
 		dataPanel.data.examRequests.map(function(valueSelectedExamRequest){
 			selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
 			return selectedExamRequest;
@@ -137,10 +141,12 @@ class PanelFormTemplate extends React.Component {
 		const response = await createdPanelAPI(apiBody);
     console.log("TCL: PanelFormTemplate -> createPanel -> response", response)
 
+		// @ts-ignore
 		if(response.status === 201){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
 				message: 'Successfully created! Reloading page...',
+				// @ts-ignore
 				status: response.status,
 				duration: 3, 
 				onClose: () => window.location.reload() 
@@ -165,10 +171,12 @@ class PanelFormTemplate extends React.Component {
 
 		console.log('fieldValues =>', typeof(fieldValues));
 
+		// @ts-ignore
 		if(response.status === 200){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
 				message: 'Update successful! Reloading page...',
+				// @ts-ignore
 				status: response.status,
 				duration: 3, 
 				onClose: () => window.location.reload() 
@@ -308,11 +316,15 @@ class PanelFormTemplate extends React.Component {
 
 PanelFormTemplate.propTypes = {
 	panelInfo: PropTypes.object,
-	drawerButton: PropTypes.string.isRequired
+	drawerButton: PropTypes.string.isRequired,
+	form: PropTypes.object,
+	onCancel: PropTypes.func
 }
 
 PanelFormTemplate.defaultProps = {
-	panelInfo: null
+	panelInfo: null,
+	form() { return null},
+	onCancel() { return null}
 }
 
 const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));

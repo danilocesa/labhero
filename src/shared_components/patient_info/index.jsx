@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react/jsx-closing-tag-location */
 // LIBRARY
 import React from "react";
@@ -5,29 +6,26 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
-// import computeAge from 'shared_components/age_computation';
-// import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
-
-
-// IMAGES
-import { PatientImgPlaceholder } from 'images';
+import patientPhleboSpecimensAPI from "services/phlebo/specimenTracking/requestid";
+import computeAge from "shared_components/age_computation";
 
 // CSS
 import './patient_info.css';
-import patientPhleboSpecimensAPI from "services/patientPhleboSpecimens";
-import computeAge from "shared_components/age_computation";
+
+// IMAGES
+import { PatientImgPlaceholder } from '../../images';
 
 class PatientInfo extends React.Component {
 
 	state = {
-		hospitalID: '',
+		hospitalID: '-',
 		physicianID: '',
-		bed: '',
-		visit: '',
-		chargeSlip: '',
-		receipt: '',
-		comment: '',
-		location: ''
+		bed: '-',
+		visit: '-',
+		chargeSlip: '-',
+		receipt: '-',
+		comment: '-',
+		location: '-'
 	};
 
 
@@ -37,14 +35,14 @@ class PatientInfo extends React.Component {
     console.log("TCL: PatientInfo -> componentDidMount -> patientInfoValue", patientInfoValue);
 		
 		this.setState({
-			hospitalID: 	patientInfoValue ? patientInfoValue.hospitalRequestID : 0,
-			physicianID: 	patientInfoValue ? patientInfoValue.physician.physicianID : 0,
-			bed: 					patientInfoValue ? patientInfoValue.bed : 0,
-			visit: 				patientInfoValue ? patientInfoValue.visit : 0,
-			chargeSlip: 	patientInfoValue ? patientInfoValue.chargeSlip : 0,
-			receipt:      patientInfoValue ? patientInfoValue.officialReceipt : 0,
-			comment:      patientInfoValue ? patientInfoValue.comment : 0,
-			location: 		patientInfoValue ? patientInfoValue.location.name : 0
+			hospitalID: 	patientInfoValue.hospitalRequestID != undefined? patientInfoValue.hospitalRequestID : '-',
+			physicianID: 	patientInfoValue.physician != undefined ? patientInfoValue.physician.physicianID : '-',
+			bed: 					patientInfoValue.bed != undefined ? patientInfoValue.bed : '-',
+			visit: 				patientInfoValue.visit != undefined ? patientInfoValue.visit : '-',
+			chargeSlip: 	patientInfoValue.chargeSlip != undefined ? patientInfoValue.chargeSlip : '-',
+			receipt:      patientInfoValue.officialReceipt != undefined ? patientInfoValue.officialReceipt : '-',
+			comment:      patientInfoValue.comment != undefined ? patientInfoValue.comment : '-',
+			location: 		patientInfoValue.location != undefined ? patientInfoValue.location.name : '-'
 		});
 	}
 

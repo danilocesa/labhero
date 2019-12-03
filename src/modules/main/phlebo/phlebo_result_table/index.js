@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Table as AntTable, Spin as AntSpin } from 'antd';
 
 // CSS
-import './phlebotable.css';
+import './phlebo_result_table.css';
 
 class SearchPatientTable extends React.Component {
 	/**

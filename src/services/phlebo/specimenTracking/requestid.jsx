@@ -1,6 +1,6 @@
 // CUSTOM MODULES
 import {apiUrlPhleboRequestID, apiGetMethod} from 'shared_components/constant-global';
-import axiosCall from './axiosCall';
+import axiosCall from '../../axiosCall';
 
 async function patientPhleboSpecimensAPI(requestID) {
   let data = null;

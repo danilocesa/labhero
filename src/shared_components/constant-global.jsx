@@ -53,3 +53,4 @@ export const globalTablePageSize = 10;
 
 // Messages
 export const globalRequiredMessage = 'This field is required';
+export const globalErrorMessage = 'Something went wrong! Please try again';
