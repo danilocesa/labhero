@@ -51,8 +51,7 @@ class SummaryTable extends React.Component {
 							size="small"
 							dataSource={exams} 
 							columns={columns} 
-							pagination={false} 
-							scroll={{ y: 260 }} 
+							pagination={false}
 						/>
 					</div>
 				</Col>
