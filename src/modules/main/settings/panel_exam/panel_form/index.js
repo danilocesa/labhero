@@ -21,9 +21,9 @@ import HttpCodeMessage from 'shared_components/message_http_status';
 // @ts-ignore
 import CustomMessage from 'shared_components/message';
 import examRequestListAPI from 'services/examRequestList';
-import createdPanelAPI from 'services/settings/panel/createdPanel';
-import updatedPanelListAPI from 'services/settings/panel/updatePanelList';
-import getPanelInfo from 'services/settings/panel/getPanelInfo';
+import createdPanelAPI from 'services/settings/panel/panelExamRequesting/postSettings';
+import updatedPanelListAPI from 'services/settings/panel/panelExamRequesting/putSettings';
+import getPanelInfo from 'services/settings/panel/panelExamRequesting/getSettingsPanelID';
 
 // CSS
 import './panel_form.css';

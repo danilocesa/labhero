@@ -1,6 +1,13 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
+
+// CUSTOM
+import {tableSize} from './settings';
+
+// CSS
+import './exam_item.css';
 
 const columns = [
 	{ 
@@ -39,7 +46,8 @@ class ExamTable extends React.Component {
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
-						size="small"
+						className="settings_exam_item"
+						size={tableSize}
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 
