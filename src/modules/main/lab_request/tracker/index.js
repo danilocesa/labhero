@@ -1,7 +1,9 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Steps, Icon, Row, Col } from 'antd';
 
+// CSS
 import './tracker.css';
 
 const { Step } = Steps;
@@ -27,27 +29,33 @@ const items = [
 		description: 'Summary',
 		icon: 'idcard',
 	}
-	// {
-	//   title: 'Step 5',
-	//   description: 'Confirmation',
-	//   icon: 'file-protect',
-	// },
 ];
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
+	state = { current: 0 }
+
+	onClickTracker = current => {
+		console.log('onChange:', current);
+		const nextSteps = current + 1;
+		if(this.props.requestType === 1 && nextSteps > current){
+			return false;
+		}
+		this.setState({ current });
+    
+	}
+
 	render() {
 		const StepItems = items.map(item => (
 			<Step
 				key={item.title}
-				// title={item.title}
 				title={item.description}
 				icon={<Icon type={item.icon} />}
 			/>
-			// <Step title={item.title} description={item.description} />
 		));
 
 		const { active } = this.props;
+		const { current } = this.state;
 
 		return (
 			<Row>
@@ -55,8 +63,9 @@ class Tracker extends React.Component {
 					<Steps
 						size="small"
 						labelPlacement="vertical"
-						current={active || 0}
+						current={active || current}
 						style={{ marginTop: 20 }}
+						onChange={this.onClickTracker}
 					>
 						{StepItems}
 					</Steps>
@@ -68,6 +77,7 @@ class Tracker extends React.Component {
 
 Tracker.propTypes = {
 	active: PropTypes.number.isRequired,
+	requestType: PropTypes.number.isRequired
 };
 
 export default Tracker;
