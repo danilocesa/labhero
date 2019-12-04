@@ -5,9 +5,10 @@ import { Drawer as AntDrawer, Tabs as AntTabs, Badge as AntBadge} from 'antd';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import SearchPatientTableHeader from 'shared_components/search_pager';
-import SearchPatientHeaderForm from './search_patient/header_input'; // Search form input
-import SearchPatientTable from './phlebotable';
-import PhleboPatientResult from './phlebopatient';
+import SearchPatientHeaderForm from './search_form/search_input';
+import SearchPatientTable from './phlebo_result_table';
+import PhleboPatientResult from './patient_phlebo_info';
+import {moduleTitle, tablePageSize, drawerTitle, tabNames} from './settings';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -16,7 +17,7 @@ class Phlebo extends React.Component {
 	state = {   
 		extractedPatients: [], 
 		forExtractionPatients: [], 
-		pageSize: 10,   
+		pageSize: tablePageSize,   
 		loading: false,
 		showDrawer:false,
 		patientInfo: null,
@@ -47,18 +48,20 @@ class Phlebo extends React.Component {
 
 	onClosePhleboPatientResultDrawer = () => {
     this.setState({
-      showDrawer:false,
-    });
+			showDrawer:false
+		});
+		// this.populateExtractedPatients();
+		// this.populateForExtractionPatients();
   }
 
   render() {
 		const { extractedPatients, forExtractionPatients, pageSize, loading, showDrawer, patientInfo } = this.state;
-		const forExtrationPatientLength = (forExtractionPatients == undefined || forExtractionPatients.length == 0 ? 0 : forExtractionPatients.length );
-		const extractedPatientLength = (extractedPatients == undefined || extractedPatients.length == 0 ? 0 : extractedPatients.length );
+		const forExtrationPatientLength = (forExtractionPatients === undefined || forExtractionPatients.length === 0 ? 0 : forExtractionPatients.length );
+		const extractedPatientLength = (extractedPatients === undefined || extractedPatients.length === 0 ? 0 : extractedPatients.length );
 		const patientDrawer = (
 			<div>
 				<AntDrawer
-					title="SPECIMEN CHECK-IN" 
+					title={drawerTitle} 
 					onClose={this.onClosePhleboPatientResultDrawer}
 					width="95%"
 					visible={showDrawer}
@@ -71,7 +74,7 @@ class Phlebo extends React.Component {
     return ( 
 			<div>
 				<div>
-					<PageTitle pageTitle="PHLEBO" />
+					<PageTitle pageTitle={moduleTitle} />
 					<SearchPatientHeaderForm 
 						populateExtractedPatients={this.populateExtractedPatients}
 						populateForExtractionPatients={this.populateForExtractionPatients}
@@ -82,7 +85,7 @@ class Phlebo extends React.Component {
 						<TabPane
 							tab={(
 								<span>
-									FOR EXTRACTION
+									{tabNames.forExtraction}
 									<AntBadge count={forExtrationPatientLength} />
 								</span>
 								
@@ -110,7 +113,7 @@ class Phlebo extends React.Component {
 						<TabPane
 							tab={(
 								<span>
-									EXTRACTED
+									{tabNames.extracted}
 									<AntBadge count={extractedPatientLength} />
 								</span>
 							)}

@@ -1,23 +1,23 @@
 import { message as AntMessage } from 'antd';
+import {globalErrorMessage} from 'shared_components/constant-global';
 
-const defaultMessage = 'Something went wrong, please try again.';
 const defaultDuration = 3;
 
 class Message {
 	static info = (message) => {
-		AntMessage.info(message || defaultMessage);
+		AntMessage.info(message || globalErrorMessage);
 	}
 
 	static error = (message) => {
-		AntMessage.error(message || defaultMessage);
+		AntMessage.error(message || globalErrorMessage);
 	}
 
 	static warning = (message) => {
-		AntMessage.warning(message || defaultMessage);
+		AntMessage.warning(message || globalErrorMessage);
 	}
 
 	static success = (param) => {
-		AntMessage.success(param.message || defaultMessage, param.duration || defaultDuration, param.onClose);
+		AntMessage.success(param.message || globalErrorMessage, param.duration || defaultDuration, param.onClose);
 	}
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 // @ts-nocheck
 /* eslint-disable func-names */
 /* eslint-disable array-callback-return */
@@ -8,29 +9,25 @@ import PropTypes from 'prop-types';
 
 
 // CUSTOM MODULES
-import patientPhleboSpecimensAPI from 'services/patientPhleboSpecimens';
+import patientPhleboSpecimensAPI from 'services/phlebo/specimenTracking/requestid';
+import patientPhleboCheckInSpecimensAPI from 'services/phlebo/specimenTracking/checkinspecimen';
 import printBarcodeSpecimenAPI from 'services/printBarcodeSpecimen';
-import axiosCall from 'services/axiosCall';
-import { apiUrlCheckInSpecimen, apiPostMethod } from 'shared_components/constant-global';
-import Message from 'shared_components/message';
+import HttpCodeMessage from 'shared_components/message_http_status';
+import {messagePrompts, buttonNames} from './settings';
 
 // CSS
 import './specimen.css';
-
-// const RadioButton = Radio.Button;
-// const RadioGroup = Radio.Group;
 
 
 class SpecimenList extends React.Component {
 	state = {
 		patientRequestSpecimen: null,
-		loading: false
+		loading: []
 	}
 
 	async componentDidMount(){
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-    	console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI);
 		// eslint-disable-next-line prefer-destructuring
 		let requestExams = [];
 		requestExams = this.mapExams(patientSpecimensAPI);
@@ -40,68 +37,47 @@ class SpecimenList extends React.Component {
 		
 	}
 
-	onChange = async (e) => {
-		const sectionID =  e.target.attributes.getNamedItem('data-sectionid').value;
-		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
-		const requestID = e.target.attributes.getNamedItem('data-requestid').value;
-		const inputID = e.target.id;
-		const userDataSession = sessionStorage.getItem("LOGGEDIN_USER_DATA");
-		console.log('e ',e.target.attributes);
-    
-		this.setState({ loading: true});
-		const saveExtraction = await this.checkIn(requestID, sectionID, specimenID, JSON.parse(userDataSession).userID);
-		this.setState({ loading: false });
-		
-		if(saveExtraction){
-			document.getElementById(inputID).setAttribute("disabled","");
-			document.getElementById(inputID).setAttribute("loading", true);
-			document.getElementById(inputID).innerHTML = "EXTRACTED";
-			Message.info(`Success! Sample specimen ID: ${ saveExtraction.sampleSpecimenID}`);
-			// data = await patientPhleboSpecimensAPI(requestID);
-			// this.setState({patientRequestSpecimen:data});
-			this.forceUpdate();
-		} else{
-			Message.error("Something went wrong!");
-		}
-		
-	}
-
-	checkIn = async (requestID, sectionID, specimenID, userID) => {
-		let data = null;
-		try{
-			const body = { requestID, sectionID, specimenID, userID };
-			const response = await axiosCall({
-				method: apiPostMethod,
-				url: apiUrlCheckInSpecimen,
-				data: body,
-				headers: {
-					'content-type': 'application/json',
-					'authorization': 'Bearer superSecretKey@345' // Change to env
-				}
-			});
-			data = response;
-		}
-		catch(e) {
-    	console.log("TCL: SpecimenList -> checkIn -> e", e)
-		}
-		return data.data;
-	}
-
-
 	componentDidUpdate = async () =>{
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
 		let requestExams = [];
 		requestExams = this.mapExams(patientSpecimensAPI);
-		this.setState({  
-			patientRequestSpecimen: requestExams
-		});
+		if(patientSpecimensAPI != undefined){
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({  
+				patientRequestSpecimen: requestExams
+			});
+		}
+		
+	}
+
+	onChange = async (e,id) => {
+		// eslint-disable-next-line react/no-access-state-in-setstate
+		const loading = this.state.loading.slice();
+		loading[id] = true;
+		const sectionID =  e.target.attributes.getNamedItem('data-sectionid').value;
+		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
+		const requestID = e.target.attributes.getNamedItem('data-requestid').value;
+		const inputID = e.target.id;
+		const {userID} = JSON.parse(sessionStorage.getItem("LOGGEDIN_USER_DATA"));
+		
+		this.setState({ loading });
+		const saveExtraction = await patientPhleboCheckInSpecimensAPI({ requestID, sectionID, specimenID, userID  });
+		
+		this.setState({ loading: false });
+		console.log(saveExtraction);
+		if(saveExtraction.status === 200 || saveExtraction.length > 0){
+			document.getElementById(inputID).setAttribute("disabled","");
+			document.getElementById(inputID).innerHTML = buttonNames.extracted;
+			HttpCodeMessage({status: saveExtraction.status, message: `${messagePrompts.successExtraction} ${ saveExtraction.data.sampleSpecimenID}` });
+		} else{
+			HttpCodeMessage({status: saveExtraction.status, message: messagePrompts.commonErrorMessage});
+		}
 	}
 
 	mapExams = (params) =>{
-
 		const returnArray = [];
-		const requestID = params.requestID;
+		const {requestID} = params;
 		params.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
 				returnArray[indexSection] = {
@@ -134,8 +110,8 @@ class SpecimenList extends React.Component {
 	handlePrint = async (e) =>{
 		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
 		const printBarcode = await printBarcodeSpecimenAPI(specimenID);
-		// await printBarcodeSpecimenAPI(specimenID); 
-		console.log(1);
+
+		HttpCodeMessage({status: printBarcode.status, message: printBarcode.data});
 	}
 
 	render() {  
@@ -180,19 +156,20 @@ class SpecimenList extends React.Component {
 			key: 'phlebo_status_col',
 			width: '15%',
 			render:(button,value) => {
+				const id = `phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`;
 				return(
 					<Col className="phlebo_exams_extract phlebo_examreq_alignment">
 						<Button 
-							id={`phlebo_extractButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
-							onClick={this.onChange}
-							loading={this.state.loading}
+							id={id}
+							onClick={e => this.onChange(e,id)}
+							loading={this.state.loading[id] || false}
 							data-sectionid={value.phlebo_sectionID} 
 							data-specimenid={value.phlebo_specimenID} 
 							data-requestid={value.phlebo_requestID}
 							disabled={value.phlebo_sampleSpecimenID}
 							className="extract-phlebo-btn"
 						>
-							{value.phlebo_sampleSpecimenID ? 'EXTRACTED' : 'EXTRACT'} 
+							{value.phlebo_sampleSpecimenID ? buttonNames.extracted : buttonNames.extract} 
 						</Button>
 					</Col>
 				)

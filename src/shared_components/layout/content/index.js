@@ -1,5 +1,6 @@
 // LIBRARY
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
@@ -11,9 +12,9 @@ import SearchLabTestResult from 'modules/main/search_lab_result';
 import PatientInfo from 'modules/main/patientinfo';
 import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
-import PhleboPatientResult from 'modules/main/phlebo/phlebopatient'
+import PhleboPatientResult from 'modules/main/phlebo/patient_phlebo_info'
 import ErrorPage from 'modules/error_page';
-import SearchPatient from 'modules/main/search_patients';
+import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
 import Inventory from 'modules/main/inventory';
 import auth from 'services/auth';
@@ -70,5 +71,15 @@ function PrivateRoute({ component: Component, ...rest }) {
 	/>
   );
 }
+
+PrivateRoute.propTypes = {
+	location: PropTypes.object
+}
+
+PrivateRoute.defaultProps = {
+	location() { return null }
+}
+
+
 
 export default withRouter(Content);

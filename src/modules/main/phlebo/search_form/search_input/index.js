@@ -8,6 +8,7 @@ import { Form, Input, Button, Row, Col, DatePicker as AntDatePicker } from 'antd
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
 import CustomMessage from 'shared_components/message';
+import HttpCodeMessage from 'shared_components/message_http_status';
 import { apiUrlPhleboSearchPatient } from 'shared_components/constant-global';
 
 // CSS
@@ -77,7 +78,7 @@ class SearchPatientHeaderForm extends React.Component {
 		populateForExtractionPatients(patients.forExtraction);
 		
 		if(patients.length < 1)
-			CustomMessage.info('No results found');
+		HttpCodeMessage({ status: patients.status});
 			
 	}
 
@@ -87,7 +88,6 @@ class SearchPatientHeaderForm extends React.Component {
 			// eslint-disable-next-line max-len
 			const apiBaseUrl = `${apiUrlPhleboSearchPatient}${this.state.selectedDateValue}`;
 			const apiUrl = (patientID ? `${apiBaseUrl}/patientid/${patientID}` : `${apiBaseUrl}/patientname/${patientName}`);
-			console.log(apiUrl);
 			apiResponse = await axiosCall({ method: 'GET', url: apiUrl });
 		}
 		catch(error) {
@@ -162,13 +162,13 @@ class SearchPatientHeaderForm extends React.Component {
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[3]}>
-						<Form.Item label="SELECT A DATE">
+						<Form.Item label="SELECT DATE">
 							<AntDatePicker 
 								allowClear={false}
 								// @ts-ignore
 								defaultValue={moment()} 
 								onChange={this.handleChangeDate} 
-								/>
+							/>
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[4]}>
@@ -209,13 +209,15 @@ SearchPatientHeaderForm.propTypes = {
 	populateForExtractionPatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func,
 	sessionPatientName: PropTypes.string, 
-	sessionPatientID: PropTypes.string
+	sessionPatientID: PropTypes.string,
+	populatePatients: PropTypes.func
 };
 
 SearchPatientHeaderForm.defaultProps = {
 	displayLoading() { return null; },
 	sessionPatientName: '',
-	sessionPatientID: ''
+	sessionPatientID: '',
+	populatePatients() { return null; }
 }
 
 export default SearchPatientHeaderForm;
