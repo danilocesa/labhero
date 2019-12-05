@@ -71,7 +71,7 @@ class Sider extends React.Component {
 							<Menu.Item key="2">
 								<Link to="/request/create/step/1">
 									<Icon component={AddIcon} />
-									<span>REQUEST {process.env.REACT_APP_DISPLAY_LAB_REQUEST}</span>
+									<span>REQUEST</span>
 								</Link>
 							</Menu.Item>
 						)

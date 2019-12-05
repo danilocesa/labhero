@@ -81,7 +81,8 @@ class SearchPatientForm extends React.Component {
 			const response = await axiosCall({
 				method: 'GET',
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
-      });
+			});
+			
 			const { data } = await response;
       console.log("TCL: SearchPatientForm -> fetchPatients -> data", data)
 			

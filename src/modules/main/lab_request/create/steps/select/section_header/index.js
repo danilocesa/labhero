@@ -1,8 +1,9 @@
 import React from 'react';
 import { Radio, Tooltip, Spin, Icon } from 'antd';
 import PropTypes from 'prop-types';
-import axiosCall from 'services/axiosCall';
-import Message from 'shared_components/message';
+import fetchPanel from 'services/lab_request/labPanelExamRequesting';
+import fetchSection from 'services/shared/section';
+import { fetchPerSpecimens } from 'services/shared/examRequest';
 
 import './section_header.css';
 
@@ -33,8 +34,8 @@ class SectionHeader extends React.Component {
 
 			displayLoading(true);
 
-			const sections = await this.fetchSection();
-			const rawPanels = await this.fetchPanel();
+			const sections = await fetchSection();
+			const rawPanels = await fetchPanel();
 			
 			populatePanelRef(rawPanels);
 			populatePanels();
@@ -98,60 +99,9 @@ class SectionHeader extends React.Component {
 
 		populateSpecimen = async(selectedSectionID) => {
 			this.setState({ isLoading: true });
-			const specimens = await this.fetchSpecimen(selectedSectionID);
+			const specimens = await fetchPerSpecimens(selectedSectionID);
 			this.setState({ isLoading: false, specimens });
 		}
-
-		fetchPanel = async() => {
-			let panels = [];
-
-			try {
-				const url = `lab/PanelExamRequesting`;
-
-				const response = await axiosCall({ method: 'GET', url });
-				const { data } = await response;
-
-				panels = data;
-			} catch (e) {
-				Message.error();
-			}
-
-			return panels;
-		}
-
-		fetchSection = async() => {
-			let sections = [];
-
-			try {
-				const url = `lab/Section`;
-
-				const response = await axiosCall({ method: 'GET', url });
-				const { data } = await response;
-
-				sections = data;
-			} catch (e) {
-				Message.error();
-			}
-
-			return sections;
-		}
-
-    fetchSpecimen = async(selectedSection) => {
-			let specimens = [];
-
-			try {
-				const url = `lab/ExamRequest/ids/${selectedSection}`;
-
-				const response = await axiosCall({ method: 'GET', url });
-				const { data } = await response;
-
-				specimens = data[0].perSpecimen;
-			} catch (e) {
-				Message.error();
-			}
-
-			return specimens;
-    }
 
     render() {
 			const { sections, specimens, isLoading } = this.state;

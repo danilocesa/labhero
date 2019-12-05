@@ -1,6 +1,5 @@
 import React from 'react';
-import axiosCall from 'services/axiosCall';
-import Message from 'shared_components/message';
+import saveLabRequest from 'services/lab_request/labRequest';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
@@ -35,7 +34,7 @@ class SummaryStep extends React.Component {
 	}
 	
 	saveExams = async () => {
-		let isSuccess = false;
+		// const isSuccess = false;
 		const { otherInfo, exams, user } = this.state;
 		const payloadExams = exams.map(exam => ({
 			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
@@ -49,23 +48,7 @@ class SummaryStep extends React.Component {
 			exams: payloadExams,
 		};
 		
-		try {
-			const response = await axiosCall({ 
-				method: 'POST', 
-				url: 'lab/Request',
-				data: payload
-			 });
-
-			// eslint-disable-next-line no-unused-vars
-			const { data } = await response;
-
-			isSuccess = true;
-		} catch (e) {
-			Message.error();
-			isSuccess = false;
-		}
-
-		return isSuccess;
+		return saveLabRequest(payload);
 	}
 
 	render() {

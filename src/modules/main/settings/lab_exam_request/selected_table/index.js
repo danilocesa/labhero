@@ -35,7 +35,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: labels.groupTitle,
 				dataIndex: 'examRequestItemGroup',
-				width: 120,
+				width: 70,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
@@ -45,7 +45,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: labels.formulaTitle,
 				dataIndex: 'examRequestItemFormula',
-				width: 100,
+				width: 260,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
@@ -112,7 +112,7 @@ class SelectedTable extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<Form.Item className='selected-table-row'>
+			<Form.Item className='ser-selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
 					rules: [{ required: true }],
 					initialValue,
@@ -128,7 +128,7 @@ class SelectedTable extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<Form.Item className='selected-table-row'>
+			<Form.Item className='ser-selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
 					initialValue:  initialValue === 1,
 					valuePropName: 'checked',

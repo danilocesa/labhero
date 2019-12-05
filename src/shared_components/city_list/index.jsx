@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
 // CUSTOM
-import cityListAPI from 'services/shared/cityList';
+import { cityListAPI } from 'services/shared/address';
 import { FIELD_RULES, LABEL_TITLE } from './settings';
 
 const { Option } = Select;
 
-class cityListComponent extends React.Component { 
+class CityListComponent extends React.Component { 
 	state = {
 		cityList: [],
 		loading: true
@@ -41,7 +41,7 @@ class cityListComponent extends React.Component {
 		const { cityList, loading } = this.state;
 
 		const citySelections = (
-			cityList.length > 0 && !loading  ? (
+			cityList.length > 0 && !loading ? (
 				getFieldDecorator('city', { 
 					rules: FIELD_RULES,
 					initialValue: selectedCity
@@ -73,13 +73,12 @@ class cityListComponent extends React.Component {
 	}
 }
 
-cityListComponent.propTypes = {
-		form : PropTypes.object.isRequired,
-		selectDefaultOptions: PropTypes.string.isRequired,
-		provinceValue: PropTypes.string.isRequired,
-		selectedCity: PropTypes.string.isRequired
-	};
+CityListComponent.propTypes = {
+	form : PropTypes.object.isRequired,
+	selectDefaultOptions: PropTypes.string.isRequired,
+	provinceValue: PropTypes.string.isRequired,
+	selectedCity: PropTypes.string.isRequired
+};
 
-
-export default cityListComponent;
+export default CityListComponent;
   

@@ -2,7 +2,7 @@ import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
 import { apiGetMethod } from 'shared_components/constant-global';
 
-export async function fetchExamList(sectionId, specimenId) {
+export default async function fetchExamList(sectionId, specimenId) {
 	let examList = null;
 
 	try{
@@ -23,24 +23,4 @@ export async function fetchExamList(sectionId, specimenId) {
 	return examList;
 }
 
-export async function createExamRequest(examItem) {
-	let createdExamItem = null;
 
-	try{
-		const content = {
-			method: 'POST',
-			url: 'lab/ExamRequest',
-			data: { ...examItem }
-		}
-
-		const response = await axiosCall(content);
-		const { data } = await response;
-
-		createdExamItem = data;
-	}
-	catch(error) {
-		Message.error();
-	}
-
-	return createdExamItem;
-}

@@ -1,13 +1,13 @@
 const FIELD_RULES = {
 	dateCategory: [
     { 
-			required: true, 
+			required: false, 
 			message: 'This field is required.' 
 		}
 	],
 	dateSpan: [
     { 
-			required: true, 
+			required: false, 
 			message: 'This field is required.' }
 	],
 	status: [

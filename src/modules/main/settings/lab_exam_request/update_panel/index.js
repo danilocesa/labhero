@@ -5,11 +5,12 @@ import { Drawer, Form, Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM
-import { drawerTitle, buttonNames } from '../settings';
-import { fetchExamList, fetchSelectedExamList, updateExamRequest } from './api_repo';
+import { fetchSelectedExamList, updateExamRequest } from 'services/shared/examRequest';
+import fetchExamList from 'services/settings/examItem';
 import InputForm from '../form/update_form';
 import SelectionTable from '../selection_table';
 import SelectedTable from '../selected_table';
+import { drawerTitle, buttonNames } from '../settings';
 
 class UpdatePanel extends React.Component {
 	constructor(props) {
@@ -143,7 +144,7 @@ class UpdatePanel extends React.Component {
 		return ( 
 			<Drawer
 				title={drawerTitle.update}
-				width="70%"
+				width="80%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}
