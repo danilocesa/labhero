@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table, Input, Form, Switch } from 'antd';
@@ -6,10 +7,12 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
+// CUSTOM
+import { selectedTableConst, tableSize } from '../settings';
 import DragableBodyRow from './drag_and_drop';
 
+// CSS
 import './selected_table.css';
-import { selectedTableConst } from '../settings';
 
 const {labels} = selectedTableConst;
 
@@ -163,7 +166,7 @@ class SelectedTable extends React.Component {
 					<DndProvider backend={HTML5Backend}>
 						<Table 
 							className="ser-selected-table"
-							size="small"
+							size={tableSize}
 							columns={this.columns} 
 							dataSource={data}   
 							components={this.components}

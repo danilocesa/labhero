@@ -20,22 +20,6 @@ const DD_VAL_CHECKBOX = 'cb';
 const DD_VAL_OPTION = 'op';
 const DD_VAL_TEXT_AREA = 'ta';
 
-/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties}} */
-const styles = { 
-	fullWidth: {
-		width: '100%'
-	},
-	footer: {
-		position: 'absolute', 
-		width: '100%', 
-		bottom: 0, 
-		left: 0,  
-		borderTop: '1px solid #e8e8e8',
-		backgroundColor: '#fff',
-		textAlign: 'right'
-	}
-};
-
 class AddForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -225,7 +209,7 @@ class AddForm extends React.Component {
 							)}
 						</Form.Item>
 					</section>
-					<section style={styles.footer}>
+					<section className="drawerFooter">
 						<div>
 							<Button 
 								shape="round" 

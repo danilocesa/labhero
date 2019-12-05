@@ -1,6 +1,10 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
+
+// CUSTOM
+import { tableYScroll, tableSize } from '../settings';
 
 const columns = [
 	{ 
@@ -68,11 +72,11 @@ class ExamTable extends React.Component {
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
 						className="ser-search-table"
-						size="small"
+						size={tableSize}
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: 260 }}
+						scroll={{ y: tableYScroll }}
 						rowKey={record => record.examRequestID}
 						onRow={(record) => {
 							return {

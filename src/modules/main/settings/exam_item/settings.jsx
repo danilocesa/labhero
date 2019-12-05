@@ -1,4 +1,4 @@
-import {globalTablePageSize, globalTableSize, globalRequiredMessage} from 'shared_components/constant-global';
+import {globalTablePageSize, globalTableSize, globalRequiredMessage, globalTableYScroll} from 'shared_components/constant-global';
 
 export const moduleTitle = 'EXAM ITEMS';
 export const drawerTitle = {
@@ -8,6 +8,7 @@ export const drawerTitle = {
 
 export const tablePageSize = globalTablePageSize;
 export const tableSize = globalTableSize;
+export const tableYScroll = globalTableYScroll;
 
 export const buttonNames = {
   addExamItem : 'ADD EXAM ITEM',

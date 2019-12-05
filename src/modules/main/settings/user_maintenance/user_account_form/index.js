@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 // CUSTOM
 import {createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
 import {getAllUserTypesAPI} from 'services/settings/user_maintenance/userType';
-import { drawerAdd, drawerUpdate, labels as gLabels, errorMessages } from '../settings';
+import { drawerAdd, drawerUpdate, labels as gLabels, errorMessages, buttonLabels, fieldLabels } from '../settings';
 
 // CSS
 import './useraccountform.css';
@@ -26,23 +26,22 @@ const formItemLayout = {
 	},
 };
 
-const userTypes = (
-	<Select>
-		<Option value={1}>Admin</Option>
-		<Option value={2}>Lab Admin</Option>
-		<Option value={3}>Med Tech</Option>
-		<Option value={4}>Encoder</Option>
-		<Option value={5}>Guest</Option>
-	</Select>
-);
-
 class UserAccountForm extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			confirmDirty: false,
+			userTypeList: []
 		};
+	}
+	
+	async componentDidMount(){
+		const response = await getAllUserTypesAPI();
+		this.setState({
+			// @ts-ignore
+			userTypeList: response.data
+		})
 	}
 
 	componentWillUnmount(){
@@ -98,20 +97,23 @@ class UserAccountForm extends React.Component {
 		callback();
 	};
 
-	fetchUserTypes = () =>{
-		const response = getAllUserTypesAPI;
-		console.log('TCL-> response', response);
-	}
-
 	render() {
 		const { getFieldDecorator } = this.props.form;
 		const { patientInfo } = this.props;
+		const {userTypeList } = this.state;
+
+		const UserTypeOptions = userTypeList.map(userType => (
+			<Option value={userType.userTypeID} key={userType.userTypeID}>
+				{userType.userTypeName}
+			</Option>
+		));
+		 
 		return(
 			<div>
 				<Row gutter={40}>
 					<Col span={24} style={{ textAlign: "right" }}>
-							<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-							<Switch defaultChecked  />
+						<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
+						<Switch defaultChecked  />
 					</Col>
 					<div className="user-form">
 						<Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -121,7 +123,7 @@ class UserAccountForm extends React.Component {
 									<div className="form-title">
 										<Text strong>{gLabels.personalInfoLabel}</Text>
 									</div>
-									<Form.Item label="USERID">
+									<Form.Item label={fieldLabels.userID}>
 										{
 											getFieldDecorator('userID',{
 												initialValue: patientInfo.userID,
@@ -129,7 +131,7 @@ class UserAccountForm extends React.Component {
 										}
 									</Form.Item>
 
-									<Form.Item label="FIRST NAME">
+									<Form.Item label={fieldLabels.firstName}>
 										{getFieldDecorator('givenName', {
 											initialValue: patientInfo.givenName,
 											rules: [{ required: true, message: errorMessages.requiredField }]
@@ -138,7 +140,7 @@ class UserAccountForm extends React.Component {
 										)}	
 									</Form.Item>
 
-									<Form.Item label="MIDDLE NAME">
+									<Form.Item label={fieldLabels.middleName}>
 										{
 											getFieldDecorator('middleName',{
 												initialValue: patientInfo.middleName,
@@ -146,7 +148,7 @@ class UserAccountForm extends React.Component {
 											})(<Input />)
 										}
 									</Form.Item>
-									<Form.Item label="LAST NAME">
+									<Form.Item label={fieldLabels.lastName}>
 										{
 											getFieldDecorator('lastName',{
 												initialValue: patientInfo.lastName,
@@ -162,7 +164,7 @@ class UserAccountForm extends React.Component {
 										<Text strong>{gLabels.accountInfoLabel}</Text>
 									</div>
 
-									<Form.Item label="USERNAME">
+									<Form.Item label={fieldLabels.username}>
 										{
 											getFieldDecorator('userName',{
 												initialValue: patientInfo.userName,
@@ -172,7 +174,7 @@ class UserAccountForm extends React.Component {
 										}
 									</Form.Item>
 
-									<Form.Item label="PASSWORD">
+									<Form.Item label={fieldLabels.password}>
 										{
 											getFieldDecorator('password',{
 												initialValue: patientInfo.password,
@@ -185,7 +187,7 @@ class UserAccountForm extends React.Component {
 										}
 									</Form.Item>
 
-									<Form.Item label="REPEAT PASSWORD">
+									<Form.Item label={fieldLabels.repeatPassword}>
 										{
 											getFieldDecorator('repeat_password',{
 												initialValue: patientInfo.password,
@@ -204,7 +206,7 @@ class UserAccountForm extends React.Component {
 									<div className="form-title">
 										<Text strong>{ gLabels.otherInfoLabel }</Text>
 									</div>
-									<Form.Item label="REGISTRATION NO.">
+									<Form.Item label={fieldLabels.registrationNo}>
 										{
 											getFieldDecorator('registration_no',{
 												initialValue: patientInfo.registryNumber
@@ -212,7 +214,7 @@ class UserAccountForm extends React.Component {
 											<Input />)
 										}
 									</Form.Item>
-									<Form.Item label="REGISTRATION VALIDITY">
+									<Form.Item label={fieldLabels.registrationValidity}>
 										{
 											getFieldDecorator('registration_validity',{
 												initialValue: patientInfo.registryValidityDate
@@ -220,38 +222,28 @@ class UserAccountForm extends React.Component {
 											<Input />)
 										}
 									</Form.Item>
-									<Form.Item label="USER RIGHTS">
+									<Form.Item label={fieldLabels.userRights}>
 										{
 											getFieldDecorator('userTypeID',{ 
 												initialValue: patientInfo.userTypeID,
 												rules: [{ required: true, message: errorMessages.requiredField}],
 											})(
-												userTypes
+												<Select>
+													{UserTypeOptions}
+												</Select>
 											)
 										}
 									</Form.Item>
 								</div>
 							</Col>
-							<div
-								style={{
-								position: 'fixed',
-								left: 0,
-								bottom: 0,
-								width: '100%',
-								marginTop: '25px',
-								borderTop: '1px solid #e9e9e9',
-								padding: '10px 16px',
-								background: '#fff',
-								textAlign: 'right',
-								}}   
-							>
+							<section className="drawerFooter">
 								<Button shape="round" style={{ marginRight: 8 }}>
-									CANCEL
+									{buttonLabels.cancel}
 								</Button>
 								<Button type="primary" shape="round" style={{ padding: '0px 20px' }} htmlType="submit">
 									{this.props.drawerButton}
 								</Button>
-							</div>
+							</section>
 						</Form>
 					</div>
 				</Row>

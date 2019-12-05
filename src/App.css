@@ -1,3 +1,17 @@
 body {
   font-family: 'Karla', sans-serif !important;
 }
+
+.drawerFooter {
+  position: absolute !important;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #e8e8e8;
+  background-color: #fff;
+  text-align: right;
+}
+
+.fullWidth {
+  width: '100%'
+}

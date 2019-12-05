@@ -16,20 +16,16 @@ import { withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
-// @ts-ignore
 import HttpCodeMessage from 'shared_components/message_http_status';
-// @ts-ignore
-import CustomMessage from 'shared_components/message';
 import examRequestListAPI from 'services/examRequestList';
 import createdPanelAPI from 'services/settings/panel/panelExamRequesting/postSettings';
 import updatedPanelListAPI from 'services/settings/panel/panelExamRequesting/putSettings';
 import getPanelInfo from 'services/settings/panel/panelExamRequesting/getSettingsPanelID';
+import {messagePrompts} from '../settings';
 
 // CSS
 import './panel_form.css';
 
-// CONSTANTS
-  
 class PanelFormTemplate extends React.Component {
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props){
@@ -61,7 +57,7 @@ class PanelFormTemplate extends React.Component {
 		if(examRequestListData.status !== 200){
 			HttpCodeMessage({
 				status: examRequestListData.status,
-				message: 'No exam request found!'
+				message: messagePrompts.noExamFound
 			});
 		}
 		// Assign to state
@@ -83,8 +79,7 @@ class PanelFormTemplate extends React.Component {
 			dataPanel = await getPanelInfo(iKey); 
 		} 
 		catch(e) {
-			CustomMessage.error(e);
-			console.log("TCL: panelRequestDetailsAPI -> e", e);
+			HttpCodeMessage({status:500, message: e});
 		}
 		const selectedExamRequest = [];
 		// @ts-ignore
@@ -117,20 +112,18 @@ class PanelFormTemplate extends React.Component {
 
 			try{
 				this.setState({ loading:true });
-				console.log(`this is panel:`, this.props.panelInfo);
 				// eslint-disable-next-line no-unused-expressions
 				this.props.drawerButton === "UPDATE" ? this.updatePanel(values): this.createPanel(values);
 			}	
 			catch(errCatch) {
-				console.log("TCL: onSubmit -> errCatch", errCatch)
+				HttpCodeMessage({status:500, message: e});
 			}
 				
 		});
 	};
 
 	createPanel = async (fieldValues) => {
-		console.log(1);
-		const apiBody = {
+		const payload = {
 			panelRequestName: fieldValues.panel_name,
 			panelRequestCode: fieldValues.panel_code,
 			panelRequestIntegrationCode: fieldValues.panel_integration_code,
@@ -138,14 +131,13 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
-		const response = await createdPanelAPI(apiBody);
-    console.log("TCL: PanelFormTemplate -> createPanel -> response", response)
+		const response = await createdPanelAPI(payload);
 
 		// @ts-ignore
 		if(response.status === 201){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
-				message: 'Successfully created! Reloading page...',
+				message: messagePrompts.successCreatePanel,
 				// @ts-ignore
 				status: response.status,
 				duration: 3, 
@@ -156,7 +148,7 @@ class PanelFormTemplate extends React.Component {
 	}
 
 	updatePanel = async (fieldValues) => {
-		const apiBody = {
+		const payload = {
 			panelRequestID: fieldValues.panel_id,
 			panelRequestName: fieldValues.panel_name,
 			panelRequestCode: fieldValues.panel_code,
@@ -165,17 +157,13 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
-		console.log('apiBody', apiBody);
-
-		const response = await updatedPanelListAPI(apiBody);
-
-		console.log('fieldValues =>', typeof(fieldValues));
+		const response = await updatedPanelListAPI(payload);
 
 		// @ts-ignore
 		if(response.status === 200){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
-				message: 'Update successful! Reloading page...',
+				message: messagePrompts.successUpdatePanel,
 				// @ts-ignore
 				status: response.status,
 				duration: 3, 
@@ -194,12 +182,11 @@ class PanelFormTemplate extends React.Component {
 		if (data.length > 14) {
 		  console.log('Infinite List loaded all');
 		  this.setState({
-			hasMore: false,
-			loading: false,
+				hasMore: false,
+				loading: false,
 		  });
-		  
 		}
-	  };
+	};
 
 	render() {
 		const { getFieldDecorator } = this.props.form;

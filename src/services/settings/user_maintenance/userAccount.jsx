@@ -1,4 +1,4 @@
-import {apiUserAccount, apiPostMethod, apiPutMethod} from 'shared_components/constant-global';
+import {apiUserAccount, apiPostMethod, apiPutMethod, apiGetMethod} from 'shared_components/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import axiosCall from 'services/axiosCall';
 
@@ -42,4 +42,25 @@ export async function updateUserAccountAPI(payload) {
 	}
 	
   return updateUserAccount;
+}
+
+export async function getUserAccountsAPI(){
+  let getUserAccounts = [];
+	
+  try{
+    const axiosResponse = await axiosCall({
+      method: apiGetMethod,
+      url: apiUserAccount
+		}).then(response => {
+      return response;
+    });
+    // @ts-ignore
+    getUserAccounts = axiosResponse;
+  } 
+  catch(e) {
+    HttpCodeMessage({status: 500, message: e});
+	}
+	
+  return getUserAccounts;
+
 }

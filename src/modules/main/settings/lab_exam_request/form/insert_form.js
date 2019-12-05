@@ -1,16 +1,11 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
 import { Row, Col, Form, Input, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 
-import { FIELD_RULES, FIELD_LABELS } from './constant';
-
-/** @type {{fullWidth: React.CSSProperties}} */
-const styles = {
-	fullWidth: {
-		width: '100%'
-	}
-};
+// CUSTOM
+import { fieldRules, fieldLabels } from '../settings';
 
 class InputForm extends React.Component {
 	
@@ -41,59 +36,59 @@ class InputForm extends React.Component {
 			<div className="settings-exam-request-form">
 				<Row gutter={12}>
 					<Col span={10}>
-						<Form.Item label={FIELD_LABELS.examName}>
-							{getFieldDecorator('examRequestName', { rules: FIELD_RULES.examName })(
+						<Form.Item label={fieldLabels.examName}>
+							{getFieldDecorator('examRequestName', { rules: fieldRules.examName })(
 								<Input />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={14}>
-						<Form.Item label={FIELD_LABELS.examCode}>
-							{getFieldDecorator('examRequestCode', { rules: FIELD_RULES.examCode })(
+						<Form.Item label={fieldLabels.examCode}>
+							{getFieldDecorator('examRequestCode', { rules: fieldRules.examCode })(
 								<Input />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={4} className="hide">
-						<Form.Item label={FIELD_LABELS.specimenID}>
+						<Form.Item label={fieldLabels.specimenID}>
 							{getFieldDecorator('specimenID', { 
-								rules: FIELD_RULES.specimenID, 
+								rules: fieldRules.specimenID, 
 								initialValue: specimenId 
 							})(
-								<InputNumber style={styles.fullWidth} />
+								<InputNumber className="fullWidth" />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={4} className="hide">
-						<Form.Item label={FIELD_LABELS.sectionID}>
+						<Form.Item label={fieldLabels.sectionID}>
 							{getFieldDecorator('sectionID', { 
-								rules: FIELD_RULES.sectionID, 
+								rules: fieldRules.sectionID, 
 								initialValue: sectionId 
 							})(
-								<InputNumber style={styles.fullWidth} />
+								<InputNumber className="fullWidth" />
 							)}
 						</Form.Item>
 					</Col>
 				</Row>
 				<Row gutter={12}>
 					<Col span={10}>
-						<Form.Item label={FIELD_LABELS.loinc}>
-							{getFieldDecorator('examRequestLoinc', { rules: FIELD_RULES.loinc })(
+						<Form.Item label={fieldLabels.loinc}>
+							{getFieldDecorator('examRequestLoinc', { rules: fieldRules.loinc })(
 								<Input />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={10}>
-						<Form.Item label={FIELD_LABELS.integrationCode}>
-							{getFieldDecorator('examRequestIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+						<Form.Item label={fieldLabels.integrationCode}>
+							{getFieldDecorator('examRequestIntegrationCode', { rules: fieldRules.integrationCode })(
 								<Input />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label={FIELD_LABELS.examSort}>
-							{getFieldDecorator('examRequestSort', { rules: FIELD_RULES.examSort })(
-								<Input style={styles.fullWidth} />
+						<Form.Item label={fieldLabels.examSort}>
+							{getFieldDecorator('examRequestSort', { rules: fieldRules.examSort })(
+								<Input className="fullWidth" />
 							)}
 						</Form.Item>
 					</Col>

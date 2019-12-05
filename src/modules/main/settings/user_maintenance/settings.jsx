@@ -1,11 +1,8 @@
-import {globalTablePageSize, globalTableSize, globalRequiredMessage} from 'shared_components/constant-global';
+import {globalTablePageSize, globalTableSize, globalRequiredMessage, globalTableYScroll} from 'shared_components/constant-global';
 // constant variables, titles strictly implemented and shared within the module.
 
-
-// UserMaintenance Variables
 export const moduleTitle = 'USER MAINTENANCE';
 
-// UserAccountForm variables
 export const drawerAdd = 'ADD';
 export const drawerUpdate = 'UPDATE';
 export const labels = {
@@ -21,10 +18,13 @@ export const errorMessages = {
     },
 };
 
-// UserTable variables
 export const drawerAddTitle = 'ADD USER ACCOUNT';
 export const drawerUpdateTitle = 'UPDATE USER ACCOUNT';
 export const addUserButton = 'ADD USER';
+
+export const buttonLabels = {
+    cancel: "CANCEL"
+}
 
 export const tableHeaders = {
     userID : 'USER ID',
@@ -33,3 +33,20 @@ export const tableHeaders = {
     middleName : 'MIDDLE NAME',
     lastName : 'LAST NAME',
 };
+
+export const fieldLabels = {
+    userID: "USERID",
+    firstName: "FIRST NAME",
+    middleName: "MIDDLE NAME",
+    lastName: "LAST NAME",
+    username: "USERNAME",
+    password: "PASSWORD",
+    repeatPassword: "REPEAT PASSWORD",
+    registrationNo: "REGISTRATION NO.",
+    registrationValidity: "REGISTRATION VALIDITY",
+    userRights: "USER RIGHTS"
+}
+
+export const tablePageSize = globalTablePageSize;
+export const tableSize = globalTableSize;
+export const tableYScroll = globalTableYScroll;
