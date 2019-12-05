@@ -65,11 +65,7 @@ class Tracker extends React.Component {
 						labelPlacement="vertical"
 						current={active || current}
 						style={{ marginTop: 20 }}
-<<<<<<< HEAD:src/modules/main/lab_request/create/tracker/index.js
-						onChange={this.onChange}
-=======
 						onChange={this.onClickTracker}
->>>>>>> 04ce0b65521826bc7ebe41586bfb69f570bab9fd:src/modules/main/lab_request/tracker/index.js
 					>
 						{StepItems}
 					</Steps>
