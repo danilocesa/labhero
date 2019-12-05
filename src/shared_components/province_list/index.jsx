@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
 // CUSTOM
-import provinceListAPI from 'services/shared/provinceList';
+import { provinceListAPI } from 'services/shared/address';
 import { FIELD_RULES, LABEL_TITLE } from './settings';
 
 const { Option } = Select;

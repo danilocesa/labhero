@@ -5,13 +5,11 @@ import {
 	CLR_SEL_EXAMS	
 } from 'modules/main/lab_request/create/steps/constants'; 
 import PageTitle from '../../title';
-import Tracker from '../../tracker';
+import Tracker from '../../../tracker';
 import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 import ButtonLink from './link';
-
-
 
 
 class SearchStep extends React.Component {

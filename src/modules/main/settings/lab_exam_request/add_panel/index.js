@@ -1,26 +1,16 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
 import { Drawer, Form, Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 
-import { fetchExamList, createExamRequest } from './api_repo';	 
+// CUSTOM
+import { createExamRequest } from 'services/shared/examRequest';
+import fetchExamList from 'services/settings/examItem'; 
 import InputForm from '../form/insert_form';
 import SelectionTable from '../selection_table';
 import SelectedTable from '../selected_table';
-
-/** @type {{footer: React.CSSProperties}} */
-const styles = {
-	footer: { 
-		position: 'absolute', 
-		zIndex: 1,
-		width: '100%', 
-		bottom: 0, 
-		left: 0,  
-		borderTop: '1px solid #e8e8e8',
-		backgroundColor: '#fff',
-		textAlign: 'right'
-	}
-};
+import { drawerTitle, buttonNames } from '../settings';
 
 class AddPanel extends React.Component {
 	constructor(props) {
@@ -149,8 +139,8 @@ class AddPanel extends React.Component {
 
 		return (
 			<Drawer
-				title="ADD EXAM REQUEST"
-				width="70%"
+				title={drawerTitle.add}
+				width="80%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}
@@ -186,14 +176,14 @@ class AddPanel extends React.Component {
 							</Row>
 						</div>
 					</section>
-					<section style={styles.footer}>
+					<section className="drawerFooter">
 						<div>
 							<Button 
 								shape="round" 
 								style={{ margin: 10 }}
 								onClick={this.closeFormDrawer}
 							>
-								CANCEL
+								{buttonNames.cancel}
 							</Button>
 							<Button 
 								shape="round" 
@@ -202,7 +192,7 @@ class AddPanel extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10 }}
 							>
-								CREATE
+								{buttonNames.create}
 							</Button>
 						</div>
 					</section>

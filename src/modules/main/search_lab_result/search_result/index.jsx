@@ -8,7 +8,7 @@ import PatientInfo from '../../patientinfo';
 
 import './searchresult.css';
 
-class WrapperSearchLabTestResultList extends React.Component {
+class SearchResults extends React.Component {
   state = {
 		pageSize: 10,
 		isDisplayPatientInfo: false,
@@ -55,7 +55,7 @@ class WrapperSearchLabTestResultList extends React.Component {
 					/>
 		    </Row>
 				<Drawer
-					title="Patient information"
+					title="Patient Information"
 					onClose={this.onClosePatientInfoDrawer}
 					width="80%"
 					visible={isDisplayPatientInfo}
@@ -67,8 +67,8 @@ class WrapperSearchLabTestResultList extends React.Component {
   }
 }
 		
-WrapperSearchLabTestResultList.propTypes = {
+SearchResults.propTypes = {
 	labResults: PropTypes.array.isRequired
 };
 
-export default WrapperSearchLabTestResultList;
+export default SearchResults;

@@ -1,36 +1,40 @@
-.fillup-form .left-form, .right-form {
+.clr-fillup-form .left-form, .right-form {
   width: 60%;
   max-width: 400px;
 }
 
-.fillup-form .left-form {
+.clr-fillup-form .left-form {
   float: right;
 }	
 
-.fillup-form .left-form .ant-radio-button-wrapper {
+.clr-fillup-form .left-form input:not(#emailAdd){
+  text-transform: uppercase;
+}	
+
+.clr-fillup-form .left-form .ant-radio-button-wrapper {
   width: 100px;
   text-align: center;
 }
 
-.fillup-form .ant-form-item {
+.clr-fillup-form .ant-form-item {
 	margin-bottom: 7px;
 }
 
-.fillup-form .ant-input[disabled] {
+.clr-fillup-form .ant-input[disabled] {
 	color: rgba(0, 0, 0, 0.65);
 }
 
 
 @media only screen and (max-width: 800px) {
-  .fillup-form .divider {
+  .clr-fillup-form .divider {
     display: none !important;
   }
 
-  .fillup-form .left-form, .right-form {
+  .clr-fillup-form .left-form, .right-form {
     width: 90%;
   }
 
-  .fillup-form .left-form {
+  .clr-fillup-form .left-form {
     float: unset;
   }
 }

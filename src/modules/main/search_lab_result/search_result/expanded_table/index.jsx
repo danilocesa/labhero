@@ -1,32 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 
 const columns = [
 	{
-		title: 'Section ID',
-		dataIndex: 'sectionID',
-		width:'20%',
+		title: 'Section',
+		dataIndex: 'sectionName',
+		width: 150,
+	},
+	{ 
+		title: 'Sample ID No.', 
+		dataIndex: 'specimenID', 
+		width: 170,
+	},
+	{ 
+		title: 'Specimen', 
+		dataIndex: 'specimenName', 
+		width: 150,
+	},
+	{ 
+		title: 'Exam Requested', 
+		dataIndex: 'examRequestNames', 
 	},
 	{
-		title: 'Section Name',
-		dataIndex: 'sectionName',
-	},
-	{ 
-		title: 'Section Code', 
-		dataIndex: 'sectionCode', 
-		width:'20%',
-	},
-	{ 
-		title: 'Sample Specimen ID', 
-		dataIndex: 'specimenID', 
-		width:'20%',
-	},
-	{ 
-		title: 'Specimen Name', 
-		dataIndex: 'specimenName', 
-		width:'20%',
-	},
+		title: '', 
+		width: 100,
+		render: () => (<Button>Print</Button>)
+	}
 ];
 
 class ExpandedTable extends React.Component {
@@ -40,8 +40,8 @@ class ExpandedTable extends React.Component {
 		    pagination={false}
 				size="small"
 				rowKey={record => `${record.sectionID}-${record.specimenID}`}
-        onRow={(record, rowIndex) => {
-          return { onDoubleClick: onClickTableRow };
+        onRow={() => {
+          return { onClick: onClickTableRow };
         }}
 			/>
 		);

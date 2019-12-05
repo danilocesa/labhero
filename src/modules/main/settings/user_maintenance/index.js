@@ -8,7 +8,7 @@ class UserMaintenance extends React.Component {
     render() {
         return(
             <div>
-                <PageTitle pageTitle={ moduleTitle } />
+                <PageTitle pageTitle={moduleTitle} />
                 <UserTable />
             </div>
         );

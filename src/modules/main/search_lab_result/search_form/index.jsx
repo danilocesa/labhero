@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
-import { Row, Form, Input, Button, Col, Select, Radio, DatePicker, message } from 'antd';
+import moment from 'moment';
+import { Row, Form, Input, Button, Col, Select, DatePicker, message } from 'antd';
 import PropTypes from 'prop-types';
 import PageTitle from 'shared_components/page_title';
 
-import fetchLabResult from './api_repo';
+import fetchLabResult from 'services/lab_result/result';
 import FIELD_RULES from './constant';
 
 import './searchform.css';
@@ -13,14 +14,11 @@ import './searchform.css';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
-class SearchLabTestForm extends React.Component {
+class SearchForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			enableDateRange: false,
 			isLoading: false,
 		};
 	}
@@ -33,19 +31,20 @@ class SearchLabTestForm extends React.Component {
 		form.validateFieldsAndScroll((err, fieldsValue) => {
 			if (!err) {
 				const { dateSpan } = fieldsValue;
+				const fromDate = dateSpan ? dateSpan[0].format('YYYYMMDD') : null;
+				const toDate = dateSpan ? dateSpan[1].format('YYYYMMDD') : null;
 
 				this.setState({ isLoading: true }, async() => {
 					const labResults = await fetchLabResult({
 						...fieldsValue,
-						fromDate: dateSpan[0].format('YYYYMMDD'),
-						toDate: dateSpan[1].format('YYYYMMDD')
+						fromDate,
+						toDate
 					});
 
 					if(labResults) {
 						if(labResults.length <= 0) 
 							message.info('No results found.');
 						
-						console.log(labResults);
 						updateLabResults(labResults);
 					}
 					
@@ -59,10 +58,6 @@ class SearchLabTestForm extends React.Component {
 	onClickClear = () => {
 		
 	}
-	
-	onClickDateCategory = () => {
-		this.setState({ enableDateRange: true });
-	}
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
@@ -72,39 +67,56 @@ class SearchLabTestForm extends React.Component {
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
 				<Col sm={22} xs={24}> 
 					<Form onSubmit={this.onClickSubmit} id="searchlabtestresultform"> 
-						<PageTitle pageTitle="SEARCH" />
+						<PageTitle pageTitle="EDIT LAB RESULT" />
 						<Row type="flex" align="top" gutter={24}> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
-								<Form.Item label="DATE CATEGORY" className="gutter-box">
-									{getFieldDecorator('dateCategory', { rules: FIELD_RULES.dateCategory })(
-										<RadioGroup buttonStyle="solid" onChange={this.onClickDateCategory}>
-											<RadioButton value="Request">
-												REQUEST
-											</RadioButton>
-											<RadioButton value="Released">
-												VERIFY
-											</RadioButton>
-											<RadioButton value="Check In">
-												CHECK-IN
-											</RadioButton>
-										</RadioGroup>
+								<Form.Item label="SAMPLE ID" className="gutter-box">
+									{getFieldDecorator('sampleSpecimenID', { initialValue: '' })(
+										<Input allowClear />
 									)}
 								</Form.Item>
 							</Col>
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
+								<Form.Item label="PATIENT NAME" className="gutter-box">
+									{getFieldDecorator('patientName', { 
+										rules: FIELD_RULES.patientName,
+										initialValue: ''
+									})(
+										<Input allowClear />
+									)}
+								</Form.Item>
+							</Col> 
+							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
+								<Form.Item label="PATIENT ID" className="gutter-box">
+									{getFieldDecorator('patientID', { 
+										rules: FIELD_RULES.patientID,
+										initialValue: '' 
+									})(
+										<Input allowClear />
+									)}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row type="flex" align="top" gutter={24}>
+							<Col lg={8} md={8} sm={10} xs={24} offset={4} className="gutter-row">
 								<Form.Item label="FROM DATE - TO DATE" className="gutter-box">
-									{getFieldDecorator('dateSpan', { rules: FIELD_RULES.dateSpan })(
+									{getFieldDecorator('dateSpan', { 
+										rules: FIELD_RULES.dateSpan,
+										initialValue: [moment(new Date()), moment(new Date())]
+									})(
 										<RangePicker 
-											disabled={!this.state.enableDateRange}
 											allowClear 
 											style={{ width:'100%' }} 
 										/>
 									)}
 								</Form.Item>
-							</Col> 
-							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>   
+							</Col>
+							<Col lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="STATUS" className="gutter-box">
-									{getFieldDecorator('status', { rules: FIELD_RULES.status })(
+									{getFieldDecorator('status', { 
+										rules: FIELD_RULES.status,
+										initialValue: 'All'
+									})(
 										<Select 
 											placeholder="Please select a status" 
 											style={{ width: "100%" }} 
@@ -119,35 +131,7 @@ class SearchLabTestForm extends React.Component {
 									)}
 								</Form.Item>
 							</Col>
-						</Row>
-						<Row type="flex" align="top" gutter={24}>
-							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
-								<Form.Item label="PATIENT ID" className="gutter-box">
-									{getFieldDecorator('patientID', { 
-										rules: FIELD_RULES.patientID,
-										initialValue: '' 
-									})(
-										<Input allowClear />
-									)}
-								</Form.Item>
-							</Col>
-							<Col lg={8} md={8} sm={10} xs={24}>
-								<Form.Item label="PATIENT NAME" className="gutter-box">
-									{getFieldDecorator('patientName', { 
-										rules: FIELD_RULES.patientName,
-										initialValue: ''
-									})(
-										<Input allowClear />
-									)}
-								</Form.Item>
-							</Col>
-							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row">
-								<Form.Item label="SAMPLE ID" className="gutter-box">
-									{getFieldDecorator('sampleSpecimenID', { initialValue: '' })(
-										<Input allowClear />
-									)}
-								</Form.Item>
-							</Col>
+							<Col lg={8} md={8} sm={10} xs={24} className="gutter-row" />
 						</Row>
 						<Row gutter={24} type="flex" align="bottom">
 							<Col lg={24} className="gutter-row">
@@ -182,8 +166,8 @@ class SearchLabTestForm extends React.Component {
 	}
 }
 
-SearchLabTestForm.propTypes = {
+SearchForm.propTypes = {
 	updateLabResults: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'searchlabtestform' })(SearchLabTestForm);
+export default Form.create({ name: 'searchlabtestform' })(SearchForm);

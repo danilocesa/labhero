@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table, Input, Form, Switch } from 'antd';
@@ -6,10 +7,12 @@ import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
+// CUSTOM
+import { selectedTableConst, tableSize } from '../settings';
 import DragableBodyRow from './drag_and_drop';
 
+// CSS
 import './selected_table.css';
-import { selectedTableConst } from '../settings';
 
 const {labels} = selectedTableConst;
 
@@ -32,7 +35,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: labels.groupTitle,
 				dataIndex: 'examRequestItemGroup',
-				width: 120,
+				width: 70,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
@@ -42,7 +45,7 @@ class SelectedTable extends React.Component {
 			{ 
 				title: labels.formulaTitle,
 				dataIndex: 'examRequestItemFormula',
-				width: 100,
+				width: 260,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
@@ -109,7 +112,7 @@ class SelectedTable extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<Form.Item className='selected-table-row'>
+			<Form.Item className='ser-selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
 					rules: [{ required: true }],
 					initialValue,
@@ -125,7 +128,7 @@ class SelectedTable extends React.Component {
 		const { getFieldDecorator } = form;
 
 		return (
-			<Form.Item className='selected-table-row'>
+			<Form.Item className='ser-selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
 					initialValue:  initialValue === 1,
 					valuePropName: 'checked',
@@ -163,7 +166,7 @@ class SelectedTable extends React.Component {
 					<DndProvider backend={HTML5Backend}>
 						<Table 
 							className="ser-selected-table"
-							size="small"
+							size={tableSize}
 							columns={this.columns} 
 							dataSource={data}   
 							components={this.components}

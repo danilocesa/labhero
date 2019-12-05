@@ -1,6 +1,13 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
+
+// CUSTOM
+import {tableSize, tableYScroll} from './settings';
+
+// CSS
+import './exam_item.css';
 
 const columns = [
 	{ 
@@ -36,14 +43,14 @@ class ExamTable extends React.Component {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
 
 		return (
-			<div style={{ marginTop: 20 }}>
+			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
-						size="small"
+						size={tableSize}
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: 260 }}
+						scroll={{ y: tableYScroll }}
 						rowKey={record => record.examItemID}
 						onRow={(record) => {
 							return {

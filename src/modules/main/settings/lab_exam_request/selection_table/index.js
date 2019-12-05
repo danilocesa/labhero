@@ -1,6 +1,10 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
+
+// CUSTOM
+import {tableYScroll, tableSize} from '../settings';
 
 const columns = [
 	{ 
@@ -40,10 +44,10 @@ class SelectionTable extends React.Component {
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
-						size="small"
+						size={tableSize}
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: 260 }}
+						scroll={{ y: tableYScroll }}
 						pagination={false}
 						rowKey={record => record.examItemID}
 						rowSelection={rowSelectionConfig}

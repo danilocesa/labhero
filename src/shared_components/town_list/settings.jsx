@@ -1,4 +1,4 @@
-import {globalRequiredMessage} from 'shared_components/constant-global';
+import { globalRequiredMessage } from 'shared_components/constant-global';
 
 export const REQUIRED_MESSAGE = globalRequiredMessage;
 export const FIELD_RULES = [{ 
