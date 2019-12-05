@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
 // CUSTOM
-import townListAPI from 'services/shared/townList';
+import { townListAPI } from 'services/shared/address';
 import { FIELD_RULES, LABEL_TITLE } from './settings';
 
 const { Option } = Select;
 
-class townListComponent extends React.Component { 	
+class TownListComponent extends React.Component { 	
 	state = {
 		townList: [],
 		loading: true
@@ -66,12 +66,12 @@ class townListComponent extends React.Component {
 	}
 }
 
-townListComponent.propTypes = {
-		form : PropTypes.object.isRequired,
-		selectDefaultOptions: PropTypes.string.isRequired,
-		cityValue: PropTypes.string.isRequired
-	};
+TownListComponent.propTypes = {
+	form : PropTypes.object.isRequired,
+	selectDefaultOptions: PropTypes.string.isRequired,
+	cityValue: PropTypes.string.isRequired
+};
 
 
-export default townListComponent;
+export default TownListComponent;
   

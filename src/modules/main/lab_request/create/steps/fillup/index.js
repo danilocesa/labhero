@@ -2,9 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
-import axiosCall from 'services/axiosCall';
-import Message from 'shared_components/message';
-import { LOGGEDIN_USER_DATA, apiPatient, apiPostMethod } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
 import Tracker from '../../tracker';
@@ -62,6 +61,13 @@ class FillupStep extends React.Component {
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
+		// Convert each field's value to uppercase
+		Object.keys(personalInfo).forEach(field => {
+			console.log(personalInfo, field);
+			if(field !== 'emailAdd' && personalInfo[field] !== undefined)
+				personalInfo[field] = personalInfo[field].toUpperCase();
+		});
+
 		personalInfo.addressCode = fields.town;
 		delete personalInfo.town;
 		delete personalInfo.patientID;
@@ -69,7 +75,7 @@ class FillupStep extends React.Component {
 		this.setState({ isLoading: true }, async() =>{
 			// If patientid is null then create new patient
 			if(!fields.patientID) {
-				const createdPatient = await this.createPatientInfo({
+				const createdPatient = await createPatientInfo({
 					userID: userSession.userID,
 					...personalInfo
 				});
@@ -81,6 +87,8 @@ class FillupStep extends React.Component {
 			}
 
 			this.setState({ isLoading: false });
+
+			console.log(personalInfo);
 
 			sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 			sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
@@ -95,33 +103,6 @@ class FillupStep extends React.Component {
 
 		history.push('/request/create/step/3');
 	}
-
-	createPatientInfo = async (personalInfo) => {
-		let createdPatient;
-		try{
-			const content = {
-				method: apiPostMethod,
-				url: apiPatient.url,
-				data: personalInfo
-			}
-
-			const response = await axiosCall(content);
-			const { data } = await response;
-
-			createdPatient = data;
-		}
-		catch(error) {
-			if(error && error.response && error.response.data) {
-				const { errors } = error.response.data;
-				Object.keys(errors).forEach(key => { Message.error(errors[key]); });
-			}
-
-			createdPatient = null;
-		}
-
-		return createdPatient;
-	}
-
 
 	render() {
 		const { restriction } = this;

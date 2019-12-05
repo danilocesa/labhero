@@ -3,7 +3,8 @@ import React from 'react';
 import { Drawer, Form, Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 
-import { fetchExamList, createExamRequest } from './api_repo';	 
+import { createExamRequest } from 'services/shared/examRequest';
+import fetchExamList from 'services/settings/examItem'; 
 import InputForm from '../form/insert_form';
 import SelectionTable from '../selection_table';
 import SelectedTable from '../selected_table';
@@ -150,7 +151,7 @@ class AddPanel extends React.Component {
 		return (
 			<Drawer
 				title="ADD EXAM REQUEST"
-				width="70%"
+				width="80%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}

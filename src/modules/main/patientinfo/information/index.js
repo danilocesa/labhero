@@ -13,7 +13,7 @@ class Information extends React.Component {
   render() {
     return (
 	    <div className="verticalinfo">
-		    <div className="patient-number">
+		    {/* <div className="patient-number">
 			    <Row>
 				    <Col span={24} className="differential-title">
 					    <p>DIFFERENTIAL COUNT TOTAL</p>
@@ -22,7 +22,7 @@ class Information extends React.Component {
 					    <p>100</p>
 				    </Col>
 			    </Row>
-		    </div>
+		    </div> */}
         <PatientInfo />
      </div>
     );

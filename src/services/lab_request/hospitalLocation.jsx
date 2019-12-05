@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from './axiosCall';
+import axiosCall from '../axiosCall';
 
 
 async function hospitalLocationAPI() {

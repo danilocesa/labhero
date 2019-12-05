@@ -5,6 +5,12 @@ import { Table } from 'antd';
 import ExpandedTable from '../expanded_table';
 
 const columns = [
+	{
+		title: 'REQUEST DATE', 
+		dataIndex: 'requestDateTime', 
+		width: 110,
+		render: (text) => text.replace(/\//g, '-') 
+	},
 	{ 
 		title: 'PATIENT ID', 
 		dataIndex: 'patientID', 
@@ -23,12 +29,12 @@ const columns = [
 	{ 
 		title: 'FIRST NAME', 
 		dataIndex: 'givenName', 
-		width: 200,
+		width: 150,
 	},
 	{ 
 		title: 'DATE OF BIRTH', 
 		dataIndex: 'dateOfBirth',
-		width: 120,
+		width: 120
 	},
 	{ 
 		title: 'GENDER', 
@@ -62,6 +68,7 @@ class MainTable extends React.Component {
 				columns={columns}
 				pagination={{ pageSize }} 
 				expandedRowRender={this.expandedRowRender}
+				defaultExpandAllRows
 				dataSource={labResults}
 				rowKey={record => record.patientID}
 				size="small"

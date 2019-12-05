@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { Row, Col, Typography, Button, Icon } from 'antd';
 import TablePager from 'shared_components/search_pager/pager';
 import Message from 'shared_components/message';
-
+import fetchSpecimens from 'services/settings/specimen';
+import { fetchExamRequests } from 'services/shared/examRequest';
+import fetchSection from 'services/shared/section';
 import ExamTable from './search_table';
 import AddForm from './add_panel';
 import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
 
-import { fetchSection, fetchSpecimens, fetchExamRequest } from './api_repo';
 import { moduleTitle, messages, buttons, placeHolders, labels } from './settings';
-// import { settings } from 'cluster';
 
 const { Title } = Typography;
-
+   
 const SecondarySection = (props) => (
 	<Row style={{ marginTop: 50 }}>
 		<Col span={12} style={{ textAlign: 'left' }}>
@@ -68,7 +68,7 @@ class LabExamRequest extends React.Component {
 
 		this.setState({ isLoading: true, isShowAddForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -82,7 +82,7 @@ class LabExamRequest extends React.Component {
 
 		this.setState({ isLoading: true, isShowUpdateForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -94,7 +94,7 @@ class LabExamRequest extends React.Component {
 	onChangeSection = async(sectionId) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
 			const { selectedSpecimenId: specimenId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -107,7 +107,7 @@ class LabExamRequest extends React.Component {
 	onChangeSpecimen = (specimenId) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
 			const { selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);
+			const examRequests = await fetchExamRequests(sectionId, specimenId);
 			
 			this.setState({ 
 				examRequests,

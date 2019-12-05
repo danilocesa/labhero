@@ -12,8 +12,6 @@ import Table from './table';
 import ButtonLink from './link';
 
 
-
-
 class SearchStep extends React.Component {
 	state = { 
 		searchedPatientName: '',

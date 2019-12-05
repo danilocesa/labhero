@@ -6,8 +6,8 @@ import { withRouter } from 'react-router-dom';
 import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select } from 'antd';
 
 // CUSTOM MODULES
-import hospitalLocationAPI from 'services/hospitalLocation';
-import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
+import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
+import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
 import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
@@ -129,7 +129,7 @@ class BaseForm extends React.Component {
 					fields.physicianName +=	`${physician.middleName}. `;
 					fields.physicianName +=	`${physician.lastName}`;
 				}
-
+				
 				handleSubmit(fields);
 			}
 		});
@@ -158,7 +158,7 @@ class BaseForm extends React.Component {
 
 		return (
 			<div style={{ marginTop: 50 }}>
-				<Form className="fillup-form" onSubmit={this.onSubmit}>
+				<Form className="clr-fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={12}>
 						<Col sm={12} md={11}>
 							<div className="left-form">

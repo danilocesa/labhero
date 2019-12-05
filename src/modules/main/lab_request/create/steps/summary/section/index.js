@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Typography } from 'antd';
-import hospitalLocationAPI from 'services/hospitalLocation';
-import hospitalPhysiciansAPI from 'services/hospitalPhysicians';
+import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
+import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 
 import './section.css';
