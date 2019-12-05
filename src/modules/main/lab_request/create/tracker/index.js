@@ -36,6 +36,16 @@ const items = [
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
+
+	state = {
+		current: 0,
+	};
+
+	onChange = current => {
+		console.log('onChange:', current);
+		this.setState({ current });
+	  };
+
 	render() {
 		const StepItems = items.map(item => (
 			<Step
@@ -57,6 +67,7 @@ class Tracker extends React.Component {
 						labelPlacement="vertical"
 						current={active || 0}
 						style={{ marginTop: 20 }}
+						onChange={this.onChange}
 					>
 						{StepItems}
 					</Steps>
