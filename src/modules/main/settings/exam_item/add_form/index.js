@@ -1,11 +1,14 @@
+// LIBRARY
 import React from 'react';
 import { Drawer, Form, Input, Button, Select } from 'antd';
 import PropTypes from 'prop-types';
+
+// CUSTOM
 import DynamicForm from '../dynamic_form';
 import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';
+import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
-import FIELD_RULES from './constant';
-
+// CSS
 import './add_form.css';
 
 const { Option } = Select;
@@ -157,7 +160,7 @@ class AddForm extends React.Component {
 
 		return (
 			<Drawer
-				title="ADD EXAM"
+				title={drawerTitle.add}
 				width="400"
 				placement="right"
 				closable
@@ -166,18 +169,18 @@ class AddForm extends React.Component {
 			>
 				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
 					<section style={{ marginBottom: 50 }}>
-						<Form.Item label="EXAM ITEM NAME">
-							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
+						<Form.Item label={fieldLabels.examItemName}>
+							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="EXAM ITEM GENERAL NAME">
-							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
+						<Form.Item label={fieldLabels.examItemGeneralName}>
+							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="EXAM ITEM TYPE">
-							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
+						<Form.Item label={fieldLabels.examItemTypeCode}>
+							{getFieldDecorator('examItemTypeCode', { rules: fieldRules.examItemType })(
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
 								</Select>
@@ -185,14 +188,14 @@ class AddForm extends React.Component {
 						</Form.Item>
 						{ (selectedRsType === DD_VAL_ALPHA_NUMERIC || selectedRsType === DD_VAL_NUMERIC) && (
 							<React.Fragment>
-								<Form.Item label="UNIT OF MEASURES">
-									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
+								<Form.Item label={fieldLabels.examItemUnitCode}>
+									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
 										<Select>{UnitMeasureOptions}</Select>
 									)}
 								</Form.Item>
-								<Form.Item label="DEFAULT VALUE">
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 
-										rules: FIELD_RULES.examItemTypeDefault, 
+										rules: fieldRules.examItemTypeDefault, 
 										initialValue: 1 
 									})(
 										<Input />
@@ -206,9 +209,9 @@ class AddForm extends React.Component {
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
 							<React.Fragment>
-								<Form.Item label="DEFAULT VALUE">
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 
-										rules: FIELD_RULES.examItemTypeDefault,
+										rules: fieldRules.examItemTypeDefault,
 										initialValue: 1 
 									})(
 										<TextArea />
@@ -216,8 +219,8 @@ class AddForm extends React.Component {
 								</Form.Item>
 							</React.Fragment>	
 						)}
-						<Form.Item label="INTEGRATION CODE">
-							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+						<Form.Item label={fieldLabels.examItemIntegrationCode}>
+							{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
 								<Input />
 							)}
 						</Form.Item>
@@ -229,7 +232,7 @@ class AddForm extends React.Component {
 								style={{ margin: 10 }}
 								onClick={onClose}
 							>
-								CANCEL
+								{buttonNames.cancel}
 							</Button>
 							<Button 
 								shape="round" 
@@ -238,7 +241,7 @@ class AddForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10 }}
 							>
-								CREATE
+								{buttonNames.create}
 							</Button>
 						</div>
 					</section>

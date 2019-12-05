@@ -1,11 +1,11 @@
-
+import {globalTablePageSize, globalTableSize, globalRequiredMessage} from 'shared_components/constant-global';
 // constant variables, titles strictly implemented and shared within the module.
 
 
-//UserMaintenance Variables
+// UserMaintenance Variables
 export const moduleTitle = 'USER MAINTENANCE';
 
-//UserAccountForm variables
+// UserAccountForm variables
 export const drawerAdd = 'ADD';
 export const drawerUpdate = 'UPDATE';
 export const labels = {
@@ -15,13 +15,13 @@ export const labels = {
 };
 
 export const errorMessages = {
-    requiredField : 'This is a required field.',
+    requiredField : globalRequiredMessage,
     password : {
         doesNotMatch : 'Password and Repeat Password does not match!',
     },
 };
 
-//UserTable variables
+// UserTable variables
 export const drawerAddTitle = 'ADD USER ACCOUNT';
 export const drawerUpdateTitle = 'UPDATE USER ACCOUNT';
 export const addUserButton = 'ADD USER';

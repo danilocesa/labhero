@@ -50,6 +50,8 @@ export const LOGGEDIN_USER_DATA = 'LOGGEDIN_USER_DATA';
 
 // Table settings
 export const globalTablePageSize = 10;
+export const globalTableSize = 'small';
 
 // Messages
 export const globalRequiredMessage = 'This field is required';
+export const globalErrorMessage = 'Something went wrong! Please try again';

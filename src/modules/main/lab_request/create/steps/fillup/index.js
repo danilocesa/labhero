@@ -6,7 +6,7 @@ import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
-import Tracker from '../../tracker';
+import Tracker from '../../../tracker';
 import FillupForm from './form';
 
 

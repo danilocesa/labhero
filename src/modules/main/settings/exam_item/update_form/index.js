@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, InputNumber, Spin  } from 'antd';
+import { Drawer, Form, Input, Button, Select, Spin  } from 'antd';
 import PropTypes from 'prop-types';
+
+// CUSTOM
 import DynamicForm from '../dynamic_form';
 import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
+import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
-import FIELD_RULES from './constant';
-
+// CSS
 import './update_form.css';
 
 const { Option } = Select;
@@ -84,8 +87,6 @@ class UpdateForm extends React.Component {
 				if(examItem) {
 					const { setFieldsValue } = this.props.form;
 					const { examItemTypeCode } = examItem;
-					// const isOptnOrChbox = examItemTypeCode === DD_VAL_OPTION || examItemTypeCode === DD_VAL_CHECKBOX
-					// const examItemValue = isOptnOrChbox ? examItem.examItemValue : [];
 					const examItemValue = examItem.examItemValue || [];
 
 					// First.
@@ -221,7 +222,7 @@ class UpdateForm extends React.Component {
 
 		return (
 			<Drawer
-				title="UPDATE EXAM"
+				title={drawerTitle.update}
 				width="400"
 				placement="right"
 				closable
@@ -235,18 +236,18 @@ class UpdateForm extends React.Component {
 						spinning={isFetchingData}
 					>
 						<section style={{ marginBottom: 60 }}>
-							<Form.Item label="EXAM ITEM NAME">
-								{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
+							<Form.Item label={fieldLabels.examItemName}>
+								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
 									<Input />
 								)}
 							</Form.Item>
-							<Form.Item label="EXAM ITEM GENERAL NAME">
-								{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
+							<Form.Item label={fieldLabels.examItemGeneralName}>
+								{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
 									<Input />
 								)}
 							</Form.Item>
-							<Form.Item label="EXAM ITEM TYPE">
-								{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
+							<Form.Item label={fieldLabels.examItemTypeCode}>
+								{getFieldDecorator('examItemTypeCode', { rules: fieldRules.examItemType })(
 									<Select onChange={this.onChangeItemTypeCode}>
 										{InputTypeCodeOptions}
 									</Select>
@@ -254,13 +255,13 @@ class UpdateForm extends React.Component {
 							</Form.Item>
 							{ (selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || selectedItemTypeCode === DD_VAL_NUMERIC) &&  (
 								<>
-									<Form.Item label="UNIT OF MEASURES">
-										{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
+									<Form.Item label={fieldLabels.examItemUnitCode}>
+										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
 											<Select>{UnitMeasureOptions}</Select>
 										)}
 									</Form.Item>
-									<Form.Item label="DEFAULT VALUE">
-										{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									<Form.Item label={fieldLabels.examItemTypeDefault}>
+										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
 											<Input />
 										)}
 									</Form.Item>
@@ -276,15 +277,15 @@ class UpdateForm extends React.Component {
 							)}
 							{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
 								<>
-									<Form.Item label="DEFAULT VALUE">
-										{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+									<Form.Item label={fieldLabels.examItemTypeDefault}>
+										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
 											<TextArea />
 										)}
 									</Form.Item>
 								</>
 							)}
-							<Form.Item label="INTEGRATION CODE">
-								{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+							<Form.Item label={fieldLabels.examItemIntegrationCode}>
+								{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
 									<Input />
 								)}
 							</Form.Item>
@@ -297,7 +298,7 @@ class UpdateForm extends React.Component {
 								style={{ margin: 10 }}
 								onClick={onClose}
 							>
-								CANCEL
+								{buttonNames.cancel}
 							</Button>
 							<Button 
 								shape="round" 
@@ -306,7 +307,7 @@ class UpdateForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10 }}
 							>
-								UPDATE
+								{buttonNames.update}
 							</Button>
 						</div>
 					</section>

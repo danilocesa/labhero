@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import SettingsMenu from './settings_menu'
 import UserMaintenance from './user_maintenance'
 import PanelExam from './panel_exam'
-import ProfileExam from './profile_exam';
+// import ProfileExam from './profile_exam';
 import ExamItems from './exam_item';
 import LabExamRequest from './lab_exam_request';
 

@@ -3,7 +3,7 @@ import saveLabRequest from 'services/lab_request/labRequest';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import Restriction from '../clr_restriction/restriction';
 import PageTitle from '../../title';
-import Tracker from '../../tracker';
+import Tracker from '../../../tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';

@@ -1,5 +1,5 @@
-import {apiUrlGetPanelInfoByID} from 'shared_components/constant-global';
-import Message from 'shared_components/message';
+import {apiUrlGetPanelInfoByID, apiGetMethod} from 'shared_components/constant-global';
+import HttpCodeMessage from 'shared_components/message_http_status';
 import axiosCall from 'services/axiosCall';
 
 
@@ -8,16 +8,16 @@ async function getPanelInfoAPI(panelID) {
 	
   try{
     const axiosResponse = await axiosCall({
-      method: 'GET',
+      method: apiGetMethod,
       url: apiUrlGetPanelInfoByID + panelID,
-		}).then(function(response){
+		}).then(response => {
       return response;
     });
-    console.log("TCL: panelListAPI -> response", axiosResponse)
+    // @ts-ignore
     panelInfo = axiosResponse;
   } 
   catch(e) {
-    Message.error();
+    HttpCodeMessage({status: 500, message: e});
 	}
 	
   return panelInfo;

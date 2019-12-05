@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable func-names */
 // LIBRARY
 import React from 'react';
@@ -10,7 +11,7 @@ import {
 	Button as AntButton} from 'antd';
 
 // CUSTOM MODULES
-import panelListAPI from 'services/settings/panel/panelList';
+import panelListAPI from 'services/settings/panel/panelExamRequesting/getSettings';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import PanelForm from '../panel_form';
 
@@ -133,8 +134,8 @@ class PanelTable extends React.Component {
 	}
 
 	handleSelectChange = (value) => {
-		const pagination = {...this.state.pagination};
-		console.log(pagination);
+		const {pagination} = this.state; 
+		// eslint-disable-next-line radix
 		pagination.pageSize = parseInt(value);
 		this.setState({ pagination });
 	};
