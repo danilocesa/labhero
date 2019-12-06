@@ -295,7 +295,7 @@ class BaseForm extends React.Component {
 									fieldLabel={formLabels.unitFloorBldg}
 									selectedValue={initialPersoValue.address}
 									fieldRules={FIELD_RULES.address}
-									/>
+								/>
 
 								<Form.Item label={formLabels.contactNumber}>
 									{getFieldDecorator('contactNumber', { 

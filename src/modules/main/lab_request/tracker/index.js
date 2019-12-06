@@ -13,36 +13,38 @@ const items = [
 		title: 'Step 1',
 		description: 'Search Patient',
 		icon: 'search',
+		link: '/request/create/step/1',
 	},
 	{
 		title: 'Step 2',
 		description: 'Fill up',
 		icon: 'form',
+		link: '/request/create/step/2',
 	},
 	{
 		title: 'Step 3',
 		description: 'Select Lab Test',
 		icon: 'check-square',
+		link: '/request/create/step/3',
 	},
 	{
 		title: 'Step 4',
 		description: 'Summary',
 		icon: 'idcard',
+		link: '/request/create/step/4',
 	}
 ];
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
-	state = { current: 0 }
-
+	
 	onClickTracker = current => {
-		console.log('onChange:', current);
 		const nextSteps = current + 1;
+		const targetUrl = `/request/create/step/${nextSteps}`;
 		if(this.props.requestType === 1 && nextSteps > current){
 			return false;
 		}
-		this.setState({ current });
-    
+		window.location.assign(targetUrl);
 	}
 
 	render() {
