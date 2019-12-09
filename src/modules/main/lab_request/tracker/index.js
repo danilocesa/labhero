@@ -37,14 +37,23 @@ const items = [
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
+	state={
+		current: 0,
+	};
 	
-	onClickTracker = current => {
-		const nextSteps = current + 1;
+	onClickTracker = clickedStep => {
+		const nextSteps = clickedStep + 1;
 		const targetUrl = `/request/create/step/${nextSteps}`;
-		if(this.props.requestType === 1 && nextSteps > current){
-			return false;
+		let clickedVal = false;
+
+		if(this.props.requestType === 1 && nextSteps < clickedStep){
+			clickedVal = false;
+		}else{
+			this.setState({current: clickedStep});
+			window.location.assign(targetUrl);
+			clickedVal = true;
 		}
-		window.location.assign(targetUrl);
+		return clickedVal;
 	}
 
 	render() {
@@ -55,7 +64,6 @@ class Tracker extends React.Component {
 				icon={<Icon type={item.icon} />}
 			/>
 		));
-
 		const { active } = this.props;
 		const { current } = this.state;
 
