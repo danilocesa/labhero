@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 // LIBRARY
 import React from 'react';
-import { Row, Col } from 'antd';
+// import { Row, Col } from 'antd';
 
 // CUSTOM MODULES
 import PatientInfo from 'shared_components/patient_info';

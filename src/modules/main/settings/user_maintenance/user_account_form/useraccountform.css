@@ -1,66 +1,8 @@
-
-.user-form {
-    padding: 25px;
-    margin-top: 15px;
+.form-section .form-title{
+	margin-bottom: 15px;
 }
 
-.user-form .drawerPadding {
-    padding: 20px;
-}
-
-.user-form .ant-form-item-label {
-    margin:  15px 0;
-    padding-right: 15px;
-}
-
-.user-form .form-title {
-    margin-bottom: 15px;
-}
-
-.user-form .ant-form-item-label {
-    font-weight: lighter;
-}
-
-.user-form .ant-form label {
-    font-size: 13px;
-}
-
-.user-form .personalInfo .checkboxUser {
-    margin-bottom: 0px;
-}
-
-.user-form .personalInfo .ant-checkbox-inner {
-    width: 23px;
-    height: 23px;
-}
-
-.user-form .user-table-drawer .ant-select-selection {
-    border: none !important;
-}
-
-.user-table-drawer {
-    margin-bottom: 200px;
-}
-
-.user-table-drawer .ant-table-thead > tr > th {
-    padding: 4px 16px !important;
-}
-
-.user-table-drawer .ant-table-tbody > tr > td {
-    padding: 10px !important;
-}
-
-.user-table-drawer .ant-table-thead > tr > th:last-child,
-.user-table-drawer .ant-table-tbody > tr > td:nth-child(4),
-.user-table-drawer .ant-table-tbody > tr > td:last-child {
-    text-align: center;
-}
-
-.user-table-drawer .ant-table-tbody .ant-checkbox-inner {
-    width: 23px;
-    height: 23px;
-}
-
-.ant-drawer-body {
-    padding-bottom: 0px;
+.ant-form label {
+	line-height: 35px!important;
+	font-size: 12px!important;
 }

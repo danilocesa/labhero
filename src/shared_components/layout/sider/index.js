@@ -1,4 +1,6 @@
+// @ts-nocheck
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -111,7 +113,7 @@ class Sider extends React.Component {
 							<Menu.Item key="6">
 								<Link to="/settings">
 									<Icon component={SettingsIcon} />
-									<span>SETTINGS {process.env.REACT_APP_DISPLAY_INVENTORY}</span>
+									<span>SETTINGS</span>
 								</Link>
 							</Menu.Item>
 						)
@@ -130,6 +132,14 @@ class Sider extends React.Component {
      </AntSider>
     );
   }
+}
+
+Sider.propTypes = {
+	collapsed: PropTypes.bool
+};
+
+Sider.defaultProps = {
+	collapsed: null
 }
 
 export default Sider;

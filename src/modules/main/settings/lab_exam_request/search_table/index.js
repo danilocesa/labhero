@@ -6,6 +6,9 @@ import { Spin, Table } from 'antd';
 // CUSTOM
 import { tableYScroll, tableSize } from '../settings';
 
+// CSS
+import './search_table.css';
+
 const columns = [
 	{ 
 		title: 'ID',

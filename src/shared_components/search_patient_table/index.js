@@ -12,6 +12,7 @@ import {
 	CLR_SEARCHED_ID,
 	CLR_SEARCHED_NAME 
 } from 'modules/main/lab_request/create/steps/constants'; 
+import {globalTableSize} from '../constant-global';
 
 // CSS
 import './table.css';
@@ -97,7 +98,7 @@ class SearchPatientTable extends React.Component {
 			<Spin spinning={loading} tip="Loading...">
 				<div className="search-patient-table">
 					<AntTable 
-						size="small"
+						size={globalTableSize}
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 

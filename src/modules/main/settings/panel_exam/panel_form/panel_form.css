@@ -1,11 +1,4 @@
 
-
-.panel-form .ant-form label {
-    font-size: 13px;
-    font-weight: lighter;
-}
-
-
 .panel-infinite-container {
     border: 1px solid #e8e8e8;
     border-radius: 4px;
@@ -14,6 +7,11 @@
     height: 165px;
     /* width: 250px; */
 }
+
+.panel-infinite-container .ant-checkbox-group {
+    width: 100%;
+}
+
 .panel-loading-container {
     position: absolute;
     bottom: 40px;
