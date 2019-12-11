@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
@@ -39,11 +40,13 @@ class Sider extends React.Component {
   }
 
   render() {
+		const { collapsed } = this.props;
+
     return (
 	    <AntSider
         trigger={null}
         collapsible
-        collapsed={this.props.collapsed}
+        collapsed={collapsed}
 	    >
         <div className="logo" />
         <Menu
@@ -52,7 +55,6 @@ class Sider extends React.Component {
 					defaultSelectedKeys={[
 						(sessionStorage.getItem(SELECTED_SIDER_KEY) ? sessionStorage.getItem(SELECTED_SIDER_KEY) : '1' )
 					]}
-					// defaultSelectedKeys={['1']}
 					onClick={this.handleMenuClick}
         >
 					{
@@ -78,8 +80,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
-							<Menu.Item key="4">
-								<Link to="/phleboresult">
+							<Menu.Item key="3">
+								<Link to="/phlebo/result">
 									<Icon component={PleboIcon} />
 									<span>PHLEBO</span>
 								</Link>
@@ -88,8 +90,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
-							<Menu.Item key="3">
-								<Link to="/searchlabresult">
+							<Menu.Item key="4">
+								<Link to="/lab/result/edit">
 									<Icon component={SearchIcon} />
 									<span>SEARCH LAB RESULT</span>
 								</Link>
@@ -97,9 +99,19 @@ class Sider extends React.Component {
 						)
 					}
 					{
-						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
+						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
 							<Menu.Item key="5">
-								<Link to="/searchpatient">
+								<Link to="/lab/result/print">
+									<Icon component={SearchIcon} />
+									<span>PRINT LAB RESULT</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
+					{
+						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
+							<Menu.Item key="6">
+								<Link to="/patient/search">
 									<Icon component={SearchPatientIcon} />
 									<span>PATIENT DEMOGRAPHICS</span>
 								</Link>
@@ -108,7 +120,7 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-							<Menu.Item key="6">
+							<Menu.Item key="7">
 								<Link to="/settings">
 									<Icon component={SettingsIcon} />
 									<span>SETTINGS {process.env.REACT_APP_DISPLAY_INVENTORY}</span>
@@ -118,7 +130,7 @@ class Sider extends React.Component {
 					}
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
-							<Menu.Item key="7">
+							<Menu.Item key="8">
 								<Link to="/inventory">
 									<Icon component={InventoryIcon} />
 									<span>INVENTORY</span>
@@ -130,6 +142,10 @@ class Sider extends React.Component {
      </AntSider>
     );
   }
+}
+
+Sider.propTypes = {
+	collapsed: PropTypes.bool.isRequired
 }
 
 export default Sider;

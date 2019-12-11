@@ -8,7 +8,8 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
-import SearchLabTestResult from 'modules/main/search_lab_result';
+import EditLabResult from 'modules/main/lab_result/edit_result';
+import PrintLabResult from 'modules/main/lab_result/print_result';
 import PatientInfo from 'modules/main/patientinfo';
 import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
@@ -38,14 +39,15 @@ const Content = () => (
 			{/* Lab request route */}
 			<PrivateRoute path="/request/create" component={CreateRequestPage} />
 			{/* Search lab result route */}
-			<PrivateRoute path="/searchlabresult" component={SearchLabTestResult} />
+			<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
+			<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
 			<PrivateRoute path="/patientinfo" component={PatientInfo} />
 			<PrivateRoute path="/iresults" component={Iresults} />
 			{/* Phlebo route */}
-			<PrivateRoute path="/phleboresult" component={PhleboSearch} />
-			<PrivateRoute path="/phlebopatient" component={PhleboPatientResult} />
+			<PrivateRoute path="/phlebo/result" component={PhleboSearch} />
+			<PrivateRoute path="/phlebo/patient" component={PhleboPatientResult} />
 			{/* Search patients route */}
-			<PrivateRoute path="/searchpatient" component={SearchPatient} />
+			<PrivateRoute path="/patient/search" component={SearchPatient} />
 			{/* Settings route */}
 			<PrivateRoute path="/settings" component={Settings} />
 			{/* Inventory route */}

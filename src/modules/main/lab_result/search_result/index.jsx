@@ -1,39 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Drawer } from 'antd';
+import { Row, Col } from 'antd';
 
 import Pager from 'shared_components/search_pager';
 import MainTable from './main_table';
-import PatientInfo from '../../patientinfo';
 
 import './searchresult.css';
 
 class SearchResults extends React.Component {
   state = {
 		pageSize: 10,
-		isDisplayPatientInfo: false,
 		isLoading: false
 	};
 
   componentDidMount() {
     this.setState({ showLoading: false });
   } 
-
-  onClickTableRow = () => {
-    this.setState({ isDisplayPatientInfo: true });
-  }
-
-  onClosePatientInfoDrawer = () => {
-    this.setState({ isDisplayPatientInfo: false });
-	}
-
+  
 	onChangePageSize = (pageSize) => {
 		this.setState({ pageSize });
 	}
 
   render() {  
-		const { isLoading, pageSize, isDisplayPatientInfo } = this.state;
-		const { labResults } = this.props;
+		const { isLoading, pageSize } = this.state;
+		const { labResults, onClickTableRow } = this.props;
    
     return (
 	    <div>
@@ -51,24 +41,17 @@ class SearchResults extends React.Component {
 						isLoading={isLoading}
 						labResults={labResults}
 						pageSize={pageSize}
-						onClickTableRow={this.onClickTableRow}
+						onClickTableRow={onClickTableRow}
 					/>
 		    </Row>
-				<Drawer
-					title="Patient Information"
-					onClose={this.onClosePatientInfoDrawer}
-					width="80%"
-					visible={isDisplayPatientInfo}
-				>
-					<PatientInfo /> 
-				</Drawer>
 	    </div>
     );
   }
 }
 		
 SearchResults.propTypes = {
-	labResults: PropTypes.array.isRequired
+	labResults: PropTypes.array.isRequired,
+	onClickTableRow: PropTypes.func.isRequired
 };
 
 export default SearchResults;
