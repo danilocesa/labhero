@@ -1,13 +1,15 @@
+// @ts-nocheck
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';
-import PageTitle from '../../title';
 import Tracker from '../../../tracker';
 import FillupForm from './form';
+import {moduleTitle} from '../../settings';
 
 
 import { 
@@ -111,7 +113,7 @@ class FillupStep extends React.Component {
 		if(restriction.hasAccess) {
 			return (
 				<div>
-					<PageTitle />
+					<PageTitle pageTitle={moduleTitle} />
 					<Tracker active={1} />
 					<FillupForm 
 						handleSubmit={this.handleSubmit} 

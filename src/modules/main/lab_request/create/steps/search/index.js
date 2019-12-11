@@ -4,12 +4,13 @@ import {
 	CLR_OTHER_INFO, 
 	CLR_SEL_EXAMS	
 } from 'modules/main/lab_request/create/steps/constants'; 
-import PageTitle from '../../title';
+import PageTitle from 'shared_components/page_title';
 import Tracker from '../../../tracker';
 import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 import ButtonLink from './link';
+import {moduleTitle} from '../../settings';
 
 
 class SearchStep extends React.Component {
@@ -52,7 +53,7 @@ class SearchStep extends React.Component {
 
 		return (
 			<div>
-				<PageTitle />
+				<PageTitle pageTitle={moduleTitle} />
 				<Tracker active={0} />
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
