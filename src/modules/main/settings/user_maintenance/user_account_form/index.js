@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col, Switch, Typography, Form, Input, Select, Button } from 'antd';
+import { Col, Switch, Typography, Form, Input, Select, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
@@ -99,7 +99,7 @@ class UserAccountForm extends React.Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { patientInfo } = this.props;
+		const { patientInfo, drawerButton } = this.props;
 		const {userTypeList } = this.state;
 
 		const UserTypeOptions = userTypeList.map(userType => (
@@ -110,143 +110,141 @@ class UserAccountForm extends React.Component {
 		 
 		return(
 			<div>
-				<Row gutter={40}>
-					<Col span={24} style={{ textAlign: "right" }}>
-						<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-						<Switch defaultChecked  />
-					</Col>
-					<div className="user-form">
-						<Form {...formItemLayout} onSubmit={this.handleSubmit}>
-							<Col span={12}>
-								{/* PERSONAL INFORMATION */}
-								<div className="personalInfo">
-									<div className="form-title">
-										<Text strong>{gLabels.personalInfoLabel}</Text>
-									</div>
-									<Form.Item label={fieldLabels.userID}>
-										{
-											getFieldDecorator('userID',{
-												initialValue: patientInfo.userID,
-											})(<Input disabled />)
-										}
-									</Form.Item>
+				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+					<section style={{ height:'50px' }}>
+						<Col span={24} style={{ textAlign: "right" }}>
+							<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
+							<Switch defaultChecked  />
+						</Col>
+					</section>
+					<section style={{ marginBottom: 50 }}>
+						<Col span={12}>
+							{/* PERSONAL INFORMATION */}
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{gLabels.personalInfoLabel}</Text>
+								</div>
+								<Form.Item label={fieldLabels.userID}>
+									{
+										getFieldDecorator('userID',{
+											initialValue: patientInfo.userID,
+										})(<Input disabled />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.firstName}>
+									{getFieldDecorator('givenName', {
+										initialValue: patientInfo.givenName,
+										rules: [{ required: true, message: errorMessages.requiredField }]
+									})(
+										<Input />
+									)}	
+								</Form.Item>
+								<Form.Item label={fieldLabels.middleName}>
+									{
+										getFieldDecorator('middleName',{
+											initialValue: patientInfo.middleName,
+											rules: [{ required: true, message: errorMessages.requiredField}]
+										})(<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.lastName}>
+									{
+										getFieldDecorator('lastName',{
+											initialValue: patientInfo.lastName,
+											rules: [{ required: true, message: errorMessages.requiredField}]
+										})(<Input />)
+									}
+								</Form.Item>
+							</div>
 
-									<Form.Item label={fieldLabels.firstName}>
-										{getFieldDecorator('givenName', {
-											initialValue: patientInfo.givenName,
-											rules: [{ required: true, message: errorMessages.requiredField }]
+							{/* ACCOUNT INFORMATION */}
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{gLabels.accountInfoLabel}</Text>
+								</div>
+
+								<Form.Item label={fieldLabels.username}>
+									{
+										getFieldDecorator('userName',{
+											initialValue: patientInfo.userName,
+											rules: [{ required: true, message: errorMessages.requiredField}],
 										})(
-											<Input />
-										)}	
-									</Form.Item>
+										<Input />)
+									}
+								</Form.Item>
 
-									<Form.Item label={fieldLabels.middleName}>
-										{
-											getFieldDecorator('middleName',{
-												initialValue: patientInfo.middleName,
-												rules: [{ required: true, message: errorMessages.requiredField}]
-											})(<Input />)
-										}
-									</Form.Item>
-									<Form.Item label={fieldLabels.lastName}>
-										{
-											getFieldDecorator('lastName',{
-												initialValue: patientInfo.lastName,
-												rules: [{ required: true, message: errorMessages.requiredField}]
-											})(<Input />)
-										}
-									</Form.Item>
+								<Form.Item label={fieldLabels.password}>
+									{
+										getFieldDecorator('password',{
+											initialValue: patientInfo.password,
+											rules: [
+												{ required: true, message: errorMessages.requiredField},
+												{ validator: this.validateToNextPassword}
+											]
+										})(
+										<Input.Password />)
+									}
+								</Form.Item>
+
+								<Form.Item label={fieldLabels.repeatPassword}>
+									{
+										getFieldDecorator('repeat_password',{
+											initialValue: patientInfo.password,
+											rules:[
+												{ required: true, message: errorMessages.requiredField },
+												{ validator: this.compareToFirstPassword }
+											]
+										})(
+										<Input.Password />)
+									}
+								</Form.Item>
+							</div>
+						</Col>
+						<Col span={12}>
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{ gLabels.otherInfoLabel }</Text>
 								</div>
-
-								{/* ACCOUNT INFORMATION */}
-								<div className="personalInfo">
-									<div className="form-title">
-										<Text strong>{gLabels.accountInfoLabel}</Text>
-									</div>
-
-									<Form.Item label={fieldLabels.username}>
-										{
-											getFieldDecorator('userName',{
-												initialValue: patientInfo.userName,
-												rules: [{ required: true, message: errorMessages.requiredField}],
-											})(
-											<Input />)
-										}
-									</Form.Item>
-
-									<Form.Item label={fieldLabels.password}>
-										{
-											getFieldDecorator('password',{
-												initialValue: patientInfo.password,
-												rules: [
-													{ required: true, message: errorMessages.requiredField},
-													{ validator: this.validateToNextPassword}
-												]
-											})(
-											<Input.Password />)
-										}
-									</Form.Item>
-
-									<Form.Item label={fieldLabels.repeatPassword}>
-										{
-											getFieldDecorator('repeat_password',{
-												initialValue: patientInfo.password,
-												rules:[
-													{ required: true, message: errorMessages.requiredField },
-													{ validator: this.compareToFirstPassword }
-												]
-											})(
-											<Input.Password />)
-										}
-									</Form.Item>
-								</div>
-							</Col>
-							<Col span={12}>
-								<div className="personalInfo">
-									<div className="form-title">
-										<Text strong>{ gLabels.otherInfoLabel }</Text>
-									</div>
-									<Form.Item label={fieldLabels.registrationNo}>
-										{
-											getFieldDecorator('registration_no',{
-												initialValue: patientInfo.registryNumber
-											})(
-											<Input />)
-										}
-									</Form.Item>
-									<Form.Item label={fieldLabels.registrationValidity}>
-										{
-											getFieldDecorator('registration_validity',{
-												initialValue: patientInfo.registryValidityDate
-											})(
-											<Input />)
-										}
-									</Form.Item>
-									<Form.Item label={fieldLabels.userRights}>
-										{
-											getFieldDecorator('userTypeID',{ 
-												initialValue: patientInfo.userTypeID,
-												rules: [{ required: true, message: errorMessages.requiredField}],
-											})(
-												<Select>
-													{UserTypeOptions}
-												</Select>
-											)
-										}
-									</Form.Item>
-								</div>
-							</Col>
-							<section className="drawerFooter">
-								<Button shape="round" style={{ marginRight: 8 }}>
-									{buttonLabels.cancel}
-								</Button>
-								<Button type="primary" shape="round" style={{ padding: '0px 20px' }} htmlType="submit">
-									{this.props.drawerButton}
-								</Button>
-							</section>
-						</Form>
-					</div>
-				</Row>
+								<Form.Item label={fieldLabels.registrationNo}>
+									{
+										getFieldDecorator('registration_no',{
+											initialValue: patientInfo.registryNumber
+										})(
+										<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.registrationValidity}>
+									{
+										getFieldDecorator('registration_validity',{
+											initialValue: patientInfo.registryValidityDate
+										})(
+										<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.userRights}>
+									{
+										getFieldDecorator('userTypeID',{ 
+											initialValue: patientInfo.userTypeID,
+											rules: [{ required: true, message: errorMessages.requiredField}],
+										})(
+											<Select>
+												{UserTypeOptions}
+											</Select>
+										)
+									}
+								</Form.Item>
+							</div>
+						</Col>
+					</section>
+					<section className="drawerFooter">
+						<Button shape="round" style={{ marginRight: 8 }}>
+							{buttonLabels.cancel}
+						</Button>
+						<Button type="primary" shape="round" style={{ margin: 10 }} htmlType="submit">
+							{drawerButton}
+						</Button>
+					</section>
+				</Form>
 			</div>
 		);
 	}

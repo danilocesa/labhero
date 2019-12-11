@@ -77,7 +77,7 @@ class SearchPatient extends React.Component {
 							width="50%"
 							visible={showDrawer}
 						>
-              <UpdatePatientForm patientInfo={patientInfo} />
+              <UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
 						</Drawer>
 					)
 					:

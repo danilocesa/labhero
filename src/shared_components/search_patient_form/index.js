@@ -140,7 +140,7 @@ class SearchPatientForm extends React.Component {
 					</Col>
 					<Col 
 						{...formItemLayout[1]} 
-						style={{textAlign: 'center', marginTop: 30}}
+						style={{textAlign: 'center', marginTop: 45}}
 					>
 						OR
 					</Col>
@@ -157,7 +157,7 @@ class SearchPatientForm extends React.Component {
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[3]}>
-						<Form.Item style={{ marginTop: 22 }}>
+						<Form.Item style={{ marginTop: 33 }}>
 							<Row gutter={12}>
 								<Col span={12}>
 									<Button 
