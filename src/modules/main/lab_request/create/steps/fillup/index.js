@@ -88,8 +88,6 @@ class FillupStep extends React.Component {
 
 			this.setState({ isLoading: false });
 
-			console.log(personalInfo);
-
 			sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 			sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));

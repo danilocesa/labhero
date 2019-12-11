@@ -12,8 +12,8 @@ const { Option } = Select;
 class TownListComponent extends React.Component { 	
 	state = {
 		townList: [],
-		loading: true
-	};	
+		loading: true,
+	};
 
 	componentDidUpdate(prevProps){
 		if(prevProps.cityValue !== this.props.cityValue){
@@ -30,36 +30,38 @@ class TownListComponent extends React.Component {
 	}
 
 	render(){
-		const { form, selectDefaultOptions } = this.props;
+		const { form, selectDefaultOptions, selectedTown } = this.props;
 		const { getFieldDecorator } = form;
 		const { townList, loading } = this.state;
 
 		const townSelections = (
 			townList.length > 0 && !loading ? (
-				<Select
-					loading={loading}
-					placeholder={selectDefaultOptions}
-					allowClear
-				>
-					{townList.map((item) => (
-						<Option value={item.townCode} key={item.townCode}>
-							{item.townName}
-						</Option>
-					))}
-				</Select>
-			) : (	
-				<Select placeholder={selectDefaultOptions} disabled />
-			)	
-		)
+				getFieldDecorator('town', { 
+					rules: FIELD_RULES,
+					initialValue: selectedTown
+				})(
+					<Select
+						loading={loading}
+						placeholder={selectDefaultOptions}
+						allowClear
+					>
+						{
+							townList.map((item) => (
+							<Option value={item.townCode} key={item.townCode}>
+								{item.townName}
+							</Option>
+							))
+						}
+					</Select>
+				)
+
+			) : (<Select placeholder={selectDefaultOptions} disabled />)
+		);	
 
 		return (
 			<Form.Item label={LABEL_TITLE} className="gutter-box">
 				<div className="treeselect-address">
-					{getFieldDecorator('town', { 
-						rules: FIELD_RULES
-					})(	
-						townSelections
-					)}
+					{ townSelections }
 				</div>
 			</Form.Item>
 		);
@@ -69,7 +71,8 @@ class TownListComponent extends React.Component {
 TownListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	selectDefaultOptions: PropTypes.string.isRequired,
-	cityValue: PropTypes.string.isRequired
+	cityValue: PropTypes.string.isRequired,
+	selectedTown: PropTypes.string.isRequired
 };
 
 
