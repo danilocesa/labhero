@@ -14,7 +14,7 @@ import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
 import updatePatientAPI from 'services/shared/patient';
-import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions, fieldRules} from '../settings';
+import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions, fieldRules, errorMessages} from '../settings';
 
 
 // CSS
@@ -27,6 +27,7 @@ const RadioButton = Radio.Button;
 const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
+
 	searchAddress = (input,treenode) => {
 		const searchText = treenode.props.title.search(input.toUpperCase())
 		if(searchText < 0){
@@ -80,9 +81,18 @@ class EditProfile extends React.Component {
 		}
 	}
 
+	houseUnitfieldRules = (provinceCode) => {
+		if(provinceCode){
+			return [{ required: true, message: errorMessages.requiredField }];
+		}
+		return [{ required: false, message: errorMessages.requiredField }];
+	}
+
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
+		console.log(this.props.patientInfo);
+		console.log("TCL: EditProfile -> render -> getFieldsValue", getFieldsValue())
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -191,7 +201,7 @@ class EditProfile extends React.Component {
 							<CityList 
 								form={this.props.form}
 								selectDefaultOptions={selectDefaultOptions} 
-								provinceValue={getFieldsValue().provinces}
+								provinceValue={getFieldsValue().provinces || this.props.patientInfo.provinceCode}
 								selectedcity={this.props.patientInfo.cityMunicipalityCode}
 							/>
 						</Col>
@@ -200,14 +210,15 @@ class EditProfile extends React.Component {
 							<TownList 
 								form={this.props.form}
 								selectDefaultOptions={selectDefaultOptions} 
-								cityValue={getFieldsValue().city}
+								cityValue={getFieldsValue().city || this.props.patientInfo.cityMunicipalityCode}
+								selectedTown={this.props.patientInfo.townCode}
 							/>
 						</Col>
 						{/** Unit No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.unitNo}>
 							{getFieldDecorator('unitNo', {
-								rules: fieldRules.unitNo ,
+								rules: this.houseUnitfieldRules(getFieldsValue().provinces) ,
 								initialValue: this.props.patientInfo.address
 							})(
 								<Input />
