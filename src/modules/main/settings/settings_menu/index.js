@@ -13,23 +13,23 @@ const settingsItemData = [
 	{
 		image: LabExamRequestIcon,
 		link: '/settings/exam-items',
-		label: 'Exam Items',
+		label: 'EXAM ITEMS',
 		offset: 4
 	},
 	{
 		image: LabExamRequestIcon,
 		link: '/settings/exam-request',
-		label: 'Exam Request'
+		label: 'EXAM REQUEST'
 	},
 	{
 		image: LabExamRequestIcon,
-		link: '../settings/panel-exam',
-		label: 'Panel Exam'
+		link: '/settings/panel-exam',
+		label: 'PANEL EXAM'
 	},
 	{
 		image: UserMaintenanceIcon,
 		link: '/settings/user-maintenance',
-		label: 'User Maintenance'
+		label: 'USER MAINTENANCE'
 	}
 ]
 

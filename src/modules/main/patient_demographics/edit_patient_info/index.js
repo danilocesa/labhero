@@ -9,13 +9,12 @@ import { withRouter } from 'react-router-dom';
 import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd';
 
 // CUSTOM MODULES
-import Message from 'shared_components/message';
-import updatePatientAPI from 'services/search_patient/updatePatient';
+import HttpCodeMessage from 'shared_components/message_http_status';
 import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
-import FIELD_RULES from './constant';
-import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions} from '../settings';
+import updatePatientAPI from 'services/shared/patient';
+import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions, fieldRules} from '../settings';
 
 
 // CSS
@@ -38,7 +37,7 @@ class EditProfile extends React.Component {
 
 	onChangePatientInfo = (event) => {
 		this.setState({[event.target.name]: event.target.value})
-	}
+	} 
 	
 	onSubmit = (e) => {
 		e.preventDefault();
@@ -52,12 +51,10 @@ class EditProfile extends React.Component {
 					this.submitUpdatePatient(fields);
 				}
 				catch(error){
-					Message.error();
+					HttpCodeMessage({status: 500});
 				}
 			}
 		});
-
-	
 	}
 
 	submitUpdatePatient = async (fields) => {
@@ -79,14 +76,13 @@ class EditProfile extends React.Component {
 			message.success(successMessages.update);
 			window.location.reload();
 		} else {
-			Message.error();
+			HttpCodeMessage({status:500});
 		}
 	}
 
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
-    console.log("TCL: EditProfile -> render -> getFieldsValue", getFieldsValue())
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -96,7 +92,7 @@ class EditProfile extends React.Component {
 							<Form.Item label={formLabels.lastName}>
 							{getFieldDecorator('lastname', {
 								initialValue: this.props.patientInfo.lastName,
-								rules: FIELD_RULES.lastname ,
+								rules: fieldRules.lastname ,
 							})(
 								<Input />
 							)}
@@ -107,7 +103,7 @@ class EditProfile extends React.Component {
 							<Form.Item label={formLabels.firstName}>
 								{getFieldDecorator('firstname', {
 									initialValue: this.props.patientInfo.givenName,
-									rules: FIELD_RULES.firstname,
+									rules: fieldRules.firstname,
 								})(
 									<Input onChange={this.onChangePatientInfo} />
 								)}
@@ -118,7 +114,7 @@ class EditProfile extends React.Component {
 							<Form.Item label={formLabels.middleName}>
 								{getFieldDecorator('middlename', {
 									initialValue: this.props.patientInfo.middleName,
-									rules: FIELD_RULES.middlename,
+									rules: fieldRules.middlename,
 								})(
 									<Input onChange={this.onChangePatientInfo} />
 								)}
@@ -129,7 +125,7 @@ class EditProfile extends React.Component {
 							<Form.Item label={formLabels.suffix}>
 								{getFieldDecorator('suffix', {
 									initialValue: this.props.patientInfo.suffix,
-									rules: FIELD_RULES.suffix,
+									rules: fieldRules.suffix,
 								})(
 									<Input onChange={this.onChangePatientInfo} />
 								)}
@@ -140,7 +136,7 @@ class EditProfile extends React.Component {
 							<Form.Item label={formLabels.gender} className="gutter-box">
 								{getFieldDecorator('gender', {
 									initialValue: this.props.patientInfo.sex,
-									rules: FIELD_RULES.gender,
+									rules: fieldRules.gender,
 								})(
 									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
 										<RadioButton 
@@ -169,7 +165,7 @@ class EditProfile extends React.Component {
 										<div className="customDatePickerWidth">
 											{getFieldDecorator('dateOfBirth', { 
 												initialValue: this.props.patientInfo.dateOfBirth ? moment(this.props.patientInfo.dateOfBirth, 'MM-DD-YYYY') : null,
-												rules: FIELD_RULES.dateOfBirth
+												rules: fieldRules.dateOfBirth
 											})(
 												<DatePicker 
 													format={dateFormat}
@@ -211,7 +207,7 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.unitNo}>
 							{getFieldDecorator('unitNo', {
-								rules: FIELD_RULES.unitNo ,
+								rules: fieldRules.unitNo ,
 								initialValue: this.props.patientInfo.address
 							})(
 								<Input />
@@ -221,7 +217,7 @@ class EditProfile extends React.Component {
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.contactNumber}>
-								{getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
+								{getFieldDecorator('contactNumber', { rules: fieldRules.contactNumber })(
 									<Input addonBefore="+ 63" maxLength={10} />
 								)}
 							</Form.Item>
@@ -230,32 +226,21 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.emailAddress}>
 							{getFieldDecorator('emailAddress', {
-								rules: FIELD_RULES.emailAddress ,
+								rules: fieldRules.emailAddress ,
 							})(
 								<Input />
 							)}
 							</Form.Item>
 						</Col>	
 					</Row>
-					<div
-					style={{
-						position: 'absolute',
-						left: 0,
-						bottom: 0,
-						width: '100%',
-						borderTop: '1px solid #e9e9e9',
-						padding: '10px 16px',
-						background: '#fff',
-						textAlign: 'right',
-					}}
-						>
-						<Button style={{ marginRight: 8 }}>
+					<section className="drawerFooter">
+						<Button shape="round" style={{ marginRight: 10 }} onClick={this.props.onCancel}>
 							{drawerCancelButton}
 						</Button>
-						<Button type="primary" htmlType="submit">
+						<Button shape="round" type="primary" htmlType="submit" style={{ margin: 10 }}>
 							{drawerSubmitButton}
 						</Button>
-					</div>
+					</section>
 				</Form>
 			
 			</div>
@@ -266,13 +251,15 @@ class EditProfile extends React.Component {
 EditProfile.propTypes = {
 	patientInfo: PropTypes.object,
 	form: PropTypes.object,
-	provinceCode: PropTypes.string
+	provinceCode: PropTypes.string,
+	onCancel: PropTypes.func
 };
 
 EditProfile.defaultProps = {
 	patientInfo() { return null; },
 	form() { return null; },
-	provinceCode: null
+	provinceCode: null,
+	onCancel() { return null }
 }
 
 const UpdatePatientForm = Form.create()(withRouter(EditProfile));

@@ -56,7 +56,9 @@ class SearchForm extends React.Component {
 
 	
 	onClickClear = () => {
-		
+		const { resetFields } = this.props.form;
+
+		resetFields();
 	}
 
 	render() {

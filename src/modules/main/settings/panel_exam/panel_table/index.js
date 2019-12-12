@@ -11,12 +11,14 @@ import {
 	Button as AntButton} from 'antd';
 
 // CUSTOM MODULES
-import panelListAPI from 'services/settings/panel/panelExamRequesting/getSettings';
 import HttpCodeMessage from 'shared_components/message_http_status';
+import { panelListAPI } from 'services/settings/panel/panelExamRequesting';
 import PanelForm from '../panel_form';
 
+import {drawerUpdateTitle, drawerAddTitle, tablePageSize, buttonLabels} from '../settings'
+
 // CSS
-import './paneltable.css'
+import './paneltable.css';
 
 // CONSTANTS
 const { Text } = AntTypography;
@@ -79,7 +81,7 @@ class PanelTable extends React.Component {
 			panelInfo: [],
 			panelListState: [],
 			pagination: {
-				pageSize: 5,
+				pageSize: tablePageSize,
 			}
 		}
 	}
@@ -110,8 +112,8 @@ class PanelTable extends React.Component {
 	displayDrawerUpdate = (record) => {
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: 'UPDATE PANEL',
-			drawerButton: 'UPDATE',
+			drawerTitle: drawerUpdateTitle,
+			drawerButton: buttonLabels.update,
 			panelInfo: record
 		});
 	}
@@ -126,8 +128,8 @@ class PanelTable extends React.Component {
 		this.setState({ loading:true });
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: 'ADD PANEL',
-			drawerButton: 'ADD',
+			drawerTitle: drawerAddTitle,
+			drawerButton: buttonLabels.create,
 			panelInfo: {},
 			loading:false
 		})
@@ -151,10 +153,10 @@ class PanelTable extends React.Component {
 						onClick={this.showDrawer}
 					>
 						<AntIcon type="plus" />
-						ADD PANEL
+						{drawerAddTitle}
 					</AntButton>
 					<Text>Display per page</Text>
-					<AntSelect defaultValue="5" style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
+					<AntSelect defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
 						<Option value="5">5</Option>
 						<Option value="10">10</Option>
 						<Option value="15">15</Option>

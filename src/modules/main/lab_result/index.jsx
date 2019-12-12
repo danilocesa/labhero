@@ -1,14 +1,16 @@
 // LIBRARY
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Tabs } from 'antd';
 import fetchSection from 'services/shared/section';
 
 import SearchForm from './search_form';
 import SearchResultComponent from './search_result';
 
+
 const { TabPane } = Tabs;
 
-class SearchLabTestResult extends React.Component {
+class LabResult extends React.Component {
 	
 	state = {
 		sections: [],
@@ -40,16 +42,21 @@ class SearchLabTestResult extends React.Component {
 			});
 		});
 
-		console.log(searchResults);
-
 		this.setState({ labResults, searchResults });
 	}
 
+	
+
 	render() {
 		const { sections, labResults, searchResults } = this.state;
+		const { onClickTableRow } = this.props;
+		
 		const TabPanes = sections.map(section => (
 			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionID}>
-				<SearchResultComponent labResults={searchResults[section.sectionCode] || []} />
+				<SearchResultComponent 
+					labResults={searchResults[section.sectionCode] || []} 
+					onClickTableRow={onClickTableRow}
+				/>
 			</TabPane>
 		));
 		
@@ -59,7 +66,10 @@ class SearchLabTestResult extends React.Component {
 			    <SearchForm updateLabResults={this.updateLabResults} />
 					<Tabs defaultActiveKey="1">
 						<TabPane tab={<span>ALL</span>} key="all">
-			    		<SearchResultComponent labResults={labResults} />
+							<SearchResultComponent 
+								labResults={labResults} 
+								onClickTableRow={onClickTableRow}
+							/>
 						</TabPane>
 						{ TabPanes }
 					</Tabs>
@@ -69,4 +79,8 @@ class SearchLabTestResult extends React.Component {
   }
 }
 
-export default SearchLabTestResult;
+LabResult.propTypes = {
+	onClickTableRow: PropTypes.func.isRequired
+}
+
+export default LabResult;

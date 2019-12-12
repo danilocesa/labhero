@@ -192,13 +192,13 @@ class UserTable extends React.Component {
 				{/* DRAWER */}
 				<Drawer
 					title={drawerTitle}
-					width={1100}
+					width="60%"
 					visible={visible}
 					onClose={this.onClose}
 				>
 					<UserAccountForm
-							drawerButton={drawerButton} 
-							patientInfo={patientInfo}
+						drawerButton={drawerButton} 
+						patientInfo={patientInfo}
 					/>
 				</Drawer>
 			</div>
