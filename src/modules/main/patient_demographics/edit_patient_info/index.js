@@ -14,6 +14,7 @@ import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
 import updatePatientAPI from 'services/shared/patient';
+import HouseAddress from 'shared_components/address';
 import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions, fieldRules, errorMessages} from '../settings';
 
 
@@ -216,14 +217,12 @@ class EditProfile extends React.Component {
 						</Col>
 						{/** Unit No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.unitNo}>
-							{getFieldDecorator('unitNo', {
-								rules: this.houseUnitfieldRules(getFieldsValue().provinces) ,
-								initialValue: this.props.patientInfo.address
-							})(
-								<Input />
-							)}
-							</Form.Item>
+							<HouseAddress 
+								form={this.props.form}
+								townValue={getFieldsValue().town || this.props.patientInfo.townCode}
+								fieldLabel={formLabels.unitNo}
+								selectedValue={this.props.patientInfo.address}
+							/>
 						</Col>
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>

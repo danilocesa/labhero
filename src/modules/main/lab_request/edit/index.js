@@ -2,12 +2,7 @@
 import React from 'react';
 
 // CUSTOM
-import StepPage from './steps';
-
-// CSS
-import './create.css';
-
-
+import StepPage from '../create/steps';
 
 class CreateRequestPage extends React.Component {
 	render() {
