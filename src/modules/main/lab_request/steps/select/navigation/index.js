@@ -9,7 +9,7 @@ import {
 	CLR_SEL_EXAMS,
 	CLR_SEL_CONTENTS,
 	CLR_SEL_PANEL_CONTENTS
-} from 'modules/main/lab_request/create/steps/constants';
+} from '../../constants';
 
 const { Text } = Typography;
 

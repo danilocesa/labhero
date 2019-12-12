@@ -14,7 +14,7 @@ class SearchForm extends React.Component {
 	}
 	
 	render() {
-		const { populatePatients, displayLoading } = this.props;
+		const { populatePatients, displayLoading, moduleProfile } = this.props;
 		const sessionPatientId = sessionStorage.getItem(CLR_SEARCHED_ID);
 		const sessionPatientName = sessionStorage.getItem(CLR_SEARCHED_NAME);
 
@@ -25,6 +25,7 @@ class SearchForm extends React.Component {
 				displayLoading={displayLoading}
 				sessionPatientId={sessionPatientId}
 				sessionPatientName={sessionPatientName}
+				moduleProfile={moduleProfile}
 			/>
 		);
 	}
@@ -33,7 +34,8 @@ class SearchForm extends React.Component {
 SearchForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func.isRequired,
-	updateSearchedValue: PropTypes.func.isRequired
+	updateSearchedValue: PropTypes.func.isRequired,
+	moduleProfile: PropTypes.string.isRequired
 };
 
 

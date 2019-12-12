@@ -12,8 +12,8 @@ const { Option } = Select;
 class TownListComponent extends React.Component { 	
 	state = {
 		townList: [],
-		loading: true
-	};	
+		loading: true,
+	};
 
 	componentDidMount(){
 		if(this.props.cityValue){

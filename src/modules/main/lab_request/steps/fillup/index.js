@@ -1,5 +1,6 @@
 // @ts-nocheck
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { pick } from 'lodash';
@@ -7,9 +8,9 @@ import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';
-import Tracker from '../../../tracker';
+import Tracker from '../../tracker';
 import FillupForm from './form';
-import {moduleTitle} from '../../settings';
+import {moduleTitle} from '../../create/settings';
 
 
 import { 
@@ -90,8 +91,6 @@ class FillupStep extends React.Component {
 
 			this.setState({ isLoading: false });
 
-			console.log(personalInfo);
-
 			sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 			sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
@@ -106,6 +105,11 @@ class FillupStep extends React.Component {
 		history.push('/request/create/step/3');
 	}
 
+	dynamicModuleTitle = () =>{
+		const pageTitle = (this.props.requestType === 1 ? "CREATE REQUEST" : "EDIT REQUEST")
+		return pageTitle || moduleTitle;
+	}
+
 	render() {
 		const { restriction } = this;
 		const { isLoading } = this.state;
@@ -113,7 +117,7 @@ class FillupStep extends React.Component {
 		if(restriction.hasAccess) {
 			return (
 				<div>
-					<PageTitle pageTitle={moduleTitle} />
+					<PageTitle pageTitle={this.dynamicModuleTitle()} />
 					<Tracker active={1} />
 					<FillupForm 
 						handleSubmit={this.handleSubmit} 
@@ -128,7 +132,8 @@ class FillupStep extends React.Component {
 }
 
 FillupStep.propTypes = {
-	history: ReactRouterPropTypes.history.isRequired
+	history: ReactRouterPropTypes.history.isRequired,
+	requestType: PropTypes.string.isRequired
 };
 
 export default withRouter(FillupStep);

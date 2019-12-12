@@ -3,14 +3,14 @@ import { Row, Col, Spin } from 'antd';
 
 import PageTitle from 'shared_components/page_title';
 import Restriction from '../clr_restriction/restriction';
-import Tracker from '../../../tracker';
+import Tracker from '../../tracker';
 import SectionHeader from './section_header';
 import SectionContent from './section_content';
 import SelectTable from './table';
 import Navigation from './navigation';
 
 import { CLR_SEL_EXAMS, CLR_SEL_CONTENTS, CLR_SEL_PANEL_CONTENTS } from '../constants';
-import {moduleTitle} from '../../settings';
+import {moduleTitle} from '../../create/settings';
 
 const ColLayout = {
 	sm: { span: 24 },

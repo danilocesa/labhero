@@ -2,7 +2,9 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Row, Col } from 'antd';
+import moment from 'moment';
+import { Form, Input, Button, Row, Col, DatePicker } from 'antd';
+
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -11,38 +13,12 @@ import {
 	apiUrlPatientByID, 
 	apiUrlPatientByName, 
 } from 'shared_components/constant-global';
+import {buttonNames, fieldLabels} from './settings';
 
 // CSS
 import './search_patient_form.css';
 
-
-// CONSTANTS
-const formItemLayout = [
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 6,  offset: 3 },
-		lg: { span: 4,  offset: 3 },
-	},
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 1 },
-		lg: { span: 1 }
-	},  
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },      
-		md: { span: 6 },
-		lg: { span: 8 },
-	},
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 6 },
-		lg: { span: 5 }, 
-	},
-];
+const dateFormat = 'MM/DD/YYYY';
 
 class SearchPatientForm extends React.Component {
 	state = {
@@ -127,8 +103,9 @@ class SearchPatientForm extends React.Component {
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
 				<Row gutter={12}>
-					<Col {...formItemLayout[0]}>
-						<Form.Item label="PATIENT ID">
+					{/* Patient id field */}
+					<Col xs={24} sm={24} md={6} lg={4} offset={3}>
+						<Form.Item label={fieldLabels.patientID}>
 							<Input 
 								// allowClear
 								name="patientID" 
@@ -138,14 +115,13 @@ class SearchPatientForm extends React.Component {
 							/> 
 						</Form.Item>
 					</Col>
-					<Col 
-						{...formItemLayout[1]} 
-						style={{textAlign: 'center', marginTop: 45}}
-					>
+					{/* Or */}
+					<Col xs={24} sm={24} md={1} lg={1} style={{textAlign: 'center', marginTop: 45}}>
 						OR
 					</Col>
-					<Col {...formItemLayout[2]}>
-						<Form.Item label="PATIENT NAME">
+					{/* Patient Name */}
+					<Col xs={24} sm={24} md={6} lg={4}>
+						<Form.Item label={fieldLabels.patientName}>
 							<Input 
 								// allowClear
 								name="patientName" 
@@ -156,7 +132,18 @@ class SearchPatientForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[3]}>
+					{/* Request date */}
+					<Col xs={24} sm={24} md={6} lg={4}>
+					{ (this.props.moduleProfile === "editRequest") ? 
+						(
+							<Form.Item label={fieldLabels.requestDate}>
+								<DatePicker defaultValue={moment()} format={dateFormat}	 />
+							</Form.Item>
+						) : null 
+					}
+					</Col>
+					{/* Buttons */}
+					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item style={{ marginTop: 33 }}>
 							<Row gutter={12}>
 								<Col span={12}>
@@ -165,7 +152,7 @@ class SearchPatientForm extends React.Component {
 										shape="round" 
 										onClick={this.clearInputs} 
 									>
-										CLEAR
+										{buttonNames.clear}
 									</Button>
 								</Col>
 								<Col span={12}>
@@ -177,7 +164,7 @@ class SearchPatientForm extends React.Component {
 										disabled={disabled}
 										loading={loading}
 									>
-										SEARCH
+										{buttonNames.search}
 									</Button>
 								</Col>
 							</Row>
@@ -192,18 +179,11 @@ class SearchPatientForm extends React.Component {
 SearchPatientForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
 	storeSearchedVal: PropTypes.func,
-	displayLoading: PropTypes.func,
-	sessionPatientName: PropTypes.string, 
-	sessionPatientID: PropTypes.string,
-	apiProfile: PropTypes.string
+	moduleProfile: PropTypes.string.isRequired
 };
 
 SearchPatientForm.defaultProps = {
-	storeSearchedVal() { return null; },
-	displayLoading() { return null; },
-	sessionPatientName: '',
-	sessionPatientID: '',
-	apiProfile: ''
+	storeSearchedVal() { return null; }
 }
 
 export default SearchPatientForm;
