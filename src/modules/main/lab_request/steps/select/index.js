@@ -1,15 +1,16 @@
 import React from 'react';
 import { Row, Col, Spin } from 'antd';
 
+import PageTitle from 'shared_components/page_title';
 import Restriction from '../clr_restriction/restriction';
-import PageTitle from '../../title';
-import Tracker from '../../../tracker';
+import Tracker from '../../tracker';
 import SectionHeader from './section_header';
 import SectionContent from './section_content';
 import SelectTable from './table';
 import Navigation from './navigation';
 
 import { CLR_SEL_EXAMS, CLR_SEL_CONTENTS, CLR_SEL_PANEL_CONTENTS } from '../constants';
+import {moduleTitle} from '../../create/settings';
 
 const ColLayout = {
 	sm: { span: 24 },
@@ -391,7 +392,7 @@ class SelectStep extends React.Component {
 		if(restriction.hasAccess) {
 			return (
 				<div>
-					<PageTitle />
+					<PageTitle pageTitle={moduleTitle} />
 					<Tracker active={2} />
 					{ isLoading && <Loading /> }
 					<div style={{ display: isLoading ? 'none' : 'block' }}>

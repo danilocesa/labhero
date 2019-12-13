@@ -75,14 +75,24 @@ class Sider extends React.Component {
 							<Menu.Item key="2">
 								<Link to="/request/create/step/1">
 									<Icon component={AddIcon} />
-									<span>REQUEST</span>
+									<span>CREATE REQUEST</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
+					{
+						process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1' && (
+							<Menu.Item key="3">
+								<Link to="/request/edit/step/1">
+									<Icon component={AddIcon} />
+									<span>EDIT REQUEST</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
-							<Menu.Item key="3">
+							<Menu.Item key="4">
 								<Link to="/phlebo/result">
 									<Icon component={PleboIcon} />
 									<span>PHLEBO</span>
@@ -92,17 +102,17 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
-							<Menu.Item key="4">
+							<Menu.Item key="5">
 								<Link to="/lab/result/edit">
 									<Icon component={SearchIcon} />
-									<span>SEARCH LAB RESULT</span>
+									<span>EDIT LAB RESULT</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
-							<Menu.Item key="5">
+							<Menu.Item key="6">
 								<Link to="/lab/result/print">
 									<Icon component={PrintIcon} />
 									<span>PRINT LAB RESULT</span>
@@ -112,17 +122,17 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
-							<Menu.Item key="6">
+							<Menu.Item key="7">
 								<Link to="/patient/search">
 									<Icon component={SearchPatientIcon} />
-									<span>PATIENT DEMOGRAPHICS</span>
+									<span>EDIT PATIENT DEMOGRAPHICS</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-							<Menu.Item key="7">
+							<Menu.Item key="8">
 								<Link to="/settings">
 									<Icon component={SettingsIcon} />
 									<span>SETTINGS</span>
@@ -132,7 +142,7 @@ class Sider extends React.Component {
 					}
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
-							<Menu.Item key="8">
+							<Menu.Item key="9">
 								<Link to="/inventory">
 									<Icon component={InventoryIcon} />
 									<span>INVENTORY</span>

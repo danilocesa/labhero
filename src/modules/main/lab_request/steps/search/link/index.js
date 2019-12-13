@@ -10,7 +10,7 @@ import {
 	CLR_STEP_PROGRESS,
 	CLR_SEARCHED_ID,
 	CLR_SEARCHED_NAME	
-} from 'modules/main/lab_request/create/steps/constants'; 
+} from '../../constants'; 
 
 class ButtonLink extends React.Component {
 	onClick = () => {
@@ -20,7 +20,7 @@ class ButtonLink extends React.Component {
 		sessionStorage.removeItem(CLR_SEARCHED_ID);
 		sessionStorage.removeItem(CLR_SEARCHED_NAME);
 		
-		history.push('/request/create/step/2');
+		history.push('/request/step/2');
 	}
 
 	render() {

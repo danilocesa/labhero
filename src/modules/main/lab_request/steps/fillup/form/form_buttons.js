@@ -12,7 +12,7 @@ class FormButtons extends React.Component {
 		return (
 			<Row style={{ marginTop: 10 }}>
 				<Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
-					<Link to="/request/create/step/1">
+					<Link to="/request/step/1">
 						<Text><u>BACK</u></Text>
 					</Link>
 					<Button

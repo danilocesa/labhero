@@ -6,12 +6,11 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
-
 import { 
 	CLR_STEP_PROGRESS, 
 	CLR_SEARCHED_ID,
 	CLR_SEARCHED_NAME 
-} from 'modules/main/lab_request/create/steps/constants'; 
+} from 'modules/main/lab_request/steps/constants'; 
 import {globalTableSize} from '../constant-global';
 
 // CSS
