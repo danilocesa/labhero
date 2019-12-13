@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
@@ -12,6 +11,7 @@ import { ReactComponent as PleboIcon } from 'icons/syringe.svg';
 import { ReactComponent as InventoryIcon} from 'icons/inventory.svg';
 import { ReactComponent as SearchPatientIcon } from 'icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
+import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
 
 import { SELECTED_SIDER_KEY } from '../../constant-global';
 
@@ -104,7 +104,7 @@ class Sider extends React.Component {
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
 							<Menu.Item key="5">
 								<Link to="/lab/result/print">
-									<Icon component={SearchIcon} />
+									<Icon component={PrintIcon} />
 									<span>PRINT LAB RESULT</span>
 								</Link>
 							</Menu.Item>
@@ -147,15 +147,11 @@ class Sider extends React.Component {
 }
 
 Sider.propTypes = {
-<<<<<<< HEAD
-	collapsed: PropTypes.bool.isRequired
-=======
 	collapsed: PropTypes.bool
 };
 
 Sider.defaultProps = {
 	collapsed: null
->>>>>>> f9fef536526b735cf8ab1c47782ac3d1dcd9db4f
 }
 
 export default Sider;

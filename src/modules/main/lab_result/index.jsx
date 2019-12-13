@@ -49,7 +49,7 @@ class LabResult extends React.Component {
 
 	render() {
 		const { sections, labResults, searchResults } = this.state;
-		const { onClickTableRow } = this.props;
+		const { onClickTableRow, pageTitle } = this.props;
 		
 		const TabPanes = sections.map(section => (
 			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionID}>
@@ -63,7 +63,10 @@ class LabResult extends React.Component {
     return (
 	    <Row type="flex" align="middle" justify="center">
 		    <Col xs={24}>
-			    <SearchForm updateLabResults={this.updateLabResults} />
+					<SearchForm 
+						pageTitle={pageTitle}
+						updateLabResults={this.updateLabResults} 
+					/>
 					<Tabs defaultActiveKey="1">
 						<TabPane tab={<span>ALL</span>} key="all">
 							<SearchResultComponent 
@@ -80,6 +83,7 @@ class LabResult extends React.Component {
 }
 
 LabResult.propTypes = {
+	pageTitle: PropTypes.string.isRequired,
 	onClickTableRow: PropTypes.func.isRequired
 }
 
