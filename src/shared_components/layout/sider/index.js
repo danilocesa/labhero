@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
@@ -147,15 +146,11 @@ class Sider extends React.Component {
 }
 
 Sider.propTypes = {
-<<<<<<< HEAD
-	collapsed: PropTypes.bool.isRequired
-=======
 	collapsed: PropTypes.bool
 };
 
 Sider.defaultProps = {
 	collapsed: null
->>>>>>> f9fef536526b735cf8ab1c47782ac3d1dcd9db4f
 }
 
 export default Sider;
