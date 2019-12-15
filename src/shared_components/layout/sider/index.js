@@ -11,6 +11,8 @@ import { ReactComponent as PleboIcon } from 'icons/syringe.svg';
 import { ReactComponent as InventoryIcon} from 'icons/inventory.svg';
 import { ReactComponent as SearchPatientIcon } from 'icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
+import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
+import { ReactComponent as EditIcon } from 'icons/edit.svg';
 
 import { SELECTED_SIDER_KEY } from '../../constant-global';
 
@@ -22,23 +24,15 @@ const { Sider: AntSider } = Layout;
 class Sider extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      SELECTED_SIDER_KEY: '',
-    }
+    this.state = { selectedKey: '' };
   }
 
-	// UNSAFE_componentWillMount()
-  componentDidMount() {
-    this.handleMenuClick = (event) => {
-      this.setState({
-        SELECTED_SIDER_KEY: event.key,
-        
-      }, function keys(){
-				sessionStorage.setItem(SELECTED_SIDER_KEY, this.state.SELECTED_SIDER_KEY);
-				sessionStorage.getItem(SELECTED_SIDER_KEY);
-      });
-    }
-  }
+	handleMenuClick = (event) => {
+		this.setState({ selectedKey: event.key }, () => {
+			const { selectedKey } = this.state;
+			sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
+		});
+	}
 
   render() {
 		const { collapsed } = this.props;
@@ -53,9 +47,7 @@ class Sider extends React.Component {
         <Menu
 					className="side-menu" 
 					mode="inline" 
-					defaultSelectedKeys={[
-						(sessionStorage.getItem(SELECTED_SIDER_KEY) ? sessionStorage.getItem(SELECTED_SIDER_KEY) : '1' )
-					]}
+					defaultSelectedKeys={[sessionStorage.getItem(SELECTED_SIDER_KEY) || '1']}
 					onClick={this.handleMenuClick}
         >
 					{
@@ -74,14 +66,24 @@ class Sider extends React.Component {
 							<Menu.Item key="2">
 								<Link to="/request/create/step/1">
 									<Icon component={AddIcon} />
-									<span>REQUEST</span>
+									<span>CREATE REQUEST</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
+					{
+						process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1' && (
+							<Menu.Item key="3">
+								<Link to="/request/edit/step/1">
+									<Icon component={EditIcon} />
+									<span>EDIT REQUEST</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
-							<Menu.Item key="3">
+							<Menu.Item key="4">
 								<Link to="/phlebo/result">
 									<Icon component={PleboIcon} />
 									<span>PHLEBO</span>
@@ -91,19 +93,19 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
-							<Menu.Item key="4">
+							<Menu.Item key="5">
 								<Link to="/lab/result/edit">
 									<Icon component={SearchIcon} />
-									<span>SEARCH LAB RESULT</span>
+									<span>EDIT LAB RESULT</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
-							<Menu.Item key="5">
+							<Menu.Item key="6">
 								<Link to="/lab/result/print">
-									<Icon component={SearchIcon} />
+									<Icon component={PrintIcon} />
 									<span>PRINT LAB RESULT</span>
 								</Link>
 							</Menu.Item>
@@ -111,17 +113,17 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
-							<Menu.Item key="6">
+							<Menu.Item key="7">
 								<Link to="/patient/search">
 									<Icon component={SearchPatientIcon} />
-									<span>PATIENT DEMOGRAPHICS</span>
+									<span>EDIT PATIENT DEMOGRAPHICS</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-							<Menu.Item key="7">
+							<Menu.Item key="8">
 								<Link to="/settings">
 									<Icon component={SettingsIcon} />
 									<span>SETTINGS</span>
@@ -131,7 +133,7 @@ class Sider extends React.Component {
 					}
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
-							<Menu.Item key="8">
+							<Menu.Item key="9">
 								<Link to="/inventory">
 									<Icon component={InventoryIcon} />
 									<span>INVENTORY</span>

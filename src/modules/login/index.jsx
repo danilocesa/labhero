@@ -63,18 +63,21 @@ class Login extends React.Component {
 								this.props.history.push("/request/create/step/1");
 								break;
 							case '3':
-								this.props.history.push("/phlebo/result");
+								this.props.history.push("/request/edit/step/1");
 								break;
 							case '4':
-								this.props.history.push("/lab/result/edit");
+								this.props.history.push("/phlebo/result");
 								break;
 							case '5':
+								this.props.history.push("/lab/result/edit");
+								break;
+							case '6':
 									this.props.history.push("/lab/result/print");
 									break;
-							case '6':
+							case '7':
 								this.props.history.push("/patient/search");
 								break;
-							case '7':
+							case '8':
 								this.props.history.push("/settings");
 								break;
 							default : 

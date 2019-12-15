@@ -2,21 +2,16 @@
 import React from 'react';
 
 // CUSTOM
-import StepPage from './steps';
+import StepPage from '../steps';
 
-// CSS
-import './create.css';
-
-
-
-class CreateRequestPage extends React.Component {
+class EditRequestPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<StepPage />
+				<StepPage requestType={2} moduleProfile="editRequest" />
 			</div>
 		);
 	}
 }
 
-export default CreateRequestPage;
+export default EditRequestPage;

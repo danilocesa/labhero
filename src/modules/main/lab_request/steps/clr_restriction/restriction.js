@@ -14,7 +14,7 @@ class Restriction {
   }
 
   redirect = () => (
-    <Redirect to={`/request/create/step/${this.stepProgress}`} />
+    <Redirect to={`/request/step/${this.stepProgress}`} />
   );
 }
 

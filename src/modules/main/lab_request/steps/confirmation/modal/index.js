@@ -37,7 +37,7 @@ class ConfirmationModal extends React.Component {
 
 		clearTimeout(this.timer);
 
-		history.push('/request/create/step/1');
+		history.push('/request/step/1');
 	}
 
 	render() {

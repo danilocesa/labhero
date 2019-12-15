@@ -15,10 +15,6 @@ class ProvinceListComponent extends React.Component {
 			loading: true
 	};
 	
- 	// filter(inputValue, path) {
-	// 	return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
-	// }
-
 	componentDidMount() {
 		this.populateProvince();
 	}
@@ -45,7 +41,6 @@ class ProvinceListComponent extends React.Component {
 					<Select
 						loading={loading}
 						placeholder={selectDefaultOptions}
-						allowClear
 					>
 						{provinceList.map((item) => (
 							<Option value={item.provinceCode} key={item.provinceCode}>
@@ -70,10 +65,14 @@ class ProvinceListComponent extends React.Component {
 }
 
 ProvinceListComponent.propTypes = {
-		form : PropTypes.object.isRequired,
-		selectDefaultOptions: PropTypes.string.isRequired,
-		selectedProvince: PropTypes.string.isRequired
-	};
+	form : PropTypes.object.isRequired,
+	selectDefaultOptions: PropTypes.string.isRequired,
+	selectedProvince: PropTypes.string
+};
+
+ProvinceListComponent.defaultProps = {
+	selectedProvince: null
+}
 
 
 export default ProvinceListComponent;

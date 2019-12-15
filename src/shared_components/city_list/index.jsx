@@ -16,8 +16,8 @@ class CityListComponent extends React.Component {
 	};	
 	
 	componentDidMount(){
-		if(this.props.selectedCity){ // Not working
-			this.populateCity(this.props.selectedCity);
+		if(this.props.provinceValue){
+			this.populateCity(this.props.provinceValue);
 		}
 	}
 
@@ -76,9 +76,14 @@ class CityListComponent extends React.Component {
 CityListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	selectDefaultOptions: PropTypes.string.isRequired,
-	provinceValue: PropTypes.string.isRequired,
-	selectedCity: PropTypes.string.isRequired
+	provinceValue: PropTypes.string,
+	selectedCity: PropTypes.string
 };
+
+CityListComponent.defaultProps = {
+	provinceValue: null,
+	selectedCity: null
+}
 
 export default CityListComponent;
   

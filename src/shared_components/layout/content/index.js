@@ -8,6 +8,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
+import EditRequestPage from 'modules/main/lab_request/edit';
 import EditLabResult from 'modules/main/lab_result/edit_result';
 import PrintLabResult from 'modules/main/lab_result/print_result';
 import PatientInfo from 'modules/main/patientinfo';
@@ -38,6 +39,7 @@ const Content = () => (
 			<Route path="/dashboard" component={DashboardPage} />
 			{/* Lab request route */}
 			<PrivateRoute path="/request/create" component={CreateRequestPage} />
+			<PrivateRoute path="/request/edit" component={EditRequestPage} />
 			{/* Search lab result route */}
 			<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 			<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
@@ -66,9 +68,9 @@ function PrivateRoute({ component: Component, ...rest }) {
 		{...rest}
 		render={
 			props =>
-    	auth.isAuthenticated ? ( <Component {...props} />) 
-			: 
-			( <Redirect to={{pathname: "/login", state: { from: props.location }}} /> )
+				auth.isAuthenticated 
+				? (<Component {...props} />) 
+				: (<Redirect to={{pathname: "/login", state: { from: props.location }}} />)
   	}
 	/>
   );

@@ -67,6 +67,6 @@ export const fieldRules = {
 		{ required: false, message: globalRequiredMessage}
 	],
 	unitNo: [
-		{ required: true, message: globalRequiredMessage}
+		{ required: false, message: globalRequiredMessage}
 	],
 }
