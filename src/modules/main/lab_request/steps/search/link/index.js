@@ -1,11 +1,14 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import { Icon } from 'antd';
 
+// CSS
 import './link.css';
 
+// CONSTANTS
 import { 
 	CLR_STEP_PROGRESS,
 	CLR_SEARCHED_ID,
@@ -20,7 +23,7 @@ class ButtonLink extends React.Component {
 		sessionStorage.removeItem(CLR_SEARCHED_ID);
 		sessionStorage.removeItem(CLR_SEARCHED_NAME);
 		
-		history.push('/request/step/2');
+		history.push('/request/create/step/2');
 	}
 
 	render() {

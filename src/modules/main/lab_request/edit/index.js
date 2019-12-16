@@ -8,7 +8,7 @@ class EditRequestPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<StepPage requestType={2} moduleProfile="editRequest" />
+				<StepPage requestType='edit' moduleProfile="editRequest" />
 			</div>
 		);
 	}

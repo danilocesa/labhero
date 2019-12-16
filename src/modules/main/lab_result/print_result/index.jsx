@@ -23,7 +23,7 @@ class PrintLabResult extends React.Component {
 		
 		return (
 			<div>
-				<LabResult onClickTableRow={this.onClickTableRow} />
+				<LabResult onClickTableRow={this.onClickTableRow} resultType={2} />
 				<Drawer
 					title="Patient Information"
 					onClose={this.onClosePatientInfoDrawer}

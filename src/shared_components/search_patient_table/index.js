@@ -9,7 +9,9 @@ import { Table as AntTable, Spin } from 'antd';
 import { 
 	CLR_STEP_PROGRESS, 
 	CLR_SEARCHED_ID,
-	CLR_SEARCHED_NAME 
+	CLR_SEARCHED_NAME,
+	REQUEST_TYPE,
+	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
 import {globalTableSize} from '../constant-global';
 
@@ -28,7 +30,9 @@ class SearchPatientTable extends React.Component {
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
 			sessionStorage.setItem(CLR_SEARCHED_ID, SearchedPatientId);
 			sessionStorage.setItem(CLR_SEARCHED_NAME, SearchedPatientName);
-			
+			sessionStorage.setItem(REQUEST_TYPE, this.props.requestType);
+			sessionStorage.setItem(MODULE_PROFILE, this.props.moduleProfile);
+
 			history.push(redirect, { record });
 		}
 		else  {
@@ -132,7 +136,9 @@ SearchPatientTable.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	redirectUrl: PropTypes.string.isRequired,
 	SearchedPatientId: PropTypes.string,
-	SearchedPatientName: PropTypes.string
+	SearchedPatientName: PropTypes.string,
+	requestType: PropTypes.number.isRequired,
+	moduleProfile: PropTypes.string.isRequired
 };
 
 SearchPatientTable.defaultProps = {

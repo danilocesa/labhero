@@ -1,9 +1,11 @@
 // @ts-nocheck
+// LIBRARY
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 import { pick } from 'lodash';
+
+// CUSTOM
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
@@ -12,7 +14,7 @@ import Tracker from '../../tracker';
 import FillupForm from './form';
 import {moduleTitle} from '../../create/settings';
 
-
+// CONSTANTS
 import { 
 	CLR_PERSONAL_INFO, 
 	CLR_OTHER_INFO, 
@@ -48,8 +50,6 @@ const otherInfoKeys = [
 	'comment'
 ];
 
-
-
 class FillupStep extends React.Component {
 	constructor(props) {
 		super(props);
@@ -66,7 +66,6 @@ class FillupStep extends React.Component {
 		
 		// Convert each field's value to uppercase
 		Object.keys(personalInfo).forEach(field => {
-			console.log(personalInfo, field);
 			if(field !== 'emailAdd' && personalInfo[field] !== undefined)
 				personalInfo[field] = personalInfo[field].toUpperCase();
 		});
@@ -101,12 +100,16 @@ class FillupStep extends React.Component {
 
 	goToNextPage = () => {
 		const { history } = this.props;
-
-		history.push('/request/create/step/3');
+		if(sessionStorage.getItem('REQUEST_TYPE') === 'create'){
+			history.push('/request/create/step/3');
+		} else {
+			history.push('/request/edit/step/3');
+		}
+		
 	}
 
 	dynamicModuleTitle = () =>{
-		const pageTitle = (this.props.requestType === 1 ? "CREATE REQUEST" : "EDIT REQUEST")
+		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === 'create' || sessionStorage.getItem('REQUEST_TYPE') === undefined ? "CREATE REQUEST" : "EDIT REQUEST");
 		return pageTitle || moduleTitle;
 	}
 
@@ -132,8 +135,7 @@ class FillupStep extends React.Component {
 }
 
 FillupStep.propTypes = {
-	history: ReactRouterPropTypes.history.isRequired,
-	requestType: PropTypes.string.isRequired
+	history: ReactRouterPropTypes.history.isRequired
 };
 
 export default withRouter(FillupStep);

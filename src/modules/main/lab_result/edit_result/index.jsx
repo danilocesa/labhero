@@ -24,7 +24,7 @@ class EditLabResult extends React.Component {
 		
 		return (
 			<div>
-				<LabResult onClickTableRow={this.onClickTableRow} />
+				<LabResult onClickTableRow={this.onClickTableRow} resultType={1} />
 				<Drawer
 					title="Patient Information"
 					onClose={this.onClosePatientInfoDrawer}

@@ -10,7 +10,7 @@ class CreateRequestPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<StepPage requestType={1} moduleProfile="createRequest" />
+				<StepPage requestType='create' moduleProfile="createRequest" />
 			</div>
 		);
 	}

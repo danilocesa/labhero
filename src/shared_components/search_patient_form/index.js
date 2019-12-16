@@ -60,7 +60,6 @@ class SearchPatientForm extends React.Component {
 			});
 			
 			const { data } = await response;
-      console.log("TCL: SearchPatientForm -> fetchPatients -> data", data)
 			
 			patients = data ? data.patient : [];
 		}
@@ -134,7 +133,7 @@ class SearchPatientForm extends React.Component {
 					</Col>
 					{/* Request date */}
 					<Col xs={24} sm={24} md={6} lg={4}>
-					{ (this.props.moduleProfile === "editRequest") ? 
+					{ (sessionStorage.getItem('MODULE_PROFILE') === "editRequest") ? 
 						(
 							<Form.Item label={fieldLabels.requestDate}>
 								<DatePicker defaultValue={moment()} format={dateFormat}	 />
@@ -178,8 +177,7 @@ class SearchPatientForm extends React.Component {
 
 SearchPatientForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	storeSearchedVal: PropTypes.func,
-	moduleProfile: PropTypes.string.isRequired
+	storeSearchedVal: PropTypes.func
 };
 
 SearchPatientForm.defaultProps = {

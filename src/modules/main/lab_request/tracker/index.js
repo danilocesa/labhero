@@ -8,32 +8,7 @@ import './tracker.css';
 
 const { Step } = Steps;
 
-const items = [
-	{
-		title: 'Step 1',
-		description: 'Search Patient',
-		icon: 'search',
-		link: '/request/create/step/1',
-	},
-	{
-		title: 'Step 2',
-		description: 'Fill up',
-		icon: 'form',
-		link: '/request/create/step/2',
-	},
-	{
-		title: 'Step 3',
-		description: 'Select Lab Test',
-		icon: 'check-square',
-		link: '/request/create/step/3',
-	},
-	{
-		title: 'Step 4',
-		description: 'Summary',
-		icon: 'idcard',
-		link: '/request/create/step/4',
-	}
-];
+
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
@@ -41,12 +16,24 @@ class Tracker extends React.Component {
 		current: 0,
 	};
 	
+	dynamicLink = () => {
+		return (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "/request/create/step" : "/request/edit/step" )
+	};
+
 	onClickTracker = clickedStep => {
+		if(this.props.active === 0){ // Prevent click if in step is currently in search patient
+			return false;
+		}
+
+		if(clickedStep === 0){ // Show modal confirmation if step is not in search patient
+
+		}
+
 		const nextSteps = clickedStep + 1;
-		const targetUrl = `/request/create/step/${nextSteps}`;
+		const targetUrl = `${this.dynamicLink()}${nextSteps}`;
 		let clickedVal = false;
 
-		if(this.props.requestType === 1 && nextSteps < clickedStep){
+		if(this.props.requestType === 'create' && nextSteps < clickedStep){
 			clickedVal = false;
 		}else{
 			this.setState({current: clickedStep});
@@ -57,6 +44,32 @@ class Tracker extends React.Component {
 	}
 
 	render() {
+		const items = [
+			{
+				title: 'Step 1',
+				description: 'Search Patient',
+				icon: 'search',
+				link: `${this.dynamicLink()}/1`,
+			},
+			{
+				title: 'Step 2',
+				description: 'Fill up',
+				icon: 'form',
+				link: `${this.dynamicLink()}/2`,
+			},
+			{
+				title: 'Step 3',
+				description: 'Select Lab Test',
+				icon: 'check-square',
+				link: `${this.dynamicLink()}/3`,
+			},
+			{
+				title: 'Step 4',
+				description: 'Summary',
+				icon: 'idcard',
+				link: `${this.dynamicLink()}/4`,
+			}
+		];
 		const StepItems = items.map(item => (
 			<Step
 				key={item.title}
@@ -87,7 +100,7 @@ class Tracker extends React.Component {
 
 Tracker.propTypes = {
 	active: PropTypes.number.isRequired,
-	requestType: PropTypes.number.isRequired
+	requestType: PropTypes.number.isRequired,
 };
 
 export default Tracker;
