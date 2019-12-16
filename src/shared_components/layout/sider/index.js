@@ -11,6 +11,8 @@ import { ReactComponent as PleboIcon } from 'icons/syringe.svg';
 import { ReactComponent as InventoryIcon} from 'icons/inventory.svg';
 import { ReactComponent as SearchPatientIcon } from 'icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
+import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
+import { ReactComponent as EditIcon } from 'icons/edit.svg';
 
 import { SELECTED_SIDER_KEY } from '../../constant-global';
 
@@ -22,23 +24,15 @@ const { Sider: AntSider } = Layout;
 class Sider extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      SELECTED_SIDER_KEY: '',
-    }
+    this.state = { selectedKey: '' };
   }
 
-	// UNSAFE_componentWillMount()
-  componentDidMount() {
-    this.handleMenuClick = (event) => {
-      this.setState({
-        SELECTED_SIDER_KEY: event.key,
-        
-      }, function keys(){
-				sessionStorage.setItem(SELECTED_SIDER_KEY, this.state.SELECTED_SIDER_KEY);
-				sessionStorage.getItem(SELECTED_SIDER_KEY);
-      });
-    }
-  }
+	handleMenuClick = (event) => {
+		this.setState({ selectedKey: event.key }, () => {
+			const { selectedKey } = this.state;
+			sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
+		});
+	}
 
   render() {
 		const { collapsed } = this.props;
@@ -53,9 +47,7 @@ class Sider extends React.Component {
         <Menu
 					className="side-menu" 
 					mode="inline" 
-					defaultSelectedKeys={[
-						(sessionStorage.getItem(SELECTED_SIDER_KEY) ? sessionStorage.getItem(SELECTED_SIDER_KEY) : '1' )
-					]}
+					defaultSelectedKeys={[sessionStorage.getItem(SELECTED_SIDER_KEY) || '1']}
 					onClick={this.handleMenuClick}
         >
 					{
@@ -83,7 +75,7 @@ class Sider extends React.Component {
 						process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1' && (
 							<Menu.Item key="3">
 								<Link to="/request/edit/step/1">
-									<Icon component={AddIcon} />
+									<Icon component={EditIcon} />
 									<span>EDIT REQUEST</span>
 								</Link>
 							</Menu.Item>
@@ -113,7 +105,7 @@ class Sider extends React.Component {
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
 							<Menu.Item key="6">
 								<Link to="/lab/result/print">
-									<Icon component={SearchIcon} />
+									<Icon component={PrintIcon} />
 									<span>PRINT LAB RESULT</span>
 								</Link>
 							</Menu.Item>

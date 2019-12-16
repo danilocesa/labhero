@@ -4,8 +4,6 @@ import StepPage from '../steps';
 
 import './create.css';
 
-
-
 class CreateRequestPage extends React.Component {
 	render() {
 		return (

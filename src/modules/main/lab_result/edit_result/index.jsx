@@ -16,7 +16,6 @@ class EditLabResult extends React.Component {
 	
 	onClickTableRow = () => {
 		this.setState({ isDisplayDrawer: true });
-		console.log('ship');
 	}
 
 	render() {
@@ -24,7 +23,10 @@ class EditLabResult extends React.Component {
 		
 		return (
 			<div>
-				<LabResult onClickTableRow={this.onClickTableRow} resultType={1} />
+				<LabResult 
+					pageTitle="EDIT LAB RESULT"
+					onClickTableRow={this.onClickTableRow} 
+				/>
 				<Drawer
 					title="Patient Information"
 					onClose={this.onClosePatientInfoDrawer}

@@ -62,6 +62,7 @@ class SearchForm extends React.Component {
 	}
 
 	render() {
+		const { pageTitle } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		const { isLoading } = this.state;
 		const { resultType } = this.props;
@@ -71,7 +72,7 @@ class SearchForm extends React.Component {
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>
 				<Col sm={22} xs={24}> 
 					<Form onSubmit={this.onClickSubmit} id="searchlabtestresultform"> 
-						<PageTitle pageTitle={title} />
+						<PageTitle pageTitle={pageTitle} />
 						<Row type="flex" align="top" gutter={24}> 
 							<Col className="gutter-row" lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="SAMPLE ID" className="gutter-box">
@@ -171,8 +172,8 @@ class SearchForm extends React.Component {
 }
 
 SearchForm.propTypes = {
-	updateLabResults: PropTypes.func.isRequired,
-	resultType: PropTypes.number.isRequired
+	pageTitle: PropTypes.string.isRequired,
+	updateLabResults: PropTypes.func.isRequired
 };
 
 export default Form.create({ name: 'searchlabtestform' })(SearchForm);
