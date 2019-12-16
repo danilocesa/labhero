@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Spin } from 'antd';
 
 import PageTitle from 'shared_components/page_title';
@@ -388,12 +389,16 @@ class SelectStep extends React.Component {
 			isLoading 
 		} = this.state;
 		const { restriction } = this;
+		const { requestType } = this.props;
 
 		if(restriction.hasAccess) {
 			return (
 				<div>
 					<PageTitle pageTitle={moduleTitle} />
-					<Tracker active={2} />
+					<Tracker 
+						active={2}
+						requestType={requestType}
+					/>
 					{ isLoading && <Loading /> }
 					<div style={{ display: isLoading ? 'none' : 'block' }}>
 						<Row gutter={48} style={{ marginTop: 50 }}>
@@ -443,5 +448,9 @@ class SelectStep extends React.Component {
 		return restriction.redirect();
 	}
 }
+
+SelectStep.propTypes = {
+	requestType: PropTypes.string.isRequired
+};
 
 export default SelectStep;

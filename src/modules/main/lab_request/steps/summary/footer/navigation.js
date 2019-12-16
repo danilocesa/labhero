@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 
-import ConfirmationModal from '../../confirmation/modal';
+import ConfirmationModal from '../confirmation/modal';
 
 const { Text } = Typography;
 

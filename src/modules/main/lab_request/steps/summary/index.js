@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import saveLabRequest from 'services/lab_request/labRequest';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import PageTitle from 'shared_components/page_title';
@@ -55,12 +56,16 @@ class SummaryStep extends React.Component {
 	render() {
 		const { exams } = this.state;
 		const { restriction } = this;
+		const { requestType } = this.props;
 
 		if(restriction.hasAccess) {
 			return (
 				<div>
 					<PageTitle pageTitle={moduleTitle} />
-					<Tracker active={3} />
+					<Tracker 
+						active={3}
+						requestType={requestType}
+					/>
 					<SummarySection />
 					<SummaryTable exams={exams} />
 					<br />
@@ -72,5 +77,9 @@ class SummaryStep extends React.Component {
 		return restriction.redirect();
 	}
 }
+
+SummaryStep.propTypes = {
+	requestType: PropTypes.string.isRequired
+};
 
 export default SummaryStep;

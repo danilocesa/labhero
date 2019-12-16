@@ -1,12 +1,13 @@
 // LIBRARY
 import React from 'react';
-import PropTypes from 'prop-types';
 
 // CUSTOM
 import { 
 	CLR_PERSONAL_INFO, 
 	CLR_OTHER_INFO, 
-	CLR_SEL_EXAMS	
+	CLR_SEL_EXAMS,	
+	REQUEST_TYPE,
+	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from '../../tracker';
@@ -30,6 +31,8 @@ class SearchStep extends React.Component {
 		sessionStorage.removeItem(CLR_PERSONAL_INFO);
 		sessionStorage.removeItem(CLR_OTHER_INFO);
 		sessionStorage.removeItem(CLR_SEL_EXAMS);
+		sessionStorage.removeItem(REQUEST_TYPE);
+		sessionStorage.removeItem(MODULE_PROFILE);
 	}
 
 	updateSearchedValue = (patientId, patientName) => {
@@ -52,25 +55,26 @@ class SearchStep extends React.Component {
 	}
 
 	dynamicModuleTitle = () =>{
-		const pageTitle = (this.props.requestType === 1 ? "CREATE REQUEST" : "EDIT REQUEST")
+		// @ts-ignore
+		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "CREATE REQUEST" : "EDIT REQUEST")
 		return pageTitle || moduleTitle;
 	}
 
 	render() {
 		const { patients, pageSize, loading, searchedPatientID, searchedPatientName } = this.state;
-		const { requestType, moduleProfile } = this.props;
-		const redirectUrl = (requestType === 1 ? "/request/create/step/2" : "/request/edit/step/2")
+		// @ts-ignore
+		const redirectUrl = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "/request/create/step/2" : "/request/edit/step/2")
 		return (
 			<div>
 				<PageTitle pageTitle={this.dynamicModuleTitle()} />
-				<Tracker active={0} />
+				<Tracker 
+					active={0}	
+				/>
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
 						populatePatients={this.populatePatients}
 						displayLoading={this.displayLoading} 
 						updateSearchedValue={this.updateSearchedValue}
-						requestType={requestType}
-						moduleProfile={moduleProfile}
 					/>
 					<TableHeader 
 						pageSize={pageSize}
@@ -86,15 +90,16 @@ class SearchStep extends React.Component {
 						SearchedPatientName={searchedPatientName}
 					/>
 				</div>
-				<ButtonLink dataLength={patients.length} />
+				{ 
+				// @ts-ignore
+				sessionStorage.getItem('REQUEST_TYPE') === 'create' ? (
+					<ButtonLink dataLength={patients.length} />
+				) : null
+				}
+				
 			</div>
 		);
 	}
-}
-
-SearchStep.propTypes ={
-	requestType: PropTypes.number.isRequired,
-	moduleProfile: PropTypes.string.isRequired
 }
 
 export default SearchStep;

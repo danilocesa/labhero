@@ -75,7 +75,7 @@ class UserAccountForm extends React.Component {
 				} else {
 					updateUserAccountAPI(vData)
 				}
-				// window.location.reload();
+				window.location.reload();
 			}
 		});
 	}

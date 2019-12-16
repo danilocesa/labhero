@@ -65,6 +65,8 @@ class SearchForm extends React.Component {
 		const { pageTitle } = this.props;
 		const { getFieldDecorator } = this.props.form;
 		const { isLoading } = this.state;
+		const { resultType } = this.props;
+		const title = (resultType === 1 ? "EDIT LAB RESULT" : "PRINT LAB RESULT");
 
 		return(
 			<Row type="flex" justify="center" align="middle" style={{ paddingBottom: '1em' }}>

@@ -11,7 +11,7 @@ import {
 	CLR_PERSONAL_INFO,
 	CLR_OTHER_INFO,
 	CLR_STEP_PROGRESS
-} from '../../constants';
+} from '../../../constants';
 
 class ConfirmationModal extends React.Component {
 	constructor(args) {

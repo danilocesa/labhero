@@ -7,12 +7,15 @@ const { Text } = Typography;
 
 class FormButtons extends React.Component {
 	render() {
+
+		
 		const { isLoading } = this.props;
+		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create' || sessionStorage.getItem('REQUEST_TYPE') === undefined ? "/request/create/step/1" : "/request/edit/step/1" );
 
 		return (
 			<Row style={{ marginTop: 10 }}>
 				<Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
-					<Link to="/request/step/1">
+					<Link to={dynamicLink}>
 						<Text><u>BACK</u></Text>
 					</Link>
 					<Button
@@ -24,7 +27,7 @@ class FormButtons extends React.Component {
 					>
 						NEXT STEP
 					</Button>
-				</Col>
+				</Col> 
 			</Row>
 		);
 	}
@@ -33,9 +36,5 @@ class FormButtons extends React.Component {
 FormButtons.propTypes = {
 	isLoading: PropTypes.bool.isRequired
 }
-
-// FormButtons.defaultProps = {
-// 	isLoading: false
-// }
 
 export default FormButtons;
