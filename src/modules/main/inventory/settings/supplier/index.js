@@ -25,7 +25,7 @@ const columns = [
     title: 'Supplier ID',
     dataIndex: 'supplier_id',
     key: 'supplier_id'
-  },
+	},
   {
     title: 'Supplier',
     dataIndex: 'supplier',
@@ -82,7 +82,7 @@ class InventorySupplierTemplate extends React.Component {
         <AntRow>
           <AntCol span={6}>
             <Title level={4}>SUPPLIER SETUP</Title>
-            <AntForm onSubmit={this.handleSubmit} >
+            <AntForm onSubmit={this.handleSubmit}>
               <AntForm.Item label="SUPPLIER ID">
                 {getFieldDecorator('supplier_id', {
                   rules: [{ required: true, message: 'Please input!' }],

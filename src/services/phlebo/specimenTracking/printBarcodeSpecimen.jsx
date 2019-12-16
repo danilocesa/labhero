@@ -1,6 +1,6 @@
 // CUSTOM MODULES
 import {apiUrlprintBarcodeSpecimen, apiGetMethod} from 'shared_components/constant-global';
-import axiosCall from './axiosCall';
+import axiosCall from 'services/axiosCall';
 
 async function printBarcodeSpecimenAPI(specimenID) {
   let printBarcode = [];
@@ -21,3 +21,5 @@ async function printBarcodeSpecimenAPI(specimenID) {
 }
 
 export default printBarcodeSpecimenAPI;
+
+

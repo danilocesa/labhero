@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 // LIBRARY
 import axios from 'axios';
-import login from 'modules/login/api_repo';
+import login from 'services/login/login';
 // import jwtDecode from 'jwt-decode';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 

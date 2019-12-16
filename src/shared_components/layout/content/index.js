@@ -9,8 +9,8 @@ import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
 import EditRequestPage from 'modules/main/lab_request/edit';
-import EditLabResult from 'modules/main/lab_result/edit_result';
-import PrintLabResult from 'modules/main/lab_result/print_result';
+import EditLabResult from 'modules/main/lab_result/edit';
+import PrintLabResult from 'modules/main/lab_result/print';
 import PatientInfo from 'modules/main/patientinfo';
 import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
@@ -19,7 +19,7 @@ import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
 import Inventory from 'modules/main/inventory';
-import auth from 'services/auth';
+import auth from 'services/login/auth';
 
 // CONSTANTS
 const { Content: Antcontent } = Layout;

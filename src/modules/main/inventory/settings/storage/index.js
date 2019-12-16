@@ -77,7 +77,7 @@ class InventoryStorageTemplate extends React.Component {
         <AntRow>
           <AntCol span={6}>
             <Title level={4}>STORAGE SETUP</Title>
-            <AntForm onSubmit={this.handleSubmit} >
+            <AntForm onSubmit={this.handleSubmit}>
               <AntForm.Item label="STORAGE ID">
                 {getFieldDecorator('storage_id', {
                   rules: [{ required: true, message: 'Please input!' }],

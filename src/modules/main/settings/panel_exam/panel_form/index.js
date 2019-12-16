@@ -17,8 +17,12 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
-import examRequestListAPI from 'services/examRequestList';
-import { createdPanelAPI, updatePanelListAPI, getPanelInfoAPI } from 'services/settings/panel/panelExamRequesting';
+import { fetchExamRequestList } from 'services/shared/examRequest';
+import { 
+	createdPanelAPI, 
+	updatePanelListAPI, 
+	getPanelInfoAPI 
+} from 'services/settings/panel/panelExamRequesting';
 import {messagePrompts, buttonLabels, fieldLabels, fieldRules} from '../settings';
 
 // CSS
@@ -51,13 +55,14 @@ class PanelFormTemplate extends React.Component {
 
 	getExamRequest = async () => {
 		// Get all exam request
-		const examRequestListData = await examRequestListAPI(); 
+		const examRequestListData = await fetchExamRequestList(); 
 		if(examRequestListData.status !== 200){
 			HttpCodeMessage({
 				status: examRequestListData.status,
 				message: messagePrompts.noExamFound
 			});
 		}
+
 		// Assign to state
 		const examRequestData = [];
 		examRequestListData.data.map(function(valueExamRequest,indexExamRequest){

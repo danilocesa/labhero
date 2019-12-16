@@ -1,4 +1,10 @@
-import {apiUrlPanelExamRequestSettings, apiUrlGetPanelInfoByID, apiGetMethod, apiPostMethod, apiPutMethod} from 'shared_components/constant-global';
+import {
+	apiUrlPanelExamRequestSettings, 
+	apiUrlGetPanelInfoByID, 
+	apiGetMethod, 
+	apiPostMethod, 
+	apiPutMethod
+} from 'shared_components/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import axiosCall from 'services/axiosCall';
 

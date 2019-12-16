@@ -18,7 +18,6 @@ export async function fetchPerSpecimens(selectedSection) {
 	return specimens;
 }
 
-
 export async function fetchExamRequests(sectionId, specimenId) {
 	let examRequests = [];
 
@@ -57,6 +56,23 @@ export async function fetchSelectedExamList(secID, specID, erID) {
 
 	return examList;
 }
+
+export async function fetchExamRequestList() {
+	let data = null;
+	
+  try{
+    const resp = await axiosCall({
+      method: 'GET',
+      url: 'lab/ExamRequest/Settings/'
+		});
+		
+    data = resp;
+  } 
+  catch(e) {
+    Message.error();
+  }
+  return data;
+} 
 
 export async function	updateExamRequest(examRequest) {
 	let updatedExamRequest = null;
@@ -101,3 +117,4 @@ export async function createExamRequest(examItem) {
 
 	return createdExamItem;
 }
+

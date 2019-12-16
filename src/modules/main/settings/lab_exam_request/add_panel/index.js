@@ -133,7 +133,7 @@ class AddPanel extends React.Component {
 
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
-		const { sectionId , specimenId} = this.props;
+		const { sectionId , specimenId } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { visible } = this.props;
 

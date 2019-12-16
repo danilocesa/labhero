@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 // CUSTOM MODULES
 import patientPhleboSpecimensAPI from 'services/phlebo/specimenTracking/requestid';
 import patientPhleboCheckInSpecimensAPI from 'services/phlebo/specimenTracking/checkinspecimen';
-import printBarcodeSpecimenAPI from 'services/printBarcodeSpecimen';
+import printBarcodeSpecimenAPI from 'services/phlebo/specimenTracking/printBarcodeSpecimen';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import {messagePrompts, buttonNames} from './settings';
 

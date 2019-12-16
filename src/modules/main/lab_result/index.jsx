@@ -28,6 +28,7 @@ class LabResult extends React.Component {
 		const searchResults = {};
 
 		sections.forEach(section => {
+			// Create the skeleton object of sections
 			Object.assign(searchResults, { [section.sectionCode]: [] });
 		});
 

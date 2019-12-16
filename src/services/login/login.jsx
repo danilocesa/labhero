@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Message from 'shared_components/message';
 
 export default async function login(username, password) {
 	let data = null;
@@ -19,7 +18,7 @@ export default async function login(username, password) {
 		data = response;
 	}
 	catch(e) {
-		Message.error();
+		// Message.error();
 	}
 
 	return data;

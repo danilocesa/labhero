@@ -1,7 +1,7 @@
 import React from 'react';
 import { notification } from 'antd';
 import IdleTimer from 'react-idle-timer';
-import Auth from 'services/auth';
+import Auth from 'services/login/auth';
 
 
 class IdleTimerComponent extends React.Component {
