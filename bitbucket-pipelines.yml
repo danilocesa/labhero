@@ -37,7 +37,7 @@ pipelines:
           script:
             - npm install react-app-rewired --save-dev
             - npm install
-            - npm run build
+            - CI=false npm run build
           artifacts:
             - build/**
       - step:
