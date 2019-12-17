@@ -1,8 +1,8 @@
 import React from 'react';
 import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
-// import { Link } from 'react-router-dom';
-import axiosCall from 'services/axiosCall';
-import auth from 'services/auth';
+import auth from 'services/login/auth';
+import login from 'services/login/login';
+import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
@@ -12,110 +12,65 @@ import { CompanyLogo } from '../../images';
 
 const { Header, Content } = Layout;
 
+const mainModuleURL = [
+	'/', // Dashboard
+	'/request/create/step/1', // Create Lab Request
+	'/request/edit/step/1', // Edit Lab Request
+	'/phlebo/result', // Phlebo
+	'/lab/result/edit', // Edit Lab Result
+	'/lab/result/print', // Print Lab Result
+	'/patient/search', // Search Patient
+	'/settings', // Settings
+	'/inventory' // Inventory
+];
+
 class Login extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			username: '',
-			password: '',
 			loading: false
 		}
-		this.handleUsernameChange=this.handleUsernameChange.bind(this);
-		this.handlePasswordChange=this.handlePasswordChange.bind(this);
-		this.handleSubmit=this.handleSubmit.bind(this);
-	}
-	
-	handleUsernameChange=(event)=>{
-		this.setState({username:event.target.value});
-	}
-
-	handlePasswordChange=(event)=>{
-		this.setState({password:event.target.value});
 	}
 
 	handleSubmit = (event) => {
 		event.preventDefault();
 
+		const { username, password } = this.props.form.getFieldsValue();
+
 		this.setState({ loading: true });
 
-		const { username, password, userid } = this.state;
-
 		this.props.form.validateFields(async (err) => {
-			if (username !== '' && password!== '') {
-				if (!err) {
-					const response = await this.login(username, password, userid);
+			if (!err) {
+				const response = await login(username, password);
+
+				this.setState({ loading: false });
+
+				if(response && response.status === 200) {
+					const loggedinUserData = {
+						...response.data,
+						password
+					};
 					
-					if(response && response.status === 200) {
-						const loggedinUserData = {
-							...response.data,
-							password
-						};
-						
-						sessionStorage.setItem('LOGGEDIN_USER_DATA', JSON.stringify(loggedinUserData));
-						auth.authenticate();
-						message.success('You are now successfully logged in!', 1.5);
-						
-						switch(sessionStorage.SELECTED_SIDER_KEY) {
-							case '1':
-								this.props.history.push("/");
-								break;
-							case '2':
-								this.props.history.push("/request/create/step/1");
-								break;
-							case '3':
-								this.props.history.push("/searchlabresult");
-								break;
-							case '4':
-								this.props.history.push("/phleboresult");
-								break;
-							case '5':
-								this.props.history.push("/searchpatient");
-								break;
-							case '6':
-								this.props.history.push("/settings");
-								break;
-							default : 
-								this.props.history.push("/");
-								break;	
-						}
-					} 
-					else {
-						this.setState({loading: false});
-						message.error('Incorrect Username/Password');
-					}
+					sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
+					message.success('You are now successfully logged in!', 1.5);
+					auth.authenticate();
+					this.redirectPage();
+				} 
+				else {
+					message.error('Incorrect Username/Password');
 				}
-			} else {
-				this.setState({loading: false});
-				message.error('Enter Valid Username/Password');
 			}
 		});
 
 	}
-
-  login = async (userName, password, userID) => {
-    let data = null;
-    
-    try{
-			const body = { userName, password, userID };
-			const response = await axiosCall({
-				method: 'POST',
-				url: 'lab/LogIn',
-				data: body,
-				headers: {
-					'content-type': 'application/json',
-					'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
-				}
-			});
-			data = response;
-    }
-    catch(e) {
-   		console.log("TCL: login -> e", e)
-    }
-
-    return data;
-  }
 	
-  
+	redirectPage = () => {
+		// Redirect to current session module or to dashboard module
+		const selectedLink = mainModuleURL[sessionStorage.SELECTED_SIDER_KEY - 1] || mainModuleURL[0];
+		
+		this.props.history.push(selectedLink); 
+	}
+
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
@@ -125,12 +80,7 @@ class Login extends React.Component {
 				<Spin spinning={this.state.loading}>
 					<Header style={{ borderBottom: 'none' }}>
 						<Row>
-							<Col span={24}>
-								{/* <Icon type="left" /> */}
-								{/* <Link to="/" className="redirect-home">
-									Go back to homepage
-								</Link> */}
-							</Col>
+							<Col span={24} />
 						</Row>
 					</Header>
 					<Content>
@@ -142,14 +92,14 @@ class Login extends React.Component {
 								<Row>
 									<Form onSubmit={this.handleSubmit}>
 										<Form.Item label="Username" className="login-input font12">
-											{getFieldDecorator('userName', {
+											{getFieldDecorator('username', {
 												rules: [{ required: true, message: 'Please enter your username!' }],
-											})(<Input onChange={this.handleUsernameChange} />)}
+											})(<Input />)}
 										</Form.Item>
 										<Form.Item label="Password">
 											{getFieldDecorator('password', {
 												rules: [{ required: true, message: 'Please enter your password!' }],
-											})(<Input.Password onChange={this.handlePasswordChange} type="password" />)}
+											})(<Input.Password type="password" />)}
 										</Form.Item>
 										<Form.Item style={{marginBottom:'0px'}}>
 											<Button type="primary" htmlType="submit" className="login-form-button" block>

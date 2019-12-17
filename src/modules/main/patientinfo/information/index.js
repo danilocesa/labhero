@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 // LIBRARY
 import React from 'react';
-import { Row, Col } from 'antd';
+// import { Row, Col } from 'antd';
 
 // CUSTOM MODULES
 import PatientInfo from 'shared_components/patient_info';
@@ -13,7 +13,7 @@ class Information extends React.Component {
   render() {
     return (
 	    <div className="verticalinfo">
-		    <div className="patient-number">
+		    {/* <div className="patient-number">
 			    <Row>
 				    <Col span={24} className="differential-title">
 					    <p>DIFFERENTIAL COUNT TOTAL</p>
@@ -22,7 +22,7 @@ class Information extends React.Component {
 					    <p>100</p>
 				    </Col>
 			    </Row>
-		    </div>
+		    </div> */}
         <PatientInfo />
      </div>
     );

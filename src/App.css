@@ -1,3 +1,31 @@
 body {
   font-family: 'Karla', sans-serif !important;
 }
+
+.drawerFooter {
+  position: absolute !important;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #e8e8e8;
+  background-color: #fff;
+  text-align: right;
+}
+
+.fullWidth {
+  width: '100%'
+}
+
+.ant-table-thead th {
+  padding-left:1px!important;
+  padding-right:1px!important;
+}
+
+.ant-table-thead > tr > th {
+  padding: 4px 16px !important;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 7px 15px !important;
+}
+

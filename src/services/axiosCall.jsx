@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 // LIBRARY
 import axios from 'axios';
-import login from 'modules/login/api_repo';
+import login from 'services/login/login';
 // import jwtDecode from 'jwt-decode';
 import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
 
@@ -16,8 +16,6 @@ export function setupAxiosInterceptors() {
 	axios.interceptors.request.use(config => {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
-
-		// if(LoggedinUserData) console.log(jwtDecode(LoggedinUserData.token));
 
     return { ...config, headers: { 
 			'content-type': 'application/json',	

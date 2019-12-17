@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Button, Icon } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import TablePager from 'shared_components/search_pager/pager';
 import _ from 'lodash';
 import SectionDropdown from './dropdown';
 import ExamTable from './table';

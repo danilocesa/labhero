@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, InputNumber, Spin  } from 'antd';
+import { Drawer, Form, Input, Button, Select, Spin  } from 'antd';
 import PropTypes from 'prop-types';
+
+// CUSTOM
 import DynamicForm from '../dynamic_form';
 import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
+import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
-import FIELD_RULES from './constant';
-
+// CSS
 import './update_form.css';
 
 const { Option } = Select;
@@ -84,8 +87,7 @@ class UpdateForm extends React.Component {
 				if(examItem) {
 					const { setFieldsValue } = this.props.form;
 					const { examItemTypeCode } = examItem;
-					const isOptnOrChbox = examItemTypeCode === DD_VAL_OPTION || examItemTypeCode === DD_VAL_CHECKBOX
-					const examItemValue = isOptnOrChbox ? examItem.examItemValue : [];
+					const examItemValue = examItem.examItemValue || [];
 
 					// First.
 					// Assign value to the dynamic form only if the selected 
@@ -111,12 +113,13 @@ class UpdateForm extends React.Component {
 					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
 						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
 					}
-					
+
 					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_NUMERIC 
 						|| examItem.examItemTypeCode === DD_VAL_TEXT_AREA
 					){
-						setFieldsValue({ examItemTypeDefault: '' });
+						const defaultVal = examItemValue.length > 0 ? examItemValue[0].examItemValueLabel : null;
+						setFieldsValue({ examItemTypeDefault: defaultVal });
 					}
 
 				}
@@ -162,6 +165,15 @@ class UpdateForm extends React.Component {
 					fields.examItemValue = examItemValueParam;
 				} 
 
+				if(selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || 
+					 selectedItemTypeCode === DD_VAL_NUMERIC || 
+					 selectedItemTypeCode === DD_VAL_TEXT_AREA ) {
+					 fields.examItemValue = [{ 
+						 examItemValueDefault: 0,
+						 examItemValueLabel: fields.examItemTypeDefault
+					 }];
+			 	}
+
 				const payload = { 
 					...fields, 
 					sectionID: selectedSectionId,
@@ -196,7 +208,7 @@ class UpdateForm extends React.Component {
 		
 		const UnitMeasureOptions = unitOfMeasures.map(unit => (
 			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
-				{unit.unitOfMesureBase}
+				{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
 			</Option>
 		));
 
@@ -210,7 +222,7 @@ class UpdateForm extends React.Component {
 
 		return (
 			<Drawer
-				title="Update Exam"
+				title={drawerTitle.update}
 				width="400"
 				placement="right"
 				closable
@@ -224,77 +236,69 @@ class UpdateForm extends React.Component {
 						spinning={isFetchingData}
 					>
 						<section style={{ marginBottom: 60 }}>
-						<Form.Item label="Exam Item Name">
-							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
-								<Input />
+							<Form.Item label={fieldLabels.examItemName}>
+								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
+									<Input />
+								)}
+							</Form.Item>
+							<Form.Item label={fieldLabels.examItemGeneralName}>
+								{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
+									<Input />
+								)}
+							</Form.Item>
+							<Form.Item label={fieldLabels.examItemTypeCode}>
+								{getFieldDecorator('examItemTypeCode', { rules: fieldRules.examItemType })(
+									<Select onChange={this.onChangeItemTypeCode}>
+										{InputTypeCodeOptions}
+									</Select>
+								)}
+							</Form.Item>
+							{ (selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || selectedItemTypeCode === DD_VAL_NUMERIC) &&  (
+								<>
+									<Form.Item label={fieldLabels.examItemUnitCode}>
+										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
+											<Select>{UnitMeasureOptions}</Select>
+										)}
+									</Form.Item>
+									<Form.Item label={fieldLabels.examItemTypeDefault}>
+										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
+											<Input />
+										)}
+									</Form.Item>
+								</>
 							)}
-						</Form.Item>
-						<Form.Item label="Exam Item General Name">
-							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
-								<Input />
+							{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
+									// @ts-ignore
+									<DynamicForm 
+										wrappedComponentRef={(inst) => this.dynamicForm = inst} 
+										examItemValue={examItemValue}
+										examId={fieldsValue.examItemId}
+									/> 
 							)}
-						</Form.Item>
-						<Form.Item label="Exam Item Type">
-							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
-								<Select onChange={this.onChangeItemTypeCode}>
-									{InputTypeCodeOptions}
-								</Select>
+							{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
+								<>
+									<Form.Item label={fieldLabels.examItemTypeDefault}>
+										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
+											<TextArea />
+										)}
+									</Form.Item>
+								</>
 							)}
-						</Form.Item>
-						{ selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC && (
-							<>
-								<Form.Item label="Unit of Measures">
-									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
-										<Select>{UnitMeasureOptions}</Select>
-									)}
-								</Form.Item>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<Input />
-									)}
-								</Form.Item>
-							</>
-						)}
-						{ (selectedItemTypeCode === DD_VAL_NUMERIC) && (
-							<>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<InputNumber style={styles.fullWidth} />
-									)}
-								</Form.Item>
-							</>	
-						)}
-						{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
-								// @ts-ignore
-								<DynamicForm 
-									wrappedComponentRef={(inst) => this.dynamicForm = inst} 
-									examItemValue={examItemValue}
-									examId={fieldsValue.examItemId}
-								/> 
-						)}
-						{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
-							<>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<TextArea />
-									)}
-								</Form.Item>
-							</>
-						)}
-						<Form.Item label="Integration Code">
-							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
-								<Input />
-							)}
-						</Form.Item>
-      </section>
+							<Form.Item label={fieldLabels.examItemIntegrationCode}>
+								{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
+									<Input />
+								)}
+							</Form.Item>
+						</section>
 					</Spin>
 					<section style={styles.footer}>
 						<div>
 							<Button 
 								shape="round" 
 								style={{ margin: 10 }}
+								onClick={onClose}
 							>
-								CANCEL
+								{buttonNames.cancel}
 							</Button>
 							<Button 
 								shape="round" 
@@ -303,7 +307,7 @@ class UpdateForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10 }}
 							>
-								UPDATE
+								{buttonNames.update}
 							</Button>
 						</div>
 					</section>

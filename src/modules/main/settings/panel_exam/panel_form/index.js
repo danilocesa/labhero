@@ -17,17 +17,17 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
-import CustomMessage from 'shared_components/message';
-import examRequestListAPI from 'services/examRequestList';
-import createdPanelAPI from 'services/settings/panel/createdPanel';
-import updatedPanelListAPI from 'services/settings/panel/updatePanelList';
-import getPanelInfo from 'services/settings/panel/getPanelInfo';
+import { fetchExamRequestList } from 'services/shared/examRequest';
+import { 
+	createdPanelAPI, 
+	updatePanelListAPI, 
+	getPanelInfoAPI 
+} from 'services/settings/panel/panelExamRequesting';
+import {messagePrompts, buttonLabels, fieldLabels, fieldRules} from '../settings';
 
 // CSS
 import './panel_form.css';
 
-// CONSTANTS
-  
 class PanelFormTemplate extends React.Component {
 	// eslint-disable-next-line no-useless-constructor
 	constructor(props){
@@ -44,7 +44,7 @@ class PanelFormTemplate extends React.Component {
 	componentDidMount() {
 		this.getExamRequest();
 		
-		if(this.props.drawerButton === "Update"){
+		if(this.props.drawerButton === buttonLabels.update){
 
 			// Get selected examrequest in db for update
 			if(this.props.panelInfo){ 
@@ -55,13 +55,14 @@ class PanelFormTemplate extends React.Component {
 
 	getExamRequest = async () => {
 		// Get all exam request
-		const examRequestListData = await examRequestListAPI(); 
+		const examRequestListData = await fetchExamRequestList(); 
 		if(examRequestListData.status !== 200){
 			HttpCodeMessage({
 				status: examRequestListData.status,
-				message: 'No exam request found!'
+				message: messagePrompts.noExamFound
 			});
 		}
+
 		// Assign to state
 		const examRequestData = [];
 		examRequestListData.data.map(function(valueExamRequest,indexExamRequest){
@@ -75,17 +76,18 @@ class PanelFormTemplate extends React.Component {
 		this.setState({ examRequestData });
 	};
 
-	getSelectedExamRequest = async (i_key) => { 
+	getSelectedExamRequest = async (iKey) => { 
 		let dataPanel = null;
 		try{
-			dataPanel = await getPanelInfo(i_key); 
+			dataPanel = await getPanelInfoAPI(iKey); 
 		} 
 		catch(e) {
-			CustomMessage.error(e);
-			console.log("TCL: panelRequestDetailsAPI -> e", e);
+			HttpCodeMessage({status:500, message: e});
 		}
 		const selectedExamRequest = [];
+		// @ts-ignore
 		if(dataPanel.data.examRequests.length < 2 ){ return; } // Empty
+		// @ts-ignore
 		dataPanel.data.examRequests.map(function(valueSelectedExamRequest){
 			selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
 			return selectedExamRequest;
@@ -113,20 +115,18 @@ class PanelFormTemplate extends React.Component {
 
 			try{
 				this.setState({ loading:true });
-				console.log(`thisis panel:`, this.props.panelInfo);
 				// eslint-disable-next-line no-unused-expressions
-				this.props.drawerButton === "Update" ? this.updatePanel(values): this.createPanel(values);
+				this.props.drawerButton === buttonLabels.update ? this.updatePanel(values): this.createPanel(values);
 			}	
 			catch(errCatch) {
-				console.log("TCL: onSubmit -> errCatch", errCatch)
+				HttpCodeMessage({status:500, message: e});
 			}
 				
 		});
 	};
 
 	createPanel = async (fieldValues) => {
-		console.log(1);
-		const apiBody = {
+		const payload = {
 			panelRequestName: fieldValues.panel_name,
 			panelRequestCode: fieldValues.panel_code,
 			panelRequestIntegrationCode: fieldValues.panel_integration_code,
@@ -134,13 +134,14 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
-		const response = await createdPanelAPI(apiBody);
-    console.log("TCL: PanelFormTemplate -> createPanel -> response", response)
+		const response = await createdPanelAPI(payload);
 
+		// @ts-ignore
 		if(response.status === 201){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
-				message: 'Successfully created! Reloading page...',
+				message: messagePrompts.successCreatePanel,
+				// @ts-ignore
 				status: response.status,
 				duration: 3, 
 				onClose: () => window.location.reload() 
@@ -150,7 +151,7 @@ class PanelFormTemplate extends React.Component {
 	}
 
 	updatePanel = async (fieldValues) => {
-		const apiBody = {
+		const payload = {
 			panelRequestID: fieldValues.panel_id,
 			panelRequestName: fieldValues.panel_name,
 			panelRequestCode: fieldValues.panel_code,
@@ -159,16 +160,14 @@ class PanelFormTemplate extends React.Component {
 			examRequests: this.state.selectedExamRequest
 		}
 
-		console.log('apiBody', apiBody);
+		const response = await updatePanelListAPI(payload);
 
-		const response = await updatedPanelListAPI(apiBody);
-
-		console.log('fieldValues =>', typeof(fieldValues));
-
+		// @ts-ignore
 		if(response.status === 200){
 			this.setState({ loading:false });
 			const httpMessageConfig = {
-				message: 'Update successful! Reloading page...',
+				message: messagePrompts.successUpdatePanel,
+				// @ts-ignore
 				status: response.status,
 				duration: 3, 
 				onClose: () => window.location.reload() 
@@ -184,131 +183,113 @@ class PanelFormTemplate extends React.Component {
 		  loading: true,
 		});
 		if (data.length > 14) {
-		  console.log('Infinite List loaded all');
 		  this.setState({
-			hasMore: false,
-			loading: false,
+				hasMore: false,
+				loading: false,
 		  });
-		  
 		}
-	  };
+	};
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const { panelInfo } = this.props;
+		const { panelInfo, drawerButton } = this.props;
 
 		return(
-			<div className="panel-form"> 
+			<div> 
 				<AntForm onSubmit={this.onSubmit}>
-					<AntForm.Item label="PANEL ID" className={panelInfo ? null : "hide"}>
-						{getFieldDecorator('panel_id', {
-							initialValue: panelInfo.key
-						})(
-							<AntInput disabled />
-						)}	
-					</AntForm.Item>
-					<AntForm.Item label="PANEL NAME">
-						{getFieldDecorator('panel_name', {
-							initialValue: panelInfo.panel_name,
-							rules: [{ required: true, message: 'Please input panel name!' }],
-						})(
-							<AntInput />
-						)}	
-					</AntForm.Item>
-					<AntForm.Item label="PANEL CODE">
-						{getFieldDecorator('panel_code', {
-							initialValue: panelInfo.code,
-							rules: [{ required: true, message: 'Please input panel code!' }],
-						})(
-							<AntInput />
-						)}	
-					</AntForm.Item>
-					<AntForm.Item label="PANEL INTEGRATION CODE">
-						{getFieldDecorator('panel_integration_code', {
-							initialValue: panelInfo.integration_code,
-							rules: [{ required: true, message: 'Please input panel integration code!' }],
-						})(
-							<AntInput />
-						)}	
-					</AntForm.Item>
-					<AntForm.Item label="STATUS">
-						{getFieldDecorator('panel_status', {
-							valuePropName: 'checked',
-							initialValue: panelInfo ? ( panelInfo.status === 1 ) : true
-						})(
-							<AntSwitch
-								checkedChildren="Enable"
-								unCheckedChildren="Disable"
-								// checked={panelInfo ? panelInfo.status : true}
-							/>
-						)}	
-					</AntForm.Item>
-					<AntForm.Item label="EXAM REQUESTS">
-						{ this.state.examRequestValidation ? (
-							<AntAlert
-								message="Please select exam request!"
-								type="error"
-							/> 
-							) : null
-						}
-						{/* <AntTransfer
-							dataSource={this.state.examRequestData}
-							titles={['Select', 'Selected']}
-							targetKeys={this.state.selectedExamRequest}
-							showSearch
-							filterOption={this.transferFilterOption}
-							onChange={this.transferHandleChange}
-							render={item => item.title}
-						/> */}
+					<section style={{ marginBottom: 50 }}>
+						<AntForm.Item label={fieldLabels.panel_id} className={panelInfo ? null : "hide"}>
+							{getFieldDecorator('panel_id', {
+								initialValue: panelInfo.key
+							})(
+								<AntInput disabled />
+							)}	
+						</AntForm.Item>
+						<AntForm.Item label={fieldLabels.panel_name}>
+							{getFieldDecorator('panel_name', {
+								initialValue: panelInfo.panel_name,
+								rules: fieldRules.panel_name,
+							})(
+								<AntInput />
+							)}	
+						</AntForm.Item>
+						<AntForm.Item label={fieldLabels.panel_code}>
+							{getFieldDecorator('panel_code', {
+								initialValue: panelInfo.code,
+								rules: fieldRules.panel_code,
+							})(
+								<AntInput />
+							)}	
+						</AntForm.Item>
+						<AntForm.Item label={fieldLabels.panel_integration_code}>
+							{getFieldDecorator('panel_integration_code', {
+								initialValue: panelInfo.integration_code,
+								rules: fieldRules.panel_integration_code,
+							})(
+								<AntInput />
+							)}	
+						</AntForm.Item>
+						<AntForm.Item label={fieldLabels.panel_status}>
+							{getFieldDecorator('panel_status', {
+								valuePropName: 'checked',
+								initialValue: panelInfo ? ( panelInfo.status === 1 ) : true
+							})(
+								<AntSwitch
+									checkedChildren="ENABLE"
+									unCheckedChildren="DISABLE"
+									// checked={panelInfo ? panelInfo.status : true}
+								/>
+							)}	
+						</AntForm.Item>
+						<AntForm.Item label="EXAM REQUESTS">
+							{ this.state.examRequestValidation ? (
+								<AntAlert
+									message="Please select exam request!"
+									type="error"
+								/> 
+								) : null
+							}
 							<div className="panel-infinite-container">
-							<InfiniteScroll 
-							initialLoad={false}
-							loadMore={this.handleInfiniteOnLoad}
-							pageStart={0}
-							hasMore={!this.state.loading && this.state.hasMore}
-							useWindow={false}
-							>
-								<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
-									<AntList 
-									itemLayout="vertical" 
-									dataSource={this.state.examRequestData}
-									renderItem={item=>(
-										<AntList.Item key={item.key}>
-											<AntCheckbox value={item.key}>
-												{item.title}
-											</AntCheckbox>
-										</AntList.Item>
-									)}
-									>
-										{this.state.loading && this.state.hasMore && (
-										<div className="panel-loading-container">
-											<AntSpin />
-										</div>
-										)}
-									</AntList>
-								</AntCheckbox.Group>
-							</InfiniteScroll>
+								<InfiniteScroll 
+									initialLoad={false}
+									loadMore={this.handleInfiniteOnLoad}
+									pageStart={0}
+									hasMore={!this.state.loading && this.state.hasMore}
+									useWindow={false}
+								>
+									<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
+										<AntList 
+											itemLayout="vertical" 
+											dataSource={this.state.examRequestData}
+											renderItem={item=>(
+												<AntList.Item key={item.key}>
+													<AntCheckbox value={item.key}>
+														{item.title}
+													</AntCheckbox>
+												</AntList.Item>
+											)}
+										>
+											{this.state.loading && this.state.hasMore && (
+											<div className="panel-loading-container">
+												<AntSpin />
+											</div>
+											)}
+										</AntList>
+									</AntCheckbox.Group>
+								</InfiniteScroll>
 							</div>
-     </AntForm.Item>
-					<div
-						style={{
-							position: 'absolute',
-							left: 0,
-							bottom: 0,
-							width: '100%',
-							borderTop: '1px solid #e9e9e9',
-							padding: '10px 16px',
-							background: '#fff',
-							textAlign: 'right'
-						}}
-					>   
-						<AntButton style={{ marginRight: 8 }} onClick={this.props.onCancel}>
-							Cancel
-						</AntButton>
-						<AntButton type="primary" htmlType="submit" loading={this.state.loading}>
-							{this.props.drawerButton}
-						</AntButton>
-					</div>
+						</AntForm.Item>
+					</section>	
+					<section className="drawerFooter">
+						<div>
+							<AntButton shape="round" style={{ marginRight: 10 }} onClick={this.props.onCancel}>
+								{buttonLabels.cancel}
+							</AntButton>
+							<AntButton type="primary" shape="round" htmlType="submit" loading={this.state.loading} style={{ margin: 10 }}>
+								{drawerButton}
+							</AntButton>
+						</div>
+					</section>
 				</AntForm>
 			</div>
 		);
@@ -317,11 +298,15 @@ class PanelFormTemplate extends React.Component {
 
 PanelFormTemplate.propTypes = {
 	panelInfo: PropTypes.object,
-	drawerButton: PropTypes.string.isRequired
+	drawerButton: PropTypes.string.isRequired,
+	form: PropTypes.object,
+	onCancel: PropTypes.func
 }
 
 PanelFormTemplate.defaultProps = {
-	panelInfo: null
+	panelInfo: null,
+	form() { return null},
+	onCancel() { return null}
 }
 
 const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));

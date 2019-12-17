@@ -1,17 +1,20 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Typography, Button, Icon } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import { Row, Col, Button, Icon } from 'antd';
+
+// CUSTOM
+import TablePager from 'shared_components/search_pager/pager';
 import Message from 'shared_components/message';
-
-import ExamTable from './table';
-import AddForm from './add_form';
-import UpdateForm from './update_form';
+import PageTitle from 'shared_components/page_title';
+import fetchSpecimens from 'services/settings/specimen';
+import { fetchExamRequests } from 'services/shared/examRequest';
+import fetchSection from 'services/shared/section';
+import ExamTable from './search_table';
+import AddForm from './add_panel';
+import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
-
-import { fetchSection, fetchSpecimens, fetchExamRequest } from './api_repo';
-
-const { Title } = Typography;
+import { moduleTitle, messages, placeHolders, labels, tablePageSize, buttonNames } from './settings';
 
 const SecondarySection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -30,7 +33,7 @@ class LabExamRequest extends React.Component {
 		selectedSpecimenId: null,
 		isInitializing: true,
 		isLoading: false,
-		pageSize: 5,
+		pageSize: tablePageSize,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
 		examRequests: [],
@@ -62,11 +65,11 @@ class LabExamRequest extends React.Component {
 	}
 	
 	onSuccessCreateExamReq = () => {
-		Message.success({ message: 'Exam request successfully updated.' });
+		Message.success({ message: messages.updateSuccess });
 
 		this.setState({ isLoading: true, isShowAddForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -76,11 +79,11 @@ class LabExamRequest extends React.Component {
 	}
 
 	onSuccessUpdateExamReq = () => {
-		Message.success({ message: 'Exam request successfully updated.' });
+		Message.success({ message: messages.updateSuccess });
 
 		this.setState({ isLoading: true, isShowUpdateForm: false }, async() => {
 			const { selectedSpecimenId: specimenId, selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -92,7 +95,7 @@ class LabExamRequest extends React.Component {
 	onChangeSection = async(sectionId) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
 			const { selectedSpecimenId: specimenId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);		
+			const examRequests = await fetchExamRequests(sectionId, specimenId);		
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
@@ -105,7 +108,7 @@ class LabExamRequest extends React.Component {
 	onChangeSpecimen = (specimenId) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
 			const { selectedSectionId: sectionId } = this.state;
-			const examRequests = await fetchExamRequest(sectionId, specimenId);
+			const examRequests = await fetchExamRequests(sectionId, specimenId);
 			
 			this.setState({ 
 				examRequests,
@@ -134,7 +137,7 @@ class LabExamRequest extends React.Component {
 	render() {
 		const { 
 			pageSize, 
-			examRequests, 
+			examRequests,
 			ddSpecimens, 
 			ddSections, 
 			isShowAddForm, 
@@ -151,7 +154,7 @@ class LabExamRequest extends React.Component {
 				<Col span={10}>
 					<DropDown 
 						size="small"
-						placeholder="Filter by Specimen"
+						placeholder={placeHolders.specimenDropdown}
 						content={ddSpecimens} 
 						disabled={selectedSectionId == null}
 						onChange={this.onChangeSpecimen}
@@ -172,7 +175,7 @@ class LabExamRequest extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId == null}
 				>
-					<Icon type="plus" /> Add Exam Request
+					<Icon type="plus" />{buttonNames.addExam}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -181,11 +184,11 @@ class LabExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Exam Request</Title>
+					<PageTitle pageTitle={moduleTitle} />
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
-							label="SECTION" 
-							placeholder="Select Section"
+							label={labels.sectionLabel} 
+							placeholder={placeHolders.sectionDropdown}
 							content={ddSections} 
 							onChange={this.onChangeSection}
 							value={selectedSectionId}

@@ -1,0 +1,14 @@
+.ant-form-item-label {
+  line-height: 0.8em !important;
+  font-weight: bold;
+}
+
+.ant-btn-round {
+  font-size: 14px !important;
+}
+
+.searchLabTestResultTable .ant-table-thead > tr > th {
+  background-color: #8a73f9!important;
+  color: #ffffff;
+  text-transform: uppercase;
+}

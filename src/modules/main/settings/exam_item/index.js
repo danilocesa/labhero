@@ -1,17 +1,19 @@
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Button, Icon, Row, Col } from 'antd';
-import TablePager from 'shared_components/table_pager';
-import Message from 'shared_components/message';
+import { Button, Icon, Row, Col } from 'antd';
 
+// CUSTOM
+import TablePager from 'shared_components/search_pager/pager';
+import PageTitle from 'shared_components/page_title';
+import HttpCodeMessage from 'shared_components/message_http_status';
 import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
-
 import { fetchSections, fetchSpecimens, fetchExamitems } from './api_repo';
+import {moduleTitle, tablePageSize, messagePrompts, buttonNames} from './settings';
 
-const { Title } = Typography;
 
 const ActionSection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -30,7 +32,7 @@ class ExamItems extends React.Component {
 		isLoading: false,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
-		pageSize: 10,
+		pageSize: tablePageSize,
 		examItems: [],
 		ddSections: [],
 		ddSpecimens: [],
@@ -101,22 +103,22 @@ class ExamItems extends React.Component {
 		this.setState({ isLoading: true, isShowAddForm: false }, async () => {
 			const { selectedSectionId: sectionId, selectedSpecimenId: specimenId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenId);
-
 			this.setState({ examItems, isLoading: false });
 		});
 
-		Message.success({ message: 'Exam item successfully created.' });
+		// @ts-ignore
+		HttpCodeMessage({ status:this.state.examItems.status, message: messagePrompts.successCreatedExamItems });
 	}
 
 	onSuccessUpdateExamItem = () => {
 		this.setState({ isLoading: true, isShowUpdateForm: false }, async () => {
 			const { selectedSectionId: sectionId, selectedSpecimenId: specimenId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenId);
-
 			this.setState({ examItems, isLoading: false });
 		});
 
-		Message.success({ message: 'Exam item successfully updated.' });
+		// @ts-ignore
+		HttpCodeMessage({ status:this.state.examItems.status, message: messagePrompts.successCreatedExamItems });
 	}
 
 	render() {
@@ -157,7 +159,7 @@ class ExamItems extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<Icon type="plus" /> Add Exam Items
+					<Icon type="plus" /> {buttonNames.addExamItem}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -166,7 +168,7 @@ class ExamItems extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Title level={3}>Exam Items</Title>
+					<PageTitle pageTitle={moduleTitle} />
 					<Row style={{ marginTop: 50 }}>
 					<DropDown 
 						label="SECTION"

@@ -1,377 +1,265 @@
+// LIBRARY
 import React from 'react';
-import { Row, Col, Switch, Typography, Form, Input, Select, Checkbox, Table, Icon, Button } from 'antd';
+import { Col, Switch, Typography, Form, Input, Select, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import axiosCall from 'services/axiosCall';
-import { apiUserAccount, apiPOSTMethod, apiPutMethod, apiGetMethod } from 'shared_components/constant-global';
+
+// CUSTOM
+import {createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
+import {getAllUserTypesAPI} from 'services/settings/user_maintenance/userType';
+import { drawerAdd, drawerUpdate, labels as gLabels, errorMessages, buttonLabels, fieldLabels } from '../settings';
+
+// CSS
 import './useraccountform.css';
 
 const { Text } = Typography;
 const { Option } = Select;
 
 const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 },
-    },
+	labelCol: {
+		xs: { span: 24 },
+		sm: { span: 8 },
+	},
+	wrapperCol: {
+		xs: { span: 24 },
+		sm: { span: 16 },
+	},
 };
-
-const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
-    },
-};
-
-const columns = [
-    {
-        title: 'SECTION',
-        dataIndex: 'section',
-        key: 'section',
-        width: '25%'
-    },
-    {
-        title: 'SORT',
-        dataIndex: 'sort',
-        key: 'sort',
-        width: '25%'
-    },
-    {
-        title: 'INSTRUMENT',
-        dataIndex: 'instrument',
-        key: 'instrument',
-        width: '25%'
-    },
-    {
-        title: 'VIEW ONLY',
-        dataIndex: 'viewOnly',
-        key: 'viewOnly',
-        width: '13%'
-    },
-    {
-        title: <Icon type="delete" theme="filled" />,
-        dataIndex: 'deleteRow',
-        key: 'deleteRow',
-        width: '13%'
-    },
-]
-
-const selectSection = (
-    <Select placeholder="Select Section">
-        <Option value="hema">HEMA</Option>
-        <Option value="chem">CHEM</Option>
-        <Option value="immu">IMMU</Option>
-    </Select>
-)
-
-const checkBoxViewOnly = (
-    <Checkbox disabled />
-)
-
-const dataSource = [
-    {
-        section: selectSection,
-        sort: '',
-        instrument: '',
-        viewOnly: checkBoxViewOnly,
-        deleteRow: '',
-        key: 0,
-    }
-]
 
 class UserAccountForm extends React.Component {
-    constructor(props) {
-        super(props);
+	constructor(props) {
+		super(props);
 
-        this.state = {
-            confirmDirty: false,
-        };
-    }
+		this.state = {
+			confirmDirty: false,
+			userTypeList: []
+		};
+	}
+	
+	async componentDidMount(){
+		const response = await getAllUserTypesAPI();
+		this.setState({
+			// @ts-ignore
+			userTypeList: response.data
+		})
+	}
 
-    componentWillUnmount(){
-        const { form } = this.props;
-        form.resetFields();
-    }
+	componentWillUnmount(){
+		const { form } = this.props;
+		form.resetFields();
+	}
 
-    async fetchUserTypes(){
-		await axiosCall({
-            url: 'UserType',
-            method: apiGetMethod,
-        }).then(userType =>{
-            this.setState({
-                user_types: userType.data,
-            });
-        });
-    }
+	handleSubmit = (event) => {
+		const { form, drawerButton } = this.props;
 
-    handleSubmit = (event) => {
-        const { form, drawerButton } = this.props;
-        const v_method = (drawerButton === 'Add') ? apiPOSTMethod : apiPutMethod;
+		event.preventDefault();
+		form.validateFields( (err, values) => {
+			if (!err) {
+				const vData = {
+					userName : values.userName,
+					userTypeID : values.userTypeID,
+					givenName : values.givenName,
+					lastName : values.lastName,
+					middleName : values.middleName,
+					password : values.password,
+					registryNumber : values.registration_no,
+					registryValidityDate: values.registration_validity,
+				};
 
-        event.preventDefault();
-        form.validateFields( (err, values) => {
-             if (!err) {
-                 const v_data = {
-                    userName : values.userName,
-                    userTypeID : values.userTypeID,
-                    givenName : values.givenName,
-                    lastName : values.lastName,
-                    middleName : values.middleName,
-                    password : values.password,
-                 };
-                this.handleApi({method: v_method, url: apiUserAccount, data: v_data});
-             }
-          });
-    }
+				if(drawerButton === drawerUpdate ){
+						vData.userID = values.userID;
+				}
+				
+				if(drawerButton === drawerAdd){
+					createUserAccountAPI(vData)
+				} else {
+					updateUserAccountAPI(vData)
+				}
+				window.location.reload();
+			}
+		});
+	}
 
-    handleApi = async (param) => {
+	compareToFirstPassword = (rule, value, callback) => {
+		const { form } = this.props;
+		if (value && value !== form.getFieldValue('password')) {
+			callback(errorMessages.password.doesNotMatch);
+		} else {
+			callback();
+		}
+	};
 
-        await axiosCall({
-            method: param.method,
-            url: param.url,
-            data: param.data,
-            headers: {
-                'content-type': 'application/json',
-                'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
-            }
-        }).finally(function(){
-            window.location.reload();
-        }).catch(e=>{
-            console.log('TCL -> userAccountForm -> submit -> error', e);
-        });
-    }
+	validateToNextPassword = (rule, value, callback) => {
+		const { form } = this.props;
+		if (value && this.state.confirmDirty) {
+			form.validateFields(['repeat_password'], { force: true });
+		}
+		callback();
+	};
 
-    compareToFirstPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && value !== form.getFieldValue('password')) {
-          callback('Two passwords does not match!');
-        } else {
-          callback();
-        }
-      };
+	render() {
+		const { getFieldDecorator } = this.props.form;
+		const { patientInfo, drawerButton } = this.props;
+		const {userTypeList } = this.state;
 
-    validateToNextPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && this.state.confirmDirty) {
-          form.validateFields(['repeat_password'], { force: true });
-        }
-        callback();
-      };
+		const UserTypeOptions = userTypeList.map(userType => (
+			<Option value={userType.userTypeID} key={userType.userTypeID}>
+				{userType.userTypeName}
+			</Option>
+		));
+		 
+		return(
+			<div>
+				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+					<section style={{ height:'50px' }}>
+						<Col span={24} style={{ textAlign: "right" }}>
+							<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
+							<Switch defaultChecked  />
+						</Col>
+					</section>
+					<section style={{ marginBottom: 50 }}>
+						<Col span={12}>
+							{/* PERSONAL INFORMATION */}
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{gLabels.personalInfoLabel}</Text>
+								</div>
+								<Form.Item label={fieldLabels.userID}>
+									{
+										getFieldDecorator('userID',{
+											initialValue: patientInfo.userID,
+										})(<Input disabled />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.firstName}>
+									{getFieldDecorator('givenName', {
+										initialValue: patientInfo.givenName,
+										rules: [{ required: true, message: errorMessages.requiredField }]
+									})(
+										<Input />
+									)}	
+								</Form.Item>
+								<Form.Item label={fieldLabels.middleName}>
+									{
+										getFieldDecorator('middleName',{
+											initialValue: patientInfo.middleName,
+											rules: [{ required: true, message: errorMessages.requiredField}]
+										})(<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.lastName}>
+									{
+										getFieldDecorator('lastName',{
+											initialValue: patientInfo.lastName,
+											rules: [{ required: true, message: errorMessages.requiredField}]
+										})(<Input />)
+									}
+								</Form.Item>
+							</div>
 
-    isUpdated = () =>{
-        if(this.props.drawerButton === "Update"){
-            return true;
-        }else{
-            return false;
-        }
-    }
+							{/* ACCOUNT INFORMATION */}
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{gLabels.accountInfoLabel}</Text>
+								</div>
 
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        const { patientInfo } = this.props;
-        return(
-            <div>
-                <Row gutter={40}>
-                    <Col span={24} style={{ textAlign: "right" }}>
-                        <Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-                        <Switch defaultChecked  />
-                    </Col>
-                    <div className="user-form">
-                        <Form {...formItemLayout} onSubmit={this.handleSubmit} >
-                            <Col span={12}>
-                                {/* PERSONAL INFORMATION */}
-                                <div className="personalInfo">
-                                    <div className="form-title">
-                                        <Text strong>Personal Information</Text>
-                                    </div>
-                                    <Form.Item label="USERID">
-                                        {
-                                            getFieldDecorator('userID',{
-                                                initialValue: patientInfo.userID,
-                                            })(<Input disabled />)
-                                        }
-                                    </Form.Item>
+								<Form.Item label={fieldLabels.username}>
+									{
+										getFieldDecorator('userName',{
+											initialValue: patientInfo.userName,
+											rules: [{ required: true, message: errorMessages.requiredField}],
+										})(
+										<Input />)
+									}
+								</Form.Item>
 
-                                    <Form.Item label="FIRST NAME">
-                                        {getFieldDecorator('givenName', {
-                                            initialValue: patientInfo.givenName,
-                                        	rules: [{ required: true, message: "This field is required" }]
-                                        })(
-                                        	<Input />
-                                        )}	
-                                    </Form.Item>
+								<Form.Item label={fieldLabels.password}>
+									{
+										getFieldDecorator('password',{
+											initialValue: patientInfo.password,
+											rules: [
+												{ required: true, message: errorMessages.requiredField},
+												{ validator: this.validateToNextPassword}
+											]
+										})(
+										<Input.Password />)
+									}
+								</Form.Item>
 
-                                    <Form.Item label="MIDDLE NAME">
-                                        {
-                                            getFieldDecorator('middleName',{
-                                                initialValue: patientInfo.middleName,
-                                                rules: [{ required: true, message: "This field is required"}]
-                                            })(<Input />)
-                                        }
-                                    </Form.Item>
-                                    <Form.Item label="LAST NAME">
-                                        {
-                                            getFieldDecorator('lastName',{
-                                                initialValue: patientInfo.lastName,
-                                                rules: [{ required: true, message: "This field is required"}]
-                                            })(<Input />)
-                                        }
-                                    </Form.Item>
-                                </div>
-
-                                {/* ACCOUNT INFORMATION */}
-                                <div className="personalInfo">
-                                    <div className="form-title">
-                                        <Text strong>Account Information</Text>
-                                    </div>
-
-                                    <Form.Item label="USERNAME">
-                                        {
-                                            getFieldDecorator('userName',{
-                                                initialValue: patientInfo.userName,
-                                                rules: [{ required: true, message: "This field is required"}],
-                                            })(
-                                            <Input />)
-                                        }
-                                    </Form.Item>
-
-                                    <Form.Item label="PASSWORD">
-                                        {
-                                            getFieldDecorator('password',{
-                                                initialValue: patientInfo.password,
-                                                rules: [
-                                                    { required: true, message: "This field is required"},
-                                                    { validator: this.validateToNextPassword}
-                                                ]
-                                            })(
-                                            <Input.Password />)
-                                        }
-                                    </Form.Item>
-
-                                    <Form.Item label="REPEAT PASSWORD">
-                                        {
-                                            getFieldDecorator('repeat_password',{
-                                                initialValue: patientInfo.password,
-                                                rules:[
-                                                    { required: true, message: "This field is required" },
-                                                    { validator: this.compareToFirstPassword }
-                                                ]
-                                            })(
-                                            <Input.Password />)
-                                        }
-                                    </Form.Item>
-                                </div>
-                            </Col>
-                            <Col span={12}>
-                                <div className="personalInfo">
-                                    <div className="form-title">
-                                        <Text strong>Other Information</Text>
-                                    </div>
-
-                                    <Form.Item label="AUTOLOCK (MINUTES)">
-                                        {
-                                            getFieldDecorator('autolock_min')(
-                                            <Input />)
-                                        }
-                                    </Form.Item>
-
-                                    <Form.Item label="REGISTRATION NO.">
-                                        {
-                                            getFieldDecorator('registration_no')(
-                                            <Input />)
-                                        }
-                                    </Form.Item>
-
-                                    <Form.Item label="REGISTRATION VALIDITY">
-                                        {
-                                            getFieldDecorator('registration_validity')(
-                                            <Input />)
-                                        }
-                                    </Form.Item>
-                                    <Form.Item label="USER RIGHTS">
-                                        {
-                                            getFieldDecorator('userTypeID',{ 
-                                                initialValue: patientInfo.userTypeID,
-                                                rules: [{ required: true, message: "This field is required"}],
-                                            })(<Select>
-                                                <Option value={1}>Admin</Option>
-                                                <Option value={2}>Lab Admin</Option>
-                                                <Option value={3}>Med Tech</Option>
-                                                <Option value={4}>Encoder</Option>
-                                                <Option value={5}>Guest</Option>
-                                                {/* {user_type_options} */}
-                                            </Select>)
-                                        }
-                                    </Form.Item>
-                                    <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        {
-                                            getFieldDecorator('allow_add_edit')(
-                                            <Checkbox>
-                                                Allow to add and/or edit users
-                                            </Checkbox>)
-                                        }
-                                    </Form.Item>
-                                    <Form.Item className="checkboxUser" {...tailFormItemLayout}>
-                                        {
-                                            getFieldDecorator('allow_printing')(
-                                            <Checkbox>
-                                                Allow printing
-                                            </Checkbox>)
-                                        }
-                                    </Form.Item>
-                                </div>
-                            </Col>
-                            <Col span={24} style={{ marginTop: '25px' }}>
-                                <div className="form-title" style={{ paddingLeft: '25px' }}>
-                                    <Text strong>User Department</Text>
-                                </div>
-                            </Col>
-                            <Col span={20} offset={2} className="user-table-drawer">
-                                <Table columns={columns} dataSource={dataSource} pagination={false} />
-                            </Col>
-                            <div
-                                style={{
-                                position: 'absolute',
-                                left: 0,
-                                bottom: 0,
-                                width: '100%',
-                                borderTop: '1px solid #e9e9e9',
-                                padding: '10px 16px',
-                                background: '#fff',
-                                textAlign: 'right',
-                                }}   
-                            >
-                                <Button shape="round" style={{ marginRight: 8 }}>
-                                Cancel
-                                </Button>
-                                <Button type="primary" shape="round" style={{ padding: '0px 20px' }} htmlType="submit">
-                                {this.props.drawerButton}
-                                </Button>
-                            </div>
-                        </Form>
-                    </div>
-                </Row>
-            </div>
-        );
-    }
+								<Form.Item label={fieldLabels.repeatPassword}>
+									{
+										getFieldDecorator('repeat_password',{
+											initialValue: patientInfo.password,
+											rules:[
+												{ required: true, message: errorMessages.requiredField },
+												{ validator: this.compareToFirstPassword }
+											]
+										})(
+										<Input.Password />)
+									}
+								</Form.Item>
+							</div>
+						</Col>
+						<Col span={12}>
+							<div className="form-section">
+								<div className="form-title">
+									<Text strong>{ gLabels.otherInfoLabel }</Text>
+								</div>
+								<Form.Item label={fieldLabels.registrationNo}>
+									{
+										getFieldDecorator('registration_no',{
+											initialValue: patientInfo.registryNumber
+										})(
+										<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.registrationValidity}>
+									{
+										getFieldDecorator('registration_validity',{
+											initialValue: patientInfo.registryValidityDate
+										})(
+										<Input />)
+									}
+								</Form.Item>
+								<Form.Item label={fieldLabels.userRights}>
+									{
+										getFieldDecorator('userTypeID',{ 
+											initialValue: patientInfo.userTypeID,
+											rules: [{ required: true, message: errorMessages.requiredField}],
+										})(
+											<Select>
+												{UserTypeOptions}
+											</Select>
+										)
+									}
+								</Form.Item>
+							</div>
+						</Col>
+					</section>
+					<section className="drawerFooter">
+						<Button shape="round" style={{ marginRight: 8 }}>
+							{buttonLabels.cancel}
+						</Button>
+						<Button type="primary" shape="round" style={{ margin: 10 }} htmlType="submit">
+							{drawerButton}
+						</Button>
+					</section>
+				</Form>
+			</div>
+		);
+	}
 }
 
 UserAccountForm.propTypes = {
-    patientInfo: PropTypes.array.isRequired,
-    drawerButton: PropTypes.string.isRequired
+	patientInfo: PropTypes.array.isRequired,
+	drawerButton: PropTypes.string.isRequired,
+	form: PropTypes.object
 }
 
+UserAccountForm.defaultProps = {
+	form(){ return null; }
+};
+
 const UserAccount = Form.create()(withRouter(UserAccountForm));
-// const UserAccount = Form.create()(UserAccountForm);
 
 export default UserAccount;

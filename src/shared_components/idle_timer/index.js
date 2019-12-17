@@ -1,7 +1,7 @@
 import React from 'react';
 import { notification } from 'antd';
 import IdleTimer from 'react-idle-timer';
-import Auth from 'services/auth';
+import Auth from 'services/login/auth';
 
 
 class IdleTimerComponent extends React.Component {
@@ -38,7 +38,7 @@ class IdleTimerComponent extends React.Component {
 				onIdle={this.onIdle}
 				onAction={this.onAction}
 				debounce={250}
-				timeout={120000} // 60 * 60 * 1000 minutes - seconds - milliseconds
+				timeout={60 * 60 * 1000} // 60 * 60 * 1000 minutes - seconds - milliseconds
 			/>
     )
   }

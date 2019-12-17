@@ -1,11 +1,14 @@
+// LIBRARY
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, InputNumber } from 'antd';
+import { Drawer, Form, Input, Button, Select } from 'antd';
 import PropTypes from 'prop-types';
+
+// CUSTOM
 import DynamicForm from '../dynamic_form';
 import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';
+import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
-import FIELD_RULES from './constant';
-
+// CSS
 import './add_form.css';
 
 const { Option } = Select;
@@ -16,22 +19,6 @@ const DD_VAL_NUMERIC = 'nu';
 const DD_VAL_CHECKBOX = 'cb';
 const DD_VAL_OPTION = 'op';
 const DD_VAL_TEXT_AREA = 'ta';
-
-/** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties}} */
-const styles = { 
-	fullWidth: {
-		width: '100%'
-	},
-	footer: {
-		position: 'absolute', 
-		width: '100%', 
-		bottom: 0, 
-		left: 0,  
-		borderTop: '1px solid #e8e8e8',
-		backgroundColor: '#fff',
-		textAlign: 'right'
-	}
-};
 
 class AddForm extends React.Component {
 	constructor(props) {
@@ -92,6 +79,15 @@ class AddForm extends React.Component {
 					fields.examItemValue = examItemValueParam;
 				} 
 
+				if(selectedRsType === DD_VAL_ALPHA_NUMERIC || 
+					 selectedRsType === DD_VAL_NUMERIC || 
+					 selectedRsType === DD_VAL_TEXT_AREA ) {
+						fields.examItemValue = [{ 
+							examItemValueDefault: 0,
+							examItemValueLabel: fields.examItemTypeDefault
+						}];
+				}
+
 				delete fields.examItemTypeDefault; // We don't need it
 
 				const payload = { 
@@ -131,11 +127,13 @@ class AddForm extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = form;
 	
-		const UnitMeasureOptions = unitOfMeasures.map(unit => (
-			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
-				{unit.unitOfMesureBase}
-			</Option>
-		));
+		const UnitMeasureOptions = unitOfMeasures.map(unit => {
+			return (
+				<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
+					{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
+				</Option>
+			);
+		});
 
 		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
 			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
@@ -144,10 +142,9 @@ class AddForm extends React.Component {
 		));
 		
 
-
 		return (
 			<Drawer
-				title="Add Exam"
+				title={drawerTitle.add}
 				width="400"
 				placement="right"
 				closable
@@ -156,72 +153,70 @@ class AddForm extends React.Component {
 			>
 				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
 					<section style={{ marginBottom: 50 }}>
-						<Form.Item label="Exam Item Name">
-							{getFieldDecorator('examItemName', { rules: FIELD_RULES.examItemName })(
+						<Form.Item label={fieldLabels.examItemName}>
+							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="Exam Item General Name">
-							{getFieldDecorator('examItemGeneralName', { rules: FIELD_RULES.examItemGeneralName })(
+						<Form.Item label={fieldLabels.examItemGeneralName}>
+							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
 								<Input />
 							)}
 						</Form.Item>
-						<Form.Item label="Exam Item Type">
-							{getFieldDecorator('examItemTypeCode', { rules: FIELD_RULES.examItemType })(
+						<Form.Item label={fieldLabels.examItemTypeCode}>
+							{getFieldDecorator('examItemTypeCode', { rules: fieldRules.examItemType })(
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
 								</Select>
 							)}
 						</Form.Item>
-						{ selectedRsType === DD_VAL_ALPHA_NUMERIC && (
-							<>
-								<Form.Item label="Unit of Measures">
-									{getFieldDecorator('examItemUnitCode', { rules: FIELD_RULES.unitOfMeasure })(
+						{ (selectedRsType === DD_VAL_ALPHA_NUMERIC || selectedRsType === DD_VAL_NUMERIC) && (
+							<React.Fragment>
+								<Form.Item label={fieldLabels.examItemUnitCode}>
+									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
 										<Select>{UnitMeasureOptions}</Select>
 									)}
 								</Form.Item>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault, 
+										initialValue: 1 
+									})(
 										<Input />
 									)}
 								</Form.Item>
-							</>
-						)}
-						{ (selectedRsType === DD_VAL_NUMERIC) && (
-							<>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
-										<InputNumber style={styles.fullWidth} />
-									)}
-								</Form.Item>
-							</>	
+							</React.Fragment>
 						)}
 						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
 							// @ts-ignore
 							<DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
 						)}
 						{ selectedRsType === DD_VAL_TEXT_AREA && (
-							<>
-								<Form.Item label="Default Value">
-									{getFieldDecorator('examItemTypeDefault', { rules: FIELD_RULES.examItemTypeDefault })(
+							<React.Fragment>
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault,
+										initialValue: 1 
+									})(
 										<TextArea />
 									)}
 								</Form.Item>
-							</>	
+							</React.Fragment>	
 						)}
-						<Form.Item label="Integration Code">
-							{getFieldDecorator('examItemIntegrationCode', { rules: FIELD_RULES.integrationCode })(
+						<Form.Item label={fieldLabels.examItemIntegrationCode}>
+							{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
 								<Input />
 							)}
 						</Form.Item>
 					</section>
-					<section style={styles.footer}>
+					<section className="drawerFooter">
 						<div>
 							<Button 
 								shape="round" 
 								style={{ margin: 10 }}
+								onClick={onClose}
 							>
-								CANCEL
+								{buttonNames.cancel}
 							</Button>
 							<Button 
 								shape="round" 
@@ -230,7 +225,7 @@ class AddForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10 }}
 							>
-								CREATE
+								{buttonNames.create}
 							</Button>
 						</div>
 					</section>

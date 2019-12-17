@@ -1,7 +1,14 @@
 /* eslint-disable react/prop-types */
+
+// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Input, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
+
+// CUSTOM
+import {globalRequiredMessage} from 'shared_components/constant-global';
+import {buttonNames} from '../settings';
+
 
 let id = 0;
 
@@ -142,10 +149,9 @@ class DynamicForm extends React.Component {
 									{
 										required: true,
 										whitespace: true,
-										message: 'This field is required'
+										message: globalRequiredMessage
 									},
 								],
-								// initialValue: field.key.examItemValueLabel,
 							})(<Input />)}
 						</Col>
 						</Form.Item>
@@ -160,7 +166,7 @@ class DynamicForm extends React.Component {
 				{ OptionFormItems }
 				<Form.Item>
 					<Button type="dashed" onClick={this.add} style={{ width: '100%' }}>
-						<Icon type="plus" /> Add field
+						<Icon type="plus" /> {buttonNames.addField}
 					</Button>
 				</Form.Item>
 			</div>	

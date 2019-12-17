@@ -6,12 +6,14 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Table as AntTable, Spin } from 'antd';
-
 import { 
 	CLR_STEP_PROGRESS, 
 	CLR_SEARCHED_ID,
-	CLR_SEARCHED_NAME 
-} from 'modules/main/lab_request/create/steps/constants'; 
+	CLR_SEARCHED_NAME,
+	REQUEST_TYPE,
+	MODULE_PROFILE
+} from 'modules/main/lab_request/steps/constants'; 
+import {globalTableSize} from '../constant-global';
 
 // CSS
 import './table.css';
@@ -28,7 +30,9 @@ class SearchPatientTable extends React.Component {
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
 			sessionStorage.setItem(CLR_SEARCHED_ID, SearchedPatientId);
 			sessionStorage.setItem(CLR_SEARCHED_NAME, SearchedPatientName);
-			
+			sessionStorage.setItem(REQUEST_TYPE, this.props.requestType);
+			sessionStorage.setItem(MODULE_PROFILE, this.props.moduleProfile);
+
 			history.push(redirect, { record });
 		}
 		else  {
@@ -89,6 +93,7 @@ class SearchPatientTable extends React.Component {
 				title: 'ADDRESS',
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
+				render: (text,row) => <p>{`${text}, ${row.townName}, ${row.cityMunicipalityName}, ${row.provinceName}`}</p>
 			},
 		];
 
@@ -96,6 +101,7 @@ class SearchPatientTable extends React.Component {
 			<Spin spinning={loading} tip="Loading...">
 				<div className="search-patient-table">
 					<AntTable 
+						size={globalTableSize}
 						pagination={{pageSize}} 
 						columns={columns} 
 						dataSource={data} 
@@ -130,7 +136,9 @@ SearchPatientTable.propTypes = {
 	loading: PropTypes.bool.isRequired,
 	redirectUrl: PropTypes.string.isRequired,
 	SearchedPatientId: PropTypes.string,
-	SearchedPatientName: PropTypes.string
+	SearchedPatientName: PropTypes.string,
+	requestType: PropTypes.number.isRequired,
+	moduleProfile: PropTypes.string.isRequired
 };
 
 SearchPatientTable.defaultProps = {

@@ -7,7 +7,7 @@ import { Dropdown, Menu, Icon, Typography, Avatar, Button } from 'antd';
 
 
 // CUSTOM MODULES
-import auth from 'services/auth';
+import auth from 'services/login/auth';
 // import {userData} from 'shared_components/constant-global';
 // CSS
 import './menu.css';  
