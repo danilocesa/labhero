@@ -2,8 +2,6 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import { Modal, Row, Col, Button } from 'antd';
 
-const yes = 'yes';
-
 class TrackerModal extends React.Component{
 
     handleOk = () =>{
@@ -16,15 +14,11 @@ class TrackerModal extends React.Component{
         return(
             <div>
                 <Modal 
-                    className="save-modal-container" 
-                    centered 
-                    visible={visibility} 
-                    footer={null}
-                    >
-					{/* <Row type="flex" justify="center">
-						<Col>							
-						</Col>
-					</Row> */}
+                className="save-modal-container" 
+                centered 
+                visible={visibility} 
+                footer={null}
+                >
 					<p style={{ textAlign: 'center' }}>
 						Are you sure you wish to proceed?
 					</p>
@@ -37,7 +31,7 @@ class TrackerModal extends React.Component{
                             <Button block onClick={onCancel}>Cancel</Button>
                         </Col>
                     </Row>
-				</Modal>
+                </Modal>
             </div>
         );
     }
