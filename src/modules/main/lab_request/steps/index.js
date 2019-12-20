@@ -34,7 +34,7 @@ class StepsPage extends React.Component {
 }
 
 StepsPage.propTypes ={
-	requestType: PropTypes.number.isRequired,
+	requestType: PropTypes.string.isRequired,
 	moduleProfile: PropTypes.string.isRequired
 }
 
