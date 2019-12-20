@@ -3,12 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Steps, Icon, Row, Col } from 'antd';
 import TrackerModal from './tracker_modal';
+import TrackerSettings from './settings';
 
 // CSS
 import './tracker.css';
 
 const { Step } = Steps;
-
+const { requestTypes } = TrackerSettings;
 
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -19,7 +20,8 @@ class Tracker extends React.Component {
 	};
 	
 	dynamicLink = () => {
-		return (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "/request/create/step" : "/request/edit/step" )
+		const {links} = TrackerSettings;
+		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
 	};
 
 	closeModal = () =>{
@@ -43,7 +45,7 @@ class Tracker extends React.Component {
 			this.openModal();
 		}
 
-		if(this.props.requestType === 'create' && nextSteps < clickedStep){
+		if(this.props.requestType === requestTypes.create && nextSteps < clickedStep){
 			clickedVal = false;
 		}else{
 			this.setState({current: clickedStep});
@@ -53,7 +55,6 @@ class Tracker extends React.Component {
 	}
 
 	handleRedirect = (isClicked, clickedStep) =>{
-		// console.log('TCL -> param', isClicked,clickedStep);
 		const nextSteps =  clickedStep;
 		const targetUrl = `${this.dynamicLink()}/${nextSteps}`;
 		console.log(targetUrl);
@@ -62,29 +63,14 @@ class Tracker extends React.Component {
 		}
 	}
 
+	handleCancelModal = (isCancelled) =>{
+		if(isCancelled){
+			this.closeModal();
+		}
+	}
+
 	render() {
-		const items = [
-			{
-				title: 'Step 1',
-				description: 'Search Patient',
-				icon: 'search'
-			},
-			{
-				title: 'Step 2',
-				description: 'Fill up',
-				icon: 'form'
-			},
-			{
-				title: 'Step 3',
-				description: 'Select Lab Test',
-				icon: 'check-square'
-			},
-			{
-				title: 'Step 4',
-				description: 'Summary',
-				icon: 'idcard'
-			}
-		];
+		const items = TrackerSettings.stepItems;
 		const StepItems = items.map(item => (
 			<Step
 				key={item.title}
@@ -110,7 +96,12 @@ class Tracker extends React.Component {
 						</Steps>
 					</Col>
 				</Row>
-				<TrackerModal onCancel={this.closeModal} onOK={this.handleRedirect} visibility={modalVisibility} current={active || current} />
+				<TrackerModal 
+					onCancel={this.handleCancelModal} 
+					onOK={this.handleRedirect} 
+					visibility={modalVisibility} 
+					current={active || current} 
+				/>
 			</div>
 		);
 	}
