@@ -19,19 +19,14 @@ import { SELECTED_SIDER_KEY } from '../../constant-global';
 import './sider.css';
 
 const { Sider: AntSider } = Layout;
+const { SubMenu } = Menu;
 
 
 class Sider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { selectedKey: '' };
-  }
+	handleMenuClick = ({ key }) => {
+		const selectedKey = key.includes('inventory') ? 9 : key;
 
-	handleMenuClick = (event) => {
-		this.setState({ selectedKey: event.key }, () => {
-			const { selectedKey } = this.state;
-			sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
-		});
+		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
 	}
 
   render() {
@@ -133,12 +128,37 @@ class Sider extends React.Component {
 					}
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
-							<Menu.Item key="9">
-								<Link to="/inventory">
-									<Icon component={InventoryIcon} />
-									<span>INVENTORY</span>
-								</Link>
-							</Menu.Item>
+							<SubMenu
+								key="9"
+								title={(
+									<span>
+											<Icon component={InventoryIcon} />
+											<span>INVENTORY</span>
+									</span>
+								)}
+							>
+								<Menu.Item key="inventory1">
+									<Link to="/inventory/stocks"><span>Stocks</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory2">
+									<Link to="/inventory/transaction"><span>Transactions</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory3">
+									<Link to="/inventory/restock"><span>Restock</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory4">
+									<Link to="/inventory/takeout"><span>Takeout</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory5">
+									<Link to="/inventory/notifications"><span>Notifications</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory6">
+									<Link to="/inventory/itemsetup"><span>Item Setup</span></Link>
+								</Menu.Item>
+								<Menu.Item key="inventory7">
+									<Link to="/inventory/settings"><span>Settings</span></Link>
+								</Menu.Item>
+							</SubMenu>
 						)
 					}
         </Menu>
