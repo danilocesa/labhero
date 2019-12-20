@@ -1,6 +1,9 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Modal, Row, Col, Button } from 'antd';
+import TrackerModalSettings from './settings';
+
+const {labels} = TrackerModalSettings;
 
 class TrackerModal extends React.Component{
 
@@ -9,26 +12,31 @@ class TrackerModal extends React.Component{
         onOK(true, current);
     };
 
+    handleCancel =()=>{
+        const {onCancel} = this.props;
+        onCancel(true);
+    };
+
     render(){
-        const {visibility, onCancel} = this.props;
+        const {visibility} = this.props;
+        const {buttonLabels, prompt} = labels;
         return(
             <div>
                 <Modal 
-                className="save-modal-container" 
+                className="tracker-modal-container" 
                 centered 
                 visible={visibility} 
                 footer={null}
                 >
-					<p style={{ textAlign: 'center' }}>
-						Are you sure you wish to proceed?
+					<p style={{ textAlign: 'center'}}>
+						{prompt}
 					</p>
-                    <Row gutter={[24,16]}>
+                    <Row gutter={16}>
                         <Col span={12}>
-                            <Button type='primary' block onClick={this.handleOk}>OK</Button>                            
+                            <Button type='primary' block onClick={this.handleOk}>{buttonLabels.ok}</Button>                            
                         </Col>
                         <Col span={12}>
-
-                            <Button block onClick={onCancel}>Cancel</Button>
+                            <Button block onClick={this.handleCancel}>{buttonLabels.cancel}</Button>
                         </Col>
                     </Row>
                 </Modal>
@@ -38,10 +46,12 @@ class TrackerModal extends React.Component{
 
 }
 
-// TrackerModal.propTypes = {
-//     path: PropTypes.string.isRequired,
-//     visibility: PropTypes.bool.isRequired,
-// };
+TrackerModal.propTypes = {
+    onOK: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    current: PropTypes.number.isRequired,
+    visibility: PropTypes.bool.isRequired,
+};
 
 
 export default TrackerModal;
