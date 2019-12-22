@@ -52,7 +52,7 @@ class UserMenu extends React.Component {
         </Button>
       </Dropdown>
       );
-    } 
+		} 
     return (
       <Link to="/login">
         <Button className="ant-btn ant-btn-round login-btn">Login</Button>
