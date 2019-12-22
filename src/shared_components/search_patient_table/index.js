@@ -137,8 +137,9 @@ SearchPatientTable.propTypes = {
 	redirectUrl: PropTypes.string.isRequired,
 	SearchedPatientId: PropTypes.string,
 	SearchedPatientName: PropTypes.string,
-	requestType: PropTypes.number.isRequired,
-	moduleProfile: PropTypes.string.isRequired
+	requestType: PropTypes.string,
+	moduleProfile: PropTypes.string
+	// moduleProfile: PropTypes.string.isRequired
 };
 
 SearchPatientTable.defaultProps = {
