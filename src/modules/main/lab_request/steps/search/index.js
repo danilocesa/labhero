@@ -69,10 +69,7 @@ class SearchStep extends React.Component {
 		return (
 			<div>
 				<PageTitle pageTitle={this.dynamicModuleTitle()} />
-				<Tracker 
-					active={0} 
-					requestType={createRequestType}	
-				/>
+				hgfd
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
 						populatePatients={this.populatePatients}
