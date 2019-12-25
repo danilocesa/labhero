@@ -2,7 +2,10 @@ import {globalTableYScroll, globalTableSize, globalRequiredMessage,globalTablePa
 // constant variables, titles strictly implemented and shared within the module.
 
 // Exam Request Variables
-// export const moduleTitle = 'EXAM REQUEST';
+
+export const settings = {
+
+};
 
 export const messages = {
 	updateSuccess : 'Exam request successfully updated.',
@@ -87,11 +90,13 @@ const requestTypes = {
 	edit: 'edit',
 };
 
-const requestlinks = {
+const requestLinks = {
 	create: '/request/create/',
 	edit: '/request/edit/',
 };
 
 // gets the appropriate moduleTitle according to session request type
 export const moduleTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.edit) ? moduleTitles.edit : moduleTitles.create;
-// export const requestTypeLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.edit ) ? requestlinks.edit : requestlinks.create;
+// export const requestTypeLink = 'request';
+
+export default settings;

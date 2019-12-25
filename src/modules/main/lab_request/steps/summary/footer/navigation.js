@@ -38,11 +38,15 @@ class Navigation extends React.Component {
 			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
 		);
 
+		console.log('TCL -> requestTypeLink ', requestTypeLink);
+
+		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create') ? "/request/create/step/3": "/request/edit/step/3";
+
 		return (
 			<div>
 				<Row type="flex" justify="end">
 					<Col>
-						<Link to="/request/create/step/3">
+						<Link to={dynamicLink}>
 							<Text>
 								<u>BACK</u>
 							</Text>

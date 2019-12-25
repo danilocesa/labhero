@@ -22,7 +22,7 @@ class Navigation extends React.Component {
 		sessionStorage.setItem(CLR_SEL_PANEL_CONTENTS, JSON.stringify(selectedPanelContents));
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(4));
 
-		if(sessionStorage.getItem('REQUEST_TYPE')==='create'){
+		if(sessionStorage.getItem('REQUEST_TYPE') ==='create'){
 			history.push('/request/create/step/4');
 		}else{
 			history.push('/request/edit/step/4');
