@@ -391,9 +391,6 @@ class SelectStep extends React.Component {
 		const { restriction } = this;
 		const { requestType } = this.props;
 
-		console.log('TCL->',sessionStorage.getItem("REQUEST_TYPE"));
-		console.log('TCL->',sessionStorage.getItem("MODULE_PROFILE"));
-
 		if(restriction.hasAccess) {
 			return (
 				<div>

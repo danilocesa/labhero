@@ -93,7 +93,6 @@ class EditProfile extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
 		console.log(this.props.patientInfo);
-		console.log("TCL: EditProfile -> render -> getFieldsValue", getFieldsValue())
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
