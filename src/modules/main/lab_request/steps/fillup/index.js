@@ -66,7 +66,7 @@ class FillupStep extends React.Component {
 		
 		// Convert each field's value to uppercase
 		Object.keys(personalInfo).forEach(field => {
-			if(field !== 'emailAdd' && personalInfo[field] !== undefined)
+			if(field !== 'emailAdd' && personalInfo[field] !== undefined && personalInfo[field] !== null )
 				personalInfo[field] = personalInfo[field].toUpperCase();
 		});
 

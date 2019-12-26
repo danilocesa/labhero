@@ -10,6 +10,7 @@ import './tracker.css';
 
 const { Step } = Steps;
 const { requestTypes } = TrackerSettings;
+const {links} = TrackerSettings;
 
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -20,7 +21,6 @@ class Tracker extends React.Component {
 	};
 	
 	dynamicLink = () => {
-		const {links} = TrackerSettings;
 		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
 	};
 

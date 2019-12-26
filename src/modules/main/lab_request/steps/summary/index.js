@@ -8,8 +8,7 @@ import Tracker from '../../tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
-import {moduleTitle} from '../../create/settings'
-
+import { moduleTitle } from '../../../settings/lab_exam_request/settings';
 
 import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
 

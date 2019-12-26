@@ -22,16 +22,21 @@ class Navigation extends React.Component {
 		sessionStorage.setItem(CLR_SEL_PANEL_CONTENTS, JSON.stringify(selectedPanelContents));
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(4));
 
-		history.push('/request/create/step/4');
+		if(sessionStorage.getItem('REQUEST_TYPE') ==='create'){
+			history.push('/request/create/step/4');
+		}else{
+			history.push('/request/edit/step/4');
+		}
 	}
 	
 	render() {
 		const { disabled } = this.props;
+		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create') ? "/request/create/step/2" : "/request/edit/step/2";
 
 		return (
 			<Row style={{ marginTop: 20 }}>
 				<Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
-					<Link to="/request/create/step/2">
+					<Link to={dynamicLink}>
 						<Text>
 							<u>BACK</u>
 						</Text>

@@ -3,7 +3,8 @@
   background: #fafafc !important;
 }
 
-.side-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+.side-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.ant-menu-submenu-selected {
   background-color: transparent !important;
   border-right: 3px solid;
 }

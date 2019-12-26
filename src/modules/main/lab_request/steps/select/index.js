@@ -11,7 +11,7 @@ import SelectTable from './table';
 import Navigation from './navigation';
 
 import { CLR_SEL_EXAMS, CLR_SEL_CONTENTS, CLR_SEL_PANEL_CONTENTS } from '../constants';
-import {moduleTitle} from '../../create/settings';
+import { moduleTitle } from '../../../settings/lab_exam_request/settings';
 
 const ColLayout = {
 	sm: { span: 24 },
