@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 
 // CUSTOM
@@ -12,11 +12,6 @@ import SummaryStep from './summary';
 
 
 class StepsPage extends React.Component {
-	componentDidMount(){
-		sessionStorage.setItem('REQUEST_TYPE', this.props.requestType); // Set request type session
-		sessionStorage.setItem('MODULE_PROFILE', this.props.moduleProfile); // Set module profile session 
-	}
-
 	render() {
 		const requestTypeLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? '/request/create/' : '/request/edit/')
 		return (
@@ -33,10 +28,10 @@ class StepsPage extends React.Component {
 	}
 }
 
-StepsPage.propTypes ={
-	requestType: PropTypes.string.isRequired,
-	moduleProfile: PropTypes.string.isRequired
-}
+// StepsPage.propTypes ={
+// 	requestType: PropTypes.string.isRequired,
+// 	moduleProfile: PropTypes.string.isRequired
+// }
 
 
 export default StepsPage;

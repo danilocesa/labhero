@@ -57,7 +57,6 @@ class Tracker extends React.Component {
 	handleRedirect = (isClicked, clickedStep) =>{
 		const nextSteps =  clickedStep;
 		const targetUrl = `${this.dynamicLink()}/${nextSteps}`;
-		console.log(targetUrl);
 		if(isClicked){
 			window.location.assign(targetUrl);
 		}
