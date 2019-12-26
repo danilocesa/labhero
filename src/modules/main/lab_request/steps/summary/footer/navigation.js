@@ -4,6 +4,7 @@ import { Row, Col, Button, Typography, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 
 import ConfirmationModal from '../confirmation/modal';
+import { requestLinks, requestTypes } from '../../../../settings/lab_exam_request/settings';
 
 const { Text } = Typography;
 
@@ -38,7 +39,7 @@ class Navigation extends React.Component {
 			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
 		);
 
-		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create') ? "/request/create/step/3": "/request/edit/step/3";
+		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? requestLinks.create.step3: requestLinks.edit.step3;
 
 		return (
 			<div>

@@ -8,7 +8,7 @@ import Tracker from '../../tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
-import { moduleTitle } from '../../../settings/lab_exam_request/settings';
+import { moduleTitles, requestTypes } from '../../../settings/lab_exam_request/settings';
 
 import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
 
@@ -32,6 +32,7 @@ class SummaryStep extends React.Component {
 		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		this.setState({ exams, user, otherInfo });
+		console.log('TCL-> sessionRequestType', sessionStorage.getItem('REQUEST_TYPE'));
 	}
 	
 	saveExams = async () => {
@@ -56,6 +57,7 @@ class SummaryStep extends React.Component {
 		const { exams } = this.state;
 		const { restriction } = this;
 		const { requestType } = this.props;
+		const moduleTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
 
 		if(restriction.hasAccess) {
 			return (

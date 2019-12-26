@@ -13,6 +13,8 @@ import {
 	CLR_STEP_PROGRESS
 } from '../../../constants';
 
+import {requestLinks, requestTypes} from '../../../../../settings/lab_exam_request/settings';
+
 class ConfirmationModal extends React.Component {
 	constructor(args) {
 		super(args);
@@ -37,7 +39,11 @@ class ConfirmationModal extends React.Component {
 
 		clearTimeout(this.timer);
 
-		history.push('/request/step/1');
+		if(sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create){
+			history.push(requestLinks.create.step1);
+		}else{
+			history.push(requestLinks.edit.step1);
+		}
 	}
 
 	render() {

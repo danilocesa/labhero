@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 
 // CUSTOM
@@ -9,11 +9,18 @@ import SearchStep from './search';
 import FillupStep from './fillup';
 import SelectStep from './select';
 import SummaryStep from './summary';
+import { requestLinks, requestTypes } from '../../settings/lab_exam_request/settings';
 
 
 class StepsPage extends React.Component {
+
+	componentDidMount(){
+		sessionStorage.setItem('REQUEST_TYPE', this.props.requestType);
+		sessionStorage.setItem('MODULE_PROFILE', this.props.moduleProfile);
+	}
+
 	render() {
-		const requestTypeLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? '/request/create/' : '/request/edit/')
+		const requestTypeLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? requestLinks.create.base : requestLinks.edit.base);
 		return (
 			<div>
 				<Switch>
@@ -28,10 +35,10 @@ class StepsPage extends React.Component {
 	}
 }
 
-// StepsPage.propTypes ={
-// 	requestType: PropTypes.string.isRequired,
-// 	moduleProfile: PropTypes.string.isRequired
-// }
+StepsPage.propTypes ={
+	requestType: PropTypes.string.isRequired,
+	moduleProfile: PropTypes.string.isRequired
+}
 
 
 export default StepsPage;
