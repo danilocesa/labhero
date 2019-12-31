@@ -60,6 +60,12 @@ class SearchPatientTable extends React.Component {
 		// CONSTANTS
 		const columns = [
 			{
+				title: 'PATIENT ID',
+				dataIndex: 'patientID',
+				sorter: getSorter(data, 'patientID'),
+				width: '15%'
+			},
+			{
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
