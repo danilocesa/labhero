@@ -150,7 +150,9 @@ SearchPatientTable.propTypes = {
 
 SearchPatientTable.defaultProps = {
 	SearchedPatientId: '',
-	SearchedPatientName: ''
+	SearchedPatientName: '',
+	requestType: '',
+	moduleProfile: ''
 }
 
 export default withRouter(SearchPatientTable);
