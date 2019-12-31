@@ -1,11 +1,11 @@
-.clr-fillup-form .left-form, .right-form {
-  width: 60%;
+.clr-fillup-form .left-form, .right-form, .center-form {
+  width: 80%;
   max-width: 400px;
 }
 
-.clr-fillup-form .left-form {
+/* .clr-fillup-form .left-form {
   float: right;
-}	
+}  */
 
 .clr-fillup-form .left-form input:not(#emailAdd){
   text-transform: uppercase;

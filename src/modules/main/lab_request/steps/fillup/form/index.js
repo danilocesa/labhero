@@ -160,7 +160,7 @@ class BaseForm extends React.Component {
 			<div style={{ marginTop: 50 }}>
 				<Form className="clr-fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={12}>
-						<Col sm={12} md={11}>
+						<Col sm={7} md={7}>
 							<div className="left-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>PERSONAL INFORMATION</Text>
@@ -259,15 +259,28 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 								</Row>
-								<Row gutter={12}>
-									<Col span={12}>
+								
+							</div>
+						</Col>
+						<Col md={1} style={{ textAlign: 'center' }}>
+							<Divider className="divider" type="vertical" style={{ height: 650 }} />
+						</Col>
+						<Col sm={7} md={7}>
+							<div className="center-form">
+								<div style={{ padding: '10px 0px' }}>
+									<Text strong>LOCATION AND GENDER</Text>
+								</div>
+								<Row>
+									<Col>
 										<ProvinceList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
 											selectedProvince={dummyVal}
 										/>
 									</Col>
-									<Col span={12}>
+								</Row>
+								<Row>
+									<Col>
 										<CityList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
@@ -276,9 +289,8 @@ class BaseForm extends React.Component {
 										/>
 									</Col>
 								</Row>
-								
-								<Row gutter={12}>
-									<Col span={12}>
+								<Row>
+									<Col>
 										<TownList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
@@ -286,16 +298,17 @@ class BaseForm extends React.Component {
 											cityValue={getFieldsValue().city}
 										/>
 									</Col>
-
+								</Row>						
+								<Row>
+									<Col>
+										<HouseAddress 
+											form={form}
+											townValue={getFieldsValue().town}
+											fieldLabel={formLabels.unitFloorBldg}
+											selectedValue={initialPersoValue.address}
+										/>
+									</Col>
 								</Row>
-																
-								<HouseAddress 
-									form={form}
-									townValue={getFieldsValue().town}
-									fieldLabel={formLabels.unitFloorBldg}
-									selectedValue={initialPersoValue.address}
-								/>
-
 								<Form.Item label={formLabels.contactNumber}>
 									{getFieldDecorator('contactNumber', { 
 										rules: FIELD_RULES.contactNumber,
@@ -321,10 +334,10 @@ class BaseForm extends React.Component {
 								</Form.Item>
 							</div>
 						</Col>
-						<Col md={2} style={{ textAlign: 'center' }}>
+						<Col md={1} style={{ textAlign: 'center' }}>
 							<Divider className="divider" type="vertical" style={{ height: 650 }} />
 						</Col>
-						<Col sm={12} md={11}>
+						<Col sm={7} md={7}>
 							<div className="right-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>

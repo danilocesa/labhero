@@ -1,3 +1,5 @@
+import { requestLinks } from '../../settings/lab_exam_request/settings';
+
 export const trackerSettings={
     requestTypes: {
         create: 'create'
@@ -25,8 +27,8 @@ export const trackerSettings={
         }
     ],
     links: {
-        createRequest : "/request/create/step",
-        editRequest : "/request/edit/step",
+        createRequest : `${requestLinks.create.base}step`,
+        editRequest : `${requestLinks.edit.base}step`,
     }
 
 }

@@ -8,8 +8,8 @@ const {labels} = TrackerModalSettings;
 class TrackerModal extends React.Component{
 
     handleOk = () =>{
-        const {onOK, current} = this.props;
-        onOK(true, current);
+        const {onOK} = this.props;
+        onOK(true);
     };
 
     handleCancel =()=>{
@@ -49,7 +49,6 @@ class TrackerModal extends React.Component{
 TrackerModal.propTypes = {
     onOK: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    current: PropTypes.number.isRequired,
     visibility: PropTypes.bool.isRequired,
 };
 
