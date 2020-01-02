@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:10.15.1
+image: node:10.15.3
 
 pipelines:   
   tags:                         # add the 'tags' section
@@ -11,10 +11,12 @@ pipelines:
       - step:
           name: Deploy For Testing
           deployment: test
+          caches:
+            - node
           script:
             - npm install
             - npm run build
-            - pipe: atlassian/aws-s3-deploy:0.2.1
+            - pipe: atlassian/aws-s3-deploy:0.3.7
               variables:
                 AWS_ACCESS_KEY_ID: "----------"
                 AWS_SECRET_ACCESS_KEY: "----------"
@@ -30,17 +32,20 @@ pipelines:
     release:
       - step:
           name: Clone to release
+          caches:
+            - node
           script:
+            - npm install react-app-rewired --save-dev
             - npm install
-            - npm run build
+            - CI=false npm run build
           artifacts:
             - build/**
       - step:
-          name: Deploy to release
+          name: Deploy to aws s3
           deployment: staging
           trigger: manual
           script:
-            - pipe: atlassian/aws-s3-deploy:0.2.1
+            - pipe: atlassian/aws-s3-deploy:0.3.7
               variables:
                 AWS_ACCESS_KEY_ID: "----------"
                 AWS_SECRET_ACCESS_KEY: "----------"
