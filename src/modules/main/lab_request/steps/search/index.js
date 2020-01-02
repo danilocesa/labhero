@@ -15,7 +15,8 @@ import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 import ButtonLink from './link';
-import {moduleTitle, tablePageSize} from '../settings';
+import {tablePageSize} from '../settings';
+import { moduleTitles, requestTypes, requestLinks } from '../../../settings/lab_exam_request/settings';
 
 class SearchStep extends React.Component {
 	state = { 
@@ -56,19 +57,20 @@ class SearchStep extends React.Component {
 
 	dynamicModuleTitle = () =>{
 		// @ts-ignore
-		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "CREATE REQUEST" : "EDIT REQUEST")
-		return pageTitle || moduleTitle;
+		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? moduleTitles.create : moduleTitles.edit)
+		return pageTitle;
 	}
 
 	render() {
 		const { patients, pageSize, loading, searchedPatientID, searchedPatientName } = this.state;
 		// @ts-ignore
-		const redirectUrl = (sessionStorage.getItem('REQUEST_TYPE') === 'create' ? "/request/create/step/2" : "/request/edit/step/2")
+		const redirectUrl = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? requestLinks.create.step2 : requestLinks.edit.step2)
 		return (
 			<div>
 				<PageTitle pageTitle={this.dynamicModuleTitle()} />
 				<Tracker 
-					active={0}	
+					active={0} 
+					requestType={requestTypes.create}	
 				/>
 				<div style={{ marginTop: 60 }}>
 					<SearchForm 
@@ -92,7 +94,7 @@ class SearchStep extends React.Component {
 				</div>
 				{ 
 				// @ts-ignore
-				sessionStorage.getItem('REQUEST_TYPE') === 'create' ? (
+				sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? (
 					<ButtonLink dataLength={patients.length} />
 				) : null
 				}

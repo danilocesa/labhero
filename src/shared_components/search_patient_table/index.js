@@ -60,6 +60,12 @@ class SearchPatientTable extends React.Component {
 		// CONSTANTS
 		const columns = [
 			{
+				title: 'PATIENT ID',
+				dataIndex: 'patientID',
+				sorter: getSorter(data, 'patientID'),
+				width: '15%'
+			},
+			{
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
@@ -137,13 +143,16 @@ SearchPatientTable.propTypes = {
 	redirectUrl: PropTypes.string.isRequired,
 	SearchedPatientId: PropTypes.string,
 	SearchedPatientName: PropTypes.string,
-	requestType: PropTypes.number.isRequired,
-	moduleProfile: PropTypes.string.isRequired
+	requestType: PropTypes.string,
+	moduleProfile: PropTypes.string
+	// moduleProfile: PropTypes.string.isRequired
 };
 
 SearchPatientTable.defaultProps = {
 	SearchedPatientId: '',
-	SearchedPatientName: ''
+	SearchedPatientName: '',
+	requestType: '',
+	moduleProfile: ''
 }
 
 export default withRouter(SearchPatientTable);

@@ -10,17 +10,18 @@ import './tracker.css';
 
 const { Step } = Steps;
 const { requestTypes } = TrackerSettings;
+const {links} = TrackerSettings;
 
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
 	state={
 		current: 0,
+		clicked: 0,
 		modalVisibility: false
 	};
 	
 	dynamicLink = () => {
-		const {links} = TrackerSettings;
 		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
 	};
 
@@ -32,32 +33,47 @@ class Tracker extends React.Component {
 		this.setState({modalVisibility:true});
 	};
 
-	onClickTracker = clickedStep => {
-		
+	onClickTracker = clickedStep => {	
 		const nextSteps =  clickedStep + 1;
 		let clickedVal = false;
+		this.setState({clicked: clickedStep});
 
 		if(this.props.active === 0){ // Prevent click if in step is currently in search patient
 			return false;
 		}
 
-		if(clickedStep === 0){ // Show modal confirmation if step is not in search patient
-			this.openModal();
+		// if(clickedStep > 0){ // Show modal confirmation if step is not in search patient
+		// 	this.openModal();
+		// }
+
+		this.openModal();
+
+		switch(this.props.requestType){
+			case requestTypes.create:
+				clickedVal = true;
+				break;
+			case requestTypes.edit:
+				clickedVal = true;
+				break;
+			default:
+				this.setState({current: clickedStep});
+				clickedVal = true;
 		}
 
-		if(this.props.requestType === requestTypes.create && nextSteps < clickedStep){
-			clickedVal = false;
-		}else{
-			this.setState({current: clickedStep});
-			clickedVal = true;
-		}
+		// if(this.props.requestType === requestTypes.create && nextSteps < clickedStep){
+		// 	clickedVal = false;
+		// }else{
+		// 	this.setState({current: clickedStep});
+		// 	clickedVal = true;
+		// }
+
 		return clickedVal;
 	}
 
-	handleRedirect = (isClicked, clickedStep) =>{
-		const nextSteps =  clickedStep;
+	handleRedirect = (isClicked) =>{
+		const {clicked} = this.state;
+		const nextSteps =  clicked + 1;
 		const targetUrl = `${this.dynamicLink()}/${nextSteps}`;
-		console.log(targetUrl);
 		if(isClicked){
 			window.location.assign(targetUrl);
 		}
@@ -80,7 +96,8 @@ class Tracker extends React.Component {
 		));
 		const { active } = this.props;
 		const { current, modalVisibility } = this.state;
-
+		console.log('TCL-> active',active);
+		console.log('TCL-> current',current);
 		return (
 			<div>
 				<Row>
