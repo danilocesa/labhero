@@ -11,7 +11,7 @@ class Notification extends React.Component{
         return(
             <div>
                 <div>
-                    <PageTitle pageTitle="NOTIFICATIONS" />
+                    <PageTitle pageTitle="INVENTORY / NOTIFICATIONS" align="left" />
                     <NotificationsSearch />
                     <NotificationsTable />
                 </div>

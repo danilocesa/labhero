@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-
+import URI from 'shared_components/uri';
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
 import { ReactComponent as SearchIcon } from 'icons/search.svg';
@@ -24,22 +24,10 @@ const { SubMenu } = Menu;
 
 class Sider extends React.Component {
 	handleMenuClick = ({ key }) => {
-		const selectedKey = key.includes('inventory') ? 9 : key;
-		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
+		// const isInventorySelected = Object.keys(URI.inventory.sub).some(i => URI.inventory.sub[i].key === key);
+		// const selectedKey = isInventorySelected ? URI.inventory.key : key;
 
-		// workaround to avoid delays in stepsPage
-		switch(key){
-			case '2':
-				sessionStorage.setItem('REQUEST_TYPE','create');
-				sessionStorage.setItem('MODULE_PROFILE','createRequest');
-				break;
-			case '3':
-				sessionStorage.setItem('REQUEST_TYPE','edit');
-				sessionStorage.setItem('MODULE_PROFILE','editRequest');
-				break;
-			default:
-
-		}
+		sessionStorage.setItem(SELECTED_SIDER_KEY, key);
 	}
 
   render() {
@@ -60,8 +48,8 @@ class Sider extends React.Component {
         >
 					{
 						process.env.REACT_APP_DISPLAY_HOME === '1' && (
-							<Menu.Item key="1">
-								<Link to="/">
+							<Menu.Item key={URI.dashboard.key}>
+								<Link to={URI.dashboard.link}>
 									<Icon component={HomeIcon} />
 									<span>DASHBOARD</span>
 								</Link>
@@ -71,8 +59,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_LAB_REQUEST === '1' && (
-							<Menu.Item key="2">
-								<Link to="/request/create/step/1">
+							<Menu.Item key={URI.createLabReq.key}>
+								<Link to={URI.createLabReq.link}>
 									<Icon component={AddIcon} />
 									<span>CREATE REQUEST</span>
 								</Link>
@@ -81,8 +69,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1' && (
-							<Menu.Item key="3">
-								<Link to="/request/edit/step/1">
+							<Menu.Item key={URI.editLabReq.key}>
+								<Link to={URI.editLabReq.link}>
 									<Icon component={EditIcon} />
 									<span>EDIT REQUEST</span>
 								</Link>
@@ -91,8 +79,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
-							<Menu.Item key="4">
-								<Link to="/phlebo/result">
+							<Menu.Item key={URI.phlebo.key}>
+								<Link to={URI.phlebo.link}>
 									<Icon component={PleboIcon} />
 									<span>PHLEBO</span>
 								</Link>
@@ -101,8 +89,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
-							<Menu.Item key="5">
-								<Link to="/lab/result/edit">
+							<Menu.Item key={URI.editLabResult.key}>
+								<Link to={URI.editLabResult.link}>
 									<Icon component={SearchIcon} />
 									<span>EDIT LAB RESULT</span>
 								</Link>
@@ -111,8 +99,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
-							<Menu.Item key="6">
-								<Link to="/lab/result/print">
+							<Menu.Item key={URI.printLabResult.key}>
+								<Link to={URI.printLabResult.link}>
 									<Icon component={PrintIcon} />
 									<span>PRINT LAB RESULT</span>
 								</Link>
@@ -121,8 +109,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
-							<Menu.Item key="7">
-								<Link to="/patient/search">
+							<Menu.Item key={URI.searchPatient.key}>
+								<Link to={URI.searchPatient.link}>
 									<Icon component={SearchPatientIcon} />
 									<span>EDIT PATIENT DEMOGRAPHICS</span>
 								</Link>
@@ -131,8 +119,8 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-							<Menu.Item key="8">
-								<Link to="/settings">
+							<Menu.Item key={URI.settings.key}>
+								<Link to={URI.settings.link}>
 									<Icon component={SettingsIcon} />
 									<span>SETTINGS</span>
 								</Link>
@@ -150,26 +138,26 @@ class Sider extends React.Component {
 									</span>
 								)}
 							>
-								<Menu.Item key="inventory1">
-									<Link to="/inventory/stocks"><span>Stocks</span></Link>
+								<Menu.Item key={URI.inventory.sub.stocks.key}>
+									<Link to={URI.inventory.sub.stocks.link}><span>Stocks</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory2">
-									<Link to="/inventory/transaction"><span>Transactions</span></Link>
+								<Menu.Item key={URI.inventory.sub.transaction.key}>
+									<Link to={URI.inventory.sub.transaction.link}><span>Transactions</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory3">
-									<Link to="/inventory/restock"><span>Restock</span></Link>
+								<Menu.Item key={URI.inventory.sub.restock.key}>
+									<Link to={URI.inventory.sub.restock.link}><span>Restock</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory4">
-									<Link to="/inventory/takeout"><span>Takeout</span></Link>
+								<Menu.Item key={URI.inventory.sub.takeout.key}>
+									<Link to={URI.inventory.sub.takeout.link}><span>Takeout</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory5">
-									<Link to="/inventory/notifications"><span>Notifications</span></Link>
+								<Menu.Item key={URI.inventory.sub.notifications.key}>
+									<Link to={URI.inventory.sub.notifications.link}><span>Notifications</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory6">
-									<Link to="/inventory/itemsetup"><span>Item Setup</span></Link>
+								<Menu.Item key={URI.inventory.sub.itemsetup.key}>
+									<Link to={URI.inventory.sub.itemsetup.link}><span>Item Setup</span></Link>
 								</Menu.Item>
-								<Menu.Item key="inventory7">
-									<Link to="/inventory/settings"><span>Settings</span></Link>
+								<Menu.Item key={URI.inventory.sub.settings.key}>
+									<Link to={URI.inventory.sub.settings.link}><span>Settings</span></Link>
 								</Menu.Item>
 							</SubMenu>
 						)

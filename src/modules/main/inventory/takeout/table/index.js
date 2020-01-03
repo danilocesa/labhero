@@ -8,49 +8,38 @@ import {
 
 const columns = [
 	{ 
-		title: 'DR NO.',
+		title: 'ITEM NAME',
 		dataIndex: 'a',
-		width: 50
+		width: 200
 	},
 	{ 
-		title: 'SUPPLIER',
+		title: 'CURRENT QTY',
 		dataIndex: 'b',
-		width: 150
+		width: 200
 	},
 	{ 
-		title: 'LOCATION',
+		title: 'TAKEOUT QTY',
 		dataIndex: 'c',
-		width: 50
+		width: 200
+	},
+	{ 
+		title: 'EXP DATE',
+		dataIndex: 'd',
+		width: 200
 	},
 	{ 
 		title: 'SECTION',
-		dataIndex: 'd',
-		width: 50
-	},
-	{ 
-		title: 'ITEM',
 		dataIndex: 'e',
-		width: 50
+		width: 200
 	},
 	{ 
-		title: 'EXPIRATION DATE',
+		title: 'LOCATION',
 		dataIndex: 'f',
-		width: 50
 	},
-	{ 
-		title: 'PRICE',
-		dataIndex: 'g',
-		width: 50
-	},
-	{ 
-		title: 'QUANTITY',
-		dataIndex: 'h',
-		width: 50
-	}
 ];
 
 
-class SearchResultTable extends React.Component {
+class TakeoutTable extends React.Component {
 	render() {
 		return (
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
@@ -69,4 +58,4 @@ class SearchResultTable extends React.Component {
 }
 
 
-export default SearchResultTable;
+export default TakeoutTable;
