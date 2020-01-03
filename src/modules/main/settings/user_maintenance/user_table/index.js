@@ -56,32 +56,6 @@ const columns = [
 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
 	},
 ];
-const dataSource = [
-	{
-		key: '1',
-		userID: '1',
-		userName: 'WILLIE',
-		lastName: 'FABROA',
-		firstName: 'WILLIE',
-		middleName: 'R'
-	},
-	{
-		key: '2',
-		userID: '2',
-		userName: 'CANIL',
-		lastName: 'NAYRE',
-		firstName: 'CANIL',
-		middleName: 'A'
-	},
-	{
-		key: '3',
-		userID: '3',
-		userName: 'GINA',
-		lastName: 'SAMSON',
-		firstName: 'GINA',
-		middleName: 'M'
-	},
-]
 
 class UserTable extends React.Component {
 	constructor(props) {
@@ -100,8 +74,12 @@ class UserTable extends React.Component {
 	}
 	
 	async componentDidMount(){
+
 		this.setState({loading:true});
 		const userAccounts = await getUserAccountsAPI();
+		console.log('TCL->', userAccounts.data);
+		// userData.push({})
+
 		this.setState({
 			pagination: userAccounts.data.length,
 			users: userAccounts.data,
@@ -171,7 +149,7 @@ class UserTable extends React.Component {
 					size={tableSize}
 					scroll={{ y: tableYScroll }}
 					columns={columns} 
-					dataSource={users || dataSource}
+					dataSource={users}
 					pagination={pagination}
 					rowKey={record => record.key}
 					onRow={(record) => {

@@ -34,17 +34,12 @@ class Tracker extends React.Component {
 	};
 
 	onClickTracker = clickedStep => {	
-		const nextSteps =  clickedStep + 1;
 		let clickedVal = false;
 		this.setState({clicked: clickedStep});
 
 		if(this.props.active === 0){ // Prevent click if in step is currently in search patient
 			return false;
 		}
-
-		// if(clickedStep > 0){ // Show modal confirmation if step is not in search patient
-		// 	this.openModal();
-		// }
 
 		this.openModal();
 
@@ -59,13 +54,6 @@ class Tracker extends React.Component {
 				this.setState({current: clickedStep});
 				clickedVal = true;
 		}
-
-		// if(this.props.requestType === requestTypes.create && nextSteps < clickedStep){
-		// 	clickedVal = false;
-		// }else{
-		// 	this.setState({current: clickedStep});
-		// 	clickedVal = true;
-		// }
 
 		return clickedVal;
 	}
