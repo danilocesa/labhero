@@ -8,12 +8,13 @@ import SearchPatientForm from 'shared_components/search_patient_form'
 
 class Search extends React.Component {
 	render() {
-		const { populatePatients, displayLoading } = this.props;
+		const { populatePatients, displayLoading, enableRequestDate } = this.props;
 
 		return (
 			<SearchPatientForm 
 				populatePatients={populatePatients}
 				displayLoading={displayLoading}
+				enableRequestDate={enableRequestDate}
 			/>
 		);
 	}
@@ -21,7 +22,8 @@ class Search extends React.Component {
 
 Search.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	displayLoading: PropTypes.func.isRequired
+	displayLoading: PropTypes.func.isRequired,
+	enableRequestDate: PropTypes.bool.isRequired,
 };
 
 

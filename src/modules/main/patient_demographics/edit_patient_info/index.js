@@ -70,7 +70,9 @@ class EditProfile extends React.Component {
 			"sex": fields.gender,
 			"dateOfBirth": fields.dateOfBirth,
 			"addressCode": fields.town,
-			"address": fields.unitNo
+			"address": fields.unitNo,
+			"emailAdd": fields.emailAdd,
+			"contactNumber" : fields.contactNumber
 		};
 		const response = await updatePatientAPI(payload);
 
@@ -148,7 +150,7 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.sex,
 									rules: fieldRules.gender,
 								})(
-									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
+									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }} disabled>
 										<RadioButton 
 											style={{ width:'50%' }} 
 											value={genderOptions.male} 
@@ -181,6 +183,7 @@ class EditProfile extends React.Component {
 													format={dateFormat}
 													style={{ width: '100%' }}
 													onChange={this.onDateChange}
+													disabled
 												/>
 											)}
 										</div>
@@ -226,7 +229,10 @@ class EditProfile extends React.Component {
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.contactNumber}>
-								{getFieldDecorator('contactNumber', { rules: fieldRules.contactNumber })(
+								{getFieldDecorator('contactNumber', { 
+									initialValue: this.props.patientInfo.contactNumber,
+									rules: fieldRules.contactNumber
+								 })(
 									<Input addonBefore="+ 63" maxLength={10} />
 								)}
 							</Form.Item>
@@ -234,7 +240,8 @@ class EditProfile extends React.Component {
 						{/** Email address */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.emailAddress}>
-							{getFieldDecorator('emailAddress', {
+							{getFieldDecorator('emailAdd', {
+								initialValue: this.props.patientInfo.emailAdd,
 								rules: fieldRules.emailAddress ,
 							})(
 								<Input />

@@ -11,7 +11,8 @@ import axiosCall from 'services/axiosCall';
 import Message from 'shared_components/message';
 import { 
 	apiUrlPatientByID, 
-	apiUrlPatientByName, 
+	apiUrlPatientByName,
+	apiGetMethod, 
 } from 'shared_components/constant-global';
 import {buttonNames, fieldLabels} from './settings';
 
@@ -55,7 +56,7 @@ class SearchPatientForm extends React.Component {
 		let patients = [];
 		try{
 			const response = await axiosCall({
-				method: 'GET',
+				method: apiGetMethod,
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
 			});
 			
@@ -98,6 +99,8 @@ class SearchPatientForm extends React.Component {
 	render() {
 		const { patientID, patientName, loading } = this.state;
 		const disabled = !(patientID || patientName);
+		const isEditting = (sessionStorage.getItem('MODULE_PROFILE') === "editRequest");
+		const { requestDateEnabled } = this.props;
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
@@ -131,16 +134,16 @@ class SearchPatientForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					{/* Request date */}
-					<Col xs={24} sm={24} md={6} lg={4}>
-					{ (sessionStorage.getItem('MODULE_PROFILE') === "editRequest") ? 
+					{/* Request date */}	
+					{ (isEditting && requestDateEnabled) ? 
 						(
-							<Form.Item label={fieldLabels.requestDate}>
-								<DatePicker defaultValue={moment()} format={dateFormat}	 />
-							</Form.Item>
+							<Col xs={24} sm={24} md={6} lg={4}>
+								<Form.Item label={fieldLabels.requestDate}>
+									<DatePicker defaultValue={moment()} format={dateFormat} />
+								</Form.Item>
+							</Col>
 						) : null 
 					}
-					</Col>
 					{/* Buttons */}
 					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item style={{ marginTop: 33 }}>
@@ -177,11 +180,13 @@ class SearchPatientForm extends React.Component {
 
 SearchPatientForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	storeSearchedVal: PropTypes.func
+	storeSearchedVal: PropTypes.func,
+	enableRequestDate: PropTypes.bool
 };
 
 SearchPatientForm.defaultProps = {
-	storeSearchedVal() { return null; }
+	storeSearchedVal() { return null; },
+	enableRequestDate: true,
 }
 
 export default SearchPatientForm;
