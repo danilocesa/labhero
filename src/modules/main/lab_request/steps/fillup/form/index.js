@@ -304,7 +304,8 @@ class BaseForm extends React.Component {
 										<HouseAddress 
 											form={form}
 											townValue={getFieldsValue().town}
-											fieldLabel={formLabels.unitFloorBldg}
+											fieldLabel={formLabels.unitNo.label}
+											fieldName={formLabels.unitNo.fieldName}
 											selectedValue={initialPersoValue.address}
 										/>
 									</Col>

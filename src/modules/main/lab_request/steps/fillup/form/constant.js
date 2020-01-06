@@ -65,7 +65,10 @@ export const formLabels = {
 	suffix : "SUFFIX",
 	dateOfBirth : "DATE OF BIRTH",
 	age : "AGE",
-	unitFloorBldg : "HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
+	unitNo : {
+		label:"HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
+		fieldName: 'address',
+	},
 	contactNumber : "CONTACT NUMBER",
 	patientGender : "PATIENT'S GENDER",
 	location : "LOCATION",

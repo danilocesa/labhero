@@ -25,12 +25,12 @@ class houseAddressComponent extends React.Component{
 	}
 
 	render(){
-		const { form, fieldLabel, selectedValue } = this.props;
+		const { form, fieldLabel, fieldName, selectedValue } = this.props;
 		const { isDisabled } = this.state;
 		const { getFieldDecorator } = form;
 		
 		const addressInput = (
-			getFieldDecorator(fieldLabel, {
+			getFieldDecorator(fieldName, {
 				rules: this.houseUnitfieldRules(),
 				initialValue: selectedValue,
 			})(
@@ -51,6 +51,7 @@ houseAddressComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	townValue: PropTypes.string.isRequired,
 	fieldLabel : PropTypes.string.isRequired,
+	fieldName : PropTypes.string.isRequired,
 	selectedValue : PropTypes.string.isRequired
 };
 

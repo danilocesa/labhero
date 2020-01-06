@@ -60,6 +60,7 @@ class EditProfile extends React.Component {
 	}
 
 	submitUpdatePatient = async (fields) => {
+		console.log('fields', fields);
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 		const payload = {
 			"patientID": this.props.patientInfo.patientID,
@@ -70,7 +71,7 @@ class EditProfile extends React.Component {
 			"sex": fields.gender,
 			"dateOfBirth": fields.dateOfBirth,
 			"addressCode": fields.town,
-			"address": fields.unitNo,
+			"address": fields.address,
 			"emailAdd": fields.emailAdd,
 			"contactNumber" : fields.contactNumber
 		};
@@ -222,7 +223,8 @@ class EditProfile extends React.Component {
 							<HouseAddress 
 								form={this.props.form}
 								townValue={getFieldsValue().town || this.props.patientInfo.townCode}
-								fieldLabel={formLabels.unitNo}
+								fieldLabel={formLabels.unitNo.label}
+								fieldName={formLabels.unitNo.fieldName}
 								selectedValue={this.props.patientInfo.address}
 							/>
 						</Col>
