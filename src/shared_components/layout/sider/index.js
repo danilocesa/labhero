@@ -27,8 +27,26 @@ class Sider extends React.Component {
 		// const isInventorySelected = Object.keys(URI.inventory.sub).some(i => URI.inventory.sub[i].key === key);
 		// const selectedKey = isInventorySelected ? URI.inventory.key : key;
 
-		sessionStorage.setItem(SELECTED_SIDER_KEY, key);
+		const selectedKey = key.includes('inventory') ? 9 : key;
+		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
+
+		// workaround to avoid delays in stepsPage
+
+		switch(key){
+				case '2':
+					sessionStorage.setItem('REQUEST_TYPE','create');
+					sessionStorage.setItem('MODULE_PROFILE','createRequest');
+					break;
+				case '3':	
+					sessionStorage.setItem('REQUEST_TYPE','edit');
+					sessionStorage.setItem('MODULE_PROFILE','editRequest');
+					break;
+				default:
+		}
+		// sessionStorage.setItem(SELECTED_SIDER_KEY, key);
 	}
+
+	
 
   render() {
 		const { collapsed } = this.props;
