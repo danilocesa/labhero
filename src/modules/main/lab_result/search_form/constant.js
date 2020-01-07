@@ -1,35 +1,38 @@
+import errorMessage from 'global_config/error_messages';
+
 const FIELD_RULES = {
 	dateCategory: [
     { 
 			required: false, 
-			message: 'This field is required.' 
+			message: errorMessage.required 
 		}
 	],
 	dateSpan: [
     { 
 			required: false, 
-			message: 'This field is required.' }
+			message: errorMessage.required }
 	],
 	status: [
     { 
 			required: true, 
-			message: 'This field is required.' 
+			message: errorMessage.required 
 		}
 	],
 	patientID: [
     { 
 			pattern: '^[0-9]+$', 
-			message: 'Numbers only!' }
+			message: errorMessage.number 
+		}
 	],
 	patientName: [
 		{ 
 			max: 100, 
-			message: 'Less than 100 characters only!' 
+			message: errorMessage.maxLength(100)
 		},
-		{ 
-			pattern: '^[a-zA-Z0-9äöüÄÖÜ]*$', 
-			message: 'Special character not allowed!'
-		}
+		// { 
+		// 	pattern: '^[a-zA-Z0-9äöüÄÖÜ]*$', 
+		// 	message: 'Special characters are not allowed.'
+		// }
 	],
 };
 

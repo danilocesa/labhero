@@ -28,7 +28,7 @@ class ProvinceListComponent extends React.Component {
 	}
 
 	render(){
-		const { form, selectDefaultOptions, selectedProvince } = this.props;
+		const { form, selectDefaultOptions, selectedProvince, disabled } = this.props;
 		const { getFieldDecorator } = form;
 		const { provinceList, loading } = this.state;
 		
@@ -41,6 +41,7 @@ class ProvinceListComponent extends React.Component {
 					<Select
 						loading={loading}
 						placeholder={selectDefaultOptions}
+						disabled={disabled}
 					>
 						{provinceList.map((item) => (
 							<Option value={item.provinceCode} key={item.provinceCode}>
@@ -67,11 +68,13 @@ class ProvinceListComponent extends React.Component {
 ProvinceListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	selectDefaultOptions: PropTypes.string.isRequired,
-	selectedProvince: PropTypes.string
+	selectedProvince: PropTypes.string,
+	disabled: PropTypes.bool
 };
 
 ProvinceListComponent.defaultProps = {
-	selectedProvince: null
+	selectedProvince: null,
+	disabled: false
 }
 
 

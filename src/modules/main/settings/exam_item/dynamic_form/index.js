@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Input, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
 
 // CUSTOM
-import {globalRequiredMessage} from 'shared_components/constant-global';
+import errorMessage from 'global_config/error_messages';
 import {buttonNames} from '../settings';
 
 
@@ -142,18 +142,22 @@ class DynamicForm extends React.Component {
 				>
 					<Row>
 						<Form.Item>
-						<Col span={24}>
-							{getFieldDecorator(`names[${field.key}]`, {
-								validateTrigger: ['onChange', 'onBlur'],
-								rules: [
-									{
-										required: true,
-										whitespace: true,
-										message: globalRequiredMessage
-									},
-								],
-							})(<Input />)}
-						</Col>
+							<Col span={24}>
+								{getFieldDecorator(`names[${field.key}]`, {
+									validateTrigger: ['onChange', 'onBlur'],
+									rules: [
+										{
+											required: true,
+											whitespace: true,
+											message: errorMessage.required
+										},
+										{
+											max: 254,
+											message: errorMessage.maxLength(254)
+										}
+									],
+								})(<Input maxLength={254} />)}
+							</Col>
 						</Form.Item>
 					</Row>
 				</AntCard>

@@ -1,4 +1,5 @@
-import {globalTablePageSize, globalTableSize, globalRequiredMessage, globalTableYScroll} from 'shared_components/constant-global';
+import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import vdltnMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 export const moduleTitle = 'USER MAINTENANCE';
@@ -11,8 +12,8 @@ export const labels = {
 	otherInfoLabel:'OTHER INFORMATION',
 };
 
-export const errorMessages = {
-	requiredField : globalRequiredMessage,
+export const errorMessage = {
+	requiredField : vdltnMessage.required,
 	password : {
 		doesNotMatch : 'Password and Repeat Password does not match!',
 	},
@@ -54,18 +55,38 @@ export const tableYScroll = globalTableYScroll;
 
 export const fieldRules = {
 	panel_name: [
-	{ required: true, message: globalRequiredMessage }
+		{ required: true, message: vdltnMessage.required },
 	],
 	panel_code: [
-	{ required: true, message: globalRequiredMessage }
+		{ required: true, message: vdltnMessage.required }
 	],
 	examItemType: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: vdltnMessage.required }
 	],
 	unitOfMeasure: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: vdltnMessage.required }
 	],
 	integrationCode: [
-    { required: false, message: globalRequiredMessage }
-	]
+    { required: false, message: vdltnMessage.required }
+	],
+	firstname: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 100, message: vdltnMessage.maxLength(100) }
+	],
+	middlename: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 100, message: vdltnMessage.maxLength(100) }
+	],
+	lastname: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 100, message: vdltnMessage.maxLength(100) }
+	],
+	username: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 10, message: vdltnMessage.maxLength(10) }
+	],
+	password: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 12, message: vdltnMessage.maxLength(12) }
+	],
 };

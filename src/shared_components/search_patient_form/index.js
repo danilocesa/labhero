@@ -12,8 +12,8 @@ import Message from 'shared_components/message';
 import { 
 	apiUrlPatientByID, 
 	apiUrlPatientByName, 
-} from 'shared_components/constant-global';
-import {buttonNames, fieldLabels} from './settings';
+} from 'global_config/constant-global';
+import { buttonNames, fieldLabels } from './settings';
 
 // CSS
 import './search_patient_form.css';
@@ -101,9 +101,9 @@ class SearchPatientForm extends React.Component {
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
-				<Row gutter={12}>
+				<Row gutter={12} type="flex" justify="center">
 					{/* Patient id field */}
-					<Col xs={24} sm={24} md={6} lg={4} offset={3}>
+					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label={fieldLabels.patientID}>
 							<Input 
 								// allowClear
@@ -115,16 +115,17 @@ class SearchPatientForm extends React.Component {
 						</Form.Item>
 					</Col>
 					{/* Or */}
-					<Col xs={24} sm={24} md={1} lg={1} style={{textAlign: 'center', marginTop: 45}}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 45 }}>
 						OR
 					</Col>
 					{/* Patient Name */}
-					<Col xs={24} sm={24} md={6} lg={4}>
+					<Col xs={24} sm={24} md={12} lg={7}>
 						<Form.Item label={fieldLabels.patientName}>
 							<Input 
 								// allowClear
 								name="patientName" 
 								value={patientName} 
+								maxLength={100}
 								onChange={this.handleInputChange} 
 								onFocus={this.handleFocus}
 								placeholder="Lastname, Firstname"
@@ -132,40 +133,36 @@ class SearchPatientForm extends React.Component {
 						</Form.Item>
 					</Col>
 					{/* Request date */}
-					<Col xs={24} sm={24} md={6} lg={4}>
 					{ (sessionStorage.getItem('MODULE_PROFILE') === "editRequest") ? 
 						(
-							<Form.Item label={fieldLabels.requestDate}>
-								<DatePicker defaultValue={moment()} format={dateFormat}	 />
-							</Form.Item>
+							<Col xs={24} sm={24} md={6} lg={4}>
+								<Form.Item label={fieldLabels.requestDate}>
+									<DatePicker defaultValue={moment()} format={dateFormat}	 />
+								</Form.Item>
+							</Col>
 						) : null 
 					}
-					</Col>
 					{/* Buttons */}
-					<Col xs={24} sm={24} md={6} lg={4}>
+					<Col xs={24} sm={24} md={6} lg={5}>
 						<Form.Item style={{ marginTop: 33 }}>
-							<Row gutter={12}>
-								<Col span={12}>
-									<Button 
-										block 
-										shape="round" 
-										onClick={this.clearInputs} 
-									>
-										{buttonNames.clear}
-									</Button>
-								</Col>
-								<Col span={12}>
-									<Button 
-										block 
-										shape="round" 
-										type="primary" 
-										htmlType="submit" 
-										disabled={disabled}
-										loading={loading}
-									>
-										{buttonNames.search}
-									</Button>
-								</Col>
+							<Row>
+								<Button 
+									className="form-button"
+									shape="round" 
+									onClick={this.clearInputs} 
+								>
+									{buttonNames.clear}
+								</Button>
+								<Button 
+									className="form-button"
+									shape="round" 
+									type="primary" 
+									htmlType="submit" 
+									disabled={disabled}
+									loading={loading}
+								>
+									{buttonNames.search}
+								</Button>
 							</Row>
 						</Form.Item>
 					</Col>

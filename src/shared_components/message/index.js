@@ -1,23 +1,23 @@
 import { message as AntMessage } from 'antd';
-import {globalErrorMessage} from 'shared_components/constant-global';
+import Messages from 'global_config/error_messages';
 
 const defaultDuration = 3;
 
 class Message {
 	static info = (message) => {
-		AntMessage.info(message || globalErrorMessage);
+		AntMessage.info(message || Messages.genericError);
 	}
 
 	static error = (message) => {
-		AntMessage.error(message || globalErrorMessage);
+		AntMessage.error(message || Messages.genericError);
 	}
 
 	static warning = (message) => {
-		AntMessage.warning(message || globalErrorMessage);
+		AntMessage.warning(message || Messages.genericError);
 	}
 
 	static success = (param) => {
-		AntMessage.success(param.message || globalErrorMessage, param.duration || defaultDuration, param.onClose);
+		AntMessage.success(param.message || Messages.genericError, param.duration || defaultDuration, param.onClose);
 	}
 }
 

@@ -1,5 +1,5 @@
-import {globalTablePageSize, globalRequiredMessage} from 'shared_components/constant-global';
-
+import {globalTablePageSize} from 'global_config/constant-global';
+import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 // SearchPatient Variables
@@ -43,30 +43,30 @@ export const successMessages = {
 
 export const fieldRules = {
 	lastname: [
-		{ required: true, message: globalRequiredMessage }
+		{ required: true, message: errorMessage.required }
 	],
 	firstname: [
-		{ required: true, message: globalRequiredMessage}
+		{ required: true, message: errorMessage.required}
 	],
 	middlename: [
-		{ required: true, message: globalRequiredMessage}
+		{ required: true, message: errorMessage.required}
 	],
 	suffix: [
-		{ required: false, message: globalRequiredMessage}
+		{ required: false, message: errorMessage.required}
 	],
 	gender: [
-		{ required: true, message: globalRequiredMessage}
+		{ required: true, message: errorMessage.required}
 	],
 	dateOfBirth: [
-		{ required: true, message: globalRequiredMessage}
+		{ required: true, message: errorMessage.required}
 	],
 	contactNumber:  [
-		{ required: false, message: globalRequiredMessage}
+		{ required: false, message: errorMessage.required}
 	],
 	emailAddress:  [
-		{ required: false, message: globalRequiredMessage}
+		{ required: false, message: errorMessage.required}
 	],
 	unitNo: [
-		{ required: false, message: globalRequiredMessage}
+		{ required: false, message: errorMessage.required}
 	],
 }

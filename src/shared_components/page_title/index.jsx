@@ -10,7 +10,7 @@ function PageTitle({pageTitle, align}) {
 	const placement = align === 'left' ? 'start' : 'center'; 
 
   return (
-	  <AntRow type="flex" align={align} justify={placement}>
+	  <AntRow type="flex" justify={placement}>
 		  <Title level={4}>{pageTitle}</Title>
 	  </AntRow>
   );

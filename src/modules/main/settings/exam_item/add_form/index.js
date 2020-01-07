@@ -63,7 +63,7 @@ class AddForm extends React.Component {
 			
 			if (!err && !dynaFormFields.hasError) {
 				// Define default values
-				const examItemValueDefault = [{ examItemValueDefault: 1, examItemValueLabel: "Default" }];
+				const examItemValueDefault = [{ examItemValueDefault: 1, examItemValueLabel: 'Default' }];
 				const fields = { ...getFieldsValue(), examItemValue: examItemValueDefault };
 				
 				// If checkbox or option get default & label in dynamic form
@@ -155,12 +155,12 @@ class AddForm extends React.Component {
 					<section style={{ marginBottom: 50 }}>
 						<Form.Item label={fieldLabels.examItemName}>
 							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-								<Input />
+								<Input maxLength={254} />
 							)}
 						</Form.Item>
 						<Form.Item label={fieldLabels.examItemGeneralName}>
 							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-								<Input />
+								<Input maxLength={50} />
 							)}
 						</Form.Item>
 						<Form.Item label={fieldLabels.examItemTypeCode}>
@@ -182,7 +182,7 @@ class AddForm extends React.Component {
 										rules: fieldRules.examItemTypeDefault, 
 										initialValue: 1 
 									})(
-										<Input />
+										<Input maxLength={254} />
 									)}
 								</Form.Item>
 							</React.Fragment>
@@ -198,14 +198,14 @@ class AddForm extends React.Component {
 										rules: fieldRules.examItemTypeDefault,
 										initialValue: 1 
 									})(
-										<TextArea />
+										<TextArea maxLength={100} />
 									)}
 								</Form.Item>
 							</React.Fragment>	
 						)}
 						<Form.Item label={fieldLabels.examItemIntegrationCode}>
 							{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
-								<Input />
+								<Input maxLength={100} />
 							)}
 						</Form.Item>
 					</section>

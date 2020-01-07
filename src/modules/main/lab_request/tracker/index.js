@@ -10,7 +10,7 @@ import './tracker.css';
 
 const { Step } = Steps;
 const { requestTypes } = TrackerSettings;
-const {links} = TrackerSettings;
+const { links } = TrackerSettings;
 
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -20,7 +20,7 @@ class Tracker extends React.Component {
 		clicked: 0,
 		modalVisibility: false
 	};
-	
+
 	dynamicLink = () => {
 		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
 	};
@@ -96,8 +96,7 @@ class Tracker extends React.Component {
 		));
 		const { active } = this.props;
 		const { current, modalVisibility } = this.state;
-		console.log('TCL-> active',active);
-		console.log('TCL-> current',current);
+	
 		return (
 			<div>
 				<Row>

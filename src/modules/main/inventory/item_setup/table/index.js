@@ -4,7 +4,7 @@ import { Spin, Table } from 'antd';
 import {
 	globalTableSize, 
 	// globalTableYScroll
-} from 'shared_components/constant-global';
+} from 'global_config/constant-global';
 
 import './table.css';
 

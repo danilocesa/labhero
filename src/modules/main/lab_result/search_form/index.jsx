@@ -87,7 +87,7 @@ class SearchForm extends React.Component {
 										rules: FIELD_RULES.patientName,
 										initialValue: ''
 									})(
-										<Input allowClear />
+										<Input allowClear maxLength={100} />
 									)}
 								</Form.Item>
 							</Col> 

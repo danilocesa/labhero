@@ -39,17 +39,19 @@ class SelectedTable extends React.Component {
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemGroup
+					initialValue: record.examRequestItemGroup,
+					maxLength: 100
 				})
 			},
 			{ 
 				title: labels.formulaTitle,
 				dataIndex: 'examRequestItemFormula',
-				width: 260,
+				width: 220,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemFormula
+					initialValue: record.examRequestItemFormula,
+					maxLength: 500
 				})
 			},
 			{ 
@@ -64,6 +66,7 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Sort',
+				width: 60,
 				render: (text, record, index) => {
 					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center' }} />;
 				}
@@ -107,7 +110,7 @@ class SelectedTable extends React.Component {
 		onDragAndDropRow(updatedData.data);
   };
 
-	createFormInput = ({ fieldName, examItemID, initialValue }) => {
+	createFormInput = ({ fieldName, examItemID, initialValue, maxLength }) => {
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
 
@@ -117,7 +120,7 @@ class SelectedTable extends React.Component {
 					rules: [{ required: true }],
 					initialValue,
 				})(
-					<Input size="small" />
+					<Input size="small" maxLength={maxLength || 524288} />
 				)}
 			</Form.Item>
 		)

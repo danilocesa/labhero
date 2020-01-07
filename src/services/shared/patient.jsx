@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* eslint-disable func-names */
-import {apiPutMethod, apiPatient} from 'shared_components/constant-global';
+import {apiPutMethod, apiPatient} from 'global_config/constant-global';
 import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
 

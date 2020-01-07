@@ -2,10 +2,11 @@ import React from 'react';
 import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
-import URI from 'shared_components/uri';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import URI from 'global_config/uri';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import FIELD_RULES from './constants';
 
 import './login.css';
 
@@ -92,14 +93,20 @@ class Login extends React.Component {
 								<Row>
 									<Form onSubmit={this.handleSubmit}>
 										<Form.Item label="Username" className="login-input font12">
-											{getFieldDecorator('username', {
-												rules: [{ required: true, message: 'Please enter your username!' }],
-											})(<Input />)}
+											{getFieldDecorator('username', { 
+												rules: FIELD_RULES.Username,
+												validateTrigger: 'onBlur' 
+											})(
+												<Input maxLength={20} />
+											)}
 										</Form.Item>
 										<Form.Item label="Password">
-											{getFieldDecorator('password', {
-												rules: [{ required: true, message: 'Please enter your password!' }],
-											})(<Input.Password type="password" />)}
+											{getFieldDecorator('password', { 
+												rules: FIELD_RULES.password, 
+												validateTrigger: 'onBlur' 
+											})(
+												<Input.Password type="password" maxLength={20} />
+											)}
 										</Form.Item>
 										<Form.Item style={{marginBottom:'0px'}}>
 											<Button type="primary" htmlType="submit" className="login-form-button" block>

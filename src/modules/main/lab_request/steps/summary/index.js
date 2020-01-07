@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import saveLabRequest from 'services/lab_request/labRequest';
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
 import Restriction from '../clr_restriction/restriction';
 import Tracker from '../../tracker';

@@ -63,8 +63,9 @@ class SearchStep extends React.Component {
 
 	render() {
 		const { patients, pageSize, loading, searchedPatientID, searchedPatientName } = this.state;
-		// @ts-ignore
+	
 		const redirectUrl = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? requestLinks.create.step2 : requestLinks.edit.step2)
+		
 		return (
 			<div>
 				<PageTitle pageTitle={this.dynamicModuleTitle()} />

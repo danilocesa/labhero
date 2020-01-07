@@ -1,4 +1,4 @@
-import {globalErrorMessage} from 'shared_components/constant-global';
+import Messages from 'global_config/error_messages';
 
 export const buttonNames = {
   extracted: 'EXTRACTED',
@@ -8,5 +8,5 @@ export const buttonNames = {
 export const messagePrompts = {
   successExtraction: 'Success! Sample specimen ID:',
   successPrinting: 'Success!',
-  commonErrorMessage: globalErrorMessage,
+  commonErrorMessage: Messages.genericError,
 }

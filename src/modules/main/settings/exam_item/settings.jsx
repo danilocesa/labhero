@@ -1,4 +1,5 @@
-import {globalTablePageSize, globalTableSize, globalRequiredMessage, globalTableYScroll} from 'shared_components/constant-global';
+import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import errorMessage from 'global_config/error_messages';
 
 export const moduleTitle = 'EXAM ITEMS';
 export const drawerTitle = {
@@ -24,19 +25,25 @@ export const messagePrompts = {
 
 export const fieldRules = {
 	examItemName: [
-    { required: true, message: globalRequiredMessage }
+		{ required: true, message: errorMessage.required },
+		{ max: 254, message: errorMessage.maxLength(254) }
 	],
 	examItemGeneralName: [
-    { required: true, message: globalRequiredMessage }
+		{ required: true, message: errorMessage.required },
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	examItemType: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: errorMessage.required }
+	],
+	examItemTypeDefault: [
+		{ max: 254, message: errorMessage.maxLength(254) }
 	],
 	unitOfMeasure: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: errorMessage.required }
 	],
 	integrationCode: [
-    { required: false, message: globalRequiredMessage }
+		{ required: false, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	]
 };
 

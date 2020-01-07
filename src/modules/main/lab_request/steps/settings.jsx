@@ -1,4 +1,4 @@
-import {globalTablePageSize} from 'shared_components/constant-global';
+import {globalTablePageSize} from 'global_config/constant-global';
 
 export const moduleTitle = "CREATE REQUEST";
 export const tablePageSize = globalTablePageSize;

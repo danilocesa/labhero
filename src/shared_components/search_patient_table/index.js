@@ -13,7 +13,7 @@ import {
 	REQUEST_TYPE,
 	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
-import {globalTableSize} from '../constant-global';
+import {globalTableSize} from '../../global_config/constant-global';
 
 // CSS
 import './table.css';

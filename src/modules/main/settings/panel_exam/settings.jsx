@@ -1,4 +1,5 @@
-import { globalRequiredMessage, globalTablePageSize} from 'shared_components/constant-global';
+import { globalTablePageSize } from 'global_config/constant-global';
+import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 
@@ -16,19 +17,22 @@ export const messagePrompts = {
 
 export const fieldRules = {
 	panel_name: [
-    { required: true, message: globalRequiredMessage }
-    ],
-    panel_code: [
-    { required: true, message: globalRequiredMessage }
-    ],
+		{ required: true, message: errorMessage.required },
+		{ max: 254, message: errorMessage.maxLength(254) }
+	],
+	panel_code: [
+		{ required: true, message: errorMessage.required },
+		{ max: 50, message: errorMessage.maxLength(50) }
+	],
 	examItemType: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: errorMessage.required }
 	],
 	unitOfMeasure: [
-    { required: true, message: globalRequiredMessage }
+    { required: true, message: errorMessage.required }
 	],
 	integrationCode: [
-    { required: false, message: globalRequiredMessage }
+		{ required: false, message: errorMessage.required },
+		{ max: 50, message: errorMessage.maxLength(50) }
 	]
 };
 

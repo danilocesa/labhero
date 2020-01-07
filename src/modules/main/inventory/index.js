@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import URI from 'shared_components/uri';
+import URI from 'global_config/uri';
 
 import Notification from './notifications';
 import InventorySettings from './settings';

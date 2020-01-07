@@ -5,9 +5,17 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 // CUSTOM
-import {createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
-import {getAllUserTypesAPI} from 'services/settings/user_maintenance/userType';
-import { drawerAdd, drawerUpdate, labels as gLabels, errorMessages, buttonLabels, fieldLabels } from '../settings';
+import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
+import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
+import { 
+	drawerAdd, 
+	drawerUpdate, 
+	labels as gLabels, 
+	buttonLabels, 
+	fieldLabels, 
+	fieldRules,
+	errorMessage 
+} from '../settings';
 
 // CSS
 import './useraccountform.css';
@@ -83,7 +91,7 @@ class UserAccountForm extends React.Component {
 	compareToFirstPassword = (rule, value, callback) => {
 		const { form } = this.props;
 		if (value && value !== form.getFieldValue('password')) {
-			callback(errorMessages.password.doesNotMatch);
+			callback(errorMessage.password.doesNotMatch);
 		} else {
 			callback();
 		}
@@ -134,25 +142,25 @@ class UserAccountForm extends React.Component {
 								<Form.Item label={fieldLabels.firstName}>
 									{getFieldDecorator('givenName', {
 										initialValue: patientInfo.givenName,
-										rules: [{ required: true, message: errorMessages.requiredField }]
+										rules: fieldRules.firstname
 									})(
-										<Input />
+										<Input maxLength={100} />
 									)}	
 								</Form.Item>
 								<Form.Item label={fieldLabels.middleName}>
 									{
 										getFieldDecorator('middleName',{
 											initialValue: patientInfo.middleName,
-											rules: [{ required: true, message: errorMessages.requiredField}]
-										})(<Input />)
+											rules: fieldRules.middlename
+										})(<Input maxLength={100} />)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.lastName}>
 									{
 										getFieldDecorator('lastName',{
 											initialValue: patientInfo.lastName,
-											rules: [{ required: true, message: errorMessages.requiredField}]
-										})(<Input />)
+											rules: fieldRules.lastname
+										})(<Input maxLength={100} />)
 									}
 								</Form.Item>
 							</div>
@@ -167,9 +175,9 @@ class UserAccountForm extends React.Component {
 									{
 										getFieldDecorator('userName',{
 											initialValue: patientInfo.userName,
-											rules: [{ required: true, message: errorMessages.requiredField}],
+											rules: fieldRules.username
 										})(
-										<Input />)
+										<Input maxLength={10} />)
 									}
 								</Form.Item>
 
@@ -178,11 +186,11 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('password',{
 											initialValue: patientInfo.password,
 											rules: [
-												{ required: true, message: errorMessages.requiredField},
+												...fieldRules.password,
 												{ validator: this.validateToNextPassword}
 											]
 										})(
-										<Input.Password />)
+										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
 
@@ -191,11 +199,11 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('repeat_password',{
 											initialValue: patientInfo.password,
 											rules:[
-												{ required: true, message: errorMessages.requiredField },
+												...fieldRules.password,
 												{ validator: this.compareToFirstPassword }
 											]
 										})(
-										<Input.Password />)
+										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
 							</div>
@@ -225,7 +233,7 @@ class UserAccountForm extends React.Component {
 									{
 										getFieldDecorator('userTypeID',{ 
 											initialValue: patientInfo.userTypeID,
-											rules: [{ required: true, message: errorMessages.requiredField}],
+											rules: [{ required: true, message: errorMessage.requiredField}],
 										})(
 											<Select>
 												{UserTypeOptions}

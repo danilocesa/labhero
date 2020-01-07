@@ -1,4 +1,5 @@
-import {globalTableYScroll, globalTableSize, globalRequiredMessage,globalTablePageSize} from 'shared_components/constant-global';
+import {globalTableYScroll, globalTableSize, globalTablePageSize} from 'global_config/constant-global';
+import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 // Exam Request Variables
@@ -48,25 +49,30 @@ export const buttonNames = {
 
 export const fieldRules = {
 	examName: [
-    { required: true, message: globalRequiredMessage }
+		{ required: true, message: errorMessage.required },
+		{ max: 254, message: errorMessage.maxLength(254) }
 	],
 	examCode: [
-    { required: false, message: globalRequiredMessage }
+		{ required: false, message: errorMessage.required },
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	loinc: [
-    { required: false, message: globalRequiredMessage }
+		{ required: false, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	integrationCode: [
-    { required: false, message: globalRequiredMessage }
+		{ required: false, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	examSort: [
-		{ required: false, message: globalRequiredMessage },
+		{ required: false, message: errorMessage.required },
+		{ max: 32, message: errorMessage.maxLength(32) }
 	],
 	sectionID: [
-		{ required: false, message: globalRequiredMessage },
+		{ required: false, message: errorMessage.required },
 	],
 	specimenID: [
-		{ required: false, message: globalRequiredMessage },
+		{ required: false, message: errorMessage.required },
 	],
 };
 

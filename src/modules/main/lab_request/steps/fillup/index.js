@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { pick } from 'lodash';
 
 // CUSTOM
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';

@@ -53,6 +53,3 @@ export const globalTablePageSize = 10;
 export const globalTableSize = 'small';
 export const globalTableYScroll = 260;
 
-// Messages
-export const globalRequiredMessage = 'This field is required';
-export const globalErrorMessage = 'Something went wrong! Please try again';

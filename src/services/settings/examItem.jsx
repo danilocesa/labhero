@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
-import { apiGetMethod } from 'shared_components/constant-global';
+import { apiGetMethod } from 'global_config/constant-global';
 
 export default async function fetchExamList(sectionId, specimenId) {
 	let examList = null;

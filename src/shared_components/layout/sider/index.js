@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import URI from 'shared_components/uri';
+import URI from 'global_config/uri';
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
 import { ReactComponent as SearchIcon } from 'icons/search.svg';
@@ -14,7 +14,7 @@ import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
 import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
 import { ReactComponent as EditIcon } from 'icons/edit.svg';
 
-import { SELECTED_SIDER_KEY } from '../../constant-global';
+import { SELECTED_SIDER_KEY } from '../../../global_config/constant-global';
 
 import './sider.css';
 
