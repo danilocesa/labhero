@@ -5,3 +5,7 @@
 .treeselect-address .ant-select {
    width: 100% !important;
 }
+
+.fillup-form input{
+   text-transform: uppercase;
+}

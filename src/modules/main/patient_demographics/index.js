@@ -55,7 +55,8 @@ class SearchPatient extends React.Component {
 					<PageTitle pageTitle={moduleTitle} />
 					<Search
 						populatePatients={this.populatePatients}
-						displayLoading={this.displayLoading} 
+						displayLoading={this.displayLoading}
+						enableRequestDate={false}
 					/>
 					<SearchPatientTableHeader 
 						pageSize={pageSize}
@@ -77,7 +78,7 @@ class SearchPatient extends React.Component {
 							width="50%"
 							visible={showDrawer}
 						>
-              <UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
+              				<UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
 						</Drawer>
 					)
 					:

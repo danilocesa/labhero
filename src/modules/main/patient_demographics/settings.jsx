@@ -20,7 +20,10 @@ export const formLabels = {
 	age: 'AGE',
 	city: 'CITY',
 	barangay: 'BARANGAY',
-	unitNo: 'HOUSE NO./UNIT/FLOOR NO., BLDG NAME, BLK OR LOT NO.',
+	unitNo: {
+		label:'HOUSE NO./UNIT/FLOOR NO., BLDG NAME, BLK OR LOT NO.',
+		fieldName: 'address',
+	},
 	contactNumber: 'MOBILE NO.',
 	emailAddress: 'EMAIL ADDRESS'
 };

@@ -72,16 +72,15 @@ class UserAccountForm extends React.Component {
 					password : values.password,
 					registryNumber : values.registration_no,
 					registryValidityDate: values.registration_validity,
+					active: (values.active === true) ? 1 : 0,
 				};
-
-				if(drawerButton === drawerUpdate ){
-						vData.userID = values.userID;
-				}
 				
 				if(drawerButton === drawerAdd){
-					createUserAccountAPI(vData)
+					createUserAccountAPI(vData);
 				} else {
-					updateUserAccountAPI(vData)
+					vData.userID = values.userID;
+					updateUserAccountAPI(vData).catch(
+						reason => console.log('TCL->', reason));
 				}
 				window.location.reload();
 			}
@@ -106,24 +105,35 @@ class UserAccountForm extends React.Component {
 	};
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
-		const { patientInfo, drawerButton } = this.props;
-		const {userTypeList } = this.state;
+		const { patientInfo, drawerButton, form } = this.props;
+		const { getFieldDecorator } = form;
+		const { userTypeList } = this.state;
 
 		const UserTypeOptions = userTypeList.map(userType => (
 			<Option value={userType.userTypeID} key={userType.userTypeID}>
 				{userType.userTypeName}
 			</Option>
 		));
+
+		const isActive = (patientInfo.active === 1 );
 		 
 		return(
 			<div>
 				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
 					<section style={{ height:'50px' }}>
-						<Col span={24} style={{ textAlign: "right" }}>
-							<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-							<Switch defaultChecked  />
-						</Col>
+							{/* <Col span={11}></Col> */}
+							<Col xs={24} sm={24} style={{ textAlign: "right" }}>
+								<Form.Item label="ENABLE LOGIN" labelCol={{ span: 22 }} wrapperCol={{ span: 1 }}>
+									{
+										getFieldDecorator('active',{
+											initialValue: isActive,
+											valuePropName: 'checked'
+										})(
+											<Switch />
+										)
+									}
+								</Form.Item>	
+							</Col>
 					</section>
 					<section style={{ marginBottom: 50 }}>
 						<Col span={12}>
