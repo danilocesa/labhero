@@ -4,7 +4,7 @@
 import axios from 'axios';
 import login from 'services/login/login';
 // import jwtDecode from 'jwt-decode';
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 
 
 export function setupAxiosInterceptors() {

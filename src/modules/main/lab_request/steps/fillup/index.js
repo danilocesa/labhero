@@ -6,13 +6,13 @@ import { withRouter } from 'react-router-dom';
 import { pick } from 'lodash';
 
 // CUSTOM
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
 import Restriction from '../clr_restriction/restriction';
 import Tracker from '../../tracker';
 import FillupForm from './form';
-import {moduleTitle} from '../../create/settings';
+import { requestTypes, requestLinks, moduleTitles } from '../../../settings/lab_exam_request/settings';
 
 // CONSTANTS
 import { 
@@ -100,17 +100,17 @@ class FillupStep extends React.Component {
 
 	goToNextPage = () => {
 		const { history } = this.props;
-		if(sessionStorage.getItem('REQUEST_TYPE') === 'create'){
-			history.push('/request/create/step/3');
+		if(sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create){
+			history.push(requestLinks.create.step3);
 		} else {
-			history.push('/request/edit/step/3');
+			history.push(requestLinks.edit.step3);
 		}
 		
 	}
 
 	dynamicModuleTitle = () =>{
-		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === 'create' || sessionStorage.getItem('REQUEST_TYPE') === undefined ? "CREATE REQUEST" : "EDIT REQUEST");
-		return pageTitle || moduleTitle;
+		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create || sessionStorage.getItem('REQUEST_TYPE') === undefined ? moduleTitles.create : moduleTitles.edit);
+		return pageTitle;
 	}
 
 	render() {

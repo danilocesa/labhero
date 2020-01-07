@@ -11,6 +11,8 @@ import {
 	CLR_SEL_PANEL_CONTENTS
 } from '../../constants';
 
+import {requestLinks, requestTypes} from '../../../../settings/lab_exam_request/settings';
+
 const { Text } = Typography;
 
 class Navigation extends React.Component {
@@ -22,16 +24,16 @@ class Navigation extends React.Component {
 		sessionStorage.setItem(CLR_SEL_PANEL_CONTENTS, JSON.stringify(selectedPanelContents));
 		sessionStorage.setItem(CLR_STEP_PROGRESS, String(4));
 
-		if(sessionStorage.getItem('REQUEST_TYPE') ==='create'){
-			history.push('/request/create/step/4');
+		if(sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create){
+			history.push(requestLinks.create.step4);
 		}else{
-			history.push('/request/edit/step/4');
+			history.push(requestLinks.edit.step4);
 		}
 	}
 	
 	render() {
 		const { disabled } = this.props;
-		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === 'create') ? "/request/create/step/2" : "/request/edit/step/2";
+		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? requestLinks.create.step2 : requestLinks.edit.step2;
 
 		return (
 			<Row style={{ marginTop: 20 }}>

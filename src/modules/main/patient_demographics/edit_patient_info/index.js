@@ -60,6 +60,7 @@ class EditProfile extends React.Component {
 	}
 
 	submitUpdatePatient = async (fields) => {
+		console.log('fields', fields);
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 		const payload = {
 			"patientID": this.props.patientInfo.patientID,
@@ -70,7 +71,9 @@ class EditProfile extends React.Component {
 			"sex": fields.gender,
 			"dateOfBirth": fields.dateOfBirth,
 			"addressCode": fields.town,
-			"address": fields.unitNo
+			"address": fields.address,
+			"emailAdd": fields.emailAdd,
+			"contactNumber" : fields.contactNumber
 		};
 		const response = await updatePatientAPI(payload);
 
@@ -148,7 +151,7 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.sex,
 									rules: fieldRules.gender,
 								})(
-									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }}>
+									<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }} disabled>
 										<RadioButton 
 											style={{ width:'50%' }} 
 											value={genderOptions.male} 
@@ -181,6 +184,7 @@ class EditProfile extends React.Component {
 													format={dateFormat}
 													style={{ width: '100%' }}
 													onChange={this.onDateChange}
+													disabled
 												/>
 											)}
 										</div>
@@ -219,14 +223,18 @@ class EditProfile extends React.Component {
 							<HouseAddress 
 								form={this.props.form}
 								townValue={getFieldsValue().town || this.props.patientInfo.townCode}
-								fieldLabel={formLabels.unitNo}
+								fieldLabel={formLabels.unitNo.label}
+								fieldName={formLabels.unitNo.fieldName}
 								selectedValue={this.props.patientInfo.address}
 							/>
 						</Col>
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.contactNumber}>
-								{getFieldDecorator('contactNumber', { rules: fieldRules.contactNumber })(
+								{getFieldDecorator('contactNumber', { 
+									initialValue: this.props.patientInfo.contactNumber,
+									rules: fieldRules.contactNumber
+								 })(
 									<Input addonBefore="+ 63" maxLength={10} />
 								)}
 							</Form.Item>
@@ -234,7 +242,8 @@ class EditProfile extends React.Component {
 						{/** Email address */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.emailAddress}>
-							{getFieldDecorator('emailAddress', {
+							{getFieldDecorator('emailAdd', {
+								initialValue: this.props.patientInfo.emailAdd,
 								rules: fieldRules.emailAddress ,
 							})(
 								<Input />

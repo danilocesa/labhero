@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { Modal, Row, Col, Button } from 'antd';
 import TrackerModalSettings from './settings';
 
-const {labels} = TrackerModalSettings;
+const { labels } = TrackerModalSettings;
 
 class TrackerModal extends React.Component{
 
-    handleOk = () =>{
-        const {onOK, current} = this.props;
-        onOK(true, current);
+    handleOk = () => {
+        const {onOK} = this.props;
+        onOK(true);
     };
 
-    handleCancel =()=>{
+    handleCancel = () => {
         const {onCancel} = this.props;
         onCancel(true);
     };
@@ -23,14 +23,15 @@ class TrackerModal extends React.Component{
         return(
             <div>
                 <Modal 
-                className="tracker-modal-container" 
-                centered 
-                visible={visibility} 
-                footer={null}
+									className="tracker-modal-container" 
+									centered 
+									visible={visibility} 
+									bodyStyle={{ padding: 50 }}
+									footer={null}
                 >
-					<p style={{ textAlign: 'center'}}>
-						{prompt}
-					</p>
+										<p style={{ textAlign: 'center'}}>
+											{prompt}
+										</p>
                     <Row gutter={16}>
                         <Col span={12}>
                             <Button type='primary' block onClick={this.handleOk}>{buttonLabels.ok}</Button>                            
@@ -43,13 +44,11 @@ class TrackerModal extends React.Component{
             </div>
         );
     }
-
 }
 
 TrackerModal.propTypes = {
     onOK: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    current: PropTypes.number.isRequired,
     visibility: PropTypes.bool.isRequired,
 };
 

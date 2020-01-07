@@ -2,27 +2,17 @@ import React from 'react';
 import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
-import { LOGGEDIN_USER_DATA } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import URI from 'global_config/uri';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import FIELD_RULES from './constants';
 
 import './login.css';
 
 import { CompanyLogo } from '../../images';
 
 const { Header, Content } = Layout;
-
-const mainModuleURL = [
-	'/', // Dashboard
-	'/request/create/step/1', // Create Lab Request
-	'/request/edit/step/1', // Edit Lab Request
-	'/phlebo/result', // Phlebo
-	'/lab/result/edit', // Edit Lab Result
-	'/lab/result/print', // Print Lab Result
-	'/patient/search', // Search Patient
-	'/settings', // Settings
-	'/inventory' // Inventory
-];
 
 class Login extends React.Component {
   constructor(props) {
@@ -66,10 +56,21 @@ class Login extends React.Component {
 	
 	redirectPage = () => {
 		// Redirect to current session module or to dashboard module
-		const selectedLink = mainModuleURL[sessionStorage.SELECTED_SIDER_KEY - 1] || mainModuleURL[0];
-		
+		let selectedLink = URI.dashboard.link;
+
+		Object.keys(URI).forEach(k => {
+			if(URI[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
+				selectedLink = URI[k].link;
+		});
+
+		Object.keys(URI.inventory.sub).forEach(k => {
+			if(URI.inventory.sub[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
+				selectedLink = URI.inventory.sub[k].link;
+		});
+
 		this.props.history.push(selectedLink); 
 	}
+	
 
   render() {
 		// eslint-disable-next-line react/prop-types
@@ -92,14 +93,20 @@ class Login extends React.Component {
 								<Row>
 									<Form onSubmit={this.handleSubmit}>
 										<Form.Item label="Username" className="login-input font12">
-											{getFieldDecorator('username', {
-												rules: [{ required: true, message: 'Please enter your username!' }],
-											})(<Input />)}
+											{getFieldDecorator('username', { 
+												rules: FIELD_RULES.Username,
+												validateTrigger: 'onBlur' 
+											})(
+												<Input maxLength={20} />
+											)}
 										</Form.Item>
 										<Form.Item label="Password">
-											{getFieldDecorator('password', {
-												rules: [{ required: true, message: 'Please enter your password!' }],
-											})(<Input.Password type="password" />)}
+											{getFieldDecorator('password', { 
+												rules: FIELD_RULES.password, 
+												validateTrigger: 'onBlur' 
+											})(
+												<Input.Password type="password" maxLength={20} />
+											)}
 										</Form.Item>
 										<Form.Item style={{marginBottom:'0px'}}>
 											<Button type="primary" htmlType="submit" className="login-form-button" block>

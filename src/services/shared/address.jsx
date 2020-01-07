@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import {apiGetMethod, apiAddress} from 'shared_components/constant-global';
+import {apiGetMethod, apiAddress} from 'global_config/constant-global';
 import Message from 'shared_components/message';
 import axiosCall from '../axiosCall';
 

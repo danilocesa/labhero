@@ -4,53 +4,53 @@ import { Spin, Table } from 'antd';
 import {
 	globalTableSize, 
 	globalTableYScroll
-} from 'shared_components/constant-global';
+} from 'global_config/constant-global';
 
 const columns = [
 	{ 
 		title: 'DR NO.',
-		dataIndex: 'examItemID',
+		dataIndex: 'a',
 		width: 50
 	},
 	{ 
 		title: 'SUPPLIER',
-		dataIndex: 'examItemName',
+		dataIndex: 'b',
 		width: 150
 	},
 	{ 
 		title: 'LOCATION',
-		dataIndex: 'examItemGeneralName',
+		dataIndex: 'c',
 		width: 50
 	},
 	{ 
 		title: 'SECTION',
-		dataIndex: 'examItemTypeCode',
+		dataIndex: 'd',
 		width: 50
 	},
 	{ 
 		title: 'ITEM',
-		dataIndex: 'examItemIntegrationCode',
+		dataIndex: 'e',
 		width: 50
 	},
 	{ 
 		title: 'EXPIRATION DATE',
-		dataIndex: 'examItemIntegrationCode',
+		dataIndex: 'f',
 		width: 50
 	},
 	{ 
 		title: 'PRICE',
-		dataIndex: 'examItemIntegrationCode',
+		dataIndex: 'g',
 		width: 50
 	},
 	{ 
 		title: 'QUANTITY',
-		dataIndex: 'examItemIntegrationCode',
+		dataIndex: 'h',
 		width: 50
 	}
 ];
 
 
-class ExamTable extends React.Component {
+class SearchResultTable extends React.Component {
 	render() {
 		return (
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
@@ -69,4 +69,4 @@ class ExamTable extends React.Component {
 }
 
 
-export default ExamTable;
+export default SearchResultTable;

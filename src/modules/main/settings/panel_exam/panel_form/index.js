@@ -210,7 +210,7 @@ class PanelFormTemplate extends React.Component {
 								initialValue: panelInfo.panel_name,
 								rules: fieldRules.panel_name,
 							})(
-								<AntInput />
+								<AntInput maxLength={254} />
 							)}	
 						</AntForm.Item>
 						<AntForm.Item label={fieldLabels.panel_code}>
@@ -218,7 +218,7 @@ class PanelFormTemplate extends React.Component {
 								initialValue: panelInfo.code,
 								rules: fieldRules.panel_code,
 							})(
-								<AntInput />
+								<AntInput maxLength={50} />
 							)}	
 						</AntForm.Item>
 						<AntForm.Item label={fieldLabels.panel_integration_code}>
@@ -226,7 +226,7 @@ class PanelFormTemplate extends React.Component {
 								initialValue: panelInfo.integration_code,
 								rules: fieldRules.panel_integration_code,
 							})(
-								<AntInput />
+								<AntInput maxLength={50} />
 							)}	
 						</AntForm.Item>
 						<AntForm.Item label={fieldLabels.panel_status}>

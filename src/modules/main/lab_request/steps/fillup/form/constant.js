@@ -1,58 +1,58 @@
+import errorMessage from 'global_config/error_messages';
+
 export const FIELD_RULES = {
 	hospitalID: [
-    // { required: true, message: 'This field is required..' }
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	emailAdd: [
-		// { required: true, message: 'This field is required.' },
-		{ type: 'email', message: 'Please input valid email.' }
+		{ type: 'email', message: errorMessage.email },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	givenName: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	middleName: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	lastName: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: errorMessage.required },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	suffix: [
-		{  }
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	dateOfBirth: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: errorMessage.required }
 	],
-	address: [
-		// { required: true, message: 'This field is required.' }
-	],
+	address: [],
 	contactNumber: [
-		// { required: true, message: 'This field is required.' },
-		{ pattern: /^[9]\d{9}/, message: 'Please input valid contact number.' }
+		{ pattern: /^[9]\d{9}/, message: errorMessage.contactNum },
+		{ max: 45, message: errorMessage.maxLength(45) }
 	],
 	gender: [
 		{ required: true, message: 'Please select gender' }
 	],
 	location: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: errorMessage.required }
 	],
-	physicianId: [
-		// { required: true, message: 'This field is required.' }
-	],
+	physicianId: [],
 	visit: [
-		// { required: true, message: 'This field is required.' }
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	chargeSlip: [
-		// { required: true, message: 'This field is required.' }
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	officialReceipt: [
-		// { required: true, message: 'This field is required.' }
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	bed: [
-		// { required: true, message: 'This field is required.' }
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	comment: [
-
+		{ max: 254, message: errorMessage.maxLength(254) }
 	],
-	
 };
 
 export const formLabels = {
@@ -65,7 +65,10 @@ export const formLabels = {
 	suffix : "SUFFIX",
 	dateOfBirth : "DATE OF BIRTH",
 	age : "AGE",
-	unitFloorBldg : "HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
+	unitNo : {
+		label:"HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
+		fieldName: 'address',
+	},
 	contactNumber : "CONTACT NUMBER",
 	patientGender : "PATIENT'S GENDER",
 	location : "LOCATION",

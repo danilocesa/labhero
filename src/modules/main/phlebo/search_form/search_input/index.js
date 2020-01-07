@@ -9,7 +9,7 @@ import { Form, Input, Button, Row, Col, DatePicker as AntDatePicker } from 'antd
 import axiosCall from 'services/axiosCall';
 import CustomMessage from 'shared_components/message';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import { apiUrlPhleboSearchPatient } from 'shared_components/constant-global';
+import { apiUrlPhleboSearchPatient } from 'global_config/constant-global';
 
 // CSS
 import './search_patient_form.css';
@@ -158,6 +158,7 @@ class SearchPatientHeaderForm extends React.Component {
 								onChange={this.handleInputChange} 
 								onFocus={this.handleFocus}
 								placeholder="Lastname,Firstname"
+								maxLength={100}
 							/>
 						</Form.Item>
 					</Col>

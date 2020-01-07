@@ -35,14 +35,14 @@ class InputForm extends React.Component {
 					<Col span={10}>
 						<Form.Item label={fieldLabels.examName}>
 							{getFieldDecorator('examRequestName', { rules: fieldRules.examName })(
-								<Input />
+								<Input maxLength={254} />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={14}>
 						<Form.Item label={fieldLabels.examCode}>
 							{getFieldDecorator('examRequestCode', { rules: fieldRules.examCode })(
-								<Input />
+								<Input maxLength={50} />
 							)}
 						</Form.Item>
 					</Col>
@@ -71,21 +71,21 @@ class InputForm extends React.Component {
 					<Col span={10}>
 						<Form.Item label={fieldLabels.loinc}>
 							{getFieldDecorator('examRequestLoinc', { rules: fieldRules.loinc })(
-								<Input />
+								<Input maxLength={100} />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={10}>
 						<Form.Item label={fieldLabels.integrationCode}>
 							{getFieldDecorator('examRequestIntegrationCode', { rules: fieldRules.integrationCode })(
-								<Input />
+								<Input maxLength={100} />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={4}>
 						<Form.Item label={fieldLabels.examSort}>
 							{getFieldDecorator('examRequestSort', { rules: fieldRules.examSort })(
-								<Input className="fullWidth" />
+								<Input className="fullWidth" maxLength={32} />
 							)}
 						</Form.Item>
 					</Col>

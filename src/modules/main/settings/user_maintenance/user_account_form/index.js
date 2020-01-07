@@ -5,9 +5,17 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 // CUSTOM
-import {createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
-import {getAllUserTypesAPI} from 'services/settings/user_maintenance/userType';
-import { drawerAdd, drawerUpdate, labels as gLabels, errorMessages, buttonLabels, fieldLabels } from '../settings';
+import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
+import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
+import { 
+	drawerAdd, 
+	drawerUpdate, 
+	labels as gLabels, 
+	buttonLabels, 
+	fieldLabels, 
+	fieldRules,
+	errorMessage 
+} from '../settings';
 
 // CSS
 import './useraccountform.css';
@@ -64,16 +72,15 @@ class UserAccountForm extends React.Component {
 					password : values.password,
 					registryNumber : values.registration_no,
 					registryValidityDate: values.registration_validity,
+					active: (values.active === true) ? 1 : 0,
 				};
-
-				if(drawerButton === drawerUpdate ){
-						vData.userID = values.userID;
-				}
 				
 				if(drawerButton === drawerAdd){
-					createUserAccountAPI(vData)
+					createUserAccountAPI(vData);
 				} else {
-					updateUserAccountAPI(vData)
+					vData.userID = values.userID;
+					updateUserAccountAPI(vData).catch(
+						reason => console.log('TCL->', reason));
 				}
 				window.location.reload();
 			}
@@ -83,7 +90,7 @@ class UserAccountForm extends React.Component {
 	compareToFirstPassword = (rule, value, callback) => {
 		const { form } = this.props;
 		if (value && value !== form.getFieldValue('password')) {
-			callback(errorMessages.password.doesNotMatch);
+			callback(errorMessage.password.doesNotMatch);
 		} else {
 			callback();
 		}
@@ -98,24 +105,35 @@ class UserAccountForm extends React.Component {
 	};
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
-		const { patientInfo, drawerButton } = this.props;
-		const {userTypeList } = this.state;
+		const { patientInfo, drawerButton, form } = this.props;
+		const { getFieldDecorator } = form;
+		const { userTypeList } = this.state;
 
 		const UserTypeOptions = userTypeList.map(userType => (
 			<Option value={userType.userTypeID} key={userType.userTypeID}>
 				{userType.userTypeName}
 			</Option>
 		));
+
+		const isActive = (patientInfo.active === 1 );
 		 
 		return(
 			<div>
 				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
 					<section style={{ height:'50px' }}>
-						<Col span={24} style={{ textAlign: "right" }}>
-							<Text style={{paddingRight: '10px'}}>ENABLE LOGIN</Text>
-							<Switch defaultChecked  />
-						</Col>
+							{/* <Col span={11}></Col> */}
+							<Col xs={24} sm={24} style={{ textAlign: "right" }}>
+								<Form.Item label="ENABLE LOGIN" labelCol={{ span: 22 }} wrapperCol={{ span: 1 }}>
+									{
+										getFieldDecorator('active',{
+											initialValue: isActive,
+											valuePropName: 'checked'
+										})(
+											<Switch />
+										)
+									}
+								</Form.Item>	
+							</Col>
 					</section>
 					<section style={{ marginBottom: 50 }}>
 						<Col span={12}>
@@ -134,25 +152,25 @@ class UserAccountForm extends React.Component {
 								<Form.Item label={fieldLabels.firstName}>
 									{getFieldDecorator('givenName', {
 										initialValue: patientInfo.givenName,
-										rules: [{ required: true, message: errorMessages.requiredField }]
+										rules: fieldRules.firstname
 									})(
-										<Input />
+										<Input maxLength={100} />
 									)}	
 								</Form.Item>
 								<Form.Item label={fieldLabels.middleName}>
 									{
 										getFieldDecorator('middleName',{
 											initialValue: patientInfo.middleName,
-											rules: [{ required: true, message: errorMessages.requiredField}]
-										})(<Input />)
+											rules: fieldRules.middlename
+										})(<Input maxLength={100} />)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.lastName}>
 									{
 										getFieldDecorator('lastName',{
 											initialValue: patientInfo.lastName,
-											rules: [{ required: true, message: errorMessages.requiredField}]
-										})(<Input />)
+											rules: fieldRules.lastname
+										})(<Input maxLength={100} />)
 									}
 								</Form.Item>
 							</div>
@@ -167,9 +185,9 @@ class UserAccountForm extends React.Component {
 									{
 										getFieldDecorator('userName',{
 											initialValue: patientInfo.userName,
-											rules: [{ required: true, message: errorMessages.requiredField}],
+											rules: fieldRules.username
 										})(
-										<Input />)
+										<Input maxLength={10} />)
 									}
 								</Form.Item>
 
@@ -178,11 +196,11 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('password',{
 											initialValue: patientInfo.password,
 											rules: [
-												{ required: true, message: errorMessages.requiredField},
+												...fieldRules.password,
 												{ validator: this.validateToNextPassword}
 											]
 										})(
-										<Input.Password />)
+										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
 
@@ -191,11 +209,11 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('repeat_password',{
 											initialValue: patientInfo.password,
 											rules:[
-												{ required: true, message: errorMessages.requiredField },
+												...fieldRules.password,
 												{ validator: this.compareToFirstPassword }
 											]
 										})(
-										<Input.Password />)
+										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
 							</div>
@@ -225,7 +243,7 @@ class UserAccountForm extends React.Component {
 									{
 										getFieldDecorator('userTypeID',{ 
 											initialValue: patientInfo.userTypeID,
-											rules: [{ required: true, message: errorMessages.requiredField}],
+											rules: [{ required: true, message: errorMessage.requiredField}],
 										})(
 											<Select>
 												{UserTypeOptions}

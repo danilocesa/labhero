@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import { apiPostMethod, apiPatient } from 'shared_components/constant-global';
+import { apiPostMethod, apiPatient } from 'global_config/constant-global';
 import axiosCall from '../axiosCall';
 
 export default async function createPatientInfo(personalInfo) {

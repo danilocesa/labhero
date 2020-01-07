@@ -4,7 +4,7 @@ export const trackerModalSettings={
             ok: "OK",
             cancel: "Cancel",
         },
-        prompt: "Do you want to proceed",
+        prompt: "Do you want to proceed?",
     }
 };
 

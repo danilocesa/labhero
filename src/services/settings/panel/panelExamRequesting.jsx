@@ -4,7 +4,7 @@ import {
 	apiGetMethod, 
 	apiPostMethod, 
 	apiPutMethod
-} from 'shared_components/constant-global';
+} from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import axiosCall from 'services/axiosCall';
 

@@ -238,12 +238,12 @@ class UpdateForm extends React.Component {
 						<section style={{ marginBottom: 60 }}>
 							<Form.Item label={fieldLabels.examItemName}>
 								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-									<Input />
+									<Input maxLength={254} />
 								)}
 							</Form.Item>
 							<Form.Item label={fieldLabels.examItemGeneralName}>
 								{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-									<Input />
+									<Input maxLength={50} />
 								)}
 							</Form.Item>
 							<Form.Item label={fieldLabels.examItemTypeCode}>
@@ -262,7 +262,7 @@ class UpdateForm extends React.Component {
 									</Form.Item>
 									<Form.Item label={fieldLabels.examItemTypeDefault}>
 										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<Input />
+											<Input maxLength={254} />
 										)}
 									</Form.Item>
 								</>
@@ -279,14 +279,14 @@ class UpdateForm extends React.Component {
 								<>
 									<Form.Item label={fieldLabels.examItemTypeDefault}>
 										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<TextArea />
+											<TextArea maxLength={100} />
 										)}
 									</Form.Item>
 								</>
 							)}
 							<Form.Item label={fieldLabels.examItemIntegrationCode}>
 								{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
-									<Input />
+									<Input maxLength={100} />
 								)}
 							</Form.Item>
 						</section>

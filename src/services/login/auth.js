@@ -1,4 +1,4 @@
-import { LOGGEDIN_USER_DATA, SELECTED_SIDER_KEY } from 'shared_components/constant-global';
+import { LOGGEDIN_USER_DATA, SELECTED_SIDER_KEY } from 'global_config/constant-global';
 
 const auth = {
 	isAuthenticated: !! sessionStorage.getItem(LOGGEDIN_USER_DATA),

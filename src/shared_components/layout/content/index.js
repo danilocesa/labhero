@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
@@ -76,13 +76,13 @@ function PrivateRoute({ component: Component, ...rest }) {
   );
 }
 
-PrivateRoute.propTypes = {
-	location: PropTypes.object
-}
+// PrivateRoute.propTypes = {
+// 	location: PropTypes.object
+// }
 
-PrivateRoute.defaultProps = {
-	location() { return null }
-}
+// PrivateRoute.defaultProps = {
+// 	location() { return null }
+// }
 
 
 

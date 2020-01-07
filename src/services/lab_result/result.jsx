@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import axiosCall from 'services/axiosCall';
-import { apiPostMethod } from 'shared_components/constant-global';
+import { apiPostMethod } from 'global_config/constant-global';
 
 export default async function fetchLabResult(payload) {
 	try{

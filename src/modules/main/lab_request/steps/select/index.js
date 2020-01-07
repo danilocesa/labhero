@@ -11,7 +11,7 @@ import SelectTable from './table';
 import Navigation from './navigation';
 
 import { CLR_SEL_EXAMS, CLR_SEL_CONTENTS, CLR_SEL_PANEL_CONTENTS } from '../constants';
-import { moduleTitle } from '../../../settings/lab_exam_request/settings';
+import { moduleTitles, requestTypes } from '../../../settings/lab_exam_request/settings';
 
 const ColLayout = {
 	sm: { span: 24 },
@@ -390,6 +390,7 @@ class SelectStep extends React.Component {
 		} = this.state;
 		const { restriction } = this;
 		const { requestType } = this.props;
+		const moduleTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
 
 		if(restriction.hasAccess) {
 			return (

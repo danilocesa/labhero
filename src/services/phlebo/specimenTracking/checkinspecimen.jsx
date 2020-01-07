@@ -1,6 +1,6 @@
 // @ts-nocheck
 // CUSTOM MODULES
-import {apiUrlCheckInSpecimen, apiPostMethod} from 'shared_components/constant-global';
+import {apiUrlCheckInSpecimen, apiPostMethod} from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import axiosCall from '../../axiosCall';
 

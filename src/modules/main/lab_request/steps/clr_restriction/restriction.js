@@ -23,7 +23,6 @@ class Restriction {
 
   redirect = () => (
     <Redirect to={`${this.link}`} />
-    
   );
 }
 

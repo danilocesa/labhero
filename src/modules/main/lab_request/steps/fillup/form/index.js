@@ -37,7 +37,6 @@ class BaseForm extends React.Component {
 		this.populateLocation();
 		this.populatePhysician();
 		this.populatePersonalInfo();
-		// setTimeout(() => this.populatePersonalInfo(), 3000);
 	}
 
 	populatePersonalInfo = () => {
@@ -59,7 +58,6 @@ class BaseForm extends React.Component {
 				},
 				isDisabledPersoFields: patientID !== null
 			});
-
 		}
 		
 		// Else if user has pressed back button
@@ -137,7 +135,12 @@ class BaseForm extends React.Component {
 	}
 
 	render() {
-		const { isDisabledPersoFields, initialPersoValue, hospitalPhysicianList, hospitalLocationList } = this.state;
+		const { 
+			isDisabledPersoFields, 
+			initialPersoValue, 
+			hospitalPhysicianList, 
+			hospitalLocationList 
+		} = this.state;
 		const { isLoading, form } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
@@ -160,7 +163,7 @@ class BaseForm extends React.Component {
 			<div style={{ marginTop: 50 }}>
 				<Form className="clr-fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={12}>
-						<Col sm={12} md={11}>
+						<Col sm={7} md={7}>
 							<div className="left-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>PERSONAL INFORMATION</Text>
@@ -191,7 +194,7 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.emailAdd,
 										initialValue: initialPersoValue.emailAdd
 									})(
-										<Input disabled={isDisabledPersoFields} />
+										<Input disabled={isDisabledPersoFields} maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.firstName}>
@@ -199,7 +202,7 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.givenName, 
 										initialValue: initialPersoValue.givenName
 									})(
-										<Input disabled={isDisabledPersoFields} />
+										<Input disabled={isDisabledPersoFields} maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.middleName}>
@@ -207,7 +210,7 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.middleName,
 										initialValue: initialPersoValue.middleName
 									})(
-										<Input disabled={isDisabledPersoFields} />
+										<Input disabled={isDisabledPersoFields} maxLength={100} />
 									)}
 								</Form.Item>
 								<Row gutter={12}>
@@ -217,7 +220,7 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.lastName,
 												initialValue: initialPersoValue.lastName 
 											})(
-												<Input disabled={isDisabledPersoFields} />
+												<Input disabled={isDisabledPersoFields} maxLength={100} />
 											)}
 										</Form.Item>
 									</Col>
@@ -227,7 +230,7 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.suffix, 
 												initialValue: initialPersoValue.suffix
 											})(
-												<Input maxLength={1} disabled={isDisabledPersoFields} />
+												<Input disabled={isDisabledPersoFields} maxLength={50} />
 											)}
 										</Form.Item>
 									</Col>
@@ -259,15 +262,28 @@ class BaseForm extends React.Component {
 										</Form.Item>
 									</Col>
 								</Row>
-								<Row gutter={12}>
-									<Col span={12}>
+							</div>
+						</Col>
+						<Col md={1} style={{ textAlign: 'center' }}>
+							<Divider className="divider" type="vertical" style={{ height: 650 }} />
+						</Col>
+						<Col sm={7} md={7}>
+							<div className="center-form">
+								<div style={{ padding: '10px 0px' }}>
+									<Text strong>LOCATION AND GENDER</Text>
+								</div>
+								<Row>
+									<Col>
 										<ProvinceList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
 											selectedProvince={dummyVal}
+											disabled={isDisabledPersoFields}
 										/>
 									</Col>
-									<Col span={12}>
+								</Row>
+								<Row>
+									<Col>
 										<CityList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
@@ -276,9 +292,8 @@ class BaseForm extends React.Component {
 										/>
 									</Col>
 								</Row>
-								
-								<Row gutter={12}>
-									<Col span={12}>
+								<Row>
+									<Col>
 										<TownList 
 											form={form}
 											selectDefaultOptions={selectDefaultOptions}
@@ -286,16 +301,18 @@ class BaseForm extends React.Component {
 											cityValue={getFieldsValue().city}
 										/>
 									</Col>
-
+								</Row>						
+								<Row>
+									<Col>
+										<HouseAddress 
+											form={form}
+											townValue={getFieldsValue().town}
+											fieldLabel={formLabels.unitNo.label}
+											fieldName={formLabels.unitNo.fieldName}
+											selectedValue={initialPersoValue.address}
+										/>
+									</Col>
 								</Row>
-																
-								<HouseAddress 
-									form={form}
-									townValue={getFieldsValue().town}
-									fieldLabel={formLabels.unitFloorBldg}
-									selectedValue={initialPersoValue.address}
-								/>
-
 								<Form.Item label={formLabels.contactNumber}>
 									{getFieldDecorator('contactNumber', { 
 										rules: FIELD_RULES.contactNumber,
@@ -303,7 +320,7 @@ class BaseForm extends React.Component {
 									})(
 										<Input 
 											addonBefore="+ 63" 
-											maxLength={10} 
+											maxLength={45} 
 											disabled={isDisabledPersoFields}
 										/>
 									)}
@@ -314,17 +331,21 @@ class BaseForm extends React.Component {
 										initialValue: initialPersoValue.sex
 									})(
 										<Radio.Group buttonStyle="solid" disabled={isDisabledPersoFields}>
-											<Radio.Button value="MALE">MALE</Radio.Button>
-											<Radio.Button value="FEMALE">FEMALE</Radio.Button>
+											<Radio.Button value="MALE" className="gender-radio-btn">
+												MALE
+											</Radio.Button>
+											<Radio.Button value="FEMALE" className="gender-radio-btn">
+												FEMALE
+											</Radio.Button>
 										</Radio.Group>
 									)}
 								</Form.Item>
 							</div>
 						</Col>
-						<Col md={2} style={{ textAlign: 'center' }}>
+						<Col md={1} style={{ textAlign: 'center' }}>
 							<Divider className="divider" type="vertical" style={{ height: 650 }} />
 						</Col>
-						<Col sm={12} md={11}>
+						<Col sm={7} md={7}>
 							<div className="right-form">
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
@@ -348,27 +369,27 @@ class BaseForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={formLabels.visit}>
 									{getFieldDecorator('visit', { rules: FIELD_RULES.visit })(
-										<Input />
+										<Input maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.chargeSlip}>
 									{getFieldDecorator('chargeSlip', { rules: FIELD_RULES.chargeSlip })(
-										<Input />
+										<Input maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.officialReceipt}>
 									{getFieldDecorator('officialReceipt', { rules: FIELD_RULES.officialReceipt })(
-										<Input />
+										<Input maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.bed}>
 									{getFieldDecorator('bed', { rules: FIELD_RULES.bed })(
-										<Input />
+										<Input maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.comment}>
 									{getFieldDecorator('comment', { rules: FIELD_RULES.comment })(
-										<TextArea rows={3} />
+										<TextArea rows={3} maxLength={254} />
 									)}
 								</Form.Item>
 							</div>

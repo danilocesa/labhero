@@ -13,7 +13,7 @@ import {
 	REQUEST_TYPE,
 	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
-import {globalTableSize} from '../constant-global';
+import {globalTableSize} from '../../global_config/constant-global';
 
 // CSS
 import './table.css';
@@ -60,34 +60,40 @@ class SearchPatientTable extends React.Component {
 		// CONSTANTS
 		const columns = [
 			{
+				title: 'PATIENT ID',
+				dataIndex: 'patientID',
+				sorter: getSorter(data, 'patientID'),
+				width: '10%'
+			},
+			{
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
-				width: '15%'
+				width: '10%'
 			},
 			{
 				title: 'FIRST NAME',
 				dataIndex: 'givenName',
 				sorter: getSorter(data, 'givenName'),
-				width: '15%'
+				width: '10%'
 			},
 			{
 				title: 'MIDDLE NAME',
 				dataIndex: 'middleName',
 				sorter: getSorter(data, 'middleName'),
-				width: '15%'
+				width: '10%'
 			}, 
 			{
 				title: 'DATE OF BIRTH',
 				dataIndex: 'dateOfBirth',
 				sorter:  getSorter(data, 'dateOfBirth'),
-				width: '14%'
+				width: '10%'
 			},
 			{
 				title: 'GENDER',
 				dataIndex: 'sex',
 				sorter:  getSorter(data, 'sex'),
-				width: '12%'
+				width: '10%'
 			},
 			{
 				title: 'ADDRESS',
@@ -144,7 +150,9 @@ SearchPatientTable.propTypes = {
 
 SearchPatientTable.defaultProps = {
 	SearchedPatientId: '',
-	SearchedPatientName: ''
+	SearchedPatientName: '',
+	requestType: '',
+	moduleProfile: ''
 }
 
 export default withRouter(SearchPatientTable);

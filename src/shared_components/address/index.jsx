@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 
-import { globalRequiredMessage } from '../constant-global';
+import Messages from 'global_config/error_messages';
 
 class houseAddressComponent extends React.Component{
 	state = {
@@ -11,7 +11,9 @@ class houseAddressComponent extends React.Component{
 	};
 
 	componentDidUpdate(prevProps){
-		if(prevProps.townValue !== this.props.townValue){
+		const { townValue } = this.props;
+
+		if(prevProps.townValue !== townValue && townValue !== ''){
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ isDisabled:false });
 		}
@@ -19,18 +21,18 @@ class houseAddressComponent extends React.Component{
 
 	houseUnitfieldRules = () => {
 		if(this.props.townValue){
-			return [{ required: true, message: globalRequiredMessage }];
+			return [{ required: true, message: Messages.required }];
 		}
-		return [{ required: false, message: globalRequiredMessage }];
+		return [{ required: false, message: Messages.required }];
 	}
 
 	render(){
-		const { form, fieldLabel, selectedValue } = this.props;
+		const { form, fieldLabel, fieldName, selectedValue } = this.props;
 		const { isDisabled } = this.state;
 		const { getFieldDecorator } = form;
 		
 		const addressInput = (
-			getFieldDecorator(fieldLabel, {
+			getFieldDecorator(fieldName, {
 				rules: this.houseUnitfieldRules(),
 				initialValue: selectedValue,
 			})(
@@ -49,9 +51,14 @@ class houseAddressComponent extends React.Component{
 
 houseAddressComponent.propTypes = {
 	form : PropTypes.object.isRequired,
-	townValue: PropTypes.string.isRequired,
 	fieldLabel : PropTypes.string.isRequired,
-	selectedValue : PropTypes.string.isRequired
+	townValue: PropTypes.string,
+	selectedValue : PropTypes.string
+};
+
+houseAddressComponent.defaultProps = {
+	selectedValue: '',
+	townValue: ''
 };
 
 export default houseAddressComponent;

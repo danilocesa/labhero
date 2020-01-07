@@ -1,6 +1,6 @@
-import { globalRequiredMessage } from 'shared_components/constant-global';
+import errorMessage from 'global_config/error_messages';
 
-export const REQUIRED_MESSAGE = globalRequiredMessage;
+export const REQUIRED_MESSAGE = errorMessage.required;
 export const FIELD_RULES = [{ 
   required: true, 
   message: REQUIRED_MESSAGE
