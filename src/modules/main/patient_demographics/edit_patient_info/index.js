@@ -95,7 +95,6 @@ class EditProfile extends React.Component {
 	render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator, getFieldsValue } = this.props.form;
-		console.log(this.props.patientInfo);
 		return(
 			<div>
 				<Form className="fillup-form" onSubmit={this.onSubmit}>
@@ -206,7 +205,7 @@ class EditProfile extends React.Component {
 								form={this.props.form}
 								selectDefaultOptions={selectDefaultOptions} 
 								provinceValue={getFieldsValue().provinces || this.props.patientInfo.provinceCode}
-								selectedcity={this.props.patientInfo.cityMunicipalityCode}
+								selectedCity={this.props.patientInfo.cityMunicipalityCode}
 							/>
 						</Col>
 						{/** Barangay */}
