@@ -30,7 +30,6 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: 240,
 			},
 			{ 
 				title: labels.groupTitle,
@@ -66,7 +65,7 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Sort',
-				width: 60,
+				width: 50,
 				render: (text, record, index) => {
 					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center' }} />;
 				}

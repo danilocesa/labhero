@@ -15,7 +15,7 @@
 }
 
 
-.clr-fillup-form .left-form input:not(#emailAdd){
+.clr-fillup-form .left-form input {
   text-transform: uppercase;
 }	
 
@@ -28,6 +28,13 @@
 	width: 100px;
 	text-align: center;
 }
+
+.clr-fillup-form .right-form,
+.clr-fillup-form .right-form input, 
+.clr-fillup-form .right-form select, 
+.clr-fillup-form .right-form textarea{
+  text-transform: uppercase;
+}	
 
 @media only screen and (max-width: 800px) {
   .clr-fillup-form .divider {

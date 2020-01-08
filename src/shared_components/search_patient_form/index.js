@@ -146,12 +146,13 @@ class SearchPatientForm extends React.Component {
 						) : null 
 					}
 					{/* Buttons */}
-					<Col xs={24} sm={24} md={6} lg={5}>
+					<Col xs={24} sm={24} md={6} lg={6}>
 						<Form.Item style={{ marginTop: 33 }}>
 							<Row>
 								<Button 
 									className="form-button"
 									shape="round" 
+									style={{ width: 120 }}
 									onClick={this.clearInputs} 
 								>
 									{buttonNames.clear}
@@ -163,6 +164,7 @@ class SearchPatientForm extends React.Component {
 									htmlType="submit" 
 									disabled={disabled}
 									loading={loading}
+									style={{ width: 120 }}
 								>
 									{buttonNames.search}
 								</Button>

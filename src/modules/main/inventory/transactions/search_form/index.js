@@ -40,6 +40,7 @@ class SearchForm extends React.Component {
 									<Button 
 										block
 										shape="round" 
+										style={{ width: 120 }}
 										onClick={this.clearInputs} 
 									>
 										CLEAR
@@ -51,6 +52,7 @@ class SearchForm extends React.Component {
 										shape="round" 
 										type="primary" 
 										htmlType="submit" 
+										style={{ width: 120 }}
 									>
 										SEARCH
 									</Button>

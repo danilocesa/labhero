@@ -115,7 +115,6 @@ class BaseForm extends React.Component {
 		validateFieldsAndScroll((err) => {
 			if (!err) {
 				const fields = getFieldsValue();
-
 				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
@@ -129,6 +128,11 @@ class BaseForm extends React.Component {
 					fields.physicianName +=	`${physician.lastName}`;
 				}
 				
+				Object.keys(fields).forEach(key => {
+					const fieldValue = fields[key];
+					fields[key] = (typeof fieldValue === 'string') ? fieldValue.toUpperCase() : fieldValue;
+				});
+
 				handleSubmit(fields);
 			}
 		});

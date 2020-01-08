@@ -1,3 +1,8 @@
+.settings-user-maintence-form input,
+.settings-user-maintence-form select {
+	text-transform: uppercase;
+}
+
 .form-section .form-title{
 	margin-bottom: 15px;
 }

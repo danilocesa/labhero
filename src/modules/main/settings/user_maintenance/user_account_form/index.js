@@ -58,17 +58,17 @@ class UserAccountForm extends React.Component {
 	}
 
 	handleSubmit = (event) => {
-		const { form, drawerButton } = this.props;
-
 		event.preventDefault();
+		const { form, drawerButton } = this.props;
+		
 		form.validateFields( (err, values) => {
 			if (!err) {
 				const vData = {
 					userName : values.userName,
 					userTypeID : values.userTypeID,
-					givenName : values.givenName,
-					lastName : values.lastName,
-					middleName : values.middleName,
+					givenName : values.givenName.toUpperCase(),
+					lastName : values.lastName.toUpperCase(),
+					middleName : values.middleName.toUpperCase(),
 					password : values.password,
 					registryNumber : values.registration_no,
 					registryValidityDate: values.registration_validity,
@@ -79,9 +79,9 @@ class UserAccountForm extends React.Component {
 					createUserAccountAPI(vData);
 				} else {
 					vData.userID = values.userID;
-					updateUserAccountAPI(vData).catch(
-						reason => console.log('TCL->', reason));
+					updateUserAccountAPI(vData).catch(reason => console.log('TCL->', reason));
 				}
+
 				window.location.reload();
 			}
 		});
@@ -119,7 +119,11 @@ class UserAccountForm extends React.Component {
 		 
 		return(
 			<div>
-				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+				<Form 
+					{...formItemLayout} 
+					onSubmit={this.handleSubmit} 
+					className="settings-user-maintence-form"
+				>
 					<section style={{ height:'50px' }}>
 							{/* <Col span={11}></Col> */}
 							<Col xs={24} sm={24} style={{ textAlign: "right" }}>
@@ -233,7 +237,7 @@ class UserAccountForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={fieldLabels.registrationValidity}>
 									{
-										getFieldDecorator('registration_validity',{
+										getFieldDecorator('registration_validity', {
 											initialValue: patientInfo.registryValidityDate
 										})(
 										<Input />)
@@ -241,7 +245,7 @@ class UserAccountForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={fieldLabels.userRights}>
 									{
-										getFieldDecorator('userTypeID',{ 
+										getFieldDecorator('userTypeID', { 
 											initialValue: patientInfo.userTypeID,
 											rules: [{ required: true, message: errorMessage.requiredField}],
 										})(
