@@ -25,7 +25,6 @@ class CityListComponent extends React.Component {
 		const { provinceValue } = this.props;
 
 		if(prevProps.provinceValue !== provinceValue && provinceValue !== ''){
-			console.log(this.props.provinceValue);
 			this.populateCity(this.props.provinceValue);
 		}
 	}
