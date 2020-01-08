@@ -39,14 +39,18 @@ class SpecimenList extends React.Component {
 
 	componentDidUpdate = async () =>{
 		const { patientInfo } = this.props;
-		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-		let requestExams = [];
-		requestExams = this.mapExams(patientSpecimensAPI);
-		if(patientSpecimensAPI != undefined){
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({  
-				patientRequestSpecimen: requestExams
-			});
+		if(!this.state.patientRequestSpecimen){ // Temp fix for too many request
+			const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+			let requestExams = [];
+			requestExams = this.mapExams(patientSpecimensAPI);
+
+			if(patientSpecimensAPI != undefined){
+				// eslint-disable-next-line react/no-did-update-set-state
+				this.setState({  
+					patientRequestSpecimen: requestExams
+				});
+			}
+
 		}
 		
 	}
@@ -65,7 +69,6 @@ class SpecimenList extends React.Component {
 		const saveExtraction = await patientPhleboCheckInSpecimensAPI({ requestID, sectionID, specimenID, userID  });
 		
 		this.setState({ loading: false });
-		console.log(saveExtraction);
 		if(saveExtraction.status === 200 || saveExtraction.length > 0){
 			document.getElementById(inputID).setAttribute("disabled","");
 			document.getElementById(inputID).innerHTML = buttonNames.extracted;
@@ -81,7 +84,7 @@ class SpecimenList extends React.Component {
 		params.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
 				returnArray[indexSection] = {
-					"key": `${keySection.sectionName}${keySection.sectionID}`,
+					"key": `${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}`,
 					"phlebo_sectionID": keySection.sectionID,
 					"phlebo_section_col": keySection.sectionName, 
 					"phlebo_specimenID": keySpecimen.specimenID,
@@ -97,7 +100,7 @@ class SpecimenList extends React.Component {
 							props: {
 								colSpan: '5',
 							},
-							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
+							"key":`${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}${indexExams}`,
 							"phlebo_section_col": keyExams,
 						};
 					})
