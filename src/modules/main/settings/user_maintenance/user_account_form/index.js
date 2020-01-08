@@ -119,7 +119,7 @@ class UserAccountForm extends React.Component {
 		 
 		return(
 			<div>
-				<Form {...formItemLayout} onSubmit={this.handleSubmit}>
+				<Form {...formItemLayout} onSubmit={this.handleSubmit} className="user-account-form">
 					<section style={{ height:'50px' }}>
 							{/* <Col span={11}></Col> */}
 							<Col xs={24} sm={24} style={{ textAlign: "right" }}>

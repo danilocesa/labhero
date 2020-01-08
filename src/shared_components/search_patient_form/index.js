@@ -99,8 +99,7 @@ class SearchPatientForm extends React.Component {
 	render() {
 		const { patientID, patientName, loading } = this.state;
 		const disabled = !(patientID || patientName);
-		const isEditting = (sessionStorage.getItem('MODULE_PROFILE') === "editRequest");
-		const { requestDateEnabled } = this.props;
+		const { enableRequestDate } = this.props;
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
@@ -135,8 +134,8 @@ class SearchPatientForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					{/* Request date */}	
-					{ (isEditting && requestDateEnabled) ? 
+					{/* Request date */}
+					{ (enableRequestDate === true) ? 
 						(
 							<Col xs={24} sm={24} md={6} lg={4}>
 								<Form.Item label={fieldLabels.requestDate}>
