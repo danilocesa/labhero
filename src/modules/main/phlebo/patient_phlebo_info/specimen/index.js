@@ -28,9 +28,11 @@ class SpecimenList extends React.Component {
 	async componentDidMount(){
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
 		// eslint-disable-next-line prefer-destructuring
 		let requestExams = [];
 		requestExams = this.mapExams(patientSpecimensAPI);
+    console.log("TCL: SpecimenList -> componentDidMount -> requestExams", requestExams)
 		this.setState({  
 			patientRequestSpecimen: requestExams
 		});
@@ -38,16 +40,23 @@ class SpecimenList extends React.Component {
 	}
 
 	componentDidUpdate = async () =>{
+		console.log('didupdate');
 		const { patientInfo } = this.props;
-		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-		let requestExams = [];
-		requestExams = this.mapExams(patientSpecimensAPI);
-		if(patientSpecimensAPI != undefined){
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({  
-				patientRequestSpecimen: requestExams
-			});
-		}
+		// if(!this.state.patientRequestSpecimen){ // Temp fix for too many request
+      console.log("TCL: SpecimenList -> componentDidUpdate -> this.state.patientRequestSpecimen", this.state.patientRequestSpecimen)
+			const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+      console.log("TCL: SpecimenList -> componentDidUpdate -> patientSpecimensAPI", patientSpecimensAPI)
+			let requestExams = [];
+			requestExams = this.mapExams(patientSpecimensAPI);
+
+			if(patientSpecimensAPI != undefined){
+				// eslint-disable-next-line react/no-did-update-set-state
+				this.setState({  
+					patientRequestSpecimen: requestExams
+				});
+			}
+
+		// }
 		
 	}
 
@@ -81,7 +90,7 @@ class SpecimenList extends React.Component {
 		params.sections.map(function(keySection,indexSection){ // Get sections
 			keySection.specimens.map(function(keySpecimen){ // Get specimens
 				returnArray[indexSection] = {
-					"key": `${keySection.sectionName}${keySection.sectionID}`,
+					"key": `${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}`,
 					"phlebo_sectionID": keySection.sectionID,
 					"phlebo_section_col": keySection.sectionName, 
 					"phlebo_specimenID": keySpecimen.specimenID,
@@ -97,7 +106,7 @@ class SpecimenList extends React.Component {
 							props: {
 								colSpan: '5',
 							},
-							"key":`${keySection.sectionName}${keySection.sectionID}${indexExams}`,
+							"key":`${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}${indexExams}`,
 							"phlebo_section_col": keyExams,
 						};
 					})
