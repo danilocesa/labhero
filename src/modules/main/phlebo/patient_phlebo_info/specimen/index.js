@@ -28,11 +28,9 @@ class SpecimenList extends React.Component {
 	async componentDidMount(){
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
 		// eslint-disable-next-line prefer-destructuring
 		let requestExams = [];
 		requestExams = this.mapExams(patientSpecimensAPI);
-    console.log("TCL: SpecimenList -> componentDidMount -> requestExams", requestExams)
 		this.setState({  
 			patientRequestSpecimen: requestExams
 		});
@@ -40,12 +38,9 @@ class SpecimenList extends React.Component {
 	}
 
 	componentDidUpdate = async () =>{
-		console.log('didupdate');
 		const { patientInfo } = this.props;
-		// if(!this.state.patientRequestSpecimen){ // Temp fix for too many request
-      console.log("TCL: SpecimenList -> componentDidUpdate -> this.state.patientRequestSpecimen", this.state.patientRequestSpecimen)
+		if(!this.state.patientRequestSpecimen){ // Temp fix for too many request
 			const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-      console.log("TCL: SpecimenList -> componentDidUpdate -> patientSpecimensAPI", patientSpecimensAPI)
 			let requestExams = [];
 			requestExams = this.mapExams(patientSpecimensAPI);
 
@@ -56,7 +51,7 @@ class SpecimenList extends React.Component {
 				});
 			}
 
-		// }
+		}
 		
 	}
 
@@ -74,7 +69,6 @@ class SpecimenList extends React.Component {
 		const saveExtraction = await patientPhleboCheckInSpecimensAPI({ requestID, sectionID, specimenID, userID  });
 		
 		this.setState({ loading: false });
-		console.log(saveExtraction);
 		if(saveExtraction.status === 200 || saveExtraction.length > 0){
 			document.getElementById(inputID).setAttribute("disabled","");
 			document.getElementById(inputID).innerHTML = buttonNames.extracted;
