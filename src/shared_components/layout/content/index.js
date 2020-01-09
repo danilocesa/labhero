@@ -2,7 +2,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Layout } from 'antd';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect, BrowserRouter } from 'react-router-dom';
 
 // CUSTOM MODULES
 import Login from 'modules/login';
@@ -31,48 +31,50 @@ const wrapperStyle = {
 };
 
 const Content = () => (
-	<Antcontent style={wrapperStyle}>
-		<Switch>
-			<Route exact path="/" component={DashboardPage} />
-			{/* Login */}
-			<Route path="/login" component={Login} />
-			<Route path="/dashboard" component={DashboardPage} />
-			{/* Lab request route */}
-			<PrivateRoute path="/request/create" component={CreateRequestPage} />
-			<PrivateRoute path="/request/edit" component={EditRequestPage} />
-			{/* Search lab result route */}
-			<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
-			<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
-			<PrivateRoute path="/patientinfo" component={PatientInfo} />
-			<PrivateRoute path="/iresults" component={Iresults} />
-			{/* Phlebo route */}
-			<PrivateRoute path="/phlebo/result" component={PhleboSearch} />
-			<PrivateRoute path="/phlebo/patient" component={PhleboPatientResult} />
-			{/* Search patients route */}
-			<PrivateRoute path="/patient/search" component={SearchPatient} />
-			{/* Settings route */}
-			<PrivateRoute path="/settings" component={Settings} />
-			{/* Inventory route */}
-			<PrivateRoute path="/inventory" component={Inventory} />
-			{/* 404 page route */}
-			<Route component={ErrorPage} />
-		</Switch>
-	</Antcontent>
+		<Antcontent style={wrapperStyle}>
+			<Switch>
+				<Route exact path="/" component={DashboardPage} />
+				{/* Login */}
+				<Route path="/login" component={Login} />
+				<Route path="/dashboard" component={DashboardPage} />
+				{/* Lab request route */}
+				<PrivateRoute path="/request/create" component={CreateRequestPage} />
+				<PrivateRoute path="/request/edit" component={EditRequestPage} />
+				{/* Search lab result route */}
+				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
+				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
+				<PrivateRoute path="/patientinfo" component={PatientInfo} />
+				<PrivateRoute path="/iresults" component={Iresults} />
+				{/* Phlebo route */}
+				<PrivateRoute path="/phlebo/result" component={PhleboSearch} />
+				<PrivateRoute path="/phlebo/patient" component={PhleboPatientResult} />
+				{/* Search patients route */}
+				<PrivateRoute path="/patient/search" component={SearchPatient} />
+				{/* Settings route */}
+				<PrivateRoute path="/settings" component={Settings} />
+				{/* Inventory route */}
+				<PrivateRoute path="/inventory" component={Inventory} />
+				{/* 404 page route */}
+				<Route component={ErrorPage} />
+			</Switch>
+		</Antcontent>
 );
 
 
 // eslint-disable-next-line react/prop-types
 function PrivateRoute({ component: Component, ...rest }) {
   return (
-	<Route
-		{...rest}
-		render={
-			props =>
-				auth.isAuthenticated 
-				? (<Component {...props} />) 
-				: (<Redirect to={{pathname: "/login", state: { from: props.location }}} />)
-  	}
-	/>
+		<Switch>
+			<Route
+				{...rest}
+				render={
+					props =>
+						auth.isAuthenticated 
+						? (<Component {...props} />) 
+						: (<Redirect to={{pathname: "/login", state: { from: props.location }}} />)
+				}
+			/>
+		</Switch>
   );
 }
 
