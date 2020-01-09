@@ -259,10 +259,10 @@ class UserAccountForm extends React.Component {
 						</Col>
 					</section>
 					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 8 }}>
+						<Button shape="round" style={{ marginRight: 8, width: 120 }}>
 							{buttonLabels.cancel}
 						</Button>
-						<Button type="primary" shape="round" style={{ margin: 10 }} htmlType="submit">
+						<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
 							{drawerButton}
 						</Button>
 					</section>

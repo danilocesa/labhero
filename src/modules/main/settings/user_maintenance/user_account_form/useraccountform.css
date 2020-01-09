@@ -3,11 +3,11 @@
 	text-transform: uppercase;
 }
 
-.form-section .form-title{
+.settings-user-maintence-form .form-section .form-title{
 	margin-bottom: 15px;
 }
 
-.ant-form label {
+.settings-user-maintence-form .ant-form label {
 	line-height: 35px!important;
 	font-size: 12px!important;
 }
