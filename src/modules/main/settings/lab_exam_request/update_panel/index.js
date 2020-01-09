@@ -185,7 +185,7 @@ class UpdatePanel extends React.Component {
 						<div>
 							<Button 
 								shape="round" 
-								style={{ margin: 10, width: 100 }}
+								style={{ margin: 10, width: 120 }}
 								onClick={this.closeFormDrawer}
 							>
 								{buttonNames.cancel}
@@ -195,7 +195,7 @@ class UpdatePanel extends React.Component {
 								type="primary" 
 								htmlType="submit"
 								loading={isLoading}
-								style={{ margin: 10, width: 100 }}
+								style={{ margin: 10, width: 120 }}
 							>
 								{buttonNames.update}
 							</Button>

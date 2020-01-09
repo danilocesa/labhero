@@ -11,11 +11,6 @@
   border-top-right-radius: 0px !important;
 }
 
-.ser-selected-table .ant-table-thead th,
-.ser-selected-table .ant-table-tbody td {
-	text-align: center;
-}
-
 .ser-selected-table-row {
 	margin-bottom: 0px;
 }
