@@ -53,7 +53,7 @@ class TownListComponent extends React.Component {
 					>
 						{townList.map((item) => (
 							<Option value={item.townCode} key={item.townCode}>
-								{item.townName}
+								{item.townName.toUpperCase()}
 							</Option>
 						))}
 					</Select>
