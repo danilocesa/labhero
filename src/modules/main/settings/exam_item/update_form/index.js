@@ -3,7 +3,14 @@
 import React from 'react';
 import { Drawer, Form, Input, Button, Select, Spin  } from 'antd';
 import PropTypes from 'prop-types';
-
+import {
+	// Exam Item Type Codes
+	EITC_ALPHA_NUMERIC,
+	EITC_NUMERIC,
+	EITC_CHECKBOX,
+	EITC_OPTION,
+	EITC_TEXT_AREA,
+} from 'global_config/constant-global';
 // CUSTOM
 import DynamicForm from '../dynamic_form';
 import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
@@ -14,12 +21,6 @@ import './update_form.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
-
-const DD_VAL_ALPHA_NUMERIC = 'an';
-const DD_VAL_NUMERIC = 'nu';
-const DD_VAL_CHECKBOX = 'cb';
-const DD_VAL_OPTION = 'op';
-const DD_VAL_TEXT_AREA = 'ta';
 
 /** @type {{footer: React.CSSProperties, fullWidth: React.CSSProperties }} */
 const styles = { 
@@ -110,13 +111,13 @@ class UpdateForm extends React.Component {
 					// Third. 
 					// Assign value to the fields that correspond to the selected
 					// item type code. E.g Alpha numeric, textarea, etc.
-					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC) {
+					if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC) {
 						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
 					}
 
-					if(examItem.examItemTypeCode === DD_VAL_ALPHA_NUMERIC 
-						|| examItem.examItemTypeCode === DD_VAL_NUMERIC 
-						|| examItem.examItemTypeCode === DD_VAL_TEXT_AREA
+					if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC 
+						|| examItem.examItemTypeCode === EITC_NUMERIC 
+						|| examItem.examItemTypeCode === EITC_TEXT_AREA
 					){
 						const defaultVal = examItemValue.length > 0 ? examItemValue[0].examItemValueLabel : null;
 						setFieldsValue({ examItemTypeDefault: defaultVal });
@@ -145,7 +146,7 @@ class UpdateForm extends React.Component {
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
-			const dynaFormFields = selectedItemTypeCode === DD_VAL_OPTION || selectedItemTypeCode === DD_VAL_CHECKBOX
+			const dynaFormFields = selectedItemTypeCode === EITC_OPTION || selectedItemTypeCode === EITC_CHECKBOX
 				// @ts-ignore	
 				? this.dynamicForm.getFormValues() 
 				: { hasError: false };
@@ -154,7 +155,7 @@ class UpdateForm extends React.Component {
 				const fields = getFieldsValue();
 				const examItemValueParam = [];
 
-				if(selectedItemTypeCode === DD_VAL_OPTION || selectedItemTypeCode === DD_VAL_CHECKBOX){  
+				if(selectedItemTypeCode === EITC_OPTION || selectedItemTypeCode === EITC_CHECKBOX){  
 					dynaFormFields.formValues.map(value=> (
 						examItemValueParam.push({
 							examItemValueDefault: value.isDefault ? 1 : 0,
@@ -165,9 +166,9 @@ class UpdateForm extends React.Component {
 					fields.examItemValue = examItemValueParam;
 				} 
 
-				if(selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || 
-					 selectedItemTypeCode === DD_VAL_NUMERIC || 
-					 selectedItemTypeCode === DD_VAL_TEXT_AREA ) {
+				if(selectedItemTypeCode === EITC_ALPHA_NUMERIC || 
+					 selectedItemTypeCode === EITC_NUMERIC || 
+					 selectedItemTypeCode === EITC_TEXT_AREA ) {
 					 fields.examItemValue = [{ 
 						 examItemValueDefault: 0,
 						 examItemValueLabel: fields.examItemTypeDefault
@@ -253,7 +254,7 @@ class UpdateForm extends React.Component {
 									</Select>
 								)}
 							</Form.Item>
-							{ (selectedItemTypeCode === DD_VAL_ALPHA_NUMERIC || selectedItemTypeCode === DD_VAL_NUMERIC) &&  (
+							{ (selectedItemTypeCode === EITC_ALPHA_NUMERIC || selectedItemTypeCode === EITC_NUMERIC) &&  (
 								<>
 									<Form.Item label={fieldLabels.examItemUnitCode}>
 										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
@@ -267,7 +268,7 @@ class UpdateForm extends React.Component {
 									</Form.Item>
 								</>
 							)}
-							{ (selectedItemTypeCode === DD_VAL_CHECKBOX || selectedItemTypeCode === DD_VAL_OPTION) && (
+							{ (selectedItemTypeCode === EITC_CHECKBOX || selectedItemTypeCode === EITC_OPTION) && (
 									// @ts-ignore
 									<DynamicForm 
 										wrappedComponentRef={(inst) => this.dynamicForm = inst} 
@@ -275,7 +276,7 @@ class UpdateForm extends React.Component {
 										examId={fieldsValue.examItemId}
 									/> 
 							)}
-							{ selectedItemTypeCode === DD_VAL_TEXT_AREA && (
+							{ selectedItemTypeCode === EITC_TEXT_AREA && (
 								<>
 									<Form.Item label={fieldLabels.examItemTypeDefault}>
 										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(

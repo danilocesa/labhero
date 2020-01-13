@@ -12,6 +12,7 @@ import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
 import HouseAddress from 'shared_components/address';
+import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
 
@@ -104,6 +105,11 @@ class BaseForm extends React.Component {
 		setFieldsValue({ patientAge });
 	}
 
+	disabledDate = (current) => {
+		// Can not select days after today and today
+		return current && current > moment().endOf('day');
+	}
+
 	onSubmit = (event) => {
 		event.preventDefault();
 
@@ -179,7 +185,7 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.hospitalID,
 												initialValue: initialPersoValue.hospitalID
 											})(
-												<Input disabled={isDisabledPersoFields} />
+												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={50} />
 											)}
 										</Form.Item>
 									</Col>
@@ -206,7 +212,7 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.givenName, 
 										initialValue: initialPersoValue.givenName
 									})(
-										<Input disabled={isDisabledPersoFields} maxLength={100} />
+										<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.middleName}>
@@ -214,7 +220,7 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.middleName,
 										initialValue: initialPersoValue.middleName
 									})(
-										<Input disabled={isDisabledPersoFields} maxLength={100} />
+										<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
 									)}
 								</Form.Item>
 								<Row gutter={12}>
@@ -224,7 +230,7 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.lastName,
 												initialValue: initialPersoValue.lastName 
 											})(
-												<Input disabled={isDisabledPersoFields} maxLength={100} />
+												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
 											)}
 										</Form.Item>
 									</Col>
@@ -234,7 +240,7 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.suffix, 
 												initialValue: initialPersoValue.suffix
 											})(
-												<Input disabled={isDisabledPersoFields} maxLength={50} />
+												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={50} />
 											)}
 										</Form.Item>
 									</Col>
@@ -248,6 +254,7 @@ class BaseForm extends React.Component {
 											})(
 												<DatePicker 
 													format="MM-DD-YYYY"
+													disabledDate={this.disabledDate}
 													style={{ width: '100%' }}
 													onChange={this.onDateChange}
 													disabled={isDisabledPersoFields}
@@ -322,9 +329,9 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.contactNumber,
 										initialValue: initialPersoValue.contactNumber
 									})(
-										<Input 
+										<NumberInput 
 											addonBefore="+ 63" 
-											maxLength={45} 
+											maxLength={10} 
 											disabled={isDisabledPersoFields}
 										/>
 									)}

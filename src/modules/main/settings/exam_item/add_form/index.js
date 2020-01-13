@@ -2,6 +2,14 @@
 import React from 'react';
 import { Drawer, Form, Input, Button, Select } from 'antd';
 import PropTypes from 'prop-types';
+import {
+	// Exam Item Type Codes
+	EITC_ALPHA_NUMERIC,
+	EITC_NUMERIC,
+	EITC_CHECKBOX,
+	EITC_OPTION,
+	EITC_TEXT_AREA,
+} from 'global_config/constant-global';
 
 // CUSTOM
 import DynamicForm from '../dynamic_form';
@@ -13,12 +21,6 @@ import './add_form.css';
 
 const { Option } = Select;
 const { TextArea } = Input;
-
-const DD_VAL_ALPHA_NUMERIC = 'an';
-const DD_VAL_NUMERIC = 'nu';
-const DD_VAL_CHECKBOX = 'cb';
-const DD_VAL_OPTION = 'op';
-const DD_VAL_TEXT_AREA = 'ta';
 
 class AddForm extends React.Component {
 	constructor(props) {
@@ -55,8 +57,7 @@ class AddForm extends React.Component {
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
-		
-			const dynaFormFields = selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX
+			const dynaFormFields = selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX
 				// @ts-ignore	
 				? this.dynamicForm.getFormValues() 
 				: { hasError: false };
@@ -67,7 +68,7 @@ class AddForm extends React.Component {
 				const fields = { ...getFieldsValue(), examItemValue: examItemValueDefault };
 				
 				// If checkbox or option get default & label in dynamic form
-				if(selectedRsType === DD_VAL_OPTION || selectedRsType === DD_VAL_CHECKBOX){  
+				if(selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX){  
 					const examItemValueParam = [];
 					dynaFormFields.formValues.forEach(value => (
 						examItemValueParam.push({
@@ -79,9 +80,9 @@ class AddForm extends React.Component {
 					fields.examItemValue = examItemValueParam;
 				} 
 
-				if(selectedRsType === DD_VAL_ALPHA_NUMERIC || 
-					 selectedRsType === DD_VAL_NUMERIC || 
-					 selectedRsType === DD_VAL_TEXT_AREA ) {
+				if(selectedRsType === EITC_ALPHA_NUMERIC || 
+					 selectedRsType === EITC_NUMERIC || 
+					 selectedRsType === EITC_TEXT_AREA ) {
 						fields.examItemValue = [{ 
 							examItemValueDefault: 0,
 							examItemValueLabel: fields.examItemTypeDefault
@@ -170,7 +171,7 @@ class AddForm extends React.Component {
 								</Select>
 							)}
 						</Form.Item>
-						{ (selectedRsType === DD_VAL_ALPHA_NUMERIC || selectedRsType === DD_VAL_NUMERIC) && (
+						{ (selectedRsType === EITC_ALPHA_NUMERIC || selectedRsType === EITC_NUMERIC) && (
 							<React.Fragment>
 								<Form.Item label={fieldLabels.examItemUnitCode}>
 									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
@@ -187,11 +188,11 @@ class AddForm extends React.Component {
 								</Form.Item>
 							</React.Fragment>
 						)}
-						{ (selectedRsType === DD_VAL_CHECKBOX || selectedRsType === DD_VAL_OPTION) && (
+						{ (selectedRsType === EITC_CHECKBOX || selectedRsType === EITC_OPTION) && (
 							// @ts-ignore
 							<DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
 						)}
-						{ selectedRsType === DD_VAL_TEXT_AREA && (
+						{ selectedRsType === EITC_TEXT_AREA && (
 							<React.Fragment>
 								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 

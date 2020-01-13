@@ -6,7 +6,7 @@ import { Row, Form, Input, Button, Col, Select, DatePicker, message } from 'antd
 import PropTypes from 'prop-types';
 import PageTitle from 'shared_components/page_title';
 
-import fetchLabResult from 'services/lab_result/result';
+import { fetchLabResult } from 'services/lab_result/result';
 import FIELD_RULES from './constant';
 
 import './searchform.css';

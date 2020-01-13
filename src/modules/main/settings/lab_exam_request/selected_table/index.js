@@ -65,7 +65,7 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Sort',
-				width: 50,
+				width: 60,
 				render: (text, record, index) => {
 					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center' }} />;
 				}
