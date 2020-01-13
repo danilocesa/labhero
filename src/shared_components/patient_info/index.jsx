@@ -182,7 +182,7 @@ PatientInfo.propTypes = {
 };
 
 PatientInfo.defaultProps = {
-	patientInfo() { return null; }
+	patientInfo: {}
 }
 
 export default PatientInfo;

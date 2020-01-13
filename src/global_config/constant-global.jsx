@@ -48,6 +48,13 @@ export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
 export const SELECTED_SIDER_KEY = 'SELECTED_SIDER_KEY';
 export const LOGGEDIN_USER_DATA = 'LOGGEDIN_USER_DATA';
 
+// Exam Item Type Codes
+export const EITC_ALPHA_NUMERIC = 'an';
+export const EITC_NUMERIC = 'nu';
+export const EITC_CHECKBOX = 'cb';
+export const EITC_OPTION = 'op';
+export const EITC_TEXT_AREA = 'ta';
+
 // Table settings
 export const globalTablePageSize = 10;
 export const globalTableSize = 'small';

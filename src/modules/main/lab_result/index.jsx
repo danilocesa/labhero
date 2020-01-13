@@ -42,7 +42,7 @@ class LabResult extends React.Component {
 				searchResults[content.sectionCode].push(item);
 			});
 		});
-
+		
 		this.setState({ labResults, searchResults });
 	}
 
@@ -55,6 +55,7 @@ class LabResult extends React.Component {
 		const TabPanes = sections.map(section => (
 			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionID}>
 				<SearchResultComponent 
+					section={section.sectionCode}
 					labResults={searchResults[section.sectionCode] || []} 
 					onClickTableRow={onClickTableRow}
 				/>
@@ -71,6 +72,7 @@ class LabResult extends React.Component {
 					<Tabs defaultActiveKey="1">
 						<TabPane tab={<span>ALL</span>} key="all">
 							<SearchResultComponent 
+								section="all"
 								labResults={labResults} 
 								onClickTableRow={onClickTableRow}
 							/>

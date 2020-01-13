@@ -10,6 +10,7 @@ export const FIELD_RULES = {
 	],
 	givenName: [
 		{ required: true, message: errorMessage.required },
+		{ min: 2, message: errorMessage.maxLength(2) },
 		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	middleName: [
@@ -18,6 +19,7 @@ export const FIELD_RULES = {
 	],
 	lastName: [
 		{ required: true, message: errorMessage.required },
+		{ min: 2, message: errorMessage.maxLength(2) },
 		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	suffix: [
@@ -28,8 +30,8 @@ export const FIELD_RULES = {
 	],
 	address: [],
 	contactNumber: [
-		{ pattern: /^[9]\d{9}/, message: errorMessage.contactNum },
-		{ max: 45, message: errorMessage.maxLength(45) }
+		{ min: 8, message: errorMessage.minLength(8) },
+		{ max: 10, message: errorMessage.maxLength(10) }
 	],
 	gender: [
 		{ required: true, message: 'Please select gender' }

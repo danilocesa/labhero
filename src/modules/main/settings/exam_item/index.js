@@ -107,7 +107,7 @@ class ExamItems extends React.Component {
 		});
 
 		// @ts-ignore
-		HttpCodeMessage({ status:this.state.examItems.status, message: messagePrompts.successCreatedExamItems });
+		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedExamItems });
 	}
 
 	onSuccessUpdateExamItem = () => {
@@ -117,8 +117,7 @@ class ExamItems extends React.Component {
 			this.setState({ examItems, isLoading: false });
 		});
 
-		// @ts-ignore
-		HttpCodeMessage({ status:this.state.examItems.status, message: messagePrompts.successCreatedExamItems });
+		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedExamItems });
 	}
 
 	render() {
