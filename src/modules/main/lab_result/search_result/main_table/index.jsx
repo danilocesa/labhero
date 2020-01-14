@@ -61,7 +61,7 @@ class MainTable extends React.Component {
 	
 	render() {
 		const { labResults, isLoading, pageSize } = this.props;
-
+		
 		return (
 			<Table
 				className="test-results-table"
@@ -70,7 +70,7 @@ class MainTable extends React.Component {
 				expandedRowRender={this.expandedRowRender}
 				defaultExpandAllRows
 				dataSource={labResults}
-				rowKey={record => record.patientID}
+				rowKey={record => record.requestID}
 				size="small"
 				scroll={{ y: 300 }}
 				loading={isLoading}

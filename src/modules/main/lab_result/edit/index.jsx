@@ -7,20 +7,26 @@ import LabResult from '../index';
 
 class EditLabResult extends React.Component {
 	state = {
-		isDisplayDrawer: false
+		isDisplayDrawer: false,
+		selectedSampleSpecimenId: ''
 	};
 	
 	onClosePatientInfoDrawer = () => {
     this.setState({ isDisplayDrawer: false });
 	}
 	
-	onClickTableRow = () => {
-		this.setState({ isDisplayDrawer: true });
+	onClickTableRow = ({ sampleSpecimenID }) => {
+		this.setState({ 
+			selectedSampleSpecimenId: sampleSpecimenID,
+			isDisplayDrawer: true
+		});
 	}
 
 	render() {
-		const { isDisplayDrawer } = this.state;
+		const { isDisplayDrawer, selectedSampleSpecimenId } = this.state;
 		
+		console.log('Edit did update', selectedSampleSpecimenId);
+
 		return (
 			<div>
 				<LabResult 
@@ -33,7 +39,7 @@ class EditLabResult extends React.Component {
 					width="80%"
 					visible={isDisplayDrawer}
 				>
-					<PatientInfo /> 
+					<PatientInfo sampleSpecimenId={selectedSampleSpecimenId} /> 
 				</Drawer>
 			</div>
 		);

@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import PatientInfo from 'shared_components/patient_info';
 
 class PhleboPatientInfo extends React.Component {
-render() {
-  return(
-	<div className='verticalinfo'>
-		<PatientInfo patientInfo={this.props.patientInfo} />
-	</div>
-    );
+	render() {
+		return(
+			<div className='verticalinfo'>
+				<PatientInfo patientInfo={this.props.patientInfo} />
+			</div>
+		);
   }
 }
 

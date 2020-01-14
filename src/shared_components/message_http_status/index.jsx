@@ -5,23 +5,24 @@ function HttpCodeMessage(param) {
 	switch(param.status){
 		case 204:// No content available
 			CustomMessage.info(param.message || 'No results found!');
-		break;
+			break;
 		case 201: // Created successfully
 			CustomMessage.success({
 				message: param.message || 'Successfully created!', 
 				duration: param.duration, 
 				onClose:param.onClose
 			});
-		break;
+			break;
 		case 200: // Success
 			CustomMessage.success({
 				message: param.message || 'Success!', 
 				duration: param.duration, 
 				onClose:param.onClose
 			});
-		break;
+			break;
 		default:
 			CustomMessage.error();
+			break;
 	}
 
 }

@@ -30,7 +30,6 @@ class SelectedTable extends React.Component {
 			{ 
 				title: 'Exam',
 				dataIndex: 'examItemName',
-				width: 240,
 			},
 			{ 
 				title: labels.groupTitle,

@@ -20,7 +20,8 @@ export const buttonNames = {
 }
 
 export const messagePrompts = {
-  successCreatedExamItems: 'Exam item successfully created.'
+	successCreatedExamItems: 'Exam item successfully created.',
+	successUpdatedExamItems: 'Exam item successfully updated.'
 }
 
 export const fieldRules = {
@@ -36,7 +37,7 @@ export const fieldRules = {
     { required: true, message: errorMessage.required }
 	],
 	examItemTypeDefault: [
-		{ max: 254, message: errorMessage.maxLength(254) }
+		// { max: 254, message: errorMessage.maxLength(254) }
 	],
 	unitOfMeasure: [
     { required: true, message: errorMessage.required }

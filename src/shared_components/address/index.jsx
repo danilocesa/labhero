@@ -3,7 +3,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 
-import Messages from 'global_config/error_messages';
+import errorMessage from 'global_config/error_messages';
 
 class houseAddressComponent extends React.Component{
 	state = {
@@ -21,9 +21,9 @@ class houseAddressComponent extends React.Component{
 
 	houseUnitfieldRules = () => {
 		if(this.props.townValue){
-			return [{ required: true, message: Messages.required }];
+			return [{ required: true, message: errorMessage.required }];
 		}
-		return [{ required: false, message: Messages.required }];
+		return [{ required: false, message: errorMessage.required }];
 	}
 
 	render(){
@@ -33,10 +33,14 @@ class houseAddressComponent extends React.Component{
 		
 		const addressInput = (
 			getFieldDecorator(fieldName, {
-				rules: this.houseUnitfieldRules(),
+				rules: [
+					...this.houseUnitfieldRules(),
+					{ min: 2, message: errorMessage.minLength(2) },
+					{ max: 254, message: errorMessage.maxLength(254) }
+				],
 				initialValue: selectedValue,
 			})(
-				<Input disabled={isDisabled} />
+				<Input disabled={isDisabled} maxLength={254} />
 			)   
 		);
 

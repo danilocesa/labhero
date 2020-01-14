@@ -13,27 +13,26 @@ const columns = [
 	{ 
 		title: 'EXAM ITEM ID',
 		dataIndex: 'examItemID',
-		width: '20%'
+		width: 200
 	},
 	{ 
 		title: 'EXAM ITEM NAME',
 		dataIndex: 'examItemName',
-		width: '20%'
+		width: 400
 	},
 	{ 
 		title: 'EXAM ITEM GENERAL NAME',
 		dataIndex: 'examItemGeneralName',
-		width: '20%'
+		width: 250
 	},
 	{ 
 		title: 'EXAM ITEM TYPE',
 		dataIndex: 'examItemTypeCode',
-		width: '20%'
+		width: 200
 	},
 	{ 
 		title: 'INTEGRATION CODE',
 		dataIndex: 'examItemIntegrationCode',
-		width: '20%'
 	}
 ];
 

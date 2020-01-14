@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import URI from 'global_config/uri';
-import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import { AlphaNumInput } from 'shared_components/pattern_input';
 import FIELD_RULES from './constants';
 
 import './login.css';
@@ -52,6 +53,7 @@ class Login extends React.Component {
 			}
 		});
 
+		this.setState({ loading: false });
 	}
 	
 	redirectPage = () => {
@@ -95,15 +97,13 @@ class Login extends React.Component {
 										<Form.Item label="Username" className="login-input font12">
 											{getFieldDecorator('username', { 
 												rules: FIELD_RULES.Username,
-												validateTrigger: 'onBlur' 
 											})(
-												<Input maxLength={20} />
+												<AlphaNumInput maxLength={20} />
 											)}
 										</Form.Item>
 										<Form.Item label="Password">
 											{getFieldDecorator('password', { 
 												rules: FIELD_RULES.password, 
-												validateTrigger: 'onBlur' 
 											})(
 												<Input.Password type="password" maxLength={20} />
 											)}
