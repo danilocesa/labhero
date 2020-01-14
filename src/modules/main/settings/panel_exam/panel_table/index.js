@@ -15,7 +15,7 @@ import HttpCodeMessage from 'shared_components/message_http_status';
 import { panelListAPI } from 'services/settings/panel/panelExamRequesting';
 import PanelForm from '../panel_form';
 
-import {drawerUpdateTitle, drawerAddTitle, tablePageSize, buttonLabels} from '../settings'
+import {drawerUpdateTitle, drawerAddTitle, tablePageSize, buttonLabels} from '../settings';
 
 // CSS
 import './paneltable.css';
@@ -93,10 +93,14 @@ class PanelTable extends React.Component {
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
+<<<<<<< HEAD
 		if(panelListData.status !== 200){
 			HttpCodeMessage(panelListData.status);
 		}
 
+=======
+		// HttpCodeMessage(panelListData.status);
+>>>>>>> f5b0ece45b1035448045a87994542982743e5123
 		const panelListArray = []; 
 		panelListData.data.map(function(valuePanel,indexPanel){ 
 			panelListArray[indexPanel] = {

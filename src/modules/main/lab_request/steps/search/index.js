@@ -15,7 +15,7 @@ import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 import ButtonLink from './link';
-import {tablePageSize} from '../settings';
+import { tablePageSize } from '../settings';
 import { moduleTitles, requestTypes, requestLinks } from '../../../settings/lab_exam_request/settings';
 
 class SearchStep extends React.Component {

@@ -19,6 +19,7 @@ class SearchForm extends React.Component {
 		const { populatePatients, displayLoading } = this.props;
 		const sessionPatientId = sessionStorage.getItem(CLR_SEARCHED_ID);
 		const sessionPatientName = sessionStorage.getItem(CLR_SEARCHED_NAME);
+		const isEditting = (sessionStorage.getItem('REQUEST_TYPE') === "edit" ? true : false);
 
 		return (
 			<SearchPatientForm 
@@ -27,6 +28,7 @@ class SearchForm extends React.Component {
 				displayLoading={displayLoading}
 				sessionPatientId={sessionPatientId}
 				sessionPatientName={sessionPatientName}
+				enableRequestDate={isEditting}
 			/>
 		);
 	}

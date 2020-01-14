@@ -61,6 +61,7 @@ class SearchForm extends React.Component {
 										block
 										shape="round" 
 										type="danger"
+										style={{ width: 120 }}
 										onClick={this.clearInputs} 
 									>
 										DELETE
@@ -72,6 +73,7 @@ class SearchForm extends React.Component {
 										shape="round" 
 										type="primary" 
 										htmlType="submit" 
+										style={{ width: 120 }}
 									>
 										ADD TO LIST
 									</Button>

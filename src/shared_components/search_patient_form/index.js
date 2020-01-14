@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable func-names */
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Form, Input, Button, Row, Col, DatePicker } from 'antd';
-
+import { Form, Button, Row, Col, DatePicker } from 'antd';
+import { AlphaNumInput } from 'shared_components/pattern_input';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -14,7 +15,7 @@ import {
 	apiUrlPatientByName, 
 	apiGetMethod
 } from 'global_config/constant-global';
-import { buttonNames, fieldLabels } from './settings';
+import { buttonNames, fieldLabels, FIELD_RULES } from './settings';
 
 // CSS
 import './search_patient_form.css';
@@ -28,16 +29,12 @@ class SearchPatientForm extends React.Component {
 		loading: false
 	};
 
-	handleInputChange = (event) => {
-		this.setState({
-			[event.target.name]: event.target.value
-		});
-	}
-
 	handleSubmit = async (event) => {  
 		event.preventDefault();
 
-		const { patientName, patientID } = this.state;
+		const { getFieldsValue } = this.props.form;
+
+		const { patientID, patientName } = getFieldsValue();
 		const { populatePatients, storeSearchedVal } = this.props;
 		let patients = [];
 		
@@ -89,18 +86,21 @@ class SearchPatientForm extends React.Component {
 	}
 
 	handleFocus = (event) => {
+		const { setFieldsValue } = this.props.form;
+
 		if(event.target.name === 'patientID')
-			this.setState({ patientName: '' });
+			setFieldsValue({ patientName: '' });
 		
 		if(event.target.name === 'patientName')	
-			this.setState({ patientID: '' });
+			setFieldsValue({ patientID: '' });
 	}
 
 	render() {
-		const { patientID, patientName, loading } = this.state;
-		const disabled = !(patientID || patientName);
-		const isEditting = (sessionStorage.getItem('MODULE_PROFILE') === "editRequest");
-		const { requestDateEnabled } = this.props;
+		const { enableRequestDate, form } = this.props;
+		const { getFieldDecorator, getFieldsValue } = form;
+		const { loading } = this.state;
+		const { patientID, patientName } = getFieldsValue();
+		const disabled = !(patientID || patientName && patientName.length > 1);
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
@@ -108,35 +108,39 @@ class SearchPatientForm extends React.Component {
 					{/* Patient id field */}
 					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label={fieldLabels.patientID}>
-							<Input 
-								// allowClear
-								name="patientID" 
-								value={patientID} 
-								onChange={this.handleInputChange}
-								onFocus={this.handleFocus}
-							/> 
+							{getFieldDecorator('patientID', { 
+								rules: FIELD_RULES.patientId,
+							})(
+								<AlphaNumInput 
+									name="patientID" 
+									onFocus={this.handleFocus}
+								/> 
+							)}
 						</Form.Item>
 					</Col>
 					{/* Or */}
-					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 45 }}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
 						OR
 					</Col>
 					{/* Patient Name */}
 					<Col xs={24} sm={24} md={12} lg={7}>
 						<Form.Item label={fieldLabels.patientName}>
-							<Input 
-								// allowClear
-								name="patientName" 
-								value={patientName} 
-								maxLength={100}
-								onChange={this.handleInputChange} 
-								onFocus={this.handleFocus}
-								placeholder="Lastname, Firstname"
-							/>
+							{getFieldDecorator('patientName', { 
+								rules: FIELD_RULES.patientName,
+								validateTrigger: 'onBlur'
+							})(
+								<AlphaNumInput 
+									// allowClear
+									name="patientName" 
+									maxLength={100}
+									onFocus={this.handleFocus}
+									placeholder="Lastname, Firstname"
+								/>
+							)}
 						</Form.Item>
 					</Col>
-					{/* Request date */}	
-					{ (isEditting && requestDateEnabled) ? 
+					{/* Request date */}
+					{ (enableRequestDate === true) ? 
 						(
 							<Col xs={24} sm={24} md={6} lg={4}>
 								<Form.Item label={fieldLabels.requestDate}>
@@ -146,12 +150,13 @@ class SearchPatientForm extends React.Component {
 						) : null 
 					}
 					{/* Buttons */}
-					<Col xs={24} sm={24} md={6} lg={5}>
-						<Form.Item style={{ marginTop: 33 }}>
+					<Col xs={24} sm={24} md={6} lg={6}>
+						<Form.Item style={{ marginTop: 20 }}>
 							<Row>
 								<Button 
 									className="form-button"
 									shape="round" 
+									style={{ width: 120 }}
 									onClick={this.clearInputs} 
 								>
 									{buttonNames.clear}
@@ -163,6 +168,7 @@ class SearchPatientForm extends React.Component {
 									htmlType="submit" 
 									disabled={disabled}
 									loading={loading}
+									style={{ width: 120 }}
 								>
 									{buttonNames.search}
 								</Button>
@@ -186,4 +192,4 @@ SearchPatientForm.defaultProps = {
 	enableRequestDate: true,
 }
 
-export default SearchPatientForm;
+export default Form.create()(SearchPatientForm);

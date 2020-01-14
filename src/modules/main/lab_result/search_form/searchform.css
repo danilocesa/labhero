@@ -1,14 +1,7 @@
-.ant-form-item-label {
-  line-height: 0.8em !important;
+.labresult-search-form .ant-form-item-label {
   font-weight: bold;
 }
 
-.ant-btn-round {
-  font-size: 14px !important;
-}
-
-.searchLabTestResultTable .ant-table-thead > tr > th {
-  background-color: #8a73f9!important;
-  color: #ffffff;
-  text-transform: uppercase;
+.labresult-search-form .ant-form-item {
+	margin-bottom: 0px;
 }

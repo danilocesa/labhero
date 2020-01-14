@@ -44,31 +44,31 @@ class SearchPatientTable extends React.Component {
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
-				width: '15%'
+				width: 150
 			},
 			{
 				title: 'FIRST NAME',
 				dataIndex: 'givenName',
 				sorter: getSorter(data, 'givenName'),
-				width: '15%'
+				width: 150
 			},
 			{
 				title: 'MIDDLE NAME',
 				dataIndex: 'middleName',
 				sorter: getSorter(data, 'middleName'),
-				width: '15%'
+				width: 150
 			}, 
 			{
 				title: 'DATE OF BIRTH',
 				dataIndex: 'dateOfBirth',
 				sorter:  getSorter(data, 'dateOfBirth'),
-				width: '14%'
+				width: 150
 			},
 			{
 				title: 'GENDER',
 				dataIndex: 'sex',
 				sorter:  getSorter(data, 'sex'),
-				width: '12%'
+				width: 120
 			},
 			{
 				title: 'ADDRESS',

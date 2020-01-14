@@ -140,7 +140,7 @@ class AddPanel extends React.Component {
 		return (
 			<Drawer
 				title={drawerTitle.add}
-				width="80%"
+				width="90%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}
@@ -180,7 +180,7 @@ class AddPanel extends React.Component {
 						<div>
 							<Button 
 								shape="round" 
-								style={{ margin: 10 }}
+								style={{ margin: 10, width: 120 }}
 								onClick={this.closeFormDrawer}
 							>
 								{buttonNames.cancel}
@@ -190,7 +190,7 @@ class AddPanel extends React.Component {
 								type="primary" 
 								htmlType="submit"
 								loading={isLoading}
-								style={{ margin: 10 }}
+								style={{ margin: 10, width: 120 }}
 							>
 								{buttonNames.create}
 							</Button>

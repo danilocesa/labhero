@@ -20,7 +20,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 6,  offset: 3 },
-		lg: { span: 4,  offset: 3 },
+		lg: { span: 4,  offset: 2 },
 	},
 	{
 		xs: { span: 24 },
@@ -44,7 +44,7 @@ const formItemLayout = [
 		xs: { span: 24 },
 		sm: { span: 24 },
 		md: { span: 4 },
-		lg: { span: 4 }, 
+		lg: { span: 5 }, 
 	},
 ];
 
@@ -76,10 +76,9 @@ class SearchPatientHeaderForm extends React.Component {
 
 		populateExtractedPatients(patients.extracted);
 		populateForExtractionPatients(patients.forExtraction);
-		
-		if(patients.length < 1)
-		HttpCodeMessage({ status: patients.status});
-			
+
+		if(patients.length < 1) 
+			HttpCodeMessage({ status: 204 });
 	}
 
 	fetchPatients = async (patientName, patientID) => {
@@ -93,6 +92,7 @@ class SearchPatientHeaderForm extends React.Component {
 		catch(error) {
 			CustomMessage.error();
 		}
+
 		return apiResponse.data;
 	}
 
@@ -145,7 +145,7 @@ class SearchPatientHeaderForm extends React.Component {
 					</Col>
 					<Col 
 						{...formItemLayout[1]} 
-						style={{textAlign: 'center', marginTop: 30}}
+						style={{textAlign: 'center', marginTop: 45}}
 					>
 						OR
 					</Col>
@@ -169,16 +169,18 @@ class SearchPatientHeaderForm extends React.Component {
 								// @ts-ignore
 								defaultValue={moment()} 
 								onChange={this.handleChangeDate} 
+								style={{ width: '100%' }}
 							/>
 						</Form.Item>
 					</Col>
 					<Col {...formItemLayout[4]}>
-						<Form.Item style={{ marginTop: 22 }}>
+						<Form.Item style={{ marginTop: 35 }}>
 							<Row gutter={12}>
 								<Col span={12}>
 									<Button 
 										block 
 										shape="round" 
+										style={{ width: 120 }}
 										onClick={this.clearInputs} 
 									>
 										CLEAR
@@ -192,6 +194,7 @@ class SearchPatientHeaderForm extends React.Component {
 										htmlType="submit" 
 										disabled={disabled}
 										loading={loading}
+										style={{ width: 120 }}
 									>
 										SEARCH
 									</Button>
