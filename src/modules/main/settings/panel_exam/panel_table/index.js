@@ -93,14 +93,10 @@ class PanelTable extends React.Component {
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
-<<<<<<< HEAD
 		if(panelListData.status !== 200){
 			HttpCodeMessage(panelListData.status);
 		}
 
-=======
-		// HttpCodeMessage(panelListData.status);
->>>>>>> f5b0ece45b1035448045a87994542982743e5123
 		const panelListArray = []; 
 		panelListData.data.map(function(valuePanel,indexPanel){ 
 			panelListArray[indexPanel] = {
