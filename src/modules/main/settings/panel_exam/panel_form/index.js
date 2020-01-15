@@ -9,7 +9,9 @@ import {
 	Spin as AntSpin,
 	Checkbox as AntCheckbox,
 	Switch as AntSwitch,
-	Alert as AntAlert
+	Alert as AntAlert,
+	Col as AntCol,
+	Row as AntRow
 } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -198,37 +200,49 @@ class PanelFormTemplate extends React.Component {
 			<div> 
 				<AntForm onSubmit={this.onSubmit}>
 					<section style={{ marginBottom: 50 }}>
-						<AntForm.Item label={fieldLabels.panel_id} className={panelInfo ? null : "hide"}>
-							{getFieldDecorator('panel_id', {
-								initialValue: panelInfo.key
-							})(
-								<AntInput disabled />
-							)}	
-						</AntForm.Item>
-						<AntForm.Item label={fieldLabels.panel_name}>
-							{getFieldDecorator('panel_name', {
-								initialValue: panelInfo.panel_name,
-								rules: fieldRules.panel_name,
-							})(
-								<AntInput maxLength={254} />
-							)}	
-						</AntForm.Item>
-						<AntForm.Item label={fieldLabels.panel_code}>
-							{getFieldDecorator('panel_code', {
-								initialValue: panelInfo.code,
-								rules: fieldRules.panel_code,
-							})(
-								<AntInput maxLength={50} />
-							)}	
-						</AntForm.Item>
-						<AntForm.Item label={fieldLabels.panel_integration_code}>
-							{getFieldDecorator('panel_integration_code', {
-								initialValue: panelInfo.integration_code,
-								rules: fieldRules.panel_integration_code,
-							})(
-								<AntInput maxLength={50} />
-							)}	
-						</AntForm.Item>
+						<AntRow gutter={12}>
+							<AntCol span={12}>
+								<AntForm.Item label={fieldLabels.panel_id} className={panelInfo ? null : "hide"}>
+									{getFieldDecorator('panel_id', {
+										initialValue: panelInfo.key
+									})(
+										<AntInput disabled />
+									)}	
+								</AntForm.Item>
+							</AntCol>
+							<AntCol span={12}>
+								<AntForm.Item label={fieldLabels.panel_name}>
+									{getFieldDecorator('panel_name', {
+										initialValue: panelInfo.panel_name,
+										rules: fieldRules.panel_name,
+									})(
+										<AntInput maxLength={254} />
+									)}	
+								</AntForm.Item>
+							</AntCol>
+						</AntRow>
+						<AntRow gutter={12}>
+							<AntCol span={12}>
+								<AntForm.Item label={fieldLabels.panel_code}>
+								{getFieldDecorator('panel_code', {
+									initialValue: panelInfo.code,
+									rules: fieldRules.panel_code,
+								})(
+									<AntInput maxLength={50} />
+								)}	
+								</AntForm.Item>
+							</AntCol>
+							<AntCol span={12}>
+								<AntForm.Item label={fieldLabels.panel_integration_code}>
+								{getFieldDecorator('panel_integration_code', {
+									initialValue: panelInfo.integration_code,
+									rules: fieldRules.panel_integration_code,
+								})(
+									<AntInput maxLength={50} />
+								)}	
+								</AntForm.Item>
+							</AntCol>
+						</AntRow>	
 						<AntForm.Item label={fieldLabels.panel_status}>
 							{getFieldDecorator('panel_status', {
 								valuePropName: 'checked',
@@ -256,9 +270,11 @@ class PanelFormTemplate extends React.Component {
 									pageStart={0}
 									hasMore={!this.state.loading && this.state.hasMore}
 									useWindow={false}
+									
 								>
 									<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
 										<AntList 
+											size="small"
 											itemLayout="vertical" 
 											dataSource={this.state.examRequestData}
 											renderItem={item=>(

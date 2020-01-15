@@ -93,7 +93,10 @@ class PanelTable extends React.Component {
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
-		// HttpCodeMessage(panelListData.status);
+		if(panelListData.status !== 200){
+			HttpCodeMessage(panelListData.status);
+		}
+
 		const panelListArray = []; 
 		panelListData.data.map(function(valuePanel,indexPanel){ 
 			panelListArray[indexPanel] = {
@@ -181,7 +184,7 @@ class PanelTable extends React.Component {
 						title={this.state.drawerTitle}
 						visible={this.state.isDrawerVisible}
 						onClose={this.onClose}
-						width="40%"
+						width="60%"
 						destroyOnClose
 					>
 						<PanelForm 
