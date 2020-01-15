@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Input } from 'antd';
 
 const alpha = /[A-z]/;
@@ -37,3 +38,15 @@ export class NumberInput extends React.Component {
 		return <TemplateInput regex={num} {...this.props} />;
 	}
 }
+
+export class RegexInput extends React.Component {
+	render() {
+		const { regex } = this.props;
+
+		return <TemplateInput regex={regex} {...this.props} />;
+	}
+}
+
+RegexInput.propTypes = {
+	regex: PropTypes.string.isRequired
+};

@@ -31,7 +31,8 @@
 
 .clr-fillup-form .right-form input, 
 .clr-fillup-form .right-form select, 
-.clr-fillup-form .right-form textarea{
+.clr-fillup-form .right-form textarea,
+.clr-fillup-form .right-form .ant-form-item-control{
   text-transform: uppercase;
 }	
 

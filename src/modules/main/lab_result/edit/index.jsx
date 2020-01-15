@@ -7,8 +7,8 @@ import LabResult from '../index';
 
 class EditLabResult extends React.Component {
 	state = {
-		isDisplayDrawer: false,
-		selectedSampleSpecimenId: ''
+			isDisplayDrawer: false,
+			selectedSampleSpecimenId: ''
 	};
 	
 	onClosePatientInfoDrawer = () => {
@@ -24,8 +24,6 @@ class EditLabResult extends React.Component {
 
 	render() {
 		const { isDisplayDrawer, selectedSampleSpecimenId } = this.state;
-		
-		console.log('Edit did update', selectedSampleSpecimenId);
 
 		return (
 			<div>
@@ -45,5 +43,7 @@ class EditLabResult extends React.Component {
 		);
 	}
 }
+
+
 
 export default EditLabResult;

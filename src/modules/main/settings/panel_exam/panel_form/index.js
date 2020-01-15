@@ -282,10 +282,20 @@ class PanelFormTemplate extends React.Component {
 					</section>	
 					<section className="drawerFooter">
 						<div>
-							<AntButton shape="round" style={{ marginRight: 10 }} onClick={this.props.onCancel}>
+							<AntButton 
+								shape="round" 
+								style={{ marginRight: 10, width: 120 }} 
+								onClick={this.props.onCancel}
+							>
 								{buttonLabels.cancel}
 							</AntButton>
-							<AntButton type="primary" shape="round" htmlType="submit" loading={this.state.loading} style={{ margin: 10 }}>
+							<AntButton 
+								type="primary" 
+								shape="round" 
+								htmlType="submit" 
+								loading={this.state.loading} 
+								style={{ margin: 10, width: 120 }}
+							>
 								{drawerButton}
 							</AntButton>
 						</div>
