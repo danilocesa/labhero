@@ -29,12 +29,13 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Exam',
+				width: 320,
 				dataIndex: 'examItemName',
 			},
 			{ 
 				title: labels.groupTitle,
 				dataIndex: 'examRequestItemGroup',
-				width: 70,
+				width: 80,
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
@@ -65,7 +66,6 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Sort',
-				width: 60,
 				render: (text, record, index) => {
 					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center' }} />;
 				}

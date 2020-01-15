@@ -13,6 +13,7 @@ const { TabPane } = Tabs;
 class LabResult extends React.Component {
 	
 	state = {
+		tabActiveKey: 'ALL',
 		sections: [],
 		labResults: [],
 		searchResults: []
@@ -24,36 +25,34 @@ class LabResult extends React.Component {
 	}
 
 	updateLabResults = (labResults) => {
-		const { sections } = this.state;
-		const searchResults = {};
-
-		sections.forEach(section => {
-			// Create the skeleton object of sections
-			Object.assign(searchResults, { [section.sectionCode]: [] });
-		});
-
-		labResults.forEach(labResult => {
-			labResult.contents.forEach(content => {
-				// Clone labResult object
-				const item = Object.assign({}, labResult);
-				// Replace content property with a single content object
-				item.contents = [content];
-				// Append each content to designated section
-				searchResults[content.sectionCode].push(item);
-			});
-		});
-		
-		this.setState({ labResults, searchResults });
+		this.setState({ labResults, tabActiveKey: 'ALL' });
 	}
 
-	
+	onChangeTab = (sectionCode) => {
+		const { labResults } = this.state;
+		const searchResults = { [sectionCode]: [] };
+
+		labResults.forEach(labResult => {
+			const labResultClone = Object.assign({}, labResult);
+			const contents = labResult.contents.filter(i => i.sectionCode === sectionCode);
+			
+			labResultClone.contents = contents;
+
+			if(labResultClone.contents.length > 0)
+				searchResults[sectionCode].push(labResultClone);
+		});
+
+
+		console.log(searchResults);
+		this.setState({ searchResults, tabActiveKey: sectionCode });
+	}
 
 	render() {
-		const { sections, labResults, searchResults } = this.state;
+		const { sections, labResults, searchResults, tabActiveKey } = this.state;
 		const { onClickTableRow, pageTitle } = this.props;
 		
 		const TabPanes = sections.map(section => (
-			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionID}>
+			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionCode}>
 				<SearchResultComponent 
 					section={section.sectionCode}
 					labResults={searchResults[section.sectionCode] || []} 
@@ -69,8 +68,11 @@ class LabResult extends React.Component {
 						pageTitle={pageTitle}
 						updateLabResults={this.updateLabResults} 
 					/>
-					<Tabs defaultActiveKey="1">
-						<TabPane tab={<span>ALL</span>} key="all">
+					<Tabs 
+						activeKey={tabActiveKey}
+						onChange={this.onChangeTab}
+					>
+						<TabPane tab={<span>ALL</span>} key="ALL">
 							<SearchResultComponent 
 								section="all"
 								labResults={labResults} 

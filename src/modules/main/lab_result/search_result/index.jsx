@@ -48,7 +48,7 @@ class SearchResults extends React.Component {
     );
   }
 }
-		
+
 SearchResults.propTypes = {
 	labResults: PropTypes.array.isRequired,
 	onClickTableRow: PropTypes.func.isRequired

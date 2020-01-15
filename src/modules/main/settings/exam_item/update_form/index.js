@@ -239,7 +239,7 @@ class UpdateForm extends React.Component {
 						<section style={{ marginBottom: 60 }}>
 							<Form.Item label={fieldLabels.examItemName}>
 								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-									<Input maxLength={254} />
+									<Input maxLength={200} />
 								)}
 							</Form.Item>
 							<Form.Item label={fieldLabels.examItemGeneralName}>

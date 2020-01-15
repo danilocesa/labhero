@@ -39,7 +39,7 @@ class ExpandedTable extends React.Component {
 		    dataSource={expandedData}
 		    pagination={false}
 				size="small"
-				rowKey={record => `${record.sectionName}-${record.sampleSpecimenID}`}
+				rowKey={record => `${record.sampleSpecimenID}-${record.specimenID}`}
         onRow={record => {
           return { onClick: () => { onClickTableRow(record); } };
         }}

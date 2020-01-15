@@ -31,7 +31,7 @@ class Dropdown extends React.Component {
 				<Label text={label} />
 				<Select 
 					onChange={onChange}
-					style={{ width }} 
+					style={{ width, textTransform: 'uppercase' }} 
 					disabled={disabled} 
 					placeholder={placeholder}
 					loading={loading}

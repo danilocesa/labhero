@@ -12,7 +12,7 @@ import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
 import HouseAddress from 'shared_components/address';
-import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
+import { AlphaNumInput, NumberInput, RegexInput } from 'shared_components/pattern_input';
 import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
 
@@ -212,7 +212,11 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.givenName, 
 										initialValue: initialPersoValue.givenName
 									})(
-										<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
+										<RegexInput 
+											regex={/[A-z0-9 -]/}
+											disabled={isDisabledPersoFields} 
+											maxLength={100} 
+										/>
 									)}
 								</Form.Item>
 								<Form.Item label={formLabels.middleName}>
@@ -230,7 +234,11 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.lastName,
 												initialValue: initialPersoValue.lastName 
 											})(
-												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
+												<RegexInput 
+													regex={/[A-z0-9 -]/} 
+													disabled={isDisabledPersoFields} 
+													maxLength={100} 
+												/>
 											)}
 										</Form.Item>
 									</Col>
@@ -240,7 +248,11 @@ class BaseForm extends React.Component {
 												rules: FIELD_RULES.suffix, 
 												initialValue: initialPersoValue.suffix
 											})(
-												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={50} />
+												<RegexInput 
+													regex={/[A-z0-9 -]/} 
+													disabled={isDisabledPersoFields} 
+													maxLength={50} 
+												/>
 											)}
 										</Form.Item>
 									</Col>
