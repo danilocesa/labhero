@@ -28,6 +28,7 @@ class SpecimenList extends React.Component {
 	async componentDidMount(){
 		const { patientInfo } = this.props;
 		const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
+    console.log("TCL: SpecimenList -> componentDidMount -> patientSpecimensAPI", patientSpecimensAPI)
 		// eslint-disable-next-line prefer-destructuring
 		let requestExams = [];
 		requestExams = this.mapExams(patientSpecimensAPI);
@@ -82,9 +83,12 @@ class SpecimenList extends React.Component {
 		const returnArray = [];
 		const {requestID} = params;
 		params.sections.map(function(keySection,indexSection){ // Get sections
-			keySection.specimens.map(function(keySpecimen){ // Get specimens
+    console.log("TCL: SpecimenList -> mapExams -> indexSection", indexSection)
+    console.log("TCL: SpecimenList -> mapExams -> keySection", keySection)
+			keySection.specimens.map(function(keySpecimen,indexSpecimen){ // Get specimens
+      console.log("TCL: SpecimenList -> mapExams -> keySpecimen", keySpecimen)
 				returnArray[indexSection] = {
-					"key": `${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}`,
+					"key": `${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}${indexSection}${indexSpecimen}`,
 					"phlebo_sectionID": keySection.sectionID,
 					"phlebo_section_col": keySection.sectionName, 
 					"phlebo_specimenID": keySpecimen.specimenID,
@@ -100,7 +104,7 @@ class SpecimenList extends React.Component {
 							props: {
 								colSpan: '5',
 							},
-							"key":`${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}${indexExams}`,
+							"key":`${keySection.sectionName}${keySection.sectionID}${keySection.specimenID}${keySection.specimenName}${keySection.sampleSpecimenID}${indexExams}${indexSpecimen}${indexSection}`,
 							"phlebo_section_col": keyExams,
 						};
 					})
