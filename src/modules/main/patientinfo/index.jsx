@@ -15,20 +15,28 @@ import PatientComment from './patientcomment';
 import './layout.css';
 
 class PatientInfo extends React.Component {
-	
+	state = {
+		examItems: []
+	};
+
 	async componentDidUpdate(prevProps) {
 		const { sampleSpecimenId } = this.props;
 
 		console.log('patient Info did update', sampleSpecimenId);
 		console.log('prevprops', prevProps);
 
-		if(sampleSpecimenId !== prevProps.sampleSpecimenId && sampleSpecimenId) {
+		if(sampleSpecimenId !== prevProps.sampleSpecimenId) {
 			const examItems = await fetchLabResultExamItems(sampleSpecimenId);
+			
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ examItems });
 			console.log(examItems);
 		}
 	}
 	
 	render() {
+		const { examItems } = this.state;
+
     return (
 	    <Row>
 		    <Col xs={24} sm={7} md={7} lg={6} xl={6}>
@@ -36,7 +44,7 @@ class PatientInfo extends React.Component {
 		    </Col>
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
 			    <Name />
-			    <TableResults />
+			    <TableResults examItems={examItems} />
 			    <PatientComment />
 			    <Actions />
 		    </Col>
