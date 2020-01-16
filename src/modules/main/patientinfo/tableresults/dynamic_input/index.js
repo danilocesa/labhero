@@ -18,11 +18,23 @@ const { TextArea } = Input;
 
 const FormField = React.forwardRef((props, innerRef) => {
 		if(props.type === EITC_ALPHA_NUMERIC) {
-			return <Input ref={innerRef} {...props} />;
+			return (
+				<Input 
+					ref={innerRef}  
+					onPressEnter={props.saveState} 
+					onBlur={props.saveState} 
+				/>
+			);
 		}
 			
 		if(props.type ===  EITC_NUMERIC) {
-			return <Input ref={innerRef} {...props} />;
+			return (
+				<Input 
+					ref={innerRef}  
+					onPressEnter={props.saveState} 
+					onBlur={props.saveState} 
+				/>
+			);
 		}
 			
 		if(props.type === EITC_CHECKBOX) {
@@ -35,23 +47,35 @@ const FormField = React.forwardRef((props, innerRef) => {
 
 			return (
 				<Checkbox.Group 
-					// ref={innerRef} 
+					ref={innerRef} 
 					options={options}
 					defaultValue={defaultValue}
-					{...props} 
+					onChange={props.saveState} 
 				/>
 			);
 		}
 
 		if(props.type === EITC_OPTION) {
-			return <Radio ref={innerRef} {...props} />;
+			return <Radio ref={innerRef} />;
 		}
 
 		if(props.type === EITC_TEXT_AREA) {
-			return <TextArea ref={innerRef} {...props} />;
+			return (
+				<TextArea 
+					ref={innerRef}  
+					onPressEnter={props.saveState} 
+					onBlur={props.saveState} 
+				/>
+			);
 		}
 			
-		return <Input ref={innerRef} {...props} />;
+		return (
+			<Input 
+				ref={innerRef}  
+				onPressEnter={props.saveState} 
+				onBlur={props.saveState} 
+			/>
+		);
 });
 
 
@@ -73,9 +97,8 @@ class DynamicInput extends React.Component {
 					<FormField 
 						ref={innerRef} 
 						type={typeCode}
-						itemOptions={itemOptions || []}
-						onPressEnter={onSave} 
-						onBlur={onSave} 
+						itemOptions={itemOptions}
+						saveState={onSave} 
 					/>
 				)}
 			</FormItem>
@@ -85,14 +108,20 @@ class DynamicInput extends React.Component {
 
 DynamicInput.propTypes = {
 	typeCode: PropTypes.string.isRequired,
-	unitCode: PropTypes.string.isRequired,
+	unitCode: PropTypes.string,
+	value: PropTypes.string,
 	isLock: PropTypes.bool.isRequired,
-	itemOptions: PropTypes.array.isRequired,
-	value: PropTypes.string.isRequired,
+	itemOptions: PropTypes.array,
 	form: PropTypes.any.isRequired,
 	onSave: PropTypes.func.isRequired,
 	fieldName: PropTypes.string.isRequired,
 	innerRef: PropTypes.any.isRequired
+};
+
+DynamicInput.defaultProps = {
+	unitCode: '',
+	itemOptions: [],
+	value: ''
 };
 
 export default React.forwardRef((props, ref) => <DynamicInput innerRef={ref} {...props} />);
