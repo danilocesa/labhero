@@ -176,6 +176,7 @@ class UserTable extends React.Component {
 					width="85%"
 					visible={visible}
 					onClose={this.onClose}
+					destroyOnClose
 				>
 					<UserAccountForm
 						drawerButton={drawerButton} 
