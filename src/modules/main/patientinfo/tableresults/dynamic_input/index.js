@@ -2,8 +2,8 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Checkbox, Radio   } from 'antd';
-import errorMessage from 'global_config/error_messages';
+import { Input, Checkbox, Radio   } from 'antd';
+import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { 
 	EITC_ALPHA_NUMERIC,
 	EITC_NUMERIC,
@@ -13,115 +13,85 @@ import {
 } from 'global_config/constant-global';
 
 
-const FormItem = Form.Item;
 const { TextArea } = Input;
 
-const FormField = React.forwardRef((props, innerRef) => {
-		if(props.type === EITC_ALPHA_NUMERIC) {
+class DynamicInput extends React.Component {
+	render() {
+		const { type, itemOptions, unitCode, isLock } = this.props;
+
+		if(type === EITC_ALPHA_NUMERIC) {
 			return (
-				<Input 
-					ref={innerRef}  
-					onPressEnter={props.saveState} 
-					onBlur={props.saveState} 
+				<AlphaNumInput 
+					addonAfter={unitCode} 
+					disabled={isLock}
 				/>
 			);
 		}
 			
-		if(props.type ===  EITC_NUMERIC) {
+		if(type ===  EITC_NUMERIC) {
 			return (
-				<Input 
-					ref={innerRef}  
-					onPressEnter={props.saveState} 
-					onBlur={props.saveState} 
+				<NumberInput 
+					addonAfter={unitCode} 
+					disabled={isLock} 
 				/>
 			);
 		}
 			
-		if(props.type === EITC_CHECKBOX) {
-			const options = props.itemOptions.map(itemOption => ({ 
+		if(type === EITC_CHECKBOX) {
+			const options = itemOptions.map(itemOption => ({ 
 				label: itemOption.examItemValueLabel, 
 				value: itemOption.examItemValueLabel
 			}));
 
-			const defaultValue = props.itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
+			const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
 
 			return (
 				<Checkbox.Group 
-					ref={innerRef} 
 					options={options}
 					defaultValue={defaultValue}
-					onChange={props.saveState} 
+					disabled={isLock}
 				/>
 			);
 		}
 
-		if(props.type === EITC_OPTION) {
-			return <Radio ref={innerRef} />;
+		if(type === EITC_OPTION) {
+			const Options = itemOptions.map(itemOption => ({ 
+				label: itemOption.examItemValueLabel, 
+				value: itemOption.examItemValueLabel
+			}));
+			const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
+
+			return (
+				<Radio.Group 
+					options={Options}
+					defaultValue={defaultValue}
+					disabled={isLock}
+				/>
+			);
 		}
 
-		if(props.type === EITC_TEXT_AREA) {
+		if(type === EITC_TEXT_AREA) {
 			return (
-				<TextArea 
-					ref={innerRef}  
-					onPressEnter={props.saveState} 
-					onBlur={props.saveState} 
-				/>
+				<TextArea disabled={isLock} />
 			);
 		}
 			
-		return (
-			<Input 
-				ref={innerRef}  
-				onPressEnter={props.saveState} 
-				onBlur={props.saveState} 
-			/>
-		);
-});
-
-
-class DynamicInput extends React.Component {
-	render() {
-		const { form, value, onSave, fieldName, innerRef, typeCode, itemOptions } = this.props;
-
-		return (
-			<FormItem style={{ margin: 0 }}>
-				{form.getFieldDecorator(fieldName, {
-					rules: [
-						{
-							required: true,
-							message: errorMessage.required,
-						},
-					],
-					initialValue: value,
-				})(
-					<FormField 
-						ref={innerRef} 
-						type={typeCode}
-						itemOptions={itemOptions}
-						saveState={onSave} 
-					/>
-				)}
-			</FormItem>
-		)
+		return <Input addonAfter={unitCode} disabled={isLock} />;
 	}
 }
 
+
 DynamicInput.propTypes = {
-	typeCode: PropTypes.string.isRequired,
-	unitCode: PropTypes.string,
-	value: PropTypes.string,
-	isLock: PropTypes.bool.isRequired,
+	type: PropTypes.string.isRequired,
 	itemOptions: PropTypes.array,
-	form: PropTypes.any.isRequired,
-	onSave: PropTypes.func.isRequired,
-	fieldName: PropTypes.string.isRequired,
-	innerRef: PropTypes.any.isRequired
+	unitCode: PropTypes.string,
+	isLock: PropTypes.bool
 };
 
 DynamicInput.defaultProps = {
-	unitCode: '',
 	itemOptions: [],
-	value: ''
+	unitCode: '',
+	isLock: false
 };
 
-export default React.forwardRef((props, ref) => <DynamicInput innerRef={ref} {...props} />);
+export default DynamicInput;

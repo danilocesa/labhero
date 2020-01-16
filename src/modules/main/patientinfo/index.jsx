@@ -41,7 +41,6 @@ class PatientInfo extends React.Component {
     const index = newData.findIndex(item => row.examItemID === item.examItemID);
 		const item = newData[index];
 		
-		console.log('rowVal', row);
     newData.splice(index, 1, {
       ...item,
       ...row,
@@ -61,7 +60,6 @@ class PatientInfo extends React.Component {
 			    <Name />
 					<TableResults 
 						examItems={examItems} 
-						handleSave={this.handleSave}
 					/>
 			    <PatientComment />
 			    <Actions />

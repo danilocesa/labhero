@@ -1,4 +1,4 @@
-import { globalTablePageSize } from 'global_config/constant-global';
+import { globalTablePageSize, globalTableSize } from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
@@ -60,3 +60,4 @@ export const buttonLabels = {
 
 
 export const tablePageSize = globalTablePageSize;
+export const tableSize = globalTableSize;

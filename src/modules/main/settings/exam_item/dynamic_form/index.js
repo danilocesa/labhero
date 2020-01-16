@@ -107,7 +107,10 @@ class DynamicForm extends React.Component {
 	};
 	
 	onSwitchChange = (checked, index) => {
-		if(checked) this.setState({ checkedKey: index });
+		if(checked) 
+			this.setState({ checkedKey: index });
+		else
+			this.setState({ checkedKey: -1 });
 	}
 
 	render() {
