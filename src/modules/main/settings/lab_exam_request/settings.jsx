@@ -66,7 +66,7 @@ export const fieldRules = {
 	],
 	examSort: [
 		{ required: false, message: errorMessage.required },
-		{ max: 32, message: errorMessage.maxLength(32) }
+		// { max: 32, message: errorMessage.maxLength(32) }
 	],
 	sectionID: [
 		{ required: false, message: errorMessage.required },

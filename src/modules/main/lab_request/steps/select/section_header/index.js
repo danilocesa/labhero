@@ -37,7 +37,7 @@ class SectionHeader extends React.Component {
 			const sections = await fetchSection();
 			const rawPanels = await fetchPanel();
 			
-			populatePanelRef(rawPanels);
+			populatePanelRef(rawPanels.filter(rawPanel => rawPanel.active === 1));
 			populatePanels();
 
 			this.setState({ sections });

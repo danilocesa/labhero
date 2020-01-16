@@ -144,7 +144,7 @@ class UpdatePanel extends React.Component {
 		return ( 
 			<Drawer
 				title={drawerTitle.update}
-				width="80%"
+				width="90%"
 				placement="right"
 				closable
 				onClose={this.closeFormDrawer}

@@ -22,7 +22,7 @@ class Dropdown extends React.Component {
 		const width = size === 'small' ? 200 : 300;
 		const Options = content.map(section => (
 			<Option value={section.value} key={section.value}>
-				{section.label}
+				{section.label.toUpperCase()}
 			</Option>
 		));
 
