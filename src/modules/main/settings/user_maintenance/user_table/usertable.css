@@ -3,15 +3,7 @@
     margin-top: 15px;
 }
 
-.user-table-options .user-table .ant-table-thead > tr > th {
-    padding: 4px 16px !important;
-}
-
-.user-table-options .user-table .ant-table-tbody > tr > td {
-    padding: 7px 15px !important;
-}
-
-.user-table-options {
+.user-table-action {
     text-align: right;
+    margin-bottom:10px;
 }
-

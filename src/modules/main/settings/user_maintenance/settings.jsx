@@ -19,6 +19,11 @@ export const errorMessage = {
 	},
 };
 
+export const messagePrompts = {
+  successCreateUser: "Successfully created! Reloading page...",
+  successUpdateUser: "Update successful! Reloading page..."
+}
+
 export const drawerAddTitle = 'ADD USER ACCOUNT';
 export const drawerUpdateTitle = 'UPDATE USER ACCOUNT';
 export const addUserButton = 'ADD USER';

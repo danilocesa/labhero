@@ -28,25 +28,28 @@ const columns = [
 		title: tableHeaders.userID,
 		dataIndex: 'userID',
 		key: 'userID',
-		width: "10%",
+		width: 150,
 		sorter: (a, b) => a.userID - b.userID,
 	},
 	{
 		title: tableHeaders.userName,
 		dataIndex: 'userName',
 		key: 'userName',
+		width: 250,
 		sorter: (a, b) => a.userName.localeCompare(b.userName),
 	},
 	{
 		title: tableHeaders.lastName,
 		dataIndex: 'lastName',
 		key: 'lastName',
+		width: 250,
 		sorter: (a, b) => a.lastName.localeCompare(b.lastName),
 	},
 	{
 		title: tableHeaders.firstName,
 		dataIndex: 'givenName',
 		key: 'givenName',
+		width: 250,
 		sorter: (a, b) => a.givenName.localeCompare(b.givenName),
 	},
 	{
@@ -124,8 +127,8 @@ class UserTable extends React.Component {
 		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading } = this.state;
 
 		return(
-			<div className="user-table-options">
-				<div>
+			<div>
+				<div className="user-table-action">
 					<Button 
 					type="primary" 
 					shape="round" 
@@ -170,13 +173,14 @@ class UserTable extends React.Component {
 				{/* DRAWER */}
 				<Drawer
 					title={drawerTitle}
-					width="60%"
+					width="85%"
 					visible={visible}
 					onClose={this.onClose}
 				>
 					<UserAccountForm
 						drawerButton={drawerButton} 
 						patientInfo={patientInfo}
+						onClose={this.onClose}
 					/>
 				</Drawer>
 			</div>
