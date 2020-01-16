@@ -3,12 +3,10 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Typography, Card, Empty } from 'antd';
+import { Table } from 'antd';
 import { EditableFormRow, EditableCell } from './editable_table_component';
 
 import './table.css';
-
-const { Text } = Typography;
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -47,67 +45,10 @@ class EditableTable extends React.Component {
         width: 200,
       },
     ];
-
-    this.state = {
-      dataSource: [
-        {
-          key: '5234346',
-          examItemName: 'Hemoglobin',
-          instrumentResult: '85',
-          releasedResult: '85',
-          values: '14.0 - 17.5',
-          status: <Text type="danger">HIGH</Text>,
-        },
-        {
-          key: '1',
-          examItemName: 'Hematocrit',
-          instrumentResult: '0.257',
-          releasedResult: '0.257',
-          values: '41.5 - 50.4',
-          status: <Text style={{ color: 'blue' }}>LOW</Text>,
-        },
-        {
-          key: '2',
-          examItemName: 'Exam 1',
-          instrumentResult: '0.257',
-          releasedResult: '0.257',
-          values: '41.5 - 50.4',
-          status: <Text style={{ color: 'blue' }}>LOW</Text>,
-        },
-        {
-          key: '3',
-          examItemName: 'Exam 2',
-          instrumentResult: '0.257',
-          releasedResult: '0.257',
-          values: '41.5 - 50.4',
-          status: <Text style={{ color: 'blue' }}>LOW</Text>,
-        },
-        {
-          key: '4',
-          examItemName: 'Exam 3',
-          instrumentResult: '0.257',
-          releasedResult: '0.257',
-          values: '41.5 - 50.4',
-          status: <Text style={{ color: 'blue' }}>LOW</Text>,
-        },
-      ],
-    };
   }
 
-  handleSave = row => {
-    const newData = [...this.state.dataSource];
-    const index = newData.findIndex(item => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    this.setState({ dataSource: newData });
-  };
-
   render() {
-		const { examItems } = this.props;
-    const { dataSource } = this.state;
+		const { examItems, handleSave } = this.props;
     const components = {
       body: {
         row: EditableFormRow,
@@ -126,22 +67,20 @@ class EditableTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave,
+          handleSave,
         }),
       };
 		});
-		
-    const emptyTableData = <Card><Empty /></Card>
 
     return (
 			<div className="patient-table">
 				<Table
 					components={components}
 					rowClassName={() => 'editable-row'}
-					// dataSource={dataSource || emptyTableData}
 					dataSource={examItems}
 					columns={columns}
 					rowSelection={rowSelection}
+					rowKey={item => item.examItemID}
 					scroll={{ x: 800, y: 300 }}
 					size="small"
 					pagination={false}
@@ -152,7 +91,8 @@ class EditableTable extends React.Component {
 }
 
 EditableTable.propTypes = {
-	examItems: PropTypes.array.isRequired
+	examItems: PropTypes.array.isRequired,
+	handleSave: PropTypes.func.isRequired
 };
 
 export default EditableTable;

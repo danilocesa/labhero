@@ -19,21 +19,36 @@ class PatientInfo extends React.Component {
 		examItems: []
 	};
 
+	componentDidMount() {
+	
+	}
+
 	async componentDidUpdate(prevProps) {
 		const { sampleSpecimenId } = this.props;
-
-		console.log('patient Info did update', sampleSpecimenId);
-		console.log('prevprops', prevProps);
 
 		if(sampleSpecimenId !== prevProps.sampleSpecimenId) {
 			const examItems = await fetchLabResultExamItems(sampleSpecimenId);
 			
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ examItems });
-			console.log(examItems);
 		}
 	}
 	
+
+	handleSave = row => {
+		const { examItems } = this.state;
+    const newData = [...examItems];
+    const index = newData.findIndex(item => row.examItemID === item.examItemID);
+		const item = newData[index];
+		
+		console.log('rowVal', row);
+    newData.splice(index, 1, {
+      ...item,
+      ...row,
+    });
+    this.setState({ examItems: newData });
+  };
+
 	render() {
 		const { examItems } = this.state;
 
@@ -44,7 +59,10 @@ class PatientInfo extends React.Component {
 		    </Col>
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
 			    <Name />
-			    <TableResults examItems={examItems} />
+					<TableResults 
+						examItems={examItems} 
+						handleSave={this.handleSave}
+					/>
 			    <PatientComment />
 			    <Actions />
 		    </Col>
