@@ -12,10 +12,10 @@ import {
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
-import { panelListAPI } from 'services/settings/panel/panelExamRequesting';
+import { panelListAPI } from 'services/settings/panel/panelExamRequesting';	
 import PanelForm from '../panel_form';
 
-import {drawerUpdateTitle, drawerAddTitle, tablePageSize, buttonLabels} from '../settings';
+import {drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels} from '../settings';
 
 // CSS
 import './paneltable.css';
@@ -53,6 +53,7 @@ const columns = [
         title: 'CODE',
         dataIndex: 'code',
 				key: 'code',
+				width: 200,
 				sorter: (a, b) => { return a.code.localeCompare(b.code)}
     },
     {
@@ -66,6 +67,7 @@ const columns = [
         title: 'INTEGRATION CODE',
         dataIndex: 'integration_code',
 				key: 'integration_code',
+				width: 250,
 				sorter: (a, b) => { return a.integration_code.localeCompare(b.integration_code)}
     },
 ]
@@ -167,6 +169,7 @@ class PanelTable extends React.Component {
 					</AntSelect>
 				</div>
 					<AntTable 
+						size={tableSize}
 						dataSource={this.state.panelListState}
 						pagination={this.state.pagination}
 						loading={this.state.loading} 

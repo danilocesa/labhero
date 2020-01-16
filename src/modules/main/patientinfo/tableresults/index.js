@@ -1,10 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/no-access-state-in-setstate */
-// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
-import { EditableFormRow, EditableCell } from './editable_table_component';
+import { Table, Form, Input } from 'antd';
+import DynamicInput from './dynamic_input';
 
 import './table.css';
 
@@ -16,7 +16,7 @@ const rowSelection = {
 
 class EditableTable extends React.Component {
   constructor(props) {
-    super(props);
+		super(props);
     this.columns = [
       {
         title: 'EXAM NAME',
@@ -31,8 +31,12 @@ class EditableTable extends React.Component {
       {
         title: 'RESULT',
         dataIndex: 'releasedResult',
-        editable: true,
-        width: 200,
+				width: 200,
+				render: (text, record, index) => this.createFormInput({ 
+					...record, 
+					fieldName: 'test',
+					examItemID: index
+				})
       },
       {
         title: 'NORMAL VALUES',
@@ -47,44 +51,44 @@ class EditableTable extends React.Component {
     ];
   }
 
-  render() {
-		const { examItems, handleSave } = this.props;
-    const components = {
-      body: {
-        row: EditableFormRow,
-        cell: EditableCell,
-      },
-		};
-		
-    const columns = this.columns.map(col => {
-      if (!col.editable) {
-        return col;
-      }
-      return {
-        ...col,
-        onCell: record => ({
-          record,
-          editable: col.editable,
-          dataIndex: col.dataIndex,
-          title: col.title,
-          handleSave,
-        }),
-      };
-		});
+	createFormInput = (record) => {
+		const { form } = this.props;
+		const { getFieldDecorator } = form;
 
+		return (
+			<Form.Item>
+				{ getFieldDecorator(`${record.fieldName}[${record.examItemID}]`, { 	
+					rules: [{ required: true }],
+					initialValue: record.releasedResult,
+				})(
+					<DynamicInput 
+						type={record.examItemTypeCode}
+						unitCode={record.examItemUnitCode}
+						isLock={record.examRequestItemLock === 1}
+						itemOptions={record.examItemOptions}
+						maxLength={record.maxLength}
+					/>
+				)}
+			</Form.Item>
+		)
+	}
+
+  render() {
+		const { examItems } = this.props;
+   
     return (
 			<div className="patient-table">
-				<Table
-					components={components}
-					rowClassName={() => 'editable-row'}
-					dataSource={examItems}
-					columns={columns}
-					rowSelection={rowSelection}
-					rowKey={item => item.examItemID}
-					scroll={{ x: 800, y: 300 }}
-					size="small"
-					pagination={false}
-				/>
+				<Form>
+					<Table
+						dataSource={examItems}
+						columns={this.columns}
+						// rowSelection={rowSelection}
+						rowKey={item => item.examItemID}
+						scroll={{ x: 800, y: 300 }}
+						size="small"
+						pagination={false}
+					/>
+				</Form>
 			</div>
     );
   }
@@ -92,7 +96,6 @@ class EditableTable extends React.Component {
 
 EditableTable.propTypes = {
 	examItems: PropTypes.array.isRequired,
-	handleSave: PropTypes.func.isRequired
 };
 
-export default EditableTable;
+export default Form.create()(EditableTable);
