@@ -1,20 +1,21 @@
 // LIBRARY
 import React from 'react';
-import { Col, Switch, Typography, Form, Input, Select, Button } from 'antd';
+import { Col, Switch, Typography, Form, Input, Select, Button, Row as AntRow } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 // CUSTOM
+import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
 import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
 import { 
-	drawerAdd, 
-	drawerUpdate, 
+	drawerAdd,  
 	labels as gLabels, 
 	buttonLabels, 
 	fieldLabels, 
 	fieldRules,
-	errorMessage 
+	errorMessage,
+	messagePrompts
 } from '../settings';
 
 // CSS
@@ -61,7 +62,7 @@ class UserAccountForm extends React.Component {
 		event.preventDefault();
 		const { form, drawerButton } = this.props;
 		
-		form.validateFields( (err, values) => {
+		form.validateFields( async (err, values) => {
 			if (!err) {
 				const vData = {
 					userName : values.userName,
@@ -76,13 +77,33 @@ class UserAccountForm extends React.Component {
 				};
 				
 				if(drawerButton === drawerAdd){
-					createUserAccountAPI(vData);
+					const createdUserResponse = await createUserAccountAPI(vData);
+          console.log("TCL: handleSubmit -> createdUserResponse", createdUserResponse)
+					if(createdUserResponse.status === 201){
+						const httpMessageConfig = {
+							message: messagePrompts.successCreateUser,
+							// @ts-ignore
+							status: createdUserResponse.status,
+							duration: 3, 
+							onClose: () => window.location.reload() 
+						}
+						HttpCodeMessage(httpMessageConfig);
+					}
 				} else {
 					vData.userID = values.userID;
-					updateUserAccountAPI(vData).catch(reason => console.log('TCL->', reason));
+					const updateUserResponse = await updateUserAccountAPI(vData).catch(reason => console.log('TCL->', reason));
+          console.log("TCL: handleSubmit -> updateUserResponse", updateUserResponse)
+					if(updateUserResponse.status === 200){
+						const httpMessageConfig = {
+							message: messagePrompts.successUpdateUser,
+							// @ts-ignore
+							status: updateUserResponse.status,
+							duration: 3, 
+							onClose: () => window.location.reload() 
+						}
+						HttpCodeMessage(httpMessageConfig);
+					}
 				}
-
-				window.location.reload();
 			}
 		});
 	}
@@ -124,8 +145,8 @@ class UserAccountForm extends React.Component {
 					onSubmit={this.handleSubmit} 
 					className="settings-user-maintence-form"
 				>
-					<section style={{ height:'50px' }}>
-							{/* <Col span={11}></Col> */}
+					<section style={{ height:'50px', marginTop:'-25px', 'overflow': 'hidden' }}>
+						<AntRow>
 							<Col xs={24} sm={24} style={{ textAlign: "right" }}>
 								<Form.Item label="ENABLE LOGIN" labelCol={{ span: 22 }} wrapperCol={{ span: 1 }}>
 									{
@@ -138,6 +159,7 @@ class UserAccountForm extends React.Component {
 									}
 								</Form.Item>	
 							</Col>
+						</AntRow>
 					</section>
 					<section style={{ marginBottom: 50 }}>
 						<Col span={12}>
@@ -259,7 +281,7 @@ class UserAccountForm extends React.Component {
 						</Col>
 					</section>
 					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 8, width: 120 }}>
+						<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
 							{buttonLabels.cancel}
 						</Button>
 						<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
@@ -275,11 +297,13 @@ class UserAccountForm extends React.Component {
 UserAccountForm.propTypes = {
 	patientInfo: PropTypes.array.isRequired,
 	drawerButton: PropTypes.string.isRequired,
-	form: PropTypes.object
+	form: PropTypes.object,
+	onClose: PropTypes.func
 }
 
 UserAccountForm.defaultProps = {
-	form(){ return null; }
+	form(){ return null; },
+	onClose() { return null}
 };
 
 const UserAccount = Form.create()(withRouter(UserAccountForm));

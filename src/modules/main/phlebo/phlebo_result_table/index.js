@@ -19,6 +19,7 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading } = this.props;
+    console.log("TCL: SearchPatientTable -> render -> data", data)
 		const getSorter = (myDataSource, columnName) => {
 			// @ts-ignore
 			if(myDataSource === undefined || myDataSource.length === 0 ){
@@ -42,8 +43,8 @@ class SearchPatientTable extends React.Component {
 		const columns = [
 			{
 				title: 'PATIENT ID',
-				dataIndex: 'lastName',
-				sorter: getSorter(data, 'lastName'),
+				dataIndex: 'patientID',
+				sorter: getSorter(data, 'patientID'),
 				width: 150
 			},
 			{

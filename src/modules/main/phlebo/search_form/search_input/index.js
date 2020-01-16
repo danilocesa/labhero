@@ -15,39 +15,6 @@ import { apiUrlPhleboSearchPatient } from 'global_config/constant-global';
 import './search_patient_form.css';
 
 // CONSTANTS
-const formItemLayout = [
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 6,  offset: 3 },
-		lg: { span: 4,  offset: 2 },
-	},
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 1 },
-		lg: { span: 1 }
-	},  
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },      
-		md: { span: 6 },
-		lg: { span: 6 },
-	},
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },      
-		md: { span: 4 },
-		lg: { span: 4 },
-	},
-	{
-		xs: { span: 24 },
-		sm: { span: 24 },
-		md: { span: 4 },
-		lg: { span: 5 }, 
-	},
-];
-
 class SearchPatientHeaderForm extends React.Component {
 	state = {
 		patientID: '',
@@ -131,8 +98,8 @@ class SearchPatientHeaderForm extends React.Component {
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
-				<Row gutter={12}>
-					<Col {...formItemLayout[0]}>
+				<Row gutter={12} type="flex" justify="center">
+					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label="PATIENT ID">
 							<Input 
 								// allowClear
@@ -143,13 +110,10 @@ class SearchPatientHeaderForm extends React.Component {
 							/> 
 						</Form.Item>
 					</Col>
-					<Col 
-						{...formItemLayout[1]} 
-						style={{textAlign: 'center', marginTop: 45}}
-					>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
 						OR
 					</Col>
-					<Col {...formItemLayout[2]}>
+					<Col xs={24} sm={24} md={12} lg={7}>
 						<Form.Item label="PATIENT NAME">
 							<Input 
 								// allowClear
@@ -162,7 +126,7 @@ class SearchPatientHeaderForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[3]}>
+					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label="SELECT DATE">
 							<AntDatePicker 
 								allowClear={false}
@@ -173,32 +137,30 @@ class SearchPatientHeaderForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					<Col {...formItemLayout[4]}>
-						<Form.Item style={{ marginTop: 35 }}>
-							<Row gutter={12}>
-								<Col span={12}>
-									<Button 
-										block 
-										shape="round" 
-										style={{ width: 120 }}
-										onClick={this.clearInputs} 
-									>
-										CLEAR
-									</Button>
-								</Col>
-								<Col span={12}>
-									<Button 
-										block 
-										shape="round" 
-										type="primary" 
-										htmlType="submit" 
-										disabled={disabled}
-										loading={loading}
-										style={{ width: 120 }}
-									>
-										SEARCH
-									</Button>
-								</Col>
+					<Col xs={24} sm={24} md={6} lg={6}>
+						<Form.Item style={{ marginTop: 20 }}>
+							<Row>
+								<Button 
+									className="form-button"
+									block 
+									shape="round" 
+									style={{ width: 120 }}
+									onClick={this.clearInputs} 
+								>
+									CLEAR
+								</Button>
+								<Button
+									className="form-button" 
+									block 
+									shape="round" 
+									type="primary" 
+									htmlType="submit" 
+									disabled={disabled}
+									loading={loading}
+									style={{ width: 120 }}
+								>
+									SEARCH
+								</Button>
 							</Row>
 						</Form.Item>
 					</Col>
