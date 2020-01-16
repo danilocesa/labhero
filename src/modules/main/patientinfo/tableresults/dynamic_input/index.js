@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Radio   } from 'antd';
@@ -15,26 +17,47 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 
 const FormField = React.forwardRef((props, innerRef) => {
-	switch(props.type) {
-		case EITC_ALPHA_NUMERIC:
+		if(props.type === EITC_ALPHA_NUMERIC) {
 			return <Input ref={innerRef} {...props} />;
-		case EITC_NUMERIC:
+		}
+			
+		if(props.type ===  EITC_NUMERIC) {
 			return <Input ref={innerRef} {...props} />;
-		case EITC_CHECKBOX:
-			return <Checkbox ref={innerRef} {...props} />;
-		case EITC_OPTION:
+		}
+			
+		if(props.type === EITC_CHECKBOX) {
+			const options = props.itemOptions.map(itemOption => ({ 
+				label: itemOption.examItemValueLabel, 
+				value: itemOption.examItemValueLabel
+			}));
+
+			const defaultValue = props.itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
+
+			return (
+				<Checkbox.Group 
+					// ref={innerRef} 
+					options={options}
+					defaultValue={defaultValue}
+					{...props} 
+				/>
+			);
+		}
+
+		if(props.type === EITC_OPTION) {
 			return <Radio ref={innerRef} {...props} />;
-		case EITC_TEXT_AREA:
+		}
+
+		if(props.type === EITC_TEXT_AREA) {
 			return <TextArea ref={innerRef} {...props} />;
-		default:
-			return <Input ref={innerRef} {...props} />;
-	} 
+		}
+			
+		return <Input ref={innerRef} {...props} />;
 });
 
 
 class DynamicInput extends React.Component {
 	render() {
-		const { form, value, onSave, fieldName, innerRef, typeCode } = this.props;
+		const { form, value, onSave, fieldName, innerRef, typeCode, itemOptions } = this.props;
 
 		return (
 			<FormItem style={{ margin: 0 }}>
@@ -50,6 +73,7 @@ class DynamicInput extends React.Component {
 					<FormField 
 						ref={innerRef} 
 						type={typeCode}
+						itemOptions={itemOptions || []}
 						onPressEnter={onSave} 
 						onBlur={onSave} 
 					/>
@@ -63,6 +87,7 @@ DynamicInput.propTypes = {
 	typeCode: PropTypes.string.isRequired,
 	unitCode: PropTypes.string.isRequired,
 	isLock: PropTypes.bool.isRequired,
+	itemOptions: PropTypes.array.isRequired,
 	value: PropTypes.string.isRequired,
 	form: PropTypes.any.isRequired,
 	onSave: PropTypes.func.isRequired,

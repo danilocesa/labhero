@@ -27,15 +27,13 @@ export class EditableCell extends React.Component {
     const editing = !this.state.editing;
     this.setState({ editing }, () => {
       if (editing) {
-        this.input.focus();
+        // this.input.focus();
       }
     });
   };
 
   save = e => {
 		const { record, handleSave } = this.props;
-
-		console.log('onsave triggered');
 
     this.form.validateFields((error, values) => {
       if (error && error[e.currentTarget.id]) {
@@ -51,9 +49,7 @@ export class EditableCell extends React.Component {
   render() {
     const { editing } = this.state;
 		const { editable, dataIndex, title, record, index, handleSave, ...restProps } = this.props;
-		
-		console.log('editable', editable);
-		console.log('dataIndex', dataIndex);
+	
 
     return (
 	    <td {...restProps}>
@@ -66,7 +62,8 @@ export class EditableCell extends React.Component {
 									typeCode={record.examItemTypeCode}
 									unitCode={record.examItemUnitCode}
 									isLock={record.examRequestItemLock === 1}
-									value="a"
+									itemOptions={record.examItemOptions || []}
+									value={record.releasedResult}
 									form={form}
 									onSave={this.save}
 									fieldName={dataIndex}
