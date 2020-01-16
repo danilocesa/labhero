@@ -137,6 +137,17 @@ class UserAccountForm extends React.Component {
 		));
 
 		const isActive = (patientInfo.active === 1 );
+		
+		const passwordValidation = (drawerAdd === drawerButton ? {
+			initialValue: patientInfo.password,
+			rules:[
+				...fieldRules.password,
+				{ validator: this.compareToFirstPassword }
+			]
+		} :
+		{
+			initialValue: patientInfo.password
+		});
 		 
 		return(
 			<div>
@@ -206,7 +217,6 @@ class UserAccountForm extends React.Component {
 								<div className="form-title">
 									<Text strong>{gLabels.accountInfoLabel}</Text>
 								</div>
-
 								<Form.Item label={fieldLabels.username}>
 									{
 										getFieldDecorator('userName',{
@@ -216,29 +226,15 @@ class UserAccountForm extends React.Component {
 										<Input maxLength={10} />)
 									}
 								</Form.Item>
-
 								<Form.Item label={fieldLabels.password}>
 									{
-										getFieldDecorator('password',{
-											initialValue: patientInfo.password,
-											rules: [
-												...fieldRules.password,
-												{ validator: this.validateToNextPassword}
-											]
-										})(
+										getFieldDecorator('password',passwordValidation)(
 										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
-
 								<Form.Item label={fieldLabels.repeatPassword}>
 									{
-										getFieldDecorator('repeat_password',{
-											initialValue: patientInfo.password,
-											rules:[
-												...fieldRules.password,
-												{ validator: this.compareToFirstPassword }
-											]
-										})(
+										getFieldDecorator('repeat_password',)(
 										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
