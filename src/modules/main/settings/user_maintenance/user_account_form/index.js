@@ -4,7 +4,7 @@ import { Col, Switch, Typography, Form, Input, Select, Button, Row as AntRow } f
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-// CUSTOM
+import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
 import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
@@ -78,7 +78,7 @@ class UserAccountForm extends React.Component {
 				
 				if(drawerButton === drawerAdd){
 					const createdUserResponse = await createUserAccountAPI(vData);
-          console.log("TCL: handleSubmit -> createdUserResponse", createdUserResponse)
+      
 					if(createdUserResponse.status === 201){
 						const httpMessageConfig = {
 							message: messagePrompts.successCreateUser,
@@ -92,7 +92,7 @@ class UserAccountForm extends React.Component {
 				} else {
 					vData.userID = values.userID;
 					const updateUserResponse = await updateUserAccountAPI(vData).catch(reason => console.log('TCL->', reason));
-          console.log("TCL: handleSubmit -> updateUserResponse", updateUserResponse)
+          
 					if(updateUserResponse.status === 200){
 						const httpMessageConfig = {
 							message: messagePrompts.successUpdateUser,
@@ -191,7 +191,10 @@ class UserAccountForm extends React.Component {
 										initialValue: patientInfo.givenName,
 										rules: fieldRules.firstname
 									})(
-										<Input maxLength={100} />
+										<RegexInput
+											regex={/[A-z0-9 -]/} 
+											maxLength={100} 
+										/>
 									)}	
 								</Form.Item>
 								<Form.Item label={fieldLabels.middleName}>
@@ -199,7 +202,12 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('middleName',{
 											initialValue: patientInfo.middleName,
 											rules: fieldRules.middlename
-										})(<Input maxLength={100} />)
+										})(
+											<RegexInput
+												regex={/[A-z0-9 -]/} 
+												maxLength={100} 
+											/>
+										)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.lastName}>
@@ -207,7 +215,12 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('lastName',{
 											initialValue: patientInfo.lastName,
 											rules: fieldRules.lastname
-										})(<Input maxLength={100} />)
+										})(
+											<RegexInput
+												regex={/[A-z0-9 -]/} 
+												maxLength={100} 
+											/>
+										)
 									}
 								</Form.Item>
 							</div>
@@ -223,7 +236,7 @@ class UserAccountForm extends React.Component {
 											initialValue: patientInfo.userName,
 											rules: fieldRules.username
 										})(
-										<Input maxLength={10} />)
+										<AlphaNumInput maxLength={10} />)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.password}>
@@ -250,7 +263,8 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('registration_no',{
 											initialValue: patientInfo.registryNumber
 										})(
-										<Input />)
+											<AlphaNumInput />
+										)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.registrationValidity}>
@@ -258,7 +272,8 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('registration_validity', {
 											initialValue: patientInfo.registryValidityDate
 										})(
-										<Input />)
+											<AlphaNumInput />
+										)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.userRights}>

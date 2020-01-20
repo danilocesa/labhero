@@ -46,13 +46,18 @@ export const successMessages = {
 
 export const fieldRules = {
 	lastname: [
-		{ required: true, message: errorMessage.required }
+		{ required: true, message: errorMessage.required },
+		{ min: 2, message: errorMessage.minLength(2) },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	firstname: [
-		{ required: true, message: errorMessage.required}
+		{ required: true, message: errorMessage.required},
+		{ min: 2, message: errorMessage.minLength(2) },
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	middlename: [
-		{ required: true, message: errorMessage.required}
+		{ required: true, message: errorMessage.required},
+		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	suffix: [
 		{ required: false, message: errorMessage.required}
@@ -67,6 +72,7 @@ export const fieldRules = {
 		{ required: false, message: errorMessage.required}
 	],
 	emailAddress:  [
+		{ type: 'email', message: errorMessage.email },
 		{ required: false, message: errorMessage.required}
 	],
 	unitNo: [

@@ -42,8 +42,6 @@ class LabResult extends React.Component {
 				searchResults[sectionCode].push(labResultClone);
 		});
 
-
-		console.log(searchResults);
 		this.setState({ searchResults, tabActiveKey: sectionCode });
 	}
 

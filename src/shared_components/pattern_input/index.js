@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 
-const alpha = /[A-z]/;
-const alphanum = /[A-z0-9]/;
+const alpha = /[A-Za-z]/;
+const alphanum = /[A-Za-z0-9]/;
 const num = /[0-9]/;
 
 class TemplateInput extends React.Component {

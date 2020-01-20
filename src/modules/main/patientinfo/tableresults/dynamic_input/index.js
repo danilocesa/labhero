@@ -1,4 +1,4 @@
-
+/* eslint-disable react/prop-types */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -17,13 +17,14 @@ const { TextArea } = Input;
 
 class DynamicInput extends React.Component {
 	render() {
-		const { type, itemOptions, unitCode, isLock } = this.props;
+		const { type, itemOptions, unitCode, isLock, value, ...otherProps } = this.props;
 
 		if(type === EITC_ALPHA_NUMERIC) {
 			return (
 				<AlphaNumInput 
 					addonAfter={unitCode} 
 					disabled={isLock}
+					{...otherProps}
 				/>
 			);
 		}
@@ -33,6 +34,7 @@ class DynamicInput extends React.Component {
 				<NumberInput 
 					addonAfter={unitCode} 
 					disabled={isLock} 
+					{...otherProps}
 				/>
 			);
 		}
@@ -50,6 +52,7 @@ class DynamicInput extends React.Component {
 					options={options}
 					defaultValue={defaultValue}
 					disabled={isLock}
+					{...otherProps}
 				/>
 			);
 		}
@@ -66,17 +69,27 @@ class DynamicInput extends React.Component {
 					options={Options}
 					defaultValue={defaultValue}
 					disabled={isLock}
+					{...otherProps}
 				/>
 			);
 		}
 
 		if(type === EITC_TEXT_AREA) {
 			return (
-				<TextArea disabled={isLock} />
+				<TextArea 
+					disabled={isLock} 
+					{...otherProps}
+				/>
 			);
 		}
 			
-		return <Input addonAfter={unitCode} disabled={isLock} />;
+		return (
+			<Input 
+				addonAfter={unitCode} 
+				disabled={isLock} 
+				{...otherProps}
+			/>
+		);
 	}
 }
 

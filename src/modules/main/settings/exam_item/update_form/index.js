@@ -11,7 +11,8 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
-// CUSTOM
+import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+
 import DynamicForm from '../dynamic_form';
 import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
 import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
@@ -133,6 +134,11 @@ class UpdateForm extends React.Component {
 
 
 	onChangeItemTypeCode = (itemTypeCode) => {
+		const { setFieldsValue } = this.props.form;
+
+		if(itemTypeCode === EITC_NUMERIC)
+			setFieldsValue({ examItemTypeDefault: '' });
+
 		this.setState({ selectedItemTypeCode: itemTypeCode });
 	}
 
@@ -239,12 +245,18 @@ class UpdateForm extends React.Component {
 						<section style={{ marginBottom: 60 }}>
 							<Form.Item label={fieldLabels.examItemName}>
 								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-									<Input maxLength={200} />
+									<RegexInput 
+										regex={/[A-z0-9 -]/} 
+										maxLength={200} 
+									/>
 								)}
 							</Form.Item>
 							<Form.Item label={fieldLabels.examItemGeneralName}>
 								{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-									<Input maxLength={50} />
+									<RegexInput 
+										regex={/[A-z0-9 -]/} 
+										maxLength={50} 
+									/>
 								)}
 							</Form.Item>
 							<Form.Item label={fieldLabels.examItemTypeCode}>
@@ -254,7 +266,7 @@ class UpdateForm extends React.Component {
 									</Select>
 								)}
 							</Form.Item>
-							{ (selectedItemTypeCode === EITC_ALPHA_NUMERIC || selectedItemTypeCode === EITC_NUMERIC) &&  (
+							{ (selectedItemTypeCode === EITC_ALPHA_NUMERIC) &&  (
 								<>
 									<Form.Item label={fieldLabels.examItemUnitCode}>
 										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
@@ -263,7 +275,21 @@ class UpdateForm extends React.Component {
 									</Form.Item>
 									<Form.Item label={fieldLabels.examItemTypeDefault}>
 										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<Input maxLength={254} />
+											<AlphaNumInput maxLength={254} />
+										)}
+									</Form.Item>
+								</>
+							)}
+							{ (selectedItemTypeCode === EITC_NUMERIC) &&  (
+								<>
+									<Form.Item label={fieldLabels.examItemUnitCode}>
+										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
+											<Select>{UnitMeasureOptions}</Select>
+										)}
+									</Form.Item>
+									<Form.Item label={fieldLabels.examItemTypeDefault}>
+										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
+											<NumberInput maxLength={254} />
 										)}
 									</Form.Item>
 								</>

@@ -3,11 +3,10 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Input, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
-
-// CUSTOM
+import { Row, Col, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
+import { AlphaNumInput } from 'shared_components/pattern_input';
 import errorMessage from 'global_config/error_messages';
-import {buttonNames} from '../settings';
+import { buttonNames } from '../settings';
 
 
 let id = 0;
@@ -159,7 +158,7 @@ class DynamicForm extends React.Component {
 											message: errorMessage.maxLength(254)
 										}
 									],
-								})(<Input maxLength={254} />)}
+								})(<AlphaNumInput maxLength={254} />)}
 							</Col>
 						</Form.Item>
 					</Row>

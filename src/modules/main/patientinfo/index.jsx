@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchLabResultExamItems } from 'services/lab_result/result';
 
@@ -16,40 +16,35 @@ import './layout.css';
 
 class PatientInfo extends React.Component {
 	state = {
+		isLoading: false,
 		examItems: []
 	};
 
 	componentDidMount() {
-	
+		const { sampleSpecimenId } = this.props;
+		this.setState({ isLoading: true }, async () => {
+			const examItems = await fetchLabResultExamItems(sampleSpecimenId);
+			
+			this.setState({ examItems, isLoading: false });
+		});
 	}
 
 	async componentDidUpdate(prevProps) {
 		const { sampleSpecimenId } = this.props;
 
 		if(sampleSpecimenId !== prevProps.sampleSpecimenId) {
-			const examItems = await fetchLabResultExamItems(sampleSpecimenId);
-			
 			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ examItems });
+			this.setState({ isLoading: true }, async () => {
+				const examItems = await fetchLabResultExamItems(sampleSpecimenId);
+				
+				// eslint-disable-next-line react/no-did-update-set-state
+				this.setState({ examItems, isLoading: false });
+			});
 		}
 	}
 	
-
-	handleSave = row => {
-		const { examItems } = this.state;
-    const newData = [...examItems];
-    const index = newData.findIndex(item => row.examItemID === item.examItemID);
-		const item = newData[index];
-		
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-    this.setState({ examItems: newData });
-  };
-
 	render() {
-		const { examItems } = this.state;
+		const { examItems, isLoading } = this.state;
 
     return (
 	    <Row>
@@ -58,9 +53,9 @@ class PatientInfo extends React.Component {
 		    </Col>
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
 			    <Name />
-					<TableResults 
-						examItems={examItems} 
-					/>
+					<Spin spinning={isLoading}>
+						<TableResults examItems={examItems} />
+					</Spin>
 			    <PatientComment />
 			    <Actions />
 		    </Col>

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
 import { Drawer, Form, Input, Button, Select } from 'antd';
@@ -10,13 +11,12 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
+import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
 
-// CUSTOM
 import DynamicForm from '../dynamic_form';
 import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';
 import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
-// CSS
 import './add_form.css';
 
 const { Option } = Select;
@@ -44,6 +44,11 @@ class AddForm extends React.Component {
 	}
 
 	onChangeItemTypeCode = (itemTypeCode) => {
+		const { setFieldsValue } = this.props.form;
+
+		if(itemTypeCode === EITC_NUMERIC)
+			setFieldsValue({ examItemTypeDefault: '' });
+
 		this.setState({ selectedRsType: itemTypeCode });
 	}
 
@@ -51,9 +56,7 @@ class AddForm extends React.Component {
 		event.preventDefault();
 		
 		const { selectedRsType } = this.state;
-		// eslint-disable-next-line react/prop-types
 		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
-		// eslint-disable-next-line react/prop-types
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 
 		validateFieldsAndScroll((err) => {
@@ -156,12 +159,18 @@ class AddForm extends React.Component {
 					<section style={{ marginBottom: 50 }}>
 						<Form.Item label={fieldLabels.examItemName}>
 							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-								<Input maxLength={200} />
+								<RegexInput 
+									regex={/[A-z0-9 -]/} 
+									maxLength={200} 
+								/>
 							)}
 						</Form.Item>
 						<Form.Item label={fieldLabels.examItemGeneralName}>
 							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-								<Input maxLength={50} />
+								<RegexInput 
+									regex={/[A-z0-9 -]/} 
+									maxLength={50} 
+								/>
 							)}
 						</Form.Item>
 						<Form.Item label={fieldLabels.examItemTypeCode}>
@@ -171,7 +180,7 @@ class AddForm extends React.Component {
 								</Select>
 							)}
 						</Form.Item>
-						{ (selectedRsType === EITC_ALPHA_NUMERIC || selectedRsType === EITC_NUMERIC) && (
+						{ (selectedRsType === EITC_ALPHA_NUMERIC) && (
 							<React.Fragment>
 								<Form.Item label={fieldLabels.examItemUnitCode}>
 									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
@@ -183,7 +192,24 @@ class AddForm extends React.Component {
 										rules: fieldRules.examItemTypeDefault, 
 										initialValue: 1 
 									})(
-										<Input maxLength={254} />
+										<AlphaNumInput maxLength={254} />
+									)}
+								</Form.Item>
+							</React.Fragment>
+						)}
+						{ (selectedRsType === EITC_NUMERIC) && (
+							<React.Fragment>
+								<Form.Item label={fieldLabels.examItemUnitCode}>
+									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
+										<Select>{UnitMeasureOptions}</Select>
+									)}
+								</Form.Item>
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault, 
+										initialValue: 1 
+									})(
+										<NumberInput maxLength={254} />
 									)}
 								</Form.Item>
 							</React.Fragment>
