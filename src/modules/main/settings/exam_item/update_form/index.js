@@ -175,10 +175,14 @@ class UpdateForm extends React.Component {
 				if(selectedItemTypeCode === EITC_ALPHA_NUMERIC || 
 					 selectedItemTypeCode === EITC_NUMERIC || 
 					 selectedItemTypeCode === EITC_TEXT_AREA ) {
-					 fields.examItemValue = [{ 
-						 examItemValueDefault: 0,
-						 examItemValueLabel: fields.examItemTypeDefault
-					 }];
+						fields.examItemValue = null;
+
+						if(fields.examItemTypeDefault) {
+							fields.examItemValue = [{ 
+								examItemValueDefault: 1,
+								examItemValueLabel: fields.examItemTypeDefault
+							}];
+						}
 			 	}
 
 				const payload = { 

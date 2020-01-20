@@ -19,7 +19,7 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading } = this.props;
-    console.log("TCL: SearchPatientTable -> render -> data", data)
+    console.log("TCL: SearchPatientTable -> render -> data", data);
 		const getSorter = (myDataSource, columnName) => {
 			// @ts-ignore
 			if(myDataSource === undefined || myDataSource.length === 0 ){

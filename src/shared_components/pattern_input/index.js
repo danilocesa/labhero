@@ -48,5 +48,5 @@ export class RegexInput extends React.Component {
 }
 
 RegexInput.propTypes = {
-	regex: PropTypes.string.isRequired
+	regex: PropTypes.instanceOf(RegExp).isRequired
 };

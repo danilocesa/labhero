@@ -66,10 +66,9 @@ class AddForm extends React.Component {
 				: { hasError: false };
 			
 			if (!err && !dynaFormFields.hasError) {
-				// Define default values
-				const examItemValueDefault = [{ examItemValueDefault: 1, examItemValueLabel: 'Default' }];
-				const fields = { ...getFieldsValue(), examItemValue: examItemValueDefault };
+				const fields = getFieldsValue();
 				
+				console.log('begin', fields.examItemTypeDefault);
 				// If checkbox or option get default & label in dynamic form
 				if(selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX){  
 					const examItemValueParam = [];
@@ -86,10 +85,12 @@ class AddForm extends React.Component {
 				if(selectedRsType === EITC_ALPHA_NUMERIC || 
 					 selectedRsType === EITC_NUMERIC || 
 					 selectedRsType === EITC_TEXT_AREA ) {
-						fields.examItemValue = [{ 
-							examItemValueDefault: 0,
-							examItemValueLabel: fields.examItemTypeDefault
-						}];
+						if(fields.examItemTypeDefault) {
+							fields.examItemValue = [{ 
+								examItemValueDefault: 1,
+								examItemValueLabel: fields.examItemTypeDefault
+							}];
+						}
 				}
 
 				delete fields.examItemTypeDefault; // We don't need it
@@ -190,7 +191,7 @@ class AddForm extends React.Component {
 								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault, 
-										initialValue: 1 
+										// initialValue: 1 
 									})(
 										<AlphaNumInput maxLength={254} />
 									)}
@@ -207,7 +208,7 @@ class AddForm extends React.Component {
 								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault, 
-										initialValue: 1 
+										// initialValue: 1 
 									})(
 										<NumberInput maxLength={254} />
 									)}
@@ -223,7 +224,7 @@ class AddForm extends React.Component {
 								<Form.Item label={fieldLabels.examItemTypeDefault}>
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault,
-										initialValue: 1 
+										// initialValue: 1 
 									})(
 										<TextArea maxLength={100} />
 									)}

@@ -49,6 +49,7 @@ class SearchPatientHeaderForm extends React.Component {
 			HttpCodeMessage({ status: 204 });
 	}
 
+
 	fetchPatients = async (patientName, patientID) => {
 		let apiResponse;
 		try{
