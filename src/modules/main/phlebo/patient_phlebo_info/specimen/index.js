@@ -4,7 +4,7 @@
 /* eslint-disable array-callback-return */
 // LIBRARY
 import React from 'react';
-import { Table, Button, Col } from 'antd';
+import { Table, Button, Spin } from 'antd';
 import PropTypes from 'prop-types';
 
 
@@ -23,11 +23,14 @@ class SpecimenList extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			requestID: null,
+			examRequests: [],
+			loadingIndex: [],
+			isFetchingData: false
+		}
+
 		this.columns = [
-			{ 
-				title: '',
-				width: 50
-			},
 			{ 
 				title: 'SECTION', 
 				dataIndex: 'sectionName',
@@ -56,131 +59,128 @@ class SpecimenList extends React.Component {
 			{ 
 				title: 'STATUS',
 				dataIndex: 'phlebo_status_col',
-				key: 'phlebo_status_col',
 				width: '15%',
 				render: (value, row, index) => {
-					const { loading } = this.state;
-					const id = `phlebo_extractButton-${row.phlebo_sectionID}${row.phlebo_specimenID}${row.phlebo_requestID}`;
-					
+					const { loadingIndex } = this.state;
+
 					return(
-						<Col className="phlebo_exams_extract phlebo_examreq_alignment">
-							<Button 
-								id={id}
-								onClick={() => this.onClickExtract(row.sectionID, row.specimenID, index)}
-								loading={loading[index]}
-								disabled={row.phlebo_sampleSpecimenID}
-								className="extract-phlebo-btn"
-							>
-								{row.phlebo_sampleSpecimenID ? buttonNames.extracted : buttonNames.extract} 
-							</Button>
-						</Col>
+						<Button 
+							onClick={() => this.onClickExtract(row.sectionID, row.specimenID, index)}
+							loading={loadingIndex === index}
+							disabled={row.sampleSpecimenID}
+							className="extract-phlebo-btn"
+						>
+							{row.sampleSpecimenID ? buttonNames.extracted : buttonNames.extract} 
+						</Button>
 					)
 				}
 			},
 			{ 
 				title: '',
 				dataIndex: 'phlebo_print_col',
-				key: 'phlebo_print_col',
 				width: 100,
-				render:(button, value) => {
+				render:(value, row) => {
 					return(
-						<Col className="phlebo_exams_extract phlebo_examreq_alignment">
-							<Button 
-								id={`phlebo_printButton-${value.phlebo_sectionID}${value.phlebo_specimenID}${value.phlebo_requestID}`}
-								onClick={this.handlePrint} 
-								className="extract-phlebo-btn"
-								data-specimenid={value.phlebo_specimenID} 
-								icon="printer"
-								style={{ fontSize: '24px' }}
-								disabled={!value.phlebo_sampleSpecimenID}
-							>
-								{''} 
-							</Button>
-						</Col>
+						<Button 
+							onClick={() => this.handlePrint(row.specimenID)} 
+							className="extract-phlebo-btn"
+							icon="printer"
+							style={{ fontSize: '24px' }}
+							disabled={!row.sampleSpecimenID}
+						/>
 					)
 				}
 			},
 		];
 
-		this.state = {
-			requestID: null,
-			examRequests: null,
-			loading: []
-		}
 	}
 
-	async componentDidMount(){
+	componentDidMount(){
 		const { patientInfo } = this.props;
-		const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
+		this.setState({ isFetchingData: true }, async () => {
+			const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
 
-		this.setState({ 
-			requestID: patientSpecimens.requestID,
-			examRequests: patientSpecimens.examRequests
+			this.setState({ 
+				requestID: patientSpecimens.requestID,
+				examRequests: patientSpecimens.examRequests,
+				isFetchingData: false
+			});
 		});
 	}
 
-	componentDidUpdate = async () =>{
-		const { patientInfo } = this.props;
-		if(!this.state.examRequests){ // Temp fix for too many request
-			const patientSpecimensAPI = await patientPhleboSpecimensAPI(patientInfo.requestID);
-			const requestExams = [];
-			// requestExams = this.mapExams(patientSpecimensAPI);
+	// componentDidUpdate = async (prevProps) =>{
+	// 	const { patientInfo } = this.props;
 
-			if(patientSpecimensAPI != undefined){
-				// eslint-disable-next-line react/no-did-update-set-state
-				this.setState({  
-					examRequests: requestExams
-				});
-			}
+	// 	if(patientInfo.requestID !== prevProps.patientInfo.requestID){ 
+	// 		const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
+	
+	// 		if(patientSpecimens !== undefined){
+	// 			// eslint-disable-next-line react/no-did-update-set-state
+	// 			this.setState({  
+	// 				requestID: patientSpecimens.requestID,
+	// 				examRequests: patientSpecimens.examRequests
+	// 			});
+	// 		}
+	// 	}
+	// }
 
-		}
-		
-	}
-
-	onClickExtract = async (sectionID, specimenID, index) => {
-		// eslint-disable-next-line react/no-access-state-in-setstate
+	onClickExtract = (sectionID, specimenID, index) => {
 		const { requestID } = this.state;
 
 		const { userID } = JSON.parse(sessionStorage.getItem("LOGGEDIN_USER_DATA"));
 		
-		this.setState({ [`data-${index}`]: true });
-		const saveExtraction = await patientPhleboCheckInSpecimensAPI({ 
-			requestID, 
-			sectionID, 
-			specimenID, 
-			userID  
+		this.setState({ loadingIndex: index }, async () => {
+			const { examRequests } = this.state;
+			const examRequestClone = JSON.parse(JSON.stringify(examRequests));
+
+			const saveExtraction = await patientPhleboCheckInSpecimensAPI({ 
+				requestID, 
+				sectionID, 
+				specimenID, 
+				userID  
+			});
+
+			if(saveExtraction.status === 200 || saveExtraction.length > 0){
+				HttpCodeMessage({
+					status: saveExtraction.status, 
+					message: `${messagePrompts.successExtraction} ${ saveExtraction.data.sampleSpecimenID}` 
+				});
+
+				// Update the selected row's sampleSpecimenId to disable exctract button
+				examRequestClone.splice(index, 1, { ...examRequestClone[index], sampleSpecimenID: 1 })
+			} else{
+				HttpCodeMessage({
+					status: saveExtraction.status, 
+					message: messagePrompts.commonErrorMessage
+				});
+			}
+
+			this.setState({ loadingIndex: -1, examRequests: examRequestClone });
 		});
-		
-		this.setState({ [`data-${index}`]: false });
-		// if(saveExtraction.status === 200 || saveExtraction.length > 0){
-		// 	document.getElementById(inputID).setAttribute("disabled","");
-		// 	document.getElementById(inputID).innerHTML = buttonNames.extracted;
-		// 	HttpCodeMessage({status: saveExtraction.status, message: `${messagePrompts.successExtraction} ${ saveExtraction.data.sampleSpecimenID}` });
-		// } else{
-		// 	HttpCodeMessage({status: saveExtraction.status, message: messagePrompts.commonErrorMessage});
-		// }
 	}
 
-	handlePrint = async (e) =>{
-		const specimenID = e.target.attributes.getNamedItem('data-specimenid').value;
+	handlePrint = async (specimenID) =>{
 		const printBarcode = await printBarcodeSpecimenAPI(specimenID);
 
 		HttpCodeMessage({status: printBarcode.status, message: printBarcode.data});
 	}
 
 	render() {  
-		const { examRequests } = this.state;
+		const { examRequests, isFetchingData } = this.state;
 
 		return (
 			<div className="phlebotable-container">
-				<Table
-					className="phlebotable"
-					columns={this.columns}
-					expandedRowRender={record => record.exams.map(i => <div>{i}</div>)}
-					dataSource={examRequests}
-					size="small"
-					scroll={{ y: 300 }}
-				/>
+				<Spin spinning={isFetchingData}>
+					<Table
+						columns={this.columns}
+						// eslint-disable-next-line react/no-array-index-key
+						expandedRowRender={(record) => record.exams.map((i, index) => <div key={index}>{i}</div>)}
+						dataSource={examRequests}
+						rowKey={record => `${record.sectionCode}-${record.specimenID}`}
+						size="small"
+						scroll={{ y: 300 }}
+					/>
+				</Spin>
 			</div>
 		);
 	}

@@ -68,7 +68,6 @@ class AddForm extends React.Component {
 			if (!err && !dynaFormFields.hasError) {
 				const fields = getFieldsValue();
 				
-				console.log('begin', fields.examItemTypeDefault);
 				// If checkbox or option get default & label in dynamic form
 				if(selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX){  
 					const examItemValueParam = [];
