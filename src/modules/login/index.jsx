@@ -49,11 +49,12 @@ class Login extends React.Component {
 				} 
 				else {
 					message.error('Incorrect Username/Password');
+					this.setState({ loading: false });
 				}
 			}
 		});
 
-		this.setState({ loading: false });
+		
 	}
 	
 	redirectPage = () => {

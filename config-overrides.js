@@ -13,6 +13,7 @@ module.exports = override(
       '@border-color-base': '#BBADFF',
       '@table-header-bg': '#8a74f9',
 			'@table-header-sort-bg': '#8a74f9',
+			'@table-header-color': 'white'
 			// '@table-padding-vertical': '8px',
 			// '@table-padding-horizontal': '16px'
     },

@@ -13,7 +13,12 @@ class FormButtons extends React.Component {
 		
 		const { isLoading } = this.props;
 		const { create, edit } = requestLinks
-		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create || sessionStorage.getItem('REQUEST_TYPE') === undefined ? create.step1 : edit.step1);
+		const sessReqType = sessionStorage.getItem('REQUEST_TYPE');
+		const dynamicLink = (
+			sessReqType === requestTypes.create || sessReqType === undefined 
+			? create.step1 
+			: edit.step1
+		);
 
 		return (
 			<Row style={{ marginTop: 10 }}>

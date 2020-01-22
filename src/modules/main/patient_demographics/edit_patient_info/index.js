@@ -13,9 +13,19 @@ import HttpCodeMessage from 'shared_components/message_http_status';
 import ProvinceList from 'shared_components/province_list';
 import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
-import updatePatientAPI from 'services/shared/patient';
 import HouseAddress from 'shared_components/address';
-import {successMessages, formLabels, genderOptions, drawerCancelButton, drawerSubmitButton,selectDefaultOptions, fieldRules, errorMessages} from '../settings';
+import { RegexInput, NumberInput } from 'shared_components/pattern_input';
+import updatePatientAPI from 'services/shared/patient';
+import {
+	successMessages, 
+	formLabels, 
+	genderOptions, 
+	drawerCancelButton, 
+	drawerSubmitButton,
+	selectDefaultOptions, 
+	fieldRules, 
+	errorMessages
+} from '../settings';
 
 
 // CSS
@@ -60,7 +70,6 @@ class EditProfile extends React.Component {
 	}
 
 	submitUpdatePatient = async (fields) => {
-		console.log('fields', fields);
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 		const payload = {
 			"patientID": this.props.patientInfo.patientID,
@@ -106,7 +115,10 @@ class EditProfile extends React.Component {
 								initialValue: this.props.patientInfo.lastName,
 								rules: fieldRules.lastname ,
 							})(
-								<Input />
+								<RegexInput
+									regex={/[A-z0-9 -]/}  
+									maxLength={100}
+								/>
 							)}
 							</Form.Item>
 						</Col>
@@ -117,7 +129,11 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.givenName,
 									rules: fieldRules.firstname,
 								})(
-									<Input onChange={this.onChangePatientInfo} />
+									<RegexInput 
+										regex={/[A-z0-9 -]/}  
+										onChange={this.onChangePatientInfo} 
+										maxLength={100}
+									/>
 								)}
 							</Form.Item>
 						</Col>
@@ -128,7 +144,10 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.middleName,
 									rules: fieldRules.middlename,
 								})(
-									<Input onChange={this.onChangePatientInfo} />
+									<Input 
+										onChange={this.onChangePatientInfo} 
+										maxLength={100}
+									/>
 								)}
 							</Form.Item>
 						</Col>
@@ -139,7 +158,10 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.suffix,
 									rules: fieldRules.suffix,
 								})(
-									<Input onChange={this.onChangePatientInfo} />
+									<Input 
+										onChange={this.onChangePatientInfo} 
+										maxLength={50}
+									/>
 								)}
 							</Form.Item>
 						</Col>
@@ -234,7 +256,10 @@ class EditProfile extends React.Component {
 									initialValue: this.props.patientInfo.contactNumber,
 									rules: fieldRules.contactNumber
 								 })(
-									<Input addonBefore="+ 63" maxLength={10} />
+									<NumberInput 
+										addonBefore="+ 63" 
+										maxLength={45} 
+									/>
 								)}
 							</Form.Item>
 						</Col>	

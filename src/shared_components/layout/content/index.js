@@ -2,7 +2,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Layout } from 'antd';
-import { Route, Switch, withRouter, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 // CUSTOM MODULES
 import Login from 'modules/login';

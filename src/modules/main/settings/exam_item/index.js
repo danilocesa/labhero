@@ -117,7 +117,7 @@ class ExamItems extends React.Component {
 			this.setState({ examItems, isLoading: false });
 		});
 
-		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedExamItems });
+		HttpCodeMessage({ status: 200, message: messagePrompts.successUpdatedExamItems });
 	}
 
 	render() {

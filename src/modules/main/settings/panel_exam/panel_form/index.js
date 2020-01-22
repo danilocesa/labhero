@@ -19,6 +19,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
+import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import { fetchExamRequestList } from 'services/shared/examRequest';
 import { 
 	createdPanelAPI, 
@@ -216,7 +217,10 @@ class PanelFormTemplate extends React.Component {
 										initialValue: panelInfo.panel_name,
 										rules: fieldRules.panel_name,
 									})(
-										<AntInput maxLength={254} />
+										<RegexInput	
+											regex={/[A-z0-9 -]/} 
+										 	maxLength={254} 
+										/>
 									)}	
 								</AntForm.Item>
 							</AntCol>
@@ -228,7 +232,7 @@ class PanelFormTemplate extends React.Component {
 									initialValue: panelInfo.code,
 									rules: fieldRules.panel_code,
 								})(
-									<AntInput maxLength={50} />
+									<AlphaNumInput maxLength={50} />
 								)}	
 								</AntForm.Item>
 							</AntCol>

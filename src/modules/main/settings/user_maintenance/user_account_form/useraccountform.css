@@ -11,3 +11,7 @@
 	line-height: 35px!important;
 	font-size: 12px!important;
 }
+
+.settings-user-maintence-form .ant-form-item {
+	margin-bottom: 8px;
+}

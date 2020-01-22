@@ -5,8 +5,8 @@ import { Row, Col, Tabs } from 'antd';
 import fetchSection from 'services/shared/section';
 
 import SearchForm from './search_form';
-import SearchResultComponent from './search_result';
-
+import AllTable from './all_table';
+import SectionTable from './section_table';
 
 const { TabPane } = Tabs;
 
@@ -42,8 +42,6 @@ class LabResult extends React.Component {
 				searchResults[sectionCode].push(labResultClone);
 		});
 
-
-		console.log(searchResults);
 		this.setState({ searchResults, tabActiveKey: sectionCode });
 	}
 
@@ -53,7 +51,7 @@ class LabResult extends React.Component {
 		
 		const TabPanes = sections.map(section => (
 			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionCode}>
-				<SearchResultComponent 
+				<SectionTable 
 					section={section.sectionCode}
 					labResults={searchResults[section.sectionCode] || []} 
 					onClickTableRow={onClickTableRow}
@@ -73,7 +71,7 @@ class LabResult extends React.Component {
 						onChange={this.onChangeTab}
 					>
 						<TabPane tab={<span>ALL</span>} key="ALL">
-							<SearchResultComponent 
+							<AllTable 
 								section="all"
 								labResults={labResults} 
 								onClickTableRow={onClickTableRow}

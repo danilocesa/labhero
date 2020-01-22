@@ -76,7 +76,8 @@ export const fieldRules = {
 	],
 	firstname: [
 		{ required: true, message: vdltnMessage.required },
-		{ max: 100, message: vdltnMessage.maxLength(100) }
+		{ max: 100, message: vdltnMessage.maxLength(100) },
+		{ min: 2, message: vdltnMessage.minLength(2) }
 	],
 	middlename: [
 		{ required: true, message: vdltnMessage.required },
@@ -84,14 +85,22 @@ export const fieldRules = {
 	],
 	lastname: [
 		{ required: true, message: vdltnMessage.required },
-		{ max: 100, message: vdltnMessage.maxLength(100) }
+		{ max: 100, message: vdltnMessage.maxLength(100) },
+		{ min: 2, message: vdltnMessage.minLength(2) }
 	],
 	username: [
 		{ required: true, message: vdltnMessage.required },
-		{ max: 10, message: vdltnMessage.maxLength(10) }
+		{ max: 10, message: vdltnMessage.maxLength(10) },
+		{ min: 2, message: vdltnMessage.minLength(2) }
 	],
 	password: [
 		{ required: true, message: vdltnMessage.required },
-		{ max: 12, message: vdltnMessage.maxLength(12) }
+		{ max: 12, message: vdltnMessage.maxLength(12) },
+		{ min: 3, message: vdltnMessage.minLength(2) }
+	],
+	repeat_password: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 12, message: vdltnMessage.maxLength(12) },
+		{ min: 3, message: vdltnMessage.minLength(2) }
 	],
 };
