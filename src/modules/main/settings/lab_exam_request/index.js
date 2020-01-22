@@ -14,7 +14,7 @@ import ExamTable from './search_table';
 import AddForm from './add_panel';
 import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
-import { moduleTitle, messages, placeHolders, labels, tablePageSize, buttonNames } from './settings';
+import { messages, placeHolders, labels, tablePageSize, buttonNames } from './settings';
 
 const SecondarySection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -184,7 +184,7 @@ class LabExamRequest extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle={moduleTitle} />
+					<PageTitle pageTitle="EXAM REQUEST" />
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
 							label={labels.sectionLabel} 

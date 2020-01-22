@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
-import { AlphaNumInput } from 'shared_components/pattern_input';
+import { RegexInput } from 'shared_components/pattern_input';
 import errorMessage from 'global_config/error_messages';
 import { buttonNames } from '../settings';
 
@@ -158,7 +158,7 @@ class DynamicForm extends React.Component {
 											message: errorMessage.maxLength(254)
 										}
 									],
-								})(<AlphaNumInput maxLength={254} />)}
+								})(<RegexInput regex={/[A-Za-z0-9 -]/} maxLength={254} />)}
 							</Col>
 						</Form.Item>
 					</Row>
