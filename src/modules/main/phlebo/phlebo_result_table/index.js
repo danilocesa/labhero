@@ -41,6 +41,12 @@ class SearchPatientTable extends React.Component {
 		// CONSTANTS
 		const columns = [
 			{
+				title: 'REQUEST DATE',
+				dataIndex: 'requestDateTime',
+				sorter: getSorter(data, 'requestDateTime'),
+				width: 150
+			},
+			{
 				title: 'PATIENT ID',
 				dataIndex: 'patientID',
 				sorter: getSorter(data, 'patientID'),
@@ -83,9 +89,11 @@ class SearchPatientTable extends React.Component {
 			},
 		];
 
+		console.log(data);
+
 		return (
 			<AntSpin spinning={loading} tip="Loading...">
-				<div className="search-patient-table">
+				<div>
 					<AntTable 
 						pagination={{pageSize}} 
 						size="small"

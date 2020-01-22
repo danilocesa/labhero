@@ -116,7 +116,7 @@ class SelectedTable extends React.Component {
 		return (
 			<Form.Item className='ser-selected-table-row'>
 				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
-					rules: [{ required: true }],
+					// rules: [{ required: true }],
 					initialValue,
 				})(
 					<Input size="small" maxLength={maxLength || 524288} />

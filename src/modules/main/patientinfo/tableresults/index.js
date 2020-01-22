@@ -10,12 +10,6 @@ import DynamicInput from './dynamic_input';
 
 import './table.css';
 
-// const rowSelection = {
-//   onChange: (selectedRowKeys, selectedRows) => {
-//     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-//   },
-// };
-
 class EditableTable extends React.Component {
   constructor(props) {
 		super(props);
@@ -38,6 +32,16 @@ class EditableTable extends React.Component {
 					...record, 
 					fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
 				})
+			},
+			{
+				title: 'UNIT CODE',
+				width: 100,
+				render: (text, record) => {
+					if(record.unitOfMesureBase && record.examItemUnitCode)
+						return `${record.unitOfMesureBase} - ${record.examItemUnitCode}`;
+					
+					return '';
+				}
       },
       {
         title: 'NORMAL VALUES',
@@ -59,12 +63,11 @@ class EditableTable extends React.Component {
 		return (
 			<Form.Item>
 				{ getFieldDecorator(record.fieldName, { 	
-					rules: [{ required: true, message: errorMessage.required }],
+					// rules: [{ required: true, message: errorMessage.required }],
 					initialValue: record.releasedResult,
 				})(
 					<DynamicInput 
 						type={record.examItemTypeCode}
-						unitCode={record.examItemUnitCode}
 						isLock={record.examRequestItemLock === 1}
 						itemOptions={record.examItemOptions}
 						maxLength={record.maxLength}

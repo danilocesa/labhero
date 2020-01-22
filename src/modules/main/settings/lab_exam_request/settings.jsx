@@ -78,7 +78,7 @@ export const fieldRules = {
 
 export const fieldLabels = {
 	examName : 'NAME', 
-	examCode: 'CODE',
+	examCode: 'ALTERNATIVE NAME',
 	loinc: 'LOINC',
 	integrationCode: 'INTEGRATION CODE',
 	examSort: 'EXAM SORT',

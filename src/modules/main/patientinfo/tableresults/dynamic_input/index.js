@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Checkbox, Radio   } from 'antd';
+import { Input, Checkbox, Select } from 'antd';
 import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { 
 	EITC_ALPHA_NUMERIC,
@@ -13,16 +13,16 @@ import {
 } from 'global_config/constant-global';
 
 
+const { Option } = Select;
 const { TextArea } = Input;
 
 class DynamicInput extends React.Component {
 	render() {
-		const { type, itemOptions, unitCode, isLock, value, ...otherProps } = this.props;
+		const { type, itemOptions, isLock, value, ...otherProps } = this.props;
 
 		if(type === EITC_ALPHA_NUMERIC) {
 			return (
 				<AlphaNumInput 
-					addonAfter={unitCode} 
 					disabled={isLock}
 					{...otherProps}
 				/>
@@ -32,7 +32,6 @@ class DynamicInput extends React.Component {
 		if(type ===  EITC_NUMERIC) {
 			return (
 				<NumberInput 
-					addonAfter={unitCode} 
 					disabled={isLock} 
 					{...otherProps}
 				/>
@@ -58,22 +57,36 @@ class DynamicInput extends React.Component {
 		}
 
 		if(type === EITC_OPTION) {
-			const Options = itemOptions.map(itemOption => ({ 
-				label: itemOption.examItemValueLabel, 
-				value: itemOption.examItemValueLabel
-			}));
+			const Options = itemOptions.map((itemOption, index) => (
+				<Option 
+					value={itemOption.examItemValueLabel}
+					// eslint-disable-next-line react/no-array-index-key
+					key={index}
+				>
+					{itemOption.examItemValueLabel}
+				</Option>
+			));
+			
 			const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
 
 			return (
-				<Radio.Group 
-					options={Options}
+				<Select 
+					showSearch
 					defaultValue={defaultValue}
 					disabled={isLock}
+					optionFilterProp="children"
+					filterOption={(input, option) =>
+						// @ts-ignore
+						option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}
 					{...otherProps}
-				/>
+				>
+					{Options}
+				</Select>
 			);
 		}
 
+		
 		if(type === EITC_TEXT_AREA) {
 			return (
 				<TextArea 
@@ -85,7 +98,6 @@ class DynamicInput extends React.Component {
 			
 		return (
 			<Input 
-				addonAfter={unitCode} 
 				disabled={isLock} 
 				{...otherProps}
 			/>
@@ -97,13 +109,11 @@ class DynamicInput extends React.Component {
 DynamicInput.propTypes = {
 	type: PropTypes.string.isRequired,
 	itemOptions: PropTypes.array,
-	unitCode: PropTypes.string,
 	isLock: PropTypes.bool
 };
 
 DynamicInput.defaultProps = {
 	itemOptions: [],
-	unitCode: '',
 	isLock: false
 };
 

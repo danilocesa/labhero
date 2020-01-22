@@ -17,11 +17,6 @@ const columns = [
 		width: 120,
 	},
 	{ 
-		title: 'HOSPITAL ID', 
-		dataIndex: 'hospitalID', 
-		width: 150,
-	},
-	{ 
 		title: 'LAST NAME', 
 		dataIndex: 'lastName', 
 		width: 200,
@@ -40,6 +35,11 @@ const columns = [
 		title: 'GENDER', 
 		dataIndex: 'sex', 
 		width: 120,
+	},
+	{ 
+		title: 'HOSPITAL ID', 
+		dataIndex: 'hospitalID', 
+		width: 150,
 	},
 	{ 
 		title: 'ADDRESS', 
