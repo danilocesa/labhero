@@ -2,10 +2,10 @@
 // LIBRARY
 import React from 'react';
 import moment from 'moment';
-import { Row, Form, Input, Button, Col, Select, DatePicker, message } from 'antd';
+import { Row, Form, Button, Col, Select, DatePicker, message } from 'antd';
 import PropTypes from 'prop-types';
 import PageTitle from 'shared_components/page_title';
-
+import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import { fetchLabResult } from 'services/lab_result/result';
 import FIELD_RULES from './constant';
 
@@ -61,6 +61,11 @@ class SearchForm extends React.Component {
 		resetFields();
 	}
 
+	disabledDate = (current) => {
+		// Prevent select days after today and today
+		return current && current > moment().endOf('day');
+	}
+
 	render() {
 		const { pageTitle } = this.props;
 		const { getFieldDecorator } = this.props.form;
@@ -79,7 +84,7 @@ class SearchForm extends React.Component {
 							<Col lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="SAMPLE ID">
 									{getFieldDecorator('sampleSpecimenID', { initialValue: '' })(
-										<Input allowClear />
+										<AlphaNumInput allowClear />
 									)}
 								</Form.Item>
 							</Col>
@@ -89,7 +94,11 @@ class SearchForm extends React.Component {
 										rules: FIELD_RULES.patientName,
 										initialValue: ''
 									})(
-										<Input allowClear maxLength={100} />
+										<RegexInput 
+											regex={/[A-z0-9 -]/} 
+											allowClear 
+											maxLength={100} 
+										/>
 									)}
 								</Form.Item>
 							</Col> 
@@ -99,7 +108,7 @@ class SearchForm extends React.Component {
 										rules: FIELD_RULES.patientID,
 										initialValue: '' 
 									})(
-										<Input allowClear />
+										<AlphaNumInput allowClear />
 									)}
 								</Form.Item>
 							</Col>
@@ -113,6 +122,7 @@ class SearchForm extends React.Component {
 									})(
 										<RangePicker 
 											allowClear 
+											disabledDate={this.disabledDate}
 											style={{ width:'100%' }} 
 										/>
 									)}
@@ -129,11 +139,11 @@ class SearchForm extends React.Component {
 											style={{ width: "100%" }} 
 											allowClear
 										>
-											<Option value="All">All</Option> 
-											<Option value="Checked In">Checked In</Option> 
-											<Option value="Instrument Result">Instrument Result</Option>
-											<Option value="Preliminary">Preliminary</Option>
-											<Option value="Released">Released</Option>
+											<Option value="All">ALL</Option> 
+											<Option value="Checked In">CHECKED IN</Option> 
+											<Option value="Instrument Result">INSTRUMENT RESULT</Option>
+											<Option value="Preliminary">PRELIMNARY</Option>
+											<Option value="Released">RELEASED</Option>
 										</Select>
 									)}
 								</Form.Item>

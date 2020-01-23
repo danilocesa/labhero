@@ -106,7 +106,7 @@ class BaseForm extends React.Component {
 	}
 
 	disabledDate = (current) => {
-		// Can not select days after today and today
+		// Prevent select days after today and today
 		return current && current > moment().endOf('day');
 	}
 

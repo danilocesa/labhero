@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Button, Row, Col, DatePicker } from 'antd';
-import { AlphaNumInput } from 'shared_components/pattern_input';
+import { AlphaNumInput, RegexInput } from 'shared_components/pattern_input';
 
 // CUSTOM MODULES
 import axiosCall from 'services/axiosCall';
@@ -100,7 +100,7 @@ class SearchPatientForm extends React.Component {
 		const { getFieldDecorator, getFieldsValue } = form;
 		const { loading } = this.state;
 		const { patientID, patientName } = getFieldsValue();
-		const disabled = !(patientID || patientName && patientName.length > 1);
+		const disabled = !(patientID || (patientName && patientName.length > 1));
 
 		return (
 			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
@@ -114,6 +114,7 @@ class SearchPatientForm extends React.Component {
 								<AlphaNumInput 
 									name="patientID" 
 									onFocus={this.handleFocus}
+									maxLength={20}
 								/> 
 							)}
 						</Form.Item>
@@ -129,8 +130,8 @@ class SearchPatientForm extends React.Component {
 								rules: FIELD_RULES.patientName,
 								validateTrigger: 'onBlur'
 							})(
-								<AlphaNumInput 
-									// allowClear
+								<RegexInput 
+									regex={/[A-z0-9 -]/} 
 									name="patientName" 
 									maxLength={100}
 									onFocus={this.handleFocus}

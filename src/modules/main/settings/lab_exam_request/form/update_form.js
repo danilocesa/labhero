@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
-import { Row, Col, Form, Input, InputNumber } from 'antd';
+import { Row, Col, Form, InputNumber } from 'antd';
+import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
 import PropTypes from 'prop-types';
 
 // CUSTOM
@@ -35,14 +36,17 @@ class InputForm extends React.Component {
 					<Col span={10}>
 						<Form.Item label={fieldLabels.examName}>
 							{getFieldDecorator('examRequestName', { rules: fieldRules.examName })(
-								<Input maxLength={254} />
+								<RegexInput
+									regex={/[A-z0-9 -]/} 
+									maxLength={254} 
+								/>
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={14}>
 						<Form.Item label={fieldLabels.examCode}>
 							{getFieldDecorator('examRequestCode', { rules: fieldRules.examCode })(
-								<Input maxLength={50} />
+								<AlphaNumInput maxLength={50} />
 							)}
 						</Form.Item>
 					</Col>
@@ -71,21 +75,21 @@ class InputForm extends React.Component {
 					<Col span={10}>
 						<Form.Item label={fieldLabels.loinc}>
 							{getFieldDecorator('examRequestLoinc', { rules: fieldRules.loinc })(
-								<Input maxLength={100} />
+								<AlphaNumInput maxLength={100} />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={10}>
 						<Form.Item label={fieldLabels.integrationCode}>
 							{getFieldDecorator('examRequestIntegrationCode', { rules: fieldRules.integrationCode })(
-								<Input maxLength={100} />
+								<AlphaNumInput maxLength={100} />
 							)}
 						</Form.Item>
 					</Col>
 					<Col span={4}>
 						<Form.Item label={fieldLabels.examSort}>
 							{getFieldDecorator('examRequestSort', { rules: fieldRules.examSort })(
-								<Input className="fullWidth" maxLength={32} />
+								<NumberInput className="fullWidth" maxLength={32} />
 							)}
 						</Form.Item>
 					</Col>

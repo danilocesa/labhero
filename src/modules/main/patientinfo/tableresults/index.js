@@ -3,16 +3,12 @@
 /* eslint-disable react/no-access-state-in-setstate */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Form, Input } from 'antd';
+import { Table, Form } from 'antd';
+import { globalTableSize, globalTableYScroll } from 'global_config/constant-global';
+import errorMessage from 'global_config/error_messages';
 import DynamicInput from './dynamic_input';
 
 import './table.css';
-
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-};
 
 class EditableTable extends React.Component {
   constructor(props) {
@@ -32,11 +28,20 @@ class EditableTable extends React.Component {
         title: 'RESULT',
         dataIndex: 'releasedResult',
 				width: 200,
-				render: (text, record, index) => this.createFormInput({ 
+				render: (text, record) => this.createFormInput({ 
 					...record, 
-					fieldName: 'test',
-					examItemID: index
+					fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
 				})
+			},
+			{
+				title: 'UNIT CODE',
+				width: 100,
+				render: (text, record) => {
+					if(record.unitOfMesureBase && record.examItemUnitCode)
+						return `${record.unitOfMesureBase} - ${record.examItemUnitCode}`;
+					
+					return '';
+				}
       },
       {
         title: 'NORMAL VALUES',
@@ -57,13 +62,12 @@ class EditableTable extends React.Component {
 
 		return (
 			<Form.Item>
-				{ getFieldDecorator(`${record.fieldName}[${record.examItemID}]`, { 	
-					rules: [{ required: true }],
+				{ getFieldDecorator(record.fieldName, { 	
+					// rules: [{ required: true, message: errorMessage.required }],
 					initialValue: record.releasedResult,
 				})(
 					<DynamicInput 
 						type={record.examItemTypeCode}
-						unitCode={record.examItemUnitCode}
 						isLock={record.examRequestItemLock === 1}
 						itemOptions={record.examItemOptions}
 						maxLength={record.maxLength}
@@ -77,15 +81,15 @@ class EditableTable extends React.Component {
 		const { examItems } = this.props;
    
     return (
-			<div className="patient-table">
+			<div className="labresult-exam-item-table">
 				<Form>
 					<Table
 						dataSource={examItems}
 						columns={this.columns}
 						// rowSelection={rowSelection}
 						rowKey={item => item.examItemID}
-						scroll={{ x: 800, y: 300 }}
-						size="small"
+						scroll={{ x: 800, y: globalTableYScroll }}
+						size={globalTableSize}
 						pagination={false}
 					/>
 				</Form>

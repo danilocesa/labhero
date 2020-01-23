@@ -5,3 +5,8 @@
 .labresult-search-form .ant-form-item {
 	margin-bottom: 0px;
 }
+
+.labresult-search-form .ant-form-item,
+.labresult-search-form .ant-form-item input {
+	text-transform: uppercase;
+}

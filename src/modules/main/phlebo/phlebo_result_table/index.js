@@ -19,7 +19,6 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading } = this.props;
-    console.log("TCL: SearchPatientTable -> render -> data", data)
 		const getSorter = (myDataSource, columnName) => {
 			// @ts-ignore
 			if(myDataSource === undefined || myDataSource.length === 0 ){
@@ -41,6 +40,12 @@ class SearchPatientTable extends React.Component {
 
 		// CONSTANTS
 		const columns = [
+			{
+				title: 'REQUEST DATE',
+				dataIndex: 'requestDateTime',
+				sorter: getSorter(data, 'requestDateTime'),
+				width: 150
+			},
 			{
 				title: 'PATIENT ID',
 				dataIndex: 'patientID',
@@ -84,9 +89,11 @@ class SearchPatientTable extends React.Component {
 			},
 		];
 
+		console.log(data);
+
 		return (
 			<AntSpin spinning={loading} tip="Loading...">
-				<div className="search-patient-table">
+				<div>
 					<AntTable 
 						pagination={{pageSize}} 
 						size="small"

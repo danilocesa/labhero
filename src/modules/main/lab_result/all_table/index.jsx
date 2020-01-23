@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
 import Pager from 'shared_components/search_pager';
+import { globalTablePageSize } from 'global_config/constant-global';
 import MainTable from './main_table';
 
 import './searchresult.css';
 
-class SearchResults extends React.Component {
+class AllTable extends React.Component {
   state = {
-		pageSize: 10,
+		pageSize: globalTablePageSize,
 		isLoading: false
 	};
 
@@ -49,9 +50,9 @@ class SearchResults extends React.Component {
   }
 }
 
-SearchResults.propTypes = {
+AllTable.propTypes = {
 	labResults: PropTypes.array.isRequired,
 	onClickTableRow: PropTypes.func.isRequired
 };
 
-export default SearchResults;
+export default AllTable;

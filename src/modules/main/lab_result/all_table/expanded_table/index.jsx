@@ -10,7 +10,7 @@ const columns = [
 	},
 	{ 
 		title: 'Sample ID No.', 
-		dataIndex: 'specimenID', 
+		dataIndex: 'sampleSpecimenID', 
 		width: 170,
 	},
 	{ 
