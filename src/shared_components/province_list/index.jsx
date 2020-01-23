@@ -69,12 +69,14 @@ ProvinceListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	selectDefaultOptions: PropTypes.string.isRequired,
 	selectedProvince: PropTypes.string,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	onChange: PropTypes.func,
 };
 
 ProvinceListComponent.defaultProps = {
 	selectedProvince: null,
-	disabled: false
+	disabled: false,
+	onChange() { return false }
 }
 
 

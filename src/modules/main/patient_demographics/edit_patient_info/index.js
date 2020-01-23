@@ -29,6 +29,15 @@ const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
 
+	constructor(props){
+		super(props);
+		this.state = {
+			prevProvince: this.props.patientInfo.provinceCode,
+			cityMunicipalityCode: '',
+			defaultMunicipalityCode: '',
+		};
+	}
+
 	searchAddress = (input,treenode) => {
 		const searchText = treenode.props.title.search(input.toUpperCase())
 		if(searchText < 0){
