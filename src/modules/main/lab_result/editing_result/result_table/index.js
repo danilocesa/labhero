@@ -5,10 +5,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Form } from 'antd';
 import { globalTableSize, globalTableYScroll } from 'global_config/constant-global';
-import errorMessage from 'global_config/error_messages';
 import DynamicInput from './dynamic_input';
 
-import './table.css';
+import './result_table.css';
 
 class EditableTable extends React.Component {
   constructor(props) {

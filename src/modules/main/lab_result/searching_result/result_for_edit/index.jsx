@@ -1,29 +1,30 @@
 import React from 'react';
 import { Drawer } from 'antd';
 
-import PatientInfo from 'modules/main/patientinfo';
-import LabResult from '../index';
-
+import EditResult from 'modules/main/lab_result/editing_result';
+import LabResult from 'modules/main/lab_result/searching_result';
 
 class EditLabResult extends React.Component {
 	state = {
 			isDisplayDrawer: false,
-			selectedSampleSpecimenId: ''
+			patientInfo: {},
+			examDetails: {}
 	};
 	
 	onClosePatientInfoDrawer = () => {
     this.setState({ isDisplayDrawer: false });
 	}
 	
-	onClickTableRow = ({ sampleSpecimenID }) => {
+	onClickTableRow = ({ patientInfo, examDetails }) => {
 		this.setState({ 
-			selectedSampleSpecimenId: sampleSpecimenID,
+			patientInfo,
+			examDetails,
 			isDisplayDrawer: true
 		});
 	}
 
 	render() {
-		const { isDisplayDrawer, selectedSampleSpecimenId } = this.state;
+		const { isDisplayDrawer, patientInfo, examDetails } = this.state;
 
 		return (
 			<div>
@@ -37,7 +38,10 @@ class EditLabResult extends React.Component {
 					width="85%"
 					visible={isDisplayDrawer}
 				>
-					<PatientInfo sampleSpecimenId={selectedSampleSpecimenId} /> 
+					<EditResult 
+						patientInfo={patientInfo} 
+						examDetails={examDetails}
+					/> 
 				</Drawer>
 			</div>
 		);

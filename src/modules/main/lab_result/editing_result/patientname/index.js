@@ -1,12 +1,13 @@
 // LIBRARY
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Button, Drawer } from 'antd';
 
 // CUSTOM MODULES
-import Iresults from '../../iresults';
+import Iresults from '../../../iresults';
 
 // IMAGES
-import { PrintLogo, IResultsIcon } from '../../../../images';
+import { PrintLogo, IResultsIcon } from '../../../../../images';
 
 // CSS
 import './patientname.css';
@@ -14,7 +15,7 @@ import './patientname.css';
 // CONSTANTS
 const ButtonGroup = Button.Group;
 
-class Name extends React.Component {
+class PatientName extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
@@ -23,7 +24,6 @@ class Name extends React.Component {
 		this.onIresultButtonClick = this.onIresultButtonClick.bind(this);
 	}
 
-	// React lifestyle
 
 	// Custom function
 	onIresultButtonClick() {
@@ -41,15 +41,17 @@ class Name extends React.Component {
 
 	
   render() {
+		const { patientInfo } = this.props;
+
     return (
 	    <Row>
 		    <Col span={12}>
 			    <div style={{ marginBottom: '30px' }}>
 				    <h1 style={{ marginBottom: '0', fontWeight: 'bold', letterSpacing: '1px', fontSize: '20px', textTransform:'uppercase' }}>
-              doe, john
+              {`${patientInfo.lastName}, ${patientInfo.givenName}`}
 				    </h1>
 				    <p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
-              Patient ID 00001
+              Patient ID {patientInfo.patientID}
 				    </p>
 			    </div>
 		    </Col>
@@ -72,16 +74,16 @@ class Name extends React.Component {
 		    </Col>
 		{
 			this.state.showIresultInfo ? 
-		(
-			<Drawer
-				title="Re-run results"
-				onClose={this.onCloseIresultsInfoDrawer}
-				width="50%"
-				visible={this.state.showIresultInfo}
-			>
-				<Iresults /> 
-			</Drawer>
-		)
+			(
+				<Drawer
+					title="Re-run results"
+					onClose={this.onCloseIresultsInfoDrawer}
+					width="50%"
+					visible={this.state.showIresultInfo}
+				>
+					<Iresults /> 
+				</Drawer>
+			)
 			:
 			null
 		}
@@ -90,4 +92,12 @@ class Name extends React.Component {
   }
 }
 
-export default Name;
+PatientName.propTypes = {
+	patientInfo: PropTypes.shape({
+		lastName: PropTypes.string,
+		givenName: PropTypes.string,
+		patientID: PropTypes.string,
+	}).isRequired
+};
+
+export default PatientName;

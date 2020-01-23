@@ -3,7 +3,7 @@ import React from 'react';
 import { Button, Modal, Layout, Row, Col } from 'antd';
 
 // IMAGES
-import { CheckIcon } from '../../../../images';
+import { CheckIcon } from 'images';
 
 // CSS
 import './actions.css';

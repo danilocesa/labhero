@@ -10,7 +10,7 @@ import SectionTable from './section_table';
 
 const { TabPane } = Tabs;
 
-class LabResult extends React.Component {
+class SearchResult extends React.Component {
 	
 	state = {
 		tabActiveKey: 'ALL',
@@ -85,9 +85,9 @@ class LabResult extends React.Component {
   }
 }
 
-LabResult.propTypes = {
+SearchResult.propTypes = {
 	pageTitle: PropTypes.string.isRequired,
 	onClickTableRow: PropTypes.func.isRequired
 }
 
-export default LabResult;
+export default SearchResult;

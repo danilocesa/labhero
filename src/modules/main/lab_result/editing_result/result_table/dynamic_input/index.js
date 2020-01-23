@@ -67,12 +67,12 @@ class DynamicInput extends React.Component {
 				</Option>
 			));
 			
-			const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
-
+			const defaultItemOption = itemOptions.find(itemOption => itemOption.examItemValueDefault === 1);
+			
 			return (
 				<Select 
 					showSearch
-					defaultValue={defaultValue}
+					defaultValue={defaultItemOption && defaultItemOption.examItemValueLabel}
 					disabled={isLock}
 					optionFilterProp="children"
 					filterOption={(input, option) =>

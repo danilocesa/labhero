@@ -25,7 +25,7 @@ class AllTable extends React.Component {
   render() {  
 		const { isLoading, pageSize } = this.state;
 		const { labResults, onClickTableRow } = this.props;
-   
+	 
     return (
 	    <div>
 				<Row>

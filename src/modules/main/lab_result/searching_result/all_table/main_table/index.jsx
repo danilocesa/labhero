@@ -50,10 +50,10 @@ const columns = [
 class MainTable extends React.Component {
 	expandedRowRender = (record) => {
 		const { onClickTableRow } = this.props;
-
+		
 		return (
 			<ExpandedTable 
-				expandedData={record.contents} 
+				expandedData={record} 
 				onClickTableRow={onClickTableRow}
 			/>
 		);
@@ -61,7 +61,6 @@ class MainTable extends React.Component {
 	
 	render() {
 		const { labResults, isLoading, pageSize } = this.props;
-		
 		return (
 			<Table
 				className="test-results-table"

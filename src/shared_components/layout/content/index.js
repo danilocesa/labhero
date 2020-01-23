@@ -9,9 +9,9 @@ import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
 import EditRequestPage from 'modules/main/lab_request/edit';
-import EditLabResult from 'modules/main/lab_result/edit';
-import PrintLabResult from 'modules/main/lab_result/print';
-import PatientInfo from 'modules/main/patientinfo';
+import EditLabResult from 'modules/main/lab_result/searching_result/result_for_edit';
+import PrintLabResult from 'modules/main/lab_result/searching_result/result_for_print';
+import PatientInfo from 'modules/main/lab_result/editing_result';
 import PhleboSearch from 'modules/main/phlebo'
 import Iresults from 'modules/main/iresults';
 import PhleboPatientResult from 'modules/main/phlebo/patient_phlebo_info'
