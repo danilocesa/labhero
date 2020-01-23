@@ -98,4 +98,9 @@ export const fieldRules = {
 		{ max: 12, message: vdltnMessage.maxLength(12) },
 		{ min: 3, message: vdltnMessage.minLength(2) }
 	],
+	repeat_password: [
+		{ required: true, message: vdltnMessage.required },
+		{ max: 12, message: vdltnMessage.maxLength(12) },
+		{ min: 3, message: vdltnMessage.minLength(2) }
+	],
 };

@@ -144,6 +144,10 @@ class BaseForm extends React.Component {
 		});
 	}
 
+	handleProvince = (param)=> {
+		console.log('this happened', param);
+	}
+
 	render() {
 		const { 
 			isDisabledPersoFields, 
@@ -302,6 +306,7 @@ class BaseForm extends React.Component {
 											selectDefaultOptions={selectDefaultOptions}
 											selectedProvince={dummyVal}
 											disabled={isDisabledPersoFields}
+											onChange={this.handleProvince}
 										/>
 									</Col>
 								</Row>

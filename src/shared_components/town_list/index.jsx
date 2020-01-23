@@ -16,14 +16,16 @@ class TownListComponent extends React.Component {
 	};
 
 	componentDidMount(){
-		if(this.props.cityValue){
-			this.populatetown(this.props.cityValue);
+		const {cityValue} = this.props;
+		if(cityValue){
+			this.populatetown(cityValue);
 		}
 	}
 
 	componentDidUpdate(prevProps){
-		if(prevProps.cityValue !== this.props.cityValue){
-			this.populatetown(this.props.cityValue);
+		const {cityValue} = this.props;
+		if(prevProps.cityValue !== cityValue){
+			this.populatetown(cityValue);
 		}
 	}
 
@@ -37,14 +39,14 @@ class TownListComponent extends React.Component {
 
 	render(){
 		const { form, selectDefaultOptions, selectedTown } = this.props;
-		const { getFieldDecorator } = form;
+		const { getFieldDecorator, getFieldsValue } = form;
 		const { townList, loading } = this.state;
-
+		const townValue = (getFieldsValue().city);
 		const townSelections = (
 			townList.length > 0 && !loading ? 
 				(getFieldDecorator('town', { 
 					rules: FIELD_RULES,
-					initialValue: selectedTown
+					initialValue: townValue
 				})(	
 					<Select
 						loading={loading}
@@ -77,12 +79,14 @@ TownListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	selectDefaultOptions: PropTypes.string.isRequired,
 	cityValue: PropTypes.string,
+	provinceValue: PropTypes.string,
 	selectedTown: PropTypes.string
 };
 
 TownListComponent.defaultProps = {
 	cityValue: null,
-	selectedTown: null
+	selectedTown: null,
+	provinceValue: null
 }
 
 

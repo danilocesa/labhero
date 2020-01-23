@@ -127,7 +127,7 @@ class UserAccountForm extends React.Component {
 
 	render() {
 		const { patientInfo, drawerButton, form } = this.props;
-		const { getFieldDecorator } = form;
+		const { getFieldDecorator, getFieldsValue } = form;
 		const { userTypeList } = this.state;
 
 		const UserTypeOptions = userTypeList.map(userType => (
@@ -148,7 +148,14 @@ class UserAccountForm extends React.Component {
 		{
 			initialValue: patientInfo.password
 		});
-		 
+
+		const repeatPasswordValidation = (drawerAdd === drawerButton || getFieldsValue().password ? {
+			rules:[ ...fieldRules.repeat_password ] // Check if required
+		} : 
+		{ 
+			rules:[	{ required: false, message: ""} ] // Remove required if update
+		}); 
+
 		return(
 			<div>
 				<Form 
@@ -247,7 +254,7 @@ class UserAccountForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={fieldLabels.repeatPassword}>
 									{
-										getFieldDecorator('repeat_password',)(
+										getFieldDecorator('repeat_password',repeatPasswordValidation)(
 										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
