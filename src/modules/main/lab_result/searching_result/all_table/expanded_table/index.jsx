@@ -32,16 +32,22 @@ const columns = [
 class ExpandedTable extends React.Component {
 	render() {
 		const { expandedData, onClickTableRow } = this.props;
+		const { contents, ...restProps } = expandedData;
 
 		return (
 			<Table
 		    columns={columns}
-		    dataSource={expandedData}
+		    dataSource={contents}
 		    pagination={false}
 				size="small"
 				rowKey={record => `${record.sampleSpecimenID}-${record.specimenID}`}
         onRow={record => {
-          return { onClick: () => { onClickTableRow(record); } };
+          return { onClick: () => { 
+						onClickTableRow({ 
+							examDetails: record, 
+							patientInfo: { ...restProps }
+						}); 
+					}};
         }}
 			/>
 		);
@@ -49,13 +55,9 @@ class ExpandedTable extends React.Component {
 }
 
 ExpandedTable.propTypes = {
-	expandedData: PropTypes.arrayOf(PropTypes.shape({
-		sectionID: PropTypes.number,
-		sectionName: PropTypes.string,
-		sectionCode: PropTypes.string,
-		specimenID: PropTypes.number,
-		specimenName: PropTypes.string
-	})).isRequired,
+	expandedData: PropTypes.shape({
+		contents: PropTypes.array
+	}).isRequired,
 	onClickTableRow: PropTypes.func.isRequired
 };
 

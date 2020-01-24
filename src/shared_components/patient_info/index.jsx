@@ -30,9 +30,9 @@ class PatientInfo extends React.Component {
 
 
 	async componentDidMount(){
-		const {patientInfo} = this.props
+		const { patientInfo } = this.props
 		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID);
-		
+
 		this.setState({
 			hospitalID: 	patientInfoValue.hospitalRequestID != undefined? patientInfoValue.hospitalRequestID : '-',
 			physicianID: 	patientInfoValue.physician != undefined ? patientInfoValue.physician.physicianID : '-',

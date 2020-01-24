@@ -10,22 +10,32 @@ import { FIELD_RULES, LABEL_TITLE } from './settings';
 const { Option } = Select;
 
 class CityListComponent extends React.Component { 
-	state = {
-		cityList: [],
-		loading: true
-	};	
-	
-	componentDidMount(){
-		if(this.props.provinceValue){
-			this.populateCity(this.props.provinceValue);
-		}
-	}
 
-	componentDidUpdate(prevProps){
+	constructor(props){
+		super(props);
+		this.state = {
+			cityList: [],
+			loading: true,
+			prevProvince: this.props.provinceValue
+		};
+	}
+	
+	// shouldComponentUpdate(props, state){
+	// 	const {form} = this.props;
+	// 	const {getFieldsValue} = form;
+
+	// 	if(getFieldsValue().provinces !== state.newProvinceCode){
+	// 		console.log('TCL->', state);
+	// 		this.setState({ newProvinceCode: getFieldsValue().provinces, cityValue: ''});
+	// 	}
+	// 	return true;
+	// }
+
+	componentDidUpdate(props){
 		const { provinceValue } = this.props;
 
-		if(prevProps.provinceValue !== provinceValue && provinceValue !== ''){
-			this.populateCity(this.props.provinceValue);
+		if(props.provinceValue !== provinceValue && provinceValue !== ''){
+			this.populateCity(provinceValue);
 		}
 	}
 
@@ -38,9 +48,11 @@ class CityListComponent extends React.Component {
 	}
 
 	render(){
-		const { form, selectDefaultOptions, selectedCity } = this.props;
-		const { getFieldDecorator } = form;
+		const { form, selectDefaultOptions, provinceValue,  selectedCity} = this.props;
+		const { getFieldDecorator, getFieldsValue } = form;
 		const { cityList, loading } = this.state;
+		// const cityValue = (provinceValue === getFieldsValue().provinces) ? '' : selectedCity;
+		// console.log('cityValue-> rerender');
 
 		const citySelections = (
 			cityList.length > 0 && !loading ? (
@@ -56,7 +68,7 @@ class CityListComponent extends React.Component {
 						{cityList.map((item) => (
 							<Option value={item.cityMunicipalityCode} key={item.cityMunicipalityCode}>
 								{item.cityMunicipalityName}
-							</Option>
+							</Option> 
 						))}
 					</Select>
 				)

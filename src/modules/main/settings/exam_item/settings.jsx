@@ -40,7 +40,7 @@ export const fieldRules = {
 		// { max: 254, message: errorMessage.maxLength(254) }
 	],
 	unitOfMeasure: [
-    { required: true, message: errorMessage.required }
+    // { required: true, message: errorMessage.required }
 	],
 	integrationCode: [
 		{ required: false, message: errorMessage.required },

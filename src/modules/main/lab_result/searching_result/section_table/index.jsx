@@ -102,7 +102,14 @@ class SectionTable extends React.Component {
 					size="small"
 					scroll={{ x: 3000, y: 300 }}
 					onRow={record => {
-						return { onClick: () => { onClickTableRow(record); } };
+						const { contents, ...restProps } = record;
+					
+						return { onClick: () => { 
+							onClickTableRow({
+								patientInfo: { ...restProps },
+								examDetails: contents[0]
+							}); 
+						}};
 					}}
 				/>
 			</div>
