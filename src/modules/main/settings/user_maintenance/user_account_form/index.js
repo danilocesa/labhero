@@ -125,6 +125,10 @@ class UserAccountForm extends React.Component {
 		callback();
 	};
 
+	isLogged =()=>{
+		return true;
+	}
+
 	render() {
 		const { patientInfo, drawerButton, form } = this.props;
 		const { getFieldDecorator, getFieldsValue } = form;
@@ -132,7 +136,7 @@ class UserAccountForm extends React.Component {
 
 		const UserTypeOptions = userTypeList.map(userType => (
 			<Option value={userType.userTypeID} key={userType.userTypeID}>
-				{userType.userTypeName}
+				{userType.userTypeName.toUpperCase()}
 			</Option>
 		));
 
