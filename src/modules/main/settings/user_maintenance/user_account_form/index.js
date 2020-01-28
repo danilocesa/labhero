@@ -270,7 +270,7 @@ class UserAccountForm extends React.Component {
 								<Form.Item label={fieldLabels.repeatPassword} hasFeedback>
 									{
 										getFieldDecorator('repeat_password',repeatPasswordValidation)(
-										<Input.Password maxLength={12} onBlur={this.handleConfirmBlur}/>)
+										<Input.Password maxLength={12} onBlur={this.handleConfirmBlur} />)
 									}
 								</Form.Item>
 							</div>
