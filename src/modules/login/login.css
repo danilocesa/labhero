@@ -23,6 +23,10 @@
   margin-bottom: 15px;
 }
 
+.login-form .login-input input{
+  text-transform: uppercase;
+}
+
 .login-form .ant-form-explain {
   font-size: 12px;
 }
