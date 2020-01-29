@@ -96,8 +96,9 @@ class UserAccountForm extends React.Component {
           
 					if(updateUserResponse.status === 200){
 
-						if(userData && userData.userID === vData.userID && userData.givenName !== vData.givenName){
+						if(userData && userData.userID === vData.userID){
 							userData.givenName = vData.givenName;
+							userData.lastName = vData.lastName;
 							sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(userData));
 						}
 
