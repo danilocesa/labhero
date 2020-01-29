@@ -451,7 +451,11 @@ class SelectStep extends React.Component {
 }
 
 SelectStep.propTypes = {
-	requestType: PropTypes.string.isRequired
+	requestType: PropTypes.string
+};
+
+SelectStep.defaultProps = {
+	requestType: ''
 };
 
 export default SelectStep;

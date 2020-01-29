@@ -76,6 +76,38 @@ class EditableTable extends React.Component {
 		)
 	}
 
+	// This is use to get the values of this form up to its parent 
+	// component e.g(update/add form) to cancel the submitting of
+	// data once an error validation appears
+	getFormValues = () => {
+		// eslint-disable-next-line react/prop-types
+		const { form, examItems } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+		let labResults = null;
+
+		validateFieldsAndScroll(async(err) => {	
+			const fieldsValue = getFieldsValue();
+			const clonedExamItems = JSON.parse(JSON.stringify(examItems));
+
+			const combinedExamItems = clonedExamItems.map(item => {
+				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
+
+				return { ...item, releasedResult: fieldsValue[key] };
+			});
+
+			console.log(fieldsValue);
+			console.log('examItems', examItems);
+			console.log('combinedExamItems', combinedExamItems);
+			
+			labResults = {
+				examItems: combinedExamItems,
+				hasError: err !== null,
+			};
+		});
+
+		return labResults;
+	}
+
   render() {
 		const { examItems } = this.props;
    

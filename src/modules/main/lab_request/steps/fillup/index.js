@@ -32,12 +32,16 @@ const personalInfoKeys = [
 	'nameSuffix',
 	'dateOfBirth',
 	'sex',
+	'city',
+	'town',
 	'address',
+	'provinces',
 	'addressCode',
 	'contactNumber'
 ];
 
 const otherInfoKeys = [
+	'hospitalID',
 	'patientID',
 	'visit',
 	'chargeSlip',
@@ -66,12 +70,12 @@ class FillupStep extends React.Component {
 		
 		// Convert each field's value to uppercase
 		Object.keys(personalInfo).forEach(field => {
-			if(field !== 'emailAdd' && personalInfo[field] !== undefined && personalInfo[field] !== null )
+			if(personalInfo[field] !== undefined && personalInfo[field] !== null )
 				personalInfo[field] = personalInfo[field].toUpperCase();
 		});
 
 		personalInfo.addressCode = fields.town;
-		delete personalInfo.town;
+		// delete personalInfo.town;
 		delete personalInfo.patientID;
 		
 		this.setState({ isLoading: true }, async() =>{
@@ -83,16 +87,17 @@ class FillupStep extends React.Component {
 				});
 
 				// If createPatient has an error, stop the function
-				if(!createdPatient) return;
+				if(!createdPatient) 
+					return;
 
 				otherInfo.patientID = createdPatient.patientID;
 			}
 
-			this.setState({ isLoading: false });
-
 			sessionStorage.setItem(CLR_OTHER_INFO, JSON.stringify(otherInfo));
 			sessionStorage.setItem(CLR_PERSONAL_INFO, JSON.stringify(personalInfo));
 			sessionStorage.setItem(CLR_STEP_PROGRESS, String(3));
+
+			this.setState({ isLoading: false });
 
 			this.goToNextPage();
 		});
@@ -105,7 +110,6 @@ class FillupStep extends React.Component {
 		} else {
 			history.push(requestLinks.edit.step3);
 		}
-		
 	}
 
 	dynamicModuleTitle = () =>{

@@ -116,7 +116,7 @@ class SearchPatientHeaderForm extends React.Component {
 						OR
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={7}>
-						<Form.Item label="PATIE	NT NAME">
+						<Form.Item label="PATIENT NAME">
 							<RegexInput 
 								regex={/[A-z0-9 -]/} 
 								name="patientName" 

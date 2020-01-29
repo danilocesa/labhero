@@ -16,11 +16,13 @@ class ProvinceListComponent extends React.Component {
 	};
 	
 	componentDidMount() {
+		console.log('province did mount');
 		this.populateProvince();
 	}
  
 	populateProvince = async () => {
 		const provinceListResponse = await provinceListAPI();
+
 		this.setState({ 
 			loading : false,
 			provinceList: provinceListResponse
@@ -28,7 +30,7 @@ class ProvinceListComponent extends React.Component {
 	}
 
 	render(){
-		const { form, selectDefaultOptions, selectedProvince, disabled } = this.props;
+		const { form, placeholder, selectedProvince, disabled, onChange } = this.props;
 		const { getFieldDecorator } = form;
 		const { provinceList, loading } = this.state;
 		
@@ -40,8 +42,9 @@ class ProvinceListComponent extends React.Component {
 				})(
 					<Select
 						loading={loading}
-						placeholder={selectDefaultOptions}
+						placeholder={placeholder}
 						disabled={disabled}
+						onChange={onChange}
 					>
 						{provinceList.map((item) => (
 							<Option value={item.provinceCode} key={item.provinceCode}>
@@ -51,7 +54,7 @@ class ProvinceListComponent extends React.Component {
 					</Select>
 				)
 			) : (	
-				<Select placeholder={selectDefaultOptions} disabled />
+				<Select placeholder={placeholder} disabled />
 			)	
 		)
 
@@ -67,16 +70,15 @@ class ProvinceListComponent extends React.Component {
 
 ProvinceListComponent.propTypes = {
 	form : PropTypes.object.isRequired,
-	selectDefaultOptions: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	selectedProvince: PropTypes.string,
 	disabled: PropTypes.bool,
-	onChange: PropTypes.func,
+	onChange: PropTypes.func.isRequired,
 };
 
 ProvinceListComponent.defaultProps = {
 	selectedProvince: null,
 	disabled: false,
-	onChange() { return false }
 }
 
 

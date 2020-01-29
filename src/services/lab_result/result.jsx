@@ -38,3 +38,22 @@ export async function fetchLabResultExamItems(specimenId) {
 		return false;
 	}
 }
+
+export async function saveLabResult(payload) {
+	try{
+		const content = {
+			method: apiPostMethod,
+			url: `/lab/Result/saveresult`,
+			data: payload
+		}
+
+		const response = await axiosCall(content);
+		const { data } = await response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
