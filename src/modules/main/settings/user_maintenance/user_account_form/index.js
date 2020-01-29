@@ -51,7 +51,9 @@ class UserAccountForm extends React.Component {
 		this.setState({
 			// @ts-ignore
 			userTypeList: response.data
-		})
+		});
+		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+		console.log('TCL->', userData);
 	}
 
 	componentWillUnmount(){
@@ -98,7 +100,9 @@ class UserAccountForm extends React.Component {
 
 						if(userData && userData.userID === vData.userID){
 							userData.givenName = vData.givenName;
+							userData.middleName = vData.middleName;
 							userData.lastName = vData.lastName;
+							userData.userName = vData.userName;
 							sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(userData));
 						}
 
