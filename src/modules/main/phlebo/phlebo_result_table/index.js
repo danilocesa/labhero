@@ -89,8 +89,6 @@ class SearchPatientTable extends React.Component {
 			},
 		];
 
-		console.log(data);
-
 		return (
 			<AntSpin spinning={loading} tip="Loading...">
 				<div>

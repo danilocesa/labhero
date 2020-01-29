@@ -4,100 +4,88 @@ import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
 // CUSTOM
+import errorMessage from 'global_config/error_messages';
 import { cityListAPI } from 'services/shared/address';
-import { FIELD_RULES, LABEL_TITLE } from './settings';
 
 const { Option } = Select;
 
-class CityListComponent extends React.Component { 
+class CityList extends React.Component { 
 
 	constructor(props){
 		super(props);
 		this.state = {
 			cityList: [],
-			loading: true,
-			prevProvince: this.props.provinceValue
+			loading: false,
 		};
 	}
 	
-	// shouldComponentUpdate(props, state){
-	// 	const {form} = this.props;
-	// 	const {getFieldsValue} = form;
+	componentDidUpdate(prevProps){
+		const { provinceValue, selectedCity, form } = this.props;
+		const { setFieldsValue } = form;
+		
+		if(prevProps.provinceValue !== provinceValue && provinceValue !== '' && provinceValue !== null){
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ loading: true } , async () => {
+				const cityListResponse = await cityListAPI(provinceValue);
 
-	// 	if(getFieldsValue().provinces !== state.newProvinceCode){
-	// 		console.log('TCL->', state);
-	// 		this.setState({ newProvinceCode: getFieldsValue().provinces, cityValue: ''});
-	// 	}
-	// 	return true;
-	// }
-
-	componentDidUpdate(props){
-		const { provinceValue } = this.props;
-
-		if(props.provinceValue !== provinceValue && provinceValue !== ''){
-			this.populateCity(provinceValue);
+				this.setState({ loading:false, cityList: cityListResponse }, () => {
+					setFieldsValue({ city: selectedCity });
+				});
+			});
 		}
 	}
 
-	populateCity = async (provinceCode) => {
-		const cityListResponse = await cityListAPI(provinceCode);
-		this.setState({
-			loading:false,
-			cityList: cityListResponse,
-		});
-	}
 
 	render(){
-		const { form, selectDefaultOptions, provinceValue,  selectedCity} = this.props;
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { form, placeholder, selectedCity, onChange, disabled } = this.props;
+		const { getFieldDecorator } = form;
 		const { cityList, loading } = this.state;
-		// const cityValue = (provinceValue === getFieldsValue().provinces) ? '' : selectedCity;
-		// console.log('cityValue-> rerender');
-
-		const citySelections = (
-			cityList.length > 0 && !loading ? (
-				getFieldDecorator('city', { 
-					rules: FIELD_RULES,
-					initialValue: selectedCity
-				})(
-					<Select
-						loading={loading}
-						placeholder={selectDefaultOptions}
-						allowClear
-					>
-						{cityList.map((item) => (
-							<Option value={item.cityMunicipalityCode} key={item.cityMunicipalityCode}>
-								{item.cityMunicipalityName}
-							</Option> 
-						))}
-					</Select>
-				)
-			) : (	
-				<Select placeholder={selectDefaultOptions} disabled />
-			)	
-		)
+		const isDisabled = disabled || cityList.length < 1;
 
 		return (
-			<Form.Item label={LABEL_TITLE} className="gutter-box">
+			<Form.Item label="CITY" className="gutter-box">
 				<div className="treeselect-address">
-					{citySelections}
+					{getFieldDecorator('city', { 
+						rules: [{ 
+							required: !isDisabled, 
+							message: errorMessage.required
+						}],
+						initialValue: selectedCity
+					})(
+						<Select
+							loading={loading}
+							placeholder={placeholder}
+							allowClear
+							disabled={isDisabled}
+							onChange={onChange}
+						>
+							{cityList.map((item) => (
+								<Option value={item.cityMunicipalityCode} key={item.cityMunicipalityCode}>
+									{item.cityMunicipalityName}
+								</Option> 
+							))}
+						</Select>
+					)}
 				</div>
 			</Form.Item>
 		);
 	}
 }
 
-CityListComponent.propTypes = {
+CityList.propTypes = {
 	form : PropTypes.object.isRequired,
-	selectDefaultOptions: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	provinceValue: PropTypes.string,
-	selectedCity: PropTypes.string
+	selectedCity: PropTypes.string,
+	onChange: PropTypes.func.isRequired,
+	disabled: PropTypes.bool
 };
 
-CityListComponent.defaultProps = {
+CityList.defaultProps = {
 	provinceValue: null,
-	selectedCity: null
+	selectedCity: null,
+	disabled: false
 }
 
-export default CityListComponent;
+export default CityList;
   

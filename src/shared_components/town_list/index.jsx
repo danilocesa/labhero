@@ -4,91 +4,84 @@ import PropTypes from 'prop-types';
 import { Form, Select } from 'antd';
 
 // CUSTOM
+import errorMessage from 'global_config/error_messages';
 import { townListAPI } from 'services/shared/address';
-import { FIELD_RULES, LABEL_TITLE } from './settings';
 
 const { Option } = Select;
 
-class TownListComponent extends React.Component { 	
+class TownList extends React.Component { 	
 	state = {
 		townList: [],
-		loading: true,
+		loading: false
 	};
 
-	componentDidMount(){
-		const {cityValue} = this.props;
-		if(cityValue){
-			this.populatetown(cityValue);
-		}
-	}
-
 	componentDidUpdate(prevProps){
-		const {cityValue} = this.props;
-		if(prevProps.cityValue !== cityValue){
-			this.populatetown(cityValue);
+		const { cityValue } = this.props;
+
+		if(prevProps.cityValue !== cityValue) {
+			const { selectedTown, form } = this.props;
+			const { setFieldsValue } = form;
+
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ loading: true }, async () => {
+				const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
+
+				this.setState({ loading: false, townList: townListResponse }, () => {
+					setFieldsValue({ town: selectedTown });
+				});
+			});
 		}
 	}
 
-	populatetown = async (cityCode) => {
-		const townListResponse = await townListAPI(cityCode);
-		this.setState({
-			loading:false,
-			townList: townListResponse,
-		});
-	}
 
 	render(){
-		const { form, selectDefaultOptions, selectedTown } = this.props;
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { form, placeholder, disabled } = this.props;
+		const { getFieldDecorator } = form;
 		const { townList, loading } = this.state;
-		const townValue = (getFieldsValue().city);
-		const townSelections = (
-			townList.length > 0 && !loading ? 
-				(getFieldDecorator('town', { 
-					rules: FIELD_RULES,
-					initialValue: townValue
-				})(	
-					<Select
-						loading={loading}
-						placeholder={selectDefaultOptions}
-						allowClear
-					>
-						{townList.map((item) => (
-							<Option value={item.townCode} key={item.townCode}>
-								{item.townName.toUpperCase()}
-							</Option>
-						))}
-					</Select>
-				)	
-			) : (	
-				<Select placeholder={selectDefaultOptions} disabled />
-			)	
-		)
+		const isDisabled = disabled || townList.length < 1;
 
 		return (
-			<Form.Item label={LABEL_TITLE} className="gutter-box">
+			<Form.Item label="BARANGAY" className="gutter-box">
 				<div className="treeselect-address">
-					{townSelections}
+					{getFieldDecorator('town', { 
+						rules: [{
+							required: !isDisabled,
+							message: errorMessage.required
+						}] 
+					})(	
+						<Select
+							loading={loading}
+							placeholder={placeholder}
+							disabled={isDisabled}
+							allowClear
+						>
+							{townList.map((item) => (
+								<Option value={item.townCode} key={item.townCode}>
+									{item.townName.toUpperCase()}
+								</Option>
+							))}
+						</Select>
+					)}
 				</div>
 			</Form.Item>
 		);
 	}
 }
 
-TownListComponent.propTypes = {
+TownList.propTypes = {
 	form : PropTypes.object.isRequired,
-	selectDefaultOptions: PropTypes.string.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	cityValue: PropTypes.string,
-	provinceValue: PropTypes.string,
-	selectedTown: PropTypes.string
+	selectedTown: PropTypes.string,
+	disabled: PropTypes.bool
 };
 
-TownListComponent.defaultProps = {
+TownList.defaultProps = {
 	cityValue: null,
 	selectedTown: null,
-	provinceValue: null
+	disabled: false
 }
 
 
-export default TownListComponent;
+export default TownList;
   

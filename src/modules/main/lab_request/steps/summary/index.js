@@ -32,11 +32,9 @@ class SummaryStep extends React.Component {
 		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		this.setState({ exams, user, otherInfo });
-		console.log('TCL-> sessionRequestType', sessionStorage.getItem('REQUEST_TYPE'));
 	}
 	
 	saveExams = async () => {
-		// const isSuccess = false;
 		const { otherInfo, exams, user } = this.state;
 		const payloadExams = exams.map(exam => ({
 			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
@@ -47,6 +45,7 @@ class SummaryStep extends React.Component {
 		const payload = {
 			...otherInfo,
 			userID: user.userID,
+			hospitalRequestID: otherInfo.hospitalID,
 			exams: payloadExams,
 		};
 		

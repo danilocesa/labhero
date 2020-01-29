@@ -113,7 +113,11 @@ class Tracker extends React.Component {
 
 Tracker.propTypes = {
 	active: PropTypes.number.isRequired,
-	requestType: PropTypes.string.isRequired,
+	requestType: PropTypes.string,
+};
+
+Tracker.defaultProps = {
+	requestType: null
 };
 
 export default Tracker;

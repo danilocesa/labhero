@@ -34,32 +34,32 @@ class SpecimenList extends React.Component {
 			{ 
 				title: 'SECTION', 
 				dataIndex: 'sectionName',
-				width: '15%'
+				width: 120
 			},
 			{ 
 				title: 'SPECIMEN', 
 				dataIndex: 'specimenName',
-				width: '13%'
+				width: 120
 			},
 			{ 
 				title: 'SAMPLE ID', 
 				dataIndex: 'sampleSpecimenID',
-				width: '10%'
+				width: 150
 			},
 			{ 
 				title: 'EXTRACTED BY', 
 				dataIndex: 'extractedBy',
-				width: '13%'
+				width: 150
 			},
 			{ 
 				title: 'DATE EXTRACTED', 
 				dataIndex: 'dateExtracted',
-				width: '15%'
+				width: 180
 			},
 			{ 
 				title: 'STATUS',
 				dataIndex: 'phlebo_status_col',
-				width: '15%',
+				width: 120,
 				render: (value, row, index) => {
 					const { loadingIndex } = this.state;
 
@@ -78,7 +78,7 @@ class SpecimenList extends React.Component {
 			{ 
 				title: '',
 				dataIndex: 'phlebo_print_col',
-				width: 100,
+				width: 50,
 				render:(value, row) => {
 					return(
 						<Button 
@@ -126,12 +126,12 @@ class SpecimenList extends React.Component {
 
 	onClickExtract = (sectionID, specimenID, index) => {
 		const { requestID } = this.state;
-
+		const { patientInfo } = this.props;
 		const { userID } = JSON.parse(sessionStorage.getItem("LOGGEDIN_USER_DATA"));
 		
 		this.setState({ loadingIndex: index }, async () => {
 			const { examRequests } = this.state;
-			const examRequestClone = JSON.parse(JSON.stringify(examRequests));
+			let examRequestClone = JSON.parse(JSON.stringify(examRequests));
 
 			const saveExtraction = await patientPhleboCheckInSpecimensAPI({ 
 				requestID, 
@@ -146,8 +146,12 @@ class SpecimenList extends React.Component {
 					message: `${messagePrompts.successExtraction} ${ saveExtraction.data.sampleSpecimenID}` 
 				});
 
+				const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
+
 				// Update the selected row's sampleSpecimenId to disable exctract button
-				examRequestClone.splice(index, 1, { ...examRequestClone[index], sampleSpecimenID: 1 })
+				// examRequestClone.splice(index, 1, { ...examRequestClone[index], sampleSpecimenID: 1 })
+
+				examRequestClone = patientSpecimens.examRequests;
 			} else{
 				HttpCodeMessage({
 					status: saveExtraction.status, 

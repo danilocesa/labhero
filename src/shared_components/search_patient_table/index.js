@@ -63,43 +63,48 @@ class SearchPatientTable extends React.Component {
 				title: 'PATIENT ID',
 				dataIndex: 'patientID',
 				sorter: getSorter(data, 'patientID'),
-				width: '10%'
+				width: 150
 			},
 			{
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
-				width: '10%'
+				width: 150
 			},
 			{
 				title: 'FIRST NAME',
 				dataIndex: 'givenName',
 				sorter: getSorter(data, 'givenName'),
-				width: '10%'
+				width: 150
 			},
 			{
 				title: 'MIDDLE NAME',
 				dataIndex: 'middleName',
 				sorter: getSorter(data, 'middleName'),
-				width: '10%'
+				width: 150
 			}, 
 			{
-				title: 'DATE OF BIRTH',
+				title: 'BIRTHDATE',
 				dataIndex: 'dateOfBirth',
 				sorter:  getSorter(data, 'dateOfBirth'),
-				width: '10%'
+				width: 150
 			},
 			{
 				title: 'GENDER',
 				dataIndex: 'sex',
 				sorter:  getSorter(data, 'sex'),
-				width: '10%'
+				width: 150
 			},
 			{
 				title: 'ADDRESS',
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
-				render: (text,row) => <p>{`${text}, ${row.townName}, ${row.cityMunicipalityName}, ${row.provinceName}`}</p>
+				render: (text, row) => {
+					if(row.address)
+						return `${row.address}, ${row.townName}, ${row.cityMunicipalityName}, ${row.provinceName}`;
+
+					return '';
+				}
 			},
 		];
 

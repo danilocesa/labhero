@@ -1,3 +1,4 @@
+// @ts-nocheck
 // LIBRARY
 import React from "react";
 import PropTypes from 'prop-types';
@@ -11,11 +12,16 @@ class houseAddressComponent extends React.Component{
 	};
 
 	componentDidUpdate(prevProps){
-		const { townValue } = this.props;
+		const { townValue, selectedValue, fieldName, form, disabled } = this.props;
+		const { setFieldsValue } = form;
 
-		if(prevProps.townValue !== townValue && townValue !== ''){
+		if(prevProps.townValue !== townValue){
 			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ isDisabled:false });
+			this.setState({ 
+				isDisabled: disabled || townValue === null 
+			}, () => {
+				setFieldsValue({ [fieldName]: selectedValue });
+			});
 		}
 	}
 
@@ -27,26 +33,25 @@ class houseAddressComponent extends React.Component{
 	}
 
 	render(){
-		const { form, fieldLabel, fieldName, selectedValue } = this.props;
+		const { form, fieldLabel, fieldName } = this.props;
 		const { isDisabled } = this.state;
 		const { getFieldDecorator } = form;
-		
-		const addressInput = (
-			getFieldDecorator(fieldName, {
-				rules: [
-					...this.houseUnitfieldRules(),
-					{ min: 2, message: errorMessage.minLength(2) },
-					{ max: 254, message: errorMessage.maxLength(254) }
-				],
-				initialValue: selectedValue,
-			})(
-				<Input disabled={isDisabled} maxLength={254} />
-			)   
-		);
 
 		return(
 			<Form.Item label={fieldLabel}>
-				{addressInput}
+				{getFieldDecorator(fieldName, {
+					rules: [
+						...this.houseUnitfieldRules(),
+						{ min: 2, message: errorMessage.minLength(2) },
+						{ max: 254, message: errorMessage.maxLength(254) }
+					]
+				})(
+					<Input 
+						style={{ textTransform: 'uppercase' }}
+						disabled={isDisabled} 
+						maxLength={254} 
+					/>
+				)}  
 			</Form.Item>
 		);
 	}
@@ -56,13 +61,16 @@ class houseAddressComponent extends React.Component{
 houseAddressComponent.propTypes = {
 	form : PropTypes.object.isRequired,
 	fieldLabel : PropTypes.string.isRequired,
+	fieldName: PropTypes.string.isRequired,
 	townValue: PropTypes.string,
-	selectedValue : PropTypes.string
+	selectedValue : PropTypes.string,
+	disabled: PropTypes.bool
 };
 
 houseAddressComponent.defaultProps = {
 	selectedValue: '',
-	townValue: ''
+	townValue: '',
+	disabled: false
 };
 
 export default houseAddressComponent;

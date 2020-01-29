@@ -160,7 +160,7 @@ class AddForm extends React.Component {
 						<Form.Item label={fieldLabels.examItemName}>
 							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
 								<RegexInput 
-									regex={/[A-z0-9 -]/} 
+									regex={/[A-Za-z0-9 -]/} 
 									maxLength={200} 
 								/>
 							)}
@@ -168,7 +168,7 @@ class AddForm extends React.Component {
 						<Form.Item label={fieldLabels.examItemGeneralName}>
 							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
 								<RegexInput 
-									regex={/[A-z0-9 -]/} 
+									regex={/[A-Za-z0-9 -]/} 
 									maxLength={50} 
 								/>
 							)}

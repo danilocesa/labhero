@@ -15,10 +15,17 @@ import PatientComment from './patientcomment';
 import './edit_result.css';
 
 class EditResult extends React.Component {
-	state = {
-		isLoading: false,
-		examItems: []
-	};
+	
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			isLoading: false,
+			examItems: []
+		};
+
+		this.resultTable = React.createRef();
+	}
 
 	componentDidMount() {
 		const { examDetails } = this.props;
@@ -42,6 +49,11 @@ class EditResult extends React.Component {
 			});
 		}
 	}
+
+	getFormValues = () => {
+		// @ts-ignore
+		return this.resultTable.getFormValues();
+	}
 	
 	render() {
 		const { examItems, isLoading } = this.state;
@@ -55,10 +67,13 @@ class EditResult extends React.Component {
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
 			    <PatientName patientInfo={patientInfo} />
 					<Spin spinning={isLoading}>
-						<TableResults examItems={examItems} />
+						<TableResults 
+							wrappedComponentRef={(inst) => this.resultTable = inst} 
+							examItems={examItems} 
+						/>
 					</Spin>
 			    <PatientComment />
-			    <Actions />
+			    <Actions getLabResultFormValues={this.getFormValues} />
 		    </Col>
 	    </Row>
     );

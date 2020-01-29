@@ -10,7 +10,7 @@ export const FIELD_RULES = {
 	],
 	givenName: [
 		{ required: true, message: errorMessage.required },
-		{ min: 2, message: errorMessage.maxLength(2) },
+		{ min: 2, message: errorMessage.minLength(2) },
 		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	middleName: [
@@ -19,7 +19,7 @@ export const FIELD_RULES = {
 	],
 	lastName: [
 		{ required: true, message: errorMessage.required },
-		{ min: 2, message: errorMessage.maxLength(2) },
+		{ min: 2, message: errorMessage.minLength(2) },
 		{ max: 100, message: errorMessage.maxLength(100) }
 	],
 	suffix: [

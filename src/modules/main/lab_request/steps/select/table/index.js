@@ -18,25 +18,25 @@ const createColumns = handleRemove => {
 		{
 			title: 'SECTION',
 			dataIndex: 'selectedSection.sectionName',
-			width: 135,
+			width: 100,
 			sorter: (a, b) => a.selectedSection.sectionName.localeCompare(b.selectedSection.sectionName),
 		},
 		{
 			title: 'EXAM',
 			dataIndex: 'examName',
-			width: 170,
+			width: 150,
 			sorter: (a, b) => a.examName.localeCompare(b.examName),
 		},
 		{
 			title: 'SPECIMEN',
 			dataIndex: 'selectedSpecimen.specimenName',
-			width: 135,
+			width: 100,
 			sorter: (a, b) => a.selectedSpecimen.specimenName.localeCompare(b.selectedSpecimen.specimenName),
 		},
 		{
 			title: 'PANEL',
 			dataIndex: 'selectedPanel.panelName',
-			width: 135,
+			width: 100,
 			sorter: (a, b) => {
 				const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
 				const bPanelName = b.selectedPanel ? b.selectedPanel.panelName : '';
@@ -47,7 +47,8 @@ const createColumns = handleRemove => {
 		{
 			title: RemoveBtn,
 			dataIndex: 'action',
-			width: 135,
+			width: 100,
+			align: 'right'
 		},
 	];
 };
@@ -83,6 +84,7 @@ class SelectTable extends React.Component {
 		return (
 			<div className="select-step-table">
 				<AntTable
+					size="small"
 					columns={TableCols}
 					pagination={false}
 					dataSource={TableData}
