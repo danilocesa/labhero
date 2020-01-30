@@ -31,8 +31,8 @@ class SearchForm extends React.Component {
 		form.validateFieldsAndScroll((err, fieldsValue) => {
 			if (!err) {
 				const { dateSpan } = fieldsValue;
-				const fromDate = dateSpan ? dateSpan[0].format('YYYYMMDD') : null;
-				const toDate = dateSpan ? dateSpan[1].format('YYYYMMDD') : null;
+				const fromDate = dateSpan.length > 0 ? dateSpan[0].format('YYYYMMDD') : null;
+				const toDate = dateSpan.length > 0 ? dateSpan[1].format('YYYYMMDD') : null;
 
 				this.setState({ isLoading: true }, async() => {
 					const labResults = await fetchLabResult({

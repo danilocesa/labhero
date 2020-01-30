@@ -35,7 +35,7 @@ class EditLabResult extends React.Component {
 				<Drawer
 					title="Patient Information"
 					onClose={this.onClosePatientInfoDrawer}
-					width="85%"
+					width="90%"
 					visible={isDisplayDrawer}
 				>
 					<EditResult 

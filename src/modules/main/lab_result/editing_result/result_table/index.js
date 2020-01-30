@@ -94,10 +94,6 @@ class EditableTable extends React.Component {
 
 				return { ...item, releasedResult: fieldsValue[key] };
 			});
-
-			console.log(fieldsValue);
-			console.log('examItems', examItems);
-			console.log('combinedExamItems', combinedExamItems);
 			
 			labResults = {
 				examItems: combinedExamItems,
