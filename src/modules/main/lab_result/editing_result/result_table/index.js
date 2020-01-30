@@ -16,7 +16,8 @@ class EditableTable extends React.Component {
       {
         title: 'EXAM NAME',
         dataIndex: 'examItemName',
-        width: 200,
+				width: 200,
+				render: (text, record) => (<div style={record.isChild && { marginLeft: 30 }}>{text}</div>)
       },
       {
         title: 'INSTRUMENT RESULT',
@@ -27,10 +28,16 @@ class EditableTable extends React.Component {
         title: 'RESULT',
         dataIndex: 'releasedResult',
 				width: 200,
-				render: (text, record) => this.createFormInput({ 
-					...record, 
-					fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
-				})
+				render: (text, record) => {
+					if(record.releasedResult !== undefined) {
+						return this.createFormInput({ 
+							...record, 
+							fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
+						})
+					}
+					
+					return null;
+				}
 			},
 			{
 				title: 'UNIT CODE',
@@ -62,7 +69,6 @@ class EditableTable extends React.Component {
 		return (
 			<Form.Item>
 				{ getFieldDecorator(record.fieldName, { 	
-					// rules: [{ required: true, message: errorMessage.required }],
 					initialValue: record.releasedResult,
 				})(
 					<DynamicInput 
@@ -105,15 +111,17 @@ class EditableTable extends React.Component {
 	}
 
   render() {
-		const { examItems } = this.props;
-   
+		const { examItems, formattedExamItems } = this.props;
+	 
+		console.log(examItems);
+		console.log('formatted', formattedExamItems);
+
     return (
 			<div className="labresult-exam-item-table">
 				<Form>
 					<Table
-						dataSource={examItems}
+						dataSource={formattedExamItems}
 						columns={this.columns}
-						// rowSelection={rowSelection}
 						rowKey={item => item.examItemID}
 						scroll={{ x: 800, y: globalTableYScroll }}
 						size={globalTableSize}
@@ -127,6 +135,7 @@ class EditableTable extends React.Component {
 
 EditableTable.propTypes = {
 	examItems: PropTypes.array.isRequired,
+	formattedExamItems: PropTypes.array.isRequired
 };
 
 export default Form.create()(EditableTable);
