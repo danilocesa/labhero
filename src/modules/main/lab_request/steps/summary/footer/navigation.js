@@ -11,13 +11,20 @@ const { Text } = Typography;
 class Navigation extends React.Component {
 	state = {
 		isVisible: false,
+		isLoading: false
 	};
 
-	onClickPrint = async () => {
+	onClickPrint = () => {
 		const { saveExams } = this.props;
-		const isSuccess = await saveExams();
 
-		if(isSuccess) this.showModal();
+		this.setState({ isLoading: true }, async () => {
+			const isSuccess = await saveExams();
+
+			if(isSuccess) this.showModal();
+
+			this.setState({ isLoading: false });
+		});
+	
 	}
 
 	showModal = () => {
@@ -33,7 +40,7 @@ class Navigation extends React.Component {
 	};
 
 	render() {
-		const { isVisible } = this.state;
+		const { isVisible, isLoading } = this.state;
 
 		const Prompt = !isVisible ? null : (
 			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
@@ -52,6 +59,7 @@ class Navigation extends React.Component {
 						</Link>
 						<Tooltip title="Print and Save">
 							<Button
+								loading={isLoading}
 								className="nav-btn-round"
 								type="primary"
 								onClick={this.onClickPrint}

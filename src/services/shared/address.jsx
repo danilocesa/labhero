@@ -19,7 +19,6 @@ export async function cityListAPI(provinceCode) {
   } 
   catch(e) {
     Message.error();
-    console.log("TCL: cityListAPI -> e", e); 
   }
   return cityList;
 }
@@ -39,7 +38,6 @@ export async function provinceListAPI() {
   } 
   catch(e) {
     Message.error();
-    console.log("TCL: provinceListAPI -> e", e); 
   }
   return provinceList;
 }
@@ -59,7 +57,6 @@ export async function townListAPI(cityCode) {
   } 
   catch(e) {
     Message.error();
-    console.log("TCL: townListAPI -> e", e); 
 	}
 	
   return townList;

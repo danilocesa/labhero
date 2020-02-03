@@ -16,7 +16,8 @@ class EditableTable extends React.Component {
       {
         title: 'EXAM NAME',
         dataIndex: 'examItemName',
-        width: 200,
+				width: 200,
+				render: (text, record) => (<div style={record.isChild && { marginLeft: 30 }}>{text}</div>)
       },
       {
         title: 'INSTRUMENT RESULT',
@@ -27,10 +28,16 @@ class EditableTable extends React.Component {
         title: 'RESULT',
         dataIndex: 'releasedResult',
 				width: 200,
-				render: (text, record) => this.createFormInput({ 
-					...record, 
-					fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
-				})
+				render: (text, record) => {
+					if(record.releasedResult !== undefined) {
+						return this.createFormInput({ 
+							...record, 
+							fieldName: `${record.sampleSpecimenID}-${record.examItemID}`,
+						})
+					}
+					
+					return null;
+				}
 			},
 			{
 				title: 'UNIT CODE',
@@ -62,7 +69,6 @@ class EditableTable extends React.Component {
 		return (
 			<Form.Item>
 				{ getFieldDecorator(record.fieldName, { 	
-					// rules: [{ required: true, message: errorMessage.required }],
 					initialValue: record.releasedResult,
 				})(
 					<DynamicInput 
@@ -76,16 +82,46 @@ class EditableTable extends React.Component {
 		)
 	}
 
+	// This is use to get the values of this form up to its parent 
+	// component e.g(update/add form) to cancel the submitting of
+	// data once an error validation appears
+	getFormValues = () => {
+		// eslint-disable-next-line react/prop-types
+		const { form, examItems } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+		let labResults = null;
+
+		validateFieldsAndScroll(async(err) => {	
+			const fieldsValue = getFieldsValue();
+			const clonedExamItems = JSON.parse(JSON.stringify(examItems));
+
+			const combinedExamItems = clonedExamItems.map(item => {
+				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
+
+				return { ...item, releasedResult: fieldsValue[key] };
+			});
+			
+			labResults = {
+				examItems: combinedExamItems,
+				hasError: err !== null,
+			};
+		});
+
+		return labResults;
+	}
+
   render() {
-		const { examItems } = this.props;
-   
+		const { examItems, formattedExamItems } = this.props;
+	 
+		console.log(examItems);
+		console.log('formatted', formattedExamItems);
+
     return (
 			<div className="labresult-exam-item-table">
 				<Form>
 					<Table
-						dataSource={examItems}
+						dataSource={formattedExamItems}
 						columns={this.columns}
-						// rowSelection={rowSelection}
 						rowKey={item => item.examItemID}
 						scroll={{ x: 800, y: globalTableYScroll }}
 						size={globalTableSize}
@@ -99,6 +135,7 @@ class EditableTable extends React.Component {
 
 EditableTable.propTypes = {
 	examItems: PropTypes.array.isRequired,
+	formattedExamItems: PropTypes.array.isRequired
 };
 
 export default Form.create()(EditableTable);

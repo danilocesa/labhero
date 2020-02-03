@@ -7,3 +7,7 @@
     text-align: right;
     margin-bottom:10px;
 }
+
+.user-table .ant-table-tbody td{
+    text-transform: uppercase;
+}

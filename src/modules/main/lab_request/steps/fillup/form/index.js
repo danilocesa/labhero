@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -31,23 +32,24 @@ class BaseForm extends React.Component {
 		hospitalLocationList: [],
 		hospitalPhysicianList: [],
 		isDisabledPersoFields: false,
-		initialPersoValue: {}
+		initialPersoValue: {},
+		address: {}
 	};
 
 	componentDidMount() {
 		this.populateLocation();
 		this.populatePhysician();
-		this.populatePersonalInfo();
+		this.populateFields();
 	}
 
-	populatePersonalInfo = () => {
+	populateFields = () => {
 		const { location } = this.props;
 		const sessPersoInfo = sessionStorage.getItem(CLR_PERSONAL_INFO);
 		const sessOtherInfo = sessionStorage.getItem(CLR_OTHER_INFO);
 
 		// If user came from step 1 
 		if(location.state) {
-			const { dateOfBirth, patientID } = location.state.record;
+			const { dateOfBirth, patientID, provinceCode, cityMunicipalityCode, townCode } = location.state.record;
 			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
 			const patientAge = this.computeAge(formattedDOB);
 
@@ -56,6 +58,12 @@ class BaseForm extends React.Component {
 					...location.state.record, 
 					patientAge,
 					dateOfBirth: formattedDOB
+				},
+				address: {
+					provinceCode,
+					cityMunicipalityCode,
+					townCode,
+					houseAddress: location.state.record.address
 				},
 				isDisabledPersoFields: patientID !== null
 			});
@@ -67,10 +75,23 @@ class BaseForm extends React.Component {
 			const { setFieldsValue } = this.props.form;
 			const personalInfo = JSON.parse(sessPersoInfo); 
 			const otherInfo = JSON.parse(sessOtherInfo); 
+			const { provinces, city, town, address, ...restPersoInfo } = personalInfo;
 
-			personalInfo.dateOfBirth = moment(personalInfo.dateOfBirth, 'MM-DD-YYYY');
-			setFieldsValue({ ...personalInfo, ...otherInfo });
-			this.setState({ isDisabledPersoFields: personalInfo.patientID !== null });
+			this.setState({ 
+				isDisabledPersoFields: personalInfo.patientID !== null,
+				address: { 
+					provinceCode: provinces, 
+					cityMunicipalityCode: city, 
+					townCode: town, 
+					houseAddress: address 
+				}
+			}, () => {
+				setFieldsValue({ 
+					...restPersoInfo, 
+					...otherInfo,
+					dateOfBirth: moment(personalInfo.dateOfBirth, 'MM-DD-YYYY')
+				});
+			});
 		}
 	}
 
@@ -134,6 +155,7 @@ class BaseForm extends React.Component {
 					fields.physicianName +=	`${physician.lastName}`;
 				}
 				
+				// Uppercase all fields
 				Object.keys(fields).forEach(key => {
 					const fieldValue = fields[key];
 					fields[key] = (typeof fieldValue === 'string') ? fieldValue.toUpperCase() : fieldValue;
@@ -144,8 +166,25 @@ class BaseForm extends React.Component {
 		});
 	}
 
-	handleProvince = (param)=> {
-		console.log('this happened', param);
+	onProvinceChange = () => {
+		this.setState((state) => ({ 
+			address: { 
+				...state.address, 
+				cityMunicipalityCode: null,
+				townCode: null,
+				houseAddress: null 
+			} 
+		}));
+	}
+
+	onCityChange = () => {
+		this.setState((state) => ({ 
+			address: { 
+				...state.address, 
+				townCode: null,
+				houseAddress: null 
+			} 
+		}));
 	}
 
 	render() {
@@ -153,12 +192,18 @@ class BaseForm extends React.Component {
 			isDisabledPersoFields, 
 			initialPersoValue, 
 			hospitalPhysicianList, 
-			hospitalLocationList 
+			hospitalLocationList,
+			address 
 		} = this.state;
+		
 		const { isLoading, form } = this.props;
-		// eslint-disable-next-line react/prop-types
-		const { getFieldDecorator, getFieldsValue } = this.props.form;
-
+		const { getFieldDecorator, getFieldsValue } = form;
+		const { 
+			provinces: selectedProvinceCode, 
+			city: selectedCityCode, 
+			town: selectedTownCode
+		} = getFieldsValue();
+		
 		const LocationList = hospitalLocationList.map((item) => (
 			<Option value={item.locationID} key={item.locationID}>
 				{item.name}
@@ -170,8 +215,6 @@ class BaseForm extends React.Component {
 				{`${item.givenName} ${item.lastName}`}
 			</Option>
 		));
-
-		const dummyVal = '';
 
 		return (
 			<div style={{ marginTop: 50 }}>
@@ -303,10 +346,10 @@ class BaseForm extends React.Component {
 									<Col>
 										<ProvinceList 
 											form={form}
-											selectDefaultOptions={selectDefaultOptions}
-											selectedProvince={dummyVal}
+											placeholder={selectDefaultOptions}
+											selectedProvince={address.provinceCode}
 											disabled={isDisabledPersoFields}
-											onChange={this.handleProvince}
+											onChange={this.onProvinceChange}
 										/>
 									</Col>
 								</Row>
@@ -314,9 +357,11 @@ class BaseForm extends React.Component {
 									<Col>
 										<CityList 
 											form={form}
-											selectDefaultOptions={selectDefaultOptions}
-											selectedCity={dummyVal}
-											provinceValue={getFieldsValue().provinces}
+											placeholder={selectDefaultOptions}
+											provinceValue={selectedProvinceCode || address.cityMunicipalityCode}
+											selectedCity={address.cityMunicipalityCode}
+											disabled={isDisabledPersoFields}
+											onChange={this.onCityChange}
 										/>
 									</Col>
 								</Row>
@@ -324,9 +369,10 @@ class BaseForm extends React.Component {
 									<Col>
 										<TownList 
 											form={form}
-											selectDefaultOptions={selectDefaultOptions}
-											selectedTown={dummyVal}
-											cityValue={getFieldsValue().city}
+											placeholder={selectDefaultOptions}
+											cityValue={selectedCityCode || address.townCode}
+											selectedTown={address.townCode}
+											disabled={isDisabledPersoFields}
 										/>
 									</Col>
 								</Row>						
@@ -334,10 +380,11 @@ class BaseForm extends React.Component {
 									<Col>
 										<HouseAddress 
 											form={form}
-											townValue={getFieldsValue().town}
+											townValue={selectedTownCode}
 											fieldLabel={formLabels.unitNo.label}
 											fieldName={formLabels.unitNo.fieldName}
-											selectedValue={initialPersoValue.address}
+											selectedValue={address.houseAddress}
+											disabled={isDisabledPersoFields}
 										/>
 									</Col>
 								</Row>

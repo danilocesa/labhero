@@ -3,6 +3,8 @@ import { Table, Row, Col } from 'antd';
 
 import { CLR_SEL_EXAMS } from '../../constants';
 
+import './table.css';
+
 const columns = [
 	{
 		title: 'PANEL',
@@ -24,6 +26,7 @@ const columns = [
 	{
 		title: 'SPECIMEN',
 		dataIndex: 'selectedSpecimen.specimenName',
+		width: 200,
 		// align: 'center',
 	}
 ];

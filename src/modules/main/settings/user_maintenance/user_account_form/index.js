@@ -8,6 +8,7 @@ import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
 import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global'
 import { 
 	drawerAdd,  
 	labels as gLabels, 
@@ -50,7 +51,9 @@ class UserAccountForm extends React.Component {
 		this.setState({
 			// @ts-ignore
 			userTypeList: response.data
-		})
+		});
+		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+		console.log('TCL->', userData);
 	}
 
 	componentWillUnmount(){
@@ -61,11 +64,11 @@ class UserAccountForm extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		const { form, drawerButton } = this.props;
-		
+		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
 		form.validateFields( async (err, values) => {
 			if (!err) {
 				const vData = {
-					userName : values.userName,
+					userName : values.userName.toUpperCase(),
 					userTypeID : values.userTypeID,
 					givenName : values.givenName.toUpperCase(),
 					lastName : values.lastName.toUpperCase(),
@@ -94,6 +97,15 @@ class UserAccountForm extends React.Component {
 					const updateUserResponse = await updateUserAccountAPI(vData).catch(reason => console.log('TCL->', reason));
           
 					if(updateUserResponse.status === 200){
+
+						if(userData && userData.userID === vData.userID){
+							userData.givenName = vData.givenName;
+							userData.middleName = vData.middleName;
+							userData.lastName = vData.lastName;
+							userData.userName = vData.userName;
+							sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(userData));
+						}
+
 						const httpMessageConfig = {
 							message: messagePrompts.successUpdateUser,
 							// @ts-ignore
@@ -125,6 +137,11 @@ class UserAccountForm extends React.Component {
 		callback();
 	};
 
+	handleConfirmBlur = e => {
+		const { value } = e.target;
+		this.setState({ confirmDirty: this.state.confirmDirty || !!value });
+	  };
+
 	render() {
 		const { patientInfo, drawerButton, form } = this.props;
 		const { getFieldDecorator, getFieldsValue } = form;
@@ -132,7 +149,7 @@ class UserAccountForm extends React.Component {
 
 		const UserTypeOptions = userTypeList.map(userType => (
 			<Option value={userType.userTypeID} key={userType.userTypeID}>
-				{userType.userTypeName}
+				{userType.userTypeName.toUpperCase()}
 			</Option>
 		));
 
@@ -142,7 +159,7 @@ class UserAccountForm extends React.Component {
 			initialValue: patientInfo.password,
 			rules:[
 				...fieldRules.password,
-				{ validator: this.compareToFirstPassword }
+				{ validator: this.validateToNextPassword }
 			]
 		} :
 		{
@@ -150,11 +167,14 @@ class UserAccountForm extends React.Component {
 		});
 
 		const repeatPasswordValidation = (drawerAdd === drawerButton || getFieldsValue().password ? {
-			rules:[ ...fieldRules.repeat_password ] // Check if required
+			rules:[ 
+				...fieldRules.repeat_password,
+				{ validator: this.compareToFirstPassword }
+			] // Check if required
 		} : 
 		{ 
 			rules:[	{ required: false, message: ""} ] // Remove required if update
-		}); 
+		});
 
 		return(
 			<div>
@@ -246,16 +266,16 @@ class UserAccountForm extends React.Component {
 										<AlphaNumInput maxLength={10} />)
 									}
 								</Form.Item>
-								<Form.Item label={fieldLabels.password}>
+								<Form.Item label={fieldLabels.password} hasFeedback>
 									{
 										getFieldDecorator('password',passwordValidation)(
 										<Input.Password maxLength={12} />)
 									}
 								</Form.Item>
-								<Form.Item label={fieldLabels.repeatPassword}>
+								<Form.Item label={fieldLabels.repeatPassword} hasFeedback>
 									{
 										getFieldDecorator('repeat_password',repeatPasswordValidation)(
-										<Input.Password maxLength={12} />)
+										<Input.Password maxLength={12} onBlur={this.handleConfirmBlur} />)
 									}
 								</Form.Item>
 							</div>
