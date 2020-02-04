@@ -114,7 +114,7 @@ class EditProfile extends React.Component {
 			"lastName": fields.lastname.toString().toUpperCase(),
 			"givenName": fields.firstname.toString().toUpperCase(),
 			"middleName": fields.middlename.toString().toUpperCase(),
-			"sex": fields.gender,
+			"sex": fields.gender.toString().toUpperCase(),
 			"dateOfBirth": fields.dateOfBirth,
 			"addressCode": fields.town,
 			"address": fields.address,
