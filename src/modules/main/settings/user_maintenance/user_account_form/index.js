@@ -220,7 +220,7 @@ class UserAccountForm extends React.Component {
 									})(
 										<RegexInput
 											regex={/[A-z0-9 -]/} 
-											maxLength={100} 
+											maxLength={50} 
 										/>
 									)}	
 								</Form.Item>
@@ -232,7 +232,7 @@ class UserAccountForm extends React.Component {
 										})(
 											<RegexInput
 												regex={/[A-z0-9 -]/} 
-												maxLength={100} 
+												maxLength={15} 
 											/>
 										)
 									}
@@ -245,7 +245,7 @@ class UserAccountForm extends React.Component {
 										})(
 											<RegexInput
 												regex={/[A-z0-9 -]/} 
-												maxLength={100} 
+												maxLength={50} 
 											/>
 										)
 									}

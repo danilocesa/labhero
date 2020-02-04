@@ -15,24 +15,30 @@ class TownList extends React.Component {
 		loading: false
 	};
 
-	componentDidUpdate(prevProps){
+	componentDidMount() {
+		this.fetchAndUpdateValues();
+	}
+
+	componentDidUpdate(prevProps) {
 		const { cityValue } = this.props;
 
 		if(prevProps.cityValue !== cityValue) {
-			const { selectedTown, form } = this.props;
-			const { setFieldsValue } = form;
-
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ loading: true }, async () => {
-				const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
-
-				this.setState({ loading: false, townList: townListResponse }, () => {
-					setFieldsValue({ town: selectedTown });
-				});
-			});
+			this.fetchAndUpdateValues();
 		}
 	}
 
+	fetchAndUpdateValues = () => {
+		const { selectedTown, form, cityValue } = this.props;
+		const { setFieldsValue } = form;
+
+		this.setState({ loading: true }, async () => {
+			const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
+
+			this.setState({ loading: false, townList: townListResponse }, () => {
+				setFieldsValue({ town: selectedTown });
+			});
+		});
+	}
 
 	render(){
 		const { form, placeholder, disabled } = this.props;

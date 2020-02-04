@@ -38,14 +38,21 @@ const RadioButton = Radio.Button;
 const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
+	state = {
+		patientAddress: {} 
+	};
 
-	constructor(props){
-		super(props);
-		this.state = {
-			prevProvince: this.props.patientInfo.provinceCode,
-			cityMunicipalityCode: '',
-			defaultMunicipalityCode: '',
-		};
+	componentDidMount() {
+		const { patientInfo } = this.props;
+
+		this.setState({
+			patientAddress: { 
+				provinceCode: patientInfo.provinceCode,
+				cityMunicipalityCode: patientInfo.cityMunicipalityCode,
+				townCode: patientInfo.townCode,
+				houseAddress: patientInfo.address 
+			} 
+		});
 	}
 
 	searchAddress = (input,treenode) => {
@@ -54,6 +61,27 @@ class EditProfile extends React.Component {
 			return false; 
 		}
 		return true;
+	}
+
+	onProvinceChange = () => {
+		this.setState((state) => ({ 
+			patientAddress: { 
+				...state.patientAddress, 
+				cityMunicipalityCode: null,
+				townCode: null,
+				houseAddress: null 
+			} 
+		}), () => console.log('province changed', this.state.patientAddress));
+	}
+
+	onCityChange = () => {
+		this.setState((state) => ({ 
+			patientAddress: { 
+				...state.patientAddress, 
+				townCode: null,
+				houseAddress: null 
+			} 
+		}));
 	}
 
 	onChangePatientInfo = (event) => {
@@ -83,9 +111,9 @@ class EditProfile extends React.Component {
 		const payload = {
 			"patientID": this.props.patientInfo.patientID,
 			"userID": loggedUserData.userID,
-			"lastName": fields.lastname,
-			"givenName": fields.firstname,
-			"middleName": fields.middlename,
+			"lastName": fields.lastname.toString().toUpperCase(),
+			"givenName": fields.firstname.toString().toUpperCase(),
+			"middleName": fields.middlename.toString().toUpperCase(),
 			"sex": fields.gender,
 			"dateOfBirth": fields.dateOfBirth,
 			"addressCode": fields.town,
@@ -93,6 +121,7 @@ class EditProfile extends React.Component {
 			"emailAdd": fields.emailAdd,
 			"contactNumber" : fields.contactNumber
 		};
+
 		const response = await updatePatientAPI(payload);
 
 		if(response.status === 200){
@@ -111,21 +140,39 @@ class EditProfile extends React.Component {
 	}
 
 	render() {
-		// eslint-disable-next-line react/prop-types
-		const { getFieldDecorator, getFieldsValue } = this.props.form;
+		const { patientInfo, form } = this.props;
+		const { patientAddress } = this.state;
+		const { getFieldDecorator, getFieldsValue } = form;
+		const { 
+			emailAdd,
+			contactNumber,
+			dateOfBirth,
+			sex,
+			givenName,
+			middleName,
+			lastName,
+			suffix 
+		} = patientInfo;
+		const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
+		const { 
+			provinces: selectedProvinceCode, 
+			city: selectedCityCode, 
+			town: selectedTownCode
+		} = getFieldsValue();
+
 		return(
 			<div>
-				<Form className="fillup-form" onSubmit={this.onSubmit}>
+				<Form className="patient-demo-fillup-form" onSubmit={this.onSubmit}>
 					<Row gutter={8}>
 						{/** Lastname */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.lastName}>
 							{getFieldDecorator('lastname', {
-								initialValue: this.props.patientInfo.lastName,
+								initialValue: lastName,
 								rules: fieldRules.lastname ,
 							})(
 								<RegexInput
-									regex={/[A-z0-9 -]/}  
+									regex={/[A-z0-9 -.]/}  
 									maxLength={100}
 								/>
 							)}
@@ -135,11 +182,11 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.firstName}>
 								{getFieldDecorator('firstname', {
-									initialValue: this.props.patientInfo.givenName,
+									initialValue: givenName,
 									rules: fieldRules.firstname,
 								})(
 									<RegexInput 
-										regex={/[A-z0-9 -]/}  
+										regex={/[A-z0-9 -.]/}  
 										onChange={this.onChangePatientInfo} 
 										maxLength={100}
 									/>
@@ -150,10 +197,11 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.middleName}>
 								{getFieldDecorator('middlename', {
-									initialValue: this.props.patientInfo.middleName,
+									initialValue: middleName,
 									rules: fieldRules.middlename,
 								})(
-									<Input 
+									<RegexInput 
+										regex={/[A-z0-9 -.]/}  
 										onChange={this.onChangePatientInfo} 
 										maxLength={100}
 									/>
@@ -164,7 +212,7 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.suffix}>
 								{getFieldDecorator('suffix', {
-									initialValue: this.props.patientInfo.suffix,
+									initialValue: suffix,
 									rules: fieldRules.suffix,
 								})(
 									<Input 
@@ -185,14 +233,14 @@ class EditProfile extends React.Component {
 										<RadioButton 
 											style={{ width:'50%' }} 
 											value={genderOptions.male} 
-											checked={this.props.patientInfo.sex === genderOptions.male}
+											checked={sex === genderOptions.male}
 										>
 											{genderOptions.male}
 										</RadioButton>
 										<RadioButton 
 											style={{ width:'50%' }} 
 											value={genderOptions.female} 
-											checked={this.props.patientInfo.sex === genderOptions.female}
+											checked={sex === genderOptions.female}
 										>
 											{genderOptions.female}
 										</RadioButton>
@@ -207,7 +255,7 @@ class EditProfile extends React.Component {
 									<Form.Item label={formLabels.dateOfBirth}>
 										<div className="customDatePickerWidth">
 											{getFieldDecorator('dateOfBirth', { 
-												initialValue: this.props.patientInfo.dateOfBirth ? moment(this.props.patientInfo.dateOfBirth, 'MM-DD-YYYY') : null,
+												initialValue: dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null,
 												rules: fieldRules.dateOfBirth
 											})(
 												<DatePicker 
@@ -225,49 +273,51 @@ class EditProfile extends React.Component {
 						{/** Province */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<ProvinceList
-								form={this.props.form}
-								selectDefaultOptions={selectDefaultOptions} 
-								selectedProvince={this.props.patientInfo.provinceCode}
+								form={form}
+								placeholder={selectDefaultOptions} 
+								selectedProvince={provinceCode}
+								onChange={this.onProvinceChange}
 							/>
 						</Col>
 						{/** City */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<CityList 
-								form={this.props.form}
-								selectDefaultOptions={selectDefaultOptions} 
-								provinceValue={getFieldsValue().provinces || this.props.patientInfo.provinceCode}
-								selectedCity={this.props.patientInfo.cityMunicipalityCode}
+								form={form}
+								placeholder={selectDefaultOptions} 
+								provinceValue={selectedProvinceCode || provinceCode}
+								selectedCity={cityMunicipalityCode}
+								onChange={this.onCityChange}
 							/>
 						</Col>
 						{/** Barangay */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<TownList 
-								form={this.props.form}
-								selectDefaultOptions={selectDefaultOptions} 
-								cityValue={getFieldsValue().city || this.props.patientInfo.cityMunicipalityCode}
-								selectedTown={this.props.patientInfo.townCode}
+								form={form}
+								placeholder={selectDefaultOptions} 
+								cityValue={selectedCityCode || cityMunicipalityCode}
+								selectedTown={townCode}
 							/>
 						</Col>
 						{/** Unit No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<HouseAddress 
-								form={this.props.form}
-								townValue={getFieldsValue().town || this.props.patientInfo.townCode}
+								form={form}
+								townValue={selectedTownCode || townCode}
 								fieldLabel={formLabels.unitNo.label}
 								fieldName={formLabels.unitNo.fieldName}
-								selectedValue={this.props.patientInfo.address}
+								selectedValue={houseAddress}
 							/>
 						</Col>
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.contactNumber}>
 								{getFieldDecorator('contactNumber', { 
-									initialValue: this.props.patientInfo.contactNumber,
+									initialValue: contactNumber,
 									rules: fieldRules.contactNumber
 								 })(
 									<NumberInput 
 										addonBefore="+ 63" 
-										maxLength={45} 
+										maxLength={10} 
 									/>
 								)}
 							</Form.Item>
@@ -276,10 +326,10 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item label={formLabels.emailAddress}>
 							{getFieldDecorator('emailAdd', {
-								initialValue: this.props.patientInfo.emailAdd,
+								initialValue: emailAdd,
 								rules: fieldRules.emailAddress ,
 							})(
-								<Input />
+								<Input maxLength={100} />
 							)}
 							</Form.Item>
 						</Col>	
@@ -302,14 +352,12 @@ class EditProfile extends React.Component {
 EditProfile.propTypes = {
 	patientInfo: PropTypes.object,
 	form: PropTypes.object,
-	provinceCode: PropTypes.string,
 	onCancel: PropTypes.func
 };
 
 EditProfile.defaultProps = {
 	patientInfo() { return null; },
 	form() { return null; },
-	provinceCode: null,
 	onCancel() { return null }
 }
 

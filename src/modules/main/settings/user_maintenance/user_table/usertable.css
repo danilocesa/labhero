@@ -4,8 +4,8 @@
 }
 
 .user-table-action {
-    text-align: right;
-    margin-bottom:10px;
+		margin-top: 50px;
+    margin-bottom: 10px;
 }
 
 .user-table .ant-table-tbody td{

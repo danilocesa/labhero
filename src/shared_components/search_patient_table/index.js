@@ -100,8 +100,10 @@ class SearchPatientTable extends React.Component {
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
 				render: (text, row) => {
+					const { address, townName, cityMunicipalityName, provinceName } = row;
+
 					if(row.address)
-						return `${row.address}, ${row.townName}, ${row.cityMunicipalityName}, ${row.provinceName}`;
+						return `${address}, ${townName}, ${cityMunicipalityName}, ${provinceName}`.toUpperCase();
 
 					return '';
 				}

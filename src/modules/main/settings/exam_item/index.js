@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Row, Col } from 'antd';
+import { Button, Icon, Row, Col, Input } from 'antd';
 
 // CUSTOM
 import TablePager from 'shared_components/search_pager/pager';
@@ -12,8 +12,10 @@ import AddForm from './add_form';
 import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
 import { fetchSections, fetchSpecimens, fetchExamitems } from './api_repo';
-import {moduleTitle, tablePageSize, messagePrompts, buttonNames} from './settings';
+import { moduleTitle, tablePageSize, messagePrompts, buttonNames } from './settings';
 
+
+const { Search } = Input;
 
 const ActionSection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -33,6 +35,7 @@ class ExamItems extends React.Component {
 		isShowAddForm: false,
 		isShowUpdateForm: false,
 		pageSize: tablePageSize,
+		examItemsRef: [],
 		examItems: [],
 		ddSections: [],
 		ddSpecimens: [],
@@ -75,7 +78,11 @@ class ExamItems extends React.Component {
 			const { selectedSpecimenId: specimenID } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
 		
-			this.setState({ examItems, isLoading: false });
+			this.setState({ 
+				examItems, 
+				examItemsRef: examItems,
+				isLoading: false 
+			});
 		});
 	}
 
@@ -84,9 +91,46 @@ class ExamItems extends React.Component {
 			const { selectedSectionId: sectionId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
 
-			this.setState({ examItems, isLoading: false });
+			this.setState({ 
+				examItems, 
+				examItemsRef: examItems,
+				isLoading: false 
+			});
 		});
 	}
+
+	onSearch = (value) => {
+		const { examItemsRef } = this.state;
+		const searchedVal = value.toLowerCase();
+
+		const filtered = examItemsRef.filter(item => {
+			const { examItemName, examItemGeneralName, examItemIntegrationCode } = item;
+
+			return (
+				this.containsString(examItemName, searchedVal) ||
+				this.containsString(examItemGeneralName, searchedVal) ||
+				this.containsString(examItemIntegrationCode, searchedVal)
+			);
+		});
+
+		this.setState({ examItems: filtered });
+	}
+
+	onChangeSearch = (event) => {
+		const { examItemsRef } = this.state;
+
+		if(event.target.value === '') 
+			this.setState({ examItems: examItemsRef });
+	}
+
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if(searchFrom === null || searchFrom === '')
+			return false;
+
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	}
+
 
 	onDblClickTableRow = (selectedExamItem) => {
 		this.setState({ 
@@ -145,6 +189,12 @@ class ExamItems extends React.Component {
 					onChange={this.onChangeSpecimen}
 					loading={isInitializing}
 					value={selectedSpecimenId}
+				/>
+				<Search
+					allowClear
+					onSearch={value => this.onSearch(value)}
+					onChange={this.onChangeSearch}
+					style={{ width: 200, marginLeft: 15 }}
 				/>
 			</>
 		);

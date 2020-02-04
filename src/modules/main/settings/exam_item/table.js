@@ -9,37 +9,37 @@ import {tableSize, tableYScroll} from './settings';
 // CSS
 import './exam_item.css';
 
-const columns = [
-	{ 
-		title: 'EXAM ITEM ID',
-		dataIndex: 'examItemID',
-		width: 200
-	},
-	{ 
-		title: 'EXAM ITEM NAME',
-		dataIndex: 'examItemName',
-		width: 400
-	},
-	{ 
-		title: 'EXAM ITEM GENERAL NAME',
-		dataIndex: 'examItemGeneralName',
-		width: 250
-	},
-	{ 
-		title: 'EXAM ITEM TYPE',
-		dataIndex: 'examItemTypeCode',
-		width: 200
-	},
-	{ 
-		title: 'INTEGRATION CODE',
-		dataIndex: 'examItemIntegrationCode',
-	}
-];
-
-
 class ExamTable extends React.Component {
+
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
+		
+		const columns = [
+			{ 
+				title: 'EXAM ITEM ID',
+				dataIndex: 'examItemID',
+				width: 200
+			},
+			{ 
+				title: 'EXAM ITEM NAME',
+				dataIndex: 'examItemName',
+				width: 400
+			},
+			{ 
+				title: 'EXAM ITEM GENERAL NAME',
+				dataIndex: 'examItemGeneralName',
+				width: 250
+			},
+			{ 
+				title: 'EXAM ITEM TYPE',
+				dataIndex: 'examItemTypeCode',
+				width: 200
+			},
+			{ 
+				title: 'INTEGRATION CODE',
+				dataIndex: 'examItemIntegrationCode',
+			}
+		];
 
 		return (
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
