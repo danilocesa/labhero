@@ -28,6 +28,7 @@ const columns = [
 		dataIndex: 'selectedSpecimen.specimenName',
 		width: 200,
 		// align: 'center',
+		render: text => text.toString().toUpperCase()
 	}
 ];
 

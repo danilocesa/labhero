@@ -14,20 +14,20 @@ class EditableTable extends React.Component {
 		super(props);
     this.columns = [
       {
-        title: 'EXAM NAME',
+        title: 'EXAM',
         dataIndex: 'examItemName',
-				width: 200,
+				width: 220,
 				render: (text, record) => (<div style={record.isChild && { marginLeft: 30 }}>{text}</div>)
       },
       {
-        title: 'INSTRUMENT RESULT',
+        title: 'INS. RESULT',
         dataIndex: 'instrumentResult',
-        width: 200,
+        width: 150,
       },
       {
         title: 'RESULT',
         dataIndex: 'releasedResult',
-				width: 200,
+				width: 150,
 				render: (text, record) => {
 					if(record.releasedResult !== undefined) {
 						return this.createFormInput({ 
@@ -52,12 +52,12 @@ class EditableTable extends React.Component {
       {
         title: 'NORMAL VALUES',
         dataIndex: 'values',
-        width: 200,
+        width: 150,
       },
       {
         title: 'STATUS',
         dataIndex: 'status',
-        width: 200,
+        width: 120,
       },
     ];
   }
@@ -79,7 +79,7 @@ class EditableTable extends React.Component {
 					/>
 				)}
 			</Form.Item>
-		)
+		);
 	}
 
 	// This is use to get the values of this form up to its parent 

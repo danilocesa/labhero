@@ -6,6 +6,10 @@
    width: 100% !important;
 }
 
-.fillup-form input{
+.patient-demo-fillup-form {
+	padding-bottom: 30px;
+}
+
+.patient-demo-fillup-form input{
    text-transform: uppercase;
 }

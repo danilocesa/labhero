@@ -24,8 +24,6 @@ const dateFormat = 'MM/DD/YYYY';
 
 class SearchPatientForm extends React.Component {
 	state = {
-		patientID: '',
-		patientName: '',
 		loading: false
 	};
 
@@ -70,17 +68,12 @@ class SearchPatientForm extends React.Component {
 	}
 
 	clearInputs = async () => {
-		this.setState({
-			patientID: "",
-			patientName: ""
-		});
-
-		const { populatePatients } = this.props;
+		const { populatePatients, form } = this.props;
+		const { setFieldsValue } = form;
 		let patients = [];
 		
-		this.setState({ loading: true });
+		setFieldsValue({ patientID: '', patientName: '' });
 		patients = []; 
-		this.setState({ loading: false });
 
 		populatePatients(patients);
 	}

@@ -69,6 +69,8 @@ export const fieldRules = {
 		{ required: true, message: errorMessage.required}
 	],
 	contactNumber:  [
+		{ min: 8, message: errorMessage.minLength(8) },
+		{ max: 10, message: errorMessage.maxLength(10) },
 		{ required: false, message: errorMessage.required}
 	],
 	emailAddress:  [

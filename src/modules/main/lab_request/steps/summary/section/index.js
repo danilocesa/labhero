@@ -8,9 +8,14 @@ import './section.css';
 
 const { Text } = Typography;
 
-const sectionLayout = {
+const leftSectionLayout = {
 	sm: { span: 24 },
-	lg: { span: 6 },
+	lg: { span: 4 },
+};
+
+const rightSectionLayout = {
+	sm: { span: 24 },
+	lg: { span: 20 },
 };
 
 class SummarySection extends React.Component {
@@ -92,73 +97,76 @@ class SummarySection extends React.Component {
 							</Text>
 						</Row>
 						<Row style={{ marginTop: 30 }}>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>PATIENT NAME</Text>
-									<br />
-									<Text>{`${givenName} ${middleName} ${lastName} ${nameSuffix || ''}`}</Text>
-								</div>
+							<Col {...leftSectionLayout}>
+								<Text strong>PATIENT NAME</Text>
 							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>DATE OF BIRTH</Text>
-									<br />
-									<Text>{`${dateOfBirth} - ${patientAge}`}</Text>
-								</div>
-							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>GENDER</Text>
-									<br />
-									<Text>{sex}</Text>
-								</div>
-							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>LOCATION</Text>
-									<br />
-									<Text>{locationName}</Text>
-								</div>
+							<Col {...rightSectionLayout}>
+								<Text>{`${givenName} ${middleName} ${lastName} ${nameSuffix || ''}`}</Text>
 							</Col>
 						</Row>
-						<Row style={{ marginTop: 10 }}>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>PHYSICIAN</Text>
-									<br />
-									<Text>{physicianName || '----'}</Text>
-								</div>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>DATE OF BIRTH</Text>
 							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>BED</Text>
-									<br />
-									<Text>{bed || '----'}</Text>
-								</div>
-							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>VISIT</Text>
-									<br />
-									<Text>{visit || '----'}</Text>
-								</div>
-							</Col>
-							<Col {...sectionLayout}>
-								<div className="section">
-									<Text strong>AMOUNT</Text>
-									<br />
-									<Text>{chargeSlip || '----'}</Text>
-								</div>
+							<Col {...rightSectionLayout}>
+								<Text>{`${dateOfBirth} - ${patientAge} YEARS OLD`}</Text>
 							</Col>
 						</Row>
-						<Row style={{ marginTop: 10 }}>
-							<Col span={24}>
-								<div className="comment-section">
-									<Text strong>COMMENT</Text>
-									<br />
-									<Text>{comment || '----'}</Text>
-								</div>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>GENDER</Text>
 							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{sex.toString().toUpperCase()}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>LOCATION</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{locationName.toString().toUpperCase()}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>PHYSICIAN</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{physicianName ? physicianName.toString().toUpperCase() : '----'}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>BED</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{bed ? bed.toString().toUpperCase() : '----'}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>VISIT</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{visit ? visit.toString().toUpperCase() : '----'}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>AMOUNT</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{chargeSlip ? chargeSlip.toString().toUpperCase() : '----'}</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col {...leftSectionLayout}>
+								<Text strong>COMMENT</Text>
+							</Col>
+							<Col {...rightSectionLayout}>
+								<Text>{comment ? comment.toString().toUpperCase() : '----'}</Text>
+							</Col>	
 						</Row>
 					</Col>
 				</Row>

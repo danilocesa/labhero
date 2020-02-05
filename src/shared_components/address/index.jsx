@@ -11,7 +11,18 @@ class houseAddressComponent extends React.Component{
 		isDisabled: true,
 	};
 
-	componentDidUpdate(prevProps){
+	componentDidMount() {
+		const { townValue, form, disabled, fieldName, selectedValue } = this.props;
+		const { setFieldsValue } = form;
+
+		this.setState({ 
+			isDisabled: disabled || townValue === null 
+		}, () => {
+			setFieldsValue({ [fieldName]: selectedValue });
+		});
+	}
+
+	componentDidUpdate(prevProps) {
 		const { townValue, selectedValue, fieldName, form, disabled } = this.props;
 		const { setFieldsValue } = form;
 
@@ -50,6 +61,7 @@ class houseAddressComponent extends React.Component{
 						style={{ textTransform: 'uppercase' }}
 						disabled={isDisabled} 
 						maxLength={254} 
+						allowClear
 					/>
 				)}  
 			</Form.Item>

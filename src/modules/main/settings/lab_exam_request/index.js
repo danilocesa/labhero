@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Icon } from 'antd';
+import { Row, Col, Button, Icon, Input } from 'antd';
 
 // CUSTOM
 import TablePager from 'shared_components/search_pager/pager';
@@ -15,6 +15,8 @@ import AddForm from './add_panel';
 import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
 import { messages, placeHolders, labels, tablePageSize, buttonNames } from './settings';
+
+const { Search } = Input;
 
 const SecondarySection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -36,6 +38,7 @@ class LabExamRequest extends React.Component {
 		pageSize: tablePageSize,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
+		examRequestsRef: [],
 		examRequests: [],
 		ddSections: [],
 		ddSpecimens: [],
@@ -73,6 +76,7 @@ class LabExamRequest extends React.Component {
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
+				examRequestsRef: examRequests || [], 
 				isLoading: false
 			});
 		});
@@ -87,6 +91,7 @@ class LabExamRequest extends React.Component {
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
+				examRequestsRef: examRequests || [], 
 				isLoading: false
 			});
 		});
@@ -99,6 +104,7 @@ class LabExamRequest extends React.Component {
 			
 			this.setState({ 
 				examRequests: examRequests || [], 
+				examRequestsRef: examRequests || [], 
 				selectedSectionId: sectionId,
 				isLoading: false
 			});
@@ -112,10 +118,35 @@ class LabExamRequest extends React.Component {
 			
 			this.setState({ 
 				examRequests,
+				examRequestsRef: examRequests || [], 
 				selectedSpecimenId: specimenId,
 				isLoading: false
 			});
 		});
+	}
+
+	onSearch = (value) => {
+		const { examRequestsRef } = this.state;
+		const searchedVal = value.toLowerCase();
+
+		const filtered = examRequestsRef.filter(item => {
+			const { examRequestName, examRequestCode, examRequestIntegrationCode } = item;
+
+			return (
+				this.containsString(examRequestName, searchedVal) ||
+				this.containsString(examRequestCode, searchedVal) ||
+				this.containsString(examRequestIntegrationCode, searchedVal)
+			);
+		});
+
+		this.setState({ examRequests: filtered });
+	}
+
+	onChangeSearch = (event) => {
+		const { examRequestsRef } = this.state;
+
+		if(event.target.value === '') 
+			this.setState({ examRequests: examRequestsRef });
 	}
 
 	onDblClickTableRow = (selectedExamRequest) => {
@@ -132,6 +163,14 @@ class LabExamRequest extends React.Component {
 
 	closeForm = () => {
 		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
+	}
+
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if(searchFrom === null || searchFrom === '')
+			return false;
+
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
 	}
 
 	render() {
@@ -151,7 +190,7 @@ class LabExamRequest extends React.Component {
 		
 		const leftSection = (
 			<Row gutter={24}>
-				<Col span={10}>
+				<Col span={24}>
 					<DropDown 
 						size="small"
 						placeholder={placeHolders.specimenDropdown}
@@ -161,9 +200,14 @@ class LabExamRequest extends React.Component {
 						loading={isInitializing}
 						value={selectedSpecimenId}
 					/>
+					<Search
+						allowClear
+						onSearch={value => this.onSearch(value)}
+						onChange={this.onChangeSearch}
+						style={{ width: 200, marginLeft: 15 }}
+					/>
 				</Col>
 			</Row>
-			
 		);
 
 		const rightSection = (

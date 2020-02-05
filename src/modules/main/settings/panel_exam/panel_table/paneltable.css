@@ -1,8 +1,8 @@
-/* .user-table .ant-table-thead > tr > th {
-    padding: 4px 16px !important;
-} */
-
 .user-table .panel-table-options {
-    text-align: right;
-    margin-bottom: 15px;
+		margin-bottom: 15px;
+		margin-top: 50px;
+}
+
+.settings-panel-table .ant-table-small > .ant-table-content > .ant-table-body {
+	margin: 0;
 }

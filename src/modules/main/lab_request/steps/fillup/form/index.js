@@ -260,7 +260,7 @@ class BaseForm extends React.Component {
 										initialValue: initialPersoValue.givenName
 									})(
 										<RegexInput 
-											regex={/[A-z0-9 -]/}
+											regex={/[A-z0-9 -.]/}
 											disabled={isDisabledPersoFields} 
 											maxLength={100} 
 										/>
@@ -271,7 +271,11 @@ class BaseForm extends React.Component {
 										rules: FIELD_RULES.middleName,
 										initialValue: initialPersoValue.middleName
 									})(
-										<AlphaNumInput disabled={isDisabledPersoFields} maxLength={100} />
+										<RegexInput 
+											regex={/[A-z0-9 -.]/}
+											disabled={isDisabledPersoFields} 
+											maxLength={100} 
+										/>
 									)}
 								</Form.Item>
 								<Row gutter={12}>
@@ -282,7 +286,7 @@ class BaseForm extends React.Component {
 												initialValue: initialPersoValue.lastName 
 											})(
 												<RegexInput 
-													regex={/[A-z0-9 -]/} 
+													regex={/[A-z0-9 -.]/} 
 													disabled={isDisabledPersoFields} 
 													maxLength={100} 
 												/>

@@ -1,7 +1,7 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Table, Select, Typography, Button, Icon, Drawer } from 'antd';
+import { Row, Col, Table, Select, Typography, Button, Input, Icon, Drawer } from 'antd';
 
 // CUSTOM
 import { getUserAccountsAPI } from 'services/settings/user_maintenance/userAccount';
@@ -21,6 +21,7 @@ import UserAccountForm from '../user_account_form';
 // CSS
 import './usertable.css';
 
+const { Search } = Input;
 const { Text } = Typography;
 const { Option } = Select;
 const columns = [
@@ -68,6 +69,7 @@ class UserTable extends React.Component {
 			drawerTitle: '',
 			drawerButton: '',
 			patientInfo: [], 
+			usersRef: [],
 			users: [],
 			pagination: {
 				pageSize: tablePageSize,
@@ -77,15 +79,14 @@ class UserTable extends React.Component {
 	}
 	
 	async componentDidMount(){
-
 		this.setState({loading:true});
 		const userAccounts = await getUserAccountsAPI();
-		console.log('TCL->', userAccounts.data);
 		// userData.push({})
 
 		this.setState({
 			pagination: userAccounts.data.length,
 			users: userAccounts.data,
+			usersRef: userAccounts.data,
 			loading:false
 		});
 	}
@@ -106,6 +107,30 @@ class UserTable extends React.Component {
 		});
 	};
 
+	onSearch = (value) => {
+		const { usersRef } = this.state;
+		const searchedVal = value.toLowerCase();
+
+		const filtered = usersRef.filter(item => {
+			const { userName, lastName, givenName } = item;
+
+			return (
+				this.containsString(userName, searchedVal) ||
+				this.containsString(lastName, searchedVal) ||
+				this.containsString(givenName, searchedVal)
+			);
+		});
+
+		this.setState({ users: filtered });
+	}
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+
+		if(event.target.value === '') 
+			this.setState({ users: usersRef });
+	}
+
 	displayDrawerUpdate = (record) => {
 		this.setState({
 			visible: true,
@@ -123,50 +148,70 @@ class UserTable extends React.Component {
 		this.setState({ pagination });
 	};
 
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if(searchFrom === null || searchFrom === '')
+			return false;
+
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	}
+
 	render() {
 		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading } = this.state;
 
 		return(
 			<div>
 				<div className="user-table-action">
-					<Button 
-					type="primary" 
-					shape="round" 
-					style={{ marginRight: '15px' }} 
-					onClick={this.showDrawer}
-					>
-						<Icon type="plus" />
-						{ addUserButton }
-					</Button>
-					<Text>Display per page</Text>
-					<Select defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
-						<Option value="5">5</Option>
-						<Option value="10">10</Option>
-						<Option value="15">15</Option>
-						<Option value="20">20</Option>
-					</Select>
+					<Row>
+						<Col span={12}>
+							<Search
+								allowClear
+								onSearch={value => this.onSearch(value)}
+								onChange={this.onChangeSearch}
+								style={{ width: 200 }}
+							/>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" />
+								{ addUserButton }
+							</Button>
+							<Text>Display per page</Text>
+							<Select defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
+								<Option value="5">5</Option>
+								<Option value="10">10</Option>
+								<Option value="15">15</Option>
+								<Option value="20">20</Option>
+							</Select>
+						</Col>
+					</Row>
 				</div>
 				<div className="user-table">
 					<Table 
-					loading={loading}
-					size={tableSize}
-					scroll={{ y: tableYScroll }}
-					columns={columns} 
-					dataSource={users}
-					pagination={pagination}
-					rowKey={record => record.key}
-					onRow={(record) => {
-						return {     
-							onDoubleClick: () => {
-								const rec = [];
-								// eslint-disable-next-line no-restricted-syntax
-								for(const [key, value] of Object.entries(record)){
-									rec[key] = value;
+						loading={loading}
+						size={tableSize}
+						scroll={{ y: tableYScroll }}
+						columns={columns} 
+						dataSource={users}
+						pagination={pagination}
+						rowKey={record => record.userID}
+						onRow={(record) => {
+							return {     
+								onDoubleClick: () => {
+									const rec = [];
+									// eslint-disable-next-line no-restricted-syntax
+									for(const [key, value] of Object.entries(record)){
+										rec[key] = value;
+									}
+									this.displayDrawerUpdate(rec);
 								}
-								this.displayDrawerUpdate(rec);
 							}
-						}
-					}}
+						}}
 					/>
 				</div>    
 

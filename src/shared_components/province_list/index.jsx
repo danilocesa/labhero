@@ -45,6 +45,7 @@ class ProvinceListComponent extends React.Component {
 						placeholder={placeholder}
 						disabled={disabled}
 						onChange={onChange}
+						allowClear
 					>
 						{provinceList.map((item) => (
 							<Option value={item.provinceCode} key={item.provinceCode}>

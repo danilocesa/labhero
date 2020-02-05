@@ -18,7 +18,7 @@ const { TextArea } = Input;
 
 class DynamicInput extends React.Component {
 	render() {
-		const { type, itemOptions, isLock, value, ...otherProps } = this.props;
+		const { type, itemOptions, isLock, ...otherProps } = this.props;
 
 		if(type === EITC_ALPHA_NUMERIC) {
 			return (

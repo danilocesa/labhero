@@ -15,7 +15,7 @@ export async function cityListAPI(provinceCode) {
 		
     // @ts-ignore
     const { data } = axiosResponse;
-    cityList = data;
+    cityList = data || [];
   } 
   catch(e) {
     Message.error();
@@ -34,7 +34,7 @@ export async function provinceListAPI() {
     });
     // @ts-ignore
     const { data } = axiosResponse;
-    provinceList = data;
+    provinceList = data || [];
   } 
   catch(e) {
     Message.error();
@@ -53,7 +53,7 @@ export async function townListAPI(cityCode) {
     });
     // @ts-ignore
     const { data } = axiosResponse;
-    townList = data;
+    townList = data || [];
   } 
   catch(e) {
     Message.error();

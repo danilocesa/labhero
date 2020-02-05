@@ -2,27 +2,22 @@
 /* eslint-disable func-names */
 // LIBRARY
 import React from 'react';
-import { 
-	Table as AntTable, 
-	Drawer as AntDrawer, 
-	Typography as AntTypography, 
-	Icon as AntIcon, 
-	Select as AntSelect, 
-	Button as AntButton} from 'antd';
+import { Row, Col, Input, Table, Drawer, Typography, Icon, Select, Button } from 'antd';
 
 // CUSTOM MODULES
-import HttpCodeMessage from 'shared_components/message_http_status';
+// import HttpCodeMessage from 'shared_components/message_http_status';
 import { panelListAPI } from 'services/settings/panel/panelExamRequesting';	
 import PanelForm from '../panel_form';
 
-import {drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels} from '../settings';
+import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from '../settings';
 
 // CSS
 import './paneltable.css';
 
 // CONSTANTS
-const { Text } = AntTypography;
-const { Option } = AntSelect;
+const { Text } = Typography;
+const { Option } = Select;
+const { Search } = Input;
 // const popoverContent = (data = []) => (
 // 	<div>
 // 	<AntTable 
@@ -81,6 +76,7 @@ class PanelTable extends React.Component {
 			drawerButton: '',
 			loading: false,
 			panelInfo: [],
+			panelListRef: [],
 			panelListState: [],
 			pagination: {
 				pageSize: tablePageSize,
@@ -95,23 +91,31 @@ class PanelTable extends React.Component {
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
-		if(panelListData.status !== 200){
-			HttpCodeMessage(panelListData.status);
-		}
+		// if(panelListData.status !== 200){
+		// 	HttpCodeMessage(panelListData.status);
+		// }
 
 		const panelListArray = []; 
-		panelListData.data.map(function(valuePanel,indexPanel){ 
-			panelListArray[indexPanel] = {
-				key: valuePanel.panelRequestID,
-				code: valuePanel.panelRequestCode, 
-				panel_name: valuePanel.panelRequestName,
-				integration_code: valuePanel.panelRequestIntegrationCode,
-				status: valuePanel.panelRequestActive
-			}
-			return panelListArray;
-		});
+		
+		if(panelListData.data) {
+			panelListData.data.map(function(valuePanel,indexPanel){ 
+				panelListArray[indexPanel] = {
+					key: valuePanel.panelRequestID,
+					code: valuePanel.panelRequestCode, 
+					panel_name: valuePanel.panelRequestName,
+					integration_code: valuePanel.panelRequestIntegrationCode,
+					status: valuePanel.panelRequestActive
+				}
 
-		this.setState({ loading: false, panelListState: panelListArray});
+				return panelListArray;
+			});
+		}
+
+		this.setState({ 
+			loading: false, 
+			panelListState: panelListArray,
+			panelListRef: panelListArray
+		});
 	}
     
 	displayDrawerUpdate = (record) => {
@@ -128,6 +132,38 @@ class PanelTable extends React.Component {
 			isDrawerVisible: false,
 		});
 	};
+
+	onSearch = (value) => {
+		const { panelListRef } = this.state;
+		const searchedVal = value.toLowerCase();
+
+		const filtered = panelListRef.filter(item => {
+			// eslint-disable-next-line camelcase
+			const { panel_name, integration_code } = item;
+
+			return (
+				this.containsString(panel_name, searchedVal) ||
+				this.containsString(integration_code, searchedVal)
+			);
+		});
+
+		this.setState({ panelListState: filtered });
+	}
+
+	onChangeSearch = (event) => {
+		const { panelListRef } = this.state;
+
+		if(event.target.value === '') 
+			this.setState({ panelListState: panelListRef });
+	}
+
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if(searchFrom === null || searchFrom === '')
+			return false;
+
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	}
 
 	showDrawer = async () => {
 		this.setState({ loading:true });
@@ -151,51 +187,64 @@ class PanelTable extends React.Component {
 		return(
 			<div className="user-table">
 				<div className="panel-table-options">
-					<AntButton 
-						type="primary" 
-						shape="round" 
-						style={{ marginRight: '15px' }} 
-						onClick={this.showDrawer}
-					>
-						<AntIcon type="plus" />
-						{drawerAddTitle}
-					</AntButton>
-					<Text>Display per page</Text>
-					<AntSelect defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
-						<Option value="5">5</Option>
-						<Option value="10">10</Option>
-						<Option value="15">15</Option>
-						<Option value="20">20</Option>
-					</AntSelect>
+					<Row>
+						<Col span={12}>
+							<Search
+								allowClear
+								onSearch={value => this.onSearch(value)}
+								onChange={this.onChangeSearch}
+								style={{ width: 200 }}
+							/>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" />
+								{drawerAddTitle}
+							</Button>
+							<Text>Display per page</Text>
+							<Select defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
+								<Option value="5">5</Option>
+								<Option value="10">10</Option>
+								<Option value="15">15</Option>
+								<Option value="20">20</Option>
+							</Select>
+						</Col>
+					</Row>
 				</div>
-					<AntTable 
-						size={tableSize}
-						dataSource={this.state.panelListState}
-						pagination={this.state.pagination}
-						loading={this.state.loading} 
-						columns={columns}
-						rowKey={record => record.key}
-						onRow={(record) => {
-							return {
-								onDoubleClick: () => {
-									this.displayDrawerUpdate(record);
-								}
+				<Table 
+					className="settings-panel-table"
+					size={tableSize}
+					dataSource={this.state.panelListState}
+					pagination={this.state.pagination}
+					loading={this.state.loading} 
+					columns={columns}
+					rowKey={record => record.key}
+					onRow={(record) => {
+						return {
+							onDoubleClick: () => {
+								this.displayDrawerUpdate(record);
 							}
-						}}
+						}
+					}}
+				/>
+				<Drawer 
+					title={this.state.drawerTitle}
+					visible={this.state.isDrawerVisible}
+					onClose={this.onClose}
+					width="60%"
+					destroyOnClose
+				>
+					<PanelForm 
+						drawerButton={this.state.drawerButton} 
+						panelInfo={this.state.panelInfo}
+						onCancel={this.onClose}
 					/>
-					<AntDrawer 
-						title={this.state.drawerTitle}
-						visible={this.state.isDrawerVisible}
-						onClose={this.onClose}
-						width="60%"
-						destroyOnClose
-					>
-						<PanelForm 
-							drawerButton={this.state.drawerButton} 
-							panelInfo={this.state.panelInfo}
-							onCancel={this.onClose}
-						/>
-					</AntDrawer>
+				</Drawer>
 			</div>
 		);
 	}

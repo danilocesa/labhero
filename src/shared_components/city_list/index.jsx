@@ -13,26 +13,39 @@ class CityList extends React.Component {
 
 	constructor(props){
 		super(props);
+
 		this.state = {
 			cityList: [],
 			loading: false,
 		};
 	}
 	
-	componentDidUpdate(prevProps){
+	componentDidMount() {
+		this.fetchAndUpdateValues();
+	}
+
+	componentDidUpdate(prevProps) {
+		const { provinceValue } = this.props;
+
+		if(prevProps.provinceValue !== provinceValue && provinceValue !== ''){
+			console.log('city list did update');
+			this.fetchAndUpdateValues();
+		}
+	}
+
+	fetchAndUpdateValues = () => {
 		const { provinceValue, selectedCity, form } = this.props;
 		const { setFieldsValue } = form;
-		
-		if(prevProps.provinceValue !== provinceValue && provinceValue !== '' && provinceValue !== null){
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ loading: true } , async () => {
-				const cityListResponse = await cityListAPI(provinceValue);
 
-				this.setState({ loading:false, cityList: cityListResponse }, () => {
-					setFieldsValue({ city: selectedCity });
-				});
+		console.log('selectedCity', selectedCity);
+
+		this.setState({ loading: true } , async () => {
+			const cityListResponse = await cityListAPI(provinceValue);
+
+			this.setState({ loading:false, cityList: cityListResponse }, () => {
+				setFieldsValue({ city: selectedCity });
 			});
-		}
+		});
 	}
 
 
