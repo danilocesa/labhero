@@ -19,7 +19,7 @@ class PatientInfo extends React.Component {
 
 	state = {
 		hospitalID: '-',
-		physicianID: '',
+		physician: '',
 		bed: '-',
 		visit: '-',
 		chargeSlip: '-',
@@ -32,16 +32,29 @@ class PatientInfo extends React.Component {
 	async componentDidMount(){
 		const { patientInfo } = this.props
 		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID);
+		const { 
+			hospitalRequestID, 
+			physician, 
+			bed, 
+			visit, 
+			chargeSlip, 
+			officialReceipt, 
+			comment, 
+			location  
+		} = patientInfoValue;
+		console.log('patientInfoValue', patientInfoValue);
 
 		this.setState({
-			hospitalID: 	patientInfoValue.hospitalRequestID != undefined? patientInfoValue.hospitalRequestID : '-',
-			physicianID: 	patientInfoValue.physician != undefined ? patientInfoValue.physician.physicianID : '-',
-			bed: 					patientInfoValue.bed != undefined ? patientInfoValue.bed : '-',
-			visit: 				patientInfoValue.visit != undefined ? patientInfoValue.visit : '-',
-			chargeSlip: 	patientInfoValue.chargeSlip != undefined ? patientInfoValue.chargeSlip : '-',
-			receipt:      patientInfoValue.officialReceipt != undefined ? patientInfoValue.officialReceipt : '-',
-			comment:      patientInfoValue.comment != undefined ? patientInfoValue.comment : '-',
-			location: 		patientInfoValue.location != undefined ? patientInfoValue.location.name : '-'
+			hospitalID: 	hospitalRequestID || '-',
+			physician: 		physician !== undefined 
+										? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`.toUpperCase() 
+										: '-',
+			bed: 					bed || '-',
+			visit: 				visit || '-',
+			chargeSlip: 	chargeSlip || '-',
+			receipt:      officialReceipt || '-',
+			comment:      comment || '-',
+			location: 		location !== undefined ? location.name.toString().toUpperCase() : '-'
 		});
 	}
 
@@ -104,10 +117,10 @@ class PatientInfo extends React.Component {
 				<Row>
 					<div className="info-item">
 						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							PHYSICIAN ID
+							PHYSICIAN
 						</Col>
 						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.physicianID}
+							{this.state.physician}
 						</Col>
 					</div>
 				</Row>

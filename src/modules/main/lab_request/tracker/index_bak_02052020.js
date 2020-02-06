@@ -15,41 +15,63 @@ const { links } = TrackerSettings;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
-	state = {
+	state={
 		current: 0,
+		clicked: 0,
 		modalVisibility: false
 	};
 
+	dynamicLink = () => {
+		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
+	};
+
+	closeModal = () =>{
+		this.setState({modalVisibility:false});
+	};
+
+	openModal = () =>{
+		this.setState({modalVisibility:true});
+	};
+
 	onClickTracker = clickedStep => {	
-		const { active } = this.props;
+		let clickedVal = false;
+		this.setState({clicked: clickedStep});
 
-		if(active === 0)
-			return;
-
-		if(active !== 0 && clickedStep === 0) { 
-			this.setState({ modalVisibility: true });
+		if(this.props.active === 0){ // Prevent click if in step is currently in search patient
+			return false;
 		}
-		else {
-			const targetUrl = `${this.getLink()}/${clickedStep}`;
-			
+
+		this.openModal();
+
+		switch(this.props.requestType){
+			case requestTypes.create:
+				clickedVal = true;
+				break;
+			case requestTypes.edit:
+				clickedVal = true;
+				break;
+			default:
+				this.setState({current: clickedStep});
+				clickedVal = true;
+		}
+
+		return clickedVal;
+	}
+
+	handleRedirect = (isClicked) =>{
+		const {clicked} = this.state;
+		const nextSteps =  clicked + 1;
+		const targetUrl = `${this.dynamicLink()}/${nextSteps}`;
+		if(isClicked){
 			window.location.assign(targetUrl);
 		}
 	}
 
-	onOk = () => {
-		const targetUrl = `${this.getLink()}/1`;
-
-		window.location.assign(targetUrl);
+	handleCancelModal = (isCancelled) =>{
+		if(isCancelled){
+			this.closeModal();
+		}
 	}
-
-	onCancel = () => {
-		this.setState({ modalVisibility: false });
-	}
-
-	// Private Function
-	getLink = () => {
-		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
-	};
 
 	render() {
 		const items = TrackerSettings.stepItems;
@@ -72,15 +94,15 @@ class Tracker extends React.Component {
 							labelPlacement="vertical"
 							current={active || current}
 							style={{ marginTop: 20 }}
-							// onChange={this.onClickTracker}
+							onChange={this.onClickTracker}
 						>
 							{StepItems}
 						</Steps>
 					</Col>
 				</Row>
 				<TrackerModal 
-					onCancel={this.onCancel} 
-					onOK={this.onOk} 
+					onCancel={this.handleCancelModal} 
+					onOK={this.handleRedirect} 
 					visibility={modalVisibility} 
 					current={active || current} 
 				/>

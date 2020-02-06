@@ -5,6 +5,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { globalTableSize } from 'global_config/constant-global';
 import { Table as AntTable, Spin } from 'antd';
 import { 
 	CLR_STEP_PROGRESS, 
@@ -13,7 +14,7 @@ import {
 	REQUEST_TYPE,
 	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
-import {globalTableSize} from '../../global_config/constant-global';
+
 
 // CSS
 import './table.css';

@@ -3,6 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table as AntTable, Spin as AntSpin } from 'antd';
+import { globalTableSize } from 'global_config/constant-global';
 
 // CSS
 import './phlebo_result_table.css';
@@ -56,19 +57,19 @@ class SearchPatientTable extends React.Component {
 				title: 'LAST NAME',
 				dataIndex: 'lastName',
 				sorter: getSorter(data, 'lastName'),
-				width: 150
+				width: 190
 			},
 			{
 				title: 'FIRST NAME',
 				dataIndex: 'givenName',
 				sorter: getSorter(data, 'givenName'),
-				width: 150
+				width: 190
 			},
 			{
 				title: 'MIDDLE NAME',
 				dataIndex: 'middleName',
 				sorter: getSorter(data, 'middleName'),
-				width: 150
+				width: 190
 			}, 
 			{
 				title: 'DATE OF BIRTH',
@@ -80,7 +81,6 @@ class SearchPatientTable extends React.Component {
 				title: 'GENDER',
 				dataIndex: 'sex',
 				sorter:  getSorter(data, 'sex'),
-				width: 120
 			},
 			{
 				title: 'ADDRESS',
@@ -94,12 +94,12 @@ class SearchPatientTable extends React.Component {
 				<div>
 					<AntTable 
 						pagination={{pageSize}} 
-						size="small"
+						size={globalTableSize}
 						// @ts-ignore
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
-						rowKey={record => record.patientID}
+						rowKey={record => record.requestID}
 						onRow={(record) => {
 							return { 
 								onDoubleClick: () => {

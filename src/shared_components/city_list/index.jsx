@@ -27,8 +27,8 @@ class CityList extends React.Component {
 	componentDidUpdate(prevProps) {
 		const { provinceValue } = this.props;
 
-		if(prevProps.provinceValue !== provinceValue && provinceValue !== ''){
-			console.log('city list did update');
+		if(prevProps.provinceValue !== provinceValue){
+
 			this.fetchAndUpdateValues();
 		}
 	}
@@ -36,8 +36,6 @@ class CityList extends React.Component {
 	fetchAndUpdateValues = () => {
 		const { provinceValue, selectedCity, form } = this.props;
 		const { setFieldsValue } = form;
-
-		console.log('selectedCity', selectedCity);
 
 		this.setState({ loading: true } , async () => {
 			const cityListResponse = await cityListAPI(provinceValue);
