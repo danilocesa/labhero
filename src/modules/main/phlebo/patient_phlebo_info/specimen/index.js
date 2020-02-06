@@ -6,7 +6,7 @@
 import React from 'react';
 import { Table, Button, Spin } from 'antd';
 import PropTypes from 'prop-types';
-
+import { globalTableSize } from 'global_config/constant-global';
 
 // CUSTOM MODULES
 import patientPhleboSpecimensAPI from 'services/phlebo/specimenTracking/requestid';
@@ -34,7 +34,7 @@ class SpecimenList extends React.Component {
 			{ 
 				title: 'SECTION', 
 				dataIndex: 'sectionName',
-				width: 120
+				// width: 120
 			},
 			{ 
 				title: 'SPECIMEN', 
@@ -44,7 +44,7 @@ class SpecimenList extends React.Component {
 			{ 
 				title: 'SAMPLE ID', 
 				dataIndex: 'sampleSpecimenID',
-				width: 150
+				width: 120
 			},
 			{ 
 				title: 'EXTRACTED BY', 
@@ -108,22 +108,6 @@ class SpecimenList extends React.Component {
 		});
 	}
 
-	// componentDidUpdate = async (prevProps) =>{
-	// 	const { patientInfo } = this.props;
-
-	// 	if(patientInfo.requestID !== prevProps.patientInfo.requestID){ 
-	// 		const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
-	
-	// 		if(patientSpecimens !== undefined){
-	// 			// eslint-disable-next-line react/no-did-update-set-state
-	// 			this.setState({  
-	// 				requestID: patientSpecimens.requestID,
-	// 				examRequests: patientSpecimens.examRequests
-	// 			});
-	// 		}
-	// 	}
-	// }
-
 	onClickExtract = (sectionID, specimenID, index) => {
 		const { requestID } = this.state;
 		const { patientInfo } = this.props;
@@ -147,9 +131,6 @@ class SpecimenList extends React.Component {
 				});
 
 				const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
-
-				// Update the selected row's sampleSpecimenId to disable exctract button
-				// examRequestClone.splice(index, 1, { ...examRequestClone[index], sampleSpecimenID: 1 })
 
 				examRequestClone = patientSpecimens.examRequests;
 			} else{
@@ -181,7 +162,8 @@ class SpecimenList extends React.Component {
 						expandedRowRender={(record) => record.exams.map((i, index) => <div key={index}>{i}</div>)}
 						dataSource={examRequests}
 						rowKey={record => `${record.sectionCode}-${record.specimenID}`}
-						size="small"
+						size={globalTableSize}
+						pagination={false}
 						scroll={{ y: 300 }}
 					/>
 				</Spin>

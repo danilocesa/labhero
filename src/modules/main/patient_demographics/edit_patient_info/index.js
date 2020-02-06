@@ -64,14 +64,13 @@ class EditProfile extends React.Component {
 	}
 
 	onProvinceChange = () => {
-		this.setState((state) => ({ 
+		this.setState({ 
 			patientAddress: { 
-				...state.patientAddress, 
 				cityMunicipalityCode: null,
 				townCode: null,
 				houseAddress: null 
 			} 
-		}), () => console.log('province changed', this.state.patientAddress));
+		});
 	}
 
 	onCityChange = () => {
@@ -172,8 +171,8 @@ class EditProfile extends React.Component {
 								rules: fieldRules.lastname ,
 							})(
 								<RegexInput
-									regex={/[A-z0-9 -.]/}  
-									maxLength={100}
+									regex={/[A-Za-z0-9-. ]/}  
+									maxLength={50}
 								/>
 							)}
 							</Form.Item>
@@ -186,9 +185,9 @@ class EditProfile extends React.Component {
 									rules: fieldRules.firstname,
 								})(
 									<RegexInput 
-										regex={/[A-z0-9 -.]/}  
+										regex={/[A-Za-z0-9-. ]/}  
 										onChange={this.onChangePatientInfo} 
-										maxLength={100}
+										maxLength={50}
 									/>
 								)}
 							</Form.Item>
@@ -201,9 +200,9 @@ class EditProfile extends React.Component {
 									rules: fieldRules.middlename,
 								})(
 									<RegexInput 
-										regex={/[A-z0-9 -.]/}  
+										regex={/[A-Za-z0-9-. ]/}   
 										onChange={this.onChangePatientInfo} 
-										maxLength={100}
+										maxLength={15}
 									/>
 								)}
 							</Form.Item>
@@ -217,7 +216,7 @@ class EditProfile extends React.Component {
 								})(
 									<Input 
 										onChange={this.onChangePatientInfo} 
-										maxLength={50}
+										maxLength={5}
 									/>
 								)}
 							</Form.Item>

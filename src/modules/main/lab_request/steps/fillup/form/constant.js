@@ -11,19 +11,19 @@ export const FIELD_RULES = {
 	givenName: [
 		{ required: true, message: errorMessage.required },
 		{ min: 2, message: errorMessage.minLength(2) },
-		{ max: 100, message: errorMessage.maxLength(100) }
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	middleName: [
 		{ required: true, message: errorMessage.required },
-		{ max: 100, message: errorMessage.maxLength(100) }
+		{ max: 15, message: errorMessage.maxLength(15) }
 	],
 	lastName: [
 		{ required: true, message: errorMessage.required },
 		{ min: 2, message: errorMessage.minLength(2) },
-		{ max: 100, message: errorMessage.maxLength(100) }
+		{ max: 50, message: errorMessage.maxLength(50) }
 	],
 	suffix: [
-		{ max: 50, message: errorMessage.maxLength(50) }
+		{ max: 5, message: errorMessage.maxLength(5) }
 	],
 	dateOfBirth: [
 		{ required: true, message: errorMessage.required }
