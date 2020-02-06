@@ -15,20 +15,3 @@ body {
 .fullWidth {
   width: '100%'
 }
-
-<<<<<<< HEAD
-/**.ant-table-thead th {
-  padding-left:1px!important;
-  padding-right:1px!important;
-}
-
-.ant-table-thead > tr > th {
-  padding: 4px 16px !important;
-}
-
-.ant-table-tbody > tr > td {
-  padding: 7px 15px !important;
-}
-**/
-=======
->>>>>>> api-integration
