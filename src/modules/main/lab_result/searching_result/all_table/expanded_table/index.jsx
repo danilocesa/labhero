@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
+import { globalTableSize } from 'global_config/constant-global';
 
 const columns = [
 	{
@@ -39,7 +40,7 @@ class ExpandedTable extends React.Component {
 		    columns={columns}
 		    dataSource={contents}
 		    pagination={false}
-				size="small"
+				size={globalTableSize}
 				rowKey={record => `${record.sampleSpecimenID}-${record.specimenID}`}
         onRow={record => {
           return { onClick: () => { 

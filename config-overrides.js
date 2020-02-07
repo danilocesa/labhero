@@ -15,6 +15,9 @@ module.exports = override(
 			'@table-header-bg': '#8A73F9',
 			'@table-header-sort-bg': '#8A73F9',
 			'@table-header-color': '#FFFFFF',
+			'@table-padding-vertical': '8px',
+			'@table-padding-horizontal': '8px',
+			// '@table-border-radius-base': '5px'
     },
   }),
 );
