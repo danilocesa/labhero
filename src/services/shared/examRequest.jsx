@@ -37,7 +37,7 @@ export async function fetchExamRequests(sectionId, specimenId) {
 }
 
 export async function fetchSelectedExamList(secID, specID, erID) {
-	let examList = null;
+	let examList = [];
 
 	try{
 		const content = {

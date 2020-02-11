@@ -41,7 +41,9 @@ class ExamItems extends React.Component {
 		ddSpecimens: [],
 		selectedSectionId: null,
 		selectedSpecimenId: null,
-		selectedExamItemId: null
+		selectedExamItemId: null,
+		selectedSectionName: null,
+		selectedSpecimenName: null
 	}
 	
 	async componentDidMount() {
@@ -61,6 +63,7 @@ class ExamItems extends React.Component {
 			ddSections, 
 			ddSpecimens, 
 			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
+			selectedSpecimenName: specimens[0].specimenName ? specimens[0].specimenName : null,
 			isInitializing: false, 
 		});
 	}
@@ -73,7 +76,7 @@ class ExamItems extends React.Component {
 		this.setState({ pageSize });
 	}
 
-	onChangeSectionCode = (sectionId) => {
+	onChangeSectionCode = (sectionId, option) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async () => {
 			const { selectedSpecimenId: specimenID } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
@@ -81,12 +84,13 @@ class ExamItems extends React.Component {
 			this.setState({ 
 				examItems, 
 				examItemsRef: examItems,
-				isLoading: false 
+				isLoading: false,
+				selectedSectionName: option.props.children 
 			});
 		});
 	}
 
-	onChangeSpecimen = (specimenID) => {
+	onChangeSpecimen = (specimenID, option) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenID }, async () => {
 			const { selectedSectionId: sectionId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
@@ -94,7 +98,8 @@ class ExamItems extends React.Component {
 			this.setState({ 
 				examItems, 
 				examItemsRef: examItems,
-				isLoading: false 
+				isLoading: false, 
+				selectedSpecimenName: option.props.children
 			});
 		});
 	}
@@ -176,7 +181,9 @@ class ExamItems extends React.Component {
 			isLoading,
 			selectedSpecimenId,
 			selectedSectionId,
-			selectedExamItemId
+			selectedExamItemId,
+			selectedSectionName,
+			selectedSpecimenName
 		} = this.state;
 
 		const leftSection = (
@@ -195,6 +202,8 @@ class ExamItems extends React.Component {
 					onSearch={value => this.onSearch(value)}
 					onChange={this.onChangeSearch}
 					style={{ width: 200, marginLeft: 15 }}
+					disabled={selectedSectionId == null}
+					className="exam-item-search-input"
 				/>
 			</>
 		);
@@ -245,6 +254,8 @@ class ExamItems extends React.Component {
 					onSuccess={this.onSuccessCreateExamItem}
 					selectedSectionId={selectedSectionId}
 					selectedSpecimenId={selectedSpecimenId}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
 				/>
 				<UpdateForm 
 					visible={isShowUpdateForm} 
@@ -253,6 +264,8 @@ class ExamItems extends React.Component {
 					selectedSectionId={selectedSectionId}
 					selectedSpecimenId={selectedSpecimenId}
 					selectedExamItemId={selectedExamItemId}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
 				/>
 			</div>
 		);

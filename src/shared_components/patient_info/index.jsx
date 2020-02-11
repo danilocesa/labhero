@@ -42,11 +42,12 @@ class PatientInfo extends React.Component {
 			comment, 
 			location  
 		} = patientInfoValue;
-		console.log('patientInfoValue', patientInfoValue);
+		
+
 
 		this.setState({
 			hospitalID: 	hospitalRequestID || '-',
-			physician: 		physician !== undefined 
+			physician: 		physician
 										? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`.toUpperCase() 
 										: '-',
 			bed: 					bed || '-',

@@ -211,8 +211,8 @@ class UpdateForm extends React.Component {
 			isFetchingData,
 			examItemValue
 		} = this.state;
-	
-		const { onClose, visible, form } = this.props;
+		
+		const { onClose, visible, form, selectedSectionName, selectedSpecimenName } = this.props;
 		const { getFieldDecorator, getFieldsValue } = form;
 		
 		const fieldsValue = getFieldsValue();
@@ -233,7 +233,7 @@ class UpdateForm extends React.Component {
 
 		return (
 			<Drawer
-				title={drawerTitle.update}
+				title={`${drawerTitle.update} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
 				width="400"
 				placement="right"
 				closable
@@ -354,13 +354,17 @@ UpdateForm.propTypes = {
 	onSuccess: PropTypes.func.isRequired,
 	selectedSectionId: PropTypes.number,
 	selectedSpecimenId: PropTypes.number,
-	selectedExamItemId: PropTypes.number
+	selectedExamItemId: PropTypes.number,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string,
 };
 
 UpdateForm.defaultProps = {
 	selectedSectionId: null,
 	selectedSpecimenId: null,
-	selectedExamItemId: null
+	selectedExamItemId: null,
+	selectedSectionName: null,
+	selectedSpecimenName: null
 };
 
 export default Form.create()(UpdateForm);

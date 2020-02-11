@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Row, Col, Button, Drawer } from 'antd';
 
 // CUSTOM MODULES
-import Iresults from '../../../iresults';
+import Iresults from 'modules/main/iresults';
 
 // IMAGES
-import { PrintLogo, IResultsIcon } from '../../../../../images';
+import { PrintLogo, IResultsIcon } from 'images';
 
 // CSS
 import './patientname.css';
@@ -59,12 +59,12 @@ class PatientName extends React.Component {
 			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
 				    <Row>
 					    <ButtonGroup>
-						    <Button onClick={this.onIresultButtonClick}>
+						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
 							    <img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
 							      <span style={{ paddingLeft: '7px' }}>iResults</span>
 						    </Button>
 
-						    <Button>
+						    <Button style={{ width: 120 }}>
 							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
 							    <span style={{ paddingLeft: '7px' }}>Print</span>
 						    </Button>

@@ -27,6 +27,13 @@ class Phlebo extends React.Component {
 		this.setState({pageSize});
 	}
 
+	clearPatients  = () => {
+		this.setState({ 
+			extractedPatients: [],
+			forExtractionPatients: []
+		})
+	}
+
 	populateExtractedPatients = (extractedPatients) => {
 		this.setState({ extractedPatients });
 	}
@@ -76,6 +83,7 @@ class Phlebo extends React.Component {
 				<div>
 					<PageTitle pageTitle={moduleTitle} />
 					<SearchPatientHeaderForm 
+						clearPatients={this.clearPatients}
 						populateExtractedPatients={this.populateExtractedPatients}
 						populateForExtractionPatients={this.populateForExtractionPatients}
 						displayLoading={this.displayLoading} 

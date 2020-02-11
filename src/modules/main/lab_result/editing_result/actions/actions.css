@@ -5,7 +5,8 @@
   color: #ffffff;
   margin-left: 20px;
   height: 35px;
-  line-height: 34px;
+	line-height: 34px;
+	width: 120px;
 }
 
 .action-container .back-button {

@@ -111,10 +111,7 @@ class EditableTable extends React.Component {
 	}
 
   render() {
-		const { examItems, formattedExamItems } = this.props;
-	 
-		console.log(examItems);
-		console.log('formatted', formattedExamItems);
+		const { formattedExamItems } = this.props;
 
     return (
 			<div className="labresult-exam-item-table">
