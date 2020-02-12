@@ -55,17 +55,13 @@ class SummaryStep extends React.Component {
 	render() {
 		const { exams } = this.state;
 		const { restriction } = this;
-		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
 
 		if(restriction.hasAccess) {
 			return (
 				<div>
 					<PageTitle pageTitle={moduleTitle} />
-					<Tracker 
-						active={3}
-						requestType={requestType}
-					/>
+					<Tracker active={3} />
 					<SummarySection />
 					<SummaryTable exams={exams} />
 					<br />
@@ -78,8 +74,5 @@ class SummaryStep extends React.Component {
 	}
 }
 
-SummaryStep.propTypes = {
-	requestType: PropTypes.string.isRequired
-};
 
 export default SummaryStep;

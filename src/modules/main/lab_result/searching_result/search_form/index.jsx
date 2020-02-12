@@ -56,9 +56,11 @@ class SearchForm extends React.Component {
 
 	
 	onClickClear = () => {
+		const { updateLabResults } = this.props;
 		const { resetFields } = this.props.form;
 
 		resetFields();
+		updateLabResults([]);
 	}
 
 	disabledDate = (current) => {

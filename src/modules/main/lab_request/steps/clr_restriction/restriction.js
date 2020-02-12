@@ -18,7 +18,6 @@ class Restriction {
     } else {  
       this.link = `/request/edit/step/${this.stepProgress}`;
     }
-
   }
 
   redirect = () => (

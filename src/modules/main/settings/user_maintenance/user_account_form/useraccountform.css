@@ -3,6 +3,10 @@
 	text-transform: uppercase;
 }
 
+.settings-user-maintence-form .password_input input {
+	text-transform: unset;
+}
+
 .settings-user-maintence-form .form-section .form-title{
 	margin-bottom: 15px;
 }

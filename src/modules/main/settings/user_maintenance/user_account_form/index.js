@@ -226,7 +226,7 @@ class UserAccountForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={fieldLabels.middleName}>
 									{
-										getFieldDecorator('middleName',{
+										getFieldDecorator('middleName', {
 											initialValue: patientInfo.middleName,
 											rules: fieldRules.middlename
 										})(
@@ -268,14 +268,21 @@ class UserAccountForm extends React.Component {
 								</Form.Item>
 								<Form.Item label={fieldLabels.password} hasFeedback>
 									{
-										getFieldDecorator('password',passwordValidation)(
-										<Input.Password maxLength={12} />)
+										getFieldDecorator('password', passwordValidation)(
+										<Input.Password 
+											className="password_input"
+											maxLength={12} 
+										/>)
 									}
 								</Form.Item>
 								<Form.Item label={fieldLabels.repeatPassword} hasFeedback>
 									{
-										getFieldDecorator('repeat_password',repeatPasswordValidation)(
-										<Input.Password maxLength={12} onBlur={this.handleConfirmBlur} />)
+										getFieldDecorator('repeat_password', repeatPasswordValidation)(
+										<Input.Password 
+											className="password_input"
+											maxLength={12} 
+											onBlur={this.handleConfirmBlur} 
+										/>)
 									}
 								</Form.Item>
 							</div>

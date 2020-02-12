@@ -139,11 +139,18 @@ class UpdatePanel extends React.Component {
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
 		// eslint-disable-next-line react/prop-types
-		const { visible, sectionId, specimenId, examRequest } = this.props;
+		const { 
+			visible, 
+			sectionId, 
+			specimenId, 
+			examRequest, 
+			selectedSectionName, 
+			selectedSpecimenName 
+		} = this.props;
 
 		return ( 
 			<Drawer
-				title={drawerTitle.update}
+				title={`${drawerTitle.update} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
 				width="90%"
 				placement="right"
 				closable
@@ -223,13 +230,17 @@ UpdatePanel.propTypes = {
 		examRequestSort: PropTypes.number,
 		sectionID: PropTypes.number,
 		specimenID: PropTypes.number,
-	}).isRequired
+	}).isRequired,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string,
 };
 
 UpdatePanel.defaultProps = {
 	sectionId: null,
 	specimenId: null,
-	examRequestId: null
+	examRequestId: null,
+	selectedSectionName: null,
+	selectedSpecimenName: null
 }
 
 export default UpdatePanel;

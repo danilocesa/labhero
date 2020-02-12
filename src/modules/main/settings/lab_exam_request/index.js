@@ -16,6 +16,8 @@ import UpdateForm from './update_panel';
 import DropDown from '../shared/dropdown';
 import { messages, placeHolders, labels, tablePageSize, buttonNames } from './settings';
 
+import './exam_request.css';
+
 const { Search } = Input;
 
 const SecondarySection = (props) => (
@@ -33,6 +35,8 @@ class LabExamRequest extends React.Component {
 	state = {
 		selectedSectionId: null,
 		selectedSpecimenId: null,
+		selectedSectionName: null,
+		selectedSpecimenName: null,
 		isInitializing: true,
 		isLoading: false,
 		pageSize: tablePageSize,
@@ -63,6 +67,7 @@ class LabExamRequest extends React.Component {
 			ddSections, 
 			ddSpecimens, 
 			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
+			selectedSpecimenName: specimens[0].specimenName ? specimens[0].specimenName : null,
 			isInitializing: false 
 		});
 	}
@@ -97,7 +102,7 @@ class LabExamRequest extends React.Component {
 		});
 	}
 
-	onChangeSection = async(sectionId) => {
+	onChangeSection = async(sectionId, option) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async() => {
 			const { selectedSpecimenId: specimenId } = this.state;
 			const examRequests = await fetchExamRequests(sectionId, specimenId);		
@@ -106,12 +111,13 @@ class LabExamRequest extends React.Component {
 				examRequests: examRequests || [], 
 				examRequestsRef: examRequests || [], 
 				selectedSectionId: sectionId,
+				selectedSectionName: option.props.children, 
 				isLoading: false
 			});
 		});
 	}
 
-	onChangeSpecimen = (specimenId) => {
+	onChangeSpecimen = (specimenId, option) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenId }, async() => {
 			const { selectedSectionId: sectionId } = this.state;
 			const examRequests = await fetchExamRequests(sectionId, specimenId);
@@ -120,6 +126,7 @@ class LabExamRequest extends React.Component {
 				examRequests,
 				examRequestsRef: examRequests || [], 
 				selectedSpecimenId: specimenId,
+				selectedSpecimenName: option.props.children,
 				isLoading: false
 			});
 		});
@@ -185,7 +192,9 @@ class LabExamRequest extends React.Component {
 			isInitializing,
 			selectedSectionId,
 			selectedSpecimenId,
-			selectedExamRequest
+			selectedExamRequest,
+			selectedSectionName,
+			selectedSpecimenName
 		} = this.state;
 		
 		const leftSection = (
@@ -194,7 +203,7 @@ class LabExamRequest extends React.Component {
 					<DropDown 
 						size="small"
 						placeholder={placeHolders.specimenDropdown}
-						content={ddSpecimens} 
+						content={ddSpecimens}
 						disabled={selectedSectionId == null}
 						onChange={this.onChangeSpecimen}
 						loading={isInitializing}
@@ -205,6 +214,8 @@ class LabExamRequest extends React.Component {
 						onSearch={value => this.onSearch(value)}
 						onChange={this.onChangeSearch}
 						style={{ width: 200, marginLeft: 15 }}
+						disabled={selectedSectionId == null}
+						className="exam-request-search-input"
 					/>
 				</Col>
 			</Row>
@@ -256,6 +267,8 @@ class LabExamRequest extends React.Component {
 					onSuccess={this.onSuccessCreateExamReq}
 					sectionId={selectedSectionId}
 					specimenId={selectedSpecimenId}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
 				/>
 				<UpdateForm
 					examRequest={selectedExamRequest}
@@ -265,6 +278,8 @@ class LabExamRequest extends React.Component {
 					sectionId={selectedSectionId}
 					specimenId={selectedSpecimenId}
 					examRequestId={selectedExamRequest.examRequestID}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
 				/>
 			</div>
 		);

@@ -133,13 +133,13 @@ class AddPanel extends React.Component {
 
 	render() {
 		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
-		const { sectionId , specimenId } = this.props;
+		const { sectionId , specimenId, selectedSectionName, selectedSpecimenName } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { visible } = this.props;
 
 		return (
 			<Drawer
-				title={drawerTitle.add}
+				title={`${drawerTitle.add} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
 				width="90%"
 				placement="right"
 				closable
@@ -207,12 +207,16 @@ AddPanel.propTypes = {
 	specimenId: PropTypes.number,
 	closeForm: PropTypes.func.isRequired,
 	visible: PropTypes.bool.isRequired,
-	onSuccess: PropTypes.func.isRequired
+	onSuccess: PropTypes.func.isRequired,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string,
 };
 
 AddPanel.defaultProps = {
 	sectionId: null,
-	specimenId: null
+	specimenId: null,
+	selectedSectionName: null,
+	selectedSpecimenName: null
 }
 
 export default AddPanel;
