@@ -73,9 +73,12 @@ class EditProfile extends React.Component {
 	}
 
 	onCityChange = () => {
+		console.log('city changed');
+
 		this.setState((state) => ({ 
 			patientAddress: { 
 				...state.patientAddress, 
+				cityMunicipalityCode: null,
 				townCode: null,
 				houseAddress: null 
 			} 
@@ -157,6 +160,8 @@ class EditProfile extends React.Component {
 			city: selectedCityCode, 
 			town: selectedTownCode
 		} = getFieldsValue();
+
+		console.log('selectedCityCode', selectedCityCode);
 
 		return(
 			<div>

@@ -38,9 +38,9 @@ class CityList extends React.Component {
 		const { setFieldsValue } = form;
 
 		this.setState({ loading: true } , async () => {
-			const cityListResponse = await cityListAPI(provinceValue);
+			const cityListResponse = provinceValue ? await cityListAPI(provinceValue) : [];
 
-			this.setState({ loading:false, cityList: cityListResponse }, () => {
+			this.setState({ loading: false, cityList: cityListResponse }, () => {
 				setFieldsValue({ city: selectedCity });
 			});
 		});
@@ -61,7 +61,7 @@ class CityList extends React.Component {
 							required: !isDisabled, 
 							message: errorMessage.required
 						}],
-						initialValue: selectedCity
+						initialValue: cityList.length === 0 ? null : selectedCity
 					})(
 						<Select
 							loading={loading}

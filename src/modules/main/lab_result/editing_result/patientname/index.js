@@ -72,21 +72,21 @@ class PatientName extends React.Component {
 				    </Row>
 			    </div>
 		    </Col>
-		{
-			this.state.showIresultInfo ? 
-			(
-				<Drawer
-					title="Re-run results"
-					onClose={this.onCloseIresultsInfoDrawer}
-					width="50%"
-					visible={this.state.showIresultInfo}
-				>
-					<Iresults /> 
-				</Drawer>
-			)
-			:
-			null
-		}
+				{
+					this.state.showIresultInfo ? 
+					(
+						<Drawer
+							title="Re-run results"
+							onClose={this.onCloseIresultsInfoDrawer}
+							width="50%"
+							visible={this.state.showIresultInfo}
+						>
+							<Iresults /> 
+						</Drawer>
+					)
+					:
+					null
+				}
 	    </Row>
     );
   }

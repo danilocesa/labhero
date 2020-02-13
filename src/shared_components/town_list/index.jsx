@@ -21,7 +21,7 @@ class TownList extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const { cityValue } = this.props;
-
+	
 		if(prevProps.cityValue !== cityValue) {
 			this.fetchAndUpdateValues();
 		}
@@ -35,7 +35,7 @@ class TownList extends React.Component {
 			const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
 
 			this.setState({ loading: false, townList: townListResponse }, () => {
-				setFieldsValue({ town: selectedTown });
+				setFieldsValue({ town: townListResponse.length === 0 ? null : selectedTown });
 			});
 		});
 	}

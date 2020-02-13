@@ -58,7 +58,6 @@ class houseAddressComponent extends React.Component{
 					]
 				})(
 					<Input 
-						style={{ textTransform: 'uppercase' }}
 						disabled={isDisabled} 
 						maxLength={254} 
 						allowClear
