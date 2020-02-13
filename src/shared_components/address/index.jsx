@@ -59,7 +59,7 @@ class houseAddressComponent extends React.Component{
 				})(
 					<Input 
 						disabled={isDisabled} 
-						maxLength={254} 
+						maxLength={70} 
 						allowClear
 					/>
 				)}  
