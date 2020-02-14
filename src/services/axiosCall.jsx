@@ -9,7 +9,7 @@ import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 
 export function setupAxiosInterceptors() {
 	/** BASE URL */
-	axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
+	 axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
 	// axios.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API; 
 
 	/** REQUEST INTERCEPTOR */
