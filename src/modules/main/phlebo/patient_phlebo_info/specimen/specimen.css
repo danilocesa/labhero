@@ -52,3 +52,8 @@
 .phlebotable-container .ant-table-row-level-1 td:first-child {
   width: 350px !important;
 } */
+
+
+.phlebotable-container .ant-table .ant-table-body {
+	overflow-y: overlay !important;
+}

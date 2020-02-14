@@ -54,6 +54,7 @@ class Actions extends React.Component {
 					loading={isLoading}
 					className="save-button" 
 					onClick={this.onClickSave}
+					
 				>
 					SAVE
 				</Button>

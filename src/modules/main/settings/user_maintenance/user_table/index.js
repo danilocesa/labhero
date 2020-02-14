@@ -57,8 +57,16 @@ const columns = [
 		title: tableHeaders.middleName,
 		dataIndex: 'middleName',
 		key: 'middleName',
+		width: 250,
 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
 	},
+	{
+		title: tableHeaders.userTypes,
+		dataIndex: 'userTypeName',
+		key: 'userTypeName',
+		sorter: (a, b) => a.userTypeName.localeCompare(b.userTypeName),
+	},
+
 ];
 
 class UserTable extends React.Component {

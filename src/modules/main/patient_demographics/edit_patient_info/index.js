@@ -76,6 +76,7 @@ class EditProfile extends React.Component {
 		this.setState((state) => ({ 
 			patientAddress: { 
 				...state.patientAddress, 
+				cityMunicipalityCode: null,
 				townCode: null,
 				houseAddress: null 
 			} 

@@ -34,7 +34,7 @@ class SpecimenList extends React.Component {
 			{ 
 				title: 'SECTION', 
 				dataIndex: 'sectionName',
-				// width: 120
+				width: 120
 			},
 			{ 
 				title: 'SPECIMEN', 
@@ -78,7 +78,7 @@ class SpecimenList extends React.Component {
 			{ 
 				title: '',
 				dataIndex: 'phlebo_print_col',
-				width: 50,
+				width: 70,
 				render:(value, row) => {
 					return(
 						<Button 

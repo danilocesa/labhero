@@ -15,9 +15,11 @@
 }
 
 
-.clr-fillup-form .left-form input {
+.clr-fillup-form .left-form input,
+.clr-fillup-form .center-form input {
   text-transform: uppercase;
 }	
+
 
 .clr-fillup-form .left-form .ant-radio-button-wrapper {
   width: 100px;
