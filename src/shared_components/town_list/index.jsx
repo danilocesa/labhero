@@ -32,11 +32,15 @@ class TownList extends React.Component {
 		const { setFieldsValue } = form;
 
 		this.setState({ loading: true }, async () => {
-			const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
+			const timer = setTimeout(async () => {
+				const townListResponse = (cityValue) ? await townListAPI(cityValue) : [];
 
-			this.setState({ loading: false, townList: townListResponse }, () => {
-				setFieldsValue({ town: townListResponse.length === 0 ? null : selectedTown });
-			});
+				this.setState({ loading: false, townList: townListResponse }, () => {
+					setFieldsValue({ town: townListResponse.length === 0 ? null : selectedTown });
+				});
+
+				clearTimeout(timer);
+			}, 600);
 		});
 	}
 
