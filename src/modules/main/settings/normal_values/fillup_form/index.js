@@ -5,13 +5,9 @@ import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import {
 	// Exam Item Type Codes
-	EITC_ALPHA_NUMERIC,
 	EITC_NUMERIC,
-	EITC_CHECKBOX,
-	EITC_OPTION,
-	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
-import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+import { RegexInput } from 'shared_components/pattern_input';
 
 // import DynamicForm from '../dynamic_form';
 import { getUnitOfMeasures, getInputTypeCode } from '../../exam_item/api_repo';
@@ -22,7 +18,7 @@ import './fillup_form.css';
 const { Option } = Select;
 const { TextArea } = Input;
 
-class FillupForm extends React.Component {
+class AddForm extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -147,61 +143,91 @@ class FillupForm extends React.Component {
 								</Form.Item>
 							</Col>
 						</Row>
-                        <Form.Item label={fieldLabels.gender}>
-                            {getFieldDecorator('gender', {
-								initialValue: 0,
-							})(
-                                <Select>
-                                    <Option value="0">Please Select</Option>
-                                    <Option value="1">Female</Option>
-                                    <Option value="2">Male</Option>
-                                </Select>
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.ageBracket}>
-                            {getFieldDecorator('ageBracket')(
-                                <Select>
-                                    <Option value="0">Please Select</Option>
-                                    <Option value="1">1</Option>
-                                    <Option value="2">2</Option>
-                                </Select>
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.machine}>
-                            {getFieldDecorator('machine')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.labelOfRange}>
-                            {getFieldDecorator('labelOfRange')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.displayValue}>
-                            {getFieldDecorator('displayValue')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.low}>
-                            {getFieldDecorator('low')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.displayFlag}>
-                            {getFieldDecorator('lowFlag')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.high}>
-                            {getFieldDecorator('high')(
-                                <Input />
-                            )}
-                        </Form.Item>
-                        <Form.Item label={fieldLabels.displayFlag}>
-                            {getFieldDecorator('highFlag')(
-                                <Input />
-                            )}
-                        </Form.Item>
+						<Row gutter={24}>
+							<Col span={10}>
+								<Form.Item label={fieldLabels.gender}>
+								{getFieldDecorator('gender', {
+									initialValue: 0,
+								})(
+									<Select>
+										<Option value="0">Please Select</Option>
+										<Option value="1">Female</Option>
+										<Option value="2">Male</Option>
+									</Select>
+								)}
+								</Form.Item>
+							</Col>
+							<Col span={14}>						
+								<Form.Item label={fieldLabels.ageBracket}>
+									{getFieldDecorator('ageBracket')(
+										<Select>
+											<Option value="0">Please Select</Option>
+											<Option value="1">1</Option>
+											<Option value="2">2</Option>
+										</Select>
+									)}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>
+								<Form.Item label={fieldLabels.machine}>
+								{getFieldDecorator('machine')(
+									<Input />
+								)}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>
+								<Form.Item label={fieldLabels.labelOfRange}>
+								{getFieldDecorator('labelOfRange')(
+									<Input />
+								)}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>							
+								<Form.Item label={fieldLabels.displayValue}>
+								{getFieldDecorator('displayValue')(
+									<Input />
+								)}
+								</Form.Item>						
+							</Col>
+						</Row>
+						<Row gutter={24}>
+							<Col span={6}>
+								<Form.Item label={fieldLabels.low}>
+								{getFieldDecorator('low')(
+									<Input />
+								)}
+								</Form.Item>
+							</Col>
+							<Col span={18}>
+								<Form.Item label={fieldLabels.displayFlag}>
+								{getFieldDecorator('lowFlag')(
+									<Input />
+								)}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={24}>
+							<Col span={6}>
+								<Form.Item label={fieldLabels.high}>
+								{getFieldDecorator('high')(
+									<Input />
+								)}
+                        		</Form.Item>
+							</Col>
+							<Col span={18}>
+								<Form.Item label={fieldLabels.displayFlag}>
+								{getFieldDecorator('highFlag')(
+									<Input />
+								)}
+		                        </Form.Item>
+							</Col>
+						</Row>
 					</section>
 					<section className="drawerFooter">
 						<div>
@@ -229,21 +255,17 @@ class FillupForm extends React.Component {
 	}
 }
 
-FillupForm.propTypes = {
+AddForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	visible: PropTypes.bool.isRequired,
 	onSuccess: PropTypes.func.isRequired,
-    selectedSectionId: PropTypes.number,
-    selectedSection: PropTypes.string,
-    selectedSpecimenId: PropTypes.number,
-    selectedSpecimen: PropTypes.string
+	selectedSectionId: PropTypes.number,
+	selectedSpecimenId: PropTypes.number
 };
 
-FillupForm.defaultProps = {
-    selectedSectionId: null,
-    selectedSection: null,
-    selectedSpecimenId: null,
-    selectedSpecimen: null
+AddForm.defaultProps = {
+	selectedSectionId: null,
+	selectedSpecimenId: null
 };
 
-export default Form.create()(FillupForm);
+export default Form.create()(AddForm);

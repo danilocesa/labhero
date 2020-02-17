@@ -5,13 +5,9 @@ import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import {
 	// Exam Item Type Codes
-	EITC_ALPHA_NUMERIC,
-	EITC_NUMERIC,
-	EITC_CHECKBOX,
-	EITC_OPTION,
-	EITC_TEXT_AREA,
+	EITC_NUMERIC
 } from 'global_config/constant-global';
-import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+import { RegexInput } from 'shared_components/pattern_input';
 
 // import DynamicForm from '../dynamic_form';
 import { getUnitOfMeasures, getInputTypeCode } from '../../exam_item/api_repo';
@@ -100,7 +96,7 @@ class AddForm extends React.Component {
 				visible={visible}
 			>
 				{breadCrumb}
-				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
+				<Form onSubmit={this.onSubmit} className="normal-values-add-form">
 					<section style={{ marginBottom: 50 }}>
 						<section style ={{ borderBlockColor: 'black' }} >
 							<Form.Item label={fieldLabels.examItemName}>
