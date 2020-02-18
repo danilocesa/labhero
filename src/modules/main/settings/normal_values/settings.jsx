@@ -11,13 +11,18 @@ export const drawerTitle = {
   update: "UPDATE NORMAL VALUE"
 }
 
+export const formMode ={
+  add: "add",
+  update: "update"
+}
+
 export const messagePrompts = {
 	successCreatedNormalValues: 'Normal Value successfully created.',
 	successUpdatedNormalValues: 'Normal Value successfully updated.'
 }
 
 export const buttonNames = {
-    addExamItem : 'ADD NORMAL VALUES',
+    addNormalValues : 'ADD NORMAL VALUES',
     cancel: 'CANCEL',
     create: 'ADD',
     addField: 'ADD FIELD',

@@ -8,6 +8,7 @@ import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from '../exam_item/api_repo';
 import ExamTable from '../exam_item/table';
 import AddForm from './add_form';
+import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
 import { moduleTitle, tablePageSize, buttonNames, messagePrompts } from './settings';
 
@@ -27,7 +28,7 @@ class NormalValues extends React.Component {
 	state = {
 		isInitializing: true,
 		isLoading: false,
-		isShowAddForm: true,
+		isShowAddForm: false,
 		isShowUpdateForm: false,
 		pageSize: tablePageSize,
 		examItemsRef: [],
@@ -128,6 +129,7 @@ class NormalValues extends React.Component {
 				examItems,
 				pageSize,
 				isShowAddForm,
+				isShowUpdateForm,
 				isLoading
 		} = this.state;
 
@@ -154,7 +156,7 @@ class NormalValues extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<Icon type="plus" /> {buttonNames.addExamItem}
+					<Icon type="plus" /> {buttonNames.addNormalValues}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -187,6 +189,13 @@ class NormalValues extends React.Component {
 				/>
 				<AddForm 
 					visible={isShowAddForm} 
+					onClose={this.onExitForm} 
+					onSuccess={this.onSuccessAddNormalValues}
+					selectedSectionId={selectedSectionId}
+					selectedSpecimenId={selectedSpecimenId}
+				/>
+				<UpdateForm 
+					visible={isShowUpdateForm}
 					onClose={this.onExitForm} 
 					onSuccess={this.onSuccessAddNormalValues}
 					selectedSectionId={selectedSectionId}

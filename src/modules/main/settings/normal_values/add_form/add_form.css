@@ -14,3 +14,27 @@
     cursor: not-allowed;
     opacity: 0.5;
   }
+
+  .normal-values-add-form .exam-item-information{
+    border: 1px solid #e8e8e8;
+    margin-top: 10px;
+  }
+
+  .normal-values-add-form .exam-item-information .ant-row .ant-col{
+    margin-left: 10px;
+    margin-bottom: -10px;
+  }
+
+  .normal-values-add-form .normal-values-data .ant-row .ant-col{
+    margin-bottom: -15px;
+    margin-left: 10px;
+  }
+
+  .normal-values-add-form section.exam-item-information {
+    padding-bottom: 10px;
+  }
+
+  .normal-values-add-form section.switches {
+    padding-top: 10px;
+    margin-bottom:-10px;
+  }
