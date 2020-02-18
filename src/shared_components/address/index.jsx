@@ -54,13 +54,12 @@ class houseAddressComponent extends React.Component{
 					rules: [
 						...this.houseUnitfieldRules(),
 						{ min: 2, message: errorMessage.minLength(2) },
-						{ max: 254, message: errorMessage.maxLength(254) }
+						{ max: 70, message: errorMessage.maxLength(70) }
 					]
 				})(
 					<Input 
-						style={{ textTransform: 'uppercase' }}
 						disabled={isDisabled} 
-						maxLength={254} 
+						maxLength={70} 
 						allowClear
 					/>
 				)}  

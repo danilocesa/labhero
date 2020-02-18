@@ -27,7 +27,6 @@ import {
 	errorMessages
 } from '../settings';
 
-
 // CSS
 import './editprofile.css'; 
 
@@ -77,6 +76,7 @@ class EditProfile extends React.Component {
 		this.setState((state) => ({ 
 			patientAddress: { 
 				...state.patientAddress, 
+				cityMunicipalityCode: null,
 				townCode: null,
 				houseAddress: null 
 			} 
@@ -334,10 +334,10 @@ class EditProfile extends React.Component {
 						</Col>	
 					</Row>
 					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 10 }} onClick={this.props.onCancel}>
+						<Button shape="round" style={{ marginRight: 10, width: 120 }} onClick={this.props.onCancel}>
 							{drawerCancelButton}
 						</Button>
-						<Button shape="round" type="primary" htmlType="submit" style={{ margin: 10 }}>
+						<Button shape="round" type="primary" htmlType="submit" style={{ margin: 10, width: 120 }}>
 							{drawerSubmitButton}
 						</Button>
 					</section>

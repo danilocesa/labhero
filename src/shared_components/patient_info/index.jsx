@@ -42,11 +42,12 @@ class PatientInfo extends React.Component {
 			comment, 
 			location  
 		} = patientInfoValue;
-		console.log('patientInfoValue', patientInfoValue);
+		
+
 
 		this.setState({
 			hospitalID: 	hospitalRequestID || '-',
-			physician: 		physician !== undefined 
+			physician: 		physician
 										? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`.toUpperCase() 
 										: '-',
 			bed: 					bed || '-',
@@ -60,11 +61,11 @@ class PatientInfo extends React.Component {
 
   render() {
     return (
-	    <div>
+	    <div className="patient-info-shared">
 		    {/* Patient Image Placeholder */}
-		  	<div className="patient-img">
+		  	{/* <div className="patient-img">
 			    <img src={PatientImgPlaceholder} className="image-placeholder" alt="patient" />
-      		</div>
+      		</div> */}
 
 			{/* Personal Information */}
 			<div className="info-container">

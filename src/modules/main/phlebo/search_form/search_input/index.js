@@ -65,21 +65,13 @@ class SearchPatientHeaderForm extends React.Component {
 		return apiResponse.data;
 	}
 
-	clearInputs = async () => {
+	clearItems = async () => {
 		this.setState({
 			patientID: "",
 			patientName: "",
-			selectedDateValue: moment().format("YYYYMMDD")
 		});
 
-		const { populatePatients } = this.props;
-		let patients = [];
-		
-		this.setState({ loading: true });
-		patients = []; 
-		this.setState({ loading: false });
-
-		populatePatients(patients);
+		this.props.clearPatients();
 	}
 
 	handleFocus = (event) => {
@@ -147,7 +139,7 @@ class SearchPatientHeaderForm extends React.Component {
 									block 
 									shape="round" 
 									style={{ width: 120 }}
-									onClick={this.clearInputs} 
+									onClick={this.clearItems} 
 								>
 									CLEAR
 								</Button>
@@ -175,17 +167,7 @@ class SearchPatientHeaderForm extends React.Component {
 SearchPatientHeaderForm.propTypes = {
 	populateExtractedPatients: PropTypes.func.isRequired,
 	populateForExtractionPatients: PropTypes.func.isRequired,
-	displayLoading: PropTypes.func,
-	sessionPatientName: PropTypes.string, 
-	sessionPatientID: PropTypes.string,
-	populatePatients: PropTypes.func
+	clearPatients: PropTypes.func.isRequired
 };
-
-SearchPatientHeaderForm.defaultProps = {
-	displayLoading() { return null; },
-	sessionPatientName: '',
-	sessionPatientID: '',
-	populatePatients() { return null; }
-}
 
 export default SearchPatientHeaderForm;

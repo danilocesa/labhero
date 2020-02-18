@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Row, Col } from 'antd';
+import { globalTableSize } from 'global_config/constant-global';
 
 import { CLR_SEL_EXAMS } from '../../constants';
 
@@ -52,7 +53,7 @@ class SummaryTable extends React.Component {
 				<Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
 					<div className="summary-step-table">
 						<Table 
-							size="small"
+							size={globalTableSize}
 							dataSource={exams} 
 							columns={columns} 
 							pagination={false}

@@ -38,7 +38,7 @@ class ProvinceListComponent extends React.Component {
 		const provinceSelections = (
 			getFieldDecorator('provinces', { 
 				rules: FIELD_RULES,
-				initialValue: selectedProvince
+				initialValue: provinceList.length === 0 ? null : selectedProvince
 			})(
 				<Select
 					loading={loading}

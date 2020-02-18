@@ -38,6 +38,7 @@ export const tableHeaders = {
 	firstName : 'FIRST NAME',
 	middleName : 'MIDDLE NAME',
 	lastName : 'LAST NAME',
+	userTypes: 'USER TYPE',
 };
 
 export const fieldLabels = {

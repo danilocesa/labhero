@@ -57,8 +57,16 @@ const columns = [
 		title: tableHeaders.middleName,
 		dataIndex: 'middleName',
 		key: 'middleName',
+		width: 250,
 		sorter: (a, b) => a.middleName.localeCompare(b.middleName),
 	},
+	{
+		title: tableHeaders.userTypes,
+		dataIndex: 'userTypeName',
+		key: 'userTypeName',
+		sorter: (a, b) => a.userTypeName.localeCompare(b.userTypeName),
+	},
+
 ];
 
 class UserTable extends React.Component {
@@ -182,7 +190,12 @@ class UserTable extends React.Component {
 								{ addUserButton }
 							</Button>
 							<Text>Display per page</Text>
-							<Select defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
+							<Select 
+								size="small"
+								defaultValue={tablePageSize} 
+								style={{ marginLeft: 10 }} 
+								onChange={this.handleSelectChange}
+							>
 								<Option value="5">5</Option>
 								<Option value="10">10</Option>
 								<Option value="15">15</Option>

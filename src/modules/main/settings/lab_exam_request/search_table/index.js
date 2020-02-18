@@ -19,7 +19,7 @@ class ExamTable extends React.Component {
 				width: 70
 			},
 			{ 
-				title: 'Exam Request Name',
+				title: 'EXAM REQUEST NAME',
 				dataIndex: 'examRequestName',
 				width: 300,
 				sorter: (a, b) => {
@@ -30,7 +30,7 @@ class ExamTable extends React.Component {
 				},
 			},
 			{ 
-				title: 'Exam Request Code',
+				title: 'EXAM REQUEST CODE',
 				dataIndex: 'examRequestCode',
 				width: 300,
 				sorter: (a, b) => {
@@ -52,7 +52,7 @@ class ExamTable extends React.Component {
 				}
 			},
 			{ 
-				title: 'Integration Code',
+				title: 'INTEGRATION CODE',
 				dataIndex: 'examRequestIntegrationCode',
 				width: 220,
 				sorter: (a, b) => {
@@ -63,7 +63,7 @@ class ExamTable extends React.Component {
 				}
 			},
 			{ 
-				title: 'Sort',
+				title: 'SORT',
 				dataIndex: 'examRequestSort',
 			}
 		];

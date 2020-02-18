@@ -207,7 +207,12 @@ class PanelTable extends React.Component {
 								{drawerAddTitle}
 							</Button>
 							<Text>Display per page</Text>
-							<Select defaultValue={tablePageSize} style={{ width: 120, marginLeft: '8px' }} onChange={this.handleSelectChange}>
+							<Select 
+								size="small" 
+								defaultValue={tablePageSize} 
+								style={{ marginLeft: 10 }} 
+								onChange={this.handleSelectChange}
+							>
 								<Option value="5">5</Option>
 								<Option value="10">10</Option>
 								<Option value="15">15</Option>

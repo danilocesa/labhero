@@ -41,6 +41,7 @@ class AddForm extends React.Component {
 		const inputTypeCodes = await getInputTypeCode();
 		
 		this.setState({ unitOfMeasures, inputTypeCodes });
+		console.log('addform did mount');
 	}
 
 	onChangeItemTypeCode = (itemTypeCode) => {
@@ -127,7 +128,7 @@ class AddForm extends React.Component {
 	render() {
 		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
 		// eslint-disable-next-line react/prop-types
-		const { onClose, visible, form } = this.props;
+		const { onClose, visible, form, selectedSectionName, selectedSpecimenName } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = form;
 	
@@ -148,7 +149,7 @@ class AddForm extends React.Component {
 
 		return (
 			<Drawer
-				title={drawerTitle.add}
+				title={`${drawerTitle.add} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
 				width="400"
 				placement="right"
 				closable
@@ -267,12 +268,16 @@ AddForm.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	selectedSectionId: PropTypes.number,
-	selectedSpecimenId: PropTypes.number
+	selectedSpecimenId: PropTypes.number,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string,
 };
 
 AddForm.defaultProps = {
 	selectedSectionId: null,
-	selectedSpecimenId: null
+	selectedSpecimenId: null,
+	selectedSectionName: null,
+	selectedSpecimenName: null
 };
 
 export default Form.create()(AddForm);
