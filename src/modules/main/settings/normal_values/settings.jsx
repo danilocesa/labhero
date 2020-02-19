@@ -22,12 +22,37 @@ export const messagePrompts = {
 }
 
 export const buttonNames = {
-    addNormalValues : 'ADD NORMAL VALUES',
+    addNormalValues : 'ADD NORMAL VALUE',
     cancel: 'CANCEL',
     create: 'ADD',
     addField: 'ADD FIELD',
     update: 'UPDATE'
   }
+
+export const tableHeaders = {
+  normalValues: {
+    gender: {
+      title:"GENDER",
+      dataIndex: "gender",
+    },
+    ageBracket: {
+      title:"AGE BRACKET",
+      dataIndex:"ageBracket"
+    },
+    machine: {
+      title:"MACHINE",
+      dataIndex:"machine"
+    },
+    labelOfRange: {
+      title:"LABEL OF RANGE",
+      dataIndex:"labelOfRange"
+    },
+    displayValue: {
+      title:"DISPLAY VALUE",
+      dataIndex:"displayValue"
+    }
+  }
+}
 
 export const fieldLabels = {
   examItemName: "EXAM ITEM NAME",

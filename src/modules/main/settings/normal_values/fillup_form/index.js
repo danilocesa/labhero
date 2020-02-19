@@ -61,7 +61,7 @@ class FillupForm extends React.Component {
 	}
 
 	render() {
-		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
+		const { isLoading, unitOfMeasures, inputTypeCodes } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { onClose, visible, form, drawerTitle, buttonNames, fieldRules, fieldLabels, addOrUpdate } = this.props;
 		const sumitLabel = (addOrUpdate === formMode.add) ?  buttonNames.create : buttonNames.update;
@@ -102,7 +102,7 @@ class FillupForm extends React.Component {
 						<section className="exam-item-information">
 							<Row>
 								<Col span={18}>
-									<Form.Item label={fieldLabels.examItemName} style={{}}>
+									<Form.Item label={fieldLabels.examItemName}>
 									{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
 										<RegexInput 
 											regex={/[A-Za-z0-9 -]/} 

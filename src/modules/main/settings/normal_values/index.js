@@ -9,6 +9,7 @@ import { fetchSections, fetchSpecimens, fetchExamitems } from '../exam_item/api_
 import ExamTable from '../exam_item/table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
+import NormalValuesDrawer from './values_drawer';
 import DropDown from '../shared/dropdown';
 import { moduleTitle, tablePageSize, buttonNames, messagePrompts } from './settings';
 
@@ -30,6 +31,7 @@ class NormalValues extends React.Component {
 		isLoading: false,
 		isShowAddForm: false,
 		isShowUpdateForm: false,
+		isShowValuesDrawer: true,
 		pageSize: tablePageSize,
 		examItemsRef: [],
 		examItems: [],
@@ -89,11 +91,9 @@ class NormalValues extends React.Component {
 
 	onDblClickTableRow = (selectedExamItem) => {
 		this.setState({ 
-			isShowUpdateForm: true,
+			isShowValuesDrawer: true,
 			selectedExamItemId: selectedExamItem.examItemID
 		});
-
-		console.log('TCL->', this.state.isShowUpdateForm);
 	}
 
 	onClickAdd = () => {
@@ -101,7 +101,7 @@ class NormalValues extends React.Component {
 	}
 
 	onExitForm = () => {
-		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
+		this.setState({ isShowAddForm: false, isShowUpdateForm: false, isShowValuesDrawer:false });
 	}
 
 	onChangePager = (pageSize) => {
@@ -130,6 +130,7 @@ class NormalValues extends React.Component {
 				pageSize,
 				isShowAddForm,
 				isShowUpdateForm,
+				isShowValuesDrawer,
 				isLoading
 		} = this.state;
 
@@ -149,7 +150,7 @@ class NormalValues extends React.Component {
 
 		const rightSection = (
 			<>
-				<Button 
+				{/* <Button 
 					shape="round"
 					type="primary" 
 					style={{ marginRight: 10 }}
@@ -157,7 +158,7 @@ class NormalValues extends React.Component {
 					disabled={selectedSectionId === null}
 				>
 					<Icon type="plus" /> {buttonNames.addNormalValues}
-				</Button>
+				</Button> */}
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
@@ -196,6 +197,13 @@ class NormalValues extends React.Component {
 				/>
 				<UpdateForm 
 					visible={isShowUpdateForm}
+					onClose={this.onExitForm} 
+					onSuccess={this.onSuccessAddNormalValues}
+					selectedSectionId={selectedSectionId}
+					selectedSpecimenId={selectedSpecimenId}
+				/>
+				<NormalValuesDrawer 
+					visible={isShowValuesDrawer}
 					onClose={this.onExitForm} 
 					onSuccess={this.onSuccessAddNormalValues}
 					selectedSectionId={selectedSectionId}
