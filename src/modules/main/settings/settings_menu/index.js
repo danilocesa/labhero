@@ -3,7 +3,7 @@ import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon } from "images";
+import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon } from 'images';
 import SettingsCard from './settings_card'
 
 import './setting-menu.css';
@@ -14,7 +14,7 @@ const settingsItemData = [
 		image: LabExamRequestIcon,
 		link: '/settings/exam-items',
 		label: 'EXAM ITEMS',
-		offset: 4
+		offset: 2
 	},
 	{
 		image: LabExamRequestIcon,

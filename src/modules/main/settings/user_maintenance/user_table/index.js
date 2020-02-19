@@ -64,6 +64,7 @@ const columns = [
 		title: tableHeaders.userTypes,
 		dataIndex: 'userTypeName',
 		key: 'userTypeName',
+		width: 150,
 		sorter: (a, b) => a.userTypeName.localeCompare(b.userTypeName),
 	},
 

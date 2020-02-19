@@ -219,8 +219,8 @@ class UserAccountForm extends React.Component {
 										rules: fieldRules.firstname
 									})(
 										<RegexInput
-											regex={/[A-z0-9 -]/} 
-											maxLength={50} 
+											regex={/[A-Za-z0-9 -]/} 
+											maxLength={15} 
 										/>
 									)}	
 								</Form.Item>
@@ -231,7 +231,7 @@ class UserAccountForm extends React.Component {
 											rules: fieldRules.middlename
 										})(
 											<RegexInput
-												regex={/[A-z0-9 -]/} 
+												regex={/[A-Za-z0-9 -]/} 
 												maxLength={15} 
 											/>
 										)
@@ -244,7 +244,7 @@ class UserAccountForm extends React.Component {
 											rules: fieldRules.lastname
 										})(
 											<RegexInput
-												regex={/[A-z0-9 -]/} 
+												regex={/[A-Za-z0-9 -]/} 
 												maxLength={50} 
 											/>
 										)
@@ -297,7 +297,7 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('registration_no',{
 											initialValue: patientInfo.registryNumber
 										})(
-											<AlphaNumInput />
+											<RegexInput regex={/[A-Za-z0-9 -]/} />
 										)
 									}
 								</Form.Item>
@@ -306,7 +306,7 @@ class UserAccountForm extends React.Component {
 										getFieldDecorator('registration_validity', {
 											initialValue: patientInfo.registryValidityDate
 										})(
-											<AlphaNumInput />
+											<RegexInput regex={/[A-Za-z0-9 -]/} />
 										)
 									}
 								</Form.Item>
