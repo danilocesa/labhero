@@ -1,17 +1,10 @@
-// /* eslint-disable react/prop-types */
-// // LIBRARY
+/* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
+import { Drawer, Form, Input, Button, Select, Switch, Row, Col, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
-import {
-	// Exam Item Type Codes
-	EITC_NUMERIC
-} from 'global_config/constant-global';
-import { RegexInput } from 'shared_components/pattern_input';
-
-// import DynamicForm from '../dynamic_form';
-import { getUnitOfMeasures, getInputTypeCode } from '../../exam_item/api_repo';
-import { formMode } from '../settings';
+import { getAnalyzers } from 'services/settings/examItemRange';
+import FIELD_RULES from './constants';
+import { drawerTitle, fieldLabels, formMode, buttonNames} from '../settings';
 
 import './fillup_form.css';
 
@@ -23,32 +16,101 @@ class FillupForm extends React.Component {
 
 		this.state = {
 			isLoading: false,
-			selectedRsType: null,
-			unitOfMeasures: [],
-			inputTypeCodes: []
+			analyzers: [],
 		}
+	}
 
-		this.dynamicForm = React.createRef();
+	async componentDidMount() {
+		const analyzers = await getAnalyzers();
+		const filteredAnalyzers = analyzers.filter(i => i.active);
+
+		this.setState({ analyzers: filteredAnalyzers });
+	}
+
+	componentDidUpdate(prevProps) {
+		const { moduleType, form, selectedItemRange } = this.props; 
+		const { setFieldsValue } = form;
+		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
+
+		if(moduleType === formMode.update) {
+			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
+				setFieldsValue({
+					...restItemRange,
+					canRelease: selectedItemRange.canRelease === 1,
+					autoRelease: selectedItemRange.autoRelease === 1,
+					ageBracketFrom: selectedItemRange.ageBracket.split('-')[0],
+					ageBracketTo: selectedItemRange.ageBracket.split('-')[1]
+				});
+			}
+		}
+	}
+
+	onFormSubmit = (event) => {
+		event.preventDefault();
+
+		const { form, onSubmit } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+
+		validateFieldsAndScroll((err) => {
+			if (!err) {
+				this.setState({ isLoading: true }, async() => {
+					const fieldValues = getFieldsValue();
+
+					await onSubmit(fieldValues);
+
+					this.setState({ isLoading: false });
+				});
+			}
+		});
+	}
+
+	onBlurAgeBracketTo = () => {
+		const { validateFields } = this.props.form;
+
+		validateFields(['ageBracketTo']);
+	}
+
+	onBlurAgeBracketFrom = () => {
+		const { validateFields } = this.props.form;
+
+		validateFields(['ageBracketTo']);
+	}
+
+	handleAgeFrom = (rule, value, callback) => {
+		const { form, ageBrackets } = this.props;
+		const toValue = form.getFieldValue('ageBracketTo');
+
+		if (value >= toValue) 
+			callback('Please enter valid age bracket from');
+
+		if(ageBrackets.some(age => (value && value >= age.from && value <= age.to))) 
+			callback('Age is already defined');
+
+		else 
+			callback();
+	}
+
+	handleAgeTo = (rule, value, callback) => {
+		const { form, ageBrackets } = this.props;
+		const fromValue = form.getFieldValue('ageBracketFrom');
+
+		if (fromValue >= value) 
+			callback('Please enter valid age bracket to');
+		
+		else if (ageBrackets.some(age => (value && value >= age.from && value <= age.to))) 
+			callback('Age is already defined');
+		
+		else {
+			form.validateFields(['ageBracketFrom']);
+			callback();
+		}
+			
 	}
 	
-	async componentDidMount() {
-		const unitOfMeasures = await getUnitOfMeasures();
-		const inputTypeCodes = await getInputTypeCode();
-		
-		this.setState({ unitOfMeasures, inputTypeCodes });
-	}
+	onBlurAgeBracket = () => {
+		const { form } = this.props;
 
-	onChangeItemTypeCode = (itemTypeCode) => {
-		const { setFieldsValue } = this.props.form;
-
-		if(itemTypeCode === EITC_NUMERIC)
-			setFieldsValue({ examItemTypeDefault: '' });
-
-		this.setState({ selectedRsType: itemTypeCode });
-	}
-
-	onSubmit = (event) => {
-		event.preventDefault();
+		form.validateFields(['ageBracketFrom', 'ageBracketTo']);
 	}
 
 	resetForm = () => {
@@ -56,89 +118,66 @@ class FillupForm extends React.Component {
 		const { resetFields } = this.props.form;
 
 		resetFields();
-
-		this.setState({ selectedRsType: null });
 	}
 
 	render() {
-		const { isLoading, unitOfMeasures, inputTypeCodes } = this.state;
-		// eslint-disable-next-line react/prop-types
-		const { onClose, visible, form, drawerTitle, buttonNames, fieldRules, fieldLabels, addOrUpdate } = this.props;
-		const sumitLabel = (addOrUpdate === formMode.add) ?  buttonNames.create : buttonNames.update;
+		const { isLoading, analyzers } = this.state;
+		const { 
+			onClose, 
+			visible, 
+			form, 
+			moduleType,
+			examItemName,
+			examItemGeneralName,
+			selectedSectionName,
+			selectedSpecimenName,
+			examItemUnitCode
+		} = this.props;
 		
-		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = form;
-	
-		const UnitMeasureOptions = unitOfMeasures.map(unit => {
-			return (
-				<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
-					{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
-				</Option>
-			);
-		});
-
-		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
-			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
-				{typeCode.inputTypeName}
+		const machineOptions = analyzers.map(i => (
+			<Option value={i.analyzerID} key={i.analyzerID}>
+				{i.analyzerName}
 			</Option>
 		));
 
-		const breadCrumb = (
-			<span>HEMA/BLOOD</span>
-		);
+		const headerTitle = (moduleType === formMode.add) ? drawerTitle.add : drawerTitle.update;
 
 		return (
 			<Drawer
-				title={drawerTitle}
+				title={`${headerTitle} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
 				width="700"
 				placement="right"
 				closable
 				onClose={onClose}
 				visible={visible}
 			>
-				{breadCrumb}
-				<Form onSubmit={this.onSubmit} className="normal-values-fillup-form">
+				<Form onSubmit={this.onFormSubmit} className="normal-values-fillup-form">
 					<section style={{ marginBottom: 50 }}>
-						<section className="exam-item-information">
-							<Row>
-								<Col span={18}>
+						<section className="exam-item-info">
+							<Row gutter={16}>
+								<Col span={9} style={{ marginLeft: 10 }}>
 									<Form.Item label={fieldLabels.examItemName}>
-									{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-										<RegexInput 
-											regex={/[A-Za-z0-9 -]/} 
-											maxLength={200} 
-										/>
-									)}
+										<Input value={examItemName} disabled />
 									</Form.Item>
 								</Col>
-							</Row>
-							<Row>
-								<Col span={12}>
+								<Col span={9}>
 									<Form.Item label={fieldLabels.examItemGeneralName}>
-									{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-										<RegexInput 
-											regex={/[A-Za-z0-9 -]/} 
-											maxLength={50} 
-										/>
-									)}
+										<Input value={examItemGeneralName} disabled />
 									</Form.Item>
 								</Col>
-							</Row>
-							<Row>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.examItemUnitCode}>
-									{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
-										<Select>{UnitMeasureOptions}</Select>
-									)}
-									</Form.Item>
-								</Col>
-							</Row>
-						</section>
-						<section className="switches">
-							<Row type="flex" justify="end">
 								<Col span={5}>
-									<Form.Item label={fieldLabels.print} labelCol={{span: 12}}>
-										{getFieldDecorator('print', {
+									<Form.Item label={fieldLabels.examItemUnitCode}>
+										<Input value={examItemUnitCode} disabled />
+									</Form.Item>
+								</Col>
+							</Row>
+						</section>
+						<section className="form-values">
+							<Row>
+								<Col span={8}>
+									<Form.Item label={fieldLabels.autoRelease} labelCol={{ span: 12 }}>
+										{getFieldDecorator('autoRelease', {
 											initialValue: true,
 											valuePropName: 'checked'
 										})(
@@ -146,9 +185,9 @@ class FillupForm extends React.Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.release} labelCol={{ span:12}} wrapperCol={{ span:1 }}>
-										{getFieldDecorator('release',{
+								<Col span={8}>
+									<Form.Item label={fieldLabels.release} labelCol={{ span:12 }} wrapperCol={{ span:1 }}>
+										{getFieldDecorator('canRelease',{
 											initialValue: true,
 											valuePropName: 'checked'
 										})(
@@ -157,30 +196,33 @@ class FillupForm extends React.Component {
 									</Form.Item>
 								</Col>
 							</Row>
-						</section>
-						<section className="normal-values-data">
-							<Row gutter={8}>
-								<Col span={8}>
+							<Row gutter={12} style={{ marginTop: 10 }}>
+								<Col span={6}>
 									<Form.Item label={fieldLabels.gender}>
-									{getFieldDecorator('gender', {
-										initialValue: 0,
-									})(
-										<Select>
-											<Option value="0">Please Select</Option>
-											<Option value="1">Female</Option>
-											<Option value="2">Male</Option>
-										</Select>
-									)}
+										{getFieldDecorator('sex', { rules: FIELD_RULES.sex })(
+											<Select>
+												<Option value="ALL">All</Option>
+												<Option value="MALE">Male</Option>
+												<Option value="FEMALE">Female</Option>
+											</Select>
+										)}
 									</Form.Item>
 								</Col>
-								<Col span={12}>						
-									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracket')(
-											<Select>
-												<Option value="0">Please Select</Option>
-												<Option value="1">1</Option>
-												<Option value="2">2</Option>
-											</Select>
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketFrom}>
+										{getFieldDecorator('ageBracketFrom', { 
+											rules: [{ validator: this.handleAgeFrom }],
+										})(
+											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketTo}>
+										{getFieldDecorator('ageBracketTo', { 
+											rules: [{ validator: this.handleAgeTo }],
+										})(
+											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
 										)}
 									</Form.Item>
 								</Col>
@@ -188,59 +230,61 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.machine}>
-									{getFieldDecorator('machine')(
-										<Input />
-									)}
+										{getFieldDecorator('analyzerID')(
+											<Select>
+												{machineOptions}
+											</Select>
+										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.labelOfRange}>
-									{getFieldDecorator('labelOfRange')(
-										<Input />
-									)}
+										{getFieldDecorator('rangeLabel')(
+											<Input />
+										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row>
 								<Col span={14}>							
 									<Form.Item label={fieldLabels.displayValue}>
-									{getFieldDecorator('displayValue')(
-										<Input />
-									)}
+										{getFieldDecorator('displayValue')(
+											<Input />
+										)}
 									</Form.Item>						
 								</Col>
 							</Row>
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
-									{getFieldDecorator('low')(
-										<Input />
-									)}
+										{getFieldDecorator('rangeLow')(
+											<Input />
+										)}
 									</Form.Item>
 								</Col>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
-									{getFieldDecorator('lowFlag')(
-										<Input />
-									)}
+										{getFieldDecorator('rangeLowFlagDisplay')(
+											<Input />
+										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.high}>
-									{getFieldDecorator('high')(
-										<Input />
-									)}
+										{getFieldDecorator('rangeHigh')(
+											<Input />
+										)}
 									</Form.Item>
 								</Col>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
-									{getFieldDecorator('highFlag')(
-										<Input />
-									)}
+										{getFieldDecorator('rangeHighFlagDisplay')(
+											<Input />
+										)}
 									</Form.Item>
 								</Col>
 							</Row>
@@ -262,7 +306,7 @@ class FillupForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10, width: 120 }}
 							>
-								{sumitLabel}
+								{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
 							</Button>
 						</div>
 					</section>
@@ -273,23 +317,44 @@ class FillupForm extends React.Component {
 }
 
 FillupForm.propTypes = {
-	drawerTitle: PropTypes.string.isRequired,
-	fieldRules: PropTypes.object.isRequired,
-	fieldLabels: PropTypes.object.isRequired,
-	buttonNames: PropTypes.object.isRequired,
-	addOrUpdate: PropTypes.string.isRequired,
-	onClose: PropTypes.func.isRequired,
+	moduleType: PropTypes.string.isRequired,
 	visible: PropTypes.bool.isRequired,
-	onSuccess: PropTypes.func.isRequired,
-	updateData: PropTypes.object,
-	selectedSectionId: PropTypes.number,
-	selectedSpecimenId: PropTypes.number
+	onClose: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func.isRequired,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string,
+	examItemName: PropTypes.string,
+	examItemGeneralName: PropTypes.string,
+	examItemGeneralName: PropTypes.string,
+	selectedItemRange: PropTypes.shape({
+		examItemRangeID: PropTypes.number,
+		examItemID: PropTypes.number,
+		sex: PropTypes.string,
+		analyzerID: PropTypes.number,
+		analyzerName: PropTypes.string,
+		ageBracket: PropTypes.string,
+		rangeLabel: PropTypes.string,
+		displayValue: PropTypes.string,
+		rangeLow: PropTypes.string,
+		rangeHigh: PropTypes.string,
+		rangeLowFlagDisplay: PropTypes.string,
+		rangeHighFlagDisplay: PropTypes.string,
+		canRelease: PropTypes.number,
+		autoRelease: PropTypes.number,
+	}),
+	ageBrackets: PropTypes.arrayOf(PropTypes.shape({
+		from: PropTypes.string,
+		to: PropTypes.string
+	})).isRequired
 };
 
 FillupForm.defaultProps = {
-	updateData() {return null;},
-	selectedSectionId: null,
-	selectedSpecimenId: null
-};
+	examItemName: null,
+	examItemGeneralName: null,
+	selectedSectionName: null,
+	selectedSpecimenName: null,
+	selectedItemRange: {}
+}
+
 
 export default Form.create()(FillupForm);

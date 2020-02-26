@@ -49,7 +49,7 @@ const createColumns = handleRemove => {
 			title: RemoveBtn,
 			dataIndex: 'action',
 			width: 100,
-			align: 'right'
+			align: 'center'
 		},
 	];
 };

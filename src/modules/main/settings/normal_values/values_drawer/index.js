@@ -1,224 +1,265 @@
+// @ts-nocheck
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { Drawer, Input, Button, Row, Col, Icon, Form } from 'antd';
+import Message from 'shared_components/message';
 import TablePager from 'shared_components/search_pager/pager';
-import HttpCodeMessage from 'shared_components/message_http_status';
-import { moduleTitle, fieldLabels, buttonNames, tablePageSize, messagePrompts } from '../settings';
+import { 
+	createExamItemRage, 
+	getAllItemRanges, 
+	updateExamItemRage 
+} from 'services/settings/examItemRange';
+
 import NormalValuesTable from './table';
-import AddForm from '../add_form';
-import UpdateForm from '../update_form';
+import FillupForm from '../fillup_form';
+import { 
+	moduleTitle, 
+	fieldLabels, 
+	buttonNames, 
+	tablePageSize, 
+	formMode, 
+	messagePrompts 
+} from '../settings';
 
 import './drawer.css';
 
-const ActionSection = (props) => (
-	<Row style={{ marginTop: 50 }}>
-		<Col span={24} style={{ textAlign: 'right' }}>
-			{props.rightContent}
-		</Col>
-	</Row>
-);
-
-const sampleData = [
-	{
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '< 10.0',
-		labelOfRange: 'CRITICAL LOW'
-	},
-	{
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '99999999',
-		labelOfRange: 'NORMAL'
-	},
-	{
-		gender: 'MALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: 'over 9000',
-		labelOfRange: 'NORMAL'
-    },
-    {
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '< 10.0',
-		labelOfRange: 'CRITICAL LOW'
-	},
-	{
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '99999999',
-		labelOfRange: 'NORMAL'
-	},
-	{
-		gender: 'MALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: 'over 9000',
-		labelOfRange: 'NORMAL'
-    },
-    {
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '< 10.0',
-		labelOfRange: 'CRITICAL LOW'
-	},
-	{
-		gender: 'FEMALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: '99999999',
-		labelOfRange: 'NORMAL'
-	},
-	{
-		gender: 'MALE',
-		ageBracket: '0-12',
-		machine: 'MACHINE',
-		displayValue: 'over 9000',
-		labelOfRange: 'NORMAL'
-	},
-];
-
 class NormalValuesDrawer extends React.Component{
-    state ={
-        isInitializing: true,
-		isLoading: false,
-		isShowAddForm: false,
-        isShowUpdateForm: false,
-        pageSize: tablePageSize,
-    }
+	constructor(props) {
+		super(props);
 
-    onDblClickTableRow = (selectedNormalValue) => {
-        console.log('TCL->',selectedNormalValue);
+		this.state = {
+			isLoading: false,
+			isDisplayAddForm: false,
+			isDisplayUpdateForm: false,
+			pageSize: tablePageSize,
+			itemRanges: [],
+			ageBrackets: [],
+			filteredAgeBrackets: [],
+			selectedItemRange: {}
+		};
+
+		this.addForm = React.createRef();
+		this.updateForm = React.createRef();
+	}
+
+	componentDidUpdate(prevProps) {
+		if(prevProps.selectedExamItem.examItemID !== this.props.selectedExamItem.examItemID) {
+			this.fetchAllExamItemRange();
+		}
+		
+	}
+
+	onDblClickTableRow = (row) => {
+		const { ageBrackets } = this.state;
+		const filteredAgeBrackets = ageBrackets.filter(item => item.examItemRangeID !== row.examItemRangeID);
+
 		this.setState({ 
-			isShowUpdateForm: true
+			isDisplayUpdateForm: true,
+			selectedItemRange: row,
+			filteredAgeBrackets
 		});
 	}
 
 	onClickAdd = () => {
-		this.setState({ isShowAddForm: true });
-    }
-    
-    onChangePager = (pageSize) => {
+		this.setState({ isDisplayAddForm: true });
+	}
+	
+	onChangePager = (pageSize) => {
 		this.setState({ pageSize });
-    }
-    
-	onExitForm = () => {
-		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
-    }
-    
-    onSuccessAddNormalValues = () => {
-		this.setState({ isLoading: true, isShowAddForm: false });
+	}
+	
+	onExitAddForm = () => {
+		this.addForm.resetForm();
 
-		// @ts-ignore
-		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedNormalValues });
+		this.setState({ isDisplayAddForm: false });
+	}
+
+	onExitUpdateForm = () => {
+		this.setState({ isDisplayUpdateForm: false });
+	}
+	
+	onSubmittingAddForm = async (fieldValues) => {
+		const { selectedExamItem } = this.props;
+
+		const createdItem = await createExamItemRage({
+			...fieldValues,
+			ageBracket: `${fieldValues.ageBracketFrom}-${fieldValues.ageBracketTo}`,
+			autoRelease: fieldValues.autoRelease ? 1 : 0,
+			canRelease: fieldValues.canRelease ? 1 : 0,
+			examItemId: selectedExamItem.examItemID
+		});
+		
+		if(createdItem) {
+			Message.success({ message: messagePrompts.successCreatedNormalValues });
+			this.addForm.resetForm();
+
+			await this.fetchAllExamItemRange();
+			this.setState({ isDisplayAddForm: false });
+		}
+	}
+
+	onSubmittingUpdateForm = async (fieldValues) => {
+		const { selectedItemRange } = this.state;
+
+		const isUpdated = await updateExamItemRage({
+			...fieldValues,
+			ageBracket: `${fieldValues.ageBracketFrom}-${fieldValues.ageBracketTo}`,
+			autoRelease: fieldValues.autoRelease ? 1 : 0,
+			canRelease: fieldValues.canRelease ? 1 : 0,
+			examItemRangeID: selectedItemRange.examItemRangeID
+		});
+
+		if(isUpdated) {
+			Message.success({ message: messagePrompts.successUpdatedNormalValues });
+			// this.updateForm.resetForm();
+
+			await this.fetchAllExamItemRange();
+			this.setState({ isDisplayUpdateForm: false });
+		}
+	}
+	
+
+	// Private functions
+	fetchAllExamItemRange = async () => {
+		this.setState({ isLoading: true }, async() => {
+			const { selectedExamItem } = this.props;
+			
+			const itemRanges = await getAllItemRanges(selectedExamItem.examItemID);
+			
+			const ageBrackets = itemRanges.map(item => ({ 
+				examItemRangeID: item.examItemRangeID,
+				from: item.ageBracket.split('-')[0], 
+				to: item.ageBracket.split('-')[1]
+			}));
+
+			this.setState({ itemRanges, ageBrackets, isLoading: false });
+		});
 	}
 
 
-    render() {
-        const { visible, selectedSectionID, selectedSpecimenID, onClose, isLoading, isShowAddForm, isShowUpdateForm, pageSize } = this.props;
-        
-        const breadCrumb = (
-			<span>HEMA/BLOOD</span>
-        );
-        
-        const rightSection = (
-			<>
-				<Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionID === null}
-				>
-					<Icon type="plus" /> {buttonNames.addNormalValues}
-				</Button>
-                <TablePager handleChange={this.onChangePager} />
-			</>
-		);
+	render() {
+		const { 
+			visible, 
+			onClose, 
+			selectedExamItem, 
+			selectedSectionName,
+			selectedSpecimenName
+		} = this.props;
 
-        return(
-            <div>
-            <Drawer 
-                title={moduleTitle}
-                width="1000"
-                placement="right"
-                closable
-                onClose={onClose}
-                visible={visible}
-                className="values-drawer"
-            >
-                {breadCrumb}
-                <section className="values-drawer-examItemSection">
-                    <Form>
-                        <Row gutter={16}>
-                            <Col span={9} style={{ marginLeft: 10 }}>
-                                <Form.Item label={fieldLabels.examItemName}>
-                                    <Input 
-                                        defaultValue={123} 
-                                        disabled
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={9}>
-                                <Form.Item label={fieldLabels.examItemGeneralName}>
-                                    <Input 
-                                        defaultValue={123} 
-                                        disabled
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={5}>
-                                <Form.Item label={fieldLabels.examItemUnitCode}>
-                                    <Input 
-                                        defaultValue={123} 
-                                        disabled
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </section>
-                <ActionSection 
-                    rightContent={rightSection}
-                />
-                <NormalValuesTable
-                    data={sampleData}
-                    pageSize={pageSize}
-                    loading={isLoading}
-                    onRowDblClick={this.onDblClickTableRow}
-                />
-            </Drawer>
-            <AddForm 
-                visible={isShowAddForm} 
-                onClose={this.onExitForm} 
-                onSuccess={this.onSuccessAddNormalValues}
-                selectedSectionId={selectedSectionID}
-                selectedSpecimenId={selectedSpecimenID}
-            />
-            <UpdateForm 
-                visible={isShowUpdateForm}
-                onClose={this.onExitForm} 
-                onSuccess={this.onSuccessAddNormalValues}
-                selectedSectionId={selectedSectionID}
-                selectedSpecimenId={selectedSpecimenID}
-            />
-            </div>
-        );
-    }
+		const { 
+			isDisplayAddForm, 
+			isDisplayUpdateForm, 
+			isLoading, 
+			pageSize, 
+			itemRanges,
+			selectedItemRange,
+			ageBrackets,
+			filteredAgeBrackets 
+		} = this.state;
+
+		return(
+			<div>
+				<Drawer 
+					title={`${moduleTitle} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
+					width="1000"
+					placement="right"
+					closable
+					onClose={onClose}
+					visible={visible}
+					className="values-drawer"
+				>
+					<section className="values-drawer-examItemSection">
+						<Form>
+							<Row gutter={16}>
+								<Col span={9} style={{ marginLeft: 10 }}>
+									<Form.Item label={fieldLabels.examItemName}>
+										<Input value={selectedExamItem.examItemName} disabled />
+									</Form.Item>
+								</Col>
+								<Col span={9}>
+									<Form.Item label={fieldLabels.examItemGeneralName}>
+										<Input value={selectedExamItem.examItemGeneralName} disabled />
+									</Form.Item>
+								</Col>
+								<Col span={5}>
+									<Form.Item label={fieldLabels.examItemUnitCode}>
+										<Input value={selectedExamItem.examItemUnitCode} disabled />
+									</Form.Item>
+								</Col>
+							</Row>
+						</Form>
+					</section>
+					<Row style={{ marginTop: 50 }}>
+						<Col span={24} style={{ textAlign: 'right' }}>
+							<>
+								<Button 
+									shape="round"
+									type="primary" 
+									style={{ marginRight: 10 }}
+									onClick={this.onClickAdd}
+								>
+									<Icon type="plus" /> {buttonNames.addNormalValues}
+								</Button>
+								<TablePager handleChange={this.onChangePager} />
+							</>
+						</Col>
+					</Row>
+					<NormalValuesTable
+						data={itemRanges}
+						pageSize={pageSize}
+						loading={isLoading}
+						onRowDblClick={this.onDblClickTableRow}
+					/>
+				</Drawer>
+				<FillupForm 
+					moduleType={formMode.add}
+					visible={isDisplayAddForm} 
+					onClose={this.onExitAddForm} 
+					onSubmit={this.onSubmittingAddForm}
+					ageBrackets={ageBrackets}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
+					examItemName={selectedExamItem.examItemName}
+					examItemGeneralName={selectedExamItem.examItemGeneralName}
+					examItemUnitCode={selectedExamItem.examItemUnitCode}
+					wrappedComponentRef={(inst) => this.addForm = inst}
+				/>
+				<FillupForm 
+					moduleType={formMode.update}
+					visible={isDisplayUpdateForm} 
+					onClose={this.onExitUpdateForm} 
+					onSubmit={this.onSubmittingUpdateForm}
+					ageBrackets={filteredAgeBrackets}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
+					examItemName={selectedExamItem.examItemName}
+					examItemGeneralName={selectedExamItem.examItemGeneralName}
+					examItemUnitCode={selectedExamItem.examItemUnitCode}
+					wrappedComponentRef={(inst) => this.updateForm = inst}
+					selectedItemRange={selectedItemRange}
+				/>
+			</div>
+		);
+	}
 }
 
 NormalValuesDrawer.propTypes = {
-    visible: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    selectedSpecimenID: PropTypes.number.isRequired,
-    selectedSectionID: PropTypes.number.isRequired
+	visible: PropTypes.bool.isRequired,
+	onClose: PropTypes.func.isRequired,
+	selectedExamItem: PropTypes.shape({
+		examItemID: PropTypes.number,
+		examItemName: PropTypes.string,
+		examItemGeneralName: PropTypes.string,
+		examItemUnitCode: PropTypes.string
+	}).isRequired,
+	selectedSectionName: PropTypes.string,
+	selectedSpecimenName: PropTypes.string
 };
+
+NormalValuesDrawer.defaultProps = {
+	selectedSectionName: null,
+	selectedSpecimenName: null
+};
+
 
 export default NormalValuesDrawer;

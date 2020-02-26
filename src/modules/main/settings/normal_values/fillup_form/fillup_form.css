@@ -1,40 +1,14 @@
-.normal-values-fillup-form .dynamic-delete-button {
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-  font-size: 24px;
-  color: #999;
-    transition: all 0.3s;
-    margin-left: 10px;
-}
-.normal-values-fillup-form .dynamic-delete-button:hover {
-  color: #777;
-}
-.normal-values-fillup-form .dynamic-delete-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
+.normal-values-fillup-form .exam-item-info {
+	border: 1px solid #e8e8e8;
+	margin-top: 10px;
 }
 
-.normal-values-fillup-form .exam-item-information{
-  border: 1px solid #e8e8e8;
-  margin-top: 10px;
+.normal-values-fillup-form .form-values {
+	margin-top: 20px;
 }
 
-.normal-values-fillup-form .exam-item-information .ant-row .ant-col{
-  margin-left: 10px;
-  margin-bottom: -10px;
+.normal-values-fillup-form .form-values .ant-form-item {
+	margin-bottom: 0px;
 }
 
-.normal-values-fillup-form .normal-values-data .ant-row .ant-col{
-  margin-bottom: -15px;
-  margin-left: 10px;
-}
 
-.normal-values-fillup-form section.exam-item-information {
-  padding-bottom: 10px;
-}
-
-.normal-values-fillup-form section.switches {
-  padding-top: 10px;
-  margin-bottom:-10px;
-}

@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col, Icon } from 'antd';
+import { Row, Col } from 'antd';
 
 import TablePager from 'shared_components/search_pager/pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import { fetchSections, fetchSpecimens, fetchExamitems } from '../exam_item/api_repo';
+import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
 import ExamTable from '../exam_item/table';
-import AddForm from './add_form';
-import UpdateForm from './update_form';
 import NormalValuesDrawer from './values_drawer';
 import DropDown from '../shared/dropdown';
-import { moduleTitle, tablePageSize, buttonNames, messagePrompts } from './settings';
+import { moduleTitle, tablePageSize, messagePrompts } from './settings';
 
 const ActionSection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -29,17 +27,16 @@ class NormalValues extends React.Component {
 	state = {
 		isInitializing: true,
 		isLoading: false,
-		isShowAddForm: false,
-		isShowUpdateForm: false,
-		isShowValuesDrawer: true,
+		isShowValuesDrawer: false,
 		pageSize: tablePageSize,
-		examItemsRef: [],
 		examItems: [],
 		ddSections: [],
 		ddSpecimens: [],
+		selectedExamItem: {},
 		selectedSectionId: null,
 		selectedSpecimenId: null,
-		selectedExamItemId: null
+		selectedSectionName: null,
+		selectedSpecimenName: null
 	}
 
 	async componentDidMount() {
@@ -55,53 +52,57 @@ class NormalValues extends React.Component {
 			value: specimen.specimenID
 		}));
 
+		const selectedSpecimenId = (specimens && specimens[0].specimenID) 
+			? specimens[0].specimenID 
+			: null;
+		const selectedSpecimenName = (specimens && specimens[0].specimenName) 
+			? specimens[0].specimenName 
+			: null;
+
 		this.setState({ 
 			ddSections, 
 			ddSpecimens, 
-			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
+			selectedSpecimenId,
+			selectedSpecimenName,
 			isInitializing: false, 
 		});
 	}
 
-	onChangeSectionCode = (sectionId) => {
+	onChangeSectionCode = (sectionId, option) => {
 		this.setState({ isLoading: true, selectedSectionId: sectionId }, async () => {
 			const { selectedSpecimenId: specimenID } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
-		
+			
 			this.setState({ 
 				examItems, 
-				examItemsRef: examItems,
-				isLoading: false 
+				isLoading: false, 
+				selectedSectionName: option.props.children
 			});
 		});
 	}
 
-	onChangeSpecimen = (specimenID) => {
+	onChangeSpecimen = (specimenID, option) => {
 		this.setState({ isLoading: true, selectedSpecimenId: specimenID }, async () => {
 			const { selectedSectionId: sectionId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
 
 			this.setState({ 
-				examItems, 
-				examItemsRef: examItems,
-				isLoading: false 
+				examItems,
+				isLoading: false,
+				selectedSpecimenName: option.props.children
 			});
 		});
 	}
 
 	onDblClickTableRow = (selectedExamItem) => {
 		this.setState({ 
+			selectedExamItem,
 			isShowValuesDrawer: true,
-			selectedExamItemId: selectedExamItem.examItemID
 		});
 	}
 
-	onClickAdd = () => {
-		this.setState({ isShowAddForm: true });
-	}
-
 	onExitForm = () => {
-		this.setState({ isShowAddForm: false, isShowUpdateForm: false, isShowValuesDrawer:false });
+		this.setState({ isShowValuesDrawer:false });
 	}
 
 	onChangePager = (pageSize) => {
@@ -109,7 +110,7 @@ class NormalValues extends React.Component {
 	}
 
 	onSuccessAddNormalValues = () => {
-		this.setState({ isLoading: true, isShowAddForm: false }, async () => {
+		this.setState({ isLoading: true }, async () => {
 			const { selectedSectionId: sectionId, selectedSpecimenId: specimenId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenId);
 			this.setState({ examItems, isLoading: false });
@@ -128,10 +129,11 @@ class NormalValues extends React.Component {
 				selectedSpecimenId,
 				examItems,
 				pageSize,
-				isShowAddForm,
-				isShowUpdateForm,
 				isShowValuesDrawer,
-				isLoading
+				isLoading,
+				selectedExamItem,
+				selectedSectionName,
+				selectedSpecimenName
 		} = this.state;
 
 		const leftSection = (
@@ -150,15 +152,6 @@ class NormalValues extends React.Component {
 
 		const rightSection = (
 			<>
-				{/* <Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionId === null}
-				>
-					<Icon type="plus" /> {buttonNames.addNormalValues}
-				</Button> */}
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
@@ -168,14 +161,14 @@ class NormalValues extends React.Component {
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
 					<PageTitle pageTitle={moduleTitle} />
 					<Row style={{ marginTop: 50 }}>
-					<DropDown 
-						label="SECTION"
-						placeholder="Select Section"
-						content={ddSections} 
-						onChange={this.onChangeSectionCode}
-						loading={isInitializing}
-						value={selectedSectionId}
-					/>
+						<DropDown 
+							label="SECTION"
+							placeholder="Select Section"
+							content={ddSections} 
+							onChange={this.onChangeSectionCode}
+							loading={isInitializing}
+							value={selectedSectionId}
+						/>
 					</Row>
 				</section>
 				<ActionSection 
@@ -183,31 +176,20 @@ class NormalValues extends React.Component {
 					rightContent={rightSection}
 				/>
 				<ExamTable 
-				data={examItems}
-				pageSize={pageSize}
-				loading={isLoading}
-				onRowDblClick={this.onDblClickTableRow}
-				/>
-				<AddForm 
-					visible={isShowAddForm} 
-					onClose={this.onExitForm} 
-					onSuccess={this.onSuccessAddNormalValues}
-					selectedSectionId={selectedSectionId}
-					selectedSpecimenId={selectedSpecimenId}
-				/>
-				<UpdateForm 
-					visible={isShowUpdateForm}
-					onClose={this.onExitForm} 
-					onSuccess={this.onSuccessAddNormalValues}
-					selectedSectionId={selectedSectionId}
-					selectedSpecimenId={selectedSpecimenId}
+					data={examItems}
+					pageSize={pageSize}
+					loading={isLoading}
+					onRowDblClick={this.onDblClickTableRow}
 				/>
 				<NormalValuesDrawer 
 					visible={isShowValuesDrawer}
 					onClose={this.onExitForm} 
 					onSuccess={this.onSuccessAddNormalValues}
+					selectedExamItem={selectedExamItem}
 					selectedSectionId={selectedSectionId}
 					selectedSpecimenId={selectedSpecimenId}
+					selectedSectionName={selectedSectionName}
+					selectedSpecimenName={selectedSpecimenName}
 				/>
 			</div>
 		);

@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col, Table, Select, Typography, Button, Input, Icon, Drawer } from 'antd';
 
 // CUSTOM
-import { getUserAccountsAPI } from 'services/settings/user_maintenance/userAccount';
+import { getUserAccountsAPI } from 'services/settings/userAccount';
 import { 
 	drawerAdd, 
 	drawerUpdate, 

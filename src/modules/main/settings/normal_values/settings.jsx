@@ -33,7 +33,7 @@ export const tableHeaders = {
   normalValues: {
     gender: {
       title:"GENDER",
-      dataIndex: "gender",
+      dataIndex: "sex",
     },
     ageBracket: {
       title:"AGE BRACKET",
@@ -41,11 +41,11 @@ export const tableHeaders = {
     },
     machine: {
       title:"MACHINE",
-      dataIndex:"machine"
+      dataIndex:"analyzerName"
     },
     labelOfRange: {
       title:"LABEL OF RANGE",
-      dataIndex:"labelOfRange"
+      dataIndex:"rangeLabel"
     },
     displayValue: {
       title:"DISPLAY VALUE",
@@ -59,14 +59,15 @@ export const fieldLabels = {
   examItemGeneralName: "EXAM ITEM GENERAL NAME",
   examItemUnitCode: "UNIT OF MEASURES",
   gender: "GENDER",
-  ageBracket: "AGE BRACKET",
-  machine: "MACHINE",
+	ageBracketFrom: "FROM AGE",
+	ageBracketTo: "TO AGE",
+  machine: "ANALYZER",
   labelOfRange: "LABEL OF RANGE",
   displayValue: "DISPLAY VALUE",
   low: "LOW",
   high: "HIGH",
   displayFlag: "DISPLAY FLAG",
-  print: "PRINT",
+  autoRelease: "AUTO RELEASE",
   release: "RELEASE"
 }
 

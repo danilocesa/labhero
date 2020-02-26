@@ -1,10 +1,9 @@
-//// LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
 
 // CUSTOM
-import {tableSize, tableYScroll, tableHeaders } from '../settings';
+import { tableSize, tableYScroll, tableHeaders } from '../settings';
 
 // CSS
 // import './exam_item.css';
@@ -13,7 +12,7 @@ class NormalValuesTable extends React.Component {
 
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
-		const {normalValues} = tableHeaders;
+		const { normalValues } = tableHeaders;
 		const columns = [
 			{ 
 				title: normalValues.gender.title,
@@ -50,7 +49,7 @@ class NormalValuesTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: tableYScroll }}
-						rowKey={record => record.examItemID}
+						rowKey={record => record.examItemRangeID}
 						onRow={(record) => {
 							return {
 								onDoubleClick: () => onRowDblClick(record)
@@ -66,11 +65,12 @@ class NormalValuesTable extends React.Component {
 
 NormalValuesTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		gender: PropTypes.string.isRequired,
+		examItemRangeID: PropTypes.number.isRequired,
+		sex: PropTypes.string.isRequired,
 		ageBracket: PropTypes.string.isRequired,
-		machine: PropTypes.string.isRequired,
+		analyzerName: PropTypes.string.isRequired,
 		displayValue: PropTypes.string.isRequired,
-		labelOfRange: PropTypes.string.isRequired,
+		rangeLabel: PropTypes.string.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

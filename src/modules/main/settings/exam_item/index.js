@@ -7,11 +7,11 @@ import { Button, Icon, Row, Col, Input } from 'antd';
 import TablePager from 'shared_components/search_pager/pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
+import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
 import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
 import DropDown from '../shared/dropdown';
-import { fetchSections, fetchSpecimens, fetchExamitems } from './api_repo';
 import { moduleTitle, tablePageSize, messagePrompts, buttonNames } from './settings';
 
 

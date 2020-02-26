@@ -6,8 +6,8 @@ import { withRouter } from 'react-router-dom';
 
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/user_maintenance/userAccount';
-import { getAllUserTypesAPI } from 'services/settings/user_maintenance/userType';
+import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/userAccount';
+import { getAllUserTypesAPI } from 'services/settings/userType';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global'
 import { 
 	drawerAdd,  
@@ -231,7 +231,7 @@ class UserAccountForm extends React.Component {
 											rules: fieldRules.middlename
 										})(
 											<RegexInput
-												regex={/[A-Za-z0-9 -]/} 
+												regex={/[A-Za-z0-9. -]/} 
 												maxLength={15} 
 											/>
 										)
@@ -244,7 +244,7 @@ class UserAccountForm extends React.Component {
 											rules: fieldRules.lastname
 										})(
 											<RegexInput
-												regex={/[A-Za-z0-9 -]/} 
+												regex={/[A-Za-z0-9. -]/} 
 												maxLength={50} 
 											/>
 										)
