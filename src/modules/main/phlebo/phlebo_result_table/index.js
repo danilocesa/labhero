@@ -20,6 +20,7 @@ class SearchPatientTable extends React.Component {
 	
 	render() {
 		const { data, pageSize, loading } = this.props;
+		
 		const getSorter = (myDataSource, columnName) => {
 			// @ts-ignore
 			if(myDataSource === undefined || myDataSource.length === 0 ){
@@ -42,6 +43,12 @@ class SearchPatientTable extends React.Component {
 		// CONSTANTS
 		const columns = [
 			{
+				title: 'REQUEST ID',
+				dataIndex: 'requestID',
+				sorter: getSorter(data, 'requestID'),
+				width: 150
+			},
+			{
 				title: 'REQUEST DATE',
 				dataIndex: 'requestDateTime',
 				sorter: getSorter(data, 'requestDateTime'),
@@ -51,7 +58,7 @@ class SearchPatientTable extends React.Component {
 				title: 'PATIENT ID',
 				dataIndex: 'patientID',
 				sorter: getSorter(data, 'patientID'),
-				width: 150
+				width: 130
 			},
 			{
 				title: 'LAST NAME',
@@ -81,11 +88,20 @@ class SearchPatientTable extends React.Component {
 				title: 'GENDER',
 				dataIndex: 'sex',
 				sorter:  getSorter(data, 'sex'),
+				width: 110
 			},
 			{
 				title: 'ADDRESS',
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
+				render: (text, row) => {
+					const { address, townName, cityMunicipalityName, provinceName } = row;
+
+					if(row.address)
+						return `${address}, ${townName}, ${cityMunicipalityName}, ${provinceName}`.toUpperCase();
+
+					return '';
+				}
 			},
 		];
 
