@@ -15,8 +15,6 @@ export async function createExamItemRage(payload) {
 		const response = await axiosCall(content);
 		const { data } = await response;
 
-		console.log('response', response);
-
 		createdItemRange = data;
 	}
 	catch(error) {

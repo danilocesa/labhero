@@ -177,7 +177,7 @@ class UserTable extends React.Component {
 								allowClear
 								onSearch={value => this.onSearch(value)}
 								onChange={this.onChangeSearch}
-								style={{ width: 200 }}
+								style={{ width: 200, textTransform: 'uppercase' }}
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>

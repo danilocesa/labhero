@@ -114,7 +114,7 @@ class SearchPatientTable extends React.Component {
 						// @ts-ignore
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: 260 }}
+						scroll={{ x: 1500, y: 260 }}
 						rowKey={record => record.requestID}
 						onRow={(record) => {
 							return { 

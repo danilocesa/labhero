@@ -80,15 +80,21 @@ class NormalValuesDrawer extends React.Component{
 	
 	onSubmittingAddForm = async (fieldValues) => {
 		const { selectedExamItem } = this.props;
+		const newFieldValues = Object.assign({}, fieldValues);
+
+		// Object.keys(fieldValues).forEach(key => {
+		// 	newFieldValues[key] = fieldValues[key] || null
+		// });
 
 		const createdItem = await createExamItemRage({
-			...fieldValues,
-			ageBracket: `${fieldValues.ageBracketFrom}-${fieldValues.ageBracketTo}`,
-			autoRelease: fieldValues.autoRelease ? 1 : 0,
-			canRelease: fieldValues.canRelease ? 1 : 0,
-			examItemId: selectedExamItem.examItemID
+			...newFieldValues,
+			autoRelease: newFieldValues.autoRelease ? 1 : 0,
+			canRelease: newFieldValues.canRelease ? 1 : 0,
+			examItemId: selectedExamItem.examItemID,
+			rangeLabel: `${newFieldValues.rangeLabel}`.toUpperCase()
 		});
-		
+	
+
 		if(createdItem) {
 			Message.success({ message: messagePrompts.successCreatedNormalValues });
 			this.addForm.resetForm();
@@ -103,10 +109,10 @@ class NormalValuesDrawer extends React.Component{
 
 		const isUpdated = await updateExamItemRage({
 			...fieldValues,
-			ageBracket: `${fieldValues.ageBracketFrom}-${fieldValues.ageBracketTo}`,
-			autoRelease: fieldValues.autoRelease ? 1 : 0,
+			autoRelease: fieldValues.autoRelease ? 1 : 0,	
 			canRelease: fieldValues.canRelease ? 1 : 0,
-			examItemRangeID: selectedItemRange.examItemRangeID
+			examItemRangeID: selectedItemRange.examItemRangeID,
+			rangeLabel: `${fieldValues.rangeLabel}`.toUpperCase()
 		});
 
 		if(isUpdated) {

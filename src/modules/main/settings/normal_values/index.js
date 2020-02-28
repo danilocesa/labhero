@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col } from 'antd';
+import { Row, Col, Input } from 'antd';
 
 import TablePager from 'shared_components/search_pager/pager';
 import PageTitle from 'shared_components/page_title';
@@ -10,6 +10,8 @@ import ExamTable from '../exam_item/table';
 import NormalValuesDrawer from './values_drawer';
 import DropDown from '../shared/dropdown';
 import { moduleTitle, tablePageSize, messagePrompts } from './settings';
+
+const { Search } = Input;
 
 const ActionSection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -30,6 +32,7 @@ class NormalValues extends React.Component {
 		isShowValuesDrawer: false,
 		pageSize: tablePageSize,
 		examItems: [],
+		examItemsRef: [],
 		ddSections: [],
 		ddSpecimens: [],
 		selectedExamItem: {},
@@ -75,6 +78,7 @@ class NormalValues extends React.Component {
 			
 			this.setState({ 
 				examItems, 
+				examItemsRef: examItems,
 				isLoading: false, 
 				selectedSectionName: option.props.children
 			});
@@ -88,10 +92,35 @@ class NormalValues extends React.Component {
 
 			this.setState({ 
 				examItems,
+				examItemsRef: examItems,
 				isLoading: false,
 				selectedSpecimenName: option.props.children
 			});
 		});
+	}
+
+	onSearch = (value) => {
+		const { examItemsRef } = this.state;
+		const searchedVal = value.toLowerCase();
+
+		const filtered = examItemsRef.filter(item => {
+			const { examItemName, examItemGeneralName, examItemIntegrationCode } = item;
+
+			return (
+				this.containsString(examItemName, searchedVal) ||
+				this.containsString(examItemGeneralName, searchedVal) ||
+				this.containsString(examItemIntegrationCode, searchedVal)
+			);
+		});
+
+		this.setState({ examItems: filtered });
+	}
+
+	onChangeSearch = (event) => {
+		const { examItemsRef } = this.state;
+
+		if(event.target.value === '') 
+			this.setState({ examItems: examItemsRef });
 	}
 
 	onDblClickTableRow = (selectedExamItem) => {
@@ -120,6 +149,14 @@ class NormalValues extends React.Component {
 		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedNormalValues });
 	}
 
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if(searchFrom === null || searchFrom === '')
+			return false;
+
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	}
+
 	render() {
 		const { 
 				ddSections,
@@ -146,6 +183,14 @@ class NormalValues extends React.Component {
 					onChange={this.onChangeSpecimen}
 					loading={isInitializing}
 					value={selectedSpecimenId}
+				/>
+				<Search
+					allowClear
+					onSearch={value => this.onSearch(value)}
+					onChange={this.onChangeSearch}
+					style={{ width: 200, marginLeft: 15 }}
+					disabled={selectedSectionId == null}
+					className="exam-item-search-input"
 				/>
 			</>
 		);

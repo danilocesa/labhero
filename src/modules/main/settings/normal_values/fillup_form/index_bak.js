@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
+import { Drawer, Form, Input, Button, Select, Switch, Row, Col, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import { getAnalyzers } from 'services/settings/examItemRange';
 import FIELD_RULES from './constants';
@@ -32,12 +32,16 @@ class FillupForm extends React.Component {
 		const { setFieldsValue } = form;
 		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
 
+		console.log({ ...restItemRange });
+
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
 				setFieldsValue({
 					...restItemRange,
 					canRelease: selectedItemRange.canRelease === 1,
 					autoRelease: selectedItemRange.autoRelease === 1,
+					ageBracketFrom: selectedItemRange.ageBracket.split('-')[0],
+					ageBracketTo: selectedItemRange.ageBracket.split('-')[1]
 				});
 			}
 		}
@@ -53,7 +57,7 @@ class FillupForm extends React.Component {
 			if (!err) {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
-					
+
 					await onSubmit(fieldValues);
 
 					this.setState({ isLoading: false });
@@ -62,11 +66,53 @@ class FillupForm extends React.Component {
 		});
 	}
 
-	onChangeRelease = (isSelected) => {
+	onBlurAgeBracketTo = () => {
+		const { validateFields } = this.props.form;
+
+		validateFields(['ageBracketTo']);
+	}
+
+	onBlurAgeBracketFrom = () => {
+		const { validateFields } = this.props.form;
+
+		validateFields(['ageBracketTo']);
+	}
+
+	handleAgeFrom = (rule, value, callback) => {
+		const { form, ageBrackets } = this.props;
+		const toValue = form.getFieldValue('ageBracketTo');
+
+		if (value >= toValue) 
+			callback('Please enter valid age bracket from');
+
+		if(ageBrackets.some(age => (value && value >= age.from && value <= age.to))) 
+			callback('Age is already defined');
+
+		else 
+			callback();
+	}
+
+	handleAgeTo = (rule, value, callback) => {
+		const { form, ageBrackets } = this.props;
+		const fromValue = form.getFieldValue('ageBracketFrom');
+
+		if (fromValue >= value) 
+			callback('Please enter valid age bracket to');
+		
+		else if (ageBrackets.some(age => (value && value >= age.from && value <= age.to))) 
+			callback('Age is already defined');
+		
+		else {
+			form.validateFields(['ageBracketFrom']);
+			callback();
+		}
+			
+	}
+	
+	onBlurAgeBracket = () => {
 		const { form } = this.props;
 
-		if(!isSelected)
-			form.setFieldsValue({ autoRelease: false });
+		form.validateFields(['ageBracketFrom', 'ageBracketTo']);
 	}
 
 	resetForm = () => {
@@ -90,14 +136,13 @@ class FillupForm extends React.Component {
 			examItemUnitCode
 		} = this.props;
 		
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { getFieldDecorator } = form;
 		const machineOptions = analyzers.map(i => (
 			<Option value={i.analyzerID} key={i.analyzerID}>
 				{i.analyzerName}
 			</Option>
 		));
 
-		const isReleaseSelected = getFieldsValue().canRelease;
 		const headerTitle = (moduleType === formMode.add) ? drawerTitle.add : drawerTitle.update;
 
 		return (
@@ -138,7 +183,7 @@ class FillupForm extends React.Component {
 											initialValue: true,
 											valuePropName: 'checked'
 										})(
-											<Switch disabled={!isReleaseSelected} />
+											<Switch />
 										)}
 									</Form.Item>
 								</Col>
@@ -148,7 +193,7 @@ class FillupForm extends React.Component {
 											initialValue: true,
 											valuePropName: 'checked'
 										})(
-											<Switch onChange={this.onChangeRelease} />
+											<Switch />
 										)}
 									</Form.Item>
 								</Col>
@@ -158,17 +203,28 @@ class FillupForm extends React.Component {
 									<Form.Item label={fieldLabels.gender}>
 										{getFieldDecorator('sex', { rules: FIELD_RULES.sex })(
 											<Select>
-												<Option value="ALL">ALL</Option>
-												<Option value="MALE">MALE</Option>
-												<Option value="FEMALE">FEMALE</Option>
+												<Option value="ALL">All</Option>
+												<Option value="MALE">Male</Option>
+												<Option value="FEMALE">Female</Option>
 											</Select>
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={8}>
-									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracket')(
-											<Input />
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketFrom}>
+										{getFieldDecorator('ageBracketFrom', { 
+											rules: [{ validator: this.handleAgeFrom }],
+										})(
+											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
+										)}
+									</Form.Item>
+								</Col>
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketTo}>
+										{getFieldDecorator('ageBracketTo', { 
+											rules: [{ validator: this.handleAgeTo }],
+										})(
+											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
 										)}
 									</Form.Item>
 								</Col>
@@ -188,7 +244,7 @@ class FillupForm extends React.Component {
 								<Col span={14}>
 									<Form.Item label={fieldLabels.labelOfRange}>
 										{getFieldDecorator('rangeLabel')(
-											<Input style={{ textTransform: 'uppercase' }} />
+											<Input />
 										)}
 									</Form.Item>
 								</Col>
@@ -270,6 +326,7 @@ FillupForm.propTypes = {
 	selectedSectionName: PropTypes.string,
 	selectedSpecimenName: PropTypes.string,
 	examItemName: PropTypes.string,
+	examItemGeneralName: PropTypes.string,
 	examItemGeneralName: PropTypes.string,
 	selectedItemRange: PropTypes.shape({
 		examItemRangeID: PropTypes.number,
