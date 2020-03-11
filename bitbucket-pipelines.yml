@@ -9,67 +9,17 @@ pipelines:
   tags:                         # add the 'tags' section
     release-*:                  # specify the tag
       - step:
-          name: Deploy For Testing
+          name: Build
           deployment: test
           script:
             - npm install
             - npm run build
-            - pipe: atlassian/aws-s3-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
-                AWS_DEFAULT_REGION: "us-east-1"
-                S3_BUCKET: "hh-labhero-test"
-                LOCAL_PATH: "build"
-                ACL: "public-read"
-                CACHE_CONTROL: "max-age=3600"
-                EXTRA_ARGS: "--follow-symlinks"
-          artifacts:
-            - build/**             
-  branches:        
-    release:
       - step:
-          name: Clone to release
-          script:
-            - npm install
-            - npm run build
-          artifacts:
-            - build/**
-      - step:
-          name: Deploy to release
-          deployment: staging
-          trigger: manual
-          script:
-            - pipe: atlassian/aws-s3-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
-                AWS_DEFAULT_REGION: "us-east-1"
-                S3_BUCKET: "hh-labhero-test"
-                LOCAL_PATH: "build"
-                ACL: "public-read"
-                CACHE_CONTROL: "max-age=3600"
-                EXTRA_ARGS: "--follow-symlinks"
-    master:
-      - step:
-          name: Clone to production
-          script:
-            - npm install
-            - npm run build
-          artifacts:
-            - build/**
-      - step:
-          name: Deploy to production
-          deployment: production
-          trigger: manual
-          script:
-            - pipe: atlassian/aws-s3-deploy:0.2.1
-              variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
-                AWS_DEFAULT_REGION: "us-east-1"
-                S3_BUCKET: "hh-labhero-app"
-                LOCAL_PATH: "build"
-                ACL: "public-read"
-                CACHE_CONTROL: "max-age=3600"
-                EXTRA_ARGS: "--follow-symlinks"
+        name: Deploy
+        script:
+          - pipe: atlassian/google-app-engine-deploy:0.2.1
+            variables:
+              KEY_FILE: '----------'
+              PROJECT: 'Labhero' 
+              BUCKET: 'labhero-release'         
+    

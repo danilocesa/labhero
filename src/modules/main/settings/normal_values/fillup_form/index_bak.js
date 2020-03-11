@@ -199,7 +199,7 @@ class FillupForm extends React.Component {
 								</Col>
 							</Row>
 							<Row gutter={12} style={{ marginTop: 10 }}>
-								<Col span={6}>
+								<Col span={7}>
 									<Form.Item label={fieldLabels.gender}>
 										{getFieldDecorator('sex', { rules: FIELD_RULES.sex })(
 											<Select>
@@ -210,27 +210,7 @@ class FillupForm extends React.Component {
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketFrom}>
-										{getFieldDecorator('ageBracketFrom', { 
-											rules: [{ validator: this.handleAgeFrom }],
-										})(
-											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketTo}>
-										{getFieldDecorator('ageBracketTo', { 
-											rules: [{ validator: this.handleAgeTo }],
-										})(
-											<InputNumber min={0} max={99} onBlur={this.onBlurAgeBracket} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={14}>
+								<Col span={7}>
 									<Form.Item label={fieldLabels.machine}>
 										{getFieldDecorator('analyzerID')(
 											<Select>
@@ -240,14 +220,55 @@ class FillupForm extends React.Component {
 									</Form.Item>
 								</Col>
 							</Row>
-							<Row>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.labelOfRange}>
-										{getFieldDecorator('rangeLabel')(
-											<Input />
+							<Row gutter={12}>
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketFrom}>
+										{getFieldDecorator('ageBracketFrom', { 
+											rules: [{ validator: this.handleAgeFrom }],
+										})(
+											<InputNumber 
+												min={0} 
+												max={99} 
+												onBlur={this.onBlurAgeBracket} 
+												style={{ width: '100%' }}
+											/>
+										)}
+									</Form.Item>
+								</Col>	
+								<Col span={3}>
+									<Form.Item label="UNIT">
+										{getFieldDecorator('ageBracketFromUnit')(
+											<Select>
+												<Option value="month">Month</Option>
+												<Option value="year">Year</Option>
+											</Select>
+										)}
+									</Form.Item>
+								</Col>		
+								<Col span={4}>
+									<Form.Item label={fieldLabels.ageBracketTo}>
+										{getFieldDecorator('ageBracketTo', { 
+											rules: [{ validator: this.handleAgeTo }],
+										})(
+											<InputNumber 
+												min={0} 
+												max={99} 
+												onBlur={this.onBlurAgeBracket} 
+												style={{ width: '100%' }}
+											/>
 										)}
 									</Form.Item>
 								</Col>
+								<Col span={3}>
+									<Form.Item label="UNIT">
+										{getFieldDecorator('ageBracketToUnit')(
+											<Select>
+												<Option value="month">Month</Option>
+												<Option value="year">Year</Option>
+											</Select>
+										)}
+									</Form.Item>
+								</Col>		
 							</Row>
 							<Row>
 								<Col span={14}>							
@@ -255,40 +276,60 @@ class FillupForm extends React.Component {
 										{getFieldDecorator('displayValue')(
 											<Input />
 										)}
-									</Form.Item>						
+									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={8}>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.low}>
+								<Col span={7}>
+									<Form.Item label="BORDER CRITICAL LOW">
 										{getFieldDecorator('rangeLow')(
-											<Input />
+											<InputNumber style={{ width: '50%' }} />
 										)}
 									</Form.Item>
 								</Col>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.displayFlag}>
-										{getFieldDecorator('rangeLowFlagDisplay')(
-											<Input />
+								<Col span={7}>
+									<Form.Item label="BORDER CRITICAL HIGH">
+										{getFieldDecorator('rangeHigh')(
+											<InputNumber style={{ width: '50%' }} />
 										)}
 									</Form.Item>
 								</Col>
 							</Row>
 							<Row gutter={8}>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.high}>
-										{getFieldDecorator('rangeHigh')(
-											<Input />
-										)}
-									</Form.Item>
-								</Col>
 								<Col span={14}>
-									<Form.Item label={fieldLabels.displayFlag}>
+									<Form.Item label="HIGH DISPLAY MESSAGE">
 										{getFieldDecorator('rangeHighFlagDisplay')(
 											<Input />
 										)}
 									</Form.Item>
-								</Col>
+								</Col>			
+							</Row>
+							<Row gutter={8}>
+								<Col span={14}>
+									<Form.Item label="LOW DISPLAY MESSAGE">
+										{getFieldDecorator('rangeLowFlagDisplay')(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>		
+							</Row>
+							<Row gutter={8}>
+								<Col span={14}>
+									<Form.Item label="CRITICAL HIGH DISPLAY MESSAGE">
+										{getFieldDecorator('rangeCritHighFlagDisplay')(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>			
+							</Row>
+							<Row gutter={8}>
+								<Col span={14}>
+									<Form.Item label="CRITICAL LOW DISPLAY MESSAGE">
+										{getFieldDecorator('rangeCritLowFlagDisplay')(
+											<Input />
+										)}
+									</Form.Item>
+								</Col>		
 							</Row>
 						</section>
 					</section>
@@ -326,7 +367,6 @@ FillupForm.propTypes = {
 	selectedSectionName: PropTypes.string,
 	selectedSpecimenName: PropTypes.string,
 	examItemName: PropTypes.string,
-	examItemGeneralName: PropTypes.string,
 	examItemGeneralName: PropTypes.string,
 	selectedItemRange: PropTypes.shape({
 		examItemRangeID: PropTypes.number,

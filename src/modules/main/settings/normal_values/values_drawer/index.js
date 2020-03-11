@@ -11,7 +11,7 @@ import {
 } from 'services/settings/examItemRange';
 
 import NormalValuesTable from './table';
-import FillupForm from '../fillup_form';
+import FillupForm from '../fillup_form/index_bak';
 import { 
 	moduleTitle, 
 	fieldLabels, 

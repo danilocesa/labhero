@@ -52,7 +52,23 @@ class Actions extends React.Component {
 	    <div style={{ textAlign: 'right', marginTop: '30px' }} className="action-container">
 				<Button 
 					loading={isLoading}
-					className="save-button" 
+					className="action-button" 
+					onClick={this.onClickSave}
+					
+				>
+					APPROVE
+				</Button>
+				<Button 
+					loading={isLoading}
+					className="action-button" 
+					onClick={this.onClickSave}
+					
+				>
+					PRINT
+				</Button>
+				<Button 
+					loading={isLoading}
+					className="action-button" 
 					onClick={this.onClickSave}
 					
 				>
