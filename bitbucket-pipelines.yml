@@ -24,4 +24,21 @@ pipelines:
               KEY_FILE: '----------'
               PROJECT: 'Labhero' 
               BUCKET: 'labhero-release'         
-    
+  branches:        
+      release:
+        - step:
+          name: Build
+          deployment: test
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+      - step:
+        name: Deploy
+        script:
+          - pipe: atlassian/google-app-engine-deploy:0.2.1
+            variables:
+              KEY_FILE: '----------'
+              PROJECT: 'Labhero' 
+              BUCKET: 'labhero-release'    
