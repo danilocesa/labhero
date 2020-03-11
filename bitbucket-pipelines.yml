@@ -28,7 +28,6 @@ pipelines:
       release:
         - step:
           name: Build
-          deployment: test
           caches:
             - node
           script:
@@ -36,6 +35,7 @@ pipelines:
             - npm run build
         - step:
           name: Deploy
+          deployment: staging
           script:
             - pipe: atlassian/google-app-engine-deploy:0.2.1
               variables:
