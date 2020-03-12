@@ -18,11 +18,13 @@ export const formMode ={
 
 export const messagePrompts = {
 	successCreatedNormalValues: 'Normal Value successfully created.',
-	successUpdatedNormalValues: 'Normal Value successfully updated.'
+  successUpdatedNormalValues: 'Normal Value successfully updated.',
+  successCreatedAgeBracket  : 'Age Bracket successfully created.',
 }
 
 export const buttonNames = {
     addNormalValues : 'ADD NORMAL VALUE',
+    addAgeBracket : 'ADD AGE RANGE',
     cancel: 'CANCEL',
     create: 'ADD',
     addField: 'ADD FIELD',
@@ -51,6 +53,16 @@ export const tableHeaders = {
       title:"DISPLAY VALUE",
       dataIndex:"displayValue"
     }
+  },
+  ageBracket: {
+    rangeLabel:{
+      title: "RANGE LABEL",
+      dataIndex: "rangeLabel"
+    },
+    ageBracket:{
+      title: "AGE BRACKET",
+      dataIndex: "ageBracket"
+    }
   }
 }
 
@@ -69,7 +81,9 @@ export const fieldLabels = {
   high: "HIGH",
   displayFlag: "DISPLAY FLAG",
   autoRelease: "AUTO RELEASE",
-  release: "RELEASE"
+  release: "RELEASE",
+  ageBracketRangeLabel: 'RANGE LABEL',
+  ageBracketUnit: 'UNIT'
 }
 
 export const fieldRules = {
@@ -80,8 +94,21 @@ export const fieldRules = {
 	examItemGeneralName: [
 		{ required: true, message: errorMessage.required },
 		{ max: 50, message: errorMessage.maxLength(50) }
-	],
-  unitOfMeasure: [
-    // { required: true, message: errorMessage.required }
-	],
+  ],
+  ageBracketRangeLabel: [
+    { required: true, message: errorMessage.required },
+    { max: 50, message: errorMessage.maxLength(50) }
+  ],
+  ageBracketFrom: [
+    { required: true, message: errorMessage.required }
+  ],
+  ageBracketTo: [
+    { required: true, message: errorMessage.required }
+  ],
+  ageBracketUnit: [
+    { required: true, message: errorMessage.required }
+  ]
+
 }
+
+export const settingsOptions = [{label:"AGE RANGE", value:1}, {label:"LABEL OF RANGE", value:2}];

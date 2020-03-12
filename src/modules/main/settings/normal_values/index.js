@@ -6,10 +6,12 @@ import TablePager from 'shared_components/search_pager/pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
+import AgeBracketDrawer from 'modules/main/settings/normal_values/age_bracket_drawer';
 import ExamTable from '../exam_item/table';
 import NormalValuesDrawer from './values_drawer';
 import DropDown from '../shared/dropdown';
-import { moduleTitle, tablePageSize, messagePrompts } from './settings';
+import { moduleTitle, tablePageSize, messagePrompts, settingsOptions } from './settings';
+
 
 const { Search } = Input;
 
@@ -30,6 +32,7 @@ class NormalValues extends React.Component {
 		isInitializing: true,
 		isLoading: false,
 		isShowValuesDrawer: false,
+		isShowAgeBracketsDrawer: false,
 		pageSize: tablePageSize,
 		examItems: [],
 		examItemsRef: [],
@@ -39,7 +42,8 @@ class NormalValues extends React.Component {
 		selectedSectionId: null,
 		selectedSpecimenId: null,
 		selectedSectionName: null,
-		selectedSpecimenName: null
+		selectedSpecimenName: null,
+		selectedSettings: null
 	}
 
 	async componentDidMount() {
@@ -49,7 +53,7 @@ class NormalValues extends React.Component {
 			label: section.sectionCode,
 			value: section.sectionID
 		}));
-
+		
 		const ddSpecimens = specimens.map(specimen => ({
 			label: specimen.specimenName.toUpperCase(),
 			value: specimen.specimenID
@@ -157,6 +161,10 @@ class NormalValues extends React.Component {
 		return searchFrom.toString().toLowerCase().includes(searchedVal);
 	}
 
+	onChangeSettingsOption = () => {
+		this.setState({ isShowAgeBracketsDrawer: true });
+	}
+
 	render() {
 		const { 
 				ddSections,
@@ -167,10 +175,12 @@ class NormalValues extends React.Component {
 				examItems,
 				pageSize,
 				isShowValuesDrawer,
+				isShowAgeBracketsDrawer,
 				isLoading,
 				selectedExamItem,
 				selectedSectionName,
-				selectedSpecimenName
+				selectedSpecimenName,
+				selectedSettings
 		} = this.state;
 
 		const leftSection = (
@@ -201,9 +211,24 @@ class NormalValues extends React.Component {
 			</>
 		);
 
+		const settingsSection = (
+			<>
+				<Row style={{ marginTop: 5, float: 'right' }}>
+					<DropDown 
+						label="SETTINGS"
+						placeholder="SETTINGS"
+						content={settingsOptions} 
+						onChange={this.onChangeSettingsOption}
+						value={selectedSettings}
+					/>
+				</Row>
+			</>
+		);
+
 		return(
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
+					{settingsSection} 
 					<PageTitle pageTitle={moduleTitle} />
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
@@ -235,6 +260,11 @@ class NormalValues extends React.Component {
 					selectedSpecimenId={selectedSpecimenId}
 					selectedSectionName={selectedSectionName}
 					selectedSpecimenName={selectedSpecimenName}
+				/>
+
+				<AgeBracketDrawer
+					visible={isShowAgeBracketsDrawer}
+					sectionList={ddSections}
 				/>
 			</div>
 		);
