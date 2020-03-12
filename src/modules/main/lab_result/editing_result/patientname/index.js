@@ -56,7 +56,7 @@ class PatientName extends React.Component {
 			    </div>
 		    </Col>
 		    <Col span={12}>
-			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
+			    {/* <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
 				    <Row>
 					    <ButtonGroup>
 						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
@@ -70,7 +70,7 @@ class PatientName extends React.Component {
 						    </Button>
 					    </ButtonGroup>
 				    </Row>
-			    </div>
+			    </div> */}
 		    </Col>
 				{
 					this.state.showIresultInfo ? 

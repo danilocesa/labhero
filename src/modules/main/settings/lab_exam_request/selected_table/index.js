@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form, Switch } from 'antd';
+import { Spin, Table, Input, Form, Switch, Button } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -29,7 +29,7 @@ class SelectedTable extends React.Component {
 			},
 			{ 
 				title: 'Exam',
-				width: 290,
+				width: 200,
 				dataIndex: 'examItemName',
 			},
 			{ 
@@ -63,6 +63,19 @@ class SelectedTable extends React.Component {
 					examItemID: record.examItemID, 
 					initialValue: record.examRequestItemLock
 				})
+			},
+			{ 
+				title: '',
+				dataIndex: 'examRequestRelease',
+				width: 90,
+				render: () => (
+					<Button 
+						shape="round"
+						type="primary"
+					>
+							RELEASE
+					</Button>
+				)
 			},
 			{ 
 				title: 'Sort',
