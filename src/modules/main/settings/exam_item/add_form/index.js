@@ -12,10 +12,11 @@ import {
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
 import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
-
+import { createExamItem } from 'services/settings/examItem';
+import getUnitOfMeasures from 'services/settings/unitOfMeasure';
+import getInputTypeCode from 'services/settings/inputType';
 import DynamicForm from '../dynamic_form';
-import { createExamItem, getUnitOfMeasures, getInputTypeCode } from '../api_repo';
-import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
+import { fieldRules, drawerTitle, fieldLabels, buttonNames } from '../settings';
 
 import './add_form.css';
 
@@ -41,7 +42,6 @@ class AddForm extends React.Component {
 		const inputTypeCodes = await getInputTypeCode();
 		
 		this.setState({ unitOfMeasures, inputTypeCodes });
-		console.log('addform did mount');
 	}
 
 	onChangeItemTypeCode = (itemTypeCode) => {

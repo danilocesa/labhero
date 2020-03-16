@@ -15,3 +15,11 @@ body {
 .fullWidth {
   width: '100%'
 }
+
+.ant-table .ant-table-header {
+  overflow-y: auto !important;
+}
+
+.ant-table .ant-table-body {
+	overflow-y: overlay !important;
+}

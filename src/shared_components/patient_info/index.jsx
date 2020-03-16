@@ -13,7 +13,7 @@ import computeAge from "shared_components/age_computation";
 import './patient_info.css';
 
 // IMAGES
-import { PatientImgPlaceholder } from '../../images';
+import { PatientImgPlaceholder } from 'images';
 
 class PatientInfo extends React.Component {
 

@@ -25,7 +25,7 @@ import {
 	createdPanelAPI, 
 	updatePanelListAPI, 
 	getPanelInfoAPI 
-} from 'services/settings/panel/panelExamRequesting';
+} from 'services/settings/panelExamRequesting';
 import {messagePrompts, buttonLabels, fieldLabels, fieldRules} from '../settings';
 
 // CSS

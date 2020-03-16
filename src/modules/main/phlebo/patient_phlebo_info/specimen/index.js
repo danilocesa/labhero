@@ -62,11 +62,12 @@ class SpecimenList extends React.Component {
 				width: 120,
 				render: (value, row, index) => {
 					const { loadingIndex } = this.state;
+					const isLoading = loadingIndex.findIndex(i => i === index) !== -1;
 
 					return(
 						<Button 
 							onClick={() => this.onClickExtract(row.sectionID, row.specimenID, index)}
-							loading={loadingIndex === index}
+							loading={isLoading}
 							disabled={row.sampleSpecimenID}
 							className="extract-phlebo-btn"
 						>
@@ -113,7 +114,9 @@ class SpecimenList extends React.Component {
 		const { patientInfo } = this.props;
 		const { userID } = JSON.parse(sessionStorage.getItem("LOGGEDIN_USER_DATA"));
 		
-		this.setState({ loadingIndex: index }, async () => {
+		this.setState((state) => {
+			return { loadingIndex: state.loadingIndex.concat([index]) };
+		}, async () => {
 			const { examRequests } = this.state;
 			let examRequestClone = JSON.parse(JSON.stringify(examRequests));
 
@@ -140,7 +143,12 @@ class SpecimenList extends React.Component {
 				});
 			}
 
-			this.setState({ loadingIndex: -1, examRequests: examRequestClone });
+			this.setState((state) => { 
+				return { 
+					loadingIndex: state.loadingIndex.filter(i => i !== index), 
+					examRequests: examRequestClone
+				};
+			});
 		});
 	}
 

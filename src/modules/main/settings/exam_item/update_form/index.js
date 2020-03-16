@@ -12,10 +12,11 @@ import {
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
 import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
-
+import { updateExamItem, fetchExamItem } from 'services/settings/examItem';
+import getUnitOfMeasures from 'services/settings/unitOfMeasure';
+import getInputTypeCode from 'services/settings/inputType';
+import { fieldRules, drawerTitle, fieldLabels, buttonNames } from '../settings';
 import DynamicForm from '../dynamic_form';
-import { updateExamItem, getUnitOfMeasures, getInputTypeCode, fetchExamItem } from '../api_repo';
-import {fieldRules, drawerTitle, fieldLabels, buttonNames} from '../settings';
 
 // CSS
 import './update_form.css';

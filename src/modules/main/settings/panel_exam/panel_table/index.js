@@ -6,7 +6,7 @@ import { Row, Col, Input, Table, Drawer, Typography, Icon, Select, Button } from
 
 // CUSTOM MODULES
 // import HttpCodeMessage from 'shared_components/message_http_status';
-import { panelListAPI } from 'services/settings/panel/panelExamRequesting';	
+import { panelListAPI } from 'services/settings/panelExamRequesting';	
 import PanelForm from '../panel_form';
 
 import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from '../settings';
@@ -18,31 +18,7 @@ import './paneltable.css';
 const { Text } = Typography;
 const { Option } = Select;
 const { Search } = Input;
-// const popoverContent = (data = []) => (
-// 	<div>
-// 	<AntTable 
-// 		dataSource={data}
-// 		columns={[
-// 			{ title: 'CODE', dataIndex: 'code' },
-// 			{ title: 'EXAM NAME', dataIndex: 'exam' }
-// 		]}
-// 		pagination={false}
-// 		rowKey={record => record.code}
-// 	/>
-// 	{console.log(data)}
-// 	</div>
 
-// );
-// const popover = (item) => (  
-// 	<AntPopover 
-// 		content={popoverContent(item)} 
-// 		trigger="hover"
-// 	>
-// 		<div>
-// 			{item.panel_name}
-// 		</div>
-// 	</AntPopover>
-// );
 const columns = [
     {
         title: 'CODE',
@@ -194,6 +170,7 @@ class PanelTable extends React.Component {
 								onSearch={value => this.onSearch(value)}
 								onChange={this.onChangeSearch}
 								style={{ width: 200 }}
+								className="panel-table-search-input"
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>

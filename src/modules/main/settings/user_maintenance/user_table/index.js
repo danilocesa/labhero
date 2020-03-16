@@ -4,7 +4,7 @@ import React from 'react';
 import { Row, Col, Table, Select, Typography, Button, Input, Icon, Drawer } from 'antd';
 
 // CUSTOM
-import { getUserAccountsAPI } from 'services/settings/user_maintenance/userAccount';
+import { getUserAccountsAPI } from 'services/settings/userAccount';
 import { 
 	drawerAdd, 
 	drawerUpdate, 
@@ -64,6 +64,7 @@ const columns = [
 		title: tableHeaders.userTypes,
 		dataIndex: 'userTypeName',
 		key: 'userTypeName',
+		width: 150,
 		sorter: (a, b) => a.userTypeName.localeCompare(b.userTypeName),
 	},
 
@@ -176,7 +177,7 @@ class UserTable extends React.Component {
 								allowClear
 								onSearch={value => this.onSearch(value)}
 								onChange={this.onChangeSearch}
-								style={{ width: 200 }}
+								style={{ width: 200, textTransform: 'uppercase' }}
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>

@@ -17,6 +17,7 @@ module.exports = override(
 			'@table-header-color': '#FFFFFF',
 			'@table-padding-vertical': '8px',
 			'@table-padding-horizontal': '8px',
+			'@disabled-color': 'rgba(0, 0, 0, 0.5)'
 			// '@table-border-radius-base': '5px'
     },
   }),

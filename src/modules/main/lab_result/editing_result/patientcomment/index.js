@@ -11,10 +11,10 @@ const { TextArea } = Input;
 class PatientComment extends React.Component {
   render() {
     return (
-	<div className="patient-comment">
-		<p>COMMENT</p>
-		<TextArea rows={3} />
-	</div>
+			<div className="patient-comment">
+				<p>COMMENT</p>
+				<TextArea rows={3} />
+			</div>
     );
   }
 }
