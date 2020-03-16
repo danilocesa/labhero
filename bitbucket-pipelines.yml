@@ -3,7 +3,7 @@
 # Only use spaces to indent your .yml configuration.
 # -----
 # You can specify a custom docker image from Docker Hub as your build environment.
-image: node:10.15.3
+image: node:10.15.1
 
 pipelines:   
   tags:                         # add the 'tags' section
@@ -11,11 +11,10 @@ pipelines:
       - step:
           name: Build
           deployment: test
-          caches:
-            - node
           script:
             - npm install
             - npm run build
+<<<<<<< HEAD
       - step:
         name: Deploy
         script:
@@ -25,3 +24,29 @@ pipelines:
               PROJECT: 'Labhero' 
               BUCKET: 'labhero-release'         
     
+=======
+            - pipe: atlassian/google-app-engine-deploy:0.2.1
+              variables:
+                KEY_FILE: '----------'
+                PROJECT: 'Labhero' 
+                BUCKET: 'labhero-release'  
+  branches:        
+      release:
+        - step:
+            name: Build
+            script:
+              - npm install
+              - npm run build
+            artifacts:
+              - build/**
+        - step:
+            name: Deploy to release
+            deployment: staging
+            trigger: manual
+            script:
+              - pipe: atlassian/google-app-engine-deploy:0.2.1
+                variables:
+                  KEY_FILE: '----------'
+                  PROJECT: 'Labhero' 
+                  BUCKET: 'labhero-release'    
+>>>>>>> 17542c04c432301d47a693684268fc8ba86af437
