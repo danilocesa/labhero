@@ -7,6 +7,7 @@ import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
 import AgeBracketDrawer from 'modules/main/settings/normal_values/age_bracket_drawer';
+import LabelRangeDrawer from 'modules/main/settings/normal_values/label_range_drawer';
 import ExamTable from '../exam_item/table';
 import NormalValuesDrawer from './values_drawer';
 import DropDown from '../shared/dropdown';
@@ -33,6 +34,7 @@ class NormalValues extends React.Component {
 		isLoading: false,
 		isShowValuesDrawer: false,
 		isShowAgeBracketsDrawer: false,
+		isShowLabelRangeDrawer	: false,
 		pageSize: tablePageSize,
 		examItems: [],
 		examItemsRef: [],
@@ -161,8 +163,11 @@ class NormalValues extends React.Component {
 		return searchFrom.toString().toLowerCase().includes(searchedVal);
 	}
 
-	onChangeSettingsOption = () => {
-		this.setState({ isShowAgeBracketsDrawer: true });
+	onChangeSettingsOption = (selectedSettings) => {
+		this.setState({ 
+			isShowAgeBracketsDrawer	: (selectedSettings === 1),
+			isShowLabelRangeDrawer	: (selectedSettings === 2)
+		});
 	}
 
 	render() {
@@ -176,6 +181,7 @@ class NormalValues extends React.Component {
 				pageSize,
 				isShowValuesDrawer,
 				isShowAgeBracketsDrawer,
+				isShowLabelRangeDrawer,
 				isLoading,
 				selectedExamItem,
 				selectedSectionName,
@@ -266,6 +272,13 @@ class NormalValues extends React.Component {
 					visible={isShowAgeBracketsDrawer}
 					sectionList={ddSections}
 				/>
+
+				<LabelRangeDrawer
+					visible={isShowLabelRangeDrawer}
+					sectionList={ddSections}
+				/>
+
+
 			</div>
 		);
 	} 

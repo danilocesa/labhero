@@ -28,6 +28,7 @@ export const selectedTableConst = {
 		formulaTitle : 'FORMULA',
 		lockTitle : 'LOCK',
 		sortTitle : 'SORT',
+		releaseTitle	: 'RELEASE'
 	}
 };
 

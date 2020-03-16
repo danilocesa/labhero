@@ -65,17 +65,14 @@ class SelectedTable extends React.Component {
 				})
 			},
 			{ 
-				title: '',
-				dataIndex: 'examRequestRelease',
-				width: 90,
-				render: () => (
-					<Button 
-						shape="round"
-						type="primary"
-					>
-							RELEASE
-					</Button>
-				)
+				title: labels.releaseTitle,
+				dataIndex: 'examRequestItemPrintable',
+				width: 60,
+				render: (text, record) => this.createFormSwitch({
+					fieldName: 'examRequestItemPrintable', 
+					examItemID: record.examItemID, 
+					initialValue: record.examRequestItemPrintable
+				})
 			},
 			{ 
 				title: 'Sort',
@@ -96,7 +93,7 @@ class SelectedTable extends React.Component {
 	getSelectedExamItems = () => {
 		const { getFieldsValue } = this.props.form;
 		const fieldsValue = getFieldsValue();
-		const { examRequestItemGroup, examRequestItemFormula, examRequestItemLock } = fieldsValue;
+		const { examRequestItemGroup, examRequestItemFormula, examRequestItemLock, examRequestItemPrintable } = fieldsValue;
 		const examItems = [];
 
 		fieldsValue.keys.forEach((key, index) => {
@@ -105,6 +102,7 @@ class SelectedTable extends React.Component {
 				examRequestItemGroup: examRequestItemGroup[key],
 				examRequestItemFormula: examRequestItemFormula[key],
 				examRequestItemLock: examRequestItemLock[key] ? 1 : 0,
+				examRequestItemPrintable: examRequestItemPrintable[key] ? 1 : 0,
 				examRequestItemSort: index + 1
 			});
 		});

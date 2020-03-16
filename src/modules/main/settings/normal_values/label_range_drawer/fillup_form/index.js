@@ -45,6 +45,7 @@ class FillupForm extends React.Component {
 			if (!err) {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
+          console.log("FillupForm -> onFormSubmit -> fieldValues", fieldValues)
 
 					await onSubmit(fieldValues);
 

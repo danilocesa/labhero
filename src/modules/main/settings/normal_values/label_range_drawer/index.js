@@ -156,7 +156,7 @@ class AgeBracketDrawer extends React.Component{
 		return(
 			<div>
 				<Drawer 
-					title={`${moduleTitle} - SETTINGS - AGE RANGE`.toUpperCase()}
+					title={`${moduleTitle} - SETTINGS - LABEL OF RANGE`.toUpperCase()}
 					width="1000"
 					placement="right"
 					closable
@@ -164,7 +164,7 @@ class AgeBracketDrawer extends React.Component{
 					visible={visible}
 					className="ageBracket-drawer"
 				>
-					<section className="ageBracket-drawer-section">
+					<section className="labelRange-drawer-section">
 						<Row style={{ marginTop: 50 }}>
 							<Col span={12} offset={6}>
 								<DropDown 
@@ -176,7 +176,6 @@ class AgeBracketDrawer extends React.Component{
 									value={selectedSectionId}
 								/>
 							</Col>
-						
 						</Row>
 					</section>
 					<Row style={{ marginTop: 50 }}>
