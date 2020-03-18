@@ -19,6 +19,7 @@ import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
 import Inventory from 'modules/main/inventory';
+import BloodBank from 'modules/main/blood_bank';
 import auth from 'services/login/auth';
 
 // CONSTANTS
@@ -55,6 +56,7 @@ const Content = () => (
 				{/* Inventory route */}
 				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
+				<PrivateRoute path="/bloodbank" component={BloodBank} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>

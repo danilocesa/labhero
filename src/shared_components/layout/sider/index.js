@@ -180,6 +180,16 @@ class Sider extends React.Component {
 							</SubMenu>
 						)
 					}
+					{
+						process.env.REACT_APP_DISPLAY_BLOODBANK === '1' && (
+							<Menu.Item key={URI.bloodbank.key}>
+								<Link to={URI.bloodbank.link}>
+									<Icon component={SettingsIcon} />
+									<span>BLOOD BANK</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
         </Menu>
      </AntSider>
     );
