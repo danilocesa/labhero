@@ -1,0 +1,17 @@
+
+.user-table-options .user-table {
+    margin-top: 15px;
+}
+
+.user-table-action {
+		margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.user-table .ant-table-tbody td{
+    text-transform: uppercase;
+}
+
+.user-table-action input {
+	text-transform: uppercase;
+}

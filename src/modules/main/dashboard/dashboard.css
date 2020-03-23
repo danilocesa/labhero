@@ -1,0 +1,18 @@
+.left-pane {
+  max-width: 450px;
+}
+
+.right-pane {
+  max-width: 800px;
+}
+
+@media screen and (max-width: 800px) {
+  .left-pane {
+    width: 100%;
+    text-align: center;
+  }
+
+  .right-pane {
+    width: 100%;
+  }
+}

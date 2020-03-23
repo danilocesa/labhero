@@ -1,0 +1,21 @@
+.table-title {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.table-title .left,
+.table-title .right,
+.table-title .middle {
+  display: inline-block;
+  width: 50%;
+}
+
+.table-title .right {
+  text-align: right;
+}
+
+.table-title .right input {
+  width: 70px;
+  margin-left: 20px;
+  text-align: center;
+}

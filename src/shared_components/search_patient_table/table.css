@@ -1,0 +1,29 @@
+
+/* .search-patient-table .ant-table-thead > tr > th {
+  padding: 4px 16px;
+} */
+
+/* .search-patient-table .ant-table-thead > tr:first-child > th:first-child {
+  border-top-left-radius: 0px !important;
+}
+
+.search-patient-table .ant-table-thead > tr:first-child > th:last-child {
+  border-top-right-radius: 0px !important;
+} */
+
+.search-patient-table .ant-table-thead th {
+  text-align: left;
+}
+
+.search-patient-table .ant-table-body {
+  overflow-x: auto !important;
+}
+
+.search-patient-table .ant-table-body tr {
+  cursor: pointer;
+}
+
+
+/* .search-patient-table .ant-table-tbody > tr > td {
+  padding: 7px 21px !important;
+} */

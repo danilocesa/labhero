@@ -1,0 +1,19 @@
+.iresultTable tr:nth-child(2n + 1) {
+  background: #fbfbfb;
+}
+
+.iresultTable .ant-table-body {
+  font-size: 13px;
+}
+
+.iresultTableSelectedRow {
+  background: red !important;
+}
+
+.iresultTable .clickRowStyl{
+  background-color: #8478c2 !important;
+}
+
+.ant-table-tbody>.clickRowStyl:hover>td{
+  background-color: red;
+}

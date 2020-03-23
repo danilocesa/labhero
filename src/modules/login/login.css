@@ -1,0 +1,50 @@
+.login-form {
+  background: #f2f2f2;
+  padding: 35px 35px 45px 35px;
+  margin: auto;
+  width: 330px;
+}
+
+.login-form .login-logo-image {
+  height: 41px;
+  width: auto;
+  margin-bottom: 25px;
+}
+
+.login-form-button {
+  background: #f5222d;
+  border: #f5222d;
+  font-size: 13px;
+  margin-bottom: 0px;
+  margin-top: 10px;
+}
+
+.login-form .login-input {
+  margin-bottom: 15px;
+}
+
+.login-form .login-input input{
+  text-transform: uppercase;
+}
+
+.login-form .ant-form-explain {
+  font-size: 12px;
+}
+
+.login-form label {
+  font-size: 13px;
+}
+
+.redirect-home {
+  margin-left: 5px;
+  color: #000;
+  font-weight: 600;
+}
+
+.login-form .ant-form-item-required::before {
+  display: none;
+}
+
+.login-form .ant-form-item-label > label::after {
+  display: none;
+}

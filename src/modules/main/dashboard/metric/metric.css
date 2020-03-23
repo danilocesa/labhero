@@ -1,0 +1,21 @@
+.metrics {
+  background: #fafafc !important;
+  border: 0 !important;
+  padding: 15px 0px !important;
+  width: 200px;
+  text-align: center;
+  display: inline-block;
+  margin: 10px 25px 20px 0px !important;
+}
+
+.metrics img {
+  width: 30px;
+  height: 30px;
+}
+
+.metric-value {
+  display: block;
+  margin-top: 10px;
+  font-size: 26px;
+  font-weight: bolder;
+}

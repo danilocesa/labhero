@@ -1,0 +1,109 @@
+.action-container .action-button {
+  background-color: #615de0;
+  border-radius: 30px;
+  padding: 0 30px;
+  color: #ffffff;
+  margin-left: 20px;
+  height: 35px;
+	line-height: 34px;
+	width: 120px;
+}
+
+.action-container .back-button {
+  border: 0px solid transparent;
+}
+
+.action-container .back-button span {
+  text-decoration: underline;
+}
+
+.ant-modal-footer {
+  padding: 0px;
+}
+
+.ant-modal-close {
+  display: none;
+}
+
+.save-modal-container .left-btn {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  padding: 25px;
+  line-height: 0;
+}
+
+.save-modal-container .right-btn {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  background: #7c78e6;
+  color: white;
+  padding: 25px;
+  line-height: 0;
+  border-color: #7c78e6;
+}
+
+.successful-msg {
+  color: #3aa2fb;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ant-modal {
+  width: 450px !important;
+}
+
+.ant-modal-body {
+  padding: 70px;
+}
+
+.success-prompt-btn {
+  padding: 20px;
+  line-height: 0px;
+  border-radius: 0px;
+  background: #7c78e6;
+  border: 1px solid #5d58e0;
+  color: white;
+  font-size: 15px;
+}
+
+/* NICOLE OVERRIDE */
+
+.save-patientinfo-modal .ant-modal-confirm-body > .anticon + .ant-modal-confirm-title + .ant-modal-confirm-content {
+  margin-left: 0px;
+}
+
+.save-patientinfo-modal .ant-modal-confirm-body > .anticon {
+  float: none;
+  display: none;
+}
+
+.save-patientinfo-modal .ant-modal-confirm-body-wrapper {
+  text-align: center;
+}
+
+.save-patientinfo-modal .ant-modal-confirm .ant-modal-confirm-btns {
+  float: none;
+}
+
+.save-patientinfo-modal .ant-modal-body {
+  padding: 0px;
+}
+
+.save-patientinfo-modal .ant-modal-confirm-body {
+  padding: 70px;
+}
+
+.save-patientinfo-modal .ant-modal-confirm-btns {
+  float: none;
+  margin-top: 0px;
+}
+
+.save-patientinfo-modal .ant-modal-confirm-btns .ant-btn-primary {
+  width: 100%;
+  border-radius: 0px;
+  padding: 25px;
+  line-height: 0px;
+  font-size: 15px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}

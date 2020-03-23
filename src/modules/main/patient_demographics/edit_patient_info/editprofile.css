@@ -1,0 +1,15 @@
+.customDatePickerWidth .ant-calendar-picker-input{
+   padding: 4px 35px;
+}
+
+.treeselect-address .ant-select {
+   width: 100% !important;
+}
+
+.patient-demo-fillup-form {
+	padding-bottom: 30px;
+}
+
+.patient-demo-fillup-form input{
+   text-transform: uppercase;
+}

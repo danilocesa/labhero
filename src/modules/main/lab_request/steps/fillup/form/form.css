@@ -1,0 +1,53 @@
+.clr-fillup-form .left-form, 
+.clr-fillup-form .right-form, 
+.clr-fillup-form .center-form {
+  width: 80%;
+	max-width: 400px;
+	margin: auto;
+}
+
+.clr-fillup-form .ant-form-item {
+	margin-bottom: 7px;
+}
+
+.clr-fillup-form .ant-input[disabled] {
+	color: rgba(0, 0, 0, 0.65);
+}
+
+
+.clr-fillup-form .left-form input,
+.clr-fillup-form .center-form input {
+  text-transform: uppercase;
+}	
+
+
+.clr-fillup-form .left-form .ant-radio-button-wrapper {
+  width: 100px;
+  text-align: center;
+}
+
+.clr-fillup-form .center-form .gender-radio-btn {
+	width: 100px;
+	text-align: center;
+}
+
+.clr-fillup-form .right-form input, 
+.clr-fillup-form .right-form select, 
+.clr-fillup-form .right-form textarea,
+.clr-fillup-form .right-form .ant-select{
+  text-transform: uppercase;
+}	
+
+@media only screen and (max-width: 800px) {
+  .clr-fillup-form .divider {
+    display: none !important;
+  }
+
+  .clr-fillup-form .left-form, .right-form {
+    width: 90%;
+  }
+
+  .clr-fillup-form .left-form {
+    float: unset;
+  }
+}

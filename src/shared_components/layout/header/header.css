@@ -1,0 +1,29 @@
+.ant-layout-header {
+  background: white !important;
+  padding: 0 25px !important;
+	/* border-bottom: 1px solid #bbadff; */
+}
+
+.main-header {
+	z-index: 10;
+	box-shadow: 0 2px 8px #f0f1f2;
+}
+
+.ant-avatar {
+  background: #bbadff;
+}
+
+.login-btn {
+  font-size: 14px !important;
+  width: 100px;
+}
+
+.logo-pane {
+  line-height: 10px;
+  margin-top: 20px;
+}
+
+.logo-pane h1 {
+  font-size: 18px !important;
+  font-weight: bolder;
+}

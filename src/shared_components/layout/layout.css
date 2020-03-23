@@ -1,0 +1,8 @@
+.ant-layout {
+  background: white !important;
+}
+
+.hide {
+  display:none;
+  visibility: hidden;
+}

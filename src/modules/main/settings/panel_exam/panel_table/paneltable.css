@@ -1,0 +1,12 @@
+.user-table .panel-table-options {
+		margin-bottom: 15px;
+		margin-top: 50px;
+}
+
+.settings-panel-table .ant-table-small > .ant-table-content > .ant-table-body {
+	margin: 0;
+}
+
+.panel-table-search-input input {
+	text-transform: uppercase;
+}
