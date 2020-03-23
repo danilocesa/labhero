@@ -20,6 +20,9 @@ import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
 import Inventory from 'modules/main/inventory';
 import BloodBank from 'modules/main/blood_bank';
+import Cashier from 'modules/main/cashier';
+import Receipt from 'modules/main/cashier/receipt';
+import Transactions from 'modules/main/cashier/transactions';
 import auth from 'services/login/auth';
 
 // CONSTANTS
@@ -57,6 +60,9 @@ const Content = () => (
 				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
 				<PrivateRoute path="/bloodbank" component={BloodBank} />
+				<PrivateRoute path="/cashier" component={Cashier} />
+				<PrivateRoute path="/receipt" component={Receipt} />
+				<PrivateRoute path="/transactions" component={Transactions} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>
