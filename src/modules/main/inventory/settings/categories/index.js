@@ -86,13 +86,6 @@ class InventoryCategoriesTemplate extends React.Component {
           <AntCol span={6}>
             <Title level={4}>CATEGORIES SETUP</Title>
             <AntForm onSubmit={this.handleSubmit} >
-              <AntForm.Item label="CATEGORY ID">
-                {getFieldDecorator('category_id', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <AntInput />
-                )}
-              </AntForm.Item>
               <AntForm.Item label="CATEGORY NAME">
                 {getFieldDecorator('category_name', {
                   rules: [{ required: true, message: 'Please input!' }],
