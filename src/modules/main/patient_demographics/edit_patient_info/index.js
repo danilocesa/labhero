@@ -277,7 +277,7 @@ class EditProfile extends React.Component {
 								selectedProvince={provinceCode}
 								onChange={this.onProvinceChange}
 							/>
-						</Col>
+						</Col>2
 						{/** City */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<CityList 
