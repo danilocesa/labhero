@@ -27,14 +27,14 @@
     align-items: center;
     text-align: center;
 }
-#container Button{
+/* #container Button{
     height: 32px;
     padding: 0 16px;
     font-size: 14px;
     border-radius: 32px;
-}
+} */
 
-.ant-btn-round{
+#container .ant-btn-round{
     height: 32px;
     padding: 0 16px;
     font-size: 14px;

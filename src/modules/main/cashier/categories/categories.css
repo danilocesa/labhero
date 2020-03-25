@@ -1,3 +1,7 @@
+.ant-card-head{
+    padding:0px;
+}
+
 .form{
     
     font-size: 14px;
@@ -5,12 +9,19 @@
 .form-card{
     width: auto;
     height: auto;
-    /* background-color: red; */
 }
 
 .select-category{
     margin-bottom: 10px;
+    align-items: right;
+    
 }
+
+.selection  {
+    background-color: red;
+
+}
+
 h4{
     margin-bottom: 0.5em;
     color: rgba(0, 0, 0, 0.85);
@@ -18,9 +29,32 @@ h4{
     font-size: 20px;
     line-height: 1.4;
     text-align: left;
-    margin-bottom: 30px;
 }
-.category-top .ant-btn-round{
+.cashier-antcard .ant-btn-round{
     margin-left: 20px;
     text-align: center;
+    width: 120px;
 }
+.form-card .ant-btn-round{
+    margin-left: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    width: 120px
+}
+
+.cashier-antcard .ant-card-body{
+    padding:10px;
+}
+
+.form-card .ant-card-body{
+    padding:10px;
+}
+
+.cashier-antcard .ant-card-head-title{
+    padding:10px;
+}
+
+.form-card .ant-card-head-title{
+    padding:10px;
+}
+
