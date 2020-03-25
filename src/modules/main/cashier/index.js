@@ -15,7 +15,7 @@ import {
   Button,
   Input
 } from "antd";
-import "./cashier.css";
+// import "./cashier.css";
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
