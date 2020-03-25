@@ -24,6 +24,7 @@ import Cashier from 'modules/main/cashier';
 import Receipt from 'modules/main/cashier/receipt';
 import Transactions from 'modules/main/cashier/transactions';
 import Categories from 'modules/main/cashier/categories';
+import Summary from 'modules/main/cashier/summary';
 import auth from 'services/login/auth';
 
 // CONSTANTS
@@ -65,6 +66,7 @@ const Content = () => (
 				<PrivateRoute path="/cashier/receipt" component={Receipt} />
 				<PrivateRoute path="/cashier/transactions" component={Transactions} />
 				<PrivateRoute path="/cashier/categories" component={Categories} />
+				<PrivateRoute path="/cashier/summary" component={Summary} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>

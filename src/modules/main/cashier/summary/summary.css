@@ -1,0 +1,41 @@
+h4{
+    margin-bottom: 0.5em;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.4;
+    text-align: left;
+}
+.search-input {
+    margin: auto;
+}
+.search-input .ant-input {
+    width: 280px;
+}
+.search-input .label {
+    margin-right: 10px;
+}
+.h1{
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 0.5em;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.4;
+    text-align: right;
+}
+.button-below .ant-btn-round{
+   margin-left: 5px;
+   float:right;
+   width: 120px;
+
+}
+.button-below{
+    padding: 20px;
+}
+
+.button-below .ant-btn-round :hover{
+    background-color: #fff;
+    border-color: #BBADFF;
+}

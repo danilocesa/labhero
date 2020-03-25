@@ -40,7 +40,7 @@ class Cashier extends React.Component {
 	}
 
 	RedirectToReceipt(){
-		window.location = "http://localhost:3000/cashier/receipt"
+		window.location = "http://localhost:3000/cashier/categories"
 	}
   
 	toggleSecondModal() {
@@ -98,7 +98,7 @@ class Cashier extends React.Component {
 				</Col>
 				<Col span={8}>
 				  <Card className="cashier-item-card">
-					<Link to="/cashier/receipt" >
+					<Link to="/cashier/categories" >
 						<img
 							type="primary"
 							className="loupe"
@@ -122,7 +122,7 @@ class Cashier extends React.Component {
 			onOk={this.RedirectToReceipt}
 			onCancel={this.toggleFirstModal}
 		  >
-			<div >
+			<div>
 			  <Input style={{ marginBottom: 20 }}
 				placeholder="Request ID"
 			  />
