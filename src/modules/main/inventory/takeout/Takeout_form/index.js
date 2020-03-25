@@ -1,40 +1,28 @@
-import React from 'react';
+	import React from 'react';
 import { Row, Col, Form, Input, Button, Select, DatePicker  } from 'antd';
-
+import ClearInput from 'shared_components/clear_form'
 class SearchForm extends React.Component {
-	state = { }
-  
-	handleSubmit = e => {
-	  e.preventDefault();
-	  this.props.form.validateFields((err, values) => {
-		if (!err) {
-		  console.log('Received values of form: ', values);
-		}
-	  });
-	};
-  
-	handleReset = () => {
-	  this.props.form.resetFields();
-	};
+
+	constructor(){
+		super();
+		this.state ={data: 'test'};
+	  }
 	
+	  btnClick(){
+		alert('---')
+	   this.setState({data: 'nannsd'});
+		 // this.state ={data: 'sds'};
+	  }
 	render() {
-		const { getFieldDecorator } = this.props.form;
 		return (
-			<Form onSubmit={this.handleSubmit}>
+			<Form className="search-patient-form" ref={(el) => this.myFormRef = el}>
 				<Row type="flex" justify="space-between">
 					<Col span={4}>
-					<Form.Item label="TRANSACTION DATE">
-                {getFieldDecorator('supplier', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-					<DatePicker style={{ width: '100%' }} />,
-                )}
-              </Form.Item>
-						{/* <Form.Item label="TRANSACTION DATE">
+						<Form.Item label="TRANSACTION DATE">
 							<DatePicker style={{ width: '100%' }} />
-						</Form.Item> */}
+						</Form.Item>
 					</Col>
-					{/* <Col span={4}>
+					<Col span={4}>
 						<Form.Item label="EXPIRED DATE">
                           <DatePicker style={{ width: '100%' }} />
 						</Form.Item>
@@ -53,7 +41,7 @@ class SearchForm extends React.Component {
 						<Form.Item label="LOCATION">
 							<Select />
 						</Form.Item>
-					</Col> */}
+					</Col>
 				</Row>
 				<Row type="flex" justify="space-between">
                 <Col span={6}>
@@ -71,7 +59,12 @@ class SearchForm extends React.Component {
 								</Col>
 								<Col span={12}>
 									<Button 
-										onClick={this.handleReset} shape="round" 
+										block
+										shape="round" 
+										type="primary" 
+										htmlType="submit" 
+										onClick = {ClearInput}
+										style={{ width: 120 }}
 									>
 										CLEAR
 									</Button>
