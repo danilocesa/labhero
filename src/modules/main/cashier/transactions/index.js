@@ -56,25 +56,9 @@ const columns = [
     render: text => <a>{text}</a>
   },
   {
-    title: "Icon",
-    dataIndex: "img",
-    key: "img"
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description"
-  },
-  {
-    title: "Quantity",
-    dataIndex: "quantity",
-    key: "quantity"
-  },
-
-  {
-    title: "Price",
-    dataIndex: "price",
-    key: "price"
+    title: "Request ID",
+    dataIndex: "request_id",
+    key: "request_id"
   },
   {
     title: "Date",
@@ -87,46 +71,31 @@ const data = [
   {
     key: "1",
     item: "1",
-    img: <img type="primary" className="image1" src={image1} alt="image1" />,
-    description: "Consultations",
-    quantity: "(x)1",
-    price: "P500.00",
+    request_id: "1000000000001",
     date: "March 20, 2020"
   },
   {
     key: "2",
     item: "2",
-    img: <img type="primary" className="image2" src={image2} alt="image2" />,
-    description: "Anti Biotic",
-    quantity: "(x)100",
-    price: "P25.00",
+    request_id: "1000000000001",
     date: "March 20, 2020"
   },
   {
     key: "3",
     item: "3",
-    img: <img type="primary" className="image3" src={image3} alt="image3" />,
-    description: "Professional Fee",
-    quantity: "(x)13",
-    price: "P2000.00",
+    request_id: "1000000000001",
     date: "March 20, 2020"
   },
   {
     key: "4",
     item: "4",
-    img: <img type="primary" className="image3" src={image3} alt="image3" />,
-    description: "Professional Fee",
-    quantity: "(x)13",
-    price: "P2000.00",
+    request_id: "1000000000001",
     date: "March 20, 2020"
   },
   {
     key: "5",
     item: "5",
-    img: <img type="primary" className="image3" src={image3} alt="image3" />,
-    description: "Professional Fee",
-    quantity: "(x)13",
-    price: "P2000.00",
+    request_id: "1000000000001",
     date: "March 20, 2020"
   }
 ];
@@ -147,7 +116,7 @@ class Transactions extends React.Component {
         <Row>
           <Col span={18}>
             <Card
-              title="ITEMS"
+              title="LIST OF REQUEST ID"
               bordered={true}
               style={{ width: 1000, marginTop: 2, height: 550, marginLeft: 10 }}
             >

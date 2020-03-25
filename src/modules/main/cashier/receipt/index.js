@@ -23,6 +23,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 const { Panel } = Collapse;
 const styles = {
+  // style={{ width: 300, marginTop: 2, height: 500, marginLeft: 10 }}
   rootContainer: {
     backgroundColor: "#1A1A1D",
     height: "100%"
@@ -107,47 +108,49 @@ class Breakdown extends React.Component {
   render() {
     return (
         <Row className = "container">
-          <Col span={18}>
-                <Card
-                  title="ITEMS"
-                  bordered={true}
-                >
-                  <Table columns={columns} dataSource={data}
-                />
-                  
-                </Card>
-            </Col>
-          <Col span={6}>
-          <div>
-              <Card
-                title="RECEIPT"
-                bordered={true}
-                style={{
-                  width: 300,
-                  marginTop: 2,
-                  height: 550,
-                  marginLeft: 10
-                }}
-                style={styles.card}
-                bodyStyle={styles.cardBody}
-              >
-                <Collapse accordion>
-                  <p>Consultation P500.00</p>
-                  <p>Anti Biotic P150.00</p>
-                  <p>Professional Fee P1,250.00</p>
-                  <p>---------------------------</p>
-                  <p>
-                    <b>Total (3) P1,900.00</b>
-                  </p>
-                  <p>Cash P2,000.00</p>
-                  <p>Change P100.00</p>
-                  <p></p>
-                  <p>Vatable P 0.00</p>
-                  <p>Vat_Tax P 0.00</p>
-                  <p>Zero Rated P 0.00</p>
-                </Collapse>
-              </Card>
+            <div className = "breakdown"> 
+            <Col span={18}>
+                  <Card
+                    title="ITEMS"
+                    bordered={true}
+                  >
+                    <Table columns={columns} dataSource={data}
+                  />
+                    
+                  </Card>
+              </Col>
             </div>
+          <Col span={6}>
+            <div className = "Receipt">
+                <Card
+                  title="RECEIPT"
+                  bordered={true}
+                  style={{
+                    width: 300,
+                    marginTop: 2,
+                    height: 550,
+                    marginLeft: 10
+                  }}
+                  style={styles.card}
+                  bodyStyle={styles.cardBody}
+                >
+                  <Collapse accordion>
+                    <p>Consultation P500.00</p>
+                    <p>Anti Biotic P150.00</p>
+                    <p>Professional Fee P1,250.00</p>
+                    <p>---------------------------</p>
+                    <p>
+                      <b>Total (3) P1,900.00</b>
+                    </p>
+                    <p>Cash P2,000.00</p>
+                    <p>Change P100.00</p>
+                    <p></p>
+                    <p>Vatable P 0.00</p>
+                    <p>Vat_Tax P 0.00</p>
+                    <p>Zero Rated P 0.00</p>
+                  </Collapse>
+                </Card>
+              </div>
           </Col>
         </Row>
     );
