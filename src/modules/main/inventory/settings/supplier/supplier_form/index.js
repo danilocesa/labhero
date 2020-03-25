@@ -19,6 +19,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
+import ClearFormFields from 'shared_components/form_clear_button';
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import { fetchExamRequestList } from 'services/shared/examRequest';
 import { 
@@ -234,13 +235,14 @@ class PanelFormTemplate extends React.Component {
 					</section>	
 					<section className="drawerFooter">
 						<div>
-							<AntButton 
+							<ClearFormFields form={this.props.form} />
+							{/* <AntButton 
 								shape="round" 
 								style={{ marginRight: 10, width: 120 }} 
 								onClick={this.props.onCancel}
 							>
 								{buttonLabels.cancel}
-							</AntButton>
+							</AntButton> */}
 							<AntButton 
 								type="primary" 
 								shape="round" 
