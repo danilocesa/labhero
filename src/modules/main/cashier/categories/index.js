@@ -141,6 +141,7 @@ class Categories extends React.Component {
                     <div style={{marginTop: 10}}> 
                         <Col span={12}>
                             <Card
+                            
                                     title="Search"
                                     bordered={true}
                                     style = {{alignItems: "center"}}
