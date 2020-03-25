@@ -62,9 +62,9 @@ const Content = () => (
 				{/* 404 page route */}
 				<PrivateRoute path="/bloodbank" component={BloodBank} />
 				<PrivateRoute path="/cashier" component={Cashier} />
-				<PrivateRoute path="/receipt" component={Receipt} />
-				<PrivateRoute path="/transactions" component={Transactions} />
-				<PrivateRoute path="/categories" component={Categories} />
+				<PrivateRoute path="/cashier/receipt" component={Receipt} />
+				<PrivateRoute path="/cashier/transactions" component={Transactions} />
+				<PrivateRoute path="/cashier/categories" component={Categories} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>
