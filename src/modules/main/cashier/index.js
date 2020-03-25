@@ -40,7 +40,7 @@ class Cashier extends React.Component {
 	}
 
 	RedirectToReceipt(){
-		window.location = "http://localhost:3000/receipt"
+		window.location = "http://localhost:3000/cashier/receipt"
 	}
   
 	toggleSecondModal() {
@@ -84,7 +84,7 @@ class Cashier extends React.Component {
 				</Col>
 				<Col span={8}>
 				  <Card className="cashier-item-card">
-					<Link to="/transactions" >
+					<Link to="/cashier/transactions" >
 							<img
 							type="primary"
 							className="browser"
@@ -98,7 +98,7 @@ class Cashier extends React.Component {
 				</Col>
 				<Col span={8}>
 				  <Card className="cashier-item-card">
-					<Link to="/receipt" >
+					<Link to="/cashier/receipt" >
 						<img
 							type="primary"
 							className="loupe"
