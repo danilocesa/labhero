@@ -40,7 +40,7 @@ class Cashier extends React.Component {
 	}
 
 	RedirectToReceipt(){
-		window.location = "http://localhost:3000/receipt"
+		window.location = "http://localhost:3000/cashier/receipt"
 	}
   
 	toggleSecondModal() {
@@ -58,201 +58,170 @@ class Cashier extends React.Component {
 	  console.log("=== state ===", this.state);
 	  const { image, link, label, offset, className } = this.props;
 	  return (
-	
 		<Layout
-		  className="layout"
-		  style={{
-			display: "flex",
-			justifyContent: "center",
-			alignItems: "center",
-			height: "100vh",
-			marginTop: 10
-		  }}
-		>
-		  <div  id="container" >
-			<Modal
-			  className="modal"
-			  style={{ textAlign: "center" }}
-			  title="SEARCH BY TRANSACTION NUMBER"
-			  visible={this.state.isFirstModalOpen}
-			  getContainer={this.getContainer}
-			  onOk={this.RedirectToReceipt}
-			  onCancel={this.toggleFirstModal}
-			>
-			  <div id = "container">
-				<Input
-				  placeholder="Transaction Number"
-				/>
-				<Button className="button-numbers" type="primary">
-				  1
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  2
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  3
-				</Button>
-			  </div>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  4
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  5
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  6
-				</Button>
-			  </div>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  7
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  8
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  9
-				</Button>
-			  </div>
-			  <Button
-				className="button-numbers"
-				type="primary"
-				style={{ width: 400 }}
-			  >
-				0
-			  </Button>
-			</Modal>
-			<Modal
-			  style={{ textAlign: "center" }}
-			  title="SEARCH BY CATEGORY"
-			  visible={this.state.isSecondModalOpen}
-			  getContainer={this.getContainer}
-			  onOk={this.RedirectToReceipt}
-			  onCancel={this.toggleSecondModal}
-			>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  Consultation
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Laboratory
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Medicine
-				</Button>
-			  </div>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  Check Up
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Book
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Pedia
-				</Button>
-			  </div>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  Optalmology
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  OB Gyne
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Surgeon
-				</Button>
-			  </div>
-			  <div>
-				<Button className="button-numbers" type="primary">
-				  Theraphy
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Xray
-				</Button>
-				<Button className="button-numbers" type="primary">
-				  Ultrasound
-				</Button>
-			  </div>
-			</Modal>
-		  </div>
-		  <div className = "menu">
-				<Card className="cashier-item-card">
-					<Row>
-						<img
-						type="primary"
-						onClick={this.toggleFirstModal}
-						className="browser"
-						src={browser}
-						alt="browser"
-						/>
-					</Row>
-					<Row>
-						<Col 
-							span={24} 
-							style={{ 
-									marginTop:'10px', 
-									fontWeight: "bold", 
-									fontSize: '15px'
-							}} 
-							className={className}
-						>
-							<span>{label}</span>
-						</Col>
-					</Row>
-				</Card>
-				<Card className="cashier-item-card">
-					<Row>
-						<Link to="/transactions" >
+		className="layout"
+		style={{
+		  display: "flex",
+		  justifyContent: "center",
+		  alignItems: "center",
+		//   height: "100vh",
+		  marginTop: 10
+		}}
+	  >
+		<div className = "Menu">
+			<Row>
+				<Col span={8}>
+				  <Card className="cashier-item-card">
+					  <img
+					  onClick={this.toggleFirstModal}
+					  className="browser"
+					  src={browser}
+					  alt="browser"
+					  />
+					  <br></br>
+					  <span>Search By Request ID</span>
+				  </Card>
+				</Col>
+				<Col span={8}>
+				  <Card className="cashier-item-card">
+					<Link to="/cashier/transactions" >
 							<img
 							type="primary"
 							className="browser"
 							src={browser}
 							alt="browser"
 							/>
-						</Link>
-					</Row>
-					<Row>
-						<Col 
-							span={24} 
-							style={{ 
-									marginTop:'10px', 
-									fontWeight: "bold", 
-									fontSize: '15px'
-							}} 
-							className={className}
-						>
-							<span>{label}</span>
-						</Col>
-					</Row>
-				</Card>
-				<Card className="cashier-item-card">
-					<Row>
+					</Link>
+					<br></br>
+					  <span>View All Request</span>
+				  </Card>
+				</Col>
+				<Col span={8}>
+				  <Card className="cashier-item-card">
+					<Link to="/cashier/receipt" >
 						<img
-						type="primary"
-						className="loupe"
-						src={loupe}
-						alt="loupe"
-						onClick={this.toggleSecondModal}
-						/>
-					</Row>
-					<Row>
-						<Col 
-							span={24} 
-							style={{ 
-									marginTop:'10px', 
-									fontWeight: "bold", 
-									fontSize: '15px'
-							}} 
-							className={className}
-						>
-							<span>{label}</span>
-						</Col>
-					</Row>
-				</Card>
+							type="primary"
+							className="loupe"
+							src={loupe}
+							alt="loupe"
+							/>
+							<br></br>
+							<span>Search By Category</span>
+						</Link>
+				  </Card>
+				</Col>
+			</Row>
+		  </div>
+		  <div  id="container" >
+		  <Modal
+			className="modal"
+			style={{ textAlign: "center" }}
+			title="SEARCH BY REQUEST ID"
+			visible={this.state.isFirstModalOpen}
+			getContainer={this.getContainer}
+			onOk={this.RedirectToReceipt}
+			onCancel={this.toggleFirstModal}
+		  >
+			<div >
+			  <Input style={{ marginBottom: 20 }}
+				placeholder="Request ID"
+			  />
+			  <Button className="ant-btn-round" type="primary">
+				1
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				2
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				3
+			  </Button>
 			</div>
-		</Layout>
+			<div >
+			  <Button className="ant-btn-round" type="primary">
+				4
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				5
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				6
+			  </Button>
+			</div>
+			<div >
+			  <Button className="ant-btn-round" type="primary">
+				7
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				8
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				9
+			  </Button>
+			</div>
+			<Button
+			  className="ant-btn-round"
+			  type="primary"
+			  style={{ width: 330, marginBottom: 10,marginTop: 10 }}
+			>
+			  0
+			</Button>
+		  </Modal>
+		  {/* <Modal
+		    className="modal"
+			style={{ textAlign: "center" }}
+			title="SEARCH BY CATEGORY"
+			visible={this.state.isSecondModalOpen}
+			getContainer={this.getContainer}
+			onOk={this.RedirectToReceipt}
+			onCancel={this.toggleSecondModal}
+		  >
+			<div>
+			  <Button className="ant-btn-round" type="primary">
+				Consultation
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Laboratory
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Medicine
+			  </Button>
+			</div>
+			<div>
+			  <Button className="ant-btn-round" type="primary">
+				Check Up
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Book
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Pedia
+			  </Button>
+			</div>
+			<div>
+			  <Button className="ant-btn-round" type="primary">
+				Optalmology
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				OB Gyne
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Surgeon
+			  </Button>
+			</div>
+			<div>
+			  <Button className="ant-btn-round" type="primary">
+				Theraphy
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Xray
+			  </Button>
+			  <Button className="ant-btn-round" type="primary">
+				Ultrasound
+			  </Button>
+			</div>
+		  </Modal> */}
+		</div>
+	  </Layout>
 	  );
 	}
   }

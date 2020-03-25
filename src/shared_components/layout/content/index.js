@@ -23,6 +23,7 @@ import BloodBank from 'modules/main/blood_bank';
 import Cashier from 'modules/main/cashier';
 import Receipt from 'modules/main/cashier/receipt';
 import Transactions from 'modules/main/cashier/transactions';
+import Categories from 'modules/main/cashier/categories';
 import auth from 'services/login/auth';
 
 // CONSTANTS
@@ -60,9 +61,10 @@ const Content = () => (
 				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
 				<PrivateRoute path="/bloodbank" component={BloodBank} />
-				<PrivateRoute path="/cashier" component={Cashier} />
-				<PrivateRoute path="/receipt" component={Receipt} />
-				<PrivateRoute path="/transactions" component={Transactions} />
+				<PrivateRoute exact path="/cashier" component={Cashier} />
+				<PrivateRoute path="/cashier/receipt" component={Receipt} />
+				<PrivateRoute path="/cashier/transactions" component={Transactions} />
+				<PrivateRoute path="/cashier/categories" component={Categories} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>
