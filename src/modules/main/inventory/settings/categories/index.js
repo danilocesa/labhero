@@ -1,6 +1,8 @@
 // LiBRARY
 import React from 'react';
+import CategoriesForm from '../categories/categories_form';
 import { 
+  Drawer,
   Row as AntRow, 
   Col as AntCol, 
   Typography, 
@@ -11,7 +13,7 @@ import {
 } from 'antd';
 
 // CUSTOM MODULES
-
+import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from './settings';
 //  CONSTANTS
 const { Title } = Typography;
 const columns = [
@@ -45,6 +47,7 @@ const data = [
   },
 ];
 
+
 class InventoryCategoriesTemplate extends React.Component {
   state = { }
   
@@ -61,6 +64,20 @@ class InventoryCategoriesTemplate extends React.Component {
     this.props.form.resetFields();
   };
 
+  displayDrawerUpdate = (record) => {
+		this.setState({
+			isDrawerVisible: true,
+			drawerTitle: drawerUpdateTitle,
+			drawerButton: buttonLabels.update,
+			panelInfo: record
+		});
+  }
+  onClose = () => {
+		this.setState({
+			isDrawerVisible: false,
+		});
+	};
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return ( 
@@ -69,26 +86,19 @@ class InventoryCategoriesTemplate extends React.Component {
           <AntCol span={6}>
             <Title level={4}>CATEGORIES SETUP</Title>
             <AntForm onSubmit={this.handleSubmit} >
-              <AntForm.Item label="CATEGORY ID">
-                {getFieldDecorator('category_id', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <AntInput />,
-                )}
-              </AntForm.Item>
               <AntForm.Item label="CATEGORY NAME">
                 {getFieldDecorator('category_name', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
-                  <AntInput />,
+                  <AntInput />
                 )}
               </AntForm.Item>
               <AntRow>
-                <AntCol span={24} style={{ textAlign: 'right' }}>
-                  <AntButton onClick={this.handleReset}>
+                <AntCol span={24} style={{ textAlign: 'right' }} >
+                  <AntButton onClick={this.handleReset} shape="round">
                     CLEAR
                   </AntButton>
-                  <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }}>
+                  <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }}shape="round"> 
                     ADD
                   </AntButton>
                 </AntCol>
@@ -97,7 +107,36 @@ class InventoryCategoriesTemplate extends React.Component {
           </AntCol>
           <AntCol span={2} />
           <AntCol span={16}>
-            <AntTable columns={columns} dataSource={data} />
+          <AntTable 
+					className="settings-panel-table"
+					size={tableSize}
+					dataSource={data}
+					pagination={this.state.pagination}
+					loading={this.state.loading} 
+          columns={columns}
+          
+					rowKey={record => record.key}
+					onRow={(record) => {
+						return {
+							onDoubleClick: () => {
+								this.displayDrawerUpdate(record);
+							}
+						}
+					}}
+				/>
+        <Drawer 
+					title={this.state.drawerTitle}
+					visible={this.state.isDrawerVisible}
+					onClose={this.onClose}
+					width="40%"
+					destroyOnClose
+				>
+					<CategoriesForm 
+						drawerButton={this.state.drawerButton} 
+						panelInfo={this.state.panelInfo}
+						onCancel={this.onClose}
+					/>
+				</Drawer>
           </AntCol>
         </AntRow>
 			</div>

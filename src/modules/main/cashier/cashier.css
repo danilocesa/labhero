@@ -1,0 +1,94 @@
+
+.modal{
+    padding: 10px;
+}
+#container{
+    width: 100%;
+    /* height: 100%; */
+    padding:  16px;
+}
+
+#container .modal{
+    padding: 10px;
+}
+
+#container Input {
+    width: 400px;
+    align-items: center;
+    text-align: center;
+}
+
+#container button {
+    margin: 5px 10px 10px 5px;
+}
+#inside-button Button {
+    width: 120px;
+    margin: 10px 10px 10px 10px;
+    align-items: center;
+    text-align: center;
+}
+#container Button{
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 32px;
+}
+
+.ant-btn-round{
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 32px;
+    /* margin-bottom: 10px; */
+    width: 100px;
+}
+.menu{
+    background: #FAFAFC;
+}
+.ant-modal-body{
+    padding: 0px;
+    align-items: center;
+    text-align: center;
+}
+
+.cashier-item-card {
+    width: 250px;
+    height: 200px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0;
+}
+.cashier-item-card:hover {
+    box-shadow: 0 2px 8px rgb(100, 100, 100);
+}
+.menu img{
+    height: 150;
+    width: auto;
+}
+.menu .loupe .browser {
+    height: 150;
+    width: auto;
+}
+
+.loupe:hover {
+    opacity: 1;
+    cursor: pointer;
+   
+  }
+
+  .browser:hover {
+    opacity: 1;
+    cursor: pointer;
+    
+  }
+
+  .Menu .cashier-item-card{
+    margin-left: 30px;
+    /* margin-top: 80px; */
+
+}
+
+
+
