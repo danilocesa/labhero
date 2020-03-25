@@ -5,7 +5,11 @@ class SearchForm extends React.Component {
 
 	handleSubmit = () => {}
 
-	clearInputs = () => {}
+	clearInputs = () => { 
+		this.refs.fieldName.value="";
+		this.refs.fieldorg.value="";
+		this.refs.fieldNum.value="";
+	}
 
 	render() {
 		return (
