@@ -20,19 +20,7 @@ class FillupForm extends React.Component {
 	componentDidMount() {}
 
 	componentDidUpdate(prevProps) {
-		const { moduleType, form, selectedItemRange } = this.props; 
-		const { setFieldsValue } = form;
-		// const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
-
-		if(moduleType === formMode.update) {
-			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
-				setFieldsValue({
-					// ...restItemRange,
-					canRelease: selectedItemRange.canRelease === 1,
-					autoRelease: selectedItemRange.autoRelease === 1,
-				});
-			}
-		}
+		
 	}
 
 	onFormSubmit = (event) => {
@@ -45,7 +33,6 @@ class FillupForm extends React.Component {
 			if (!err) {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
-          console.log("FillupForm -> onFormSubmit -> fieldValues", fieldValues)
 
 					await onSubmit(fieldValues);
 
@@ -79,18 +66,11 @@ class FillupForm extends React.Component {
 			selectedSectionName
 		} = this.props;
 
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { getFieldDecorator } = form;
 
-		const headerTitle = (moduleType === formMode.add) ? drawerTitle.add : drawerTitle.update;
-
-		const ageBracketUnitOptions = (
-			<Select>
-				<Option value="DAYS">DAYS</Option>
-				<Option value="WEEKS">WEEKS</Option>
-				<Option value="MONTHS">MONTHS</Option>
-				<Option value="YEARS">YEARS</Option>
-			</Select>
-		)
+		const headerTitle = (moduleType === formMode.add) 
+												? drawerTitle.rangeClass.add 
+												: drawerTitle.rangeClass.update;
 
 		return (
 			<Drawer
@@ -109,38 +89,6 @@ class FillupForm extends React.Component {
 									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
 										{getFieldDecorator('ageBracketRangeLabel', {rules: fieldRules.ageBracketRangeLabel})(
 											<Input />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketFrom}>
-										{getFieldDecorator('ageBracketFrom', {rules: fieldRules.ageBracketFrom})(
-											<InputNumber min={0} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={10}>
-									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('ageBracketUnitFrom', { rules: fieldRules.ageBracketUnit })(
-											ageBracketUnitOptions
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketTo}>
-										{getFieldDecorator('ageBracketTo', {rules: fieldRules.ageBracketTo})(
-											<InputNumber min={0} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={10}>
-									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('ageBracketUnitTo', { rules: fieldRules.ageBracketUnit })(
-											ageBracketUnitOptions
 										)}
 									</Form.Item>
 								</Col>
@@ -179,12 +127,6 @@ FillupForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	selectedSectionName: PropTypes.string,
-	ageBrackets: PropTypes.arrayOf(PropTypes.shape({
-		from: PropTypes.string,
-		to: PropTypes.string,
-		unitFrom: PropTypes.string,
-		unitTo: PropTypes.string
-	})).isRequired
 };
 
 FillupForm.defaultProps = {

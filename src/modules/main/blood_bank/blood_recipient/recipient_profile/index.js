@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Spin as AntSpin, Drawer as AntDrawer } from 'antd';
+import { Table as AntTable, Drawer as AntDrawer } from 'antd';
 import { withRouter } from 'react-router-dom';
 import RecipientInfo from '../recipient_info';
 
@@ -10,7 +10,6 @@ import RecipientInfo from '../recipient_info';
 
 // CSS
 // import './table.css';
-import ReactDOM from 'react-dom';
 
 class RecipientList extends React.Component {
 	

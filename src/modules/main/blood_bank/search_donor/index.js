@@ -12,6 +12,7 @@ const { Option } = Select;
 class SearchDonor extends React.Component{
 
     state = { visible: false };
+
 	showForm = () => {
         return (
             <div>
@@ -25,6 +26,7 @@ class SearchDonor extends React.Component{
             </div>
         );
     }
+
     render(){
         return(
             <div>
@@ -76,15 +78,21 @@ class SearchDonor extends React.Component{
                         </Row>
                         <Row>
                             <Col className="gutter-row" style={{ marginTop: '20px' }}>
-								<Form.Item>
-                                    <Button type="primary" shape="round" 
-                                            style={{
-                                                width: '10%',
-                                                textAlign: 'center'
-                                        }} onClick={() => this.setState({showForm: true}) }> SEARCH </Button>
+                                <Form.Item>
+                                    <Button 
+                                        type="primary" 
+                                        shape="round" 
+                                        style={{
+                                            width: '10%',
+                                            textAlign: 'center'
+                                        }} 
+                                        onClick={() => this.setState({showForm: true})}
+                                    > 
+                                        SEARCH 
+                                    </Button>
                                     {this.state.showForm ? this.showForm() : null}
                                 </Form.Item>
-							</Col>
+                            </Col>  
                         </Row>
                     </Form>
                 </div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
 import Message from 'shared_components/message';
 import TablePager from 'shared_components/search_pager/pager';
-import { fetchAgeBracketList, createAgeBracket } from 'services/settings/ageBracket';
+import { fetchAgeBracketList, createAgeBracket, updateAgeBracket } from 'services/settings/ageBracket';
 import DropDown from '../../shared/dropdown';
 import AgeBracketTable from './table';
 import FillupForm from './fillup_form';
@@ -25,10 +25,8 @@ class AgeBracketDrawer extends React.Component{
 			isDisplayAddForm: false,
 			isDisplayUpdateForm: false,
 			pageSize: tablePageSize,
-			itemRanges: [],
 			ageBrackets: [],
-			filteredAgeBrackets: [],
-			selectedItemRange: {},
+			selectedAgeBracket: {},
 			selectedSectionId: null,
 			selectedSectionName: null
 		};
@@ -37,22 +35,13 @@ class AgeBracketDrawer extends React.Component{
 		this.updateForm = React.createRef();
 	}
 
-	// componentDidUpdate(prevProps) {
-
-	// 	if(prevProps.ddSections !== this.props.ddSections) {
-	// 		this.fetchAllExamItemRange();
-	// 	}
-		
-	// }
-
 	onDblClickTableRow = (row) => {
 		const { ageBrackets } = this.state;
-		const filteredAgeBrackets = ageBrackets.filter(item => item.examItemRangeID !== row.examItemRangeID);
+		const selectedAgeBracket = ageBrackets.find(item => item.ageBracketID === row.ageBracketID);
 
 		this.setState({ 
 			isDisplayUpdateForm: true,
-			selectedItemRange: row,
-			filteredAgeBrackets
+			selectedAgeBracket,
 		});
 	}
 
@@ -77,58 +66,79 @@ class AgeBracketDrawer extends React.Component{
 	onSubmittingAddForm = async (fieldValues) => {
 		const newFieldValues = Object.assign({}, fieldValues);
 		
-		const createdItem = await createAgeBracket({
-			sectionID				: this.state.selectedSectionId,
-			ageBracketLabel : newFieldValues.ageBracketRangeLabel,
-			bracketFrom			: newFieldValues.ageBracketFrom,
-			bracketFromUnit : newFieldValues.ageBracketUnitFrom,
-			bracketTo				: newFieldValues.ageBracketTo,
-			bracketToUnit		: newFieldValues.ageBracketUnitTo,
-			rangeLabel			: `${newFieldValues.rangeLabel}`.toUpperCase()
-		});
-	
+		const payload = {
+			...newFieldValues,
+			sectionID: this.state.selectedSectionId,
+			ageBracketLabel: `${newFieldValues.ageBracketLabel}`.toUpperCase()
+		};
+
+		const createdItem = await createAgeBracket(payload);
 
 		if(createdItem) {
 			Message.success({ message: messagePrompts.successCreatedAgeBracket });
 			this.addForm.resetForm();
+		
+			this.setState({ isLoading: true }, async() => {
+				const { selectedSectionId } = this.state;
+				const ageBrackets = await this.fetchAgeBracketList(selectedSectionId);
 
-			// await this.fetchAllExamItemRange();
-			this.setState({ isDisplayAddForm: false });
+				this.setState({ 
+					isDisplayAddForm: false, 
+					isLoading: false,
+					ageBrackets 
+				});
+			});
 		}
 	}
 
 	onSubmittingUpdateForm = async (fieldValues) => {
-		const { selectedItemRange } = this.state;
+		const newFieldValues = Object.assign({}, fieldValues);
+		const { selectedAgeBracket } = this.state;
 
-		const isUpdated = await createAgeBracket({
-			...fieldValues,
-			autoRelease: fieldValues.autoRelease ? 1 : 0,	
-			canRelease: fieldValues.canRelease ? 1 : 0,
-			examItemRangeID: selectedItemRange.examItemRangeID,
-			rangeLabel: `${fieldValues.rangeLabel}`.toUpperCase()
-		});
 
-		if(isUpdated) {
-			Message.success({ message: messagePrompts.successUpdatedNormalValues });
-			// this.updateForm.resetForm();
+		const payload = {
+			...newFieldValues,
+			sectionID: this.state.selectedSectionId,
+			ageBracketLabel: `${newFieldValues.ageBracketLabel}`.toUpperCase(),
+			ageBracketID: selectedAgeBracket.ageBracketID
+		};
 
-			await this.fetchAllExamItemRange();
-			this.setState({ isDisplayUpdateForm: false });
+		const updatedItem = await updateAgeBracket(payload);
+
+		if(updatedItem) {
+			Message.success({ message: messagePrompts.successUpdateAgeBracket });
+			this.updateForm.resetForm();
+		
+			this.setState({ isLoading: true, isDisplayUpdateForm: false }, async() => {
+				const { selectedSectionId } = this.state;
+				const ageBrackets = await this.fetchAgeBracketList(selectedSectionId);
+
+				this.setState({ 
+					isLoading: false,
+					ageBrackets,
+					selectedAgeBracket: {} 
+				});
+			});
 		}
 	}
 	
 	onChangeSection = (sectionId, sectionName) => {
-		this.setState({ isLoading: true, selectedSectionId: sectionId, selectedSectionName: sectionName.props.children });
-	}
-
-	// Private functions
-	fetchAgeBracketList = async () => {
-		this.setState({ isLoading: true }, async() => {
-			
-			const ageBrackets = await fetchAgeBracketList();
+		this.setState({ 
+			isLoading: true, 
+			selectedSectionId: sectionId,
+			selectedSectionName: sectionName.props.children
+		}, async() => {
+			const ageBrackets = await this.fetchAgeBracketList(sectionId);
 
 			this.setState({ ageBrackets, isLoading: false });
 		});
+	}
+
+	// Private functions
+	fetchAgeBracketList = async (selectedSectionId) => {
+		const ageBrackets = await fetchAgeBracketList();
+
+		return ageBrackets.filter(ageBracket => ageBracket.sectionID === selectedSectionId);
 	}
 
 
@@ -141,17 +151,16 @@ class AgeBracketDrawer extends React.Component{
 
 		const { 
 			isDisplayAddForm, 
-			// isDisplayUpdateForm, 
+			isDisplayUpdateForm,
 			isLoading, 
 			pageSize, 
-			itemRanges,
-			// selectedItemRange,
-			// ageBrackets,
-			// filteredAgeBrackets,
-			isInitializing,
+			ageBrackets,
 			selectedSectionId,
-			selectedSectionName
+			selectedSectionName,
+			selectedAgeBracket
 		} = this.state;
+
+		const isInitializing = sectionList.length === 0;
 
 		return(
 			<div>
@@ -196,7 +205,7 @@ class AgeBracketDrawer extends React.Component{
 						</Col>
 					</Row>
 					<AgeBracketTable
-						data={itemRanges}
+						data={ageBrackets}
 						pageSize={pageSize}
 						loading={isLoading}
 						onRowDblClick={this.onDblClickTableRow}
@@ -211,20 +220,15 @@ class AgeBracketDrawer extends React.Component{
 					selectedSectionId={selectedSectionId}
 					wrappedComponentRef={(inst) => this.addForm = inst}
 				/>
-				{/* <FillupForm 
+				<FillupForm 
 					moduleType={formMode.update}
 					visible={isDisplayUpdateForm} 
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
-					ageBrackets={filteredAgeBrackets}
+					ageBracket={selectedAgeBracket}
 					selectedSectionName={selectedSectionName}
-					selectedSpecimenName={selectedSpecimenName}
-					examItemName={selectedExamItem.examItemName}
-					examItemGeneralName={selectedExamItem.examItemGeneralName}
-					examItemUnitCode={selectedExamItem.examItemUnitCode}
 					wrappedComponentRef={(inst) => this.updateForm = inst}
-					selectedItemRange={selectedItemRange}
-				/> */}
+				/>
 			</div>
 		);
 	}
@@ -232,7 +236,7 @@ class AgeBracketDrawer extends React.Component{
 
 AgeBracketDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
-	onClose: PropTypes.func.isRequired,
+	// onClose: PropTypes.func.isRequired,
 	sectionList: PropTypes.array.isRequired
 };
 

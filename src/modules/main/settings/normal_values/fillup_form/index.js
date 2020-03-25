@@ -98,7 +98,9 @@ class FillupForm extends React.Component {
 		));
 
 		const isReleaseSelected = getFieldsValue().canRelease;
-		const headerTitle = (moduleType === formMode.add) ? drawerTitle.add : drawerTitle.update;
+		const headerTitle = (moduleType === formMode.add) 
+												? drawerTitle.normalValue.add 
+												: drawerTitle.normalValue.update;
 
 		return (
 			<Drawer

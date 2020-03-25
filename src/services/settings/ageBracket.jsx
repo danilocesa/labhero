@@ -40,9 +40,40 @@ export async function createAgeBracket(payload) {
 		createdAgeBracket = data;
 	}
 	catch(error) {
-		Message.error();
+		if(error.response && error.response.status === 400) {
+			Message.error(error.response.data.error);
+		}
+		else { 
+			Message.error(); 
+		}
 	}
 
 	return createdAgeBracket;
 }
 
+export async function updateAgeBracket(payload) {
+	let createdAgeBracket;
+
+	try{
+		const content = {
+			method: apiPutMethod,
+			url: '/lab/AgeBracket',
+			data: payload
+		}
+
+		const response = await axiosCall(content);
+		const { data } = await response;
+
+		createdAgeBracket = data;
+	}
+	catch(error) {
+		if(error.response && error.response.status === 400) {
+			Message.error(error.response.data.error);
+		}
+		else { 
+			Message.error(); 
+		}
+	}
+
+	return createdAgeBracket;
+}
