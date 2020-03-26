@@ -1,10 +1,51 @@
+.cashier-modal-container {
+    background-color: red;
+}
 
+.cashier-modal-container .ant-btn-round{
+    margin-bottom: 5px;
+    vertical-align: auto;
+}
+
+.cashier-modal-container .ant-modal-footer{
+    padding:10px
+}
+.cashier-modal-container .ant-modal-body{
+    padding:20px
+    
+}
+.cashier-modal-container .ant-modal-footer button{
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 32px;
+    width: 100px;
+}
+
+.cashier-menu .ant-card-body{
+    padding: 20px;
+    height: 150px;
+    width: 320px;
+    text-align: center;
+}
+.cashier-menu .ant-card{
+    margin-top: 40px;
+    margin-right: 10px;
+}
+.cashier-menu span{
+    margin-top: 20px;
+    color: #8A73F9;
+}
+.cashier-menu img{
+    height: 100px;
+    width: auto;
+}
+/* 
 .modal{
     padding: 10px;
 }
 #container{
     width: 100%;
-    /* height: 100%; */
     padding:  16px;
 }
 
@@ -27,19 +68,12 @@
     align-items: center;
     text-align: center;
 }
-/* #container Button{
-    height: 32px;
-    padding: 0 16px;
-    font-size: 14px;
-    border-radius: 32px;
-} */
 
 #container .ant-btn-round{
     height: 32px;
     padding: 0 16px;
     font-size: 14px;
     border-radius: 32px;
-    /* margin-bottom: 10px; */
     width: 100px;
 }
 .menu{
@@ -86,9 +120,7 @@
 
   .Menu .cashier-item-card{
     margin-left: 30px;
-    /* margin-top: 80px; */
-
 }
 
 
-
+ */

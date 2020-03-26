@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Link } from 'react-router-dom';
 import { TreeSelect,Col,Card,Table, Row,Button} from 'antd';
 import image1 from "./image1.png";
 import image2 from "./image2.png";
@@ -77,10 +78,10 @@ class Categories extends React.Component {
 
     render() {
       return (
-          <div className = "form">
+          <div className = "cashier-category-form">
               <div>
-                <h4>CATEGORIES</h4>
-                <div className = "select-category"
+                <h4 className = "cashier-category-h4">CATEGORIES</h4>
+                <div className = "cashier-category-select-category"
                 style={{width: 400}}
                 >
                 <Row>
@@ -139,7 +140,7 @@ class Categories extends React.Component {
                             </Col>
                     </Row>
                 </div>
-              <div className = "form-card">
+              <div className = "cashier-category-form-card">
                   <Row> 
                     <div style={{marginTop: 10}}> 
                         <Col span={12}>
@@ -194,12 +195,17 @@ class Categories extends React.Component {
                     </div>
                     <Col span={24}>
                     <div className = "button-below">
-                        <Button className="ant-btn-round" type="primary">
-                                Next
-                        </Button>
-                        <Button className="ant-btn-round" type="primary">
-                            Cancel
-                        </Button>  
+                      <Link to="/cashier/summary">
+                            <Button className="ant-btn-round" type="primary">
+                                    Next
+                            </Button>
+                      </Link>
+                        
+                      <Link to="/cashier">
+                            <Button className="ant-btn-round" type="primary">
+                                    Cancel
+                            </Button>
+                      </Link>
                     </div>
                 </Col>
                   </Row>
