@@ -1,10 +1,9 @@
 import errorMessage from 'global_config/error_messages';
 
 export const fieldLabels = {
-  transaction_date: "FROM DATE ~ TO DATE",
-  section: "SECTION",
-  transaction_type: "TRANSACTION TYPE",
-  item: "ITEM"
+  patientID: "PATIENT ID",
+  patientName: "PATIENT NAME",
+  requestDate: "REQUEST DATE"
 }
 
 export const buttonNames = {

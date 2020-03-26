@@ -1,18 +1,28 @@
 import React from 'react';
-
+import { Collapse } from 'antd';
 import ItemForm from './item_form';
 import SearchForm from './search_form';
 import ItemTable from './table';
+import PageTitle from 'shared_components/page_title';
 
 
+const { Panel } = Collapse;
 class ItemSetup extends React.Component {
 	render() {
 		return(
 			<div>
-				<ItemForm />
-				<SearchForm />
-				<ItemTable />
+				<PageTitle pageTitle="INVENTORY / RESTOCK" align="left" />
+				<Collapse bordered={false}>
+					<Panel header="Item" key="1">
+					<ItemForm />
+					</Panel>
+					<Panel header="Search" key="2">
+					<SearchForm />
+					</Panel>
+					<ItemTable />
+				</Collapse>
 			</div>
+		
 		)
 	}
 }
