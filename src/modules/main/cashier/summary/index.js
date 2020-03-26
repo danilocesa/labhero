@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { Input,Col,Card,Table, Row,DatePicker,Select,Button} from 'antd';
 import moment from 'moment';
 import "./summary.css";
@@ -17,8 +18,7 @@ const columns = [
     {
       title: "Item",
       dataIndex: "item",
-      key: "name",
-      render: text => <a>{text}</a>
+      key: "name"
     },
     {
       title: "Particulars",
@@ -36,31 +36,76 @@ const columns = [
       key: "amount"
     }
   ];
-  
-  const data = [
-    {
-      key: "1",
-      item: "CBC",
-      particulars: "Description",
-      quantity: "1",
-      amount: "P500.00"
-    },
 
-    {
-      key: "2",
-      item: "Potassium",
-      particulars: "Description",
-      quantity: "1",
-      amount: "P500.00"
-    },
-    {
-      key: "3",
-      item: "Anti Biotic",
-      particulars: "Description",
-      quantity: "1",
-      amount: "P500.00"
-    }
-  ];
+// const columns = [
+//     {
+//       title: 'Name',
+//       dataIndex: 'name',
+//       width: 150,
+//     },
+//     {
+//       title: 'Age',
+//       dataIndex: 'age',
+//       width: 150,
+//     },
+//     {
+//       title: 'Address',
+//       dataIndex: 'address',
+//     },
+//   ];
+  
+//   const data = [
+//     {
+//       key: "1",
+//       item: "CBC",
+//       particulars: "Description",
+//       quantity: "1",
+//       amount: "P500.00"
+//     },
+
+//     {
+//       key: "2",
+//       item: "Potassium",
+//       particulars: "Description",
+//       quantity: "1",
+//       amount: "P500.00"
+//     },
+//     {
+//       key: "3",
+//       item: "Anti Biotic",
+//       particulars: "Description",
+//       quantity: "1",
+//       amount: "P500.00"
+//     },
+//     {
+//         key: "4",
+//         item: "Alcohol",
+//         particulars: "Description",
+//         quantity: "1",
+//         amount: "P20.00"
+//       }
+//   ];
+
+// const data = [];
+// for (let i = 0; i < 100; i++) {
+//   data.push({
+//     key: i,
+//     name: `Edward King ${i}`,
+//     age: 32,
+//     address: `London, Park Lane no. ${i}`,
+//   });
+// }
+
+const data = [];
+for (let i = 0; i < 30; i++) {
+  data.push({
+    key: i,
+    item: `Alcohol ${i}`,
+    particulars: "Description",
+    quantity: "1",
+    amount: "P20.00",
+  });
+}
 
 class Summary extends React.Component {
     render() {
@@ -78,8 +123,8 @@ class Summary extends React.Component {
         >
             <Row>
                 <Col span={24}>
-                    <div>   
-                        <h4>SUMMARY</h4>
+                    <div className="cashier-summary-header">   
+                        <h4 className = "h4">SUMMARY</h4>
                     </div>
                 </Col>
                 <Col span={8}>
@@ -123,8 +168,9 @@ class Summary extends React.Component {
                     <Table 
                         columns={columns} 
                         dataSource={data} 
-                        style={{marginTop: 10}}
+                        style={{marginTop: 10, height: "auto"}}
                         pagination={false} 
+                        scroll={{ y: 240 }}
                         
                     />
                     </Card>
@@ -138,12 +184,16 @@ class Summary extends React.Component {
                 </Col>
                 <Col span={24}>
                     <div className = "button-below">
-                        <Button className="ant-btn-round" type="primary">
-                                Print
-                        </Button>
-                        <Button className="ant-btn-round" type="primary">
-                            Back
-                        </Button>  
+                        <Link to="/cashier/receipt">
+                                <Button className="ant-btn-round" type="primary">
+                                        Print
+                                </Button>
+                        </Link>
+                        <Link to="/cashier">
+                                <Button className="ant-btn-round" type="primary">
+                                        Back
+                                </Button>
+                        </Link> 
                     </div>
                 </Col>
             </Row>
