@@ -31,6 +31,8 @@ export const messagePrompts = {
   successUpdatedNormalValues: 'Normal Value successfully updated.',
   successCreatedAgeBracket  : 'Age Bracket successfully created.',
   successUpdateAgeBracket  : 'Age Bracket successfully updated.',
+  successCreatedRangeLabel  : 'Range Label successfully created.',
+  successUpdateRangeLabel  : 'Range Label successfully updated.',
 }
 
 export const buttonNames = {
@@ -114,7 +116,6 @@ export const fieldRules = {
   ],
   ageBracketRangeLabel: [
     { required: true, message: errorMessage.required },
-    { max: 50, message: errorMessage.maxLength(50) }
   ],
   ageBracketFrom: [
     { required: true, message: errorMessage.required }

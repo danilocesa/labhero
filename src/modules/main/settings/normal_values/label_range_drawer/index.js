@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
 import TablePager from 'shared_components/search_pager/pager';
 import Message from 'shared_components/message';
-import { getAllRangeClass, createRangeClass } from 'services/settings/ExamItemRangeClass';
+import { getAllRangeClass, createRangeClass, updateRangeClass } from 'services/settings/ExamItemRangeClass';
 import LabelRangeTable from './table';
 import FillupForm from './fillup_form';
 import { 
@@ -26,6 +26,7 @@ class LabelRangeDrawer extends React.Component{
 			isDisplayUpdateForm: false,
 			pageSize: tablePageSize,
 			rangeClass: [],
+			selectedRangeClass: {},
 			selectedSectionId: null,
 			selectedSectionName: null
 		};
@@ -38,6 +39,7 @@ class LabelRangeDrawer extends React.Component{
 
 		this.setState({ 
 			isDisplayUpdateForm: true,
+			selectedRangeClass: row
 		});
 	}
 
@@ -65,12 +67,13 @@ class LabelRangeDrawer extends React.Component{
 		const payload = {
 			...newFieldValues,
 			sectionID: this.state.selectedSectionId,
+			rangeClassLabel: `${newFieldValues.rangeClassLabel}`.toUpperCase() 
 		};
 
 		const createdItem = await createRangeClass(payload);
 
 		if(createdItem) {
-			Message.success({ message: messagePrompts.successCreatedAgeBracket });
+			Message.success({ message: messagePrompts.successCreatedRangeLabel });
 			this.addForm.resetForm();
 		
 			this.setState({ isLoading: true }, async() => {
@@ -87,7 +90,34 @@ class LabelRangeDrawer extends React.Component{
 	}
 
 	onSubmittingUpdateForm = async (fieldValues) => {
+		const newFieldValues = Object.assign({}, fieldValues);
+		const { selectedRangeClass } = this.state;
+
+
+		const payload = {
+			sectionID: this.state.selectedSectionId,
+			rangeClassLabel: `${newFieldValues.rangeClassLabel}`.toUpperCase(),
+			rangeClassID: selectedRangeClass.rangeClassID,
+			active: 1
+		};
+
+		const updatedItem = await updateRangeClass(payload);
+
+		if(updatedItem) {
+			Message.success({ message: messagePrompts.successUpdateRangeLabel });
+			this.updateForm.resetForm();
 		
+			this.setState({ isLoading: true, isDisplayUpdateForm: false }, async() => {
+				const { selectedSectionId } = this.state;
+				const rangeClass = await this.fetchRangeClass(selectedSectionId);
+
+				this.setState({ 
+					isLoading: false,
+					rangeClass,
+					selectedRangeClass: {} 
+				});
+			});
+		}
 	}
 	
 	onChangeSection = (sectionId, sectionName) => {
@@ -124,7 +154,8 @@ class LabelRangeDrawer extends React.Component{
 			pageSize, 
 			rangeClass,
 			selectedSectionId,
-			selectedSectionName
+			selectedSectionName,
+			selectedRangeClass
 		} = this.state;
 
 		const isInitializing = sectionList.length === 0;
@@ -191,6 +222,7 @@ class LabelRangeDrawer extends React.Component{
 					visible={isDisplayUpdateForm} 
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
+					rangeClass={selectedRangeClass}
 					wrappedComponentRef={(inst) => this.updateForm = inst}
 				/>
 			</div>

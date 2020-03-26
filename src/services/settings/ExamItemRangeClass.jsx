@@ -29,6 +29,32 @@ export async function createRangeClass(payload) {
 	return createdRangeClass;
 }
 
+export async function updateRangeClass(payload) {
+	let updatedRangeClass = null;
+
+	try{
+		const content = {
+			method: apiPutMethod,
+			url: `/lab/ExamItemRangeClass`,
+			data: payload
+		}
+
+		const response = await axiosCall(content);
+		const { data } = await response;
+
+		updatedRangeClass = data;
+	}
+	catch(error) {
+    if(error.response && error.response.status === 400) {
+			Message.error(error.response.data.error);
+		}
+		else { 
+			Message.error(); 
+		}
+	}
+
+	return updatedRangeClass;
+}
 
 export async function getAllRangeClass(payload) {
 	let rangeClass = [];

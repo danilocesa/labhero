@@ -93,13 +93,18 @@ class FillupForm extends React.Component {
 			form, 
 			moduleType,
 			selectedSectionName,
+			rangeClass
 		} = this.props;
 
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { getFieldDecorator } = form;
 
 		const headerTitle = (moduleType === formMode.add) 
 												? drawerTitle.ageBracket.add 
 												: drawerTitle.ageBracket.update;
+
+		const rangeClassOptions = rangeClass.map(item => (
+			<Option value={item.rangeClassLabel}>{item.rangeClassLabel}</Option>
+		));
 
 		return (
 			<Drawer
@@ -120,8 +125,7 @@ class FillupForm extends React.Component {
 											rules: fieldRules.ageBracketRangeLabel
 										})(
 											<Select>
-												<Option value="ADULT">ADULT</Option>
-												<Option value="SENIOR">SENIOR</Option>
+												{ rangeClassOptions }
 											</Select>
 										)}
 									</Form.Item>
@@ -225,7 +229,11 @@ FillupForm.propTypes = {
 		to: PropTypes.string,
 		unitFrom: PropTypes.string,
 		unitTo: PropTypes.string
-	})
+	}),
+	rangeClass: PropTypes.arrayOf(PropTypes.shape({
+		rangeClassID: PropTypes.number.isRequired,
+		rangeClassLabel: PropTypes.string.isRequired,
+	})).isRequired
 };
 
 FillupForm.defaultProps = {

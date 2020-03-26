@@ -5,6 +5,7 @@ import { Drawer, Button, Row, Col, Icon } from 'antd';
 import Message from 'shared_components/message';
 import TablePager from 'shared_components/search_pager/pager';
 import { fetchAgeBracketList, createAgeBracket, updateAgeBracket } from 'services/settings/ageBracket';
+import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
 import DropDown from '../../shared/dropdown';
 import AgeBracketTable from './table';
 import FillupForm from './fillup_form';
@@ -26,6 +27,7 @@ class AgeBracketDrawer extends React.Component{
 			isDisplayUpdateForm: false,
 			pageSize: tablePageSize,
 			ageBrackets: [],
+			rangeClass: [],
 			selectedAgeBracket: {},
 			selectedSectionId: null,
 			selectedSectionName: null
@@ -129,8 +131,14 @@ class AgeBracketDrawer extends React.Component{
 			selectedSectionName: sectionName.props.children
 		}, async() => {
 			const ageBrackets = await this.fetchAgeBracketList(sectionId);
+			const rangeClass = await this.fetchRangeClass(sectionId);
 
-			this.setState({ ageBrackets, isLoading: false });
+
+			this.setState({ 
+				ageBrackets, 
+				rangeClass,
+				isLoading: false 
+			});
 		});
 	}
 
@@ -141,6 +149,12 @@ class AgeBracketDrawer extends React.Component{
 		return ageBrackets.filter(ageBracket => ageBracket.sectionID === selectedSectionId);
 	}
 
+
+	fetchRangeClass = async (selectedSectionId) => {
+		const rangeClass = await getAllRangeClass()
+
+		return rangeClass.filter(item => (item.sectionID === selectedSectionId) && item.active === 1);
+	}
 
 	render() {
 		const { 
@@ -157,6 +171,7 @@ class AgeBracketDrawer extends React.Component{
 			ageBrackets,
 			selectedSectionId,
 			selectedSectionName,
+			rangeClass,
 			selectedAgeBracket
 		} = this.state;
 
@@ -213,6 +228,7 @@ class AgeBracketDrawer extends React.Component{
 				</Drawer>
 				<FillupForm 
 					moduleType={formMode.add}
+					rangeClass={rangeClass}
 					visible={isDisplayAddForm} 
 					onClose={this.onExitAddForm} 
 					onSubmit={this.onSubmittingAddForm}
@@ -222,6 +238,7 @@ class AgeBracketDrawer extends React.Component{
 				/>
 				<FillupForm 
 					moduleType={formMode.update}
+					rangeClass={rangeClass}
 					visible={isDisplayUpdateForm} 
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
@@ -236,7 +253,7 @@ class AgeBracketDrawer extends React.Component{
 
 AgeBracketDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
-	// onClose: PropTypes.func.isRequired,
+	onClose: PropTypes.func.isRequired,
 	sectionList: PropTypes.array.isRequired
 };
 

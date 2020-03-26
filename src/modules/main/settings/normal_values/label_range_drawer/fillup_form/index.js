@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Row, Col, InputNumber } from 'antd';
+import { Drawer, Form, Input, Button, Select, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
@@ -20,7 +20,13 @@ class FillupForm extends React.Component {
 	componentDidMount() {}
 
 	componentDidUpdate(prevProps) {
-		
+		const { rangeClass, form } = this.props;
+
+		if(rangeClass.rangeClassID !== prevProps.rangeClass.rangeClassID) {
+			const { rangeClassLabel } = rangeClass;
+
+			form.setFieldsValue({ rangeClassLabel });
+		}
 	}
 
 	onFormSubmit = (event) => {
@@ -81,13 +87,13 @@ class FillupForm extends React.Component {
 				onClose={onClose}
 				visible={visible}
 			>
-				<Form onSubmit={this.onFormSubmit} className="age-bracket-fillup-form">
+				<Form onSubmit={this.onFormSubmit} className="label-class-fillup-form">
 					<section style={{ marginBottom: 50 }}>
 						<section className="form-values">
 							<Row style={{ marginTop: 10 }}>
 								<Col span={12}>
 									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
-										{getFieldDecorator('ageBracketRangeLabel', {rules: fieldRules.ageBracketRangeLabel})(
+										{getFieldDecorator('rangeClassLabel', {rules: fieldRules.ageBracketRangeLabel})(
 											<Input />
 										)}
 									</Form.Item>
@@ -123,6 +129,10 @@ class FillupForm extends React.Component {
 
 FillupForm.propTypes = {
 	moduleType: PropTypes.string.isRequired,
+	rangeClass: PropTypes.shape({
+		rangeClassID: PropTypes.number,
+		rangeClassLabel: PropTypes.string
+	}),
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
@@ -131,6 +141,10 @@ FillupForm.propTypes = {
 
 FillupForm.defaultProps = {
 	selectedSectionName: null,
+	rangeClass: {
+		rangeClassID: null,
+		rangeClassLabel: null
+	},
 }
 
 
