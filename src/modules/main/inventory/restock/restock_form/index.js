@@ -1,93 +1,77 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable func-names */
+// LIBRARY
 import React from 'react';
-import { Row, Col, Form, Input, Button, Select, DatePicker  } from 'antd';
-
-const style = {
-	button: {
-		width: 130
-	}
-};
-
-class SearchForm extends React.Component {
-
-	handleSubmit = () => {}
-
-	clearInputs = () => {}
-
+import { Form, Button, Row, Col, DatePicker, Select, Input } from 'antd';
+// CUSTOM MODULES
+import ClearFormFields from 'shared_components/form_clear_button';
+const { RangePicker } = DatePicker;
+class SearchPatientForm extends React.Component {
+	state = {
+		loading: false
+	};
 	render() {
+		const { form } = this.props;
+		const { getFieldDecorator, getFieldsValue } = form;
+		const { loading } = this.state;
+		const { patientID, patientName } = getFieldsValue();
+		const disabled = !(patientID || (patientName && patientName.length > 1));
 		return (
-			<Form>
-				<Row gutter={24}>
-					<Col span={5} offset={2}>
+			<Form className="search-patient-form" >
+				<Row gutter={12} type="flex" justify="center">
+				<Col span={6}>
 						<Form.Item label="TRANSACTION DATE">
+							{getFieldDecorator('transaction_date', { 
+							})(
 							<DatePicker style={{ width: '100%' }} />
+							)}
 						</Form.Item>
-					</Col>	
-					<Col span={5}>
+					</Col>
+					<Col span={4}>
 						<Form.Item label="SECTION">
-							<Select />
+							{getFieldDecorator('section', { 
+							})(
+								<Select/>
+							)}
 						</Form.Item>
-					</Col>	
-					<Col span={5}>
+					</Col>
+					<Col span={4}>
 						<Form.Item label="ITEM">
-							<Input />
+							{getFieldDecorator('item', { 
+							})(
+								<Input 	/>
+							)}
 						</Form.Item>
-					</Col>	
-					<Col span={5}>
-						<Form.Item label="BARCODE">
-							<Input />
+					</Col>
+					<Col span={4}>
+						<Form.Item label="BAR CODE">
+							{getFieldDecorator('transaction_type', { 
+							})(
+								<Input />
+							)}
 						</Form.Item>
-					</Col>	
-				</Row>
-				<Row gutter={24}>
-					<Col span={5} offset={2}>
-						<Form.Item label="EXPIRY DATE">
-							<DatePicker style={{ width: '100%' }} />
+					</Col>
+					<Col xs={24} sm={24} md={6} lg={6}>
+						<Form.Item style={{ marginTop: 20 }}>
+							<Row>
+							<ClearFormFields form={this.props.form} />
+								<Button 
+									className="form-button"
+									shape="round" 
+									type="primary" 
+									htmlType="submit" 
+									disabled={disabled}
+									loading={loading}
+									style={{ width: 120 }}
+								>
+									SEARCH
+								</Button>
+							</Row>
 						</Form.Item>
-					</Col>	
-					<Col span={5}>
-						<Form.Item label="STORAGE LOCATION">
-							<Select />
-						</Form.Item>
-					</Col>	
-					<Col span={5}>
-						<Form.Item label="SUPPLIER">
-							<Select />
-						</Form.Item>
-					</Col>	
-					<Col span={5}>
-						<Form.Item label="DR NO.">
-							<Input />
-						</Form.Item>
-					</Col>	
-				</Row>
-				<Row gutter={24} type="flex" align="middle">
-					<Col span={5} offset={2}>
-						<Form.Item label="PRICE">
-							<Input />
-						</Form.Item>
-					</Col>	
-					<Col span={5}>
-						<Form.Item label="QUANTITY">
-							<Input />
-						</Form.Item>
-					</Col>	
-					<Col span={10}>
-						<Row type="flex" justify="end" gutter={24}> 
-							<Col>
-								<Button shape="round" style={style.button}>CLEAR</Button>
-							</Col>
-							<Col>
-								<Button shape="round" style={style.button} disabled>VOID</Button>
-							</Col>
-							<Col>
-								<Button shape="round" style={style.button} type="primary">ADD STOCKS</Button>
-							</Col>
-						</Row>
-					</Col>	
+					</Col>
 				</Row>
 			</Form>
-		);	
+		);
 	}
 }
-
-export default SearchForm;
+export default Form.create()(SearchPatientForm);

@@ -1,77 +1,101 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable func-names */
+// LIBRARY
 import React from 'react';
-import { Row, Col, Button, Input, Form, Select, Typography } from 'antd';
-
-const { Title } = Typography;
-
-/** @type {{button: React.CSSProperties}} */
-const style = {
-	button: {
-		width: 120
-	}
-};
-
-class ItemForm extends React.Component {
+import { Form, Button, Row, Col, DatePicker, Select, Input } from 'antd';
+// CUSTOM MODULES
+import ClearFormFields from 'shared_components/form_clear_button';
+const { RangePicker } = DatePicker;
+class SearchPatientForm extends React.Component {
+	state = {
+		loading: false
+	};
 	render() {
-		return(
-			<Form>
-				<Row>
-					<Title level={4}>INVENTORY / ITEM SETUP</Title>
-				</Row>
-				<Row gutter={48} justify="center" type="flex">
-					<Col span={5}>
+		const { form } = this.props;
+		const { getFieldDecorator, getFieldsValue } = form;
+		const { loading } = this.state;
+		const { patientID, patientName } = getFieldsValue();
+		const disabled = !(patientID || (patientName && patientName.length > 1));
+		return (
+			<Form className="search-patient-form" >
+				<Row gutter={12} type="flex" justify="center">
+				<Col span={6}>
 						<Form.Item label="SECTION">
-							<Select />
+							{getFieldDecorator('section', { 
+							})(
+							<DatePicker style={{ width: '100%' }} />
+							)}
 						</Form.Item>
 					</Col>
-					<Col span={5}>
+					<Col span={4}>
 						<Form.Item label="ITEM CODE">
-							<Input disabled />
+							{getFieldDecorator('item_code', { 
+							})(
+								<Select/>
+							)}
 						</Form.Item>
 					</Col>
-					<Col span={5}>
+					<Col span={4}>
 						<Form.Item label="ITEM NAME">
-							<Input />
+							{getFieldDecorator('item_name', { 
+							})(
+								<Input 	/>
+							)}
 						</Form.Item>
 					</Col>
-					<Col span={5}>
+					<Col span={4}>
 						<Form.Item label="UNIT">
-							<Input />
+							{getFieldDecorator('unit', { 
+							})(
+								<Input />
+							)}
 						</Form.Item>
 					</Col>
 					<Col span={4}>
 						<Form.Item label="THRESHOLD">
-							<Input />
+							{getFieldDecorator('threshold', { 
+							})(
+								<Input />
+							)}
 						</Form.Item>
 					</Col>
-				</Row>
-				<Row gutter={48} justify="center" type="flex" align="middle">
-					<Col span={10}>
+					<Col span={4}>
 						<Form.Item label="THRESHOLD">
-							<Input />
+							{getFieldDecorator('thresholds', { 
+							})(
+								<Input />
+							)}
 						</Form.Item>
 					</Col>
-					<Col span={5}>
+					<Col span={4}>
 						<Form.Item label="SUPPLY">
-							<Input />
+							{getFieldDecorator('supply', { 
+							})(
+								<Input />
+							)}
 						</Form.Item>
 					</Col>
-					<Col span={9}>
-						<Row gutter={24}>
-							<Col span={8}>
-								<Button style={style.button} shape="round">CANCEL</Button>
-							</Col>
-							<Col span={8}>
-								<Button style={style.button} type="primary" shape="round">SAVE</Button>
-							</Col>
-							<Col span={8}>
-								<Button style={style.button} type="primary" shape="round">UPDATE</Button>
-							</Col>
-						</Row>
+					<Col xs={24} sm={24} md={6} lg={6}>
+						<Form.Item style={{ marginTop: 20 }}>
+							<Row>
+							<ClearFormFields form={this.props.form} />
+								<Button 
+									className="form-button"
+									shape="round" 
+									type="primary" 
+									htmlType="submit" 
+									disabled={disabled}
+									loading={loading}
+									style={{ width: 120 }}
+								>
+									SEARCH
+								</Button>
+							</Row>
+						</Form.Item>
 					</Col>
 				</Row>
 			</Form>
-		)
+		);
 	}
 }
-
-export default ItemForm;
+export default Form.create()(SearchPatientForm);
