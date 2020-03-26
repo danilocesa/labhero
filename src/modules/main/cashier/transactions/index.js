@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import moment from 'moment';
 import image1 from "./image1.png";
 import image2 from "./image2.png";
@@ -64,6 +64,11 @@ const columns = [
     title: "Date",
     dataIndex: "date",
     key: "date"
+  },
+  {
+    title: "",
+    dataIndex: "link",
+    key: "link"
   }
 ];
 
@@ -72,31 +77,36 @@ const data = [
     key: "1",
     item: "1",
     request_id: "1000000000001",
-    date: "March 20, 2020"
+    date: "March 20, 2020",
+    link: <Link to="/cashier/receipt">View</Link>
   },
   {
     key: "2",
     item: "2",
     request_id: "1000000000001",
-    date: "March 20, 2020"
+    date: "March 20, 2020",
+    link: <Link to="/cashier/receipt">View</Link>
   },
   {
     key: "3",
     item: "3",
     request_id: "1000000000001",
-    date: "March 20, 2020"
+    date: "March 20, 2020",
+    link: <Link to="/cashier/receipt">View</Link>
   },
   {
     key: "4",
     item: "4",
     request_id: "1000000000001",
-    date: "March 20, 2020"
+    date: "March 20, 2020",
+    link: <Link to="/cashier/receipt">View</Link>
   },
   {
     key: "5",
     item: "5",
     request_id: "1000000000001",
-    date: "March 20, 2020"
+    date: "March 20, 2020",
+    link: <Link to="/cashier/receipt">View</Link>
   }
 ];
 class Transactions extends React.Component {

@@ -1,10 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Route, Switch } from 'react-router-dom';
 import browser from "./browser.png";
 import loupe from "./loupe.png";
-import Receipt from './receipt'
 import {
   Layout,
   Menu,
@@ -40,7 +37,7 @@ class Cashier extends React.Component {
 	}
 
 	RedirectToReceipt(){
-		window.location = "http://localhost:3000/cashier/receipt"
+		window.location = "/cashier/transactions"
 	}
   
 	toggleSecondModal() {
@@ -68,7 +65,7 @@ class Cashier extends React.Component {
 		  marginTop: 10
 		}}
 	  >
-		<div className = "Menu">
+		<div className = "cashier-menu">
 			<Row>
 				<Col span={8}>
 				  <Card className="cashier-item-card">
@@ -98,7 +95,7 @@ class Cashier extends React.Component {
 				</Col>
 				<Col span={8}>
 				  <Card className="cashier-item-card">
-					<Link to="/cashier/receipt" >
+					<Link to="/cashier/categories" >
 						<img
 							type="primary"
 							className="loupe"
@@ -112,115 +109,61 @@ class Cashier extends React.Component {
 				</Col>
 			</Row>
 		  </div>
-		  <div  id="container" >
-		  <Modal
-			className="modal"
-			style={{ textAlign: "center" }}
-			title="SEARCH BY REQUEST ID"
-			visible={this.state.isFirstModalOpen}
-			getContainer={this.getContainer}
-			onOk={this.RedirectToReceipt}
-			onCancel={this.toggleFirstModal}
-		  >
-			<div >
-			  <Input style={{ marginBottom: 20 }}
-				placeholder="Request ID"
-			  />
-			  <Button className="ant-btn-round" type="primary">
-				1
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				2
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				3
-			  </Button>
+			<div  className= "cashier-modal-container" id="container" >
+				<Modal
+					style={{ textAlign: "center", }}
+					title="SEARCH BY REQUEST ID"
+					visible={this.state.isFirstModalOpen}
+					getContainer={this.getContainer}
+					onOk={this.RedirectToReceipt}
+					onCancel={this.toggleFirstModal}
+				>
+					
+					<Input style={{ marginBottom: 20, width: 320 }}
+						placeholder="Request ID"
+					/>
+					<br></br>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						1
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						2
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						3
+					</Button>
+					
+					
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						4
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						5
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						6
+					</Button>
+					
+					
+					<Button className="ant-btn-round" type="primary"style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						7
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						8
+					</Button>
+					<Button className="ant-btn-round" type="primary" style={{marginRight: 5, marginButtom: 10, width: 100, width: 100}}>
+						9
+					</Button>
+					
+					<Button
+					className="ant-btn-round"
+					type="primary"
+					style={{ width: 320, marginBottom: 10,marginTop: 10 }}
+					>
+					0
+					</Button>
+				</Modal>
 			</div>
-			<div >
-			  <Button className="ant-btn-round" type="primary">
-				4
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				5
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				6
-			  </Button>
-			</div>
-			<div >
-			  <Button className="ant-btn-round" type="primary">
-				7
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				8
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				9
-			  </Button>
-			</div>
-			<Button
-			  className="ant-btn-round"
-			  type="primary"
-			  style={{ width: 330, marginBottom: 10,marginTop: 10 }}
-			>
-			  0
-			</Button>
-		  </Modal>
-		  {/* <Modal
-		    className="modal"
-			style={{ textAlign: "center" }}
-			title="SEARCH BY CATEGORY"
-			visible={this.state.isSecondModalOpen}
-			getContainer={this.getContainer}
-			onOk={this.RedirectToReceipt}
-			onCancel={this.toggleSecondModal}
-		  >
-			<div>
-			  <Button className="ant-btn-round" type="primary">
-				Consultation
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Laboratory
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Medicine
-			  </Button>
-			</div>
-			<div>
-			  <Button className="ant-btn-round" type="primary">
-				Check Up
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Book
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Pedia
-			  </Button>
-			</div>
-			<div>
-			  <Button className="ant-btn-round" type="primary">
-				Optalmology
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				OB Gyne
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Surgeon
-			  </Button>
-			</div>
-			<div>
-			  <Button className="ant-btn-round" type="primary">
-				Theraphy
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Xray
-			  </Button>
-			  <Button className="ant-btn-round" type="primary">
-				Ultrasound
-			  </Button>
-			</div>
-		  </Modal> */}
-		</div>
 	  </Layout>
 	  );
 	}

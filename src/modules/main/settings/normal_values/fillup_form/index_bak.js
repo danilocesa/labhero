@@ -32,8 +32,6 @@ class FillupForm extends React.Component {
 		const { setFieldsValue } = form;
 		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
 
-		console.log({ ...restItemRange });
-
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
 				setFieldsValue({

@@ -13,12 +13,14 @@ class AgeBracketTable extends React.Component {
 		const columns = [
 			{ 
 				title: ageBracket.rangeLabel.title,
-				dataIndex: ageBracket.rangeLabel.dataIndex,
+				dataIndex: 'ageBracketLabel',
 				width: 150
 			},
 			{ 
 				title: ageBracket.ageBracket.title,
-				dataIndex: ageBracket.ageBracket.dataIndex,
+				render: (text, record) => `
+					${record.bracketFrom} ${record.bracketFromUnit} - ${record.bracketTo} ${record.bracketToUnit} 
+				`,
 				width: 150
 			}
     ];
@@ -32,7 +34,7 @@ class AgeBracketTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: tableYScroll }}
-						rowKey={record => record.examItemRangeID}
+						rowKey={record => record.ageBracketID}
 						onRow={(record) => {
 							return {
 								onDoubleClick: () => onRowDblClick(record)
@@ -48,12 +50,11 @@ class AgeBracketTable extends React.Component {
 
 AgeBracketTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		examItemRangeID: PropTypes.number.isRequired,
-		sex: PropTypes.string.isRequired,
-		ageBracket: PropTypes.string.isRequired,
-		analyzerName: PropTypes.string.isRequired,
-		displayValue: PropTypes.string.isRequired,
-		rangeLabel: PropTypes.string.isRequired,
+		bracketFrom: PropTypes.number.isRequired,
+		bracketFromUnit: PropTypes.string.isRequired,
+		bracketTo: PropTypes.number.isRequired,
+		bracketToUnit: PropTypes.string.isRequired,
+		ageBracketLabel: PropTypes.string.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

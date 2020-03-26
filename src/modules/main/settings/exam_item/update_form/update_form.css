@@ -7,9 +7,11 @@
 	transition: all 0.3s;
 	margin-left: 10px;
 }
+
 .exam-item-update-form .dynamic-delete-button:hover {
   color: #777;
 }
+
 .exam-item-update-form .dynamic-delete-button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;

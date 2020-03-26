@@ -7,8 +7,18 @@ export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;
 
 export const drawerTitle = {
-  add: "ADD NORMAL VALUE",
-  update: "UPDATE NORMAL VALUE"
+  normalValue: {
+    add: "ADD NORMAL VALUE",
+    update: "UPDATE NORMAL VALUE"
+  },
+  ageBracket: {
+    add: "ADD AGE BRACKET",
+    update: "UPDATE AGE BRACKET"
+  },
+  rangeClass: {
+    add: "ADD RANGE LABEL",
+    update: "UPDATE RANGE LABEL"
+  }
 }
 
 export const formMode ={
@@ -20,6 +30,9 @@ export const messagePrompts = {
 	successCreatedNormalValues: 'Normal Value successfully created.',
   successUpdatedNormalValues: 'Normal Value successfully updated.',
   successCreatedAgeBracket  : 'Age Bracket successfully created.',
+  successUpdateAgeBracket  : 'Age Bracket successfully updated.',
+  successCreatedRangeLabel  : 'Range Label successfully created.',
+  successUpdateRangeLabel  : 'Range Label successfully updated.',
 }
 
 export const buttonNames = {
@@ -63,6 +76,12 @@ export const tableHeaders = {
       title: "AGE BRACKET",
       dataIndex: "ageBracket"
     }
+  },
+  rangeLabelClass: {
+    label: {
+      title: "RANGE LABEL",
+      dataIndex: "rangeClassLabel"
+    }
   }
 }
 
@@ -97,7 +116,6 @@ export const fieldRules = {
   ],
   ageBracketRangeLabel: [
     { required: true, message: errorMessage.required },
-    { max: 50, message: errorMessage.maxLength(50) }
   ],
   ageBracketFrom: [
     { required: true, message: errorMessage.required }

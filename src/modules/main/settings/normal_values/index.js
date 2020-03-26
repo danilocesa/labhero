@@ -170,6 +170,14 @@ class NormalValues extends React.Component {
 		});
 	}
 
+	onCloseAgeBracketDrawer = () => {
+		this.setState({ isShowAgeBracketsDrawer: false });
+	}
+
+	onCloseLabelRangeDrawer = () => {
+		this.setState({ isShowLabelRangeDrawer: false });
+	}
+
 	render() {
 		const { 
 				ddSections,
@@ -217,25 +225,25 @@ class NormalValues extends React.Component {
 			</>
 		);
 
-		const settingsSection = (
-			<>
-				<Row style={{ marginTop: 5, float: 'right' }}>
-					<DropDown 
-						label="SETTINGS"
-						placeholder="SETTINGS"
-						content={settingsOptions} 
-						onChange={this.onChangeSettingsOption}
-						value={selectedSettings}
-					/>
-				</Row>
-			</>
-		);
-
 		return(
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					{settingsSection} 
-					<PageTitle pageTitle={moduleTitle} />
+					<Row>
+						<Col span={8} offset={8}>
+							<PageTitle pageTitle={moduleTitle} />
+						</Col>
+						<Col span={8} style={{ textAlign: 'right' }}>
+							<DropDown 
+								size="small"
+								label="SETTINGS"
+								placeholder="SETTINGS"
+								content={settingsOptions} 
+								onChange={this.onChangeSettingsOption}
+								value={selectedSettings}
+							/>
+						</Col>
+					</Row>
+					
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
 							label="SECTION"
@@ -271,14 +279,14 @@ class NormalValues extends React.Component {
 				<AgeBracketDrawer
 					visible={isShowAgeBracketsDrawer}
 					sectionList={ddSections}
+					onClose={this.onCloseAgeBracketDrawer}
 				/>
 
 				<LabelRangeDrawer
 					visible={isShowLabelRangeDrawer}
 					sectionList={ddSections}
+					onClose={this.onCloseLabelRangeDrawer}
 				/>
-
-
 			</div>
 		);
 	} 

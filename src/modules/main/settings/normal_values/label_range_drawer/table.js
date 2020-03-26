@@ -5,20 +5,15 @@ import { Spin, Table } from 'antd';
 // CUSTOM
 import { tableSize, tableYScroll, tableHeaders } from '../settings';
 
-class AgeBracketTable extends React.Component {
+class LabelRangeTable extends React.Component {
 
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
-		const { ageBracket } = tableHeaders;
+		const { rangeLabelClass } = tableHeaders;
 		const columns = [
 			{ 
-				title: ageBracket.rangeLabel.title,
-				dataIndex: ageBracket.rangeLabel.dataIndex,
-				width: 150
-			},
-			{ 
-				title: ageBracket.ageBracket.title,
-				dataIndex: ageBracket.ageBracket.dataIndex,
+				title: rangeLabelClass.label.title,
+				dataIndex: rangeLabelClass.label.dataIndex,
 				width: 150
 			}
     ];
@@ -32,7 +27,7 @@ class AgeBracketTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: tableYScroll }}
-						rowKey={record => record.examItemRangeID}
+						rowKey={record => record.rangeClassID}
 						onRow={(record) => {
 							return {
 								onDoubleClick: () => onRowDblClick(record)
@@ -46,18 +41,14 @@ class AgeBracketTable extends React.Component {
 }
 
 
-AgeBracketTable.propTypes = {
+LabelRangeTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
-		examItemRangeID: PropTypes.number.isRequired,
-		sex: PropTypes.string.isRequired,
-		ageBracket: PropTypes.string.isRequired,
-		analyzerName: PropTypes.string.isRequired,
-		displayValue: PropTypes.string.isRequired,
-		rangeLabel: PropTypes.string.isRequired,
+		rangeClassID: PropTypes.number.isRequired,
+		rangeClassLabel: PropTypes.string.isRequired
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,
 	onRowDblClick: PropTypes.func.isRequired
 };
 
-export default AgeBracketTable;
+export default LabelRangeTable;
