@@ -37,7 +37,7 @@ class Cashier extends React.Component {
 	}
 
 	RedirectToReceipt(){
-		window.location = "http://localhost:3000/cashier/transactions"
+		window.location = "/cashier/transactions"
 	}
   
 	toggleSecondModal() {
