@@ -4,12 +4,24 @@
 import React from 'react';
 import { Form, Button, Row, Col, DatePicker, Select, Input } from 'antd';
 // CUSTOM MODULES
+import { fieldRules } from '../settings';
+
 import ClearFormFields from 'shared_components/form_clear_button';
 const { RangePicker } = DatePicker;
 class SearchPatientForm extends React.Component {
 	state = {
 		loading: false
 	};
+	handleSubmit = e => {
+		e.preventDefault();
+		this.props.form.validateFields((err, values) => {
+		  if (!err) {
+			console.log('Received values of form: ', values);
+		  }
+		});
+	  };
+
+
 	render() {
 		const { form } = this.props;
 		const { getFieldDecorator, getFieldsValue } = form;
@@ -17,11 +29,12 @@ class SearchPatientForm extends React.Component {
 		const { patientID, patientName } = getFieldsValue();
 		const disabled = !(patientID || (patientName && patientName.length > 1));
 		return (
-			<Form className="search-patient-form" >
+			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
 				<Row gutter={12} type="flex" justify="center">
 				<Col span={6}>
 						<Form.Item label="FROM DATE ~ TO DATE">
 							{getFieldDecorator('transaction_date', { 
+									rules: fieldRules.date
 							})(
 							<RangePicker style={{ width: '100%' }} />
 							)}
@@ -30,6 +43,7 @@ class SearchPatientForm extends React.Component {
 					<Col span={6}>
 						<Form.Item label="SECTION">
 							{getFieldDecorator('section', { 
+									rules: fieldRules.section
 							})(
 								<Select/>
 							)}
@@ -38,6 +52,7 @@ class SearchPatientForm extends React.Component {
 					<Col span={6}>
 						<Form.Item label="SEARCH">
 							{getFieldDecorator('item', { 
+									rules: fieldRules.search
 							})(
 								<Input 	/>
 							)}
@@ -52,7 +67,6 @@ class SearchPatientForm extends React.Component {
 									shape="round" 
 									type="primary" 
 									htmlType="submit" 
-									disabled={disabled}
 									loading={loading}
 									style={{ width: 120 }}
 								>
