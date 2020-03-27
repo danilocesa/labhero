@@ -191,7 +191,7 @@ class Sider extends React.Component {
 							</Menu.Item>
 						)
 					}
-					{/* {
+					 {
 						process.env.REACT_APP_DISPLAY_CASHIER === '1' && (
 							<Menu.Item key={URI.cashier.key}>
 								<Link to={URI.cashier.link}>
@@ -200,7 +200,7 @@ class Sider extends React.Component {
 								</Link>
 							</Menu.Item>
 						)
-					} */}
+					} 
         </Menu>
      </AntSider>
     );

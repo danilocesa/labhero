@@ -9,6 +9,7 @@ class ClearFormFields extends React.Component {
   constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
+		
 	}
 	
 	handleClick() {
@@ -28,20 +29,6 @@ class ClearFormFields extends React.Component {
 		</>;
   }
 }
-
-// class Foo extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.handleClick = this.handleClick.bind(this);
-//   }
-//   handleClick() {
-//     console.log('Click happened');
-//   }
-//   render() {
-//     return <button onClick={this.handleClick}>Click Me</button>;
-//   }
-// }
-
 
 ClearFormFields.propTypes = {
 	form: PropTypes.object

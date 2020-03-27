@@ -16,12 +16,7 @@ import {
 
 // CUSTOM MODULES
 import ClearFormFields from 'shared_components/form_clear_button';
-// import SearchPatientTableHeader from 'shared_components/search_patient_table_header';
-// import SearchPatientHeaderForm from './search_patient/header_input'; // Search form input
-// import SearchPatientTable from './phlebotable';
-// import PhleboPatientResult from './phlebopatient';
 
-//  CONSTANTS
 const { Title } = Typography;
 const { TextArea } = AntInput;
 const columns = [
@@ -81,7 +76,7 @@ class InventorySupplierTemplate extends React.Component {
 			drawerButton: buttonLabels.update,
 			panelInfo: record
 		});
-  }
+  }                                   
   onClose = () => {
 		this.setState({
 			isDrawerVisible: false,
@@ -147,7 +142,7 @@ class InventorySupplierTemplate extends React.Component {
 					destroyOnClose
 				>
 					<SupplierForm 
-						drawerButton={this.state.drawerButton} 
+				
 						panelInfo={this.state.panelInfo}
 						onCancel={this.onClose}
 					/>

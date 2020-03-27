@@ -203,7 +203,6 @@ class PanelFormTemplate extends React.Component {
 				<AntForm onSubmit={this.onSubmit}>
 					<section style={{ marginBottom: 50 }}>
 						<AntRow gutter={12}>
-
 								<AntForm.Item label={fieldLabels.panel_id} className={panelInfo ? null : "hide"}>
 									{getFieldDecorator('panel_id', {
 										initialValue: panelInfo.key
@@ -211,7 +210,6 @@ class PanelFormTemplate extends React.Component {
 										<AntInput disabled />
 									)}	
 								</AntForm.Item>
-							
 								<AntForm.Item label={fieldLabels.panel_name} className={panelInfo ? null : "hide"}>
 									{getFieldDecorator('panel_id', {
 										initialValue: panelInfo.key
@@ -219,7 +217,6 @@ class PanelFormTemplate extends React.Component {
 										<AntInput  />
 									)}	
 								</AntForm.Item>
-							
 								<AntForm.Item label={fieldLabels.panel_details}>
 									{getFieldDecorator('panel_name', {
 										initialValue: panelInfo.panel_name,
@@ -228,21 +225,11 @@ class PanelFormTemplate extends React.Component {
 										<TextArea  rows={4}	/>
 									)}	
 								</AntForm.Item>
-							
 						</AntRow>
-						
-						
 					</section>	
 					<section className="drawerFooter">
 						<div>
 							<ClearFormFields form={this.props.form} />
-							{/* <AntButton 
-								shape="round" 
-								style={{ marginRight: 10, width: 120 }} 
-								onClick={this.props.onCancel}
-							>
-								{buttonLabels.cancel}
-							</AntButton> */}
 							<AntButton 
 								type="primary" 
 								shape="round" 
