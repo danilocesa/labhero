@@ -68,6 +68,10 @@ export const moduleURI = {
 	bloodbank: {
 		key: 17,
 		link: '/bloodbank',
+	},
+	cashier: {
+		key: 18,
+		link: '/cashier',
 	}
 };
 
