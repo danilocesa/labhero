@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Button, Select, Row, Col, InputNumber } from 'antd';
+import { Drawer, Form, Button, Select, Row, Col, InputNumber, Input, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
@@ -22,14 +22,15 @@ class FillupForm extends React.Component {
 		const { ageBracket, form } = this.props;
 
 		if(ageBracket.ageBracketID !== prevProps.ageBracket.ageBracketID) {
-			const { ageBracketLabel, bracketFrom, bracketFromUnit, bracketTo, bracketToUnit } = ageBracket;
+			const { ageBracketLabel, bracketFrom, bracketFromUnit, bracketTo, bracketToUnit, active } = ageBracket;
 
 			form.setFieldsValue({ 
 				ageBracketLabel,
 				bracketFrom,
 				bracketFromUnit,
 				bracketTo,
-				bracketToUnit
+				bracketToUnit,
+				active: active === 1
 			});
 		}
 	}
@@ -51,7 +52,7 @@ class FillupForm extends React.Component {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
 
-					await onSubmit(fieldValues);
+					await onSubmit({ ...fieldValues, active: fieldValues.active ? 1 : 0 });
 
 					this.setState({ isLoading: false });
 				});
@@ -93,7 +94,7 @@ class FillupForm extends React.Component {
 			form, 
 			moduleType,
 			selectedSectionName,
-			rangeClass
+			// rangeClass
 		} = this.props;
 
 		const { getFieldDecorator } = form;
@@ -102,9 +103,9 @@ class FillupForm extends React.Component {
 												? drawerTitle.ageBracket.add 
 												: drawerTitle.ageBracket.update;
 
-		const rangeClassOptions = rangeClass.map(item => (
-			<Option value={item.rangeClassLabel}>{item.rangeClassLabel}</Option>
-		));
+		// const rangeClassOptions = rangeClass.map(item => (
+		// 	<Option value={item.rangeClassLabel}>{item.rangeClassLabel}</Option>
+		// ));
 
 		return (
 			<Drawer
@@ -118,15 +119,28 @@ class FillupForm extends React.Component {
 				<Form onSubmit={this.onFormSubmit} className="age-bracket-fillup-form">
 					<section style={{ marginBottom: 50 }}>
 						<section className="form-values">
+							{
+								(moduleType === formMode.update) && 
+								(
+									<Row>
+										<Col>
+											<Form.Item>
+												<span style={{ marginRight: 10 }}>ACTIVE:</span>
+												{getFieldDecorator('active', { valuePropName: 'checked' })(
+													<Switch />
+												)}
+											</Form.Item>
+										</Col>
+									</Row>
+								)
+							}
 							<Row style={{ marginTop: 10 }}>
 								<Col span={12}>
 									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
 										{getFieldDecorator('ageBracketLabel', { 
 											rules: fieldRules.ageBracketRangeLabel
 										})(
-											<Select>
-												{ rangeClassOptions }
-											</Select>
+											<Input />
 										)}
 									</Form.Item>
 								</Col>
@@ -230,10 +244,10 @@ FillupForm.propTypes = {
 		unitFrom: PropTypes.string,
 		unitTo: PropTypes.string
 	}),
-	rangeClass: PropTypes.arrayOf(PropTypes.shape({
-		rangeClassID: PropTypes.number.isRequired,
-		rangeClassLabel: PropTypes.string.isRequired,
-	})).isRequired
+	// rangeClass: PropTypes.arrayOf(PropTypes.shape({
+	// 	rangeClassID: PropTypes.number.isRequired,
+	// 	rangeClassLabel: PropTypes.string.isRequired,
+	// })).isRequired
 };
 
 FillupForm.defaultProps = {

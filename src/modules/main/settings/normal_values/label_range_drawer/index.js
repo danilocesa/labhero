@@ -97,8 +97,7 @@ class LabelRangeDrawer extends React.Component{
 		const payload = {
 			sectionID: this.state.selectedSectionId,
 			rangeClassLabel: `${newFieldValues.rangeClassLabel}`.toUpperCase(),
-			rangeClassID: selectedRangeClass.rangeClassID,
-			active: 1
+			rangeClassID: selectedRangeClass.rangeClassID
 		};
 
 		const updatedItem = await updateRangeClass(payload);
@@ -136,7 +135,7 @@ class LabelRangeDrawer extends React.Component{
 	fetchRangeClass = async (selectedSectionId) => {
 		const rangeClass = await getAllRangeClass();
 
-		return rangeClass.filter(item => (item.sectionID === selectedSectionId) && item.active === 1);
+		return rangeClass.filter(item => item.sectionID === selectedSectionId);
 	}
 
 
@@ -195,7 +194,7 @@ class LabelRangeDrawer extends React.Component{
 									onClick={this.onClickAdd}
 									disabled={selectedSectionId == null}
 								>
-									<Icon type="plus" /> {buttonNames.addAgeBracket}
+									<Icon type="plus" /> {buttonNames.addRangeClass}
 								</Button>
 								<TablePager handleChange={this.onChangePager} />
 							</>

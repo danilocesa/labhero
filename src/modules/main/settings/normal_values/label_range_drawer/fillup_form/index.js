@@ -1,12 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Row, Col } from 'antd';
+import { Drawer, Form, Input, Button, Row, Col, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
 import './fillup_form.css';
-
-const { Option } = Select;
 
 class FillupForm extends React.Component {
 	constructor(props) {
@@ -23,9 +21,9 @@ class FillupForm extends React.Component {
 		const { rangeClass, form } = this.props;
 
 		if(rangeClass.rangeClassID !== prevProps.rangeClass.rangeClassID) {
-			const { rangeClassLabel } = rangeClass;
+			const { rangeClassLabel, active } = rangeClass;
 
-			form.setFieldsValue({ rangeClassLabel });
+			form.setFieldsValue({ rangeClassLabel, active: active === 1 });
 		}
 	}
 
@@ -40,7 +38,7 @@ class FillupForm extends React.Component {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
 
-					await onSubmit(fieldValues);
+					await onSubmit({ ...fieldValues, active: fieldValues.active ? 1 : 0 });
 
 					this.setState({ isLoading: false });
 				});
@@ -90,9 +88,24 @@ class FillupForm extends React.Component {
 				<Form onSubmit={this.onFormSubmit} className="label-class-fillup-form">
 					<section style={{ marginBottom: 50 }}>
 						<section className="form-values">
+							{
+								(moduleType === formMode.update) && 
+								(
+									<Row>
+										<Col>
+											<Form.Item>
+												<span style={{ marginRight: 10 }}>ACTIVE:</span>
+												{getFieldDecorator('active', { valuePropName: 'checked' })(
+													<Switch />
+												)}
+											</Form.Item>
+										</Col>
+									</Row>
+								)
+							}
 							<Row style={{ marginTop: 10 }}>
 								<Col span={12}>
-									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
+									<Form.Item label={fieldLabels.ageRangeClassLabel}>
 										{getFieldDecorator('rangeClassLabel', {rules: fieldRules.ageBracketRangeLabel})(
 											<Input />
 										)}

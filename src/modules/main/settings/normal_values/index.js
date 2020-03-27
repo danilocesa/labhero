@@ -270,7 +270,7 @@ class NormalValues extends React.Component {
 					onClose={this.onExitForm} 
 					onSuccess={this.onSuccessAddNormalValues}
 					selectedExamItem={selectedExamItem}
-					selectedSectionId={selectedSectionId}
+					selectedSectionID={selectedSectionId}
 					selectedSpecimenId={selectedSpecimenId}
 					selectedSectionName={selectedSectionName}
 					selectedSpecimenName={selectedSpecimenName}

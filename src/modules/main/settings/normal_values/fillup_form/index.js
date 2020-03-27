@@ -2,6 +2,8 @@
 import React from 'react';
 import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
+import { fetchAgeBracketList } from 'services/settings/ageBracket';
+import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
 import { getAnalyzers } from 'services/settings/examItemRange';
 import FIELD_RULES from './constants';
 import { drawerTitle, fieldLabels, formMode, buttonNames} from '../settings';
@@ -17,6 +19,8 @@ class FillupForm extends React.Component {
 		this.state = {
 			isLoading: false,
 			analyzers: [],
+			ageBrackets: [],
+			itemRangeClass: []
 		}
 	}
 
@@ -27,10 +31,24 @@ class FillupForm extends React.Component {
 		this.setState({ analyzers: filteredAnalyzers });
 	}
 
-	componentDidUpdate(prevProps) {
-		const { moduleType, form, selectedItemRange } = this.props; 
+	async componentDidUpdate(prevProps) {
+		const { moduleType, form, selectedItemRange, selectedSectionID } = this.props; 
 		const { setFieldsValue } = form;
 		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
+
+		if(selectedSectionID !== prevProps.selectedSectionID) {
+			const ageBrackets = await fetchAgeBracketList();
+			const itemRangeClass = await getAllRangeClass();
+
+			const filteredAgeBrackets = ageBrackets.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
+			const filteredRangeClass = itemRangeClass.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
+
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ 
+				ageBrackets: filteredAgeBrackets, 
+				itemRangeClass: filteredRangeClass 
+			});
+		}
 
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
@@ -77,7 +95,7 @@ class FillupForm extends React.Component {
 	}
 
 	render() {
-		const { isLoading, analyzers } = this.state;
+		const { isLoading, analyzers, ageBrackets, itemRangeClass } = this.state;
 		const { 
 			onClose, 
 			visible, 
@@ -94,6 +112,18 @@ class FillupForm extends React.Component {
 		const machineOptions = analyzers.map(i => (
 			<Option value={i.analyzerID} key={i.analyzerID}>
 				{i.analyzerName}
+			</Option>
+		));
+
+		const ageBracketOptions = ageBrackets.map(item => (
+			<Option value={item.ageBracketID} key={item.ageBracketID}>
+				{item.ageBracketLabel}
+			</Option>
+		));
+
+		const itemRangeClassOptions = itemRangeClass.map(item => (
+			<Option value={item.rangeClassLabel} key={item.rangeClassID}>
+				{item.rangeClassLabel}
 			</Option>
 		));
 
@@ -169,8 +199,10 @@ class FillupForm extends React.Component {
 								</Col>
 								<Col span={8}>
 									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracket')(
-											<Input />
+										{getFieldDecorator('ageBracket', { rules: FIELD_RULES.ageBracket })(
+											<Select>
+												{ ageBracketOptions }
+											</Select>
 										)}
 									</Form.Item>
 								</Col>
@@ -178,7 +210,7 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.machine}>
-										{getFieldDecorator('analyzerID')(
+										{getFieldDecorator('analyzerID', { rules: FIELD_RULES.analyzerID })(
 											<Select>
 												{machineOptions}
 											</Select>
@@ -189,8 +221,10 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.labelOfRange}>
-										{getFieldDecorator('rangeLabel')(
-											<Input style={{ textTransform: 'uppercase' }} />
+										{getFieldDecorator('rangeLabel', { rules: FIELD_RULES.rangeLabel })(
+											<Select>
+												{ itemRangeClassOptions }
+											</Select>
 										)}
 									</Form.Item>
 								</Col>
@@ -198,7 +232,7 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>							
 									<Form.Item label={fieldLabels.displayValue}>
-										{getFieldDecorator('displayValue')(
+										{getFieldDecorator('displayValue', { rules: FIELD_RULES.displayValue })(
 											<Input />
 										)}
 									</Form.Item>						
@@ -207,7 +241,7 @@ class FillupForm extends React.Component {
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
-										{getFieldDecorator('rangeLow')(
+										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
 											<Input />
 										)}
 									</Form.Item>
@@ -223,7 +257,7 @@ class FillupForm extends React.Component {
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.high}>
-										{getFieldDecorator('rangeHigh')(
+										{getFieldDecorator('rangeHigh', { rules: FIELD_RULES.rangeHigh })(
 											<Input />
 										)}
 									</Form.Item>
@@ -269,6 +303,7 @@ FillupForm.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
+	selectedSectionID: PropTypes.number,
 	selectedSectionName: PropTypes.string,
 	selectedSpecimenName: PropTypes.string,
 	examItemName: PropTypes.string,
@@ -300,7 +335,8 @@ FillupForm.defaultProps = {
 	examItemGeneralName: null,
 	selectedSectionName: null,
 	selectedSpecimenName: null,
-	selectedItemRange: {}
+	selectedItemRange: {},
+	selectedSectionID: null
 }
 
 

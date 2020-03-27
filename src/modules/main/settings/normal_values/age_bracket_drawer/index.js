@@ -27,7 +27,7 @@ class AgeBracketDrawer extends React.Component{
 			isDisplayUpdateForm: false,
 			pageSize: tablePageSize,
 			ageBrackets: [],
-			rangeClass: [],
+			// rangeClass: [],
 			selectedAgeBracket: {},
 			selectedSectionId: null,
 			selectedSectionName: null
@@ -131,12 +131,12 @@ class AgeBracketDrawer extends React.Component{
 			selectedSectionName: sectionName.props.children
 		}, async() => {
 			const ageBrackets = await this.fetchAgeBracketList(sectionId);
-			const rangeClass = await this.fetchRangeClass(sectionId);
+			// const rangeClass = await this.fetchRangeClass(sectionId);
 
 
 			this.setState({ 
 				ageBrackets, 
-				rangeClass,
+				// rangeClass,
 				isLoading: false 
 			});
 		});
@@ -153,7 +153,7 @@ class AgeBracketDrawer extends React.Component{
 	fetchRangeClass = async (selectedSectionId) => {
 		const rangeClass = await getAllRangeClass()
 
-		return rangeClass.filter(item => (item.sectionID === selectedSectionId) && item.active === 1);
+		return rangeClass.filter(item => item.sectionID === selectedSectionId);
 	}
 
 	render() {
@@ -171,7 +171,7 @@ class AgeBracketDrawer extends React.Component{
 			ageBrackets,
 			selectedSectionId,
 			selectedSectionName,
-			rangeClass,
+			// rangeClass,
 			selectedAgeBracket
 		} = this.state;
 
@@ -228,7 +228,7 @@ class AgeBracketDrawer extends React.Component{
 				</Drawer>
 				<FillupForm 
 					moduleType={formMode.add}
-					rangeClass={rangeClass}
+					// rangeClass={rangeClass}
 					visible={isDisplayAddForm} 
 					onClose={this.onExitAddForm} 
 					onSubmit={this.onSubmittingAddForm}
@@ -238,7 +238,7 @@ class AgeBracketDrawer extends React.Component{
 				/>
 				<FillupForm 
 					moduleType={formMode.update}
-					rangeClass={rangeClass}
+					// rangeClass={rangeClass}
 					visible={isDisplayUpdateForm} 
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
