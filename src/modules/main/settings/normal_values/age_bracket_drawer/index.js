@@ -88,7 +88,7 @@ class AgeBracketDrawer extends React.Component{
 					isDisplayAddForm: false, 
 					isLoading: false,
 					ageBrackets 
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -119,7 +119,7 @@ class AgeBracketDrawer extends React.Component{
 					isLoading: false,
 					ageBrackets,
 					selectedAgeBracket: {} 
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -254,7 +254,8 @@ class AgeBracketDrawer extends React.Component{
 AgeBracketDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	sectionList: PropTypes.array.isRequired
+	sectionList: PropTypes.array.isRequired,
+	clearSection: PropTypes.func.isRequired,
 };
 
 export default AgeBracketDrawer;

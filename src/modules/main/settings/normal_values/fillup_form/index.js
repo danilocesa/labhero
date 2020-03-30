@@ -87,12 +87,34 @@ class FillupForm extends React.Component {
 			form.setFieldsValue({ autoRelease: false });
 	}
 
+	onBlurRangeLow = () => {
+		const { form } = this.props;
+
+		form.validateFieldsAndScroll(['rangeHigh']);
+	}
+
 	resetForm = () => {
 		// eslint-disable-next-line react/prop-types
 		const { resetFields } = this.props.form;
 
 		resetFields();
 	}
+
+	// Private functions
+	validateRangeHigh = () => {
+		const { getFieldsValue } = this.props.form;
+		const { rangeLow, rangeHigh } = getFieldsValue();
+
+		if(!rangeLow || !rangeHigh) {
+			return Promise.resolve();
+		}
+
+		if (parseFloat(rangeLow) >= parseFloat(rangeHigh)) {
+			return Promise.reject('Invalid value');
+		}
+
+		return Promise.resolve();
+	}	
 
 	render() {
 		const { isLoading, analyzers, ageBrackets, itemRangeClass } = this.state;
@@ -242,7 +264,7 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
 										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<Input />
+											<Input onBlur={this.onBlurRangeLow} />
 										)}
 									</Form.Item>
 								</Col>
@@ -257,7 +279,12 @@ class FillupForm extends React.Component {
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.high}>
-										{getFieldDecorator('rangeHigh', { rules: FIELD_RULES.rangeHigh })(
+										{getFieldDecorator('rangeHigh', { 
+											rules: [{
+												...FIELD_RULES.rangeHigh,
+												validator: this.validateRangeHigh
+											}]
+										})(
 											<Input />
 										)}
 									</Form.Item>

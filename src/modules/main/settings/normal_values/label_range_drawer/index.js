@@ -84,7 +84,7 @@ class LabelRangeDrawer extends React.Component{
 					isDisplayAddForm: false, 
 					isLoading: false,
 					rangeClass
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -95,6 +95,7 @@ class LabelRangeDrawer extends React.Component{
 
 
 		const payload = {
+			...newFieldValues,
 			sectionID: this.state.selectedSectionId,
 			rangeClassLabel: `${newFieldValues.rangeClassLabel}`.toUpperCase(),
 			rangeClassID: selectedRangeClass.rangeClassID
@@ -114,7 +115,7 @@ class LabelRangeDrawer extends React.Component{
 					isLoading: false,
 					rangeClass,
 					selectedRangeClass: {} 
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -232,7 +233,8 @@ class LabelRangeDrawer extends React.Component{
 LabelRangeDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	sectionList: PropTypes.array.isRequired
+	sectionList: PropTypes.array.isRequired,
+	clearSection: PropTypes.func.isRequired
 };
 
 export default LabelRangeDrawer;
