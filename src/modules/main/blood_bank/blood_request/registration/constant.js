@@ -1,19 +1,22 @@
+import vdltnMessage from 'global_config/error_messages';
+
 const FIELD_RULES = {
 	lastName: [
-    	{ required: true, message: 'This field is required..' }
+		{ required: true, message: 'This field is required..' },
+		{ max: 50, message: vdltnMessage.maxLength(50) },
 	],
 	middleName: [
-		{  }
+		{ max: 15, message: vdltnMessage.maxLength(15) },
 	],
 	firstName: [
-		{ required: true, message: 'This field is required.' }
+		{ required: true, message: 'This field is required.' },
+		{ max: 50, message: vdltnMessage.maxLength(50) },
 	],
 	suffix: [
 		{  }
 	],
 	contactNumber: [
 		{ required: true, message: 'This field is required.' },
-		{ pattern: /^[9]\d{9}/, message: 'Please input valid contact number.' }
 	],
 	email: [
 		{ required: true, message: 'This field is required.' },
