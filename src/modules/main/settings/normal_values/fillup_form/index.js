@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
+import { Drawer, Form, Input, InputNumber, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchAgeBracketList } from 'services/settings/ageBracket';
 import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
@@ -264,7 +264,7 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
 										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<Input onBlur={this.onBlurRangeLow} />
+											<InputNumber onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
@@ -280,12 +280,12 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.high}>
 										{getFieldDecorator('rangeHigh', { 
-											rules: [{
+											rules: [
 												...FIELD_RULES.rangeHigh,
-												validator: this.validateRangeHigh
-											}]
+												{ validator: this.validateRangeHigh }
+											]
 										})(
-											<Input />
+											<InputNumber style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
