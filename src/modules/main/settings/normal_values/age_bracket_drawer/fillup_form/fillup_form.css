@@ -1,3 +1,7 @@
+.age-bracket-fillup-form .form-values input {
+	text-transform: uppercase;
+}
+
 .age-bracket-fillup-form .form-values {
 	margin-top: 20px;
 }

@@ -84,7 +84,7 @@ class LabelRangeDrawer extends React.Component{
 					isDisplayAddForm: false, 
 					isLoading: false,
 					rangeClass
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -95,10 +95,10 @@ class LabelRangeDrawer extends React.Component{
 
 
 		const payload = {
+			...newFieldValues,
 			sectionID: this.state.selectedSectionId,
 			rangeClassLabel: `${newFieldValues.rangeClassLabel}`.toUpperCase(),
-			rangeClassID: selectedRangeClass.rangeClassID,
-			active: 1
+			rangeClassID: selectedRangeClass.rangeClassID
 		};
 
 		const updatedItem = await updateRangeClass(payload);
@@ -115,7 +115,7 @@ class LabelRangeDrawer extends React.Component{
 					isLoading: false,
 					rangeClass,
 					selectedRangeClass: {} 
-				});
+				}, () => { this.props.clearSection(); });
 			});
 		}
 	}
@@ -136,7 +136,7 @@ class LabelRangeDrawer extends React.Component{
 	fetchRangeClass = async (selectedSectionId) => {
 		const rangeClass = await getAllRangeClass();
 
-		return rangeClass.filter(item => (item.sectionID === selectedSectionId) && item.active === 1);
+		return rangeClass.filter(item => item.sectionID === selectedSectionId);
 	}
 
 
@@ -195,7 +195,7 @@ class LabelRangeDrawer extends React.Component{
 									onClick={this.onClickAdd}
 									disabled={selectedSectionId == null}
 								>
-									<Icon type="plus" /> {buttonNames.addAgeBracket}
+									<Icon type="plus" /> {buttonNames.addRangeClass}
 								</Button>
 								<TablePager handleChange={this.onChangePager} />
 							</>
@@ -233,7 +233,8 @@ class LabelRangeDrawer extends React.Component{
 LabelRangeDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
-	sectionList: PropTypes.array.isRequired
+	sectionList: PropTypes.array.isRequired,
+	clearSection: PropTypes.func.isRequired
 };
 
 export default LabelRangeDrawer;

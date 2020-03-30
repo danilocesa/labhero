@@ -37,7 +37,8 @@ export const messagePrompts = {
 
 export const buttonNames = {
     addNormalValues : 'ADD NORMAL VALUE',
-    addAgeBracket : 'ADD AGE RANGE',
+    addAgeBracket : 'ADD AGE BRACKET',
+    addRangeClass : 'ADD RANGE CLASS',
     cancel: 'CANCEL',
     create: 'ADD',
     addField: 'ADD FIELD',
@@ -69,7 +70,7 @@ export const tableHeaders = {
   },
   ageBracket: {
     rangeLabel:{
-      title: "RANGE LABEL",
+      title: "AGE BRACKET LABEL",
       dataIndex: "rangeLabel"
     },
     ageBracket:{
@@ -79,7 +80,7 @@ export const tableHeaders = {
   },
   rangeLabelClass: {
     label: {
-      title: "RANGE LABEL",
+      title: "RANGE CLASS LABEL",
       dataIndex: "rangeClassLabel"
     }
   }
@@ -101,7 +102,8 @@ export const fieldLabels = {
   displayFlag: "DISPLAY FLAG",
   autoRelease: "AUTO RELEASE",
   release: "RELEASE",
-  ageBracketRangeLabel: 'RANGE LABEL',
+  ageBracketRangeLabel: 'AGE BRACKET LABEL',
+  ageRangeClassLabel: 'RANGE CLASS LABEL',
   ageBracketUnit: 'UNIT'
 }
 

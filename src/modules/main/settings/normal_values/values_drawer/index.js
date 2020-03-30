@@ -11,7 +11,7 @@ import {
 } from 'services/settings/examItemRange';
 
 import NormalValuesTable from './table';
-import FillupForm from '../fillup_form/index_bak';
+import FillupForm from '../fillup_form';
 import { 
 	moduleTitle, 
 	fieldLabels, 
@@ -149,7 +149,8 @@ class NormalValuesDrawer extends React.Component{
 			onClose, 
 			selectedExamItem, 
 			selectedSectionName,
-			selectedSpecimenName
+			selectedSpecimenName,
+			selectedSectionID
 		} = this.props;
 
 		const { 
@@ -223,6 +224,7 @@ class NormalValuesDrawer extends React.Component{
 					onClose={this.onExitAddForm} 
 					onSubmit={this.onSubmittingAddForm}
 					ageBrackets={ageBrackets}
+					selectedSectionID={selectedSectionID}
 					selectedSectionName={selectedSectionName}
 					selectedSpecimenName={selectedSpecimenName}
 					examItemName={selectedExamItem.examItemName}
@@ -236,6 +238,7 @@ class NormalValuesDrawer extends React.Component{
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
 					ageBrackets={filteredAgeBrackets}
+					selectedSectionID={selectedSectionID}
 					selectedSectionName={selectedSectionName}
 					selectedSpecimenName={selectedSpecimenName}
 					examItemName={selectedExamItem.examItemName}
@@ -258,11 +261,13 @@ NormalValuesDrawer.propTypes = {
 		examItemGeneralName: PropTypes.string,
 		examItemUnitCode: PropTypes.string
 	}).isRequired,
+	selectedSectionID: PropTypes.number,
 	selectedSectionName: PropTypes.string,
 	selectedSpecimenName: PropTypes.string
 };
 
 NormalValuesDrawer.defaultProps = {
+	selectedSectionID: null,
 	selectedSectionName: null,
 	selectedSpecimenName: null
 };
