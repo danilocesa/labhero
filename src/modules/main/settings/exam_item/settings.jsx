@@ -27,6 +27,7 @@ export const messagePrompts = {
 export const fieldRules = {
 	examItemName: [
 		{ required: true, message: errorMessage.required },
+		{ type: 'number', message: '' },
 		{ max: 200, message: errorMessage.maxLength(200) }
 	],
 	examItemGeneralName: [

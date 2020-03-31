@@ -1,10 +1,20 @@
 import React from 'react';
 import moment from 'moment';
 import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select } from 'antd';
+import { NumberInput } from 'shared_components/pattern_input';
 
 // CUSTOM MODULES
 import FormButtons from './form_buttons';
-import FIELD_RULES from './constant';
+import {
+    formLabels,
+    FIELD_RULES,
+    selectDefaultOptions
+
+} from './constant';
+import ProvinceList from 'shared_components/province_list';
+import CityList from 'shared_components/city_list';
+import TownList from 'shared_components/town_list';
+import HouseAddress from 'shared_components/address';
 
 import './form.css';
 
@@ -14,6 +24,28 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 class FillupDonor extends React.Component{
+    state = {
+		patientAddress: {} 
+	};
+	onProvinceChange = () => {
+		this.setState({ 
+			patientAddress: { 
+				cityMunicipalityCode: null,
+				townCode: null,
+				houseAddress: null 
+			} 
+		});
+	}
+	onCityChange = () => {
+		this.setState((state) => ({ 
+			patientAddress: { 
+				...state.patientAddress, 
+				cityMunicipalityCode: null,
+				townCode: null,
+				houseAddress: null 
+			} 
+		}));
+	}
     computeAge = (date) => {
 		const years = Math.floor(moment().diff(date, 'years', true));
 		const age = years > 0 ? years : '---';
@@ -39,8 +71,17 @@ class FillupDonor extends React.Component{
     }
       
     render(){
-        // eslint-disable-next-line react/prop-types
-        const { getFieldDecorator } = this.props.form;
+        const { form } = this.props;
+		const { patientAddress } = this.state;
+		const { getFieldsValue,getFieldDecorator } = form;
+		const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
+		const { 
+			provinces: selectedProvinceCode, 
+			city: selectedCityCode, 
+			town: selectedTownCode
+        } = getFieldsValue();
+      
+       
         return(
             <div>
                 <div style={{ marginTop: 50 }}>
@@ -79,7 +120,7 @@ class FillupDonor extends React.Component{
                                     </Row>
                                     <Form.Item label="CONTACT NUMBER">
                                         {getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
-                                                <Input addonBefore="+ 63" maxLength={10} />
+                                                <NumberInput addonBefore="+ 63"/>
                                         )}
                                     </Form.Item>
                                     <Form.Item label="EMAIL">
@@ -87,9 +128,50 @@ class FillupDonor extends React.Component{
                                                 <Input />
                                         )}
                                     </Form.Item>
-                                    <Form.Item label="ADDRESS">
+                                    <Form.Item >
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
-                                                <Input />
+                                               <ProvinceList
+                                               required
+                                               form={form}
+                                               placeholder={selectDefaultOptions} 
+                                               selectedProvince={provinceCode}
+                                               onChange={this.onProvinceChange}
+                                           />
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item >
+                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
+                                            <CityList 
+                                            required
+                                            form={form}
+                                            placeholder={selectDefaultOptions} 
+                                            provinceValue={selectedProvinceCode || provinceCode}
+                                            selectedCity={cityMunicipalityCode}
+                                            onChange={this.onCityChange}
+                                        />
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item>
+                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
+                                                 <TownList 
+                                                 required
+                                                 form={form}
+                                                 placeholder={selectDefaultOptions} 
+                                                 cityValue={selectedCityCode || cityMunicipalityCode}
+                                                 selectedTown={townCode}
+                                             />
+                                        )}
+                                    </Form.Item>
+                                    <Form.Item >
+                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
+                                               <HouseAddress
+                                               required 
+                                               form={form}
+                                               townValue={selectedTownCode || townCode}
+                                               fieldLabel={formLabels.unitNo.label}
+                                               fieldName={formLabels.unitNo.fieldName}
+                                               selectedValue={houseAddress}
+                                            />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="PATIENT'S GENDER">
@@ -142,7 +224,7 @@ class FillupDonor extends React.Component{
                                     </Form.Item>
                                     <Form.Item label="UNIT OF BLOOD">
                                         {getFieldDecorator('bloodBag', { rules: FIELD_RULES.bloodBag })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="DATE COLLECTED">
@@ -165,32 +247,32 @@ class FillupDonor extends React.Component{
                                     </div>
                                     <Form.Item label="BODY WEIGHT">
                                         {getFieldDecorator('bodyWeight', { rules: FIELD_RULES.bodyWeight })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="PULSE RATE">
                                         {getFieldDecorator('pulseRate', { rules: FIELD_RULES.pulseRate })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="BLOOD PRESSURE">
                                         {getFieldDecorator('bloodPressure', { rules: FIELD_RULES.bloodPressure })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="HEMOGLOBIN COUNT">
                                         {getFieldDecorator('hemoglobin', { rules: FIELD_RULES.hemoglobin })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="BODY TEMPERATURE">
                                         {getFieldDecorator('bodyTemperature', { rules: FIELD_RULES.bodyTemperature })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="WEIGHT OF BAG">
                                         {getFieldDecorator('bagWeight', { rules: FIELD_RULES.bagWeight })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                 </div>
