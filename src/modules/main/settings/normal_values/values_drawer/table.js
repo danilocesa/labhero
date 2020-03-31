@@ -38,7 +38,7 @@ class NormalValuesTable extends React.Component {
 				title: normalValues.labelOfRange.title,
 				dataIndex: normalValues.labelOfRange.dataIndex,
 			}
-        ];
+		];
 
 		return (
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
@@ -67,10 +67,9 @@ NormalValuesTable.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
 		examItemRangeID: PropTypes.number.isRequired,
 		sex: PropTypes.string.isRequired,
-		ageBracket: PropTypes.string.isRequired,
+		ageBracketLabel: PropTypes.string.isRequired,
 		analyzerName: PropTypes.string.isRequired,
 		displayValue: PropTypes.string.isRequired,
-		rangeLabel: PropTypes.string.isRequired,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

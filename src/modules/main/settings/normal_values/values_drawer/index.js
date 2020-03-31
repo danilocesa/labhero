@@ -134,8 +134,7 @@ class NormalValuesDrawer extends React.Component{
 			
 			const ageBrackets = itemRanges.map(item => ({ 
 				examItemRangeID: item.examItemRangeID,
-				from: item.ageBracket.split('-')[0], 
-				to: item.ageBracket.split('-')[1]
+				ageBracketLabel: item.ageBracketLabel
 			}));
 
 			this.setState({ itemRanges, ageBrackets, isLoading: false });

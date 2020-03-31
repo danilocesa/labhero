@@ -115,6 +115,7 @@ class FillupForm extends React.Component {
 				closable
 				onClose={onClose}
 				visible={visible}
+				className="age-bracket-drawer"
 			>
 				<Form onSubmit={this.onFormSubmit} className="age-bracket-fillup-form">
 					<section style={{ marginBottom: 50 }}>
