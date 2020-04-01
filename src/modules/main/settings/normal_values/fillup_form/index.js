@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Switch, Row, Col } from 'antd';
+import { Drawer, Form, Input, InputNumber, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchAgeBracketList } from 'services/settings/ageBracket';
 import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
@@ -34,7 +34,7 @@ class FillupForm extends React.Component {
 	async componentDidUpdate(prevProps) {
 		const { moduleType, form, selectedItemRange, selectedSectionID } = this.props; 
 		const { setFieldsValue } = form;
-		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
+		const { examItemRangeID, examItemID, analyzerName, ageBracketLabel, rangeClassLabel, ...restItemRange } = selectedItemRange;
 
 		if(selectedSectionID !== prevProps.selectedSectionID) {
 			const ageBrackets = await fetchAgeBracketList();
@@ -52,6 +52,7 @@ class FillupForm extends React.Component {
 
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
+				
 				setFieldsValue({
 					...restItemRange,
 					canRelease: selectedItemRange.canRelease === 1,
@@ -87,12 +88,34 @@ class FillupForm extends React.Component {
 			form.setFieldsValue({ autoRelease: false });
 	}
 
+	onBlurRangeLow = () => {
+		const { form } = this.props;
+
+		form.validateFieldsAndScroll(['rangeHigh']);
+	}
+
 	resetForm = () => {
 		// eslint-disable-next-line react/prop-types
 		const { resetFields } = this.props.form;
 
 		resetFields();
 	}
+
+	// Private functions
+	validateRangeHigh = () => {
+		const { getFieldsValue } = this.props.form;
+		const { rangeLow, rangeHigh } = getFieldsValue();
+
+		if(!rangeLow || !rangeHigh) {
+			return Promise.resolve();
+		}
+
+		if (parseFloat(rangeLow) >= parseFloat(rangeHigh)) {
+			return Promise.reject('Invalid value');
+		}
+
+		return Promise.resolve();
+	}	
 
 	render() {
 		const { isLoading, analyzers, ageBrackets, itemRangeClass } = this.state;
@@ -122,7 +145,7 @@ class FillupForm extends React.Component {
 		));
 
 		const itemRangeClassOptions = itemRangeClass.map(item => (
-			<Option value={item.rangeClassLabel} key={item.rangeClassID}>
+			<Option value={item.rangeClassID} key={item.rangeClassID}>
 				{item.rangeClassLabel}
 			</Option>
 		));
@@ -199,7 +222,7 @@ class FillupForm extends React.Component {
 								</Col>
 								<Col span={8}>
 									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracket', { rules: FIELD_RULES.ageBracket })(
+										{getFieldDecorator('ageBracketID', { rules: FIELD_RULES.ageBracket })(
 											<Select>
 												{ ageBracketOptions }
 											</Select>
@@ -221,7 +244,7 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.labelOfRange}>
-										{getFieldDecorator('rangeLabel', { rules: FIELD_RULES.rangeLabel })(
+										{getFieldDecorator('rangeClassID', { rules: FIELD_RULES.rangeLabel })(
 											<Select>
 												{ itemRangeClassOptions }
 											</Select>
@@ -242,7 +265,7 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
 										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<Input />
+											<InputNumber onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
@@ -257,8 +280,13 @@ class FillupForm extends React.Component {
 							<Row gutter={8}>
 								<Col span={6}>
 									<Form.Item label={fieldLabels.high}>
-										{getFieldDecorator('rangeHigh', { rules: FIELD_RULES.rangeHigh })(
-											<Input />
+										{getFieldDecorator('rangeHigh', { 
+											rules: [
+												...FIELD_RULES.rangeHigh,
+												{ validator: this.validateRangeHigh }
+											]
+										})(
+											<InputNumber style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
@@ -314,8 +342,10 @@ FillupForm.propTypes = {
 		sex: PropTypes.string,
 		analyzerID: PropTypes.number,
 		analyzerName: PropTypes.string,
-		ageBracket: PropTypes.string,
-		rangeLabel: PropTypes.string,
+		ageBracketID: PropTypes.number,
+		ageBracketLabel: PropTypes.string,
+		rangeClassID: PropTypes.number,
+		rangeClassLabel: PropTypes.string,
 		displayValue: PropTypes.string,
 		rangeLow: PropTypes.string,
 		rangeHigh: PropTypes.string,

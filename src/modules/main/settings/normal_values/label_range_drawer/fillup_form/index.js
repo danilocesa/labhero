@@ -84,6 +84,7 @@ class FillupForm extends React.Component {
 				closable
 				onClose={onClose}
 				visible={visible}
+				className="label-class-drawer"
 			>
 				<Form onSubmit={this.onFormSubmit} className="label-class-fillup-form">
 					<section style={{ marginBottom: 50 }}>

@@ -155,6 +155,15 @@ class NormalValues extends React.Component {
 		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedNormalValues });
 	}
 
+	clearSection = () => {
+		this.setState({
+			selectedSectionId: null,
+			examItems: [], 
+			examItemsRef: [],
+			selectedSectionName: null
+		});
+	}
+
 	// Private Function
 	containsString = (searchFrom, searchedVal) => {
 		if(searchFrom === null || searchFrom === '')
@@ -280,12 +289,14 @@ class NormalValues extends React.Component {
 					visible={isShowAgeBracketsDrawer}
 					sectionList={ddSections}
 					onClose={this.onCloseAgeBracketDrawer}
+					clearSection={this.clearSection}
 				/>
 
 				<LabelRangeDrawer
 					visible={isShowLabelRangeDrawer}
 					sectionList={ddSections}
 					onClose={this.onCloseLabelRangeDrawer}
+					clearSection={this.clearSection}
 				/>
 			</div>
 		);

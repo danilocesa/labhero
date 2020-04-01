@@ -4,6 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select } from 'antd';
+import { NumberInput } from 'shared_components/pattern_input';
 
 // CUSTOM MODULES
 import FormButtons from './form_buttons';
@@ -82,7 +83,7 @@ class FillupRecipient extends React.Component{
                                     </Row>
                                     <Form.Item label="CONTACT NUMBER">
                                         {getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
-                                                <Input addonBefore="+ 63" maxLength={10} />
+                                                <NumberInput addonBefore="+ 63"  />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="EMAIL">
@@ -155,7 +156,7 @@ class FillupRecipient extends React.Component{
                                     </Form.Item>
                                     <Form.Item label="UNIT OF BLOOD">
                                         {getFieldDecorator('bloodBag', { rules: FIELD_RULES.bloodBag })(
-                                                <Input />
+                                                <NumberInput />
                                         )}
                                     </Form.Item>
                                     <Form.Item label="REQUIRED DATE">

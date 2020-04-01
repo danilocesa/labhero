@@ -53,7 +53,7 @@ export const tableHeaders = {
     },
     ageBracket: {
       title:"AGE BRACKET",
-      dataIndex:"ageBracket"
+      dataIndex:"ageBracketLabel"
     },
     machine: {
       title:"MACHINE",
@@ -61,12 +61,12 @@ export const tableHeaders = {
     },
     labelOfRange: {
       title:"LABEL OF RANGE",
-      dataIndex:"rangeLabel"
+      dataIndex:"rangeClassLabel"
     },
     displayValue: {
       title:"DISPLAY VALUE",
       dataIndex:"displayValue"
-    }
+    },
   },
   ageBracket: {
     rangeLabel:{
@@ -131,4 +131,7 @@ export const fieldRules = {
 
 }
 
-export const settingsOptions = [{label:"AGE RANGE", value:1}, {label:"LABEL OF RANGE", value:2}];
+export const settingsOptions = [
+  { label: "AGE BRACKET", value: 1 }, 
+  { label: "RANGE CLASS LABEL", value: 2 }
+];
