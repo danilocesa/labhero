@@ -1,0 +1,12 @@
+.search-input {
+    margin: auto;
+}
+.cashier-transactions-search label {
+    font-weight: bold;
+    width: auto;
+    color: rgba(0, 0, 0, 0.85);
+    position: relative;
+}
+.cashier-transactions-search{
+ margin-left: 50px;
+}

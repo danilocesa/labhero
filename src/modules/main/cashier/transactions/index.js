@@ -12,7 +12,8 @@ import {
   Row,
   Col,
   Collapse,
-  DatePicker
+  DatePicker,
+  Input
 } from "antd";
 
 import "./breakdown.css";
@@ -117,25 +118,62 @@ class Transactions extends React.Component {
         style={{
           display: "flex",
           justifyContent: "center",
-          // alignItems: "center",
-          height: "100vh",
-          padding: 70,
-          marginTop: 10
+          // height: "100vh",
+          // padding: 70,
+          // marginTop: 10
         }}
       >
+      <div className="ant-row-flex ant-row-flex-center"
+			  style={{marginBottom: 20}}
+			>
+				<h4 className="ant-typography">TRANSACTIONS</h4>
+			</div>
         <Row>
-          <Col span={18}>
-            <Card
-              title="LIST OF REQUEST ID"
-              bordered={true}
-              style={{ width: 1000, marginTop: 2, height: 550, marginLeft: 10 }}
+        <div className = "cashier-transactions-search">
+        <Col span={8}>
+                    <div className = "ant-col ant-col-xs-24 ant-col-sm-10 ant-col-md-8 ant-col-lg-8">
+                        <label className="ant-form-item-label" title="PATIENT ID">PATIENT ID</label>
+                        <Input placeholder="PATIENT ID" 
+                        style={{width: 280}}
+                        />
+                    </div>
+          </Col>
+          <Col span={8}>
+                    <div className = "ant-col ant-col-xs-24 ant-col-sm-10 ant-col-md-8 ant-col-lg-8">
+                        <label className="ant-form-item-label" title="PATIENT NAME">PATIENT NAME</label>
+                        <Input placeholder="LAST NAME, FIRST NAME M.I." 
+                        style={{width: 280}}
+                        />
+                    </div>
+          </Col>
+          <Col span={8}>
+                    <div className = "ant-col ant-col-xs-24 ant-col-sm-10 ant-col-md-8 ant-col-lg-8">
+                        <label 
+                        className="ant-form-item-label" title="TRANSACTION DATE" >TRANSACTION DATE
+                        </label>
+                         <DatePicker format={dateFormat} 
+                        style={{width: 280}}
+                        /> 
+                    </div>
+          </Col>
+        </div>
+        <Col span = {24}>
+            <div className = "ant-col ant-col-xs-24 ant-col-sm-10 ant-col-md-8 ant-col-lg-8"
+            style = {{backgroundColor: "red"}}
             >
-              <DatePicker defaultValue={moment('2020/01/01', dateFormat)} format={dateFormat} 
-              style={{width: 300, alignItems: "right"}}
-              />
-              <Table columns={columns} dataSource={data} style={{marginTop: 10}}/>
-              <div span={18}></div>
-            </Card>
+                  <button className = "ant-btn ant-btn-round ant-btn-primary">
+                    <span>CLEAR</span>
+                  </button>
+                  <button className = "ant-btn ant-btn-round ant-btn-primary">
+                    <span>SEARCH</span>
+                  </button>
+              </div>
+          </Col>
+          <Col span={24}>
+            <div>
+              <Table columns={columns} dataSource={data} style={{marginTop: 30}}
+            />
+            </div>
           </Col>
         </Row>
       </Layout>

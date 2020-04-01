@@ -121,6 +121,7 @@ class Summary extends React.Component {
             marginTop: 10
             }}
         >
+            
             <Row>
                 <Col span={24}>
                     <div className="cashier-summary-header">   

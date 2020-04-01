@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import browser from "./browser.png";
-import loupe from "./loupe.png";
+import view_all from "./view_all.png";
+import view_request from "./view_request.png";
+import search_category from "./search_category.png";
 import {
   Layout,
   Menu,
@@ -66,44 +67,55 @@ class Cashier extends React.Component {
 		}}
 	  >
 		<div className = "cashier-menu">
+			<div className="ant-row-flex ant-row-flex-center"
+			style={{marginBottom: 20}}
+			>
+				<h4 className="ant-typography">CASHIER</h4>
+			</div>
 			<Row>
-				<Col span={8}>
+				<Col style = {{paddingLeft: 15, paddingRight: 15}} span={8}>
 				  <Card className="cashier-item-card">
 					  <img
+					  style = {{height: 55 , width: "auto"}}
 					  onClick={this.toggleFirstModal}
-					  className="browser"
-					  src={browser}
-					  alt="browser"
+					  className="view_request"
+					  src={view_request}
+					  alt="view_request"
 					  />
 					  <br></br>
-					  <span>Search By Request ID</span>
+					  <br></br>
+					  <span>SEARCH BY REQUEST ID</span>
 				  </Card>
 				</Col>
-				<Col span={8}>
+				<Col style = {{paddingLeft: 15, paddingRight: 15}} span={8}>
 				  <Card className="cashier-item-card">
 					<Link to="/cashier/transactions" >
 							<img
+							style = {{height: 55 , width: "auto"}}
 							type="primary"
-							className="browser"
-							src={browser}
-							alt="browser"
+							className="view_all"
+							src={view_all}
+							alt="view_all"
 							/>
 					</Link>
 					<br></br>
-					  <span>View All Request</span>
+					<br></br>
+					  <span>VIEW ALL <br></br> REQUEST</span>
 				  </Card>
 				</Col>
-				<Col span={8}>
+				<Col style = {{paddingLeft: 15, paddingRight: 15}} span={8}>
 				  <Card className="cashier-item-card">
 					<Link to="/cashier/categories" >
 						<img
+							style = {{height: 55 , width: "auto"}}
 							type="primary"
-							className="loupe"
-							src={loupe}
-							alt="loupe"
+							className="search_category"
+							src={search_category}
+							alt="search_category"
 							/>
 							<br></br>
-							<span>Search By Category</span>
+							<br></br>
+							<span>SEARCH BY CATEGORY</span>
 						</Link>
 				  </Card>
 				</Col>
