@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Row, Col, Switch } from 'antd';
+import { Drawer, Form, Button, Row, Col, Switch } from 'antd';
 import PropTypes from 'prop-types';
+import { RegexInput } from 'shared_components/pattern_input'
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
 import './fillup_form.css';
@@ -108,7 +109,7 @@ class FillupForm extends React.Component {
 								<Col span={12}>
 									<Form.Item label={fieldLabels.ageRangeClassLabel}>
 										{getFieldDecorator('rangeClassLabel', {rules: fieldRules.ageBracketRangeLabel})(
-											<Input />
+											<RegexInput maxLength={20} regex={/[A-Za-z0-9 ]/}  />
 										)}
 									</Form.Item>
 								</Col>

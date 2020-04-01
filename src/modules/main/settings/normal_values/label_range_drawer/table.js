@@ -14,7 +14,8 @@ class LabelRangeTable extends React.Component {
 			{ 
 				title: rangeLabelClass.label.title,
 				dataIndex: rangeLabelClass.label.dataIndex,
-				width: 150
+				width: 150,
+				sorter: (a, b) => a.rangeClassLabel.localeCompare(b.rangeClassLabel)
 			}
     ];
 

@@ -16,8 +16,8 @@ export const drawerTitle = {
     update: "UPDATE AGE BRACKET"
   },
   rangeClass: {
-    add: "ADD RANGE LABEL",
-    update: "UPDATE RANGE LABEL"
+    add: "ADD RANGE CLASS LABEL",
+    update: "UPDATE RANGE CLASS LABEL"
   }
 }
 
