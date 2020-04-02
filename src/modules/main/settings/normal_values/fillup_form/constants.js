@@ -22,8 +22,12 @@ export const fieldRules = {
 	rangeHigh: [
 		{ required: true, message: errorMessage.required },
 	],
-	rangeLowFlagDisplay: [],
-	rangeHighFlagDisplay: [],
+	rangeLowFlagDisplay: [
+		{ required: true, message: errorMessage.required },
+	],
+	rangeHighFlagDisplay: [
+		{ required: true, message: errorMessage.required },
+	],
 	canRelease: [],
 	autoRelease: [],
 };

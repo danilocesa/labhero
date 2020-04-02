@@ -36,7 +36,12 @@ class NormalValuesTable extends React.Component {
 				title: normalValues.displayValue.title,
 				dataIndex: normalValues.displayValue.dataIndex,
 				width: 200,
-				sorter: (a, b) => a.displayValue.localeCompare(b.displayValue)
+				sorter: (a, b) => a.displayValue.localeCompare(b.displayValue),
+				render: (text) => (
+					<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+						{text}
+					</div>
+				),
 			},
 			{ 
 				title: normalValues.labelOfRange.title,

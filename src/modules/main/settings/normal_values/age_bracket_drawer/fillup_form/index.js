@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Button, Select, Row, Col, InputNumber, Input, Switch } from 'antd';
+import { Drawer, Form, Button, Select, Row, Col, Input, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { NumberInput } from 'shared_components/pattern_input';
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
 import './fillup_form.css';
@@ -153,13 +154,13 @@ class FillupForm extends React.Component {
 									</Form.Item>
 								</Col>
 							</Row>
-							<Row>
+							<Row gutter={12}>
 								<Col span={4}>
 									<Form.Item label={fieldLabels.ageBracketFrom}>
 										{getFieldDecorator('bracketFrom', {
 											rules: fieldRules.ageBracketFrom
 										})(
-											<InputNumber min={0} max={999} onBlur={this.onBlurAgeUnits} />
+											<NumberInput maxLength={3} onBlur={this.onBlurAgeUnits} />
 										)}
 									</Form.Item>
 								</Col>
@@ -178,7 +179,7 @@ class FillupForm extends React.Component {
 									</Form.Item>
 								</Col>
 							</Row>
-							<Row>
+							<Row gutter={12}>
 								<Col span={4}>
 									<Form.Item label={fieldLabels.ageBracketTo}>
 										{getFieldDecorator('bracketTo', { 
@@ -188,7 +189,7 @@ class FillupForm extends React.Component {
 											],
 											validateTrigger: 'onBlur'
 										})(
-											<InputNumber min={1} max={999} onBlur={this.onBlurAgeUnits} />
+											<NumberInput maxLength={3} onBlur={this.onBlurAgeUnits} />
 										)}
 									</Form.Item>
 								</Col>
