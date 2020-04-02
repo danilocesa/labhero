@@ -10,3 +10,11 @@
 .cashier-transactions-search{
  margin-left: 50px;
 }
+
+.cashier-transactions-table .ant-table-tbody td{
+    text-transform: uppercase;
+}
+
+.cashier-transactions-table .ant-table-thead > tr > th{
+    text-transform: uppercase;
+}

@@ -40,3 +40,12 @@
     background-color: #fff;
     border-color: #BBADFF;
 }
+
+.cashier-summary-table .ant-table-tbody td{
+    text-transform: uppercase;
+    text-align: left!important;
+}
+
+.cashier-summary-table .ant-table-thead > tr > th{
+    text-transform: uppercase;  
+}
