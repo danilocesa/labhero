@@ -13,6 +13,7 @@ import { ReactComponent as SearchPatientIcon } from 'icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
 import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
 import { ReactComponent as EditIcon } from 'icons/edit.svg';
+import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
 
 import { SELECTED_SIDER_KEY } from '../../../global_config/constant-global';
 
@@ -180,6 +181,26 @@ class Sider extends React.Component {
 							</SubMenu>
 						)
 					}
+					{
+						process.env.REACT_APP_DISPLAY_BLOODBANK === '1' && (
+							<Menu.Item key={URI.bloodbank.key}>
+								<Link to={URI.bloodbank.link}>
+									<Icon component={BloodBankIcon} />
+									<span>BLOOD BANK</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
+					 {
+						process.env.REACT_APP_DISPLAY_CASHIER === '1' && (
+							<Menu.Item key={URI.cashier.key}>
+								<Link to={URI.cashier.link}>
+									<Icon component={SearchPatientIcon} />
+									<span>CASHIER</span>
+								</Link>
+							</Menu.Item>
+						)
+					} 
         </Menu>
      </AntSider>
     );

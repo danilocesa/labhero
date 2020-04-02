@@ -1,9 +1,12 @@
-.age-bracket-fillup-form .form-values {
-	margin-top: 20px;
+.label-class-drawer .ant-drawer-body {
+	padding: 0px 24px 24px 24px;
 }
 
-.age-bracket-fillup-form .form-values .ant-form-item {
+.label-class-fillup-form .form-values input {
+	margin-top: 20px;
+	text-transform: uppercase;
+}
+
+.label-class-fillup-form .form-values .ant-form-item {
 	margin-bottom: 0px;
 }
-
-

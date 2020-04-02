@@ -62,9 +62,17 @@ export const moduleURI = {
 			settings: {
 				key: 16,
 				link: '/inventory/settings',
-			}
+			},
 		}
 	},
+	bloodbank: {
+		key: 17,
+		link: '/bloodbank',
+	},
+	cashier: {
+		key: 18,
+		link: '/cashier',
+	}
 };
 
 export default moduleURI;

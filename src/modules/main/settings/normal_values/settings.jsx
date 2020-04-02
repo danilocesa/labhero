@@ -7,8 +7,18 @@ export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;
 
 export const drawerTitle = {
-  add: "ADD NORMAL VALUE",
-  update: "UPDATE NORMAL VALUE"
+  normalValue: {
+    add: "ADD NORMAL VALUE",
+    update: "UPDATE NORMAL VALUE"
+  },
+  ageBracket: {
+    add: "ADD AGE BRACKET",
+    update: "UPDATE AGE BRACKET"
+  },
+  rangeClass: {
+    add: "ADD RANGE CLASS LABEL",
+    update: "UPDATE RANGE CLASS LABEL"
+  }
 }
 
 export const formMode ={
@@ -20,11 +30,15 @@ export const messagePrompts = {
 	successCreatedNormalValues: 'Normal Value successfully created.',
   successUpdatedNormalValues: 'Normal Value successfully updated.',
   successCreatedAgeBracket  : 'Age Bracket successfully created.',
+  successUpdateAgeBracket  : 'Age Bracket successfully updated.',
+  successCreatedRangeLabel  : 'Range Label successfully created.',
+  successUpdateRangeLabel  : 'Range Label successfully updated.',
 }
 
 export const buttonNames = {
     addNormalValues : 'ADD NORMAL VALUE',
-    addAgeBracket : 'ADD AGE RANGE',
+    addAgeBracket : 'ADD AGE BRACKET',
+    addRangeClass : 'ADD RANGE CLASS',
     cancel: 'CANCEL',
     create: 'ADD',
     addField: 'ADD FIELD',
@@ -39,7 +53,7 @@ export const tableHeaders = {
     },
     ageBracket: {
       title:"AGE BRACKET",
-      dataIndex:"ageBracket"
+      dataIndex:"ageBracketLabel"
     },
     machine: {
       title:"MACHINE",
@@ -47,21 +61,27 @@ export const tableHeaders = {
     },
     labelOfRange: {
       title:"LABEL OF RANGE",
-      dataIndex:"rangeLabel"
+      dataIndex:"rangeClassLabel"
     },
     displayValue: {
       title:"DISPLAY VALUE",
       dataIndex:"displayValue"
-    }
+    },
   },
   ageBracket: {
     rangeLabel:{
-      title: "RANGE LABEL",
+      title: "AGE BRACKET LABEL",
       dataIndex: "rangeLabel"
     },
     ageBracket:{
       title: "AGE BRACKET",
       dataIndex: "ageBracket"
+    }
+  },
+  rangeLabelClass: {
+    label: {
+      title: "RANGE CLASS LABEL",
+      dataIndex: "rangeClassLabel"
     }
   }
 }
@@ -82,7 +102,8 @@ export const fieldLabels = {
   displayFlag: "DISPLAY FLAG",
   autoRelease: "AUTO RELEASE",
   release: "RELEASE",
-  ageBracketRangeLabel: 'RANGE LABEL',
+  ageBracketRangeLabel: 'AGE BRACKET LABEL',
+  ageRangeClassLabel: 'RANGE CLASS LABEL',
   ageBracketUnit: 'UNIT'
 }
 
@@ -97,7 +118,6 @@ export const fieldRules = {
   ],
   ageBracketRangeLabel: [
     { required: true, message: errorMessage.required },
-    { max: 50, message: errorMessage.maxLength(50) }
   ],
   ageBracketFrom: [
     { required: true, message: errorMessage.required }
@@ -111,4 +131,7 @@ export const fieldRules = {
 
 }
 
-export const settingsOptions = [{label:"AGE RANGE", value:1}, {label:"LABEL OF RANGE", value:2}];
+export const settingsOptions = [
+  { label: "AGE BRACKET", value: 1 }, 
+  { label: "RANGE CLASS LABEL", value: 2 }
+];

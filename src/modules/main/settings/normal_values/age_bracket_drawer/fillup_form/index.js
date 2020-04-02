@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, Button, Select, Row, Col, InputNumber } from 'antd';
+import { Drawer, Form, Button, Select, Row, Col, InputNumber, Input, Switch } from 'antd';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
 import './fillup_form.css';
@@ -17,22 +18,27 @@ class FillupForm extends React.Component {
 		}
 	}
 
-	componentDidMount() {}
-
 	componentDidUpdate(prevProps) {
-		const { moduleType, form, selectedItemRange } = this.props; 
-		const { setFieldsValue } = form;
-		// const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
+		const { ageBracket, form } = this.props;
 
-		if(moduleType === formMode.update) {
-			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
-				setFieldsValue({
-					// ...restItemRange,
-					canRelease: selectedItemRange.canRelease === 1,
-					autoRelease: selectedItemRange.autoRelease === 1,
-				});
-			}
+		if(ageBracket.ageBracketID !== prevProps.ageBracket.ageBracketID) {
+			const { ageBracketLabel, bracketFrom, bracketFromUnit, bracketTo, bracketToUnit, active } = ageBracket;
+
+			form.setFieldsValue({ 
+				ageBracketLabel,
+				bracketFrom,
+				bracketFromUnit,
+				bracketTo,
+				bracketToUnit,
+				active: active === 1
+			});
 		}
+	}
+
+	resetForm= () => {
+		const { resetFields } = this.props.form;
+
+		resetFields();
 	}
 
 	onFormSubmit = (event) => {
@@ -46,7 +52,7 @@ class FillupForm extends React.Component {
 				this.setState({ isLoading: true }, async() => {
 					const fieldValues = getFieldsValue();
 
-					await onSubmit(fieldValues);
+					await onSubmit({ ...fieldValues, active: fieldValues.active ? 1 : 0 });
 
 					this.setState({ isLoading: false });
 				});
@@ -54,18 +60,37 @@ class FillupForm extends React.Component {
 		});
 	}
 
-	onChangeRelease = (isSelected) => {
-		const { form } = this.props;
+	onBlurAgeUnits = () => {
+		const { getFieldsValue, validateFields } = this.props.form;
+		const { bracketFrom, bracketTo, bracketFromUnit, bracketToUnit } = getFieldsValue();
 
-		if(!isSelected)
-			form.setFieldsValue({ autoRelease: false });
+		if(!bracketFrom || !bracketTo || !bracketFromUnit || !bracketToUnit) {
+			return;
+		}
+
+		validateFields(['bracketTo', 'bracketToUnit']);
 	}
 
-	resetForm = () => {
-		// eslint-disable-next-line react/prop-types
-		const { resetFields } = this.props.form;
+	// Private functions
+	validateAge = (rule, value, callback) => {
+		const { getFieldsValue } = this.props.form;
+		const { bracketFrom, bracketTo, bracketFromUnit, bracketToUnit } = getFieldsValue();
 
-		resetFields();
+		// Reference: https://momentjs.com/docs/#/manipulating/add/
+		const fromDate = moment().add(bracketFrom, `${bracketFromUnit}`.toLowerCase());
+		const toDate = moment().add(bracketTo, `${bracketToUnit}`.toLowerCase());
+
+
+		if(!bracketFrom || !bracketTo || !bracketFromUnit || !bracketToUnit) {
+			return callback();
+		}
+
+		// Reference: https://momentjs.com/docs/#/query/is-same-or-before/
+		if (moment(toDate).isSameOrBefore(fromDate)) {
+			return callback('Invalid age range');
+		}
+
+		return callback();
 	}
 
 	render() {
@@ -75,21 +100,19 @@ class FillupForm extends React.Component {
 			visible, 
 			form, 
 			moduleType,
-			selectedSectionName
+			selectedSectionName,
+			// rangeClass
 		} = this.props;
 
-		const { getFieldDecorator, getFieldsValue } = form;
+		const { getFieldDecorator } = form;
 
-		const headerTitle = (moduleType === formMode.add) ? drawerTitle.add : drawerTitle.update;
+		const headerTitle = (moduleType === formMode.add) 
+												? drawerTitle.ageBracket.add 
+												: drawerTitle.ageBracket.update;
 
-		const ageBracketUnitOptions = (
-			<Select>
-				<Option value="DAYS">DAYS</Option>
-				<Option value="WEEKS">WEEKS</Option>
-				<Option value="MONTHS">MONTHS</Option>
-				<Option value="YEARS">YEARS</Option>
-			</Select>
-		)
+		// const rangeClassOptions = rangeClass.map(item => (
+		// 	<Option value={item.rangeClassLabel}>{item.rangeClassLabel}</Option>
+		// ));
 
 		return (
 			<Drawer
@@ -99,15 +122,33 @@ class FillupForm extends React.Component {
 				closable
 				onClose={onClose}
 				visible={visible}
+				className="age-bracket-drawer"
 			>
 				<Form onSubmit={this.onFormSubmit} className="age-bracket-fillup-form">
 					<section style={{ marginBottom: 50 }}>
 						<section className="form-values">
+							{
+								(moduleType === formMode.update) && 
+								(
+									<Row>
+										<Col>
+											<Form.Item>
+												<span style={{ marginRight: 10 }}>ACTIVE:</span>
+												{getFieldDecorator('active', { valuePropName: 'checked' })(
+													<Switch />
+												)}
+											</Form.Item>
+										</Col>
+									</Row>
+								)
+							}
 							<Row style={{ marginTop: 10 }}>
 								<Col span={12}>
 									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
-										{getFieldDecorator('ageBracketRangeLabel', {rules: fieldRules.ageBracketRangeLabel})(
-											<Input />
+										{getFieldDecorator('ageBracketLabel', { 
+											rules: fieldRules.ageBracketRangeLabel
+										})(
+											<Input maxLength={20} />
 										)}
 									</Form.Item>
 								</Col>
@@ -115,15 +156,24 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={4}>
 									<Form.Item label={fieldLabels.ageBracketFrom}>
-										{getFieldDecorator('ageBracketFrom', {rules: fieldRules.ageBracketFrom})(
-											<InputNumber min={0} />
+										{getFieldDecorator('bracketFrom', {
+											rules: fieldRules.ageBracketFrom
+										})(
+											<InputNumber min={0} max={999} onBlur={this.onBlurAgeUnits} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={10}>
 									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('ageBracketUnitFrom', { rules: fieldRules.ageBracketUnit })(
-											ageBracketUnitOptions
+										{getFieldDecorator('bracketFromUnit', { 
+											rules: fieldRules.ageBracketUnit,
+										})(
+											<Select onBlur={this.onBlurAgeUnits}>
+												<Option value="DAYS">DAYS</Option>
+												<Option value="WEEKS">WEEKS</Option>
+												<Option value="MONTHS">MONTHS</Option>
+												<Option value="YEARS">YEARS</Option>
+											</Select>
 										)}
 									</Form.Item>
 								</Col>
@@ -131,15 +181,32 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={4}>
 									<Form.Item label={fieldLabels.ageBracketTo}>
-										{getFieldDecorator('ageBracketTo', {rules: fieldRules.ageBracketTo})(
-											<InputNumber min={0} />
+										{getFieldDecorator('bracketTo', { 
+											rules: [
+												...fieldRules.ageBracketTo, 
+												{ validator: this.validateAge }
+											],
+											validateTrigger: 'onBlur'
+										})(
+											<InputNumber min={1} max={999} onBlur={this.onBlurAgeUnits} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={10}>
 									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('ageBracketUnitTo', { rules: fieldRules.ageBracketUnit })(
-											ageBracketUnitOptions
+										{getFieldDecorator('bracketToUnit', { 
+											rules: [
+												...fieldRules.ageBracketUnit,
+												{ validator: this.validateAge }
+											],
+											validateTrigger: 'onBlur'
+										})(
+											<Select onBlur={this.onBlurAgeUnits}>
+												<Option value="DAYS">DAYS</Option>
+												<Option value="WEEKS">WEEKS</Option>
+												<Option value="MONTHS">MONTHS</Option>
+												<Option value="YEARS">YEARS</Option>
+											</Select>
 										)}
 									</Form.Item>
 								</Col>
@@ -178,16 +245,28 @@ FillupForm.propTypes = {
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	selectedSectionName: PropTypes.string,
-	ageBrackets: PropTypes.arrayOf(PropTypes.shape({
+	ageBracket: PropTypes.shape({
+		ageBracketID: PropTypes.number,
 		from: PropTypes.string,
 		to: PropTypes.string,
 		unitFrom: PropTypes.string,
 		unitTo: PropTypes.string
-	})).isRequired
+	}),
+	// rangeClass: PropTypes.arrayOf(PropTypes.shape({
+	// 	rangeClassID: PropTypes.number.isRequired,
+	// 	rangeClassLabel: PropTypes.string.isRequired,
+	// })).isRequired
 };
 
 FillupForm.defaultProps = {
 	selectedSectionName: null,
+	ageBracket: {
+		ageBracketID: null,
+		from: null,
+		to: null,
+		unitFrom: null,
+		unitTo: null
+	}
 }
 
 

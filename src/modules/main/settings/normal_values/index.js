@@ -155,6 +155,15 @@ class NormalValues extends React.Component {
 		HttpCodeMessage({ status: 200, message: messagePrompts.successCreatedNormalValues });
 	}
 
+	clearSection = () => {
+		this.setState({
+			selectedSectionId: null,
+			examItems: [], 
+			examItemsRef: [],
+			selectedSectionName: null
+		});
+	}
+
 	// Private Function
 	containsString = (searchFrom, searchedVal) => {
 		if(searchFrom === null || searchFrom === '')
@@ -168,6 +177,14 @@ class NormalValues extends React.Component {
 			isShowAgeBracketsDrawer	: (selectedSettings === 1),
 			isShowLabelRangeDrawer	: (selectedSettings === 2)
 		});
+	}
+
+	onCloseAgeBracketDrawer = () => {
+		this.setState({ isShowAgeBracketsDrawer: false });
+	}
+
+	onCloseLabelRangeDrawer = () => {
+		this.setState({ isShowLabelRangeDrawer: false });
 	}
 
 	render() {
@@ -217,25 +234,25 @@ class NormalValues extends React.Component {
 			</>
 		);
 
-		const settingsSection = (
-			<>
-				<Row style={{ marginTop: 5, float: 'right' }}>
-					<DropDown 
-						label="SETTINGS"
-						placeholder="SETTINGS"
-						content={settingsOptions} 
-						onChange={this.onChangeSettingsOption}
-						value={selectedSettings}
-					/>
-				</Row>
-			</>
-		);
-
 		return(
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					{settingsSection} 
-					<PageTitle pageTitle={moduleTitle} />
+					<Row>
+						<Col span={8} offset={8}>
+							<PageTitle pageTitle={moduleTitle} />
+						</Col>
+						<Col span={8} style={{ textAlign: 'right' }}>
+							<DropDown 
+								size="small"
+								label="SETTINGS"
+								placeholder="SETTINGS"
+								content={settingsOptions} 
+								onChange={this.onChangeSettingsOption}
+								value={selectedSettings}
+							/>
+						</Col>
+					</Row>
+					
 					<Row style={{ marginTop: 50 }}>
 						<DropDown 
 							label="SECTION"
@@ -262,7 +279,7 @@ class NormalValues extends React.Component {
 					onClose={this.onExitForm} 
 					onSuccess={this.onSuccessAddNormalValues}
 					selectedExamItem={selectedExamItem}
-					selectedSectionId={selectedSectionId}
+					selectedSectionID={selectedSectionId}
 					selectedSpecimenId={selectedSpecimenId}
 					selectedSectionName={selectedSectionName}
 					selectedSpecimenName={selectedSpecimenName}
@@ -271,14 +288,16 @@ class NormalValues extends React.Component {
 				<AgeBracketDrawer
 					visible={isShowAgeBracketsDrawer}
 					sectionList={ddSections}
+					onClose={this.onCloseAgeBracketDrawer}
+					clearSection={this.clearSection}
 				/>
 
 				<LabelRangeDrawer
 					visible={isShowLabelRangeDrawer}
 					sectionList={ddSections}
+					onClose={this.onCloseLabelRangeDrawer}
+					clearSection={this.clearSection}
 				/>
-
-
 			</div>
 		);
 	} 

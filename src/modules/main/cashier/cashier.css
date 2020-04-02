@@ -1,0 +1,126 @@
+.cashier-modal-container {
+    background-color: red;
+}
+
+.cashier-modal-container .ant-btn-round{
+    margin-bottom: 5px;
+    vertical-align: auto;
+}
+
+.cashier-modal-container .ant-modal-footer{
+    padding:10px
+}
+.cashier-modal-container .ant-modal-body{
+    padding:20px
+    
+}
+.cashier-modal-container .ant-modal-footer button{
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 32px;
+    width: 100px;
+}
+
+.cashier-menu .ant-card-body{
+    padding: 20px;
+    height: 150px;
+    width: 320px;
+    text-align: center;
+}
+.cashier-menu .ant-card{
+    margin-top: 40px;
+    margin-right: 10px;
+}
+.cashier-menu span{
+    margin-top: 20px;
+    color: #8A73F9;
+}
+.cashier-menu img{
+    height: 100px;
+    width: auto;
+}
+/* 
+.modal{
+    padding: 10px;
+}
+#container{
+    width: 100%;
+    padding:  16px;
+}
+
+#container .modal{
+    padding: 10px;
+}
+
+#container Input {
+    width: 400px;
+    align-items: center;
+    text-align: center;
+}
+
+#container button {
+    margin: 5px 10px 10px 5px;
+}
+#inside-button Button {
+    width: 120px;
+    margin: 10px 10px 10px 10px;
+    align-items: center;
+    text-align: center;
+}
+
+#container .ant-btn-round{
+    height: 32px;
+    padding: 0 16px;
+    font-size: 14px;
+    border-radius: 32px;
+    width: 100px;
+}
+.menu{
+    background: #FAFAFC;
+}
+.ant-modal-body{
+    padding: 0px;
+    align-items: center;
+    text-align: center;
+}
+
+.cashier-item-card {
+    width: 250px;
+    height: 200px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px 0;
+}
+.cashier-item-card:hover {
+    box-shadow: 0 2px 8px rgb(100, 100, 100);
+}
+.menu img{
+    height: 150;
+    width: auto;
+}
+.menu .loupe .browser {
+    height: 150;
+    width: auto;
+}
+
+.loupe:hover {
+    opacity: 1;
+    cursor: pointer;
+   
+  }
+
+  .browser:hover {
+    opacity: 1;
+    cursor: pointer;
+    
+  }
+
+  .Menu .cashier-item-card{
+    margin-left: 30px;
+}
+
+
+ */
