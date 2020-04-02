@@ -22,8 +22,8 @@
 # Reference: https://medium.com/google-cloud/how-to-deploy-a-react-application-to-google-cloud-using-bitbucket-pipelines-8bc59d78d3af
 image: node:10.15.1
 
-options:
- max-time: 10
+# options:
+#  max-time: 10
 pipelines:
   branches:        
     release:
