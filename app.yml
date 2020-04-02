@@ -4,10 +4,10 @@ threadsafe: true
 handlers:
 - url: /(.*\.(html|css|js|png|jpg|woff|json))
   static_files: dist/\1
-  upload: build/(.*\.(html|css|js|png|jpg|woff|json))
+  upload: dist/(.*\.(html|css|js|png|jpg|woff|json))
 - url: /.*
-  static_files: build/index.html
-  upload: build/index.html
+  static_files: dist/index.html
+  upload: dist/index.html
 - url: /
   static_dir: build
 skip_files:

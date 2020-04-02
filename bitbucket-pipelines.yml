@@ -25,17 +25,18 @@ image: node:10.15.1
 options:
  max-time: 10
 pipelines:
-  tags:                         
-    release-*: 
+  branches:        
+    release:
       - step:
           name: Build Application
           caches:
             - node
           script:
+            - unset CI
             - npm install
             - npm run build
           artifacts:
-            - build/** # change this to your build directory
+            - dist/** # change this to your build directory
             # Set a couple variables for readability
             - SDK_VERSION=197.0.0
             - SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz
