@@ -14,14 +14,16 @@ class AgeBracketTable extends React.Component {
 			{ 
 				title: ageBracket.rangeLabel.title,
 				dataIndex: 'ageBracketLabel',
-				width: 150
+				width: 150,
+				sorter: (a, b) => a.ageBracketLabel.localeCompare(b.ageBracketLabel)
 			},
 			{ 
 				title: ageBracket.ageBracket.title,
 				render: (text, record) => `
 					${record.bracketFrom} ${record.bracketFromUnit} - ${record.bracketTo} ${record.bracketToUnit} 
 				`,
-				width: 150
+				width: 150,
+				sorter: (a, b) => a.ageBracketLabel.localeCompare(b.ageBracketLabel)
 			}
     ];
 

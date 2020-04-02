@@ -17,26 +17,36 @@ class NormalValuesTable extends React.Component {
 			{ 
 				title: normalValues.gender.title,
 				dataIndex: normalValues.gender.dataIndex,
-				width: 150
+				width: 150,
+				sorter: (a, b) => a.sex.localeCompare(b.sex)
 			},
 			{ 
 				title: normalValues.ageBracket.title,
 				dataIndex: normalValues.ageBracket.dataIndex,
-				width: 150
+				width: 150,
+				sorter: (a, b) => a.ageBracketLabel.localeCompare(b.ageBracketLabel)
 			},
 			{ 
 				title: normalValues.machine.title,
 				dataIndex: normalValues.machine.dataIndex,
-				width: 250
+				width: 250,
+				sorter: (a, b) => a.analyzerName.localeCompare(b.analyzerName)
 			},
 			{ 
 				title: normalValues.displayValue.title,
 				dataIndex: normalValues.displayValue.dataIndex,
-				width: 200
+				width: 200,
+				sorter: (a, b) => a.displayValue.localeCompare(b.displayValue),
+				render: (text) => (
+					<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+						{text}
+					</div>
+				),
 			},
 			{ 
 				title: normalValues.labelOfRange.title,
 				dataIndex: normalValues.labelOfRange.dataIndex,
+				sorter: (a, b) => a.rangeClassLabel.localeCompare(b.rangeClassLabel)
 			}
 		];
 

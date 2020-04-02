@@ -180,7 +180,7 @@ class AgeBracketDrawer extends React.Component{
 		return(
 			<div>
 				<Drawer 
-					title={`${moduleTitle} - SETTINGS - AGE RANGE`.toUpperCase()}
+					title={`${moduleTitle} - SETTINGS - AGE BRACKET`.toUpperCase()}
 					width="1000"
 					placement="right"
 					closable

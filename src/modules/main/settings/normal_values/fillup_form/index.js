@@ -256,7 +256,7 @@ class FillupForm extends React.Component {
 								<Col span={14}>							
 									<Form.Item label={fieldLabels.displayValue}>
 										{getFieldDecorator('displayValue', { rules: FIELD_RULES.displayValue })(
-											<Input />
+											<Input maxLength={50} />
 										)}
 									</Form.Item>						
 								</Col>
@@ -265,14 +265,14 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
 										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<InputNumber onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
+											<InputNumber maxLength={5} onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
-										{getFieldDecorator('rangeLowFlagDisplay')(
-											<Input />
+										{getFieldDecorator('rangeLowFlagDisplay', { rules: FIELD_RULES.rangeLowFlagDisplay })(
+											<Input maxLength={50} />
 										)}
 									</Form.Item>
 								</Col>
@@ -286,14 +286,14 @@ class FillupForm extends React.Component {
 												{ validator: this.validateRangeHigh }
 											]
 										})(
-											<InputNumber style={{ width: '100%' }} />
+											<InputNumber maxLength={5} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
-										{getFieldDecorator('rangeHighFlagDisplay')(
-											<Input />
+										{getFieldDecorator('rangeHighFlagDisplay', { rules: FIELD_RULES.rangeHighFlagDisplay })(
+											<Input maxLength={50} />
 										)}
 									</Form.Item>
 								</Col>

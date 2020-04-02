@@ -14,30 +14,49 @@ class ExamTable extends React.Component {
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
 		
+		const getSorter = (myDataSource, columnName) => {
+			if(myDataSource.length > 0) {
+				const columnSorter = (a, b) => {
+					if(a[columnName] !== null) {
+						return a[columnName].localeCompare(b[columnName])
+					}
+					return 1;
+				};
+				
+				return columnSorter;
+			} 
+			return false;
+		};
+
 		const columns = [
 			{ 
 				title: 'EXAM ITEM ID',
 				dataIndex: 'examItemID',
-				width: 200
+				width: 200,
+				
 			},
 			{ 
 				title: 'EXAM ITEM NAME',
 				dataIndex: 'examItemName',
-				width: 400
+				width: 400,
+				sorter: getSorter(data, 'examItemName'),
 			},
 			{ 
 				title: 'EXAM ITEM GENERAL NAME',
 				dataIndex: 'examItemGeneralName',
-				width: 250
+				width: 250,
+				sorter: getSorter(data, 'examItemGeneralName'),
 			},
 			{ 
 				title: 'EXAM ITEM TYPE',
 				dataIndex: 'examItemTypeCode',
-				width: 200
+				width: 200,
+				sorter: getSorter(data, 'examItemTypeCode'),
 			},
 			{ 
 				title: 'INTEGRATION CODE',
 				dataIndex: 'examItemIntegrationCode',
+				sorter: getSorter(data, 'examItemIntegrationCode'),
 			}
 		];
 
