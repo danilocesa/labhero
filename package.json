@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "set CI=false react-app-rewired build",
     "test": "jest --watchAll",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
