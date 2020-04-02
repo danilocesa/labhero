@@ -37,6 +37,10 @@ pipelines:
             - npm run build
           artifacts:
             - build/** # change this to your build directory
+      - step:
+          name: Deploy to GCloud
+          deployment: staging
+          script:
             # Set a couple variables for readability
             - SDK_VERSION=197.0.0
             - SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz
