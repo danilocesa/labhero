@@ -34,7 +34,7 @@ class FillupForm extends React.Component {
 	async componentDidUpdate(prevProps) {
 		const { moduleType, form, selectedItemRange, selectedSectionID } = this.props; 
 		const { setFieldsValue } = form;
-		const { examItemRangeID, examItemID, analyzerName, ...restItemRange } = selectedItemRange;
+		const { examItemRangeID, examItemID, analyzerName, ageBracketLabel, rangeClassLabel, ...restItemRange } = selectedItemRange;
 
 		if(selectedSectionID !== prevProps.selectedSectionID) {
 			const ageBrackets = await fetchAgeBracketList();
@@ -52,6 +52,7 @@ class FillupForm extends React.Component {
 
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
+				
 				setFieldsValue({
 					...restItemRange,
 					canRelease: selectedItemRange.canRelease === 1,
@@ -144,7 +145,7 @@ class FillupForm extends React.Component {
 		));
 
 		const itemRangeClassOptions = itemRangeClass.map(item => (
-			<Option value={item.rangeClassLabel} key={item.rangeClassID}>
+			<Option value={item.rangeClassID} key={item.rangeClassID}>
 				{item.rangeClassLabel}
 			</Option>
 		));
@@ -221,7 +222,7 @@ class FillupForm extends React.Component {
 								</Col>
 								<Col span={8}>
 									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracket', { rules: FIELD_RULES.ageBracket })(
+										{getFieldDecorator('ageBracketID', { rules: FIELD_RULES.ageBracket })(
 											<Select>
 												{ ageBracketOptions }
 											</Select>
@@ -243,7 +244,7 @@ class FillupForm extends React.Component {
 							<Row>
 								<Col span={14}>
 									<Form.Item label={fieldLabels.labelOfRange}>
-										{getFieldDecorator('rangeLabel', { rules: FIELD_RULES.rangeLabel })(
+										{getFieldDecorator('rangeClassID', { rules: FIELD_RULES.rangeLabel })(
 											<Select>
 												{ itemRangeClassOptions }
 											</Select>
@@ -255,7 +256,7 @@ class FillupForm extends React.Component {
 								<Col span={14}>							
 									<Form.Item label={fieldLabels.displayValue}>
 										{getFieldDecorator('displayValue', { rules: FIELD_RULES.displayValue })(
-											<Input />
+											<Input maxLength={50} />
 										)}
 									</Form.Item>						
 								</Col>
@@ -271,7 +272,7 @@ class FillupForm extends React.Component {
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
 										{getFieldDecorator('rangeLowFlagDisplay')(
-											<Input />
+											<Input maxLength={50} />
 										)}
 									</Form.Item>
 								</Col>
@@ -292,7 +293,7 @@ class FillupForm extends React.Component {
 								<Col span={14}>
 									<Form.Item label={fieldLabels.displayFlag}>
 										{getFieldDecorator('rangeHighFlagDisplay')(
-											<Input />
+											<Input maxLength={50} />
 										)}
 									</Form.Item>
 								</Col>
@@ -341,8 +342,10 @@ FillupForm.propTypes = {
 		sex: PropTypes.string,
 		analyzerID: PropTypes.number,
 		analyzerName: PropTypes.string,
-		ageBracket: PropTypes.string,
-		rangeLabel: PropTypes.string,
+		ageBracketID: PropTypes.number,
+		ageBracketLabel: PropTypes.string,
+		rangeClassID: PropTypes.number,
+		rangeClassLabel: PropTypes.string,
 		displayValue: PropTypes.string,
 		rangeLow: PropTypes.string,
 		rangeHigh: PropTypes.string,

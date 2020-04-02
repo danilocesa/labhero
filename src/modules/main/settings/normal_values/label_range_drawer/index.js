@@ -163,7 +163,7 @@ class LabelRangeDrawer extends React.Component{
 		return(
 			<div>
 				<Drawer 
-					title={`${moduleTitle} - SETTINGS - LABEL OF RANGE`.toUpperCase()}
+					title={`${moduleTitle} - SETTINGS - RANGE CLASS LABEL`.toUpperCase()}
 					width="1000"
 					placement="right"
 					closable
@@ -222,6 +222,8 @@ class LabelRangeDrawer extends React.Component{
 					visible={isDisplayUpdateForm} 
 					onClose={this.onExitUpdateForm} 
 					onSubmit={this.onSubmittingUpdateForm}
+					selectedSectionName={selectedSectionName}
+					selectedSectionId={selectedSectionId}
 					rangeClass={selectedRangeClass}
 					wrappedComponentRef={(inst) => this.updateForm = inst}
 				/>
@@ -234,7 +236,7 @@ LabelRangeDrawer.propTypes = {
 	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	sectionList: PropTypes.array.isRequired,
-	clearSection: PropTypes.func.isRequired
+	clearSection: PropTypes.func.isRequired,
 };
 
 export default LabelRangeDrawer;
