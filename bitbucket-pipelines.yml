@@ -21,33 +21,34 @@
 
 # Reference: https://medium.com/google-cloud/how-to-deploy-a-react-application-to-google-cloud-using-bitbucket-pipelines-8bc59d78d3af
 image: node:10.15.1
+
 options:
-  max-time: 10
+ max-time: 10
 pipelines:
   tags:                         
     release-*: 
       - step:
-        name: Build Application
-        caches:
-          - node
-        script:
-          - npm install
-          - npm run build
-        artifacts:
-          - dist/** # change this to your build directory
-          # Set a couple variables for readability
-          - SDK_VERSION=197.0.0
-          - SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz
-          # Install Google Cloud SDK
-          - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${SDK_FILENAME}
-          - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
-          - /tmp/google-cloud-sdk/install.sh -q
-          - source /tmp/google-cloud-sdk/path.bash.inc
-          - gcloud -v
-          # Authenticating with the service account key file
-          - echo $GCLOUD_API_KEYFILE | base64 - decode - ignore-garbage > ./gcloud-api-key.json
-          - gcloud auth activate-service-account - key-file gcloud-api-key.json
-          # Linking to the Google Cloud project
-          - gcloud config set project $GCLOUD_PROJECT
-          # Deploying the application
-          - gcloud app deploy
+          name: Build Application
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+          artifacts:
+            - dist/** # change this to your build directory
+            # Set a couple variables for readability
+            - SDK_VERSION=197.0.0
+            - SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz
+            # Install Google Cloud SDK
+            - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${SDK_FILENAME}
+            - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
+            - /tmp/google-cloud-sdk/install.sh -q
+            - source /tmp/google-cloud-sdk/path.bash.inc
+            - gcloud -v
+            # Authenticating with the service account key file
+            - echo $GCLOUD_API_KEYFILE | base64 - decode - ignore-garbage > ./gcloud-api-key.json
+            - gcloud auth activate-service-account - key-file gcloud-api-key.json
+            # Linking to the Google Cloud project
+            - gcloud config set project $GCLOUD_PROJECT
+            # Deploying the application
+            - gcloud app deploy
