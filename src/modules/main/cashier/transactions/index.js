@@ -91,7 +91,7 @@ class Transactions extends React.Component {
 
   RedirectToReceipt(){
     // @ts-ignore
-    window.location = "/cashier/receipt";
+    window.location = "/cashier/summary";
   }
 
   render() {

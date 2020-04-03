@@ -1,11 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import view_all from "./view_all.png";
-// import view_request from "./view_request.png";
-// import search_category from "./search_category.png";
 
-import { CAviewallIcon,CAviewrequestIcon,CAsearchcategoryIcon } from 'images';
-
+import { CAviewallIcon, CAviewrequestIcon, CAsearchcategoryIcon } from "images";
 
 import { Layout, Menu, Card, Row, Col, Modal, Button, Input } from "antd";
 import "./cashier.css";
@@ -66,39 +62,43 @@ class Cashier extends React.Component {
           </div>
           <Row>
             <Col style={{ paddingLeft: 15, paddingRight: 15 }} span={8}>
-              <Card className="cashier-item-card">
+              <Card
+                className="cashier-item-card"
+                onClick={this.toggleFirstModal}
+              >
                 <img
                   style={{ height: 45, width: "auto" }}
-                  onClick={this.toggleFirstModal}
                   className="view_request"
                   src={CAviewrequestIcon}
                   alt="view_request"
                 />
                 <br></br>
                 <br></br>
-                <span>SEARCH <br></br> REQUEST ID</span>
+                <span>
+                  SEARCH <br></br> REQUEST ID
+                </span>
               </Card>
             </Col>
             <Col style={{ paddingLeft: 15, paddingRight: 15 }} span={8}>
-              <Card className="cashier-item-card">
-                <Link to="/cashier/transactions">
+              <Link to="/cashier/transactions">
+                <Card className="cashier-item-card">
                   <img
                     style={{ height: 45, width: "auto" }}
                     className="view_all"
                     src={CAviewallIcon}
                     alt="view_all"
                   />
-                </Link>
-                <br></br>
-                <br></br>
-                <span>
-                  VIEW ALL <br></br> TRANSACTIONS
-                </span>
-              </Card>
+                  <br></br>
+                  <br></br>
+                  <span>
+                    VIEW ALL <br></br> TRANSACTIONS
+                  </span>
+                </Card>
+              </Link>
             </Col>
             <Col style={{ paddingLeft: 15, paddingRight: 15 }} span={8}>
-              <Card className="cashier-item-card">
-                <Link to="/cashier/categories">
+              <Link to="/cashier/categories">
+                <Card className="cashier-item-card">
                   <img
                     style={{ height: 45, width: "auto" }}
                     className="search_category"
@@ -107,9 +107,11 @@ class Cashier extends React.Component {
                   />
                   <br></br>
                   <br></br>
-                  <span>SEARCH <br></br> CATEGORY</span>
-                </Link>
-              </Card>
+                  <span>
+                    SEARCH <br></br> CATEGORY
+                  </span>
+                </Card>
+              </Link>
             </Col>
           </Row>
         </div>
