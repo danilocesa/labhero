@@ -56,7 +56,7 @@ export const EITC_OPTION = 'op';
 export const EITC_TEXT_AREA = 'ta';
 
 // Table settings
-export const globalTablePageSize = 10;
+export const globalTablePageSize = 15;
 export const globalTableSize = 'default';
 export const globalTableYScroll = 260;
 

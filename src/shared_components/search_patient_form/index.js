@@ -113,7 +113,7 @@ class SearchPatientForm extends React.Component {
 						</Form.Item>
 					</Col>
 					{/* Or */}
-					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 10 }}>
 						OR
 					</Col>
 					{/* Patient Name */}
@@ -138,14 +138,18 @@ class SearchPatientForm extends React.Component {
 						(
 							<Col xs={24} sm={24} md={6} lg={4}>
 								<Form.Item label={fieldLabels.requestDate}>
-									<DatePicker defaultValue={moment()} format={dateFormat} />
+									<DatePicker 
+										defaultValue={moment()} 
+										format={dateFormat} 
+										style={{ width: '100%' }}
+									/>
 								</Form.Item>
 							</Col>
 						) : null 
 					}
 					{/* Buttons */}
 					<Col xs={24} sm={24} md={6} lg={6}>
-						<Form.Item style={{ marginTop: 20 }}>
+						<Form.Item>
 							<Row>
 								<Button 
 									className="form-button"

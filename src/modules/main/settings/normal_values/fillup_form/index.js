@@ -265,7 +265,7 @@ class FillupForm extends React.Component {
 								<Col span={6}>
 									<Form.Item label={fieldLabels.low}>
 										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<InputNumber maxLength={5} onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
+											<InputNumber maxLength={8} onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>
@@ -286,7 +286,7 @@ class FillupForm extends React.Component {
 												{ validator: this.validateRangeHigh }
 											]
 										})(
-											<InputNumber maxLength={5} style={{ width: '100%' }} />
+											<InputNumber maxLength={8} style={{ width: '100%' }} />
 										)}
 									</Form.Item>
 								</Col>

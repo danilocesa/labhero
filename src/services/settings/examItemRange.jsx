@@ -19,7 +19,7 @@ export async function createExamItemRage(payload) {
 	}
 	catch(error) {
 		if(error.response.status === 400 && error.response.data.examItemID)
-			Message.error('Exam Item Range with same Gender and Analyzer already exist');
+			Message.error('Normal values already exist');
 		else
 			Message.error();
 	}
