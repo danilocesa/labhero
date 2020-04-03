@@ -16,3 +16,6 @@ export { default as BBdonorRegIcon } from './donor_registration.png';
 export { default as BBaddBloodReqIcon } from './add_blood_request.png';
 export { default as BBrecipientIcon } from './recipient.png';
 export { default as BBsearchDonorIcon } from './search_donor.png';
+export { default as CAviewallIcon } from './view_all.png';
+export { default as CAviewrequestIcon } from './view_request.png';
+export { default as CAsearchcategoryIcon } from './search_category.png';

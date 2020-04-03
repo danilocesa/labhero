@@ -1,8 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import view_all from "./view_all.png";
-import view_request from "./view_request.png";
-import search_category from "./search_category.png";
+// import view_all from "./view_all.png";
+// import view_request from "./view_request.png";
+// import search_category from "./search_category.png";
+
+import { CAviewallIcon,CAviewrequestIcon,CAsearchcategoryIcon } from 'images';
+
+
 import { Layout, Menu, Card, Row, Col, Modal, Button, Input } from "antd";
 import "./cashier.css";
 // const { SubMenu } = Menu;
@@ -67,7 +71,7 @@ class Cashier extends React.Component {
                   style={{ height: 45, width: "auto" }}
                   onClick={this.toggleFirstModal}
                   className="view_request"
-                  src={view_request}
+                  src={CAviewrequestIcon}
                   alt="view_request"
                 />
                 <br></br>
@@ -81,7 +85,7 @@ class Cashier extends React.Component {
                   <img
                     style={{ height: 45, width: "auto" }}
                     className="view_all"
-                    src={view_all}
+                    src={CAviewallIcon}
                     alt="view_all"
                   />
                 </Link>
@@ -98,7 +102,7 @@ class Cashier extends React.Component {
                   <img
                     style={{ height: 45, width: "auto" }}
                     className="search_category"
-                    src={search_category}
+                    src={CAsearchcategoryIcon}
                     alt="search_category"
                   />
                   <br></br>
