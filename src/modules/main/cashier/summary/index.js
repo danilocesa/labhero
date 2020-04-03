@@ -19,13 +19,13 @@ const columns = [
     title: "Item",
     dataIndex: "item",
     key: "name",
-    width: 150
+    width: 250
   },
   {
     title: "Particulars",
     dataIndex: "particulars",
     key: "particulars",
-    width: 150
+    width: 300
   },
   {
     title: "Quantity",
@@ -117,24 +117,19 @@ class Summary extends React.Component {
                 columns={columns}
                 dataSource={data}
                 pagination={false}
-                scroll={{ y: 240 }}
+                scroll={{ y: 220 }}
               />
             </div>
-            <div>
+            <div className = "cashier-summary-total">
               <h1 className="h1">TOTAL: 3,500.00</h1>
             </div>
           </Col>
           <Col span={24}>
             <div className="button-below">
-              {/* <Link to="/cashier/receipt">
-                <Button className="ant-btn-round" type="primary">
-                  Print
-                </Button>
-              </Link> */}
               <Button className="ant-btn-round" type="primary">
                   Print
                 </Button>
-              <Link to="/cashier">
+              <Link to="/cashier/categories">
                 <Button className="ant-btn-round" type="primary">
                   Back
                 </Button>

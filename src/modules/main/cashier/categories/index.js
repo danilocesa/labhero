@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TreeSelect, Col, Card, Table, Row, Button } from "antd";
+import { TreeSelect, Col, Card, Table, Row, Button, Input,InputNumber } from "antd";
 import "./categories.css";
+
 const { TreeNode } = TreeSelect;
+
+const { Search } = Input;
 
 const columns = [
   {
@@ -39,7 +42,7 @@ const data = [
     key: "1",
     item: "CBC",
     particulars: "Description",
-    quantity: "1",
+    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
     amount: "P500.00",
     delete: "X"
   },
@@ -48,7 +51,7 @@ const data = [
     key: "2",
     item: "Potassium",
     particulars: "Description",
-    quantity: "1",
+    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
     amount: "P500.00",
     delete: "X"
   },
@@ -56,7 +59,7 @@ const data = [
     key: "3",
     item: "Anti Biotic",
     particulars: "Description",
-    quantity: "1",
+    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
     amount: "P500.00",
     delete: "X"
   }
@@ -85,14 +88,15 @@ class Categories extends React.Component {
           className="cashier-category-select-category"
           style={{ width: 400 }}
         >
-          <Row>
+          <Row >
             <div className="selection">
               <Col span={24}>
                 <TreeSelect
                   showSearch
                   style={{
-                    width: "100%",
-                    marginBottom: 10
+                    width: 250,
+                    marginBottom: 10,
+                    marginLeft: 10
                   }}
                   value={this.state.value}
                   dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
@@ -149,11 +153,16 @@ class Categories extends React.Component {
             <div className="cashier-categories-card-left">
               <Col span={12}>
                 <Card
-                  title="SEARCH"
                   size="small"
                   bordered={true}
                   style={{ alignItems: "center" }}
                 >
+                  <Search
+                    placeholder="input search text"
+                    onSearch={value => console.log(value)}
+                    style={{ width: 250, marginBottom: 10}}
+                  />
+                  <br></br>
                   <Button className="ant-btn-round" type="primary">
                     Panel
                   </Button>
@@ -171,11 +180,16 @@ class Categories extends React.Component {
                   </Button>
                 </Card>
                 <Card
-                  title="SEARCH"
                   size="small"
                   bordered={true}
                   style={{ alignItems: "center" }}
                 >
+                  <Search
+                    placeholder="input search text"
+                    onSearch={value => console.log(value)}
+                    style={{ width: 250, marginBottom: 10}}
+                  />
+                  <br></br>
                   <Button className="ant-btn-round" type="primary">
                     EXAM 1
                   </Button>

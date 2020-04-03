@@ -5,7 +5,6 @@ import { CAviewallIcon, CAviewrequestIcon, CAsearchcategoryIcon } from "images";
 
 import { Layout, Menu, Card, Row, Col, Modal, Button, Input } from "antd";
 import "./cashier.css";
-// const { SubMenu } = Menu;
 
 class Cashier extends React.Component {
   constructor(props) {
