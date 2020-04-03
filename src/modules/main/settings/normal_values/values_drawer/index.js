@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Input, Button, Row, Col, Icon, Form } from 'antd';
 import Message from 'shared_components/message';
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import { 
 	createExamItemRage, 
 	getAllItemRanges, 

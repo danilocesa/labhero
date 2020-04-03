@@ -1,7 +1,8 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Select, Typography, Button, Input, Icon, Drawer } from 'antd';
+import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
 import { getUserAccountsAPI } from 'services/settings/userAccount';
@@ -22,8 +23,6 @@ import UserAccountForm from '../user_account_form';
 import './usertable.css';
 
 const { Search } = Input;
-const { Text } = Typography;
-const { Option } = Select;
 const columns = [
 	{
 		title: tableHeaders.userID,
@@ -190,18 +189,7 @@ class UserTable extends React.Component {
 								<Icon type="plus" />
 								{ addUserButton }
 							</Button>
-							<Text>Display per page</Text>
-							<Select 
-								size="small"
-								defaultValue={tablePageSize} 
-								style={{ marginLeft: 10 }} 
-								onChange={this.handleSelectChange}
-							>
-								<Option value="5">5</Option>
-								<Option value="10">10</Option>
-								<Option value="15">15</Option>
-								<Option value="20">20</Option>
-							</Select>
+							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
 				</div>

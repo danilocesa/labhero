@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 import { getAllRangeClass, createRangeClass, updateRangeClass } from 'services/settings/ExamItemRangeClass';
 import LabelRangeTable from './table';
@@ -58,7 +58,7 @@ class LabelRangeDrawer extends React.Component{
 	}
 
 	onExitUpdateForm = () => {
-		this.setState({ isDisplayUpdateForm: false });
+		this.setState({ isDisplayUpdateForm: false, selectedRangeClass: {} });
 	}
 	
 	onSubmittingAddForm = async (fieldValues) => {

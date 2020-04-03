@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Button, Icon, Input } from 'antd';
 
 // CUSTOM
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 import PageTitle from 'shared_components/page_title';
 import fetchSpecimens from 'services/settings/specimen';
