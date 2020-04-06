@@ -16,6 +16,8 @@ import {
 } from '../settings';
 import DropDown from '../../shared/dropdown';
 
+import './index.css';
+
 class LabelRangeDrawer extends React.Component{
 	constructor(props) {
 		super(props);

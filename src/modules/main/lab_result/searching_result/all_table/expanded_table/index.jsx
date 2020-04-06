@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 import { globalTableSize } from 'global_config/constant-global';
 
+import './index.css';
+
 const columns = [
 	{
 		title: 'Section',
@@ -37,13 +39,14 @@ class ExpandedTable extends React.Component {
 
 		return (
 			<Table
+				className="lab-result-expanded-table"
 		    columns={columns}
 		    dataSource={contents}
 		    pagination={false}
 				size={globalTableSize}
 				rowKey={record => `${record.sampleSpecimenID}-${record.specimenID}`}
         onRow={record => {
-          return { onClick: () => { 
+          return { onDoubleClick: () => { 
 						onClickTableRow({ 
 							examDetails: record, 
 							patientInfo: { ...restProps }

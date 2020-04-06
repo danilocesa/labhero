@@ -1,4 +1,5 @@
-.samplePatientID {
-  cursor:pointer;
-  color:#1E90FF;
+
+
+.phlebo-result-table .ant-table-body tr {
+  cursor: pointer;
 }

@@ -4,6 +4,8 @@ import { Row, Col, Table } from 'antd';
 import Pager from 'shared_components/search_pager';
 import { globalTablePageSize } from 'global_config/constant-global';
 
+import './index.css';
+
 const columns = [
 	{
 		title: 'REQUEST DATE', 
@@ -94,17 +96,16 @@ class SectionTable extends React.Component {
 					</Col>
 				</Row>
 				<Table
-					className="test-results-table"
+					className="lab-result-section-table"
 					columns={columns}
 					pagination={{ pageSize }} 
 					dataSource={labResults}
 					rowKey={record => record.requestID}
-					size="small"
 					scroll={{ x: 3000, y: 300 }}
 					onRow={record => {
 						const { contents, ...restProps } = record;
-					
-						return { onClick: () => { 
+						
+						return { onDoubleClick: () => { 
 							onClickTableRow({
 								patientInfo: { ...restProps },
 								examDetails: contents[0]

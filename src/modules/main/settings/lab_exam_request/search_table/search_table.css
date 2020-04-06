@@ -1,9 +1,4 @@
-/* .settings-exam-item-table{
-  margin-top: 15px;
-} */
 
-
-/* .settings-exam-item-table .user-table-options {
-  text-align: right;
-} */
-
+.ser-search-table .ant-table-body tr {
+  cursor: pointer;
+}

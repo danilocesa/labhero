@@ -46,7 +46,6 @@ class Sider extends React.Component {
 		}
 		// sessionStorage.setItem(SELECTED_SIDER_KEY, key);
 	}
-
 	
 
   render() {
@@ -111,12 +110,12 @@ class Sider extends React.Component {
 							<Menu.Item key={URI.editLabResult.key}>
 								<Link to={URI.editLabResult.link}>
 									<Icon component={SearchIcon} />
-									<span>EDIT LAB RESULT</span>
+									<span>LABORATORY RESULT</span>
 								</Link>
 							</Menu.Item>
 						)
 					}
-					{
+					{/* {
 						process.env.REACT_APP_DISPLAY_PRINT_RESULT === '1' && (
 							<Menu.Item key={URI.printLabResult.key}>
 								<Link to={URI.printLabResult.link}>
@@ -125,7 +124,7 @@ class Sider extends React.Component {
 								</Link>
 							</Menu.Item>
 						)
-					}
+					} */}
 					{
 						process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
 							<Menu.Item key={URI.searchPatient.key}>
