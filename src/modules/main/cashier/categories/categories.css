@@ -22,7 +22,7 @@
 
 .cashier-categories-card-left .ant-card {
     margin-top: 10px;
-    height: 100px;
+    height: 130!important;
    
   }
 
@@ -46,7 +46,7 @@
   > .ant-card-head
   > .ant-card-head-wrapper
   > .ant-card-head-title {
-      text-align: right;
+      text-align: Left;
 }
 
 .cashier-category-form .cashier-categories-card {
