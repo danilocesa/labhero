@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Select } from 'antd';
+import { globalTablePageSize } from 'global_config/constant-global';
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -14,7 +15,7 @@ class TablePager extends React.Component {
 				<Text>Display per page</Text>
 				<Select 
 					size="small" 
-					defaultValue="10" 
+					defaultValue={globalTablePageSize}
 					style={{ marginLeft: 10 }}
 					onChange={handleChange}
 				>

@@ -1,10 +1,15 @@
-.user-table .panel-table-options {
+.panel-table-options {
 		margin-bottom: 15px;
 		margin-top: 50px;
 }
 
-.settings-panel-table .ant-table-small > .ant-table-content > .ant-table-body {
+.settings-panel-exam-table .ant-table-small > .ant-table-content > .ant-table-body {
 	margin: 0;
+}
+
+
+.setting-panel-exam-table .ant-table-body tr {
+  cursor: pointer;
 }
 
 .panel-table-search-input input {

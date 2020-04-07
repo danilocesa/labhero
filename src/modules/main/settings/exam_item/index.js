@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Icon, Row, Col, Input } from 'antd';
 
 // CUSTOM
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
@@ -59,11 +59,19 @@ class ExamItems extends React.Component {
 			value: specimen.specimenID
 		}));
 
+		let selectedSpecimenId = null;
+		let selectedSpecimenName = null;
+
+		if(specimens.length > 0) {
+			selectedSpecimenId = specimens[0].specimenID ? specimens[0].specimenID : null;
+			selectedSpecimenName = specimens[0].specimenName ? specimens[0].specimenName : null;
+		}
+
 		this.setState({ 
 			ddSections, 
 			ddSpecimens, 
-			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
-			selectedSpecimenName: specimens[0].specimenName ? specimens[0].specimenName : null,
+			selectedSpecimenId,
+			selectedSpecimenName,
 			isInitializing: false, 
 		});
 	}

@@ -9,7 +9,7 @@ import { Form, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 import axiosCall from 'services/axiosCall';
 import CustomMessage from 'shared_components/message';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
+import { RegexInput } from 'shared_components/pattern_input';
 import { apiUrlPhleboSearchPatient } from 'global_config/constant-global';
 
 // CSS
@@ -95,12 +95,13 @@ class SearchPatientHeaderForm extends React.Component {
 				<Row gutter={12} type="flex" justify="center">
 					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label="PATIENT ID">
-							<AlphaNumInput 
+							<RegexInput 
 								name="patientID" 
 								value={patientID} 
 								onChange={this.handleInputChange}
 								onFocus={this.handleFocus}
 								maxLength={20}
+								regex={/[a-zA-Z0-9 -]/} 
 							/> 
 						</Form.Item>
 					</Col>
@@ -110,13 +111,13 @@ class SearchPatientHeaderForm extends React.Component {
 					<Col xs={24} sm={24} md={12} lg={7}>
 						<Form.Item label="PATIENT NAME">
 							<RegexInput 
-								regex={/[A-z0-9 -]/} 
 								name="patientName" 
 								value={patientName} 
 								onChange={this.handleInputChange} 
 								onFocus={this.handleFocus}
 								placeholder="Lastname,Firstname"
 								maxLength={100}
+								regex={/[A-Za-z0-9, -]/} 
 							/>
 						</Form.Item>
 					</Col>

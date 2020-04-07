@@ -10,13 +10,18 @@ import {
 	MODULE_PROFILE
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
-import Tracker from '../../tracker';
+import Tracker from 'modules/main/lab_request/tracker';
+import { 
+	moduleTitles, 
+	requestTypes, 
+	requestLinks 
+} from 'modules/main/settings/lab_exam_request/settings';
 import SearchForm from './form';
 import TableHeader from './table_header';
 import Table from './table';
 import ButtonLink from './link';
 import { tablePageSize } from '../settings';
-import { moduleTitles, requestTypes, requestLinks } from '../../../settings/lab_exam_request/settings';
+
 
 class SearchStep extends React.Component {
 	state = { 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Input } from 'antd';
 
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';

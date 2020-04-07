@@ -29,7 +29,7 @@ class EditLabResult extends React.Component {
 		return (
 			<div>
 				<LabResult 
-					pageTitle="EDIT LAB RESULT"
+					pageTitle="LABORATORY RESULT"
 					onClickTableRow={this.onClickTableRow} 
 				/>
 				<Drawer

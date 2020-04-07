@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
 import Message from 'shared_components/message';
-import TablePager from 'shared_components/search_pager/pager';
+import TablePager from 'shared_components/table_pager';
 import { fetchAgeBracketList, createAgeBracket, updateAgeBracket } from 'services/settings/ageBracket';
 import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
 import DropDown from '../../shared/dropdown';
@@ -16,6 +16,8 @@ import {
 	formMode, 
 	messagePrompts 
 } from '../settings';
+
+import './index.css';
 
 class AgeBracketDrawer extends React.Component{
 	constructor(props) {
@@ -62,7 +64,10 @@ class AgeBracketDrawer extends React.Component{
 	}
 
 	onExitUpdateForm = () => {
-		this.setState({ isDisplayUpdateForm: false });
+		this.setState({ 
+			isDisplayUpdateForm: false,
+			selectedAgeBracket: {} 
+		});
 	}
 	
 	onSubmittingAddForm = async (fieldValues) => {

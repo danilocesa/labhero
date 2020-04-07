@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from 'antd';
-import Pager from './pager';
+import Pager from 'shared_components/table_pager';
 
 // CSS
 import './table_header.css';

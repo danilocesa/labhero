@@ -20,7 +20,7 @@ class LabelRangeTable extends React.Component {
     ];
 
 		return (
-			<div style={{ marginTop: 20 }} className="settings-age-bracket-table">
+			<div style={{ marginTop: 20 }} className="settings-class-range-table">
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
 						size={tableSize}

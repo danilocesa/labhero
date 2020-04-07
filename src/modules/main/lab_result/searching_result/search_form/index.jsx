@@ -97,7 +97,7 @@ class SearchForm extends React.Component {
 										initialValue: ''
 									})(
 										<RegexInput 
-											regex={/[A-z0-9 -]/} 
+											regex={/[A-Za-z0-9 -]/} 
 											allowClear 
 											maxLength={100} 
 										/>

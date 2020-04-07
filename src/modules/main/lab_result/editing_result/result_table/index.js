@@ -57,7 +57,12 @@ class EditableTable extends React.Component {
       {
         title: 'STATUS',
         dataIndex: 'status',
-        width: 120,
+				width: 120,
+				render: (text) => (
+					<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
+						{text}
+					</div>
+				),
       },
     ];
   }

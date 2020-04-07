@@ -6,6 +6,10 @@
   text-align: right;
 }
 
+.settings-exam-item-table .ant-table-body tr {
+  cursor: pointer;
+}
+
 .exam-item-search-input input {
 	text-transform: uppercase;
 }

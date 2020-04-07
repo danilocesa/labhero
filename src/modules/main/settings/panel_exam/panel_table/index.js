@@ -2,11 +2,12 @@
 /* eslint-disable func-names */
 // LIBRARY
 import React from 'react';
-import { Row, Col, Input, Table, Drawer, Typography, Icon, Select, Button } from 'antd';
+import { Row, Col, Input, Table, Drawer, Icon, Button } from 'antd';
 
 // CUSTOM MODULES
 // import HttpCodeMessage from 'shared_components/message_http_status';
 import { panelListAPI } from 'services/settings/panelExamRequesting';	
+import TablePager from 'shared_components/table_pager';
 import PanelForm from '../panel_form';
 
 import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from '../settings';
@@ -15,8 +16,6 @@ import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabe
 import './paneltable.css';
 
 // CONSTANTS
-const { Text } = Typography;
-const { Option } = Select;
 const { Search } = Input;
 
 const columns = [
@@ -153,6 +152,7 @@ class PanelTable extends React.Component {
 	}
 
 	handleSelectChange = (value) => {
+		console.log(value);
 		const {pagination} = this.state; 
 		// eslint-disable-next-line radix
 		pagination.pageSize = parseInt(value);
@@ -161,7 +161,7 @@ class PanelTable extends React.Component {
 
 	render() {
 		return(
-			<div className="user-table">
+			<div>
 				<div className="panel-table-options">
 					<Row>
 						<Col span={12}>
@@ -183,23 +183,12 @@ class PanelTable extends React.Component {
 								<Icon type="plus" />
 								{drawerAddTitle}
 							</Button>
-							<Text>Display per page</Text>
-							<Select 
-								size="small" 
-								defaultValue={tablePageSize} 
-								style={{ marginLeft: 10 }} 
-								onChange={this.handleSelectChange}
-							>
-								<Option value="5">5</Option>
-								<Option value="10">10</Option>
-								<Option value="15">15</Option>
-								<Option value="20">20</Option>
-							</Select>
+							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
 				</div>
 				<Table 
-					className="settings-panel-table"
+					className="settings-panel-exam-table"
 					size={tableSize}
 					dataSource={this.state.panelListState}
 					pagination={this.state.pagination}

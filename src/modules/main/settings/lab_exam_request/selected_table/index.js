@@ -74,13 +74,13 @@ class SelectedTable extends React.Component {
 					initialValue: record.examRequestItemPrintable
 				})
 			},
-			{ 
-				title: 'Sort',
-				width: 70,
-				render: (text, record, index) => {
-					return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center', width: 50 }} />;
-				}
-			},
+			// { 
+			// 	title: 'Sort',
+			// 	width: 70,
+			// 	render: (text, record, index) => {
+			// 		return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center', width: 50 }} />;
+			// 	}
+			// },
 		];
 		
 		this.components = {
