@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { CAviewallIcon, CAviewrequestIcon, CAsearchcategoryIcon } from "images";
-
 import { Layout, Menu, Card, Row, Col, Modal, Button, Input } from "antd";
 import "./cashier.css";
+import { NumberInput } from "shared_components/pattern_input";
 
 class Cashier extends React.Component {
   constructor(props) {
@@ -123,7 +122,8 @@ class Cashier extends React.Component {
             onOk={this.RedirectToReceipt}
             onCancel={this.toggleFirstModal}
           >
-            <Input
+            <NumberInput
+              maxLength={20}
               style={{ marginBottom: 20, width: 320 }}
               placeholder="Request ID"
             />
