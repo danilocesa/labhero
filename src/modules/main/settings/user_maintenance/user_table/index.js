@@ -169,7 +169,7 @@ class UserTable extends React.Component {
 
 		return(
 			<div>
-				<div className="user-table-action">
+				<div className="settings-user-table-action">
 					<Row>
 						<Col span={12}>
 							<Search
@@ -193,7 +193,7 @@ class UserTable extends React.Component {
 						</Col>
 					</Row>
 				</div>
-				<div className="user-table">
+				<div className="settings-user-table">
 					<Table 
 						loading={loading}
 						size={tableSize}

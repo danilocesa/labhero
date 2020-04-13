@@ -59,11 +59,19 @@ class ExamItems extends React.Component {
 			value: specimen.specimenID
 		}));
 
+		let selectedSpecimenId = null;
+		let selectedSpecimenName = null;
+
+		if(specimens.length > 0) {
+			selectedSpecimenId = specimens[0].specimenID ? specimens[0].specimenID : null;
+			selectedSpecimenName = specimens[0].specimenName ? specimens[0].specimenName : null;
+		}
+
 		this.setState({ 
 			ddSections, 
 			ddSpecimens, 
-			selectedSpecimenId: specimens[0].specimenID ? specimens[0].specimenID : null,
-			selectedSpecimenName: specimens[0].specimenName ? specimens[0].specimenName : null,
+			selectedSpecimenId,
+			selectedSpecimenName,
 			isInitializing: false, 
 		});
 	}

@@ -161,7 +161,7 @@ class PanelTable extends React.Component {
 
 	render() {
 		return(
-			<div className="user-table">
+			<div>
 				<div className="panel-table-options">
 					<Row>
 						<Col span={12}>
@@ -188,7 +188,7 @@ class PanelTable extends React.Component {
 					</Row>
 				</div>
 				<Table 
-					className="settings-panel-table"
+					className="settings-panel-exam-table"
 					size={tableSize}
 					dataSource={this.state.panelListState}
 					pagination={this.state.pagination}

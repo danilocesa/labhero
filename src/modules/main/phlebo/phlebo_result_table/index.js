@@ -109,6 +109,7 @@ class SearchPatientTable extends React.Component {
 			<AntSpin spinning={loading} tip="Loading...">
 				<div>
 					<AntTable 
+						className="phlebo-result-table"
 						pagination={{pageSize}} 
 						size={globalTableSize}
 						// @ts-ignore

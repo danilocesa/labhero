@@ -17,6 +17,8 @@ import {
 	messagePrompts 
 } from '../settings';
 
+import './index.css';
+
 class AgeBracketDrawer extends React.Component{
 	constructor(props) {
 		super(props);

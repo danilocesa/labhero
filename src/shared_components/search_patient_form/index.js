@@ -124,7 +124,7 @@ class SearchPatientForm extends React.Component {
 								validateTrigger: 'onBlur'
 							})(
 								<RegexInput 
-									regex={/[A-z0-9 -,]/} 
+									regex={/[A-Za-z0-9, -]/} 
 									name="patientName" 
 									maxLength={100}
 									onFocus={this.handleFocus}
