@@ -1,8 +1,23 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Input, Col, Card, Table, Row, DatePicker, Select, Button, AutoComplete } from "antd";
+import {
+  Input,
+  Col,
+  Card,
+  Table,
+  Row,
+  DatePicker,
+  Select,
+  Button,
+  AutoComplete
+} from "antd";
 import moment from "moment";
 import "./summary.css";
+import {
+  RegexInput,
+  AlphaNumInput,
+  NumberInput
+} from "shared_components/pattern_input";
 
 const dateFormat = "YYYY/MM/DD";
 const monthFormat = "YYYY/MM";
@@ -73,7 +88,11 @@ class Summary extends React.Component {
               <label className="label" title="PATIENT NAME">
                 PATIENT NAME
               </label>
-              <Input placeholder="LAST NAME, FIRST NAME M.I." />
+              <RegexInput
+                regex={/[A-z0-9 -]/}
+                placeholder="LAST NAME, FIRST NAME M.I."
+                maxLength={100}
+              />
             </div>
           </Col>
           <Col span={8}>
@@ -104,7 +123,8 @@ class Summary extends React.Component {
               <label className="label" title="ADDRESS">
                 ADDRESS
               </label>
-              <Input
+              <RegexInput
+                regex={/[A-z0-9 -]/} 
                 style={{ marginLeft: 30, width: 690 }}
                 placeholder="ADDRESS"
               />
@@ -120,15 +140,15 @@ class Summary extends React.Component {
                 scroll={{ y: 220 }}
               />
             </div>
-            <div className = "cashier-summary-total">
+            <div className="cashier-summary-total">
               <h1 className="h1">TOTAL: 3,500.00</h1>
             </div>
           </Col>
           <Col span={24}>
             <div className="button-below">
               <Button className="ant-btn-round" type="primary">
-                  Print
-                </Button>
+                Print
+              </Button>
               <Link to="/cashier/categories">
                 <Button className="ant-btn-round" type="primary">
                   Back
