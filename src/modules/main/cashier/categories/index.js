@@ -1,7 +1,32 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { TreeSelect, Col, Card, Table, Row, Button, Input,InputNumber } from "antd";
+import FirstLevelSearch from './first_level';
+
+
 import "./categories.css";
+
+const categories = [
+  {
+    title: "blood",
+    children: [
+      {
+        type: "red"
+      },
+      {
+        type: "white"
+      }
+    ]
+  },
+  {
+    title: "flesh",
+    children: []
+  },
+  {
+    title: "chuchu",
+    children: []
+  }
+];
 
 const { TreeNode } = TreeSelect;
 
@@ -69,11 +94,20 @@ class Categories extends React.Component {
   state = {
     value: undefined
   };
-
-  onChange = value => {
+  
+  onChange = (value) => {
     console.log(value);
     this.setState({ value });
   };
+
+  test = () => {
+    categories.forEach(category => {
+      if(category.children.length <= 0)
+        console.log(`${category.title} has no children`);
+      else
+        console.log(`${category.title} has children`);
+    });
+  }
 
   render() {
     return (
@@ -84,70 +118,7 @@ class Categories extends React.Component {
         >
           <h4 className="ant-typography">CATEGORIES</h4>
         </div>
-        <div
-          className="cashier-category-select-category"
-          style={{ width: 400 }}
-        >
-          <Row >
-            <div className="selection">
-              <Col span={24}>
-                <TreeSelect
-                  showSearch
-                  style={{
-                    width: 250,
-                    marginBottom: 10,
-                    marginLeft: 10
-                  }}
-                  value={this.state.value}
-                  dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                  placeholder="Search"
-                  allowClear
-                  multiple
-                  treeDefaultExpandAll
-                  onChange={this.onChange}
-                >
-                  <TreeNode value="parent 1" title="parent 1">
-                    <TreeNode value="parent 1-0" title="parent 1-0">
-                      <TreeNode value="leaf1" title="my leaf" />
-                      <TreeNode value="leaf2" title="your leaf" />
-                    </TreeNode>
-                    <TreeNode value="parent 1-1" title="parent 1-1">
-                      <TreeNode
-                        value="sss"
-                        title={<b style={{ color: "#08c" }}>sss</b>}
-                      />
-                    </TreeNode>
-                  </TreeNode>
-                </TreeSelect>
-              </Col>
-            </div>
-          </Row>
-        </div>
-
-        <Row>
-          <div className="cashier-categories-card">
-            <Col span={24}>
-              <Card>
-                <Button className="ant-btn-round" type="primary">
-                  Panel
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Hematology
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Chemistry
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Immunology
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Microscopy
-                </Button>
-              </Card>
-            </Col>
-          </div>
-        </Row>
-
+        <FirstLevelSearch name={columns} data={['test1', 'test2']} />
         <div className="cashier-category-form-card">
           <Row>
             <div className="cashier-categories-card-left">
@@ -163,7 +134,7 @@ class Categories extends React.Component {
                     style={{ width: 250, marginBottom: 10}}
                   />
                   <br></br>
-                  <Button className="ant-btn-round" type="primary">
+                  <Button className="ant-btn-round" type="primary" onClick={this.test}>
                     Panel
                   </Button>
                   <Button className="ant-btn-round" type="primary">

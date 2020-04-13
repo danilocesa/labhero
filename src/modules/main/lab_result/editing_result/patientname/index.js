@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Drawer } from 'antd';
+import { Row, Col, Drawer } from 'antd';
 
 // CUSTOM MODULES
 import Iresults from 'modules/main/iresults';
@@ -12,8 +12,7 @@ import { PrintLogo, IResultsIcon } from 'images';
 // CSS
 import './patientname.css';
 
-// CONSTANTS
-const ButtonGroup = Button.Group;
+
 
 class PatientName extends React.Component {
 	constructor(props) {
@@ -41,7 +40,7 @@ class PatientName extends React.Component {
 
 	
   render() {
-		const { patientInfo } = this.props;
+		const { patientInfo, sampleSpecimenID } = this.props;
 
     return (
 	    <Row>
@@ -51,26 +50,9 @@ class PatientName extends React.Component {
               {`${patientInfo.lastName}, ${patientInfo.givenName}`}
 				    </h1>
 				    <p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
-              Patient ID {patientInfo.patientID}
+              Sample ID: {sampleSpecimenID}
 				    </p>
 			    </div>
-		    </Col>
-		    <Col span={12}>
-			    {/* <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
-				    <Row>
-					    <ButtonGroup>
-						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
-							    <img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
-							      <span style={{ paddingLeft: '7px' }}>iResults</span>
-						    </Button>
-
-						    <Button style={{ width: 120 }}>
-							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
-							    <span style={{ paddingLeft: '7px' }}>Print</span>
-						    </Button>
-					    </ButtonGroup>
-				    </Row>
-			    </div> */}
 		    </Col>
 				{
 					this.state.showIresultInfo ? 
@@ -97,7 +79,8 @@ PatientName.propTypes = {
 		lastName: PropTypes.string,
 		givenName: PropTypes.string,
 		patientID: PropTypes.string,
-	}).isRequired
+	}).isRequired,
+	sampleSpecimenID: PropTypes.string.isRequired
 };
 
 export default PatientName;

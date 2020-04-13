@@ -12,7 +12,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "jest --watchAll",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@antv/data-set": "^0.10.2",
     "@emotion/core": "^10.0.17",
+    "@types/jest": "^25.2.1",
     "antd": "^3.23.3",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.12.1",
@@ -63,6 +64,7 @@
     "react-router-prop-types": "^1.0.4",
     "react-scripts": "2.1.8",
     "react-styleguidist": "^9.0.7",
+    "react-test-renderer": "^16.13.1",
     "redux": "^4.0.1",
     "redux-immutable": "4.0.0",
     "redux-saga": "0.16.2",

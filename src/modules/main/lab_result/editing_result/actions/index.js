@@ -32,9 +32,14 @@ class Actions extends React.Component {
 
 		const labResultFormValues = getLabResultFormValues();
 
-		if(!labResultFormValues.hasError) {
+		console.log('labResultFormValues', labResultFormValues);
+
+		if(!labResultFormValues.form.hasError && !labResultFormValues.remarks.hasError) {
 			this.setState({ isLoading: true }, async () => {
-				await saveLabResult(labResultFormValues.examItems);
+				await saveLabResult({
+					resultValues: labResultFormValues.form.results,
+					remarks: labResultFormValues.remarks.value
+				});
 
 				this.setState({ isLoading: false, isDisplayModal: true });
 
@@ -54,7 +59,6 @@ class Actions extends React.Component {
 					loading={isLoading}
 					className="action-button" 
 					onClick={this.onClickSave}
-					
 				>
 					APPROVE
 				</Button>
@@ -62,7 +66,6 @@ class Actions extends React.Component {
 					loading={isLoading}
 					className="action-button" 
 					onClick={this.onClickSave}
-					
 				>
 					PRINT
 				</Button>
@@ -70,7 +73,6 @@ class Actions extends React.Component {
 					loading={isLoading}
 					className="action-button" 
 					onClick={this.onClickSave}
-					
 				>
 					SAVE
 				</Button>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-continue */
 // LIBRARY
 import React from 'react';
@@ -22,22 +23,23 @@ class EditResult extends React.Component {
 
 		this.state = {
 			isLoading: false,
-			examItems: [],
-			formattedExamItems: []
+			results: {},
+			formatedResults: []
 		};
 
 		this.resultTable = React.createRef();
+		this.resultRemarks = React.createRef();
 	}
 
 	componentDidMount() {
 		const { examDetails } = this.props;
 		this.setState({ isLoading: true }, async () => {
-			const examItems = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
-			const formattedExamItems = this.recontructExamItems(examItems);
+			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
+			const formatedResults = this.recontructExamItems(results.resultValues);
 
 			this.setState({ 
-				examItems, 
-				formattedExamItems,
+				results, 
+				formatedResults,
 				isLoading: false 
 			});
 		});
@@ -49,14 +51,17 @@ class EditResult extends React.Component {
 
 		if(examDetails.sampleSpecimenID !== prevProps.examDetails.sampleSpecimenID) {
 			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ isLoading: true }, async () => {
-				const examItems = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
-				const formattedExamItems = this.recontructExamItems(examItems);
+			this.setState({ 
+				isLoading: true,
+				results: { resultValues: [], remarks: null }
+			}, async () => {
+				const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
+				const formatedResults = this.recontructExamItems(results.resultValues);
 
 				// eslint-disable-next-line react/no-did-update-set-state
 				this.setState({ 
-					examItems, 
-					formattedExamItems,
+					results, 
+					formatedResults,
 					isLoading: false 
 				});
 			});
@@ -64,42 +69,46 @@ class EditResult extends React.Component {
 	}
 
 	getFormValues = () => {
-		// @ts-ignore
-		return this.resultTable.getFormValues();
+		return {
+			form: { ...this.resultTable.getFormValues() },
+			remarks: { ...this.resultRemarks.getRemarks() }
+		};
 	}
 	
 
 	// Private Function
-	recontructExamItems = (examItems) => {
+	recontructExamItems = (results) => {
 		const newExamItems = [];
 		let currentHeader = null;
+		
+		if(results) {
+			// eslint-disable-next-line no-plusplus
+			for (let i = 0; i < results.length; i++) {
+				if(results[i].examRequestItemGroup === '' || results[i].examRequestItemGroup === null) {
+					newExamItems.push(results[i]);
 
-		// eslint-disable-next-line no-plusplus
-		for (let i = 0; i < examItems.length; i++) {
-			if(examItems[i].examRequestItemGroup === '' || examItems[i].examRequestItemGroup === null) {
-				newExamItems.push(examItems[i]);
+					continue;
+				}
+					
+				if(currentHeader !== results[i].examRequestItemGroup) {
+					currentHeader = results[i].examRequestItemGroup;
 
-				continue;
-			}
-				
-			if(currentHeader !== examItems[i].examRequestItemGroup) {
-				currentHeader = examItems[i].examRequestItemGroup;
+					newExamItems.push({ examItemName: currentHeader, examItemID: `header-${currentHeader}` });
+					newExamItems.push({ ...results[i], isChild: true });
 
-				newExamItems.push({ examItemName: currentHeader, examItemID: `header-${currentHeader}` });
-				newExamItems.push({ ...examItems[i], isChild: true });
-
-				continue;
-			}
-				
-			newExamItems.push({ ...examItems[i], isChild: true });
-		};
+					continue;
+				}
+					
+				newExamItems.push({ ...results[i], isChild: true });
+			};
+		}
 
 		return newExamItems;
 	}
 
 	render() {
-		const { examItems, isLoading, formattedExamItems } = this.state;
-		const { patientInfo } = this.props;
+		const { results, isLoading, formatedResults } = this.state;
+		const { patientInfo, examDetails } = this.props;
 
     return (
 	    <Row>
@@ -107,15 +116,21 @@ class EditResult extends React.Component {
 			    <LabRequestDetails patientInfo={patientInfo} />
 		    </Col>
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
-			    <PatientName patientInfo={patientInfo} />
+					<PatientName 
+						patientInfo={patientInfo} 
+						sampleSpecimenID={examDetails.sampleSpecimenID || null}
+					/>
 					<Spin spinning={isLoading}>
 						<TableResults 
 							wrappedComponentRef={(inst) => this.resultTable = inst} 
-							examItems={examItems} 
-							formattedExamItems={formattedExamItems}
+							results={results.resultValues || []} 
+							formatedResults={formatedResults}
 						/>
 					</Spin>
-			    <PatientComment />
+					<PatientComment 
+						wrappedComponentRef={(inst) => this.resultRemarks = inst} 
+						remarks={results.remarks || null} 
+					/>
 			    <Actions getLabResultFormValues={this.getFormValues} />
 		    </Col>
 	    </Row>

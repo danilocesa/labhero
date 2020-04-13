@@ -14,19 +14,19 @@
 }
 
 .main-title {
-  font-size: 11px;
-  color: #aaa8a8;
+  font-size: 14px;
+  color: #040404;
   font-weight: bold;
 }
 
 .info-item {
   line-height: 30px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .info-title {
   font-weight: bolder;
-  font-size: 14px;
+  font-size: 13px;
   /* padding: 10px; */
 }
 /* 
