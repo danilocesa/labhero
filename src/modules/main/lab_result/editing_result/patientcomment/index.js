@@ -15,10 +15,6 @@ class PatientComment extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log('comment unmount');
-  }
-
   getRemarks = () => {
 		const { form } = this.props;
     let remarks = {};

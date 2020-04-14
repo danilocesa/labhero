@@ -14,7 +14,7 @@
 }
 
 .main-title {
-  font-size: 14px;
+  font-size: 15px;
   color: #040404;
   font-weight: bold;
 }
@@ -29,13 +29,13 @@
   font-size: 13px;
   /* padding: 10px; */
 }
+
 /* 
 .info-item-text {
   padding: 10px;
 } */
 
-
 .patient-info-shared {
   background-color: #e2e2e2;
-  padding:5px;
+  padding: 5px 15px;
 }

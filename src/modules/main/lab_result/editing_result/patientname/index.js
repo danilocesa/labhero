@@ -1,18 +1,13 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Drawer } from 'antd';
-
-// CUSTOM MODULES
+import { Row, Col, Drawer, Button } from 'antd';
+import { PrintLogo, IResultsIcon } from 'images';
 import Iresults from 'modules/main/iresults';
 
-// IMAGES
-import { PrintLogo, IResultsIcon } from 'images';
-
-// CSS
 import './patientname.css';
 
-
+const ButtonGroup = Button.Group;
 
 class PatientName extends React.Component {
 	constructor(props) {
@@ -54,6 +49,23 @@ class PatientName extends React.Component {
 				    </p>
 			    </div>
 		    </Col>
+				<Col span={12}>
+			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
+				    <Row>
+					    <ButtonGroup>
+						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
+							    <img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
+							      <span style={{ paddingLeft: '7px' }}>iResults</span>
+						    </Button>
+
+						    {/* <Button style={{ width: 120 }}>
+							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
+							    <span style={{ paddingLeft: '7px' }}>Print</span>
+						    </Button> */}
+					    </ButtonGroup>
+				    </Row>
+			    </div>
+				</Col>
 				{
 					this.state.showIresultInfo ? 
 					(

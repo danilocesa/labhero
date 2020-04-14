@@ -75,6 +75,21 @@ class EditResult extends React.Component {
 		};
 	}
 	
+	onSaveSuccess = () => {
+		const { examDetails  } = this.props;
+
+		this.setState({ isLoading: true }, async () => {
+			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
+			const formatedResults = this.recontructExamItems(results.resultValues);
+
+			// eslint-disable-next-line react/no-did-update-set-state
+			this.setState({ 
+				results, 
+				formatedResults,
+				isLoading: false 
+			});
+		});
+	}
 
 	// Private Function
 	recontructExamItems = (results) => {
@@ -131,7 +146,10 @@ class EditResult extends React.Component {
 						wrappedComponentRef={(inst) => this.resultRemarks = inst} 
 						remarks={results.remarks || null} 
 					/>
-			    <Actions getLabResultFormValues={this.getFormValues} />
+					<Actions 
+						getLabResultFormValues={this.getFormValues} 
+						onSaveSuccess={this.onSaveSuccess}
+					/>
 		    </Col>
 	    </Row>
     );
