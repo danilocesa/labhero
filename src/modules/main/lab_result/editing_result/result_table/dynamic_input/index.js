@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Checkbox, Select } from 'antd';
+import { Input, Checkbox, Select, InputNumber } from 'antd';
 import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { 
 	EITC_ALPHA_NUMERIC,
@@ -22,7 +22,7 @@ class DynamicInput extends React.Component {
 
 		if(type === EITC_ALPHA_NUMERIC) {
 			return (
-				<AlphaNumInput 
+				<InputNumber 
 					disabled={isLock}
 					{...otherProps}
 				/>

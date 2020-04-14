@@ -15,7 +15,13 @@ import {
   Select
 } from "antd";
 
-import { RegexInput, AlphaNumInput } from "shared_components/pattern_input";
+import {
+  RegexInput,
+  AlphaNumInput,
+  NumberInput
+} from "shared_components/pattern_input";
+
+import FIELD_RULES from "./constants.js";
 
 import "./breakdown.css";
 
@@ -88,13 +94,14 @@ const data = [
 ];
 
 class Transactions extends React.Component {
-
-  RedirectToReceipt(){
+  RedirectToReceipt() {
     // @ts-ignore
     window.location = "/cashier/summary";
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
+
     return (
       <Layout
         className="layout"
@@ -112,7 +119,9 @@ class Transactions extends React.Component {
         <Row gutter={12} type="flex" justify="center">
           <Col xs={24} sm={24} md={6} lg={4}>
             <Form.Item label="PATIENT ID">
-              <AlphaNumInput maxLength={20} />
+              {getFieldDecorator("patient_id", {
+                rules: FIELD_RULES.PatientID
+              })(<NumberInput maxLength={20} />)}
             </Form.Item>
           </Col>
           <Col
@@ -126,12 +135,16 @@ class Transactions extends React.Component {
           </Col>
           <Col xs={24} sm={24} md={12} lg={7}>
             <Form.Item label="PATIENT NAME">
-              <RegexInput
-                regex={/[A-z0-9 -]/}
-                name="patientName"
-                placeholder="Lastname, Firstname, Middle Initial"
-                maxLength={100}
-              />
+              {getFieldDecorator("patient_name", {
+                rules: FIELD_RULES.PatientName
+              })(
+                <RegexInput
+                  regex={/[A-z0-9 -]/}
+                  name="patientName"
+                  placeholder="Lastname, Firstname, Middle Initial"
+                  maxLength={100}
+                />
+              )}
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={6} lg={4}>
@@ -152,7 +165,9 @@ class Transactions extends React.Component {
                   block
                   shape="round"
                   style={{ width: 120 }}
-                  // onClick={this.clearItems}
+                  onClick={e => {
+                    this.props.form.resetFields();
+                  }}
                 >
                   CLEAR
                 </Button>
@@ -208,4 +223,7 @@ class Transactions extends React.Component {
     );
   }
 }
-export default Transactions;
+
+const TransactionsValidation = Form.create()(Transactions);
+
+export default TransactionsValidation;

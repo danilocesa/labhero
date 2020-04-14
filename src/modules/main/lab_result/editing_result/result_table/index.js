@@ -51,12 +51,12 @@ class EditableTable extends React.Component {
       },
       {
         title: 'NORMAL VALUES',
-        dataIndex: 'values',
+        dataIndex: 'displayValue',
         width: 150,
       },
       {
         title: 'STATUS',
-        dataIndex: 'status',
+        dataIndex: 'flag',
 				width: 120,
 				render: (text) => (
 					<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>
@@ -92,22 +92,34 @@ class EditableTable extends React.Component {
 	// data once an error validation appears
 	getFormValues = () => {
 		// eslint-disable-next-line react/prop-types
-		const { form, examItems } = this.props;
+		const { form, results } = this.props;
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 		let labResults = null;
 
 		validateFieldsAndScroll(async(err) => {	
 			const fieldsValue = getFieldsValue();
-			const clonedExamItems = JSON.parse(JSON.stringify(examItems));
+			const clonedResults = JSON.parse(JSON.stringify(results));
 
-			const combinedExamItems = clonedExamItems.map(item => {
+			const combinedResults = clonedResults.map(item => {
 				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
+				const requiredFields = { 
+					rangeLow: item.rangeLow || "LoremIpsum",
+					rangeHigh: item.rangeHigh || "LoremIpsum",
+					displayValue: item.displayValue || "LoremIpsum",
+					rangeLowFlagDisplay: item.rangeLowFlagDisplay || "LoremIpsum",
+					rangeHighFlagDisplay: item.rangeHighFlagDisplay || "LoremIpsum",
+				}
 
-				return { ...item, releasedResult: fieldsValue[key] };
+
+				return { 
+					...item, 
+					...requiredFields,
+					releasedResult: fieldsValue[key]
+				};
 			});
 			
 			labResults = {
-				examItems: combinedExamItems,
+				results: combinedResults,
 				hasError: err !== null,
 			};
 		});
@@ -116,13 +128,13 @@ class EditableTable extends React.Component {
 	}
 
   render() {
-		const { formattedExamItems } = this.props;
+		const { formatedResults } = this.props;
 
     return (
 			<div className="labresult-exam-item-table">
 				<Form>
 					<Table
-						dataSource={formattedExamItems}
+						dataSource={formatedResults}
 						columns={this.columns}
 						rowKey={item => item.examItemID}
 						scroll={{ x: 800, y: globalTableYScroll }}
@@ -136,8 +148,8 @@ class EditableTable extends React.Component {
 }
 
 EditableTable.propTypes = {
-	examItems: PropTypes.array.isRequired,
-	formattedExamItems: PropTypes.array.isRequired
+	results: PropTypes.array.isRequired,
+	formatedResults: PropTypes.array.isRequired,
 };
 
 export default Form.create()(EditableTable);

@@ -1,7 +1,22 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { TreeSelect, Col, Card, Table, Row, Button, Input,InputNumber } from "antd";
+import {
+  TreeSelect,
+  Col,
+  Card,
+  Table,
+  Row,
+  Button,
+  Input,
+  InputNumber
+} from "antd";
 import "./categories.css";
+
+import {
+  RegexInput,
+  AlphaNumInput,
+  NumberInput
+} from "shared_components/pattern_input";
 
 const { TreeNode } = TreeSelect;
 
@@ -10,6 +25,7 @@ const { Search } = Input;
 const columns = [
   {
     title: "Item",
+    value: "0-0",
     dataIndex: "item",
     key: "name",
     render: text => <a>{text}</a>
@@ -37,42 +53,104 @@ const columns = [
   }
 ];
 
-const data = [
+const categories = [
   {
-    key: "1",
-    item: "CBC",
-    particulars: "Description",
-    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
-    amount: "P500.00",
-    delete: "X"
+    title: "blood",
+    children: [
+      {
+        type: "red"
+      },
+      {
+        type: "white"
+      }
+    ]
   },
+  {
+    title: "flesh"
+  },
+  {
+    title: "chuchu"
+  }
+];
 
+const treeData = [
   {
-    key: "2",
-    item: "Potassium",
-    particulars: "Description",
-    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
-    amount: "P500.00",
-    delete: "X"
+    title: "Node1",
+    value: "0-0",
+    children: [
+      {
+        title: "Child Node1",
+        value: "0-0-1"
+      },
+      {
+        title: "Child Node2",
+        value: "0-0-2"
+      }
+    ]
   },
   {
-    key: "3",
-    item: "Anti Biotic",
-    particulars: "Description",
-    quantity: <InputNumber style = {{width: 50}} min={1} max={10} defaultValue={1} />,
-    amount: "P500.00",
-    delete: "X"
+    title: "Node2",
+    value: "0-1"
   }
 ];
 
 class Categories extends React.Component {
   state = {
-    value: undefined
-  };
+    value: undefined,
+    data: [
+      {
+        key: "1",
+        item: "CBC",
+        particulars: "Description",
+        quantity: <NumberInput style={{ width: 50 }} min={1} max={10} defaultValue = "1"/>,
+        amount: "P500.00",
+        delete: "X"
+      },
 
-  onChange = value => {
+      {
+        key: "2",
+        item: "Potassium",
+        particulars: "Description",
+        quantity: (
+          <NumberInput style={{ width: 50 }} min={1} max={10} defaultValue="1" />
+        ),
+        amount: "P500.00",
+        delete: "X"
+      },
+      {
+        key: "3",
+        item: "Anti Biotic",
+        particulars: "Description",
+        quantity: (
+          <NumberInput style={{ width: 50 }} min={1} max={10} defaultValue="1" />
+        ),
+        amount: "P500.00",
+        delete: "X"
+      }
+    ]
+  };
+  
+  onChange = (value) => {
     console.log(value);
     this.setState({ value });
+  };
+
+  handleAdd = () => {
+    const { count, data } = this.state;
+    const newData = {
+      key: count,
+      item: "Potassium",
+      particulars: "Description",
+      quantity: (
+        <NumberInput style={{ width: 50 }} min={1} max={10} defaultValue="1" />
+      ),
+      amount: "P500.00",
+      delete: "X"
+    };
+    this.setState({
+      data: [...data, newData],
+      count: count + 1
+    });
   };
 
   render() {
@@ -88,7 +166,7 @@ class Categories extends React.Component {
           className="cashier-category-select-category"
           style={{ width: 400 }}
         >
-          <Row >
+          <Row>
             <div className="selection">
               <Col span={24}>
                 <TreeSelect
@@ -100,25 +178,13 @@ class Categories extends React.Component {
                   }}
                   value={this.state.value}
                   dropdownStyle={{ maxHeight: 400, overflow: "auto" }}
-                  placeholder="Search"
+                  placeholder="Please select"
                   allowClear
                   multiple
                   treeDefaultExpandAll
                   onChange={this.onChange}
-                >
-                  <TreeNode value="parent 1" title="parent 1">
-                    <TreeNode value="parent 1-0" title="parent 1-0">
-                      <TreeNode value="leaf1" title="my leaf" />
-                      <TreeNode value="leaf2" title="your leaf" />
-                    </TreeNode>
-                    <TreeNode value="parent 1-1" title="parent 1-1">
-                      <TreeNode
-                        value="sss"
-                        title={<b style={{ color: "#08c" }}>sss</b>}
-                      />
-                    </TreeNode>
-                  </TreeNode>
-                </TreeSelect>
+                  treeData={treeData}
+                ></TreeSelect>
               </Col>
             </div>
           </Row>
@@ -128,21 +194,11 @@ class Categories extends React.Component {
           <div className="cashier-categories-card">
             <Col span={24}>
               <Card>
-                <Button className="ant-btn-round" type="primary">
-                  Panel
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Hematology
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Chemistry
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Immunology
-                </Button>
-                <Button className="ant-btn-round" type="primary">
-                  Microscopy
-                </Button>
+                {categories.map(item => (
+                  <Button className="ant-btn-round" type="primary">
+                    {item.title}
+                  </Button>
+                ))}
               </Card>
             </Col>
           </div>
@@ -160,24 +216,9 @@ class Categories extends React.Component {
                   <Search
                     placeholder="input search text"
                     onSearch={value => console.log(value)}
-                    style={{ width: 250, marginBottom: 10}}
+                    style={{ width: 250, marginBottom: 10 }}
                   />
                   <br></br>
-                  <Button className="ant-btn-round" type="primary">
-                    Panel
-                  </Button>
-                  <Button className="ant-btn-round" type="primary">
-                    Hematology
-                  </Button>
-                  <Button className="ant-btn-round" type="primary">
-                    Chemistry
-                  </Button>
-                  <Button className="ant-btn-round" type="primary">
-                    Immunology
-                  </Button>
-                  <Button className="ant-btn-round" type="primary">
-                    Microscopy
-                  </Button>
                 </Card>
                 <Card
                   size="small"
@@ -187,10 +228,10 @@ class Categories extends React.Component {
                   <Search
                     placeholder="input search text"
                     onSearch={value => console.log(value)}
-                    style={{ width: 250, marginBottom: 10}}
+                    style={{ width: 250, marginBottom: 10 }}
                   />
                   <br></br>
-                  <Button className="ant-btn-round" type="primary">
+                  {/* <Button className="ant-btn-round" type="primary">
                     EXAM 1
                   </Button>
                   <Button className="ant-btn-round" type="primary">
@@ -198,7 +239,7 @@ class Categories extends React.Component {
                   </Button>
                   <Button className="ant-btn-round" type="primary">
                     EXAM 3
-                  </Button>
+                  </Button> */}
                 </Card>
               </Col>
             </div>
@@ -210,9 +251,18 @@ class Categories extends React.Component {
                   bordered={true}
                   style={{ alignItems: "center" }}
                 >
+                  <Button
+                    onClick={this.handleAdd}
+                    type="primary"
+                    style={{
+                      marginBottom: 16
+                    }}
+                  >
+                    Add a row
+                  </Button>
                   <Table
                     columns={columns}
-                    dataSource={data}
+                    dataSource={this.state.data}
                     pagination={false}
                   />
                 </Card>
