@@ -96,16 +96,26 @@ class EditableTable extends React.Component {
 		const { getFieldsValue, validateFieldsAndScroll } = form;
 		let labResults = null;
 
-		console.log('results', results);
-
 		validateFieldsAndScroll(async(err) => {	
 			const fieldsValue = getFieldsValue();
 			const clonedResults = JSON.parse(JSON.stringify(results));
 
 			const combinedResults = clonedResults.map(item => {
 				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
+				const requiredFields = { 
+					rangeLow: item.rangeLow || "LoremIpsum",
+					rangeHigh: item.rangeHigh || "LoremIpsum",
+					displayValue: item.displayValue || "LoremIpsum",
+					rangeLowFlagDisplay: item.rangeLowFlagDisplay || "LoremIpsum",
+					rangeHighFlagDisplay: item.rangeHighFlagDisplay || "LoremIpsum",
+				}
 
-				return { ...item, releasedResult: fieldsValue[key] };
+
+				return { 
+					...item, 
+					...requiredFields,
+					releasedResult: fieldsValue[key]
+				};
 			});
 			
 			labResults = {
