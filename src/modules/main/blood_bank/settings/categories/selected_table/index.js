@@ -12,7 +12,7 @@ import {
   } from 'antd';
 
 // CUSTOM
-import { selectedTableConst, tableSize } from '../settings';
+import { selectedTableConst, tableSize, drawerUpdateTitle } from '../settings';
 import DragableBodyRow from './drag_and_drop';
 
 // CSS
@@ -65,6 +65,7 @@ class SelectedTable extends React.Component {
 			description: 'Sidney No. 1 Lake Park',
 		  },
 		],
+		isDrawerVisible	: false
 	  };
 	
 	  components = {
@@ -85,10 +86,20 @@ class SelectedTable extends React.Component {
 		);
 	  };
 
+	 //  showDrawer = () => {
+	 //  	this.setState(
+		//   update(this.state, {
+		// 	data: {
+		// 	  $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
+		// 	},
+		//   }),
+		// );
+	 //  }
+
 
 	render() {
 		const { data, loading = false } = this.props;
-
+		const { isDrawerVisible, drawerTitle } = this.state;
 		return (
 			<div style={{ marginTop: 20 }}>
 				<Spin spinning={loading} tip="Loading...">
@@ -100,22 +111,22 @@ class SelectedTable extends React.Component {
 					pagination={false} 
 					onRow={(record, index) => ({
 						index,
+						onDoubleClick: () => { 
+					      this.setState({ isDrawerVisible: true });
+					    },
 						moveRow: this.moveRow,
 					})}
 					/>
 					<Drawer 
-					title={this.state.drawerTitle}
-					visible={this.state.isDrawerVisible}
-					onClose={this.onClose}
-					width="40%"
-					destroyOnClose
-				>
-					<CategoriesForm 
-						drawerButton={this.state.drawerButton} 
-						panelInfo={this.state.panelInfo}
-						onCancel={this.onClose}
-					/>
-				</Drawer>
+						title={drawerUpdateTitle}
+						visible={isDrawerVisible}
+						// onClose={this.onClose} //need mo din to ayusin
+						width="40%"
+						// destroyOnClose // need mo din to ayusin
+					>
+						<Input placeholder="Basic usage" />
+					
+					</Drawer>
         
 				</DndProvider>	
 				</Spin>
