@@ -7,10 +7,13 @@ import BloodRecipient from './blood_recipient'
 import BloodRequest from './blood_request';
 import SearchDonor from './search_donor';
 
+import Settings from './settings';
+
 class BloodBank extends React.Component {
 	render() {
 		return(
 			<Switch>
+				<Route exact path="/bloodbank/settings" component={Settings} />
 				<Route exact path="/bloodbank" component={BloodBankMenu} />
 				<Route exact path="/bloodbank/donor_registration" component={DonorRegistration} />
 				<Route exact path="/bloodbank/blood_recipient" component={BloodRecipient} />
