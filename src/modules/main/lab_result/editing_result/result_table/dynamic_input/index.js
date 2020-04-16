@@ -59,6 +59,7 @@ class DynamicInput extends React.Component {
 		if(type === EITC_OPTION) {
 			const Options = itemOptions.map((itemOption, index) => (
 				<Option 
+					// value={index}
 					value={itemOption.examItemValueLabel}
 					// eslint-disable-next-line react/no-array-index-key
 					key={index}
@@ -67,12 +68,12 @@ class DynamicInput extends React.Component {
 				</Option>
 			));
 			
-			const defaultItemOption = itemOptions.find(itemOption => itemOption.examItemValueDefault === 1);
-			
+			// const defaultItemOption = itemOptions.find(itemOption => itemOption.examItemValueDefault === 1);
+
 			return (
 				<Select 
 					showSearch
-					defaultValue={defaultItemOption && defaultItemOption.examItemValueLabel}
+					// defaultValue={defaultItemOption && defaultItemOption.examItemValueLabel}
 					disabled={isLock}
 					optionFilterProp="children"
 					filterOption={(input, option) =>

@@ -8,6 +8,7 @@ import { globalTableSize, globalTableYScroll } from 'global_config/constant-glob
 import DynamicInput from './dynamic_input';
 
 import './result_table.css';
+import item_form from 'modules/main/inventory/item_setup/item_form';
 
 class EditableTable extends React.Component {
   constructor(props) {
@@ -70,11 +71,18 @@ class EditableTable extends React.Component {
 	createFormInput = (record) => {
 		const { form } = this.props;
 		const { getFieldDecorator } = form;
+		// const { examItemOptions, releasedResult } = record;
+		// const defaultItemOption = examItemOptions.findIndex(item => item && item.examItemValueDefault === 1);
+		// const selectedItemOption = defaultItemOption === -1 ? null : defaultItemOption;
+		// const initialValue = examItemOptions.length === 1 
+		// 									 ? releasedResult
+		// 									 : selectedItemOption;
 
 		return (
 			<Form.Item>
 				{ getFieldDecorator(record.fieldName, { 	
 					initialValue: record.releasedResult,
+					// initialValue
 				})(
 					<DynamicInput 
 						type={record.examItemTypeCode}
@@ -100,21 +108,21 @@ class EditableTable extends React.Component {
 			const fieldsValue = getFieldsValue();
 			const clonedResults = JSON.parse(JSON.stringify(results));
 
+		
+
 			const combinedResults = clonedResults.map(item => {
 				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
-				const requiredFields = { 
-					rangeLow: item.rangeLow || "LoremIpsum",
-					rangeHigh: item.rangeHigh || "LoremIpsum",
-					displayValue: item.displayValue || "LoremIpsum",
-					rangeLowFlagDisplay: item.rangeLowFlagDisplay || "LoremIpsum",
-					rangeHighFlagDisplay: item.rangeHighFlagDisplay || "LoremIpsum",
-				}
+				// const itemOptions = item.examItemOptions;
 
-
+				// if(item.examItemOptions.length !== 1) {
+				// 	itemOptions[fieldsValue[key]].examItemValueDefault = 1
+				// }
+					
 				return { 
 					...item, 
-					...requiredFields,
-					releasedResult: fieldsValue[key]
+					releasedResult: fieldsValue[key],
+					unitOfMesureBase: item.unitOfMesureBase || "0 0",
+					// examItemOptions: itemOptions
 				};
 			});
 			

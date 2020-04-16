@@ -2,10 +2,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Form } from 'antd';
+import errorMessage from 'global_config/error_messages';
 
 import './patientcomment.css';
 
 const { TextArea } = Input;
+
+export const fieldRules = {
+	remarks: [{ required: true, message: errorMessage.required }],
+};
 
 class PatientComment extends React.Component {
   componentDidUpdate(prevProps) {
@@ -37,7 +42,7 @@ class PatientComment extends React.Component {
     return (
 			<div className="patient-comment">
         <Form.Item label="REMARKS">
-        {getFieldDecorator('remarks')(
+        {getFieldDecorator('remarks', { rules: fieldRules.remarks })(
           <TextArea rows={3} />
         )}
         </Form.Item>
