@@ -1,27 +1,21 @@
 // LiBRARY
 import React from "react";
-import CategoriesForm from "./categories_form/categories_form";
 import TablePager from "shared_components/table_pager";
 import "./categories.css";
 import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
-  Typography,
   Form as AntForm,
-  Input as AntInput,
-  Button as AntButton,
   Table as AntTable,
   Input,
   Button,
   Icon
 } from "antd";
+import CategoriesForm from "./categories_form/categories_form";
 
 // CUSTOM MODULES
 import {
-  drawerUpdateTitle,
-  drawerAddTitle,
-  tablePageSize,
   tableSize,
   buttonLabels,
   addCategoriesButton,
@@ -31,12 +25,7 @@ import {
 } from "../settings";
 //  CONSTANTS
 const { Search } = Input;
-const { TextArea } = AntInput;
-const { Title } = Typography;
 
-const toInputUppercase = e => {
-  e.target.value = ("" + e.target.value).toUpperCase();
-};
 
 const columns = [
   {
@@ -109,6 +98,7 @@ class InventoryCategoriesTemplate extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
@@ -117,6 +107,7 @@ class InventoryCategoriesTemplate extends React.Component {
   };
 
   handleReset = () => {
+    // eslint-disable-next-line react/prop-types
     this.props.form.resetFields();
   };
 
@@ -169,6 +160,7 @@ class InventoryCategoriesTemplate extends React.Component {
     const { usersRef } = this.state;
 
     const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
       const { categories_code, categories_name, description } = item;
 
       return (
@@ -188,7 +180,6 @@ class InventoryCategoriesTemplate extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { actionType } = this.state;
     return (
       <div>
@@ -245,6 +236,7 @@ class InventoryCategoriesTemplate extends React.Component {
               destroyOnClose
             >
               <CategoriesForm
+                // @ts-ignore
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
                 panelInfo={this.state.panelInfo}

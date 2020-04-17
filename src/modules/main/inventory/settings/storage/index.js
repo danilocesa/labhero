@@ -1,41 +1,33 @@
 // LiBRARY
 import React from "react";
-import StorageForm from "./storage_form/storage_form";
 import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
-  Typography,
   Form as AntForm,
-  Input as AntInput,
-  Button as AntButton,
   Table as AntTable,
   Input,
   Button,
   Icon
 } from "antd";
+import TablePager from "shared_components/table_pager";
+import StorageForm from "./storage_form/storage_form";
 
 // CUSTOM MODULES
 
 import {
   drawerStorageTitleUpdate,
   drawerStorageTitleAdd,
-  tablePageSize,
   tableSize,
   buttonLabels,
   addStorageButton,
   tableYScroll
 } from "../settings";
-import TablePager from "shared_components/table_pager";
 
 //  CONSTANTS
-const { Title } = Typography;
 const { Search } = Input;
-const { TextArea } = AntInput;
 
-const toInputUppercase = e => {
-  e.target.value = ("" + e.target.value).toUpperCase();
-};
+
 
 const columns = [
   {
@@ -104,6 +96,7 @@ class InventoryStorageTemplate extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
@@ -164,6 +157,7 @@ class InventoryStorageTemplate extends React.Component {
     const { usersRef } = this.state;
 
     const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
       const { storage_id, storage_name, storage_description } = item;
 
       return (
@@ -183,7 +177,6 @@ class InventoryStorageTemplate extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const {actionType} = this.state
     return (
       <div>
@@ -240,6 +233,7 @@ class InventoryStorageTemplate extends React.Component {
               destroyOnClose
             >
               <StorageForm
+                // @ts-ignore
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
                 panelInfo={this.state.panelInfo}
