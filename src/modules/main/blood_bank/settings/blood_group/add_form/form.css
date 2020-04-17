@@ -1,0 +1,21 @@
+.settings-user-maintence-form input,
+.settings-user-maintence-form select {
+	text-transform: uppercase;
+}
+
+.settings-user-maintence-form .password_input input {
+	text-transform: unset;
+}
+
+.settings-user-maintence-form .form-section .form-title{
+	margin-bottom: 15px;
+}
+
+.settings-user-maintence-form .ant-form label {
+	line-height: 35px!important;
+	font-size: 12px!important;
+}
+
+.settings-user-maintence-form .ant-form-item {
+	margin-bottom: 8px;
+}

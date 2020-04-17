@@ -1,4 +1,4 @@
-import { globalTablePageSize, globalTableSize } from 'global_config/constant-global';
+import { globalTablePageSize, globalTableSize,globalTableYScroll } from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
@@ -8,6 +8,12 @@ export const moduleTitle = 'PANEL EXAM';
 
 export const drawerAddTitle = 'ADD PANEL';
 export const drawerUpdateTitle = 'UPDATE PANEL';
+export const drawerSectionTitle = 'UPDATE SECTION';
+export const drawerSectionTitleAdd = 'ADD SECTION';
+export const drawerCategoryTitleUpdate = 'UPDATE CATEGORY';
+export const drawerCategoryTitleAdd = 'ADD CATEGORY';
+export const drawerStorageTitleAdd = 'ADD STORAGE';
+export const drawerStorageTitleUpdate = 'UPDATE STORAGE';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -44,8 +50,16 @@ export const fieldLabels = {
   examItemUnitCode: "UNIT OF MEASURES",
   examItemTypeDefault: "DEFAULT VALUE",
   examItemIntegrationCode: "INTEGRATION CODE",
-  categories_id: "CATEGORIES ID",
+  categories_code: "CATEGORIES CODE",
   categories_name: "CATEGORIES NAME",
+  categories_description: "CATEGORIES DESCRIPTION",
+  section_code: "SECTION CODE",
+  section_name: "SECTION NAME",
+  section_description: "SECTION DESCRIPTION",
+  field_status: "STATUS",
+  is_active : "ACTIVE",
+  storage_name: "STORAGE NAME",
+  storage_description: "STORAGE DESCRIPTION"
  
 
 }
@@ -60,3 +74,10 @@ export const buttonLabels = {
 
 export const tablePageSize = globalTablePageSize;
 export const tableSize = globalTableSize;
+
+export const addUserButton = 'ADD USER';
+export const addSectionButton = 'ADD SECTION';
+export const addCategoriesButton = 'ADD CATEGORY';
+export const addStorageButton = 'ADD STORAGE';
+
+export const tableYScroll = globalTableYScroll;
