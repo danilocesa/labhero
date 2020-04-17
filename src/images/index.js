@@ -13,7 +13,7 @@ export { default as LabExamRequestIcon } from './lab_exam_request.png';
 export { default as UserMaintenanceIcon } from './user_maintenance.png';
 export { default as NormalValuesIcon } from './normal_values_icon_lh.jpg';
 export { default as BBdonorRegIcon } from './donor_registration.png';
-export { default as BBaddBloodReqIcon } from './add_blood_request.png';
+export { default as BBaddBloodReqIcon } from './add_blood_req.png';
 export { default as BBrecipientIcon } from './recipient.png';
 export { default as BBsearchDonorIcon } from './search_donor.png';
 export { default as CAviewallIcon } from './view_all.png';

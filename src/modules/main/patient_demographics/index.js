@@ -73,19 +73,19 @@ class SearchPatient extends React.Component {
 						drawer={this.displayDrawer}
 					/>
 					{
-					showDrawer ? (
-						<Drawer
-							title={drawerUpdateTitle} 
-							onClose={this.onClosePatientResultDrawer}
-							width="50%"
-							visible={showDrawer}
-						>
-							<UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
-						</Drawer>
-					)
-					:
-					null
-				}
+						showDrawer ? (
+							<Drawer
+								title={drawerUpdateTitle} 
+								onClose={this.onClosePatientResultDrawer}
+								width="50%"
+								visible={showDrawer}
+							>
+								<UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
+							</Drawer>
+						)
+						:
+						null
+					}
 				</div>
      </div>
     );

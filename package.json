@@ -12,7 +12,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "jest --watchAll",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",

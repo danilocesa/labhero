@@ -65,6 +65,7 @@ export const moduleURI = {
 			},
 		}
 	},
+	
 	bloodbank: {
 		key: 17,
 		link: '/bloodbank',

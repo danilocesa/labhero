@@ -102,7 +102,7 @@ class InventorySupplierTemplate extends React.Component {
                 {getFieldDecorator('supplier_details', {
                   rules: [{ required: true, message: 'Please input!' }],
                 })(
-                  <TextArea rows={6} />,
+                  <TextArea rows={6} />
                 )}
               </AntForm.Item>
               <AntRow>

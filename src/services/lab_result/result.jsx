@@ -53,7 +53,13 @@ export async function saveLabResult(payload) {
 		return data || [];
 	}
 	catch(error) {
-		Message.error();
+		if(error.response && error.response.status === 400) {
+			Message.error(error.response.data.error);
+		}
+		else { 
+			Message.error(); 
+		}
+		
 		return false;
 	}
 }

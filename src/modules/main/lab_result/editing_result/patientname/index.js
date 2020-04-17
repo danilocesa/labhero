@@ -1,18 +1,12 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Drawer } from 'antd';
-
-// CUSTOM MODULES
+import { Row, Col, Drawer, Button } from 'antd';
+import { PrintLogo, IResultsIcon } from 'images';
 import Iresults from 'modules/main/iresults';
 
-// IMAGES
-import { PrintLogo, IResultsIcon } from 'images';
-
-// CSS
 import './patientname.css';
 
-// CONSTANTS
 const ButtonGroup = Button.Group;
 
 class PatientName extends React.Component {
@@ -41,7 +35,7 @@ class PatientName extends React.Component {
 
 	
   render() {
-		const { patientInfo } = this.props;
+		const { patientInfo, sampleSpecimenID } = this.props;
 
     return (
 	    <Row>
@@ -51,12 +45,12 @@ class PatientName extends React.Component {
               {`${patientInfo.lastName}, ${patientInfo.givenName}`}
 				    </h1>
 				    <p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
-              Patient ID {patientInfo.patientID}
+              Sample ID: {sampleSpecimenID}
 				    </p>
 			    </div>
 		    </Col>
-		    <Col span={12}>
-			    {/* <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
+				<Col span={12}>
+			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
 				    <Row>
 					    <ButtonGroup>
 						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
@@ -64,14 +58,14 @@ class PatientName extends React.Component {
 							      <span style={{ paddingLeft: '7px' }}>iResults</span>
 						    </Button>
 
-						    <Button style={{ width: 120 }}>
+						    {/* <Button style={{ width: 120 }}>
 							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
 							    <span style={{ paddingLeft: '7px' }}>Print</span>
-						    </Button>
+						    </Button> */}
 					    </ButtonGroup>
 				    </Row>
-			    </div> */}
-		    </Col>
+			    </div>
+				</Col>
 				{
 					this.state.showIresultInfo ? 
 					(
@@ -97,7 +91,8 @@ PatientName.propTypes = {
 		lastName: PropTypes.string,
 		givenName: PropTypes.string,
 		patientID: PropTypes.string,
-	}).isRequired
+	}).isRequired,
+	sampleSpecimenID: PropTypes.string.isRequired
 };
 
 export default PatientName;

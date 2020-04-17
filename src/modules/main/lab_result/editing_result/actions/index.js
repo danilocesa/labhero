@@ -28,19 +28,28 @@ class Actions extends React.Component {
 	
 
   onClickSave = () => {
-		const { getLabResultFormValues } = this.props;
+		const { getLabResultFormValues, onSaveSuccess } = this.props;
 
 		const labResultFormValues = getLabResultFormValues();
 
-		if(!labResultFormValues.hasError) {
+		if(!labResultFormValues.form.hasError && !labResultFormValues.remarks.hasError) {
 			this.setState({ isLoading: true }, async () => {
-				await saveLabResult(labResultFormValues.examItems);
+				const savedResults = await saveLabResult({
+					results: labResultFormValues.form.results,
+					remarks: labResultFormValues.remarks.value
+				});
 
-				this.setState({ isLoading: false, isDisplayModal: true });
+				this.setState({ isLoading: false }, () => {
+					if(savedResults) {
+						onSaveSuccess();
 
-				this.timer = setTimeout(() => {
-					this.setState({ isDisplayModal: false });
-				}, this.countdownTime);
+						this.setState({ isDisplayModal: true });
+	
+						this.timer = setTimeout(() => {
+							this.setState({ isDisplayModal: false });
+						}, this.countdownTime);
+					}
+				});
 			});
 		}
   };
@@ -50,27 +59,16 @@ class Actions extends React.Component {
 
     return (
 	    <div style={{ textAlign: 'right', marginTop: '30px' }} className="action-container">
-				<Button 
-					loading={isLoading}
-					className="action-button" 
-					onClick={this.onClickSave}
-					
-				>
+				<Button className="action-button">
 					APPROVE
 				</Button>
-				<Button 
-					loading={isLoading}
-					className="action-button" 
-					onClick={this.onClickSave}
-					
-				>
+				<Button className="action-button">
 					PRINT
 				</Button>
 				<Button 
 					loading={isLoading}
 					className="action-button" 
 					onClick={this.onClickSave}
-					
 				>
 					SAVE
 				</Button>
@@ -104,7 +102,8 @@ class Actions extends React.Component {
 }
 
 Actions.propTypes = {
-	getLabResultFormValues: PropTypes.func.isRequired
+	getLabResultFormValues: PropTypes.func.isRequired,
+	onSaveSuccess: PropTypes.func.isRequired
 };
 
 export default Actions;

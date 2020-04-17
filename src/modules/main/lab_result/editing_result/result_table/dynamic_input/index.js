@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Checkbox, Select } from 'antd';
+import { Input, Checkbox, Select, InputNumber } from 'antd';
 import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { 
 	EITC_ALPHA_NUMERIC,
@@ -22,7 +22,7 @@ class DynamicInput extends React.Component {
 
 		if(type === EITC_ALPHA_NUMERIC) {
 			return (
-				<AlphaNumInput 
+				<InputNumber 
 					disabled={isLock}
 					{...otherProps}
 				/>
@@ -59,6 +59,7 @@ class DynamicInput extends React.Component {
 		if(type === EITC_OPTION) {
 			const Options = itemOptions.map((itemOption, index) => (
 				<Option 
+					// value={index}
 					value={itemOption.examItemValueLabel}
 					// eslint-disable-next-line react/no-array-index-key
 					key={index}
@@ -67,12 +68,12 @@ class DynamicInput extends React.Component {
 				</Option>
 			));
 			
-			const defaultItemOption = itemOptions.find(itemOption => itemOption.examItemValueDefault === 1);
-			
+			// const defaultItemOption = itemOptions.find(itemOption => itemOption.examItemValueDefault === 1);
+
 			return (
 				<Select 
 					showSearch
-					defaultValue={defaultItemOption && defaultItemOption.examItemValueLabel}
+					// defaultValue={defaultItemOption && defaultItemOption.examItemValueLabel}
 					disabled={isLock}
 					optionFilterProp="children"
 					filterOption={(input, option) =>

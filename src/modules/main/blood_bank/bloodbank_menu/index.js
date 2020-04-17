@@ -19,6 +19,11 @@ const settingsItemData = [
 		offset: 4
 	},
 	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/settings',
+		label: 'Settings',
+	},
+	{
 		image: BBaddBloodReqIcon,
 		link: '/bloodbank/blood_request',
 		label: 'Add Blood Request'
