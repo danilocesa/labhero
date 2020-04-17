@@ -218,7 +218,7 @@ class PanelFormTemplate extends React.Component {
 										rules: fieldRules.panel_name,
 									})(
 										<RegexInput	
-											regex={/[A-z0-9 -]/} 
+											regex={/[A-Za-z0-9 -]/} 
 										 	maxLength={254} 
 										/>
 									)}	
