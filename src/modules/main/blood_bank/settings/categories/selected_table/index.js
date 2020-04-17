@@ -4,13 +4,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table, Input, Form, Switch, Button,  Row, Col, Icon, Drawer } from 'antd';
 import { DndProvider } from 'react-dnd';
-import CategoriesForm from '../categories_form'
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 
 // CUSTOM
-import { drawerUpdateTitle } from '../settings';
-import DragableBodyRow from './drag_and_drop';
+import DragableBodyRow from './drag_and_drop'
+import CategoriesForm from '../categories_form'
 
 // CSS
 import './selected_table.css';
@@ -134,7 +133,6 @@ class SelectedTable extends React.Component {
 						</Col>
 					</Row>
 				</div>
-				<Spin spinning={loading} tip="Loading...">
 				<DndProvider backend={HTML5Backend}>
 					<Table
 						loading={loading}
@@ -145,7 +143,7 @@ class SelectedTable extends React.Component {
 						onRow={(record, index) => ({
 							index,
 							onDoubleClick: () => { 
-							this.setState({ isDrawerVisible: true });
+								this.displayDrawerUpdate(record);
 							},
 							moveRow: this.moveRow,
 						})}
@@ -164,22 +162,13 @@ class SelectedTable extends React.Component {
 								onClose={this.onClose}
 							/>
 					</Drawer>
-        
 				</DndProvider>	
-				</Spin>
 			</div>
 		);
 	}
 }
 
-SelectedTable.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.shape({
-		examItemID: PropTypes.any.isRequired,
-		examItemName: PropTypes.string.isRequired,
-	})).isRequired,
-	loading: PropTypes.bool.isRequired,
-	onDragAndDropRow: PropTypes.func.isRequired
-};
+
 
 export default Form.create()(SelectedTable);
 

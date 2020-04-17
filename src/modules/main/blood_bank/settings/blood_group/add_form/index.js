@@ -35,15 +35,10 @@ class UserAccountForm extends React.Component {
 						null
 						}
 						<div className="form-section" >
-							<Form.Item label= "ORDER" style={{ marginTop:'-25px'}}>
-								{					
+							<Form.Item label= "BLOOD GROUP" style={{ marginTop:'-25px'}}>
+								
 									<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
-								}
-							</Form.Item>
-							<Form.Item label= "CATEGORY NAME"style={{ marginTop:'-25px'}}>
-								{
-									<Input style={{ textTransform: 'uppercase',marginTop: 10 }} />
-								}
+								
 							</Form.Item>
 							<Form.Item label= "DESCRIPTION" style={{ marginTop:'-25px'}}>
 								{

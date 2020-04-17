@@ -16,7 +16,7 @@ class InventoryCategoriesTemplate extends React.Component {
     const {selectedExams } = this.state;
     return ( 
 			<div>
-        <PageTitle pageTitle= ' BLOOD GROUP' />
+        <PageTitle pageTitle= "CATEGORIES" />
             <SelectedTable 
               wrappedComponentRef={(inst) => this.selectedTable = inst}
               data={selectedExams}

@@ -6,10 +6,10 @@ import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
 import { 
-	drawerAdd, 
-	drawerUpdate, 
 	tableSize ,
-	tableYScroll
+	tableYScroll,
+	drawerAdd,
+	drawerUpdate
 } from '../settings';
 import UserAccountForm from '../add_form';
 
@@ -21,19 +21,14 @@ const columns = [
 		key: 1,
 	},
 	{
-		title: 'ORDER',
-		dataIndex: 'order',
+		title: 'BLOOD GROUP',
+		dataIndex: 'blood_group',
 		key: 2,	
-	},
-	{
-		title: 'CATEGORY NAME',
-		dataIndex: 'category_name',
-		key: 3,
 	},
 	{
 		title: 'DESCRIPTION',
 		dataIndex: 'description',
-		key: 4,
+		key: 3,
 	},
 ];
 
@@ -44,20 +39,17 @@ class BloodBank extends React.Component {
 			data: [
 				{
 					id: '1',
-					order: 'John Brown',
-					category_name: 32,
+					blood_group: 32,
 					description: 'New York No. 1 Lake Park',
 				},
 				{
 					id: '2',
-					order: 'Jim Green',
-					category_name: 42,
+					blood_group: 'Jim Green',
 					description: 'London No. 1 Lake Park',
 				},
 				{
 					id: '3',
-					order: 'Joe Black',
-					category_name: 32,
+					blood_group: 'Joe Black',
 					description: 'Sidney No. 1 Lake Park',
 				},
 				],
