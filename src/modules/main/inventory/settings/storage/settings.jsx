@@ -60,3 +60,5 @@ export const buttonLabels = {
 
 export const tablePageSize = globalTablePageSize;
 export const tableSize = globalTableSize;
+
+export const addUserButton = 'ADD USER';
