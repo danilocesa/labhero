@@ -8,7 +8,7 @@ import { globalTableSize, globalTableYScroll } from 'global_config/constant-glob
 import DynamicInput from './dynamic_input';
 
 import './result_table.css';
-import item_form from 'modules/main/inventory/item_setup/item_form';
+
 
 class EditableTable extends React.Component {
   constructor(props) {

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 // LiBRARY
-import SupplierForm from '../supplier/supplier_form';
-import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from './settings';
+
 import React from 'react';
 import { 
   Drawer ,
@@ -16,6 +15,8 @@ import {
 
 // CUSTOM MODULES
 import ClearFormFields from 'shared_components/form_clear_button';
+import SupplierForm from './supplier_form';
+import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from './settings';
 
 const { Title } = Typography;
 const { TextArea } = AntInput;

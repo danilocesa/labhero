@@ -2,7 +2,7 @@
 import React from 'react';
 import { Tabs as AntTabs} from 'antd';
 // CUSTOM MODULES
-import InventoryPageCrumb from 'modules/main/inventory/settings/shared_components/page_bread_crumb';
+import InventoryPageCrumb from 'modules/inventory/settings/shared_components/page_bread_crumb';
 import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'

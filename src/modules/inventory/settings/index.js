@@ -3,11 +3,11 @@ import React from 'react';
 import { Tabs as AntTabs} from 'antd';
 
 // CUSTOM MODULES
-import InventoryPageCrumb from 'modules/main/inventory/settings/shared_components/page_bread_crumb';
-import InventorySupplier from 'modules/main/inventory/settings/supplier';
-import InventoryStorage from 'modules/main/inventory/settings/storage';
-import InventorySection from 'modules/main/inventory/settings/sections';
-import InventoryCategories from 'modules/main/inventory/settings/categories';
+import InventoryPageCrumb from 'modules/inventory/settings/shared_components/page_bread_crumb';
+import InventorySupplier from 'modules/inventory/settings/supplier';
+import InventoryStorage from 'modules/inventory/settings/storage';
+import InventorySection from 'modules/inventory/settings/sections';
+import InventoryCategories from 'modules/inventory/settings/categories';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;

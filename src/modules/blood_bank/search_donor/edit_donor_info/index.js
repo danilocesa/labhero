@@ -5,13 +5,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, Row, Col, Typography, Radio, Select, Drawer, List, Divider } from 'antd';
-
-// CUSTOM MODULES
-// import DrawerButton from './form2_button';
+import { Form, Input, Row, Col, Typography, DatePicker, Radio, Button, Select, Drawer, List } from 'antd';
 
 // IMAGES
-import { PatientImgPlaceholder } from '../../../../../images';
+import { PatientImgPlaceholder } from 'images';
+
+// CUSTOM MODULES
+import DrawerButton from './form2_button';
+
 
 // CSS
 import './editprofile.css'; 
@@ -49,13 +50,26 @@ const { Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
-class RecipientProfile extends React.Component {
+class EditDonorProfile extends React.Component {
+	state= {showForm: false}
+
+	showDrawer = () => {
+		this.setState({
+		visible: true,
+		});
+	};
+
+	onClose = () => {
+		this.setState({
+		visible: false,
+		});
+	};
 
 	render() {
 		return(
 			<div>
 				<Form className="fillup-form">
-						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>RECIPIENT'S PROFILE</p>
+						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>DONOR'S PROFILE</p>
 						<Row gutter={12}>
                             <Col span={6}>
                                 <div>
@@ -68,48 +82,40 @@ class RecipientProfile extends React.Component {
 									</Col>
 								</div>
 							</Col>
-                            <Col md={2} style={{ textAlign: 'center' }}>
-                                <Divider className="divider" type="vertical" style={{ height: 500 }} />
-                            </Col>
-							<Col span={16}>
+							<Col span={9}>
                                 <div>
 									<Col>
 										<DescriptionItem title="LAST NAME" content="DOE" />
 									</Col>
 									<Col>
-										<DescriptionItem title="MIDDLE NAME" content="C." />
-									</Col>
-                                    <Col>
-										<DescriptionItem title="FIRST NAME" content="JANE" />
-									</Col>
-									<Col>
-										<DescriptionItem title="REQUESTED TIME" content="26/01/2020 11:45:56 A.M." />
-									</Col>
-                                    <Col>
-										<DescriptionItem title="REQUIRED DATE" content="27/06/2020" />
-									</Col>
-									<Col>
-										<DescriptionItem title="GENDER" content="F" />
-									</Col>
-                                    <Col>
-										<DescriptionItem title="AGE" content="32" />
+										<DescriptionItem title="MIDDLE NAME" content="P." />
 									</Col>
 									<Col>
 										<DescriptionItem title="BLOOD GROUP" content="AB POSITIVE" />
 									</Col>
 									<Col>
-										<DescriptionItem title="NO. OF BAGS" content="4" />
+										<DescriptionItem title="DATE DONATED" content="01/01/2020" />
 									</Col>
-                                    <Col>
-										<DescriptionItem title="HOSPITAL" content="St. Luke's Hospital" />
+								</div>
+							</Col>
+							<Col span={9}>
+                                <div>
+									<Col>
+										<DescriptionItem title="FIRST NAME" content="JOHN" />
 									</Col>
-                                    <Col>
-										<DescriptionItem title="CONTACT DETAILS" content="022222222222" />
+									<Col>
+										<DescriptionItem title="GENDER" content="M" />
+									</Col>
+									<Col>
+										<DescriptionItem title="UNIT OF BLOOD" content="470 ML" />
+									</Col>
+									<Col>
+										<DescriptionItem title="CONTACT DETAILS" content="01111111111" />
 									</Col>
 								</div>
 							</Col>
 							<Col xs={24} sm={12} md={24} lg={24}>
-								{/* <DrawerButton /> */}
+								<DrawerButton />
 							</Col>
 						</Row>
 				</Form>
@@ -118,14 +124,14 @@ class RecipientProfile extends React.Component {
 	}
 }
 
-RecipientProfile.propTypes = {
+EditDonorProfile.propTypes = {
 	patientInfo: PropTypes.object
 };
 
-RecipientProfile.defaultProps = {
+EditDonorProfile.defaultProps = {
 	patientInfo() { return null; }
 }
 
-const RecipientInfo = Form.create()(withRouter(RecipientProfile));
+const UpdatePatientForm = Form.create()(withRouter(EditDonorProfile));
 
-export default RecipientInfo;
+export default UpdatePatientForm;
