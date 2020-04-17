@@ -1,69 +1,112 @@
 // LiBRARY
-import StorageForm from '../storage/storage_form';
-import React from 'react';
-import { 
+import React from "react";
+import StorageForm from "./storage_form/storage_form";
+import {
   Drawer,
-  Row as AntRow, 
-  Col as AntCol, 
-  Typography, 
-  Form as AntForm, 
-  Input as AntInput, 
+  Row as AntRow,
+  Col as AntCol,
+  Typography,
+  Form as AntForm,
+  Input as AntInput,
   Button as AntButton,
-  Table as AntTable
-} from 'antd';
-import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from './settings';
+  Table as AntTable,
+  Input,
+  Button,
+  Icon
+} from "antd";
+
 // CUSTOM MODULES
+
+import {
+  drawerStorageTitleUpdate,
+  drawerStorageTitleAdd,
+  tablePageSize,
+  tableSize,
+  buttonLabels,
+  addStorageButton,
+  tableYScroll
+} from "../settings";
+import TablePager from "shared_components/table_pager";
 
 //  CONSTANTS
 const { Title } = Typography;
+const { Search } = Input;
 const { TextArea } = AntInput;
+
+const toInputUppercase = e => {
+  e.target.value = ("" + e.target.value).toUpperCase();
+};
+
 const columns = [
   {
-    title: 'STORAGE ID',
-    dataIndex: 'storage_id',
-    key: 'storage_id'
+    title: "STORAGE NAME",
+    dataIndex: "storage_name",
+    key: "storage_name",
+    width: 250,
+    sorter: (a, b) => a.storage_name.localeCompare(b.storage_name)
   },
   {
-    title: 'STORAGE NAME',
-    dataIndex: 'storage_name',
-    key: 'storage_name',
-  },
-  {
-    title: 'STORAGE DESCRIPTION',
-    dataIndex: 'storage_description',
-    key: 'storage_description',
+    title: "DESCRIPTION",
+    dataIndex: "storage_description",
+    key: "storage_description",
+    width: 250,
+    sorter: (a, b) => a.storage_description.localeCompare(b.storage_description)
   }
 ];
 
-const data = [
-  {
-    key: '1',
-    storage_id: 1,
-    storage_name: 'John Brown',
-    storage_description: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '2',
-    storage_id: 2,
-    storage_name: 'Jim Green',
-    storage_description: 'London No. 1 Lake Park'
-  },
-  {
-    key: '3',
-    storage_id: 3,
-    storage_name: 'Joe Black',
-    storage_description: 'Sidney No. 1 Lake Park'
-  },
-];
-
 class InventoryStorageTemplate extends React.Component {
-  state = { }
-  
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [
+        {
+          key: "1",
+          storage_id: 1,
+          storage_name: "John Brown",
+          storage_description: "New York No. 1 Lake Park"
+        },
+        {
+          key: "2",
+          storage_id: 2,
+          storage_name: "Jim Green",
+          storage_description: "London No. 1 Lake Park"
+        },
+        {
+          key: "3",
+          storage_id: 3,
+          storage_name: "Joe Black",
+          storage_description: "Sidney No. 1 Lake Park"
+        }
+      ],
+      usersRef: [
+        {
+          key: "1",
+          storage_id: 1,
+          storage_name: "John Brown",
+          storage_description: "New York No. 1 Lake Park"
+        },
+        {
+          key: "2",
+          storage_id: 2,
+          storage_name: "Jim Green",
+          storage_description: "London No. 1 Lake Park"
+        },
+        {
+          key: "3",
+          storage_id: 3,
+          storage_name: "Joe Black",
+          storage_description: "Sidney No. 1 Lake Park"
+        }
+      ],
+      actionType:'add'
+    };
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log("Received values of form: ", values);
       }
     });
   };
@@ -71,89 +114,141 @@ class InventoryStorageTemplate extends React.Component {
   handleReset = () => {
     this.props.form.resetFields();
   };
-  displayDrawerUpdate = (record) => {
-		this.setState({
-			isDrawerVisible: true,
-			drawerTitle: drawerUpdateTitle,
-			drawerButton: buttonLabels.update,
-			panelInfo: record
-		});
-  }
+
+  displayDrawerUpdate = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerStorageTitleUpdate,
+      drawerButton: buttonLabels.update,
+      actionType: "update",
+      panelInfo: record
+    });
+  };
+
+  displayDrawerAdd = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerStorageTitleAdd,
+      actionType: "add",
+      drawerButton: buttonLabels.create,
+      panelInfo: record
+    });
+  };
+
   onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
-	};
+    this.setState({
+      isDrawerVisible: false
+    });
+  };
+
+  handleSelectChange = value => {
+    console.log(value);
+    const { pagination } = this.state;
+    // eslint-disable-next-line radix
+    pagination.pageSize = parseInt(value);
+    this.setState({ pagination });
+  };
+
+  // Private Function
+  containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+
+    return searchFrom
+      .toString()
+      .toLowerCase()
+      .includes(searchedVal);
+  };
+
+  onSearch = value => {
+    const searchedVal = value.toLowerCase();
+    const { usersRef } = this.state;
+
+    const filtered = usersRef.filter(item => {
+      const { storage_id, storage_name, storage_description } = item;
+
+      return (
+        this.containsString(storage_id, searchedVal) ||
+        this.containsString(storage_name, searchedVal) ||
+        this.containsString(storage_description, searchedVal)
+      );
+    });
+
+    this.setState({ data: filtered });
+  };
+
+  onChangeSearch = event => {
+    const { usersRef } = this.state;
+
+    if (event.target.value === "") this.setState({ data: usersRef });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
-    return ( 
-			<div>
+    const {actionType} = this.state
+    return (
+      <div>
         <AntRow>
-          <AntCol span={6}>
-            <Title level={4}>STORAGE SETUP</Title>
-            <AntForm onSubmit={this.handleSubmit}>
-            
-              <AntForm.Item label="STORAGE NAME">
-                {getFieldDecorator('storage_name', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <AntInput />,
-                )}
-              </AntForm.Item>
-              <AntForm.Item label="DESCRIPTION">
-                {getFieldDecorator('description', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <TextArea rows={6} />,
-                )}
-              </AntForm.Item>
+          <AntCol span={24}>
+            <div className="panel-table-options" style={{ marginTop: 10 }}>
               <AntRow>
-                <AntCol span={24} style={{ textAlign: 'right' }}>
-                  <AntButton onClick={this.handleReset} shape="round">
-                    Clear
-                  </AntButton>
-                  <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }} shape="round">
-                    Add
-                  </AntButton>
+                <AntCol span={12}>
+                  <Search
+                    allowClear
+                    onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    style={{ width: 200 }}
+                    className="panel-table-search-input"
+                  />
+                </AntCol>
+                <AntCol span={12} style={{ textAlign: "right" }}>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    style={{ marginRight: "15px" }}
+                    onClick={this.displayDrawerAdd}
+                  >
+                    <Icon type="plus" />
+                    {addStorageButton}
+                  </Button>
+                  <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
-            </AntForm>
-          </AntCol>
-          <AntCol span={2} />
-          <AntCol span={16}>
-          <AntTable 
-					className="settings-panel-table"
-					size={tableSize}
-					dataSource={data}
-					pagination={this.state.pagination}
-					loading={this.state.loading} 
-          columns={columns}
-          
-					rowKey={record => record.key}
-					onRow={(record) => {
-						return {
-							onDoubleClick: () => {
-								this.displayDrawerUpdate(record);
-							}
-						}
-					}}
-				/>
-        <Drawer 
-					title={this.state.drawerTitle}
-					visible={this.state.isDrawerVisible}
-					onClose={this.onClose}
-					width="40%"
-					destroyOnClose
-				>
-					<StorageForm 
-						drawerButton={this.state.drawerButton} 
-						panelInfo={this.state.panelInfo}
-						onCancel={this.onClose}
-					/>
-				</Drawer>
+            </div>
+            <AntTable
+              className="settings-panel-table"
+              size={tableSize}
+              scroll={{ y: tableYScroll }}
+              dataSource={this.state.data}
+              pagination={this.state.pagination}
+              loading={this.state.loading}
+              columns={columns}
+              style={{ textTransform: "uppercase" }}
+              rowKey={record => record.key}
+              onRow={record => {
+                return {
+                  onDoubleClick: () => {
+                    this.displayDrawerUpdate(record);
+                  }
+                };
+              }}
+            />
+            <Drawer
+              title={this.state.drawerTitle}
+              visible={this.state.isDrawerVisible}
+              onClose={this.onClose}
+              width="30%"
+              destroyOnClose
+            >
+              <StorageForm
+                actionType={actionType}
+                drawerButton={this.state.drawerButton}
+                panelInfo={this.state.panelInfo}
+                onCancel={this.onClose}
+              />
+            </Drawer>
           </AntCol>
         </AntRow>
-			</div>
+      </div>
     );
   }
 }
