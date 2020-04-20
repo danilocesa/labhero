@@ -9,13 +9,16 @@ import { buttonLabels } from '../settings'
 import './form.css';
 
 const { TextArea } = Input;
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+  };
 
 class UserAccountForm extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			confirmDirty: false,
 			userTypeList: []
 		};
 	}	
@@ -24,26 +27,20 @@ class UserAccountForm extends React.Component {
 		const { drawerButton } = this.props;
 			return(
 				<div>
-					<Form >
+					<Form>
 						{this.props.actionType == "update"? 
-							<Form.Item label="ACTIVE" >
-								{
+							<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}}>
 									<Switch />
-								}
 							</Form.Item>	
 						:
 						null
 						}
-						<div className="form-section" >
-							<Form.Item label= "BLOOD GROUP" style={{ marginTop:'-25px'}}>
-								
+						<div className="form-section">
+							<Form.Item label="BLOOD GROUP" style={{ marginTop:'-25px'}}>
 									<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
-								
 							</Form.Item>
-							<Form.Item label= "DESCRIPTION" style={{ marginTop:'-25px'}}>
-								{
+							<Form.Item label="DESCRIPTION" style={{ marginTop:'-25px'}}>
 									<TextArea rows={5} />
-								}
 							</Form.Item>
 						</div>
 						<section className="drawerFooter">
@@ -60,9 +57,8 @@ class UserAccountForm extends React.Component {
 	}
 }
 UserAccountForm.propTypes = {
-	patientInfo: PropTypes.array.isRequired,
 	drawerButton: PropTypes.string.isRequired,
-	form: PropTypes.object,
+
 	onClose: PropTypes.func,
 	actionType: PropTypes.string
 }

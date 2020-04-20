@@ -5,7 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, Row, Col, Typography, Radio, Select, Drawer, List, Divider } from 'antd';
+import { Form, Row, Col, Divider } from 'antd';
 
 // CUSTOM MODULES
 // import DrawerButton from './form2_button';
@@ -18,9 +18,7 @@ import './editprofile.css';
 
 // OTHER FILES
 // eslint-disable-next-line camelcase
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
-const dateFormat = 'MM/DD/YYYY';
+
 const DescriptionItem = ({ title, content }) => (
 	<div
 	  style={{
@@ -45,9 +43,6 @@ const DescriptionItem = ({ title, content }) => (
 );
 
 // CONSTANTS
-const { Text } = Typography;
-const { TextArea } = Input;
-const { Option } = Select;
 
 class RecipientProfile extends React.Component {
 
@@ -55,12 +50,11 @@ class RecipientProfile extends React.Component {
 		return(
 			<div>
 				<Form className="fillup-form">
-						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>RECIPIENT'S PROFILE</p>
+						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>RECIPIENT PROFILE</p>
 						<Row gutter={12}>
                             <Col span={6}>
                                 <div>
 									<Col>
-										{' '}
 										<img src={PatientImgPlaceholder} alt="logo" style={{ height: 100, width: 100, paddingBottom: '1em' }} />
 									</Col>
 									<Col>
