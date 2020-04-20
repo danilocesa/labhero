@@ -55,58 +55,79 @@ const columns = [
   }
 ];
 
+const columns2 = [
+  {
+    title: "ADDRESS",
+    dataIndex: "address",
+    key: "address",
+    width: 250
+  },
+  {
+    title: "DESCRIPTION",
+    dataIndex: "description",
+    key: "description",
+    width: 250
+  },
+  {
+    title: "EMAIL ADDRESS",
+    dataIndex: "email_address",
+    key: "email_address",
+    width: 150
+  }
+];
+
 const data1 = [
   {
     key: "1",
-          supplier_name: "Jollibee",
-          contact_person: "John Brown",
-          contact_number: "123456",
-          tin: "10000100101001"
+    address: "Makati City",
+    description: "Masarap",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
   },
   {
     key: "2",
-    supplier_name: "Jollibee",
-    contact_person: "John Brown",
-    contact_number: "123456",
-    tin: "10000100101001"
+    address: "Taguig City",
+    description: "Delicios",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
   },
   {
     key: "3",
-    supplier_name: "Jollibee",
-    contact_person: "John Brown",
-    contact_number: "123456",
-    tin: "10000100101001"
+    address: "Pasay City",
+    description: "Yummy",
+    email_address: "juandelacruz@myherohub.com",
+    width: 150
   }
 ];
 
 const data2 = [
   {
     key: "1",
-    supplier_name: "Jollibee",
-    contact_person: "John Brown",
-    contact_number: "123456",
-    tin: "10000100101001"
+    address: "Makati City",
+    description: "Masarap",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
   },
   {
     key: "2",
-    supplier_name: "Jollibee",
-    contact_person: "John Brown",
-    contact_number: "123456",
-    tin: "10000100101001"
+    address: "Taguig City",
+    description: "Delicios",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
   },
   {
     key: "3",
-    supplier_name: "Jollibee",
-    contact_person: "John Brown",
-    contact_number: "123456",
-    tin: "10000100101001"
+    address: "Pasay City",
+    description: "Yummy",
+    email_address: "juandelacruz@myherohub.com",
+    width: 150
   }
 ];
 
 const expandedRow = row => {
   console.log(row);
   let inTable = row.key == 1 ? data1 : row.key == 2 ? data2 : data1;
-  return <AntTable columns={columns} dataSource={inTable} pagination={false} />;
+  return <AntTable columns={columns2} dataSource={inTable} pagination={false} />;
 };
 
 class InventorySupplierTemplate extends React.Component {
