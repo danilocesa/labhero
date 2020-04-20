@@ -18,8 +18,8 @@ import PhleboPatientResult from 'modules/main/phlebo/patient_phlebo_info'
 import ErrorPage from 'modules/error_page';
 import SearchPatient from 'modules/main/patient_demographics';
 import Settings from 'modules/main/settings';
-import Inventory from 'modules/main/inventory';
-import BloodBank from 'modules/main/blood_bank';
+import Inventory from 'modules/inventory';
+import BloodBank from 'modules/blood_bank';
 import Cashier from 'modules/main/cashier';
 import Receipt from 'modules/main/cashier/receipt';
 import Transactions from 'modules/main/cashier/transactions';
