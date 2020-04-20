@@ -55,9 +55,83 @@ const columns = [
   }
 ];
 
+const columns2 = [
+  {
+    title: "ADDRESS",
+    dataIndex: "address",
+    key: "address",
+    width: 250
+  },
+  {
+    title: "DESCRIPTION",
+    dataIndex: "description",
+    key: "description",
+    width: 250
+  },
+  {
+    title: "EMAIL ADDRESS",
+    dataIndex: "email_address",
+    key: "email_address",
+    width: 150
+  }
+];
 
+const data1 = [
+  {
+    key: "1",
+    address: "Makati City",
+    description: "Masarap",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
+  },
+  {
+    key: "2",
+    address: "Taguig City",
+    description: "Delicios",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
+  },
+  {
+    key: "3",
+    address: "Pasay City",
+    description: "Yummy",
+    email_address: "juandelacruz@myherohub.com",
+    width: 150
+  }
+];
+
+const data2 = [
+  {
+    key: "1",
+    address: "Makati City",
+    description: "Masarap",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
+  },
+  {
+    key: "2",
+    address: "Taguig City",
+    description: "Delicios",
+    email_address: "juandelacruz@myherohub.com",
+    width: 250
+  },
+  {
+    key: "3",
+    address: "Pasay City",
+    description: "Yummy",
+    email_address: "juandelacruz@myherohub.com",
+    width: 150
+  }
+];
+
+const expandedRow = row => {
+  console.log(row);
+  let inTable = row.key == 1 ? data1 : row.key == 2 ? data2 : data1;
+  return <AntTable columns={columns2} dataSource={inTable} pagination={false} />;
+};
 
 class InventorySupplierTemplate extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -107,9 +181,10 @@ class InventorySupplierTemplate extends React.Component {
           tin: "10000100101001"
         }
       ],
-      actionType: "add"
+      actionType: "add",
     };
   }
+
 
   handleSubmit = e => {
     e.preventDefault();
@@ -126,6 +201,16 @@ class InventorySupplierTemplate extends React.Component {
       drawerTitle: drawerUpdateTitle,
       drawerButton: buttonLabels.update,
       actionType: "update",
+      panelInfo: record
+    });
+  };
+
+  displayDrawerAdd = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerUpdateTitle,
+      drawerButton: buttonLabels.create,
+      actionType: "add",
       panelInfo: record
     });
   };
@@ -158,6 +243,7 @@ class InventorySupplierTemplate extends React.Component {
     this.setState({ data: filtered });
   };
 
+  
   onChangeSearch = event => {
     const { usersRef } = this.state;
 
@@ -180,6 +266,7 @@ class InventorySupplierTemplate extends React.Component {
 
   render() {
     const { actionType } = this.state;
+
     return (
       <div>
         <AntRow>
@@ -210,6 +297,7 @@ class InventorySupplierTemplate extends React.Component {
               </AntRow>
             </div>
             <AntTable
+              expandedRowRender={expandedRow}
               style={{ textTransform: "uppercase" }}
               className="settings-panel-table"
               size={tableSize}
@@ -230,7 +318,7 @@ class InventorySupplierTemplate extends React.Component {
               title={this.state.drawerTitle}
               visible={this.state.isDrawerVisible}
               onClose={this.onClose}
-              width="40%"
+              width="50%"
               destroyOnClose
             >
               <SupplierForm

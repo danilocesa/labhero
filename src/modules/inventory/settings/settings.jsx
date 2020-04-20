@@ -64,6 +64,7 @@ export const fieldLabels = {
   suppliersContactPerson: "CONTACT PERSON",
   suppliersContactNumber: "CONTACT NUMBER",
   suppliersEmailAddress: "EMAIL ADDRESS",
+  suppliersTin: "TIN NO.",
   suppliersUnit: "UNIT/HOUSE NO.",
   suppliersStreet: "STREET",
   suppliersBarangay: "BARANGAY",
