@@ -7,7 +7,8 @@ import {
   Form as AntForm,
   Button as AntButton,
   Switch as AntSwitch,
-  Row as AntRow
+  Row as AntRow,
+  Col as AntCol
 } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -204,12 +205,23 @@ class PanelFormTemplate extends React.Component {
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={12}>
               {this.props.actionType === "update" ? (
-                <AntForm.Item label={fieldLabels.is_active}>
-                  {getFieldDecorator("is_active", {
-                    valuePropName: "checked",
-                    initialValue: panelInfo ? panelInfo.status === 1 : true
-                  })(<AntSwitch />)}
-                </AntForm.Item>
+                <AntRow>
+                <div style={{float: "left"}}>
+                <AntCol xs={24} sm={24}>
+                  <AntForm.Item
+                    label={fieldLabels.is_active}
+                    labelCol={{ span: 14 }}
+                    wrapperCol={{ span: 1 }}
+                  >
+                    {getFieldDecorator("active", {
+                      valuePropName: "checked",
+                      initialValue: panelInfo ? panelInfo.status === 1 : true
+                    })(<AntSwitch />)}
+                  </AntForm.Item>
+                </AntCol>
+                </div>
+                
+                </AntRow>
               ) : null}
               <AntForm.Item
                 label={fieldLabels.storage_name}

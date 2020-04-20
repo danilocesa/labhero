@@ -1,155 +1,241 @@
+// @ts-nocheck
 /* eslint-disable react/prop-types */
 // LiBRARY
-import SupplierForm from '../supplier/supplier_form';
-import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from './settings';
-import React from 'react';
-import { 
-  Drawer ,
-  Row as AntRow, 
-  Col as AntCol, 
-  Typography, 
-  Form as AntForm, 
-  Input as AntInput, 
+import React from "react";
+import TablePager from "shared_components/table_pager";
+import {
+  Drawer,
+  Row as AntRow,
+  Col as AntCol,
+  Form as AntForm,
   Button as AntButton,
-  Table as AntTable
-} from 'antd';
+  Table as AntTable,
+  Input,
+  Icon
+} from "antd";
 
 // CUSTOM MODULES
-import ClearFormFields from 'shared_components/form_clear_button';
+import SupplierForm from "./supplier_form/supplier_form";
+import {
+  drawerUpdateTitle,
+  tableSize,
+  buttonLabels,
+  addSupplierButton
+} from "../settings";
 
-const { Title } = Typography;
-const { TextArea } = AntInput;
+const { Search } = Input;
+
 const columns = [
   {
-    title: 'SUPPLIER ID',
-    dataIndex: 'supplier_id',
-    key: 'supplier_id'
-	},
-  {
-    title: 'SUPLIER',
-    dataIndex: 'supplier',
-    key: 'supplier',
+    title: "SUPPLIER NAME",
+    dataIndex: "supplier_name",
+    key: "supplier_name"
   },
   {
-    title: 'SUPPLIER DETAILS',
-    dataIndex: 'supplier_details',
-    key: 'supplier_details',
+    title: "CONTACT PERSON",
+    dataIndex: "contact_person",
+    key: "contact_person"
+  },
+  {
+    title: "CONTACT NUMBER",
+    dataIndex: "contact_number",
+    key: "contact_number"
+  },
+  {
+    title: "TIN NO.",
+    dataIndex: "tin",
+    key: "tin"
   }
 ];
 
-const data = [
-  {
-    key: '1',
-    supplier_id: 1,
-    supplier: 'John Brown',
-    supplier_details: 'New York No. 1 Lake Park'
-  },
-  {
-    key: '2',
-    supplier_id: 2,
-    supplier: 'Jim Green',
-    supplier_details: 'London No. 1 Lake Park'
-  },
-  {
-    key: '3',
-    supplier_id: 3,
-    supplier: 'Joe Black',
-    supplier_details: 'Sidney No. 1 Lake Park'
-  },
-];
-
 class InventorySupplierTemplate extends React.Component {
-  state = { }
-  
+  constructor(props) {
+  super(props);
+  this.state = {
+    data: [
+      {
+        key: "1",
+        supplier_name: "Jollibee",
+        contact_person: "John Brown",
+        contact_number: "123456",
+        tin: "10000100101001"
+
+      },
+      {
+        key: "2",
+        supplier_name: "Mcdo",
+        contact_person: "Mc Kinley",
+        contact_number: "123456",
+        tin: "10000100101001"
+      },
+      {
+        key: "3",
+        supplier_name: "Chowking",
+        contact_person: "King Chow",
+        contact_number: "123456",
+        tin: "10000100101001"
+      }
+    ],
+    usersRef: [
+      {
+        key: "1",
+        supplier_name: "Jollibee",
+        contact_person: "John Brown",
+        contact_number: "123456",
+        tin: "10000100101001"
+
+      },
+      {
+        key: "2",
+        supplier_name: "Mcdo",
+        contact_person: "Mc Kinley",
+        contact_number: "123456",
+        tin: "10000100101001"
+      },
+      {
+        key: "3",
+        supplier_name: "Chowking",
+        contact_person: "King Chow",
+        contact_number: "123456",
+        tin: "10000100101001"
+      }
+    ],
+    actionType: "add"
+  };
+}
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log("Received values of form: ", values);
       }
     });
   };
-  displayDrawerUpdate = (record) => {
-		this.setState({
-			isDrawerVisible: true,
-			drawerTitle: drawerUpdateTitle,
-			drawerButton: buttonLabels.update,
-			panelInfo: record
-		});
-  }                                   
+
+  displayDrawerUpdate = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerUpdateTitle,
+      drawerButton: buttonLabels.update,
+      actionType: "update",
+      panelInfo: record
+    });
+  };
+
+  // Private Function
+  containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+
+    return searchFrom
+      .toString()
+      .toLowerCase()
+      .includes(searchedVal);
+  };
+
+  onSearch = value => {
+    const searchedVal = value.toLowerCase();
+    const { usersRef } = this.state;
+
+    const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
+      const { supplier_name, contact_person, contact_number } = item;
+
+      return (
+        this.containsString(supplier_name, searchedVal) ||
+        this.containsString(contact_person, searchedVal) ||
+        this.containsString(contact_number, searchedVal)
+      );
+    });
+
+    this.setState({ data: filtered });
+  };
+
+  onChangeSearch = event => {
+    const { usersRef } = this.state;
+
+    if (event.target.value === "") this.setState({ data: usersRef });
+  };
+
   onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
-	};
+    this.setState({
+      isDrawerVisible: false
+    });
+  };
+
+  handleSelectChange = value => {
+    console.log(value);
+    const { pagination } = this.state;
+    // eslint-disable-next-line radix
+    pagination.pageSize = parseInt(value);
+    this.setState({ pagination });
+  };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    return ( 
-			<div>
+    const { actionType } = this.state;
+    return (
+      <div>
         <AntRow>
-          <AntCol span={6}>
-            <Title level={4}>SUPPLIER SETUP</Title>
-            <AntForm onSubmit={this.handleSubmit}>
-              <AntForm.Item label="SUPPLIER NAME">
-                {getFieldDecorator('supplier', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <AntInput />,
-                )}
-              </AntForm.Item>
-              <AntForm.Item label="SUPPLIER DETAILS">
-                {getFieldDecorator('supplier_details', {
-                  rules: [{ required: true, message: 'Please input!' }],
-                })(
-                  <TextArea rows={6} />
-                )}
-              </AntForm.Item>
+          <AntCol span={24}>
+            <div className="panel-table-options" style={{ marginTop: 10 }}>
               <AntRow>
-                <AntCol span={24} style={{ textAlign: 'right' }}>
-                  <ClearFormFields form={this.props.form} />
-                  <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }} shape="round" >
-                    ADD
+                <AntCol span={12}>
+                  <Search
+                    allowClear
+                    onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    style={{ width: 200 }}
+                    className="panel-table-search-input"
+                  />
+                </AntCol>
+                <AntCol span={12} style={{ textAlign: "right" }}>
+                  <AntButton
+                    type="primary"
+                    shape="round"
+                    style={{ marginRight: "15px" }}
+                    onClick={this.displayDrawerAdd}
+                  >
+                    <Icon type="plus" />
+                    {addSupplierButton}
                   </AntButton>
+                  <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
-            </AntForm>
-          </AntCol>
-          <AntCol span={2} />
-          <AntCol span={16}>
-          <AntTable 
-					className="settings-panel-table"
-					size={tableSize}
-					dataSource={data}
-					pagination={this.state.pagination}
-					loading={this.state.loading} 
-          columns={columns}
-          
-					rowKey={record => record.key}
-					onRow={(record) => {
-						return {
-							onDoubleClick: () => {
-								this.displayDrawerUpdate(record);
-							}
-						}
-					}}
-				/>
-        <Drawer 
-					title={this.state.drawerTitle}
-					visible={this.state.isDrawerVisible}
-					onClose={this.onClose}
-					width="40%"
-					destroyOnClose
-				>
-					<SupplierForm 
-				
-						panelInfo={this.state.panelInfo}
-						onCancel={this.onClose}
-					/>
-				</Drawer>
+            </div>
+            <AntTable
+              style={{textTransform: "uppercase"}}
+              className="settings-panel-table"
+              size={tableSize}
+              dataSource={this.state.data}
+              pagination={this.state.pagination}
+              loading={this.state.loading}
+              columns={columns}
+              rowKey={record => record.key}
+              onRow={record => {
+                return {
+                  onDoubleClick: () => {
+                    this.displayDrawerUpdate(record);
+                  }
+                };
+              }}
+            />
+            <Drawer
+              title={this.state.drawerTitle}
+              visible={this.state.isDrawerVisible}
+              onClose={this.onClose}
+              width="40%"
+              destroyOnClose
+            >
+              <SupplierForm
+                actionType={actionType}
+                drawerButton={this.state.drawerButton}
+                panelInfo={this.state.panelInfo}
+                onCancel={this.onClose}
+              />
+            </Drawer>
           </AntCol>
         </AntRow>
-			</div>
+      </div>
     );
   }
 }

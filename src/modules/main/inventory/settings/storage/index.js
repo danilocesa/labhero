@@ -105,6 +105,7 @@ class InventoryStorageTemplate extends React.Component {
   };
 
   handleReset = () => {
+    // eslint-disable-next-line react/prop-types
     this.props.form.resetFields();
   };
 

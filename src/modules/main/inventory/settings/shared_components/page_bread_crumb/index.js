@@ -9,7 +9,7 @@ const { Title } = Typography;
 function InventoryPageCrumb({pageTitle}) {
   return (
 	  <AntRow type="flex" align="middle" justify="start">
-		  <Title level={3}>{pageTitle}</Title>
+		  <Title level={4}>{pageTitle}</Title>
 	  </AntRow>
   );
 }

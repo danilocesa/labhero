@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable react/no-unused-state */
 /* eslint-disable func-names */
 // LIBRARY
 import React from "react";
@@ -5,36 +7,26 @@ import {
   Input as AntInput,
   Form as AntForm,
   Button as AntButton,
-  List as AntList,
-  Spin as AntSpin,
-  Checkbox as AntCheckbox,
   Switch as AntSwitch,
-  Alert as AntAlert,
-  Col as AntCol,
-  Row as AntRow
+  Row as AntRow,
+  Col as AntCol
 } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroller";
 
 // CUSTOM MODULES
 import HttpCodeMessage from "shared_components/message_http_status";
-import { RegexInput, AlphaNumInput } from "shared_components/pattern_input";
 import { fetchExamRequestList } from "services/shared/examRequest";
 import {
   createdPanelAPI,
   updatePanelListAPI,
   getPanelInfoAPI
 } from "services/settings/panelExamRequesting";
-import {
-  messagePrompts,
-  buttonLabels,
-  fieldLabels,
-  fieldRules
-} from "../../settings";
+import { messagePrompts, buttonLabels, fieldLabels } from "../../settings";
 
 // CSS
 import "./category_form.css";
+
 const { TextArea } = AntInput;
 class PanelFormTemplate extends React.Component {
   // eslint-disable-next-line no-useless-constructor
@@ -43,6 +35,7 @@ class PanelFormTemplate extends React.Component {
   }
 
   state = {
+    // eslint-disable-next-line react/no-unused-state
     examRequestData: [],
     selectedExamRequest: [],
     loading: false,
@@ -211,15 +204,27 @@ class PanelFormTemplate extends React.Component {
         <AntForm onSubmit={this.onSubmit}>
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={12}>
-              {this.props.actionType == "update" ? (
-                <AntForm.Item label={fieldLabels.is_active}>
-                  {getFieldDecorator("is_active", {
-                    valuePropName: "checked",
-                    initialValue: panelInfo ? panelInfo.status === 1 : true
-                  })(<AntSwitch />)}
-                </AntForm.Item>
-              ) : null}
-
+              {this.props.actionType === "update" ? (
+                <AntRow>
+                  <div style={{float: "left"}}>
+                  <AntCol xs={24} sm={24}>
+                    <AntForm.Item
+                      label={fieldLabels.is_active}
+                      labelCol={{ span: 14 }}
+                      wrapperCol={{ span: 1 }}
+                    >
+                      {getFieldDecorator("active", {
+                        valuePropName: "checked",
+                        initialValue: panelInfo ? panelInfo.status === 1 : true
+                      })(<AntSwitch />)}
+                    </AntForm.Item>
+                  </AntCol>
+                  </div>
+                  
+                </AntRow>
+              ) :
+              null}
+              
               <AntForm.Item
                 label={fieldLabels.categories_code}
                 className={panelInfo ? null : "hide"}
@@ -278,6 +283,7 @@ PanelFormTemplate.propTypes = {
   panelInfo: PropTypes.object,
   drawerButton: PropTypes.string.isRequired,
   form: PropTypes.object,
+  // eslint-disable-next-line react/require-default-props
   actionType: PropTypes.string,
   onCancel: PropTypes.func
 };

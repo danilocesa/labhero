@@ -29,13 +29,13 @@ const { Search } = Input;
 
 const columns = [
   {
-    title: "CATEGORIES CODE",
+    title: "CATEGORY CODE",
     dataIndex: "categories_code",
     key: "categories_code",
     width: 250
   },
   {
-    title: "CATEGORIES NAME",
+    title: "CATEGORY NAME",
     dataIndex: "categories_name",
     key: "categories_name",
     width: 250

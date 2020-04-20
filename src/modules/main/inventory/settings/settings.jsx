@@ -50,17 +50,26 @@ export const fieldLabels = {
   examItemUnitCode: "UNIT OF MEASURES",
   examItemTypeDefault: "DEFAULT VALUE",
   examItemIntegrationCode: "INTEGRATION CODE",
-  categories_code: "CATEGORIES CODE",
-  categories_name: "CATEGORIES NAME",
-  categories_description: "CATEGORIES DESCRIPTION",
+  categories_code: "CATEGORY CODE",
+  categories_name: "CATEGORY NAME",
+  categories_description: "DESCRIPTION",
   section_code: "SECTION CODE",
   section_name: "SECTION NAME",
-  section_description: "SECTION DESCRIPTION",
+  section_description: "DESCRIPTION",
   field_status: "STATUS",
   is_active : "ACTIVE",
   storage_name: "STORAGE NAME",
-  storage_description: "STORAGE DESCRIPTION"
- 
+  storage_description: "DESCRIPTION",
+  suppliersName: "SUPPLIERS NAME",
+  suppliersContactPerson: "CONTACT PERSON",
+  suppliersContactNumber: "CONTACT NUMBER",
+  suppliersEmailAddress: "EMAIL ADDRESS",
+  suppliersUnit: "UNIT/HOUSE NO.",
+  suppliersStreet: "STREET",
+  suppliersBarangay: "BARANGAY",
+  suppliersDistrict: "DISTRICT",
+  suppliersZipCode: "ZIPCODE",
+  suppliersItemDescription: "ITEM DESCRIPTION"
 
 }
 
@@ -79,5 +88,6 @@ export const addUserButton = 'ADD USER';
 export const addSectionButton = 'ADD SECTION';
 export const addCategoriesButton = 'ADD CATEGORY';
 export const addStorageButton = 'ADD STORAGE';
+export const addSupplierButton = 'ADD SUPPLIER';
 
 export const tableYScroll = globalTableYScroll;
