@@ -1,11 +1,13 @@
 // LiBRARY
 import React from 'react';
 import { 
+  Drawer,
   Row as AntRow, 
   Col as AntCol, 
   Form as AntForm, 
   Input as AntInput, 
   Button as AntButton,
+  Table as AntTable,
   Select
 } from 'antd';
 
@@ -33,6 +35,7 @@ class InventoryCategoriesTemplate extends React.Component {
 		super(props);
 
 		this.state = {
+			isLoading: false,
 			selectedRsType: null,
 			unitOfMeasures: [],
 			inputTypeCodes: []
@@ -58,7 +61,13 @@ class InventoryCategoriesTemplate extends React.Component {
     this.props.form.resetFields();
   };
 
- 
+  displayDrawerUpdate = (record) => {
+		this.setState({
+			isDrawerVisible: true,
+			drawerTitle: "UPDATE QUESION",
+			drawerButton: "UPDATE",
+			panelInfo: record
+		});
   }
   onChangeItemTypeCode = (itemTypeCode) => {
 		const { setFieldsValue } = this.props.form;
@@ -68,6 +77,12 @@ class InventoryCategoriesTemplate extends React.Component {
 
 		this.setState({ selectedRsType: itemTypeCode });
 	}
+  onClose = () => {
+		this.setState({
+			isDrawerVisible: false,
+		});
+	};
+
   render() {
     const {  selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
     
@@ -83,19 +98,18 @@ class InventoryCategoriesTemplate extends React.Component {
 				</Option>
 			);
 		});
-		
     return ( 
 			<div>
         <AntRow>
           <AntCol span={6}>
-            <AntForm onSubmit={this.handleSubmit} >
+            <AntForm onSubmit={this.handleSubmit}>
               <AntForm.Item label="QUESTION">
                   <AntInput />
               </AntForm.Item>
               <AntForm.Item label="CATEGORY">
                   <Select />
               </AntForm.Item>
-              <AntForm.Item label= "ANSWER">
+              <AntForm.Item label="ANSWER">
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
 								</Select>
@@ -109,7 +123,7 @@ class InventoryCategoriesTemplate extends React.Component {
 						)}	
                 { (selectedRsType === EITC_NUMERIC) && (
                   <React.Fragment>
-                    <AntForm.Item label= "ANSWER">
+                    <AntForm.Item label="ANSWER">
                         <AntInput maxLength={254} />
                     </AntForm.Item>
                   </React.Fragment>
@@ -125,25 +139,9 @@ class InventoryCategoriesTemplate extends React.Component {
                      </AntForm.Item>
                   </React.Fragment>	
                 )}
-            
-
-                  {/* BUTTON */}
-              <AntRow>
-                <AntCol span={24} style={{ textAlign: 'right' }} >
-                  <AntButton onClick={this.handleReset} shape="round">
-                    CLEAR
-                  </AntButton>
-                  <AntButton type="primary" htmlType="submit" style={{ marginLeft: 8 }}shape="round"> 
-                    ADD
-                  </AntButton>
-                </AntCol>
-              </AntRow>
             </AntForm>
           </AntCol>
-          <AntCol span={2} />
-          <AntCol span={16}>
-
-          </AntCol>
+        
         </AntRow>
 			</div>
     );

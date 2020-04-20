@@ -83,7 +83,8 @@ class BloodBank extends React.Component {
 			actionType:'update',
             
 		});
-	}
+    };
+
 
 	render() {
 		const { pagination, visible, drawerTitle, loading,patientInfo,actionType,drawerButton } = this.state;
