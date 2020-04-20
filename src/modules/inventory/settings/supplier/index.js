@@ -19,7 +19,6 @@ import {
 // CUSTOM MODULES
 import TablePager from "shared_components/table_pager";
 import ClearFormFields from "shared_components/form_clear_button";
-import SupplierForm from "./supplier_form";
 import {
   drawerUpdateTitle,
   drawerAddTitle,
@@ -28,6 +27,7 @@ import {
   buttonLabels,
   addSupplierButton
 } from "modules/inventory/settings/settings";
+import SupplierForm from "./supplier_form/supplier_form";
 
 //  CONSTANTS
 const { Search } = Input;
