@@ -1,4 +1,4 @@
-import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { globalTableSize, globalTableYScroll} from 'global_config/constant-global';
 import vdltnMessage from 'global_config/error_messages';
 
 

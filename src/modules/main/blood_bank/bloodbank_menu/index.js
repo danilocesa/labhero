@@ -16,12 +16,7 @@ const settingsItemData = [
 		image: BBdonorRegIcon,
 		link: '/bloodbank/donor_registration',
 		label: 'Donor Registration',
-		offset: 4
-	},
-	{
-		image: BBdonorRegIcon,
-		link: '/bloodbank/settings',
-		label: 'Settings',
+		offset: 2
 	},
 	{
 		image: BBaddBloodReqIcon,
@@ -37,7 +32,12 @@ const settingsItemData = [
 		image: BBsearchDonorIcon,
 		link: '/bloodbank/search_donor',
 		label: 'Seach Donor'
-	}
+	},
+	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/settings',
+		label: 'Settings',
+	},
 ]
 
 class BloodBankMenu extends React.Component {
@@ -58,7 +58,7 @@ class BloodBankMenu extends React.Component {
 		return(
 			<div>
 				<PageTitle pageTitle="BLOOD BANK" />
-				<Row gutter={30} style={{paddingTop: '20px'}}>
+				<Row gutter={20} style={{paddingTop: '10px'}}>
 					{rowItems}
 				</Row>
 			</div>

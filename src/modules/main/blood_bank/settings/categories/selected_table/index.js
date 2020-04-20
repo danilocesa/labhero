@@ -93,15 +93,15 @@ class SelectedTable extends React.Component {
 	  showDrawer = () => {
 		this.setState({
 			isDrawerVisible: true ,
-			drawerTitle: "BLOOD BANK ADD",
-			drawerButton: "Add",
+			drawerTitle: "ADD CATEGORY",
+			drawerButton: "ADD",
 			actionType : 'add',
 		});
 	};
 		displayDrawerUpdate = (record) => {
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: "UPDATE BLOOD GROUP",
+			drawerTitle: "UPDATE CATEGORY",
 			drawerButton: "UPDATE",
 			actionType:'update',
 			patientInfo: record
