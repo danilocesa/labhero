@@ -1,13 +1,11 @@
 // LiBRARY
 import React from 'react';
 import { 
-  Drawer,
   Row as AntRow, 
   Col as AntCol, 
   Form as AntForm, 
   Input as AntInput, 
   Button as AntButton,
-  Table as AntTable,
   Select
 } from 'antd';
 
@@ -35,7 +33,6 @@ class InventoryCategoriesTemplate extends React.Component {
 		super(props);
 
 		this.state = {
-			isLoading: false,
 			selectedRsType: null,
 			unitOfMeasures: [],
 			inputTypeCodes: []
@@ -61,13 +58,7 @@ class InventoryCategoriesTemplate extends React.Component {
     this.props.form.resetFields();
   };
 
-  displayDrawerUpdate = (record) => {
-		this.setState({
-			isDrawerVisible: true,
-			drawerTitle: "UPDATE QUESION",
-			drawerButton: "UPDATE",
-			panelInfo: record
-		});
+ 
   }
   onChangeItemTypeCode = (itemTypeCode) => {
 		const { setFieldsValue } = this.props.form;
@@ -77,12 +68,6 @@ class InventoryCategoriesTemplate extends React.Component {
 
 		this.setState({ selectedRsType: itemTypeCode });
 	}
-  onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
-	};
-
   render() {
     const {  selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
     
@@ -99,7 +84,6 @@ class InventoryCategoriesTemplate extends React.Component {
 			);
 		});
 		
-    const { getFieldDecorator } = this.props.form;
     return ( 
 			<div>
         <AntRow>

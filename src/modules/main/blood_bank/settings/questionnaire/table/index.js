@@ -66,24 +66,22 @@ class BloodBank extends React.Component {
 			drawerTitle: "ADD QUESTIONNAIRE",
 			drawerButton: "ADD",
 			actionType : 'add',
-			patientInfo: [],
 		});
 	};
 
 	onClose = () => {
 		this.setState({
 			visible: false,
-			patientInfo: [],
 		});
 	};
 
-	displayDrawerUpdate = (record) => {
+	displayDrawerUpdate = () => {
 		this.setState({
 			visible: true,
 			drawerTitle: "UPDATE QUESTIONNAIRE",
 			drawerButton: "UPDATE",
 			actionType:'update',
-			patientInfo: record
+            
 		});
 	}
 
