@@ -34,7 +34,7 @@ const columns = [
     title: "STORAGE NAME",
     dataIndex: "storage_name",
     key: "storage_name",
-    width: 250,
+    width: 100,
     sorter: (a, b) => a.storage_name.localeCompare(b.storage_name)
   },
   {

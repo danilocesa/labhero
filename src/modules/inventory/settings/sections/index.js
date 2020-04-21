@@ -30,17 +30,20 @@ const columns = [
   {
     title: "SECTION CODE",
     dataIndex: "section_code",
-    key: "section_code"
+    key: "section_code",
+    width: 100
   },
   {
     title: "SECTION NAME",
     dataIndex: "section_name",
-    key: "section_name"
+    key: "section_name",
+    width: 150
   },
   {
     title: "DESCRIPTION",
     dataIndex: "description",
-    key: "description"
+    key: "description",
+    width: 250
   }
 ];
 
