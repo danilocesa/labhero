@@ -1,16 +1,8 @@
-// LiBRARY
+/* eslint-disable react/prop-types */
+// LIBRARY
 import React from 'react';
-import { 
-  Drawer,
-  Row as AntRow, 
-  Col as AntCol, 
-  Form as AntForm, 
-  Input as AntInput, 
-  Button as AntButton,
-  Table as AntTable,
-  Select
-} from 'antd';
-
+import {  Form, Input, Select,Switch } from 'antd';
+import PropTypes from 'prop-types';
 import {
 	// Exam Item Type Codes
 	EITC_ALPHA_NUMERIC,
@@ -19,19 +11,24 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
-import { AlphaNumInput } from 'shared_components/pattern_input';
-
-// CUSTOM MODULES
-import DynamicForm from '../dynamic_form';
+import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+import { createExamItem } from 'services/settings/examItem';
 import getUnitOfMeasures from 'services/settings/unitOfMeasure';
 import getInputTypeCode from 'services/settings/inputType';
-//  CONSTANTS
+import DynamicForm from '../dynamic_form';
+import { fieldRules, fieldLabels } from '../settings';
+
+// import './add_form.css';
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+  };
 const { Option } = Select;
+const { TextArea } = Input;
+const provinceData = ['WELLNESS', 'DRUGS & VACCINES' , 'GENERAL MEDICAL' ,'LIFE SYTLES'];
 
-
-
-class InventoryCategoriesTemplate extends React.Component {
-  constructor(props) {
+class AddForm extends React.Component {
+	constructor(props) {
 		super(props);
 
 		this.state = {
@@ -41,35 +38,17 @@ class InventoryCategoriesTemplate extends React.Component {
 			inputTypeCodes: []
 		}
 
-  }
-  async componentDidMount() {
+		this.dynamicForm = React.createRef();
+	}
+	
+	async componentDidMount() {
 		const unitOfMeasures = await getUnitOfMeasures();
 		const inputTypeCodes = await getInputTypeCode();
 		
 		this.setState({ unitOfMeasures, inputTypeCodes });
 	}
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  };
 
-  handleReset = () => {
-    this.props.form.resetFields();
-  };
-
-  displayDrawerUpdate = (record) => {
-		this.setState({
-			isDrawerVisible: true,
-			drawerTitle: "UPDATE QUESION",
-			drawerButton: "UPDATE",
-			panelInfo: record
-		});
-  }
-  onChangeItemTypeCode = (itemTypeCode) => {
+	onChangeItemTypeCode = (itemTypeCode) => {
 		const { setFieldsValue } = this.props.form;
 
 		if(itemTypeCode === EITC_NUMERIC)
@@ -77,77 +56,188 @@ class InventoryCategoriesTemplate extends React.Component {
 
 		this.setState({ selectedRsType: itemTypeCode });
 	}
-  onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
-	};
 
-  render() {
-    const {  selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
-    
-		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
-			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
-				{typeCode.inputTypeName}
-			</Option>
-    ));
-    const UnitMeasureOptions = unitOfMeasures.map(unit => {
+	onSubmit = (event) => {
+		event.preventDefault();
+		
+		const { selectedRsType } = this.state;
+		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+
+		validateFieldsAndScroll((err) => {
+			const dynaFormFields = selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX
+				// @ts-ignore	
+				? this.dynamicForm.getFormValues() 
+				: { hasError: false };
+			
+			if (!err && !dynaFormFields.hasError) {
+				const fields = getFieldsValue();
+				
+				// If checkbox or option get default & label in dynamic form
+				if(selectedRsType === EITC_OPTION || selectedRsType === EITC_CHECKBOX){  
+					const examItemValueParam = [];
+					dynaFormFields.formValues.forEach(value => (
+						examItemValueParam.push({
+							examItemValueDefault: value.isDefault ? 1 : 0,
+							examItemValueLabel: value.label
+						})
+					));
+
+					fields.examItemValue = examItemValueParam;
+				} 
+
+				if(selectedRsType === EITC_ALPHA_NUMERIC || 
+					 selectedRsType === EITC_NUMERIC || 
+					 selectedRsType === EITC_TEXT_AREA ) {
+						if(fields.examItemTypeDefault) {
+							fields.examItemValue = [{ 
+								examItemValueDefault: 1,
+								examItemValueLabel: fields.examItemTypeDefault
+							}];
+						}
+				}
+
+				delete fields.examItemTypeDefault; // We don't need it
+
+				const payload = { 
+					...fields, 
+					examItemTypeItems: dynaFormFields.formValues, 
+					sectionID: selectedSectionId,
+					specimenID: selectedSpecimenId
+				};
+				
+				this.setState({ isLoading: true }, async () => {
+					const createdExamItem = await createExamItem(payload);
+					this.setState({ isLoading: false });
+					
+					if(createdExamItem) {
+						onSuccess();
+						this.resetForm();
+					}
+				});
+
+			}
+		});
+	}
+
+	resetForm = () => {
+		// eslint-disable-next-line react/prop-types
+		const { resetFields } = this.props.form;
+
+		resetFields();
+
+		this.setState({ selectedRsType: null });
+	}
+
+	render() {
+		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
+		// eslint-disable-next-line react/prop-types
+		const {  form } = this.props;
+		// eslint-disable-next-line react/prop-types
+		const { getFieldDecorator } = form;
+	
+		const UnitMeasureOptions = unitOfMeasures.map(unit => {
 			return (
 				<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
 					{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
 				</Option>
 			);
 		});
-    return ( 
-			<div>
-        <AntRow>
-          <AntCol span={6}>
-            <AntForm onSubmit={this.handleSubmit}>
-              <AntForm.Item label="QUESTION">
-                  <AntInput />
-              </AntForm.Item>
-              <AntForm.Item label="CATEGORY">
-                  <Select />
-              </AntForm.Item>
-              <AntForm.Item label="ANSWER">
+
+		const InputTypeCodeOptions = inputTypeCodes.map(typeCode => (
+			<Option value={typeCode.inputTypeCode} key={typeCode.inputTypeCode}>
+				{typeCode.inputTypeName}
+			</Option>
+		));
+		
+
+		return (
+		
+				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
+          	{this.props.actionType == "update"?
+					<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}} >
+						<Switch />
+					</Form.Item>	
+					:
+					 null
+    			  }
+					<section style={{ marginBottom: 50 }}>
+
+            <Form.Item label="CATEGORY">
+              <Select>
+               {provinceData.map(province => (
+                  <Option key={province}>{province}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+						<Form.Item label="QUESTION">
+								<RegexInput 
+									regex={/[A-Za-z0-9 -]/} 
+									maxLength={50} 
+								/>
+						</Form.Item>
+						<Form.Item label="ANSWER">
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
 								</Select>
-						</AntForm.Item>
+						</Form.Item>
 						{ (selectedRsType === EITC_ALPHA_NUMERIC) && (
 							<React.Fragment>
-								<AntForm.Item label="ANSWER">
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault, 
+										// initialValue: 1 
+									})(
 										<AlphaNumInput maxLength={254} />
-								</AntForm.Item>
+									)}
+								</Form.Item>
 							</React.Fragment>
-						)}	
-                { (selectedRsType === EITC_NUMERIC) && (
-                  <React.Fragment>
-                    <AntForm.Item label="ANSWER">
-                        <AntInput maxLength={254} />
-                    </AntForm.Item>
-                  </React.Fragment>
-                )}
-                { (selectedRsType === EITC_CHECKBOX || selectedRsType === EITC_OPTION) && (
-                  // @ts-ignore
-                  <DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
-                )}
-                { selectedRsType === EITC_TEXT_AREA && (
-                  <React.Fragment>
-                    <AntForm.Item label="ANSWER">
-                        <AntInput maxLength={100} />
-                     </AntForm.Item>
-                  </React.Fragment>	
-                )}
-            </AntForm>
-          </AntCol>
-        
-        </AntRow>
-			</div>
-    );
-  }
+						)}
+						{ (selectedRsType === EITC_NUMERIC) && (
+							<React.Fragment>
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault, 
+										// initialValue: 1 
+									})(
+										<NumberInput maxLength={254} />
+									)}
+								</Form.Item>
+							</React.Fragment>
+						)}
+						{ (selectedRsType === EITC_CHECKBOX || selectedRsType === EITC_OPTION) && (
+							// @ts-ignore
+							<DynamicForm wrappedComponentRef={(inst) => this.dynamicForm = inst} />
+						)}
+						{ selectedRsType === EITC_TEXT_AREA && (
+							<React.Fragment>
+								<Form.Item label={fieldLabels.examItemTypeDefault}>
+									{getFieldDecorator('examItemTypeDefault', { 
+										rules: fieldRules.examItemTypeDefault,
+										// initialValue: 1 
+									})(
+										<TextArea maxLength={100} />
+									)}
+								</Form.Item>
+							</React.Fragment>	
+						)}
+					</section>
+					
+				</Form>
+		);
+	}
 }
 
-const InventoryCategories = AntForm.create()(InventoryCategoriesTemplate);
+AddForm.propTypes = {
+	onSuccess: PropTypes.func.isRequired,
+	selectedSectionId: PropTypes.number,
+  selectedSpecimenId: PropTypes.number,
+	actionType: PropTypes.string
+};
 
-export default InventoryCategories;
+AddForm.defaultProps = {
+	selectedSectionId: null,
+	selectedSpecimenId: null,
+};
+
+export default Form.create()(AddForm);

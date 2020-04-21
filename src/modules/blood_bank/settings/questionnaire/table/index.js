@@ -5,7 +5,7 @@ import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
-import questionTable from '../form'
+import QuestionTable from '../form'
 import { 
 	tableSize ,
 } from '../settings';
@@ -142,7 +142,8 @@ class BloodBank extends React.Component {
 							onClose={this.onClose}
 							destroyOnClose
 						> 
-                        <questionTable />
+                        <QuestionTable 
+						actionType={actionType}/>
 							
 						</Drawer>
 				</div>
