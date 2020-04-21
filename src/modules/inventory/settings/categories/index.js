@@ -32,13 +32,13 @@ const columns = [
     title: "CATEGORY CODE",
     dataIndex: "categories_code",
     key: "categories_code",
-    width: 250
+    width: 100
   },
   {
     title: "CATEGORY NAME",
     dataIndex: "categories_name",
     key: "categories_name",
-    width: 250
+    width: 150
   },
   {
     title: "DESCRIPTION",
