@@ -7,9 +7,7 @@ import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
-  Typography,
   Form as AntForm,
-  Input as AntInput,
   Button as AntButton,
   Table as AntTable,
   Input,
@@ -18,11 +16,9 @@ import {
 
 // CUSTOM MODULES
 import TablePager from "shared_components/table_pager";
-import ClearFormFields from "shared_components/form_clear_button";
 import {
-  drawerUpdateTitle,
-  drawerAddTitle,
-  tablePageSize,
+  drawerSupplierUpdate,
+  drawerSupplierAdd,
   tableSize,
   buttonLabels,
   addSupplierButton
@@ -126,7 +122,9 @@ const data2 = [
 
 const expandedRow = row => {
   console.log(row);
-  let inTable = row.key == 1 ? data1 : row.key == 2 ? data2 : data1;
+  // eslint-disable-next-line prefer-const
+  // eslint-disable-next-line no-nested-ternary
+  const inTable = row.key === 1 ? data1 : row.key === 2 ? data2 : data1;
   return <AntTable columns={columns2} dataSource={inTable} pagination={false} />;
 };
 
@@ -198,7 +196,7 @@ class InventorySupplierTemplate extends React.Component {
   displayDrawerUpdate = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerUpdateTitle,
+      drawerTitle: drawerSupplierUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record
@@ -208,9 +206,9 @@ class InventorySupplierTemplate extends React.Component {
   displayDrawerAdd = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerUpdateTitle,
-      drawerButton: buttonLabels.create,
+      drawerTitle: drawerSupplierAdd,
       actionType: "add",
+      drawerButton: buttonLabels.create,
       panelInfo: record
     });
   };
@@ -318,7 +316,7 @@ class InventorySupplierTemplate extends React.Component {
               title={this.state.drawerTitle}
               visible={this.state.isDrawerVisible}
               onClose={this.onClose}
-              width="50%"
+              width="70%"
               destroyOnClose
             >
               <SupplierForm

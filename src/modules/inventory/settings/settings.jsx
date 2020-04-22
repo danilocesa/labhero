@@ -14,6 +14,10 @@ export const drawerCategoryTitleUpdate = 'UPDATE CATEGORY';
 export const drawerCategoryTitleAdd = 'ADD CATEGORY';
 export const drawerStorageTitleAdd = 'ADD STORAGE';
 export const drawerStorageTitleUpdate = 'UPDATE STORAGE';
+export const drawerTransactionTypeAdd = 'ADD TRANSACTION TYPE';
+export const drawerTransactionTypeUpdate = 'UPDATE TRANSACTION TYPE';
+export const drawerSupplierUpdate = 'UPDATE SUPPLIER';
+export const drawerSupplierAdd = 'ADD SUPPLIER';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -60,7 +64,7 @@ export const fieldLabels = {
   is_active : "ACTIVE",
   storage_name: "STORAGE NAME",
   storage_description: "DESCRIPTION",
-  suppliersName: "SUPPLIERS NAME",
+  suppliersName: "SUPPLIER'S NAME",
   suppliersContactPerson: "CONTACT PERSON",
   suppliersContactNumber: "CONTACT NUMBER",
   suppliersEmailAddress: "EMAIL ADDRESS",
@@ -70,7 +74,10 @@ export const fieldLabels = {
   suppliersBarangay: "BARANGAY",
   suppliersDistrict: "DISTRICT",
   suppliersZipCode: "ZIPCODE",
-  suppliersItemDescription: "ITEM DESCRIPTION"
+  suppliersItemDescription: "DESCRIPTION",
+  transactionTypeCode: "TRANSACTION TYPE CODE",
+  transactionTypeName: "TRANSACTION TYPE NAME",
+  transactionTypeDescription: "DESCRIPTION"
 
 }
 
@@ -90,5 +97,6 @@ export const addSectionButton = 'ADD SECTION';
 export const addCategoriesButton = 'ADD CATEGORY';
 export const addStorageButton = 'ADD STORAGE';
 export const addSupplierButton = 'ADD SUPPLIER';
+export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 
 export const tableYScroll = globalTableYScroll;
