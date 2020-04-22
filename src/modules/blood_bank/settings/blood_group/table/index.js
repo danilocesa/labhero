@@ -19,11 +19,13 @@ const columns = [
 		title: 'ID',
 		dataIndex: 'id',
 		key: 1,
+		width: 200
 	},
 	{
 		title: 'BLOOD GROUP',
 		dataIndex: 'blood_group',
 		key: 2,	
+		width: 300
 	},
 	{
 		title: 'DESCRIPTION',
@@ -62,7 +64,7 @@ class BloodBank extends React.Component {
 	showDrawer = () => {
 		this.setState({
 			visible: true,
-			drawerTitle: "BLOOD BANK ADD",
+			drawerTitle: "ADD BLOOD GROUP",
 			drawerButton: drawerAdd,
 			actionType : 'add',
 			patientInfo: [],

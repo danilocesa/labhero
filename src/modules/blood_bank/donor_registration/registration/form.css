@@ -5,6 +5,7 @@
 
 .fillup-form .left-form {
   float: right;
+  margin-top: 20;
 }	
 
 .fillup-form .left-form .ant-radio-button-wrapper {
