@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
-import {  Form, Input, Select,Switch } from 'antd';
+import {  Form, Input, Select,Switch,Button } from 'antd';
 import PropTypes from 'prop-types';
 import {
 	// Exam Item Type Codes
@@ -11,12 +11,12 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
-import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
 import { createExamItem } from 'services/settings/examItem';
 import getUnitOfMeasures from 'services/settings/unitOfMeasure';
 import getInputTypeCode from 'services/settings/inputType';
 import DynamicForm from '../dynamic_form';
-import { fieldRules, fieldLabels } from '../settings';
+import { fieldRules } from '../settings';
 
 // import './add_form.css';
 const layout = {
@@ -130,6 +130,8 @@ class AddForm extends React.Component {
 	}
 
 	render() {
+		
+		const { drawerButton} = this.props;
 		const { isLoading, selectedRsType, unitOfMeasures, inputTypeCodes } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const {  form } = this.props;
@@ -152,8 +154,9 @@ class AddForm extends React.Component {
 		
 
 		return (
-		
-				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
+			
+			<div>
+				<Form onSubmit={this.onSubmit} className="exam-item-add-form" style={{marginTop: -20}}>
           	{this.props.actionType == "update"?
 					<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}} >
 						<Switch />
@@ -163,27 +166,24 @@ class AddForm extends React.Component {
     			  }
 					<section style={{ marginBottom: 50 }}>
 
-            <Form.Item label="CATEGORY">
-              <Select>
-               {provinceData.map(province => (
-                  <Option key={province}>{province}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-						<Form.Item label="QUESTION">
-								<RegexInput 
-									regex={/[A-Za-z0-9 -]/} 
-									maxLength={50} 
-								/>
+						<Form.Item label="CATEGORY" style={{marginTop: -20}}>
+						<Select>
+						{provinceData.map(province => (
+							<Option key={province}>{province}</Option>
+							))}
+						</Select>
 						</Form.Item>
-						<Form.Item label="ANSWER">
+						<Form.Item label="QUESTION" style={{marginTop: -20}}>
+							<TextArea rows={4} />
+						</Form.Item>
+						<Form.Item label="ANSWER" style={{marginTop: -20}}>
 								<Select onChange={this.onChangeItemTypeCode}>
 									{InputTypeCodeOptions}
 								</Select>
 						</Form.Item>
 						{ (selectedRsType === EITC_ALPHA_NUMERIC) && (
 							<React.Fragment>
-								<Form.Item label={fieldLabels.examItemTypeDefault}>
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault, 
 										// initialValue: 1 
@@ -195,7 +195,7 @@ class AddForm extends React.Component {
 						)}
 						{ (selectedRsType === EITC_NUMERIC) && (
 							<React.Fragment>
-								<Form.Item label={fieldLabels.examItemTypeDefault}>
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault, 
 										// initialValue: 1 
@@ -211,7 +211,7 @@ class AddForm extends React.Component {
 						)}
 						{ selectedRsType === EITC_TEXT_AREA && (
 							<React.Fragment>
-								<Form.Item label={fieldLabels.examItemTypeDefault}>
+								<Form.Item label="DEFAULT VALUE">
 									{getFieldDecorator('examItemTypeDefault', { 
 										rules: fieldRules.examItemTypeDefault,
 										// initialValue: 1 
@@ -221,17 +221,28 @@ class AddForm extends React.Component {
 								</Form.Item>
 							</React.Fragment>	
 						)}
-					</section>
-					
+					</section>	
 				</Form>
+				<section className="drawerFooter">
+					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+						CANCEL
+					</Button>
+					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+						{drawerButton}
+					</Button>
+				</section>
+			</div>
 		);
 	}
 }
 
 AddForm.propTypes = {
+
+	
+	drawerButton: PropTypes.string.isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	selectedSectionId: PropTypes.number,
-  selectedSpecimenId: PropTypes.number,
+  	selectedSpecimenId: PropTypes.number,
 	actionType: PropTypes.string
 };
 

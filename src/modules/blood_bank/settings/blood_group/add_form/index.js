@@ -26,7 +26,7 @@ class UserAccountForm extends React.Component {
 	render() {
 		const { drawerButton } = this.props;
 			return(
-				<div>
+				<div style={{marginTop: -20}}>
 					<Form>
 						{this.props.actionType == "update"? 
 							<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}}>

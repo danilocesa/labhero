@@ -63,7 +63,7 @@ class BloodBank extends React.Component {
 	showDrawer = () => {
 		this.setState({
 			visible: true,
-			drawerTitle: "ADD QUESTIONNAIRE",
+			drawerTitle: "ADD QUESTION",
 			drawerButton: "ADD",
 			actionType : 'add',
 		});
@@ -78,7 +78,7 @@ class BloodBank extends React.Component {
 	displayDrawerUpdate = () => {
 		this.setState({
 			visible: true,
-			drawerTitle: "UPDATE QUESTIONNAIRE",
+			drawerTitle: "UPDATE QUESTION",
 			drawerButton: "UPDATE",
 			actionType:'update',
             
@@ -143,7 +143,9 @@ class BloodBank extends React.Component {
 							destroyOnClose
 						> 
                         <QuestionTable 
-						actionType={actionType}/>
+						actionType={actionType}
+						drawerButton={drawerButton} 
+						/>
 							
 						</Drawer>
 				</div>

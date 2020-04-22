@@ -15,28 +15,28 @@ const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
 		link: '/bloodbank/donor_registration',
-		label: 'Donor Registration',
+		label: 'DONOR REGISTRATION',
 		offset: 2
 	},
 	{
 		image: BBaddBloodReqIcon,
 		link: '/bloodbank/blood_request',
-		label: 'Add Blood Request'
+		label: 'ADD BLOOD BANK REQUEST'
 	},
 	{
 		image: BBrecipientIcon,
 		link: '../bloodbank/blood_recipient',
-		label: 'Blood Recipient'
+		label: 'BLOOD RECIPIENT'
 	},
 	{
 		image: BBsearchDonorIcon,
 		link: '/bloodbank/search_donor',
-		label: 'Seach Donor'
+		label: 'SEARCH DONOR'
 	},
 	{
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
-		label: 'Settings',
+		label: 'SETTINGS',
 	},
 ]
 
