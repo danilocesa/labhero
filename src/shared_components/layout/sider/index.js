@@ -147,37 +147,43 @@ class Sider extends React.Component {
 					}
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
-							<SubMenu
-								key="9"
-								title={(
-									<span>
-											<Icon component={InventoryIcon} />
-											<span>INVENTORY</span>
-									</span>
-								)}
-							>
-								<Menu.Item key={URI.inventory.sub.stocks.key}>
-									<Link to={URI.inventory.sub.stocks.link}><span>Stocks</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.transaction.key}>
-									<Link to={URI.inventory.sub.transaction.link}><span>Transactions</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.restock.key}>
-									<Link to={URI.inventory.sub.restock.link}><span>Restock</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.takeout.key}>
-									<Link to={URI.inventory.sub.takeout.link}><span>Takeout</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.notifications.key}>
-									<Link to={URI.inventory.sub.notifications.link}><span>Notifications</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.itemsetup.key}>
-									<Link to={URI.inventory.sub.itemsetup.link}><span>Item Setup</span></Link>
-								</Menu.Item>
-								<Menu.Item key={URI.inventory.sub.settings.key}>
-									<Link to={URI.inventory.sub.settings.link}><span>Settings</span></Link>
-								</Menu.Item>
-							</SubMenu>
+							<Menu.Item key={URI.inventory.key}>
+								<Link to={URI.inventory.link}>
+								<Icon component={InventoryIcon} />
+								<span>INVENTORY</span>
+								</Link>
+							</Menu.Item>
+							// <SubMenu
+							// 	key="9"
+							// 	title={(
+							// 		<span>
+							// 				<Icon component={InventoryIcon} />
+							// 				<span>INVENTORY</span>
+							// 		</span>
+							// 	)}
+							// >
+							// 	<Menu.Item key={URI.inventory.sub.stocks.key}>
+							// 		<Link to={URI.inventory.sub.stocks.link}><span>Stocks</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.transaction.key}>
+							// 		<Link to={URI.inventory.sub.transaction.link}><span>Transactions</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.restock.key}>
+							// 		<Link to={URI.inventory.sub.restock.link}><span>Restock</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.takeout.key}>
+							// 		<Link to={URI.inventory.sub.takeout.link}><span>Takeout</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.notifications.key}>
+							// 		<Link to={URI.inventory.sub.notifications.link}><span>Notifications</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.itemsetup.key}>
+							// 		<Link to={URI.inventory.sub.itemsetup.link}><span>Item Setup</span></Link>
+							// 	</Menu.Item>
+							// 	<Menu.Item key={URI.inventory.sub.settings.key}>
+							// 		<Link to={URI.inventory.sub.settings.link}><span>Settings</span></Link>
+							// 	</Menu.Item>
+							// </SubMenu>
 						)
 					}
 					{

@@ -92,10 +92,21 @@ class InventoryCategoriesTemplate extends React.Component {
           description: "Description"
         }
       ],
-      actionType: "add"
+      categories: [],
+      actionType: "add",
+      
     };
   }
 
+  componentDidMount() {
+    fetch('https://labheroapitest-nqvkwb2gnq-de.a.run.app/inventory/categories')
+    .then(res => res.json())
+    .then((data) => {
+      this.setState({ categories: data })
+    })
+    .catch(console.log)
+  };
+  
   handleSubmit = e => {
     e.preventDefault();
     // eslint-disable-next-line react/prop-types
@@ -105,6 +116,8 @@ class InventoryCategoriesTemplate extends React.Component {
       }
     });
   };
+
+ 
 
   handleReset = () => {
     // eslint-disable-next-line react/prop-types

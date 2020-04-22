@@ -1,75 +1,78 @@
 // @ts-nocheck
-import React from 'react';
-import { Row } from 'antd';
+import React from "react";
+import { Row } from "antd";
 
 // CUSTOM MODULES
-import PageTitle from 'shared_components/page_title';
-import { InvList,InvListLots,InvRestock,InvSettings,InvTakeout,InvTransaction } from 'images';
-import InventoryCard from './inventory_card';
+import PageTitle from "shared_components/page_title";
+import {
+  InvList,
+  InvListLots,
+  InvRestock,
+  InvSettings,
+  InvTakeout,
+  InvTransaction
+} from "images";
+import InventoryCard from "./inventory_card";
 
-
-import './inventory_menu.css';
-
+import "./inventory_menu.css";
 
 const settingsItemData = [
-	{
-		image: InvList,
-		link: '/bloodbank/blood_request',
-		label: 'Donor Registration',
-		offset: 2
-	},
-	{
-		image: InvListLots,
-		link: '/bloodbank/blood_request',
-		label: 'Add Blood Request'
-	},
-	{
-		image: InvRestock,
-		link: '../bloodbank/blood_recipient',
-		label: 'Blood Recipient'
-	},
-	{
-		image: InvSettings,
-		link: '/bloodbank/search_donor',
-		label: 'Seach Donor'
-	},
-	{
-		image: InvTakeout,
-		link: '/bloodbank/settings',
-		label: 'Settings',
-	},
-	{
-		image: InvTransaction,
-		link: '/bloodbank/settings',
-		label: 'Settings',
-	},
-]
+  {
+    image: InvList,
+    link: "/inventory/Transactions",
+    label: "Inventory List"
+  },
+  {
+    image: InvListLots,
+    link: "/inventory/itemsetup",
+    label: "Item Set Up"
+  },
+  {
+    image: InvRestock,
+    link: "../inventory/restock",
+    label: "Restock"
+  },
+  {
+    image: InvSettings,
+    link: "/inventory/settings",
+	label: "Settings"
+  },
+  {
+    image: InvTakeout,
+    link: "/inventory/takeout",
+    label: "Takeout"
+  },
+  {
+    image: InvTransaction,
+    link: "/inventory/transactions",
+    label: "Transactions"
+  }
+];
 
-class BloodBankMenu extends React.Component {
-	render() {
-		const rowItems = settingsItemData.map((el) => {
-			return (
-				<InventoryCard 
-					image={el.image} 
-					link={el.link} 
-					label={el.label} 
-					offset={el.offset}
-					className=""
-					key={el.label}
-				/>
-			);
-		});
+class InventoryMenu extends React.Component {
+  render() {
+    const rowItems = settingsItemData.map(el => {
+      return (
+        <InventoryCard
+          image={el.image}
+          link={el.link}
+          label={el.label}
+          offset={el.offset}
+          className=""
+          key={el.label}
+        />
+      );
+    });
 
-		return(
-			<div>
-				<PageTitle pageTitle="BLOOD BANK" />
-				<Row gutter={20} style={{paddingTop: '10px'}}>
-					{rowItems}
-				</Row>
-			</div>
-		);
-	}
+    return (
+      <div>
+        <PageTitle pageTitle="INVENTORY" />
+        <Row gutter={20} style={{ paddingTop: "10px" }}>
+          {rowItems}
+        </Row>
+      </div>
+    );
+  }
 }
 
-
-export default BloodBankMenu;
+export default InventoryMenu;
