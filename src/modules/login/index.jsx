@@ -109,7 +109,7 @@ class Login extends React.Component {
 												<Input.Password type="password" maxLength={20} />
 											)}
 										</Form.Item>
-										<Form.Item style={{marginBottom:'0px'}}>
+										<Form.Item style={{ marginBottom: 0 }}>
 											<Button type="primary" htmlType="submit" className="login-form-button" block>
 												SIGN IN TO MY ACCOUNT
 											</Button>

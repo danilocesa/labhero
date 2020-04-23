@@ -22,8 +22,6 @@ class PrintResult extends React.Component {
   }
     
   componentDidMount() {
-    console.log('component did mount');
-
     window.addEventListener('message', (e) => { 
       if(e.data.isReadyToPrint) {
         this.setState({ isReadyToPrint: true });
@@ -34,27 +32,28 @@ class PrintResult extends React.Component {
   async componentDidUpdate(prevProps) {
     const { sampleID } = this.props;
     
+    if(prevProps.sampleID !== sampleID) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ isReadyToPrint: false });
+    }
+
     if(prevProps.visible === false && this.props.visible && sampleID !== null) {
       const printPreview = await getPrintPreview(sampleID);
 
       // eslint-disable-next-line react/no-did-update-set-state
-      // this.setState({ 
-      //   isReadyToPrint: false,
-      //   imageSrc: printPreview.data 
-      // }, () => {
-      //   this.timer = setInterval(() => {
-      //     const { isReadyToPrint } = this.state;
+      this.setState({ imageSrc: printPreview.data }, () => {
+        this.timer = setInterval(() => {
+          const { isReadyToPrint } = this.state;
   
-      //     console.log('timer is on');
-      //     if(isReadyToPrint) {  
-      //       this.printResult();
+          if(isReadyToPrint) {  
+            this.printResult();
 
-      //       clearInterval(this.timer);
+            clearInterval(this.timer);
 
-      //       this.timer = null;
-      //     }
-      //   }, 1000);
-      // });
+            this.timer = null;
+          }
+        }, 1000);
+      });
     }
   }
 
@@ -106,13 +105,13 @@ class PrintResult extends React.Component {
         className="ageBracket-drawer"
       >
         <div>
-          { imageSrc && 
+          { (sampleID && sampleID !== null && visible) && 
             (
               <Spin spinning={!isReadyToPrint && visible}>
                 <iframe
                   id="result"
                   src={`/lab/result/print/${sampleID}`}
-                  // style={{ height: 0, width: 0, position: 'absolute' }}
+                  style={{ height: 0, width: 0, position: 'absolute' }}
                   title="result"
                 />
                 <Document
