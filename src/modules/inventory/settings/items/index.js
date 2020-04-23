@@ -1,116 +1,127 @@
+// @ts-nocheck
+/* eslint-disable react/prop-types */
 // LiBRARY
+
 import React from "react";
-import TablePager from "shared_components/table_pager";
-import "./categories.css";
 import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
   Form as AntForm,
+  Button as AntButton,
   Table as AntTable,
   Input,
-  Button,
-  Icon,
+  Icon
 } from "antd";
-import {
-  tableSize,
-  buttonLabels,
-  addCategoriesButton,
-  drawerCategoryTitleUpdate,
-  drawerCategoryTitleAdd,
-  tableYScroll
-} from "modules/inventory/settings/settings";
-import CategoriesForm from "./categories_form/categories_form";
 
 // CUSTOM MODULES
+import TablePager from "shared_components/table_pager";
+import {
+  drawerItemsUpdate,
+  drawerItemsAdd,
+  tableSize,
+  buttonLabels,
+  addItems
+} from "modules/inventory/settings/settings";
+import ItemsForm from "./items_form/items_form";
+
 //  CONSTANTS
 const { Search } = Input;
 
-
 const columns = [
   {
-    title: "CATEGORY CODE",
-    dataIndex: "categories_code",
-    key: "categories_code",
-    width: 100
+    title: "ITEM NAME",
+    dataIndex: "item_name",
+    key: "item_name"
   },
   {
-    title: "CATEGORY NAME",
-    dataIndex: "categories_name",
-    key: "categories_name",
-    width: 150
+    title: "CATEGORY",
+    dataIndex: "category",
+    key: "category"
   },
   {
-    title: "DESCRIPTION",
-    dataIndex: "description",
-    key: "description",
-    width: 250
+    title: "SECTION",
+    dataIndex: "section",
+    key: "section"
+  },
+  {
+    title: "U.O.M",
+    dataIndex: "uom",
+    key: "uom"
+  },
+  {
+    title: "SKU BARCODE",
+    dataIndex: "sku",
+    key: "sku"
   }
 ];
 
-class InventoryCategoriesTemplate extends React.Component {
+
+
+class ItemsTemplate extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
       data: [
         {
           key: "1",
-          categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          item_name: "Jollibee",
+          category: "John Brown",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         },
         {
           key: "2",
-          categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          item_name: "Mcdo",
+          category: "Mc Kinley",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         },
         {
           key: "3",
-          categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          item_name: "Chowking",
+          category: "King Chow",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         }
       ],
       usersRef: [
         {
           key: "1",
-          categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          item_name: "Jollibee",
+          category: "John Brown",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         },
         {
           key: "2",
-          categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          item_name: "Mcdo",
+          category: "Mc Kinley",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         },
         {
           key: "3",
-          categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          item_name: "Chowking",
+          category: "King Chow",
+          section: "123456",
+          uom: "10000100101001",
+          sku: "10000100101001"
         }
       ],
-      categories: [],
       actionType: "add",
-      
     };
   }
 
-  componentDidMount() {
-    fetch('https://labheroapidev-nqvkwb2gnq-de.a.run.app/inventory/categories')
-    .then(res => res.json())
-    .then((data) => {
-      this.setState({ categories: data.result })
-    })
-    console.log(this.state.categories);
-    // .catch(console.log)
-  };
-  
+
   handleSubmit = e => {
     e.preventDefault();
-    // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
@@ -118,17 +129,10 @@ class InventoryCategoriesTemplate extends React.Component {
     });
   };
 
- 
-
-  handleReset = () => {
-    // eslint-disable-next-line react/prop-types
-    this.props.form.resetFields();
-  };
-
   displayDrawerUpdate = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleUpdate,
+      drawerTitle: drawerItemsUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record
@@ -138,25 +142,11 @@ class InventoryCategoriesTemplate extends React.Component {
   displayDrawerAdd = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleAdd,
-      drawerButton: buttonLabels.create,
+      drawerTitle: drawerItemsAdd,
       actionType: "add",
+      drawerButton: buttonLabels.create,
       panelInfo: record
     });
-  };
-
-  onClose = () => {
-    this.setState({
-      isDrawerVisible: false
-    });
-  };
-
-  handleSelectChange = value => {
-    console.log(value);
-    const { pagination } = this.state;
-    // eslint-disable-next-line radix
-    pagination.pageSize = parseInt(value);
-    this.setState({ pagination });
   };
 
   // Private Function
@@ -175,26 +165,44 @@ class InventoryCategoriesTemplate extends React.Component {
 
     const filtered = usersRef.filter(item => {
       // eslint-disable-next-line camelcase
-      const { categories_code, categories_name, description } = item;
+      const { item_name, category, section, uom, sku } = item;
 
       return (
-        this.containsString(categories_code, searchedVal) ||
-        this.containsString(categories_name, searchedVal) ||
-        this.containsString(description, searchedVal)
+        this.containsString(item_name, searchedVal) ||
+        this.containsString(category, searchedVal) ||
+        this.containsString(section, searchedVal) ||
+        this.containsString(uom, searchedVal) ||
+        this.containsString(sku, searchedVal)
       );
     });
 
     this.setState({ data: filtered });
   };
 
+  
   onChangeSearch = event => {
     const { usersRef } = this.state;
 
     if (event.target.value === "") this.setState({ data: usersRef });
   };
 
+  onClose = () => {
+    this.setState({
+      isDrawerVisible: false
+    });
+  };
+
+  handleSelectChange = value => {
+    console.log(value);
+    const { pagination } = this.state;
+    // eslint-disable-next-line radix
+    pagination.pageSize = parseInt(value);
+    this.setState({ pagination });
+  };
+
   render() {
     const { actionType } = this.state;
+
     return (
       <div>
         <AntRow>
@@ -211,15 +219,15 @@ class InventoryCategoriesTemplate extends React.Component {
                   />
                 </AntCol>
                 <AntCol span={12} style={{ textAlign: "right" }}>
-                  <Button
+                  <AntButton
                     type="primary"
                     shape="round"
                     style={{ marginRight: "15px" }}
                     onClick={this.displayDrawerAdd}
                   >
                     <Icon type="plus" />
-                    {addCategoriesButton}
-                  </Button>
+                    {addItems}
+                  </AntButton>
                   <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
@@ -231,7 +239,6 @@ class InventoryCategoriesTemplate extends React.Component {
               dataSource={this.state.data}
               pagination={this.state.pagination}
               loading={this.state.loading}
-              scroll={{ y: tableYScroll }}
               columns={columns}
               rowKey={record => record.key}
               onRow={record => {
@@ -246,11 +253,10 @@ class InventoryCategoriesTemplate extends React.Component {
               title={this.state.drawerTitle}
               visible={this.state.isDrawerVisible}
               onClose={this.onClose}
-              width="30%"
+              width="70%"
               destroyOnClose
             >
-              <CategoriesForm
-                // @ts-ignore
+              <ItemsForm
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
                 panelInfo={this.state.panelInfo}
@@ -264,6 +270,6 @@ class InventoryCategoriesTemplate extends React.Component {
   }
 }
 
-const InventoryCategories = AntForm.create()(InventoryCategoriesTemplate);
+const Items = AntForm.create()(ItemsTemplate);
 
-export default InventoryCategories;
+export default Items;
