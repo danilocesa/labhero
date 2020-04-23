@@ -69,7 +69,7 @@ class EditableTable extends React.Component {
   }
 
 	createFormInput = (record) => {
-		const { form } = this.props;
+		const { form, resultStatus } = this.props;
 		const { getFieldDecorator } = form;
 		// const { examItemOptions, releasedResult } = record;
 		// const defaultItemOption = examItemOptions.findIndex(item => item && item.examItemValueDefault === 1);
@@ -77,6 +77,7 @@ class EditableTable extends React.Component {
 		// const initialValue = examItemOptions.length === 1 
 		// 									 ? releasedResult
 		// 									 : selectedItemOption;
+
 
 		return (
 			<Form.Item>
@@ -86,7 +87,7 @@ class EditableTable extends React.Component {
 				})(
 					<DynamicInput 
 						type={record.examItemTypeCode}
-						isLock={record.examRequestItemLock === 1}
+						isLock={record.examRequestItemLock === 1 || resultStatus === 'Approve'}
 						itemOptions={record.examItemOptions}
 						maxLength={record.maxLength}
 					/>
@@ -156,6 +157,7 @@ class EditableTable extends React.Component {
 }
 
 EditableTable.propTypes = {
+	resultStatus: PropTypes.string.isRequired,
 	results: PropTypes.array.isRequired,
 	formatedResults: PropTypes.array.isRequired,
 };

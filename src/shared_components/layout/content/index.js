@@ -2,7 +2,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { Layout } from 'antd';
-import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 // CUSTOM MODULES
 import Login from 'modules/login';
@@ -25,9 +25,8 @@ import Receipt from 'modules/main/cashier/receipt';
 import Transactions from 'modules/main/cashier/transactions';
 import Categories from 'modules/main/cashier/categories';
 import Summary from 'modules/main/cashier/summary';
-import auth from 'services/login/auth';
+import PrivateRoute from 'shared_components/private_route';
 
-// CONSTANTS
 const { Content: Antcontent } = Layout;
 const wrapperStyle = {
   minHeight: 280,
@@ -72,31 +71,6 @@ const Content = () => (
 		</Antcontent>
 );
 
-
-// eslint-disable-next-line react/prop-types
-function PrivateRoute({ component: Component, ...rest }) {
-  return (
-		<Switch>
-			<Route
-				{...rest}
-				render={
-					props =>
-						auth.isAuthenticated 
-						? (<Component {...props} />) 
-						: (<Redirect to={{pathname: "/login", state: { from: props.location }}} />)
-				}
-			/>
-		</Switch>
-  );
-}
-
-// PrivateRoute.propTypes = {
-// 	location: PropTypes.object
-// }
-
-// PrivateRoute.defaultProps = {
-// 	location() { return null }
-// }
 
 
 
