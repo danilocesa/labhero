@@ -18,6 +18,10 @@ export const drawerTransactionTypeAdd = 'ADD TRANSACTION TYPE';
 export const drawerTransactionTypeUpdate = 'UPDATE TRANSACTION TYPE';
 export const drawerSupplierUpdate = 'UPDATE SUPPLIER';
 export const drawerSupplierAdd = 'ADD SUPPLIER';
+export const drawerUnitAdd = 'ADD UNIT OF MEASURE';
+export const drawerUnitUpdate = 'UPDATE UNIT OF MEASURE';
+export const drawerItemsUpdate = 'UPDATE ITEMS';
+export const drawerItemsAdd = 'ADD ITEMS';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -54,16 +58,20 @@ export const fieldLabels = {
   examItemUnitCode: "UNIT OF MEASURES",
   examItemTypeDefault: "DEFAULT VALUE",
   examItemIntegrationCode: "INTEGRATION CODE",
+  
   categories_code: "CATEGORY CODE",
   categories_name: "CATEGORY NAME",
   categories_description: "DESCRIPTION",
   section_code: "SECTION CODE",
   section_name: "SECTION NAME",
   section_description: "DESCRIPTION",
+
   field_status: "STATUS",
   is_active : "ACTIVE",
+
   storage_name: "STORAGE NAME",
   storage_description: "DESCRIPTION",
+
   suppliersName: "SUPPLIER'S NAME",
   suppliersContactPerson: "CONTACT PERSON",
   suppliersContactNumber: "CONTACT NUMBER",
@@ -75,9 +83,25 @@ export const fieldLabels = {
   suppliersDistrict: "DISTRICT",
   suppliersZipCode: "ZIPCODE",
   suppliersItemDescription: "DESCRIPTION",
+
   transactionTypeCode: "TRANSACTION TYPE CODE",
   transactionTypeName: "TRANSACTION TYPE NAME",
-  transactionTypeDescription: "DESCRIPTION"
+  transactionTypeDescription: "DESCRIPTION",
+
+  unit_name: "UNIT NAME",
+  unit_symbol: "UNIT SYMBOL",
+
+  itemName: "ITEM NAME",
+  itemCategory: "CATEGORY",
+  itemSection: "SECTION",
+  itemUnitOfMeasure: "UNIT OF MEASURE",
+  itemDefaultAmount: "DEAFAULT AMOUNT",
+  itemSkuBarcode: "SKU BARCODE",
+  itemsUpcBarcode: "UPC BARCODE",
+  ItemsItemDescription: "DESCRIPTION",
+
+  
+
 
 }
 
@@ -98,5 +122,7 @@ export const addCategoriesButton = 'ADD CATEGORY';
 export const addStorageButton = 'ADD STORAGE';
 export const addSupplierButton = 'ADD SUPPLIER';
 export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
+export const addUnitMeasure = 'ADD UNIT OF MEASURE';
+export const addItems = 'ADD ITEMS';
 
 export const tableYScroll = globalTableYScroll;

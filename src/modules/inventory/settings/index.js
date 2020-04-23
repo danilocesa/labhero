@@ -9,6 +9,8 @@ import InventoryStorage from 'modules/inventory/settings/storage';
 import InventorySection from 'modules/inventory/settings/sections';
 import InventoryCategories from 'modules/inventory/settings/categories';
 import InventoryTransactionTypes from  'modules/inventory/settings/transaction_types';
+import InventoryUnitofMeasure from  'modules/inventory/settings/unit_measure';
+import InventoryItems from 'modules/inventory/settings/items';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -19,7 +21,9 @@ const pageTitle = [
   `${pageTitleSettings } STORAGES`,
   `${pageTitleSettings } SECTIONS`,
   `${pageTitleSettings } CATEGORIES`,
-  `${pageTitleSettings } TRANSACTION TYPES`
+  `${pageTitleSettings } TRANSACTION TYPES`,
+  `${pageTitleSettings } UNIT OF MEASURES`,
+  `${pageTitleSettings } ITEMS`
 ]
 
 class InventorySettings extends React.Component {
@@ -50,6 +54,12 @@ class InventorySettings extends React.Component {
           </TabPane>
           <TabPane tab="TRANSACTION TYPES" key="5">
             <InventoryTransactionTypes />
+          </TabPane>
+          <TabPane tab="UNIT OF MEASURES" key="6">
+            <InventoryUnitofMeasure />
+          </TabPane>
+          <TabPane tab="ITEMS" key="7">
+            <InventoryItems />
           </TabPane>
         </AntTabs>
 			</div>
