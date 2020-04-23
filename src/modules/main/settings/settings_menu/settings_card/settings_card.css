@@ -1,17 +1,23 @@
-
-
 .settings-item-card {
-    width: 180px;
-    height: 170px;
     text-align: center;
+    background: #FAFAFC;
+    min-height: 170px;
+    max-width: 180px;
+    margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #FAFAFC;
-    margin: 8px 0;
 }
 
-img {
+.settings-item-card img {
     height: 45px;
     width: auto;
+}
+
+.settings-item-card span {
+    margin-top: 10px;
+    display: inline-block;
+    margin-top:10px;
+    font-weight: bold; 
+    font-size: 15px;
 }

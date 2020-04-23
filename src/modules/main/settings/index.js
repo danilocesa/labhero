@@ -8,6 +8,7 @@ import PanelExam from './panel_exam'
 import ExamItems from './exam_item';
 import LabExamRequest from './lab_exam_request';
 import NormalValues from './normal_values';
+import UserRights from './user_rights';
 
 class Settings extends React.Component {
 	render() {
@@ -20,6 +21,7 @@ class Settings extends React.Component {
 				<Route exact path="/settings/exam-items" component={ExamItems} />
 				<Route exact path="/settings/exam-request" component={LabExamRequest} />
 				<Route exact path="/settings/normal-values" component={NormalValues} />
+				<Route exact path="/settings/user-rights" component={UserRights} />
 			</Switch>
 		)
 	}
