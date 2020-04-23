@@ -36,15 +36,15 @@ class PatientComment extends React.Component {
 
 
   render() {
-    const { form } = this.props;
+    const { form, resultStatus } = this.props;
     const { getFieldDecorator } = form;
 
     return (
 			<div className="patient-comment">
         <Form.Item label="REMARKS">
-        {getFieldDecorator('remarks', { rules: fieldRules.remarks })(
-          <TextArea rows={3} />
-        )}
+          {getFieldDecorator('remarks', { rules: fieldRules.remarks })(
+            <TextArea rows={3} disabled={resultStatus === 'Approve'} />
+          )}
         </Form.Item>
 			</div>
     );
@@ -52,7 +52,8 @@ class PatientComment extends React.Component {
 }
 
 PatientComment.propTypes = {
-  remarks: PropTypes.string
+  remarks: PropTypes.string,
+  resultStatus: PropTypes.string.isRequired
 };
 
 PatientComment.defaultProps = {

@@ -15,7 +15,7 @@ class AllTable extends React.Component {
 	};
 
   componentDidMount() {
-    this.setState({ showLoading: false });
+    // this.setState({ showLoading: false });
   } 
   
 	onChangePageSize = (pageSize) => {
@@ -24,7 +24,7 @@ class AllTable extends React.Component {
 
   render() {  
 		const { isLoading, pageSize } = this.state;
-		const { labResults, onClickTableRow } = this.props;
+		const { labResults, onClickTableRow, onClickPrint } = this.props;
 	 
     return (
 	    <div>
@@ -43,6 +43,7 @@ class AllTable extends React.Component {
 						labResults={labResults}
 						pageSize={pageSize}
 						onClickTableRow={onClickTableRow}
+						onClickPrint={onClickPrint}
 					/>
 		    </Row>
 	    </div>
@@ -52,7 +53,8 @@ class AllTable extends React.Component {
 
 AllTable.propTypes = {
 	labResults: PropTypes.array.isRequired,
-	onClickTableRow: PropTypes.func.isRequired
+	onClickTableRow: PropTypes.func.isRequired,
+	onClickPrint: PropTypes.func.isRequired
 };
 
 export default AllTable;

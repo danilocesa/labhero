@@ -7,11 +7,13 @@ import PropTypes from 'prop-types';
 import { fetchLabResultExamItems } from 'services/lab_result/result';
 
 // CUSTOM MODULES
+import PrintLabResult from 'modules/main/lab_result/print_result';
 import LabRequestDetails from 'shared_components/patient_info';
 import TableResults from "./result_table";
 import PatientName from './patientname';
 import Actions from './actions';
 import PatientComment from './patientcomment';
+
 
 // CSS
 import './edit_result.css';
@@ -24,7 +26,8 @@ class EditResult extends React.Component {
 		this.state = {
 			isLoading: false,
 			results: {},
-			formatedResults: []
+			formatedResults: [],
+			isDisplayPrint: false
 		};
 
 		this.resultTable = React.createRef();
@@ -91,6 +94,10 @@ class EditResult extends React.Component {
 		});
 	}
 
+	onPrint = () => {
+		this.setState({ isDisplayPrint: true });
+	}
+
 	// Private Function
 	recontructExamItems = (results) => {
 		const newExamItems = [];
@@ -122,7 +129,7 @@ class EditResult extends React.Component {
 	}
 
 	render() {
-		const { results, isLoading, formatedResults } = this.state;
+		const { results, isLoading, formatedResults, isDisplayPrint } = this.state;
 		const { patientInfo, examDetails } = this.props;
 
     return (
@@ -139,16 +146,25 @@ class EditResult extends React.Component {
 						<TableResults 
 							wrappedComponentRef={(inst) => this.resultTable = inst} 
 							results={results.resultValues || []} 
+							resultStatus={results.status || ''}
 							formatedResults={formatedResults}
 						/>
 					</Spin>
 					<PatientComment 
 						wrappedComponentRef={(inst) => this.resultRemarks = inst} 
 						remarks={results.remarks || null} 
+						resultStatus={results.status || ''}
 					/>
 					<Actions 
 						getLabResultFormValues={this.getFormValues} 
 						onSaveSuccess={this.onSaveSuccess}
+						onPrint={this.onPrint}
+						resultStatus={results.status || ''}
+					/>
+					<PrintLabResult 
+						sampleID={examDetails.sampleSpecimenID || null}
+						visible={isDisplayPrint}
+						onClose={() => this.setState({ isDisplayPrint: false })}
 					/>
 		    </Col>
 	    </Row>
@@ -158,10 +174,11 @@ class EditResult extends React.Component {
 
 EditResult.propTypes = {
 	patientInfo: PropTypes.shape({
-		sampleSpecimenID: PropTypes.string,
 		requestID: PropTypes.string,
 	}).isRequired,
-	examDetails: PropTypes.object.isRequired
+	examDetails: PropTypes.shape({
+		sampleSpecimenID: PropTypes.string,
+	}).isRequired
 };
 
 export default EditResult;

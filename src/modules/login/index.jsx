@@ -66,10 +66,10 @@ class Login extends React.Component {
 				selectedLink = URI[k].link;
 		});
 
-		Object.keys(URI.inventory.sub).forEach(k => {
-			if(URI.inventory.sub[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
-				selectedLink = URI.inventory.sub[k].link;
-		});
+		// Object.keys(URI.inventory.sub).forEach(k => {
+		// 	if(URI.inventory.sub[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
+		// 		selectedLink = URI.inventory.sub[k].link;
+		// });
 
 		this.props.history.push(selectedLink); 
 	}
@@ -78,7 +78,7 @@ class Login extends React.Component {
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
-	
+
 		return (
 			<Layout>
 				<Spin spinning={this.state.loading}>
@@ -109,7 +109,7 @@ class Login extends React.Component {
 												<Input.Password type="password" maxLength={20} />
 											)}
 										</Form.Item>
-										<Form.Item style={{marginBottom:'0px'}}>
+										<Form.Item style={{ marginBottom: 0 }}>
 											<Button type="primary" htmlType="submit" className="login-form-button" block>
 												SIGN IN TO MY ACCOUNT
 											</Button>

@@ -6,17 +6,17 @@ import { Link } from 'react-router-dom';
 
 import './inventory_menu_card.css';
 
-class BloodBankCard extends React.Component {
+class InventoryCard extends React.Component {
 	render() {
 		const { image, link, label, offset, className } = this.props;
 		
 		return (
 			<Col span={4} offset={offset}>
 				<Link to={link}>
-					<Card className="bloodbank-item-card">
+					<Card className="inventory-item-card">
 						<Row>
 							<Col span={24}>
-								<img src={image} alt="bloodbank icon" />
+								<img src={image} alt="inventory icon" />
 							</Col>
 						</Row>
 						<Row>
@@ -39,7 +39,7 @@ class BloodBankCard extends React.Component {
 	}
 }
 
-BloodBankCard.propTypes = {
+InventoryCard.propTypes = {
 	image: PropTypes.string.isRequired,
 	link: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
@@ -47,8 +47,8 @@ BloodBankCard.propTypes = {
 	className: PropTypes.string.isRequired
 }
 
-BloodBankCard.defaultProps = {
+InventoryCard.defaultProps = {
 	offset: null
 }
 
-export default BloodBankCard;
+export default InventoryCard;
