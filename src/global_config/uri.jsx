@@ -34,36 +34,6 @@ export const moduleURI = {
 	inventory: {
 		key: 9,
 		link: '/inventory',
-		sub: {
-			stocks: {
-				key: 10,
-				link: '/inventory/stocks',
-			},
-			transaction: {
-				key: 11,
-				link: '/inventory/transaction',
-			},
-			restock: {
-				key: 12,
-				link: '/inventory/restock',
-			},
-			takeout: {
-				key: 13,
-				link: '/inventory/takeout',
-			},
-			notifications: {
-				key: 14,
-				link: '/inventory/notifications',
-			},
-			itemsetup: {
-				key: 15,
-				link: '/inventory/itemsetup',
-			},
-			settings: {
-				key: 16,
-				link: '/inventory/settings',
-			},
-		}
 	},
 	
 	bloodbank: {

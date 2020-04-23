@@ -14,6 +14,10 @@ export const drawerCategoryTitleUpdate = 'UPDATE CATEGORY';
 export const drawerCategoryTitleAdd = 'ADD CATEGORY';
 export const drawerStorageTitleAdd = 'ADD STORAGE';
 export const drawerStorageTitleUpdate = 'UPDATE STORAGE';
+export const drawerTransactionTypeAdd = 'ADD TRANSACTION TYPE';
+export const drawerTransactionTypeUpdate = 'UPDATE TRANSACTION TYPE';
+export const drawerSupplierUpdate = 'UPDATE SUPPLIER';
+export const drawerSupplierAdd = 'ADD SUPPLIER';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -50,17 +54,30 @@ export const fieldLabels = {
   examItemUnitCode: "UNIT OF MEASURES",
   examItemTypeDefault: "DEFAULT VALUE",
   examItemIntegrationCode: "INTEGRATION CODE",
-  categories_code: "CATEGORIES CODE",
-  categories_name: "CATEGORIES NAME",
-  categories_description: "CATEGORIES DESCRIPTION",
+  categories_code: "CATEGORY CODE",
+  categories_name: "CATEGORY NAME",
+  categories_description: "DESCRIPTION",
   section_code: "SECTION CODE",
   section_name: "SECTION NAME",
-  section_description: "SECTION DESCRIPTION",
+  section_description: "DESCRIPTION",
   field_status: "STATUS",
   is_active : "ACTIVE",
   storage_name: "STORAGE NAME",
-  storage_description: "STORAGE DESCRIPTION"
- 
+  storage_description: "DESCRIPTION",
+  suppliersName: "SUPPLIER'S NAME",
+  suppliersContactPerson: "CONTACT PERSON",
+  suppliersContactNumber: "CONTACT NUMBER",
+  suppliersEmailAddress: "EMAIL ADDRESS",
+  suppliersTin: "TIN NO.",
+  suppliersUnit: "UNIT/HOUSE NO.",
+  suppliersStreet: "STREET",
+  suppliersBarangay: "BARANGAY",
+  suppliersDistrict: "DISTRICT",
+  suppliersZipCode: "ZIPCODE",
+  suppliersItemDescription: "DESCRIPTION",
+  transactionTypeCode: "TRANSACTION TYPE CODE",
+  transactionTypeName: "TRANSACTION TYPE NAME",
+  transactionTypeDescription: "DESCRIPTION"
 
 }
 
@@ -79,5 +96,7 @@ export const addUserButton = 'ADD USER';
 export const addSectionButton = 'ADD SECTION';
 export const addCategoriesButton = 'ADD CATEGORY';
 export const addStorageButton = 'ADD STORAGE';
+export const addSupplierButton = 'ADD SUPPLIER';
+export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 
 export const tableYScroll = globalTableYScroll;

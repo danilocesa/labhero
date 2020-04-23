@@ -1,54 +1,49 @@
+// @ts-nocheck
 // LiBRARY
 import React from "react";
-import SectionForm from "./section_form/section_form";
 import "./section.css";
 import TablePager from "shared_components/table_pager";
 import {
   Row as AntRow,
   Col as AntCol,
-  Typography,
   Form as AntForm,
-  Input as AntInput,
-  Button as AntButton,
   Table as AntTable,
   Input,
   Button,
   Icon,
   Drawer
 } from "antd";
-
-// CUSTOM MODULES
 import {
   drawerSectionTitle,
   drawerSectionTitleAdd,
   buttonLabels,
   addSectionButton
-} from "../settings";
+} from "modules/inventory/settings/settings";
+import SectionForm from "./section_form/section_form";
 
-//  CONSTANTS
-const { Title } = Typography;
-const { TextArea } = AntInput;
+// CUSTOM MODULES
+
 const { Search } = Input;
 
-const toInputUppercase = e => {
-  e.target.value = ("" + e.target.value).toUpperCase();
-};
 
 const columns = [
   {
     title: "SECTION CODE",
     dataIndex: "section_code",
-    key: "section_code"
+    key: "section_code",
+    width: 100
   },
   {
     title: "SECTION NAME",
     dataIndex: "section_name",
-    key: "section_name"
+    key: "section_name",
+    width: 150
   },
   {
     title: "DESCRIPTION",
     dataIndex: "description",
-    key: "description"
+    key: "description",
+    width: 250
   }
 ];
 
@@ -102,6 +97,7 @@ class InventorySectionTemplate extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
@@ -110,6 +106,7 @@ class InventorySectionTemplate extends React.Component {
   };
 
   handleReset = () => {
+    // eslint-disable-next-line react/prop-types
     this.props.form.resetFields();
   };
 
@@ -128,6 +125,7 @@ class InventorySectionTemplate extends React.Component {
     const { usersRef } = this.state;
 
     const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
       const { section_code, section_name, description } = item;
 
       return (
@@ -181,7 +179,6 @@ class InventorySectionTemplate extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { actionType } = this.state;
     return (
       <div>

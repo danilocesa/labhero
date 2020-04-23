@@ -8,6 +8,7 @@ import InventorySupplier from 'modules/inventory/settings/supplier';
 import InventoryStorage from 'modules/inventory/settings/storage';
 import InventorySection from 'modules/inventory/settings/sections';
 import InventoryCategories from 'modules/inventory/settings/categories';
+import InventoryTransactionTypes from  'modules/inventory/settings/transaction_types';
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -15,9 +16,10 @@ const pageTitleSettings = "INVENTORY / SETTINGS /";
 const pageTitle = [
   `${pageTitleSettings } SUPPLIERS`,
   `${pageTitleSettings } SUPPLIERS`, 
-  `${pageTitleSettings } STORAGE`,
-  `${pageTitleSettings } SECTION`,
-  `${pageTitleSettings } CATEGORIES`
+  `${pageTitleSettings } STORAGES`,
+  `${pageTitleSettings } SECTIONS`,
+  `${pageTitleSettings } CATEGORIES`,
+  `${pageTitleSettings } TRANSACTION TYPES`
 ]
 
 class InventorySettings extends React.Component {
@@ -37,14 +39,17 @@ class InventorySettings extends React.Component {
           <TabPane tab="SUPPLIERS" key="1">
             <InventorySupplier />
           </TabPane>
-          <TabPane tab="STORAGE/LOCATION" key="2">
+          <TabPane tab="STORAGES/LOCATIONS" key="2">
             <InventoryStorage />
           </TabPane>
-          <TabPane tab="SECTION" key="3">
+          <TabPane tab="SECTIONS" key="3">
             <InventorySection />
           </TabPane>
           <TabPane tab="CATEGORIES" key="4">
             <InventoryCategories />
+          </TabPane>
+          <TabPane tab="TRANSACTION TYPES" key="5">
+            <InventoryTransactionTypes />
           </TabPane>
         </AntTabs>
 			</div>

@@ -5,13 +5,10 @@ import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
+import QuestionTable from '../form'
 import { 
 	tableSize ,
-	tableYScroll,
-	drawerAdd,
-	drawerUpdate
 } from '../settings';
-import UserAccountForm from '../add_form';
 
 const { Search } = Input;
 const columns = [
@@ -19,16 +16,19 @@ const columns = [
 		title: 'ID',
 		dataIndex: 'id',
 		key: 1,
-		width: 200
 	},
 	{
-		title: 'BLOOD GROUP',
-		dataIndex: 'blood_group',
+		title: 'CATEGORY',
+		dataIndex: 'category',
 		key: 2,	
-		width: 300
+    },
+    {
+		title: 'QUESTION',
+		dataIndex: 'question',
+		key: 2,	
 	},
 	{
-		title: 'DESCRIPTION',
+		title: 'ANSWER',
 		dataIndex: 'description',
 		key: 3,
 	},
@@ -57,39 +57,37 @@ class BloodBank extends React.Component {
 				],
 			actionType:'add',
 			drawerTitle: '',
-			drawerButton: '',
 		}
 	}
 	
 	showDrawer = () => {
 		this.setState({
 			visible: true,
-			drawerTitle: "ADD BLOOD GROUP",
-			drawerButton: drawerAdd,
+			drawerTitle: "ADD QUESTION",
+			drawerButton: "ADD",
 			actionType : 'add',
-			patientInfo: [],
 		});
 	};
 
 	onClose = () => {
 		this.setState({
 			visible: false,
-			patientInfo: [],
 		});
 	};
 
-	displayDrawerUpdate = (record) => {
+	displayDrawerUpdate = () => {
 		this.setState({
 			visible: true,
-			drawerTitle: "UPDATE BLOOD GROUP",
-			drawerButton: drawerUpdate,
+			drawerTitle: "UPDATE QUESTION",
+			drawerButton: "UPDATE",
 			actionType:'update',
-			patientInfo: record
+            
 		});
-	}
+    };
+
 
 	render() {
-		const { pagination, drawerButton, patientInfo, visible, drawerTitle, loading,actionType } = this.state;
+		const { pagination, visible, drawerTitle, loading,patientInfo,actionType,drawerButton } = this.state;
 			return(
 				<div>
 					<div className="settings-user-table-action">
@@ -108,8 +106,7 @@ class BloodBank extends React.Component {
 									style={{ marginRight: '15px' }} 
 									onClick={this.showDrawer}
 								>
-									<Icon type="plus" /> ADD BLOOD GROUP
-									
+									<Icon type="plus" /> ADD QUESTION
 								</Button>
 								<TablePager handleChange={this.handleSelectChange} />
 							</Col>
@@ -120,7 +117,6 @@ class BloodBank extends React.Component {
 							dataSource={this.state.data}
 							loading={loading}
 							size={tableSize}
-							scroll={{ y: tableYScroll }}
 							columns={columns} 
 							pagination={pagination}
 							rowKey={record => record.userID}
@@ -145,13 +141,12 @@ class BloodBank extends React.Component {
 							visible={visible}
 							onClose={this.onClose}
 							destroyOnClose
-						>
-							<UserAccountForm
-								actionType={actionType}
-								drawerButton={drawerButton} 
-								patientInfo={patientInfo}
-								onClose={this.onClose}
-							/>
+						> 
+                        <QuestionTable 
+						actionType={actionType}
+						drawerButton={drawerButton} 
+						/>
+							
 						</Drawer>
 				</div>
 			)

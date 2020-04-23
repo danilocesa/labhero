@@ -1,96 +1,98 @@
+// @ts-nocheck
 // LiBRARY
 import React from "react";
+import "./transaction.css";
+import TablePager from "shared_components/table_pager";
 import {
-  Drawer,
   Row as AntRow,
   Col as AntCol,
   Form as AntForm,
   Table as AntTable,
   Input,
   Button,
-  Icon
+  Icon,
+  Drawer
 } from "antd";
-import TablePager from "shared_components/table_pager";
 import {
-  drawerStorageTitleUpdate,
-  drawerStorageTitleAdd,
-  tableSize,
   buttonLabels,
-  addStorageButton,
-  tableYScroll
+  addransactionTypeButton,
+  drawerTransactionTypeUpdate,
+  drawerTransactionTypeAdd
 } from "modules/inventory/settings/settings";
-import StorageForm from "./storage_form/storage_form";
+// eslint-disable-next-line import/no-unresolved
+import SectionForm from "./transaction_form/transaction_form";
 
 // CUSTOM MODULES
 
-
-//  CONSTANTS
 const { Search } = Input;
-
 
 
 const columns = [
   {
-    title: "STORAGE NAME",
-    dataIndex: "storage_name",
-    key: "storage_name",
-    width: 100,
-    sorter: (a, b) => a.storage_name.localeCompare(b.storage_name)
+    title: "TRANSACTION TYPE CODE",
+    dataIndex: "transaction_type_code",
+    key: "transaction_type_code",
+    width: 100
+  },
+  {
+    title: "TRANSACTION TYPE NAME",
+    dataIndex: "transaction_type_name",
+    key: "transaction_type_name",
+    width: 150
   },
   {
     title: "DESCRIPTION",
-    dataIndex: "storage_description",
-    key: "storage_description",
-    width: 250,
-    sorter: (a, b) => a.storage_description.localeCompare(b.storage_description)
+    dataIndex: "description",
+    key: "description",
+    width: 250
   }
 ];
 
-class InventoryStorageTemplate extends React.Component {
+class InventorySectionTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
         {
           key: "1",
-          storage_id: 1,
-          storage_name: "John Brown",
-          storage_description: "New York No. 1 Lake Park"
+          transaction_type_code: 1,
+          transaction_type_name: "John Brown",
+          description: "Description"
         },
         {
           key: "2",
-          storage_id: 2,
-          storage_name: "Jim Green",
-          storage_description: "London No. 1 Lake Park"
+          transaction_type_code: 2,
+          transaction_type_name: "Jim Green",
+          description: "Description"
         },
         {
           key: "3",
-          storage_id: 3,
-          storage_name: "Joe Black",
-          storage_description: "Sidney No. 1 Lake Park"
+          transaction_type_code: 3,
+          transaction_type_name: "Joe Black",
+          description: "Description"
         }
       ],
       usersRef: [
         {
           key: "1",
-          storage_id: 1,
-          storage_name: "John Brown",
-          storage_description: "New York No. 1 Lake Park"
+          transaction_type_code: 1,
+          transaction_type_name: "John Brown",
+          description: "Description"
         },
         {
           key: "2",
-          storage_id: 2,
-          storage_name: "Jim Green",
-          storage_description: "London No. 1 Lake Park"
+          transaction_type_code: 2,
+          transaction_type_name: "Jim Green",
+          description: "Description"
         },
         {
           key: "3",
-          storage_id: 3,
-          storage_name: "Joe Black",
-          storage_description: "Sidney No. 1 Lake Park"
+          transaction_type_code: 3,
+          transaction_type_name: "Joe Black",
+          description: "Description"
         }
       ],
-      actionType:'add'
+      actionType: "add"
     };
   }
 
@@ -109,10 +111,44 @@ class InventoryStorageTemplate extends React.Component {
     this.props.form.resetFields();
   };
 
+  // Private Function
+  containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+
+    return searchFrom
+      .toString()
+      .toLowerCase()
+      .includes(searchedVal);
+  };
+
+  onSearch = value => {
+    const searchedVal = value.toLowerCase();
+    const { usersRef } = this.state;
+
+    const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
+      const { transaction_type_code, transaction_type_name, description } = item;
+
+      return (
+        this.containsString(transaction_type_code, searchedVal) ||
+        this.containsString(transaction_type_name, searchedVal) ||
+        this.containsString(description, searchedVal)
+      );
+    });
+
+    this.setState({ data: filtered });
+  };
+
+  onChangeSearch = event => {
+    const { usersRef } = this.state;
+
+    if (event.target.value === "") this.setState({ data: usersRef });
+  };
+
   displayDrawerUpdate = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerStorageTitleUpdate,
+      drawerTitle: drawerTransactionTypeUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record
@@ -122,9 +158,9 @@ class InventoryStorageTemplate extends React.Component {
   displayDrawerAdd = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerStorageTitleAdd,
-      actionType: "add",
+      drawerTitle: drawerTransactionTypeAdd,
       drawerButton: buttonLabels.create,
+      actionType: "add",
       panelInfo: record
     });
   };
@@ -143,42 +179,8 @@ class InventoryStorageTemplate extends React.Component {
     this.setState({ pagination });
   };
 
-  // Private Function
-  containsString = (searchFrom, searchedVal) => {
-    if (searchFrom === null || searchFrom === "") return false;
-
-    return searchFrom
-      .toString()
-      .toLowerCase()
-      .includes(searchedVal);
-  };
-
-  onSearch = value => {
-    const searchedVal = value.toLowerCase();
-    const { usersRef } = this.state;
-
-    const filtered = usersRef.filter(item => {
-      // eslint-disable-next-line camelcase
-      const { storage_id, storage_name, storage_description } = item;
-
-      return (
-        this.containsString(storage_id, searchedVal) ||
-        this.containsString(storage_name, searchedVal) ||
-        this.containsString(storage_description, searchedVal)
-      );
-    });
-
-    this.setState({ data: filtered });
-  };
-
-  onChangeSearch = event => {
-    const { usersRef } = this.state;
-
-    if (event.target.value === "") this.setState({ data: usersRef });
-  };
-
   render() {
-    const {actionType} = this.state
+    const { actionType } = this.state;
     return (
       <div>
         <AntRow>
@@ -202,22 +204,16 @@ class InventoryStorageTemplate extends React.Component {
                     onClick={this.displayDrawerAdd}
                   >
                     <Icon type="plus" />
-                    {addStorageButton}
+                    {addransactionTypeButton}
                   </Button>
                   <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
             </div>
             <AntTable
-              className="settings-panel-table"
-              size={tableSize}
-              scroll={{ y: tableYScroll }}
-              dataSource={this.state.data}
-              pagination={this.state.pagination}
-              loading={this.state.loading}
-              columns={columns}
               style={{ textTransform: "uppercase" }}
-              rowKey={record => record.key}
+              columns={columns}
+              dataSource={this.state.data}
               onRow={record => {
                 return {
                   onDoubleClick: () => {
@@ -233,8 +229,7 @@ class InventoryStorageTemplate extends React.Component {
               width="30%"
               destroyOnClose
             >
-              <StorageForm
-                // @ts-ignore
+              <SectionForm
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
                 panelInfo={this.state.panelInfo}
@@ -248,6 +243,6 @@ class InventoryStorageTemplate extends React.Component {
   }
 }
 
-const InventoryStorage = AntForm.create()(InventoryStorageTemplate);
+const InventorySection = AntForm.create()(InventorySectionTemplate);
 
-export default InventoryStorage;
+export default InventorySection;

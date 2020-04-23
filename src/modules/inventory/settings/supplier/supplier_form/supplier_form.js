@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 /* eslint-disable func-names */
 // LIBRARY
 import React from "react";
@@ -6,8 +5,8 @@ import {
   Input as AntInput,
   Form as AntForm,
   Button as AntButton,
-  Switch as AntSwitch,
   Row as AntRow,
+  Switch as AntSwitch,
   Col as AntCol
 } from "antd";
 import PropTypes from "prop-types";
@@ -24,10 +23,12 @@ import {
 import {
   messagePrompts,
   buttonLabels,
-  fieldLabels} from "../../settings";
+  fieldLabels,
+  fieldRules
+} from "../../settings";
 
 // CSS
-import "./section.css";
+import "./panel_form.css";
 
 const { TextArea } = AntInput;
 class PanelFormTemplate extends React.Component {
@@ -76,6 +77,7 @@ class PanelFormTemplate extends React.Component {
       };
       return examRequestData;
     });
+    // eslint-disable-next-line react/no-unused-state
     this.setState({ examRequestData });
   };
 
@@ -118,6 +120,7 @@ class PanelFormTemplate extends React.Component {
         this.state.selectedExamRequest === undefined ||
         this.state.selectedExamRequest.length === 0
       ) {
+        // eslint-disable-next-line react/no-unused-state
         this.setState({ examRequestValidation: true });
         return;
       }
@@ -192,6 +195,7 @@ class PanelFormTemplate extends React.Component {
     });
     if (data.length > 14) {
       this.setState({
+        // eslint-disable-next-line react/no-unused-state
         hasMore: false,
         loading: false
       });
@@ -206,52 +210,87 @@ class PanelFormTemplate extends React.Component {
       <div>
         <AntForm onSubmit={this.onSubmit}>
           <section style={{ marginBottom: 50 }}>
-            <AntRow gutter={12}>
-            {this.props.actionType === "update" ? (
+            <AntRow gutter={8}>
+              {this.props.actionType === "update" ? (
                 <AntRow>
-                <div style={{float: "left"}}>
-                <AntCol xs={24} sm={24}>
-                  <AntForm.Item
-                    label={fieldLabels.is_active}
-                    labelCol={{ span: 14 }}
-                    wrapperCol={{ span: 1 }}
-                  >
-                    {getFieldDecorator("active", {
-                      valuePropName: "checked",
-                      initialValue: panelInfo ? panelInfo.status === 1 : true
-                    })(<AntSwitch />)}
-                  </AntForm.Item>
-                </AntCol>
-                </div>
+                  <div style={{ float: "left" }}>
+                    <AntCol xs={24} sm={24}>
+                      <AntForm.Item
+                        label={fieldLabels.is_active}
+                        labelCol={{ span: 14 }}
+                        wrapperCol={{ span: 1 }}
+                      >
+                        {getFieldDecorator("active", {
+                          valuePropName: "checked",
+                          initialValue: panelInfo
+                            ? panelInfo.status === 1
+                            : true
+                        })(<AntSwitch />)}
+                      </AntForm.Item>
+                    </AntCol>
+                  </div>
                 </AntRow>
               ) : null}
-
-              <AntForm.Item
-                label={fieldLabels.section_code}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("section_code", {
-                  initialValue: panelInfo.key
-                })(<AntInput disabled />)}
-              </AntForm.Item>
-
-              <AntForm.Item
-                label={fieldLabels.section_name}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("section_name", {
-                  initialValue: panelInfo.key
-                })(<AntInput />)}
-              </AntForm.Item>
-
-              <AntForm.Item
-                label={fieldLabels.section_description}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("section_description", {
-                  initialValue: panelInfo.key
-                })(<TextArea rows={4} />)}
-              </AntForm.Item>
+              <AntCol xs={24} sm={24}>
+                <AntForm.Item label={fieldLabels.suppliersName}>
+                  {getFieldDecorator("panel_id", {
+                    initialValue: panelInfo.key
+                  })(<AntInput />)}
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersContactPerson}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersContactNumber}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersEmailAddress}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersTin}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersUnit}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersStreet}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersBarangay}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersDistrict}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={8}>
+                <AntForm.Item label={fieldLabels.suppliersZipCode}>
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={16}>
+                <AntForm.Item label={fieldLabels.suppliersItemDescription}>
+                  {getFieldDecorator("panel_name", {
+                    initialValue: panelInfo.panel_name,
+                    rules: fieldRules.panel_name
+                  })(<TextArea rows={1} />)}
+                </AntForm.Item>
+              </AntCol>
             </AntRow>
           </section>
           <section className="drawerFooter">

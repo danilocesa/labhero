@@ -27,7 +27,7 @@ import {
   fieldLabels} from "../../settings";
 
 // CSS
-import "./section.css";
+import "./transaction.css";
 
 const { TextArea } = AntInput;
 class PanelFormTemplate extends React.Component {
@@ -227,28 +227,28 @@ class PanelFormTemplate extends React.Component {
               ) : null}
 
               <AntForm.Item
-                label={fieldLabels.section_code}
+                label={fieldLabels.transactionTypeCode}
                 className={panelInfo ? null : "hide"}
               >
-                {getFieldDecorator("section_code", {
+                {getFieldDecorator("transaction_code", {
                   initialValue: panelInfo.key
                 })(<AntInput disabled />)}
               </AntForm.Item>
 
               <AntForm.Item
-                label={fieldLabels.section_name}
+                label={fieldLabels.transactionTypeName}
                 className={panelInfo ? null : "hide"}
               >
-                {getFieldDecorator("section_name", {
+                {getFieldDecorator("transaction_type_name", {
                   initialValue: panelInfo.key
                 })(<AntInput />)}
               </AntForm.Item>
 
               <AntForm.Item
-                label={fieldLabels.section_description}
+                label={fieldLabels.transactionTypeDescription}
                 className={panelInfo ? null : "hide"}
               >
-                {getFieldDecorator("section_description", {
+                {getFieldDecorator("transaction_type_description", {
                   initialValue: panelInfo.key
                 })(<TextArea rows={4} />)}
               </AntForm.Item>

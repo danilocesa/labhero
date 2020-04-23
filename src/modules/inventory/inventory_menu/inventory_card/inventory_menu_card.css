@@ -1,0 +1,17 @@
+
+
+.inventory-item-card {
+    width: 180px;
+    height: 170px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #FAFAFC;
+    margin: 8px 0;
+}
+
+img {
+    height: 45px;
+    width: auto;
+}

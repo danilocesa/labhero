@@ -1,9 +1,7 @@
 // LiBRARY
 import React from 'react';
-import PageTitle from 'shared_components/page_title';
 import SelectedTable from './selected_table';
 
-import { drawerUpdateTitle, buttonLabels } from './settings';
 
 class InventoryCategoriesTemplate extends React.Component {
   state = { }
@@ -15,9 +13,8 @@ class InventoryCategoriesTemplate extends React.Component {
   render() {
     const {selectedExams } = this.state;
     return ( 
-			<div>
-        <PageTitle pageTitle= "CATEGORIES" />
-            <SelectedTable 
+			<div style={{marginTop: -50}}>
+            <SelectedTable
               wrappedComponentRef={(inst) => this.selectedTable = inst}
               data={selectedExams}
               onDragAndDropRow={this.onDragAndDropRow}

@@ -12,60 +12,46 @@ import './panel_form.css';
 
 const { TextArea } = Input;
 
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+  };
+  
 class UserAccountForm extends React.Component {
-	constructor(props) {
-		super(props);
-	}
+	
 
 	render() {
-		const { drawerButton, form } = this.props;
-		const { getFieldDecorator } = form;
+		const { drawerButton} = this.props;
 
 		return(
-			<div>
-				<Form >
-				{this.props.actionType == "update"? 
-					<Form.Item label="ACTIVE" >
-					{
-						getFieldDecorator('active',{
-						})(
-							<Switch />
-						)
-					}
+			<div style={{marginTop: -20}}>
+				<Form>
+				{this.props.actionType == "update"?
+					<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}} >
+						<Switch />
 					</Form.Item>	
 					:
 					 null
     			  }
-							<div className="form-section" >
-								<Form.Item label= "ORDER" style={{ marginTop:'-25px'}}>
-									{
-									
-                                            <Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
-									
-									}
-								</Form.Item>
-								<Form.Item label= "CATEGORY NAME"style={{ marginTop:'-25px'}}>
-									{
-                                            <Input style={{ textTransform: 'uppercase',marginTop: 10 }} />
-										
-									}
-								</Form.Item>
-								<Form.Item label= "DESCRIPTION" style={{ marginTop:'-25px'}}>
-									{
-											<TextArea rows={5} />
-										
-									}
-								</Form.Item>
-							</div>
-					
-					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-							{buttonLabels.cancel}
-						</Button>
-						<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-							{drawerButton}
-						</Button>
-					</section>
+				<div className="form-section" >
+					<Form.Item label="ORDER" style={{ marginTop:'-25px'}}>									
+							<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
+					</Form.Item>
+					<Form.Item label="CATEGORY NAME" style={{ marginTop:'-25px'}}>
+							<Input style={{ textTransform: 'uppercase',marginTop: 10 }} />
+					</Form.Item>
+					<Form.Item label="DESCRIPTION" style={{ marginTop:'-25px'}}>
+								<TextArea rows={5} />
+					</Form.Item>
+				</div>
+				<section className="drawerFooter">
+					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+						{buttonLabels.cancel}
+					</Button>
+					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+						{drawerButton}
+					</Button>
+				</section>
 				</Form>
 			</div>
 		);

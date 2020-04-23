@@ -1,17 +1,14 @@
 import React from 'react';
+import BloodGroupTable from './table';
 
-import PageTitle from 'shared_components/page_title';
-import UserTable from './table';
-
-class UserMaintenance extends React.Component {
+class BloodGroup extends React.Component {
 	render() {
 		return(
-			<div>
-				<PageTitle pageTitle= ' BLOOD GROUP' />
-				<UserTable />
+			<div style={{marginTop: -50}}>
+				<BloodGroupTable />
 			</div>
 		);
 	} 
 }
 
-export default UserMaintenance;
+export default BloodGroup;
