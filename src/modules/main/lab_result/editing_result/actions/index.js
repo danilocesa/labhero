@@ -2,10 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { saveLabResult } from 'services/lab_result/result';
-import { Button, Modal, Row, Col } from 'antd';
-
-// IMAGES
-import { CheckIcon } from 'images';
+import { Button } from 'antd';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+// import NotifModal from 'modules/main/lab_result/editing_result/modal';
+import Message from 'shared_components/message';
 
 // CSS
 import './actions.css';
@@ -17,85 +17,117 @@ class Actions extends React.Component {
 		this.timer = null;
 		this.countdownTime = 2500;
 		this.state = { 
-			isDisplayModal: false,
-			isLoading: false,
+			// isDisplayModal: false,
+			isApproving: false,
+			isSaving: false
 		};
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.timer);
+		// clearTimeout(this.timer);
 	}
 	
 
-  onClickSave = () => {
+  onClickSave = async () => {
 		const { getLabResultFormValues, onSaveSuccess } = this.props;
-
 		const labResultFormValues = getLabResultFormValues();
+		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		if(!labResultFormValues.form.hasError && !labResultFormValues.remarks.hasError) {
-			this.setState({ isLoading: true }, async () => {
+			this.setState({ isSaving: true }, async () => {
 				const savedResults = await saveLabResult({
 					results: labResultFormValues.form.results,
-					remarks: labResultFormValues.remarks.value
+					remarks: labResultFormValues.remarks.value,
+					userID: userSession.userID,
+					action: 'Save'
 				});
 
-				this.setState({ isLoading: false }, () => {
+				this.setState({ isSaving: false }, () => {
 					if(savedResults) {
 						onSaveSuccess();
+						
+						Message.success({ message: `Result have successfully saved.` });
 
-						this.setState({ isDisplayModal: true });
-	
-						this.timer = setTimeout(() => {
-							this.setState({ isDisplayModal: false });
-						}, this.countdownTime);
+						// this.setState({ isDisplayModal: true });
+		
+						// this.timer = setTimeout(() => {
+						// 	this.setState({ isDisplayModal: false });
+						// }, this.countdownTime);
 					}
 				});
 			});
 		}
-  };
+	};
+	
+	onClickApprove = async () => {
+		const { getLabResultFormValues, onSaveSuccess, resultStatus } = this.props;
+		const labResultFormValues = getLabResultFormValues();
+		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+		const action = (resultStatus === 'Approve') ? 'Unapprove' : 'Approve';
+
+		if(!labResultFormValues.form.hasError && !labResultFormValues.remarks.hasError) {
+			this.setState({ isApproving: true }, async () => {
+				const savedResults = await saveLabResult({
+					results: labResultFormValues.form.results,
+					remarks: labResultFormValues.remarks.value,
+					userID: userSession.userID,
+					action
+				});
+
+				this.setState({ isApproving: false }, () => {
+					if(savedResults) {
+						onSaveSuccess();
+						
+						Message.success({ message: `Result have successfully ${action.toLowerCase()}.` });
+
+						// this.setState({ isDisplayModal: true });
+		
+						// this.timer = setTimeout(() => {
+						// 	this.setState({ isDisplayModal: false });
+						// }, this.countdownTime);
+					}
+				});
+			});
+		}
+	}
+
 
   render() {
-		const { isDisplayModal, isLoading } = this.state;
+		const { isSaving, isApproving } = this.state;
+		const { onPrint, resultStatus } = this.props;
 
-    return (
-	    <div style={{ textAlign: 'right', marginTop: '30px' }} className="action-container">
-				<Button className="action-button">
-					APPROVE
+		return (
+	    <div className="lab-res-edit-action-container">
+				<Button 
+					loading={isApproving}
+					shape="round" 
+					type="primary" 
+					onClick={this.onClickApprove}
+					className="action-buttons"
+					disabled={isSaving}
+				>
+					{ resultStatus === 'Approve' ? 'DISAPPROVE' : 'APPROVE' }
 				</Button>
-				<Button className="action-button">
+				<Button 
+					shape="round" 
+					type="primary"  
+					onClick={onPrint}
+					className="action-buttons"
+				>
 					PRINT
 				</Button>
 				<Button 
-					loading={isLoading}
-					className="action-button" 
+					loading={isSaving}
+					shape="round" 
+					type="primary" 
 					onClick={this.onClickSave}
+					disabled={resultStatus === 'Approve' || isApproving}
+					className="action-buttons"
 				>
 					SAVE
 				</Button>
 		    
-				<Modal
-					// className="save-modal-container"
-					visible={isDisplayModal}
-					maskClosable
-					footer={<></>}
-				>
-					<Row type="flex" justify="center">
-						<Col>
-							{' '}
-							<img
-								src={CheckIcon}
-								alt="logo"
-								style={{ height: 65, width: 50, paddingBottom: '1em' }}
-							/>
-						</Col>
-					</Row>
-					<p className="successful-msg">
-						You have successfully saved a result!
-					</p>
-					<p style={{ textAlign: 'center' }}>
-						A notification will be sent once the request has been verified.
-					</p>
-				</Modal>
+				{/* <NotifModal isDisplay={isDisplayModal} /> */}
 	    </div>
     );
   }
@@ -103,7 +135,9 @@ class Actions extends React.Component {
 
 Actions.propTypes = {
 	getLabResultFormValues: PropTypes.func.isRequired,
-	onSaveSuccess: PropTypes.func.isRequired
+	onSaveSuccess: PropTypes.func.isRequired,
+	onPrint: PropTypes.func.isRequired,
+	resultStatus: PropTypes.string.isRequired
 };
 
 export default Actions;

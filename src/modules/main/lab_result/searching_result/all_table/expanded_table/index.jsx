@@ -5,37 +5,38 @@ import { globalTableSize } from 'global_config/constant-global';
 
 import './index.css';
 
-const columns = [
-	{
-		title: 'Section',
-		dataIndex: 'sectionName',
-		width: 150,
-	},
-	{ 
-		title: 'Sample ID No.', 
-		dataIndex: 'sampleSpecimenID', 
-		width: 170,
-	},
-	{ 
-		title: 'Specimen', 
-		dataIndex: 'specimenName', 
-		width: 150,
-	},
-	{ 
-		title: 'Exam Requested', 
-		dataIndex: 'examRequestNames', 
-	},
-	{
-		title: '', 
-		width: 100,
-		render: () => (<Button>Print</Button>)
-	}
-];
-
 class ExpandedTable extends React.Component {
 	render() {
-		const { expandedData, onClickTableRow } = this.props;
+		const { expandedData, onClickTableRow, onClickPrint } = this.props;
 		const { contents, ...restProps } = expandedData;
+		const columns = [
+			{
+				title: 'Section',
+				dataIndex: 'sectionName',
+				width: 150,
+			},
+			{ 
+				title: 'Sample ID No.', 
+				dataIndex: 'sampleSpecimenID', 
+				width: 170,
+			},
+			{ 
+				title: 'Specimen', 
+				dataIndex: 'specimenName', 
+				width: 150,
+			},
+			{ 
+				title: 'Exam Requested', 
+				dataIndex: 'examRequestNames', 
+			},
+			{
+				title: '', 
+				width: 100,
+				render: (text, record) => {
+					return (<Button onClick={() => onClickPrint(record.sampleSpecimenID)}>Print</Button>);
+				}
+			}
+		];
 
 		return (
 			<Table
@@ -62,7 +63,8 @@ ExpandedTable.propTypes = {
 	expandedData: PropTypes.shape({
 		contents: PropTypes.array
 	}).isRequired,
-	onClickTableRow: PropTypes.func.isRequired
+	onClickTableRow: PropTypes.func.isRequired,
+	onClickPrint: PropTypes.func.isRequired
 };
 
 export default ExpandedTable;

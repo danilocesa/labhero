@@ -1,0 +1,144 @@
+// @ts-nocheck
+// LIBRARY
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Drawer, Spin } from 'antd';
+import { Document, Page, pdfjs } from 'react-pdf';
+import { getPrintPreview } from 'services/lab_result/result';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+class PrintResult extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      imageSrc: null,
+      pageNumber: 1,
+      isReadyToPrint: false
+    };
+
+    this.timer = null;
+  }
+    
+  componentDidMount() {
+    console.log('component did mount');
+
+    window.addEventListener('message', (e) => { 
+      if(e.data.isReadyToPrint) {
+        this.setState({ isReadyToPrint: true });
+      }
+    });
+  }
+
+  async componentDidUpdate(prevProps) {
+    const { sampleID } = this.props;
+    
+    if(prevProps.visible === false && this.props.visible && sampleID !== null) {
+      const printPreview = await getPrintPreview(sampleID);
+
+      // eslint-disable-next-line react/no-did-update-set-state
+      // this.setState({ 
+      //   isReadyToPrint: false,
+      //   imageSrc: printPreview.data 
+      // }, () => {
+      //   this.timer = setInterval(() => {
+      //     const { isReadyToPrint } = this.state;
+  
+      //     console.log('timer is on');
+      //     if(isReadyToPrint) {  
+      //       this.printResult();
+
+      //       clearInterval(this.timer);
+
+      //       this.timer = null;
+      //     }
+      //   }, 1000);
+      // });
+    }
+  }
+
+  // printResult = () => {
+  //   const content = document.getElementById("printableContent");
+  //   const pri = document.getElementById("ifmcontentstoprint").contentWindow;
+  //   pri.document.open();
+  //   pri.document.write(content.innerHTML);
+  //   pri.document.close();
+  //   pri.focus();
+  //   pri.print();
+  //   clearTimeout(this.timer);
+  // }
+
+  printResult = () => {
+    const id = 'result';
+    const iframe = document.frames
+      ? document.frames[id]
+      : document.getElementById(id);
+    const iframeWindow = iframe.contentWindow || iframe;
+    
+
+    iframe.focus();
+    iframeWindow.print();
+  }
+  
+  onCloseDrawer = () => {
+    const { onClose } = this.props;
+
+    if(this.timer) {
+      clearInterval(this.timer);
+    }
+    
+    onClose();
+  }
+
+	render() {
+    const { pageNumber, imageSrc, isReadyToPrint } = this.state;
+    const { visible, sampleID } = this.props;
+
+    return (
+      <Drawer 
+        title="PRINT LABORATORY RESULT"
+        width="700"
+        placement="right"
+        closable
+        onClose={this.onCloseDrawer}
+        visible={visible}
+        className="ageBracket-drawer"
+      >
+        <div>
+          { imageSrc && 
+            (
+              <Spin spinning={!isReadyToPrint && visible}>
+                <iframe
+                  id="result"
+                  src={`/lab/result/print/${sampleID}`}
+                  // style={{ height: 0, width: 0, position: 'absolute' }}
+                  title="result"
+                />
+                <Document
+                  file={`data:application/pdf;base64,${imageSrc}`}
+                  onLoadError={console.error}
+                  renderMode="svg"
+                >
+                  <Page pageNumber={pageNumber} renderMode="svg" />
+                </Document>
+              </Spin>
+            )
+          }
+        </div>
+      </Drawer>
+    );
+  }
+}
+
+PrintResult.propTypes = {
+  sampleID: PropTypes.string,
+  onClose: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired
+};
+
+PrintResult.defaultProps = {
+  sampleID: null
+};
+
+export default PrintResult;

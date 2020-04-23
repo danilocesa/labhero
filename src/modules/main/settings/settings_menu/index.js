@@ -27,6 +27,11 @@ const settingsItemData = [
 		label: 'PANEL EXAM'
 	},
 	{
+		image: NormalValuesIcon,
+		link: 'settings/normal-values',
+		label: 'NORMAL VALUES'
+	},
+	{
 		image: UserMaintenanceIcon,
 		link: '/settings/user-maintenance',
 		label: 'USER MAINTENANCE'

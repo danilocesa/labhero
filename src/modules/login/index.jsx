@@ -78,7 +78,7 @@ class Login extends React.Component {
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
-	
+
 		return (
 			<Layout>
 				<Spin spinning={this.state.loading}>
