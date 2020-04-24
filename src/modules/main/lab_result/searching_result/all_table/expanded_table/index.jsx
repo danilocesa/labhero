@@ -3,11 +3,36 @@ import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 import { globalTableSize } from 'global_config/constant-global';
 
+
 import './index.css';
 
 class ExpandedTable extends React.Component {
+	state = { isPrintLoading: [] };
+
+	onClickPrint = (record, index) => {
+		const { onClickPrint: print } = this.props;
+
+		this.setState((state) => { 
+			return this.getPrintLoadingState(state.isPrintLoading, index, true);
+		}, async () => {
+			await print(record.sampleSpecimenID);
+
+			this.setState((state) => { 
+				return this.getPrintLoadingState(state.isPrintLoading, index, false);
+			});
+		});
+	}
+
+	getPrintLoadingState = (printLoadingArray, index, isLoading) => {
+		const printLoadingClone = [...printLoadingArray];
+		printLoadingClone[index] = isLoading; 
+
+		return { isPrintLoading: printLoadingClone };
+	}
+
 	render() {
-		const { expandedData, onClickTableRow, onClickPrint } = this.props;
+		const { isPrintLoading } = this.state;
+		const { expandedData, onClickTableRow } = this.props;
 		const { contents, ...restProps } = expandedData;
 		const columns = [
 			{
@@ -32,8 +57,15 @@ class ExpandedTable extends React.Component {
 			{
 				title: '', 
 				width: 100,
-				render: (text, record) => {
-					return (<Button onClick={() => onClickPrint(record.sampleSpecimenID)}>Print</Button>);
+				render: (text, record, index) => {
+					return (
+						<Button 
+							loading={isPrintLoading[index]}
+							onClick={() => this.onClickPrint(record, index)}
+						>
+							Print
+						</Button>
+					);
 				}
 			}
 		];

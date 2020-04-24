@@ -47,12 +47,6 @@ class Actions extends React.Component {
 						onSaveSuccess();
 						
 						Message.success({ message: `Result have successfully saved.` });
-
-						// this.setState({ isDisplayModal: true });
-		
-						// this.timer = setTimeout(() => {
-						// 	this.setState({ isDisplayModal: false });
-						// }, this.countdownTime);
 					}
 				});
 			});
@@ -79,12 +73,6 @@ class Actions extends React.Component {
 						onSaveSuccess();
 						
 						Message.success({ message: `Result have successfully ${action.toLowerCase()}.` });
-
-						// this.setState({ isDisplayModal: true });
-		
-						// this.timer = setTimeout(() => {
-						// 	this.setState({ isDisplayModal: false });
-						// }, this.countdownTime);
 					}
 				});
 			});
@@ -94,7 +82,7 @@ class Actions extends React.Component {
 
   render() {
 		const { isSaving, isApproving } = this.state;
-		const { onPrint, resultStatus } = this.props;
+		const { onPrint, resultStatus, isResultsTouched } = this.props;
 
 		return (
 	    <div className="lab-res-edit-action-container">
@@ -121,7 +109,7 @@ class Actions extends React.Component {
 					shape="round" 
 					type="primary" 
 					onClick={this.onClickSave}
-					disabled={resultStatus === 'Approve' || isApproving}
+					disabled={resultStatus === 'Approve' || isApproving || !isResultsTouched}
 					className="action-buttons"
 				>
 					SAVE
@@ -137,7 +125,8 @@ Actions.propTypes = {
 	getLabResultFormValues: PropTypes.func.isRequired,
 	onSaveSuccess: PropTypes.func.isRequired,
 	onPrint: PropTypes.func.isRequired,
-	resultStatus: PropTypes.string.isRequired
+	resultStatus: PropTypes.string.isRequired,
+	isResultsTouched: PropTypes.bool.isRequired,
 };
 
 export default Actions;

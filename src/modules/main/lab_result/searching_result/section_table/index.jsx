@@ -52,22 +52,22 @@ const columns = [
 	{ 
 		title: 'SECTION', 
 		width: 250,
-		render: (record) => record.contents[0].sectionName
+		render: (record) => record.contents.sectionName
 	},
 	{ 
 		title: 'SAMPLE ID NO.', 
 		width: 250,
-		render: (record) => record.contents[0].sampleSpecimenID
+		render: (record) => record.contents.sampleSpecimenID
 	},
 	{ 
 		title: 'SPECIMEN', 
-		render: (record) => record.contents[0].specimenName
+		render: (record) => record.contents.specimenName
 	},
 	{ 
 		title: 'EXAM REQUESTED', 
 		fixed: 'right',
 		width: 350,
-		render: (record) => record.contents[0].examRequestNames
+		render: (record) => record.contents.examRequestNames
 	},
 ];
 
@@ -83,7 +83,6 @@ class SectionTable extends React.Component {
 	render() {
 		const { pageSize } = this.state;
 		const { labResults, onClickTableRow } = this.props;
-		console.log(labResults);
 		
 		return (
 			<div>
@@ -101,7 +100,7 @@ class SectionTable extends React.Component {
 					columns={columns}
 					pagination={{ pageSize }} 
 					dataSource={labResults}
-					rowKey={record => record.requestID}
+					rowKey={record => record.contents.sampleSpecimenID}
 					scroll={{ x: 3000, y: 300 }}
 					onRow={record => {
 						const { contents, ...restProps } = record;
@@ -109,7 +108,7 @@ class SectionTable extends React.Component {
 						return { onDoubleClick: () => { 
 							onClickTableRow({
 								patientInfo: { ...restProps },
-								examDetails: contents[0]
+								examDetails: contents
 							}); 
 						}};
 					}}
