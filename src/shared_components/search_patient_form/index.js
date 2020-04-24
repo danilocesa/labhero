@@ -113,7 +113,7 @@ class SearchPatientForm extends React.Component {
 						</Form.Item>
 					</Col>
 					{/* Or */}
-					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 10 }}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
 						OR
 					</Col>
 					{/* Patient Name */}
@@ -148,7 +148,7 @@ class SearchPatientForm extends React.Component {
 						) : null 
 					}
 					{/* Buttons */}
-					<Col xs={24} sm={24} md={6} lg={6}>
+					<Col xs={24} sm={24} md={6} lg={6} style={{ marginTop: 20 }}>
 						<Form.Item>
 							<Row>
 								<Button 

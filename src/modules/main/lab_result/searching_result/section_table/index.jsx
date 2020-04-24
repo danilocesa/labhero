@@ -83,6 +83,7 @@ class SectionTable extends React.Component {
 	render() {
 		const { pageSize } = this.state;
 		const { labResults, onClickTableRow } = this.props;
+		console.log(labResults);
 		
 		return (
 			<div>

@@ -4,7 +4,9 @@ export const fieldLabels = {
   transaction_date: "FROM DATE ~ TO DATE",
   section: "SECTION",
   transaction_type: "TRANSACTION TYPE",
-  item: "ITEM"
+	item: "ITEM",
+	patientID: "PATIENT ID",
+	patientName: "PATIENT NAME"
 }
 
 export const buttonNames = {
