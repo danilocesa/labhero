@@ -19,7 +19,7 @@ import "./inventory_menu.css";
 const settingsItemData = [
   {
     image: InvList,
-    link: "/inventory/Transactions",
+    link: "/inventory/inventorylist",
     label: "Inventory List"
   },
   {
@@ -33,11 +33,6 @@ const settingsItemData = [
     label: "Restock"
   },
   {
-    image: InvSettings,
-    link: "/inventory/settings",
-	label: "Settings"
-  },
-  {
     image: InvTakeout,
     link: "/inventory/takeout",
     label: "Takeout"
@@ -46,7 +41,12 @@ const settingsItemData = [
     image: InvTransaction,
     link: "/inventory/transactions",
     label: "Transactions"
-  }
+  },
+  {
+    image: InvSettings,
+    link: "/inventory/settings",
+	label: "Settings"
+  },
 ];
 
 class InventoryMenu extends React.Component {

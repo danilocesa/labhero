@@ -28,7 +28,7 @@ import {
 } from "../../settings";
 
 // CSS
-import "./supplier_form.css";
+import "./items_form.css";
 
 const { TextArea } = AntInput;
 class PanelFormTemplate extends React.Component {
@@ -207,7 +207,7 @@ class PanelFormTemplate extends React.Component {
     const { panelInfo, drawerButton } = this.props;
 
     return (
-      <div className="inventory-supplier-drawer">
+      <div className="inventory-items-drawer">
         <AntForm onSubmit={this.onSubmit}>
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={8}>
@@ -232,58 +232,43 @@ class PanelFormTemplate extends React.Component {
                 </AntRow>
               ) : null}
               <AntCol xs={24} sm={24}>
-                <AntForm.Item label={fieldLabels.suppliersName}>
+                <AntForm.Item label={fieldLabels.itemName}>
                   {getFieldDecorator("panel_id", {
                     initialValue: panelInfo.key
                   })(<AntInput />)}
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersContactPerson}>
+                <AntForm.Item label={fieldLabels.itemCategory}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersContactNumber}>
+                <AntForm.Item label={fieldLabels.itemSection}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersEmailAddress}>
+                <AntForm.Item label={fieldLabels.itemUnitOfMeasure}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersTin}>
+                <AntForm.Item label={fieldLabels.itemDefaultAmount}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersUnit}>
+                <AntForm.Item label={fieldLabels.itemSkuBarcode}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
               <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersStreet}>
+                <AntForm.Item label={fieldLabels.itemsUpcBarcode}>
                   <AntInput />
                 </AntForm.Item>
               </AntCol>
-              <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersBarangay}>
-                  <AntInput />
-                </AntForm.Item>
-              </AntCol>
-              <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersDistrict}>
-                  <AntInput />
-                </AntForm.Item>
-              </AntCol>
-              <AntCol span={8}>
-                <AntForm.Item label={fieldLabels.suppliersZipCode}>
-                  <AntInput />
-                </AntForm.Item>
-              </AntCol>
-              <AntCol span={16}>
+              <AntCol span={24}>
                 <AntForm.Item label={fieldLabels.suppliersItemDescription}>
                   {getFieldDecorator("panel_name", {
                     initialValue: panelInfo.panel_name,

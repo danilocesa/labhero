@@ -1,9 +1,9 @@
 import React from 'react';
 import { Collapse } from 'antd';
+import PageTitle from 'shared_components/page_title';
 import ItemForm from './item_form';
 import SearchForm from './search_form';
 import ItemTable from './table';
-import PageTitle from 'shared_components/page_title';
 
 
 const { Panel } = Collapse;

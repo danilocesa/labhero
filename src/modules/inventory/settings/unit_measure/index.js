@@ -1,7 +1,5 @@
 // LiBRARY
 import React from "react";
-import TablePager from "shared_components/table_pager";
-import "./categories.css";
 import {
   Drawer,
   Row as AntRow,
@@ -10,104 +8,86 @@ import {
   Table as AntTable,
   Input,
   Button,
-  Icon,
+  Icon
 } from "antd";
+import TablePager from "shared_components/table_pager";
 import {
+  drawerUnitUpdate,
+  drawerUnitAdd,
   tableSize,
   buttonLabels,
-  addCategoriesButton,
-  drawerCategoryTitleUpdate,
-  drawerCategoryTitleAdd,
+  addUnitMeasure,
   tableYScroll
 } from "modules/inventory/settings/settings";
-import CategoriesForm from "./categories_form/categories_form";
+import UnitForm from "./unit_form/unit_form";
 
 // CUSTOM MODULES
+
+
 //  CONSTANTS
 const { Search } = Input;
 
 
+
 const columns = [
   {
-    title: "CATEGORY CODE",
-    dataIndex: "categories_code",
-    key: "categories_code",
-    width: 100
+    title: "UNIT NAME",
+    dataIndex: "unit_name",
+    key: "unit_name",
+    width: 250,
+    sorter: (a, b) => a.unit_name.localeCompare(b.unit_name)
   },
   {
-    title: "CATEGORY NAME",
-    dataIndex: "categories_name",
-    key: "categories_name",
-    width: 150
-  },
-  {
-    title: "DESCRIPTION",
-    dataIndex: "description",
-    key: "description",
-    width: 250
+    title: "UNIT SYMBOL",
+    dataIndex: "symbol",
+    key: "symbol",
+    width: 150,
+    sorter: (a, b) => a.symbol.localeCompare(b.symbol)
   }
 ];
 
-class InventoryCategoriesTemplate extends React.Component {
+class UnitofMeasureTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
         {
           key: "1",
-          categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          unit_name: "Name 1",
+          symbol: "John Brown 1"
         },
         {
           key: "2",
-          categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          unit_name: "Name 2",
+          symbol: "John Brown 2"
         },
         {
           key: "3",
-          categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          unit_name: "Name 3",
+          symbol: "John Brown 3"
         }
       ],
       usersRef: [
         {
           key: "1",
-          categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          unit_name: "Name 1",
+          symbol: "John Brown 1"
         },
         {
           key: "2",
-          categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          unit_name: "Name 2",
+          symbol: "John Brown 2"
         },
         {
           key: "3",
-          categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          unit_name: "Name 3",
+          symbol: "John Brown 3"
         }
       ],
-      categories: [],
-      actionType: "add",
-      
+      actionType:'add'
     };
   }
 
-  componentDidMount() {
-    fetch('https://labheroapidev-nqvkwb2gnq-de.a.run.app/inventory/categories')
-    .then(res => res.json())
-    .then((data) => {
-      this.setState({ categories: data.result })
-    })
-    console.log(this.state.categories);
-    // .catch(console.log)
-  };
-  
   handleSubmit = e => {
     e.preventDefault();
     // eslint-disable-next-line react/prop-types
@@ -118,8 +98,6 @@ class InventoryCategoriesTemplate extends React.Component {
     });
   };
 
- 
-
   handleReset = () => {
     // eslint-disable-next-line react/prop-types
     this.props.form.resetFields();
@@ -128,7 +106,7 @@ class InventoryCategoriesTemplate extends React.Component {
   displayDrawerUpdate = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleUpdate,
+      drawerTitle: drawerUnitUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record
@@ -138,9 +116,9 @@ class InventoryCategoriesTemplate extends React.Component {
   displayDrawerAdd = record => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleAdd,
-      drawerButton: buttonLabels.create,
+      drawerTitle: drawerUnitAdd,
       actionType: "add",
+      drawerButton: buttonLabels.create,
       panelInfo: record
     });
   };
@@ -175,12 +153,11 @@ class InventoryCategoriesTemplate extends React.Component {
 
     const filtered = usersRef.filter(item => {
       // eslint-disable-next-line camelcase
-      const { categories_code, categories_name, description } = item;
+      const { unit_name, symbol } = item;
 
       return (
-        this.containsString(categories_code, searchedVal) ||
-        this.containsString(categories_name, searchedVal) ||
-        this.containsString(description, searchedVal)
+        this.containsString(unit_name, searchedVal) ||
+        this.containsString(symbol, searchedVal) 
       );
     });
 
@@ -194,7 +171,7 @@ class InventoryCategoriesTemplate extends React.Component {
   };
 
   render() {
-    const { actionType } = this.state;
+    const {actionType} = this.state
     return (
       <div>
         <AntRow>
@@ -218,21 +195,21 @@ class InventoryCategoriesTemplate extends React.Component {
                     onClick={this.displayDrawerAdd}
                   >
                     <Icon type="plus" />
-                    {addCategoriesButton}
+                    {addUnitMeasure}
                   </Button>
                   <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
             </div>
             <AntTable
-              style={{ textTransform: "uppercase" }}
               className="settings-panel-table"
               size={tableSize}
+              scroll={{ y: tableYScroll }}
               dataSource={this.state.data}
               pagination={this.state.pagination}
               loading={this.state.loading}
-              scroll={{ y: tableYScroll }}
               columns={columns}
+              style={{ textTransform: "uppercase" }}
               rowKey={record => record.key}
               onRow={record => {
                 return {
@@ -249,7 +226,7 @@ class InventoryCategoriesTemplate extends React.Component {
               width="30%"
               destroyOnClose
             >
-              <CategoriesForm
+              <UnitForm
                 // @ts-ignore
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
@@ -264,6 +241,6 @@ class InventoryCategoriesTemplate extends React.Component {
   }
 }
 
-const InventoryCategories = AntForm.create()(InventoryCategoriesTemplate);
+const UnitofMeasure = AntForm.create()(UnitofMeasureTemplate);
 
-export default InventoryCategories;
+export default UnitofMeasure;
