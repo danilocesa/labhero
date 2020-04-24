@@ -1,3 +1,7 @@
 .inventory-settings-category-left .ant-form-item {
     margin-bottom: 5px;
 }
+
+.inventory-transaction-drawer .ant-form-item {
+    margin-bottom: 5px;
+  }

@@ -14,7 +14,7 @@ class SearchForm extends React.Component {
       <Row gutter={12} type="flex" justify="center">
         <Col span={12}>
           <Form.Item style={{ marginTop: 40 }}>
-            <label style={{ marginRight: 10 }}>ITEM:</label>
+            {/* <label style={{ marginRight: 10 }}>ITEM:</label> */}
             <Select
               defaultValue=""
               style={{ width: 230, marginRight: 20 }}
@@ -29,6 +29,7 @@ class SearchForm extends React.Component {
               shape="round"
               style={{ width: 120 }}
               onClick={() => {
+                // eslint-disable-next-line react/prop-types
                 this.props.form.resetFields();
               }}
             >
