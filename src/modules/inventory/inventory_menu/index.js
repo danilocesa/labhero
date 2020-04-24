@@ -19,7 +19,7 @@ import "./inventory_menu.css";
 const settingsItemData = [
   {
     image: InvList,
-    link: "/inventory/Transactions",
+    link: "/inventory/inventorylist",
     label: "Inventory List"
   },
   {

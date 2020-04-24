@@ -28,7 +28,7 @@ import {
 } from "../../settings";
 
 // CSS
-import "./panel_form.css";
+import "./supplier_form.css";
 
 const { TextArea } = AntInput;
 class PanelFormTemplate extends React.Component {
@@ -207,7 +207,7 @@ class PanelFormTemplate extends React.Component {
     const { panelInfo, drawerButton } = this.props;
 
     return (
-      <div>
+      <div className="inventory-supplier-drawer">
         <AntForm onSubmit={this.onSubmit}>
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={8}>

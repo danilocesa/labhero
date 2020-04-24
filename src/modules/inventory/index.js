@@ -9,6 +9,7 @@ import ItemSetup from "./item_setup";
 import Transactions from "./transactions";
 import Takeout from "./takeout";
 import InventoryMenu from "./inventory_menu";
+import InventoryList from "./inventory_list";
 
 class Inventory extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class Inventory extends React.Component {
         <Route exact path="/inventory/itemsetup" component={ItemSetup} />
         <Route exact path="/inventory/transactions" component={Transactions} />
         <Route exact path="/inventory/takeout" component={Takeout} />
+        <Route exact path="/inventory/inventorylist" component={InventoryList} />
       </Switch>
     );
   }
