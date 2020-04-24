@@ -37,7 +37,7 @@ class FormButtons extends React.Component {
 							htmlType="submit"
 							onClick={this.showDrawer}
 						>
-						NEXT STEP
+						NEXT
 						</Button>
 					</Col>
 				</Row>

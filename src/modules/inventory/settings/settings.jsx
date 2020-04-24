@@ -20,8 +20,8 @@ export const drawerSupplierUpdate = 'UPDATE SUPPLIER';
 export const drawerSupplierAdd = 'ADD SUPPLIER';
 export const drawerUnitAdd = 'ADD UNIT OF MEASURE';
 export const drawerUnitUpdate = 'UPDATE UNIT OF MEASURE';
-export const drawerItemsUpdate = 'UPDATE ITEMS';
-export const drawerItemsAdd = 'ADD ITEMS';
+export const drawerItemsUpdate = 'UPDATE ITEM';
+export const drawerItemsAdd = 'ADD ITEM';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -95,7 +95,7 @@ export const fieldLabels = {
   itemCategory: "CATEGORY",
   itemSection: "SECTION",
   itemUnitOfMeasure: "UNIT OF MEASURE",
-  itemDefaultAmount: "DEAFAULT AMOUNT",
+  itemDefaultAmount: "DEFAULT AMOUNT",
   itemSkuBarcode: "SKU BARCODE",
   itemsUpcBarcode: "UPC BARCODE",
   ItemsItemDescription: "DESCRIPTION",
@@ -123,6 +123,6 @@ export const addStorageButton = 'ADD STORAGE';
 export const addSupplierButton = 'ADD SUPPLIER';
 export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 export const addUnitMeasure = 'ADD UNIT OF MEASURE';
-export const addItems = 'ADD ITEMS';
+export const addItems = 'ADD ITEM';
 
 export const tableYScroll = globalTableYScroll;
