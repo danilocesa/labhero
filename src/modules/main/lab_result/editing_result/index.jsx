@@ -27,7 +27,8 @@ class EditResult extends React.Component {
 			isLoading: false,
 			results: {},
 			formatedResults: [],
-			isDisplayPrint: false
+			isDisplayPrint: false,
+			isResultsTouched: false,
 		};
 
 		this.resultTable = React.createRef();
@@ -65,7 +66,8 @@ class EditResult extends React.Component {
 				this.setState({ 
 					results, 
 					formatedResults,
-					isLoading: false 
+					isLoading: false,
+					isResultsTouched: false
 				});
 			});
 		}
@@ -78,6 +80,10 @@ class EditResult extends React.Component {
 		};
 	}
 	
+	onChangeResult = () => {
+		this.setState({ isResultsTouched: true });
+	}
+
 	onSaveSuccess = () => {
 		const { examDetails  } = this.props;
 
@@ -89,7 +95,8 @@ class EditResult extends React.Component {
 			this.setState({ 
 				results, 
 				formatedResults,
-				isLoading: false 
+				isLoading: false ,
+				isResultsTouched: false
 			});
 		});
 	}
@@ -129,7 +136,7 @@ class EditResult extends React.Component {
 	}
 
 	render() {
-		const { results, isLoading, formatedResults, isDisplayPrint } = this.state;
+		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched } = this.state;
 		const { patientInfo, examDetails } = this.props;
 
     return (
@@ -148,6 +155,7 @@ class EditResult extends React.Component {
 							results={results.resultValues || []} 
 							resultStatus={results.status || ''}
 							formatedResults={formatedResults}
+							onChangeResult={this.onChangeResult}
 						/>
 					</Spin>
 					<PatientComment 
@@ -160,11 +168,13 @@ class EditResult extends React.Component {
 						onSaveSuccess={this.onSaveSuccess}
 						onPrint={this.onPrint}
 						resultStatus={results.status || ''}
+						isResultsTouched={isResultsTouched}
 					/>
 					<PrintLabResult 
 						sampleID={examDetails.sampleSpecimenID || null}
 						visible={isDisplayPrint}
 						onClose={() => this.setState({ isDisplayPrint: false })}
+						resultStatus={results.status || ''}
 					/>
 		    </Col>
 	    </Row>
