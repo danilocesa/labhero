@@ -162,6 +162,7 @@ class EditResult extends React.Component {
 						wrappedComponentRef={(inst) => this.resultRemarks = inst} 
 						remarks={results.remarks || null} 
 						resultStatus={results.status || ''}
+						onChangeResult={this.onChangeResult}
 					/>
 					<Actions 
 						getLabResultFormValues={this.getFormValues} 
