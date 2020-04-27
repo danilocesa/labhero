@@ -1,5 +1,4 @@
-import React from 'react';
-import { Row } from 'antd';
+import React from 'react';  
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
@@ -13,9 +12,7 @@ class BloodRecipient extends React.Component{
             <div>
                 <div>
                     <PageTitle pageTitle="BLOOD RECIPIENT" />
-                    <Row>
                         <RecipientList />
-                    </Row>
                 </div>
             </div>
         );

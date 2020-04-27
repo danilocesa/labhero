@@ -52,40 +52,40 @@ class RecipientProfile extends React.Component {
 				<Form className="fillup-form">
 						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>RECIPIENT PROFILE</p>
 						<Row gutter={12}>
-                            <Col span={6}>
-                                <div>
-									<Col>
+							<Col span={10}>
+								<div> 
+									<Col style={{display: 'flex',  justifyContent:'center', alignItems:'center', }}>
 										<img src={PatientImgPlaceholder} alt="logo" style={{ height: 100, width: 100, paddingBottom: '1em' }} />
 									</Col>
-									<Col>
+									<Col style={{display: 'flex',  justifyContent:'center', alignItems:'center', }}>
 										<DescriptionItem title="ID" content="000000" />
 									</Col>
 								</div>
 							</Col>
                             <Col md={2} style={{ textAlign: 'center' }}>
-                                <Divider className="divider" type="vertical" style={{ height: 500 }} />
+                                <Divider className="divider" type="vertical" style={{ height: 400 }} />
                             </Col>
-							<Col span={16}>
-                                <div>
+							<Col span={8}>
+								<div>
 									<Col>
 										<DescriptionItem title="LAST NAME" content="DOE" />
 									</Col>
 									<Col>
 										<DescriptionItem title="MIDDLE NAME" content="C." />
 									</Col>
-                                    <Col>
+									<Col>
 										<DescriptionItem title="FIRST NAME" content="JANE" />
 									</Col>
 									<Col>
 										<DescriptionItem title="REQUESTED TIME" content="26/01/2020 11:45:56 A.M." />
 									</Col>
-                                    <Col>
+									<Col>
 										<DescriptionItem title="REQUIRED DATE" content="27/06/2020" />
 									</Col>
 									<Col>
 										<DescriptionItem title="GENDER" content="F" />
 									</Col>
-                                    <Col>
+									<Col>
 										<DescriptionItem title="AGE" content="32" />
 									</Col>
 									<Col>
@@ -94,10 +94,10 @@ class RecipientProfile extends React.Component {
 									<Col>
 										<DescriptionItem title="NO. OF BAGS" content="4" />
 									</Col>
-                                    <Col>
+									<Col>
 										<DescriptionItem title="HOSPITAL" content="St. Luke's Hospital" />
 									</Col>
-                                    <Col>
+									<Col>
 										<DescriptionItem title="CONTACT DETAILS" content="022222222222" />
 									</Col>
 								</div>
