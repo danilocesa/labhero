@@ -69,7 +69,7 @@ class EditableTable extends React.Component {
   }
 
 	createFormInput = (record) => {
-		const { form, resultStatus } = this.props;
+		const { form, resultStatus, onChangeResult } = this.props;
 		const { getFieldDecorator } = form;
 		// const { examItemOptions, releasedResult } = record;
 		// const defaultItemOption = examItemOptions.findIndex(item => item && item.examItemValueDefault === 1);
@@ -90,6 +90,7 @@ class EditableTable extends React.Component {
 						isLock={record.examRequestItemLock === 1 || resultStatus === 'Approve'}
 						itemOptions={record.examItemOptions}
 						maxLength={record.maxLength}
+						onChange={onChangeResult}
 					/>
 				)}
 			</Form.Item>
@@ -109,21 +110,14 @@ class EditableTable extends React.Component {
 			const fieldsValue = getFieldsValue();
 			const clonedResults = JSON.parse(JSON.stringify(results));
 
-		
 
 			const combinedResults = clonedResults.map(item => {
 				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
-				// const itemOptions = item.examItemOptions;
-
-				// if(item.examItemOptions.length !== 1) {
-				// 	itemOptions[fieldsValue[key]].examItemValueDefault = 1
-				// }
 					
 				return { 
 					...item, 
 					releasedResult: `${fieldsValue[key]}`,
 					unitOfMesureBase: item.unitOfMesureBase || "0 0",
-					// examItemOptions: itemOptions
 				};
 			});
 			
@@ -160,6 +154,7 @@ EditableTable.propTypes = {
 	resultStatus: PropTypes.string.isRequired,
 	results: PropTypes.array.isRequired,
 	formatedResults: PropTypes.array.isRequired,
+	onChangeResult: PropTypes.func.isRequired
 };
 
 export default Form.create()(EditableTable);

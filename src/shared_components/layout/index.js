@@ -13,9 +13,9 @@ class MainLayout extends React.Component {
   };
 
   toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
+    // this.setState({
+    //   collapsed: !this.state.collapsed,
+    // });
   };
 
   render() {

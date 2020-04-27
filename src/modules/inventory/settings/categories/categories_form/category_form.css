@@ -18,3 +18,7 @@
     width: 100%;
     text-align: center;
 }
+
+.inventory-category-drawer .ant-form-item {
+    margin-bottom: 5px;
+  }

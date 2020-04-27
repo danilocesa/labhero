@@ -33,14 +33,19 @@ class SearchResult extends React.Component {
 		const searchResults = { [sectionCode]: [] };
 
 		labResults.forEach(labResult => {
-			const labResultClone = Object.assign({}, labResult);
+			
 			const contents = labResult.contents.filter(i => i.sectionCode === sectionCode);
 			
-			labResultClone.contents = contents;
+			if(contents.length > 0) {
+				contents.forEach(content => {
+					const labResultClone = Object.assign({}, labResult);
+					labResultClone.contents = content;
 
-			if(labResultClone.contents.length > 0)
-				searchResults[sectionCode].push(labResultClone);
+					searchResults[sectionCode].push(labResultClone);
+				});
+			}
 		});
+
 
 		this.setState({ searchResults, tabActiveKey: sectionCode });
 	}

@@ -66,11 +66,6 @@ class Login extends React.Component {
 				selectedLink = URI[k].link;
 		});
 
-		// Object.keys(URI.inventory.sub).forEach(k => {
-		// 	if(URI.inventory.sub[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
-		// 		selectedLink = URI.inventory.sub[k].link;
-		// });
-
 		this.props.history.push(selectedLink); 
 	}
 	

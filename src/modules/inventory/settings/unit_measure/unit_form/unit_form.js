@@ -200,7 +200,7 @@ class PanelFormTemplate extends React.Component {
     const { panelInfo, drawerButton } = this.props;
 
     return (
-      <div>
+      <div className="inventory-unit-drawer">
         <AntForm onSubmit={this.onSubmit}>
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={12}>

@@ -4,6 +4,7 @@ import { Drawer } from 'antd';
 import EditResult from 'modules/main/lab_result/editing_result';
 import LabResult from 'modules/main/lab_result/searching_result';
 import PrintResult from 'modules/main/lab_result/print_result';
+import { fetchLabResultExamItems } from 'services/lab_result/result';
 
 class EditLabResult extends React.Component {
 	state = {
@@ -11,7 +12,8 @@ class EditLabResult extends React.Component {
 			isDisplayPrintPreview: false,
 			patientInfo: {},
 			examDetails: {},
-			selectedSampleID: null
+			selectedSampleID: null,
+			selectedResultStatus: null,
 	};
 	
 	onClosePrintPreview = () => {
@@ -33,10 +35,13 @@ class EditLabResult extends React.Component {
 		});
 	}
 
-	onClickPrint = (sampleID) => {
+	onClickPrint = async (sampleID) => {
+		const results = await fetchLabResultExamItems(sampleID);
+
 		this.setState({
 			isDisplayPrintPreview: true,
-			selectedSampleID: sampleID
+			selectedSampleID: sampleID,
+			selectedResultStatus: results.status || null
 		});
 	}
 
@@ -46,7 +51,8 @@ class EditLabResult extends React.Component {
 			patientInfo, 
 			examDetails, 
 			isDisplayPrintPreview,
-			selectedSampleID
+			selectedSampleID,
+			selectedResultStatus
 		} = this.state;
 
 		return (
@@ -57,7 +63,7 @@ class EditLabResult extends React.Component {
 					onClickPrint={this.onClickPrint}
 				/>
 				<Drawer
-					title="Patient Information"
+					title="PATIENT RESULT"
 					onClose={this.onClosePatientInfoDrawer}
 					width="95%"
 					visible={isDisplayDrawer}
@@ -71,6 +77,7 @@ class EditLabResult extends React.Component {
 					sampleID={selectedSampleID}
 					onClose={this.onClosePrintPreview}
 					visible={isDisplayPrintPreview}
+					resultStatus={selectedResultStatus}
 				/>
 			</div>
 		);
