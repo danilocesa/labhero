@@ -1,7 +1,6 @@
 // @ts-nocheck
 import React from "react";
 import { Row } from "antd";
-import fetchInventoryItems from 'services/inventory/items';
 
 // CUSTOM MODULES
 import PageTitle from "shared_components/page_title";
@@ -51,12 +50,6 @@ const settingsItemData = [
 ];
 
 class InventoryMenu extends React.Component {
-  async componentDidMount() {
-    const items = await fetchInventoryItems();
-
-    console.log(items);
-  }
-
   render() {
     const rowItems = settingsItemData.map(el => {
       return (

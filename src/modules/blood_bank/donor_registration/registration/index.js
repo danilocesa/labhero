@@ -1,17 +1,16 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import moment from 'moment';
-import { withRouter } from 'react-router-dom';
-import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider } from 'antd';
+import React from 'react'
+import moment from 'moment'
+import { withRouter } from 'react-router-dom'
+import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider } from 'antd'
 
 // CUSTOM MODULES
-import ProvinceList from 'shared_components/province_list';
-import CityList from 'shared_components/city_list';
-import TownList from 'shared_components/town_list';
-import HouseAddress from 'shared_components/address';
-import { NumberInput } from 'shared_components/pattern_input';
-import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
-
+import ProvinceList from 'shared_components/province_list'
+import CityList from 'shared_components/city_list'
+import TownList from 'shared_components/town_list'
+import HouseAddress from 'shared_components/address'
+import { NumberInput } from 'shared_components/pattern_input'
+import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant'
 import FormButtons from './form_buttons';
 
 // CSS

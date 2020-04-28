@@ -1,6 +1,7 @@
 // LIBRARY
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch  } from 'react-router-dom';
+import {createBrowserHistory} from 'history';
 import PrintPreview from 'modules/main/lab_result/print_result/raw';
 import IdleTimerComponent from 'shared_components/idle_timer';
 import PrivateRoute from 'shared_components/private_route';
@@ -12,13 +13,14 @@ import Login from './modules/login';
 // CSS
 import './App.css';
 
+const history = createBrowserHistory({ basename: process.env.PUBLIC_URL });
 
 class App extends Component {
 	render() {
 		return (
 			<div>
 				<IdleTimerComponent />
-				<Router>
+				<Router history={history}>
 					<Switch>
 						<Route exact path="/login" component={Login} />
 						<PrivateRoute exact path="/lab/result/print/:sampleID" component={PrintPreview} />
