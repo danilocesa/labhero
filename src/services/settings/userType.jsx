@@ -1,12 +1,12 @@
 import {apiUserType, apiGetMethod} from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 
 export async function getAllUserTypesAPI(payload) {
 	let getAllUserTypes = [];
 	
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: apiUserType,
       data: payload

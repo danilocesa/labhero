@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import { apiPostMethod, apiGetMethod } from 'global_config/constant-global';
 
 export async function fetchLabResult(payload) {
@@ -10,7 +10,7 @@ export async function fetchLabResult(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		return data || [];
@@ -21,6 +21,7 @@ export async function fetchLabResult(payload) {
 	}
 }
 
+
 export async function fetchLabResultExamItems(specimenId) {
 	try{
 		const content = {
@@ -28,7 +29,7 @@ export async function fetchLabResultExamItems(specimenId) {
 			url: `/lab/Result/editresult/samplespecimenid/${specimenId}`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		return data || [];
@@ -47,7 +48,7 @@ export async function saveLabResult(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		return data || [];
@@ -71,7 +72,7 @@ export async function getPrintPreview(spcmid) {
 			url: `/lab/Result/printpreview/samplespecimenid/${spcmid}`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		return data || [];

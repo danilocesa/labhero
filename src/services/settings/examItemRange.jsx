@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
 
 export async function createExamItemRage(payload) {
@@ -12,7 +12,7 @@ export async function createExamItemRage(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		createdItemRange = data;
@@ -37,7 +37,7 @@ export async function updateExamItemRage(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 
 		isSuccess = response.status === 200;
 	}
@@ -58,7 +58,7 @@ export async function getAnalyzers() {
 			url: `/lab/ExamItemRange/Settings/Analyzers`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		analyzers = data || [];
@@ -80,7 +80,7 @@ export async function getAllItemRanges(ExamItemID) {
 			url: `/lab/ExamItemRange/Settings/ExamItemID/${ExamItemID}`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		examItemRanges = data || [];

@@ -2,7 +2,7 @@
 /* eslint-disable func-names */
 import {apiPutMethod, apiPatient} from 'global_config/constant-global';
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 
 
 async function updatePatientAPI(payload) {
@@ -11,7 +11,7 @@ async function updatePatientAPI(payload) {
   // eslint-disable-next-line no-param-reassign
   delete payload.patientID;
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiPutMethod,
       url: `${apiPatient.url}${patientID}`,
       data: payload

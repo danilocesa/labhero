@@ -41,6 +41,8 @@ class EditResult extends React.Component {
 			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
 			const formatedResults = this.recontructExamItems(results.resultValues);
 
+			console.log(results);
+
 			this.setState({ 
 				results, 
 				formatedResults,

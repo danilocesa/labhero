@@ -1,17 +1,17 @@
 // CUSTOM MODULES
 import {apiUrlprintBarcodeSpecimen, apiGetMethod} from 'global_config/constant-global';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 
 async function printBarcodeSpecimenAPI(specimenID) {
   let printBarcode = [];
   try{
-    const response = await axiosCall({
+    const response = await axiosLabAPI({
       method: `${apiGetMethod}`,
       url: `${apiUrlprintBarcodeSpecimen}${specimenID}`
     }).then(function(response){
       return response;
     });
-    console.log(response);
+   
     printBarcode = response;
   } 
   catch(e) {

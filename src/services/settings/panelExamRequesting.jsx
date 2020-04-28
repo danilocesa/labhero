@@ -6,13 +6,13 @@ import {
 	apiPutMethod
 } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 
 export async function panelListAPI() {
 	let panelList = [];
 	
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: apiUrlPanelExamRequestSettings
 		}).then(response => {
@@ -32,7 +32,7 @@ export async function getPanelInfoAPI(panelID) {
 	let panelInfo = [];
 	
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: apiUrlGetPanelInfoByID + panelID,
 		}).then(response => {
@@ -52,7 +52,7 @@ export async function createdPanelAPI(payload) {
 	let createdPanel = [];
 	
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiPostMethod,
       url: apiUrlPanelExamRequestSettings,
       data: payload
@@ -74,7 +74,7 @@ export async function updatePanelListAPI(payload) {
 	let updatedPanel = [];
 	
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiPutMethod,
       url: apiUrlPanelExamRequestSettings,
       data: payload

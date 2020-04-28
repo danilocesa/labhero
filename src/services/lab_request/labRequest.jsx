@@ -1,11 +1,11 @@
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export default async function saveLabRequest(payload) {
 	let isSuccess = false;
 	
 	try {
-		const response = await axiosCall({ 
+		const response = await axiosLabAPI({ 
 			method: 'POST', 
 			url: 'lab/Request',
 			data: payload

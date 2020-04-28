@@ -1,12 +1,12 @@
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from 'services/axios';
 
 
 async function hospitalLocationAPI() {
 	let hospitalLocations = [];
 	
   try{
-    const response = await axiosCall({
+    const response = await axiosLabAPI({
       method: 'GET',
       url: 'lab/HospitalLocation'
 		});

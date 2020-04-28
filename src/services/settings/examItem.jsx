@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
 
 export default async function fetchExamList(sectionId, specimenId) {
@@ -11,7 +11,7 @@ export default async function fetchExamList(sectionId, specimenId) {
 			url: `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		examList = data;
@@ -29,7 +29,7 @@ export async function fetchSections() {
 	try {
 		const url = `lab/Section`;
 
-		const response = await axiosCall({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: apiGetMethod, url });
 		const { data } = await response;
 
 		sections = data;
@@ -46,7 +46,7 @@ export async function fetchSpecimens() {
 	try {
 		const url = `lab/Specimen`;
 
-		const response = await axiosCall({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: apiGetMethod, url });
 		const { data } = await response;
 
 		specimens = data;
@@ -63,7 +63,7 @@ export async function fetchExamitems(sectionId, specimenId) {
 	try {
 		const url = `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`; 
 
-		const response = await axiosCall({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: apiGetMethod, url });
 		const { data } = await response;
 	
 		examItems = data || [];
@@ -80,7 +80,7 @@ export async function fetchExamItem(scid, spid, emid) {
 	try {
 		const url = `/lab/ExamItem/Settings/SectionID/${scid}/SpecimenID/${spid}/ExamItemID/${emid}`; 
 
-		const response = await axiosCall({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: apiGetMethod, url });
 		const { data } = await response;
 	
 		examItem = data || null;
@@ -101,7 +101,7 @@ export async function createExamItem(examItem) {
 			data: examItem
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		createdExamItem = data;
@@ -123,7 +123,7 @@ export async function updateExamItem(examItem) {
 			data: examItem
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		updatedExamItem = data;

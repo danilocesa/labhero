@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { apiPostMethod, apiPatient } from 'global_config/constant-global';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export default async function createPatientInfo(personalInfo) {
 	let createdPatient;
@@ -11,7 +11,7 @@ export default async function createPatientInfo(personalInfo) {
 			data: personalInfo
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		createdPatient = data;

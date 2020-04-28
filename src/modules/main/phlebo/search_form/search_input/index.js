@@ -6,7 +6,7 @@ import moment from 'moment';
 import { Form, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 
 // CUSTOM MODULES
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import CustomMessage from 'shared_components/message';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { RegexInput } from 'shared_components/pattern_input';
@@ -56,7 +56,7 @@ class SearchPatientHeaderForm extends React.Component {
 			// eslint-disable-next-line max-len
 			const apiBaseUrl = `${apiUrlPhleboSearchPatient}${this.state.selectedDateValue}`;
 			const apiUrl = (patientID ? `${apiBaseUrl}/patientid/${patientID}` : `${apiBaseUrl}/patientname/${patientName}`);
-			apiResponse = await axiosCall({ method: 'GET', url: apiUrl });
+			apiResponse = await axiosLabAPI({ method: 'GET', url: apiUrl });
 		}
 		catch(error) {
 			CustomMessage.error();

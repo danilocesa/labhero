@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { RegexInput } from 'shared_components/pattern_input';
 import { fieldRules, drawerTitles, fieldLabels, buttonLabels } from 'modules/main/settings/user_rights/settings';
 
-const { SHOW_PARENT, SHOW_ALL } = TreeSelect;
+const { SHOW_ALL } = TreeSelect;
 
 const treeData = [
   {
@@ -130,7 +130,7 @@ class AddForm extends React.Component {
 
 	render() {
 		const { isLoading } = this.state;
-		const { onClose, visible, form } = this.props;
+		const { onClose, visible, form, type } = this.props;
 		const { getFieldDecorator } = form;
     const tProps = {
       treeData,
@@ -147,7 +147,7 @@ class AddForm extends React.Component {
 
 		return (
 			<Drawer
-				title={`${drawerTitles.title1}`}
+				title={type === 'add' ? drawerTitles.title1 : drawerTitles.title2}
 				width="30%"
 				placement="right"
 				closable
@@ -186,7 +186,7 @@ class AddForm extends React.Component {
 								loading={isLoading}
 								style={{ margin: 10, width: 120 }}
 							>
-								{buttonLabels.label1}
+								{type === 'add' ? buttonLabels.label1 : buttonLabels.label2}
 							</Button>
 						</div>
 					</section>
@@ -197,6 +197,7 @@ class AddForm extends React.Component {
 }
 
 AddForm.propTypes = {
+  type: PropTypes.string.isRequired,
 	onClose: PropTypes.func.isRequired,
 	visible: PropTypes.bool.isRequired,
 	selectedSectionName: PropTypes.string,

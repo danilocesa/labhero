@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export async function fetchPerSpecimens(selectedSection) {
 	let specimens = [];
@@ -7,7 +7,7 @@ export async function fetchPerSpecimens(selectedSection) {
 	try {
 		const url = `lab/ExamRequest/ids/${selectedSection}`;
 
-		const response = await axiosCall({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: 'GET', url });
 		const { data } = await response;
 
 		specimens = data[0].perSpecimen;
@@ -24,7 +24,7 @@ export async function fetchExamRequests(sectionId, specimenId) {
 	try {
 		const url = `lab/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
 		
-		const response = await axiosCall({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: 'GET', url });
 		const { data } = await response;
 		
 		examRequests = data || [];
@@ -45,7 +45,7 @@ export async function fetchSelectedExamList(secID, specID, erID) {
 			url: `lab/ExamRequest/Settings/SectionID/${secID}/SpecimenID/${specID}/ExamRequestID/${erID}`,
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 		
 		examList = data.examRequestItems || [];
@@ -61,7 +61,7 @@ export async function fetchExamRequestList() {
 	let data = null;
 	
   try{
-    const resp = await axiosCall({
+    const resp = await axiosLabAPI({
       method: 'GET',
       url: 'lab/ExamRequest/Settings/'
 		});
@@ -84,7 +84,7 @@ export async function	updateExamRequest(examRequest) {
 			data: examRequest
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		updatedExamRequest = data;
@@ -106,7 +106,7 @@ export async function createExamRequest(examItem) {
 			data: { ...examItem }
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		createdExamItem = data;

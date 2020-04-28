@@ -5,7 +5,7 @@ import { Button, Icon, Row, Col } from 'antd';
 
 import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
-import AddForm from './add_form';
+import Form from './form';
 import UserRightsTable from './table';
 import { moduleTitle, tablePageSize, buttonLabels } from './settings';
 
@@ -28,7 +28,8 @@ const ActionSection = (props) => (
 class UserRights extends React.Component {
 	state = {
     isLoading: false,
-    isDisplayAddForm: false,
+		isDisplayAddForm: false,
+		isDisplayUpdateForm: false,
 		pageSize: tablePageSize,
 		userRights: [],
 	}
@@ -42,18 +43,22 @@ class UserRights extends React.Component {
   } 
 
   onDblClickTableRow = () => {
-
+		this.setState({ isDisplayUpdateForm: true });
   }
 
-  onCloseAddForm = () => {
-    this.setState({ isDisplayAddForm: false });
+  onCloseForm = () => {
+    this.setState({ 
+			isDisplayAddForm: false,
+			isDisplayUpdateForm: false, 
+		});
   }
 
 	render() {
 		const { 
 			pageSize, 
       isLoading,
-      isDisplayAddForm,
+			isDisplayAddForm,
+			isDisplayUpdateForm,
 			selectedSectionId,
 		} = this.state;
 
@@ -84,10 +89,16 @@ class UserRights extends React.Component {
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
 				/>
-        <AddForm 
+				<Form 
+					type="add"
           visible={isDisplayAddForm}
-          onClose={this.onCloseAddForm}
-        />
+          onClose={this.onCloseForm}
+				/>	
+				<Form 
+					type="update"
+					visible={isDisplayUpdateForm}
+          onClose={this.onCloseForm}
+				/>
 			</div>
 		);
 	}
