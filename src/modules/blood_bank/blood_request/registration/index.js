@@ -160,10 +160,10 @@ class FillupRecipient extends React.Component{
                         <Divider className="divider" type="vertical" style={{ height: 450 }} />
                     </Col>
                     <Col sm={7} md={7}>
-                        <div className="center-form">
+                        <div className="center-form" style={{marginTop:'40px'}}>
                             <Row>
                                 <Col>
-                                    <Form.Item>
+                                    <Form.Item style={{marginTop:'-8px'}}>
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <ProvinceList
                                                 required
@@ -178,7 +178,7 @@ class FillupRecipient extends React.Component{
                             </Row>
                             <Row>
                                 <Col>
-                                    <Form.Item>
+                                    <Form.Item style={{marginTop:'-8px'}}>
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <CityList 
                                                 required
@@ -194,7 +194,7 @@ class FillupRecipient extends React.Component{
                             </Row>
                             <Row>
                                 <Col>
-                                    <Form.Item>
+                                    <Form.Item style={{marginTop:'-8px'}}>
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <TownList 
                                                 required
@@ -209,7 +209,7 @@ class FillupRecipient extends React.Component{
                             </Row>						
                             <Row>
                                 <Col>
-                                    <Form.Item>
+                                    <Form.Item style={{marginTop:'-8px'}}>
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <HouseAddress
                                                 required 
@@ -223,7 +223,7 @@ class FillupRecipient extends React.Component{
                                     </Form.Item>
                                 </Col>
                             </Row>
-                                    <Form.Item label="CONTACT NUMBER">
+                                    <Form.Item label="CONTACT NUMBER" style={{marginTop:'-8px'}}>
                                             {getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
                                                     <NumberInput addonBefore="+ 63" />
                                             )}

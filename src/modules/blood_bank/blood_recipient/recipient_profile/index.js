@@ -7,7 +7,7 @@ import RecipientInfo from '../recipient_info'
 
 import TablePager from 'shared_components/table_pager';
 
-const { Search } = Input;
+const {	Search } = Input;
 
 class RecipientList extends React.Component {
 	
