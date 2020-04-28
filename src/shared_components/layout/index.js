@@ -1,11 +1,14 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Router } from 'react-router-dom';  
+import { createBrowserHistory } from 'history'; 
 import Header from './header';
 import Content from './content';
 import Sider from './sider';
 
 import './layout.css';
+
+const history = createBrowserHistory({ basename: process.env.PUBLIC_URL });
 
 class MainLayout extends React.Component {
   state = {
@@ -20,7 +23,7 @@ class MainLayout extends React.Component {
 
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <Layout style={{ minHeight: '100vh' }}>
           <Header />
           <Layout>

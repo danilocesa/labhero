@@ -110,7 +110,7 @@ class PrintResult extends React.Component {
               <Spin spinning={!isReadyToPrint && visible}>
                 <iframe
                   id="result"
-                  src={`/lab/result/print/${sampleID}`}
+                  src={`${process.env.PUBLIC_URL}/lab/result/print/${sampleID}`}
                   style={{ height: 0, width: 0, position: 'absolute' }}
                   title="result"
                 />
