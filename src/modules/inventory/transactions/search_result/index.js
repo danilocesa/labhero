@@ -31,7 +31,7 @@ const columns = [
 		width: 150
 	},
 	{ 
-		title: 'LOCATION',
+		title: 'STORAGE',
 		dataIndex: 'e',
 		width: 150
 	},
@@ -41,7 +41,7 @@ const columns = [
 		width: 150
 	},
 	{ 
-		title: 'EXP DATE',
+		title: 'EXPIRATION DATE',
 		dataIndex: 'g',
 	},
 	{ 
@@ -51,13 +51,13 @@ const columns = [
 		width: 100
 	},
 	{ 
-		title: 'QTY',
+		title: 'QUANTITY',
 		dataIndex: 'i',
 		fixed: 'right',
 		width: 100
 	},
 	{ 
-		title: 'TRANS TYPE',
+		title: 'TRANSACTION TYPE',
 		fixed: 'right',
 		dataIndex: 'j',
 		width: 150
