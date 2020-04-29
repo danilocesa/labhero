@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Button, Row, Col } from 'antd';
 import { PatientImgPlaceholder } from 'images';
+import { withRouter } from "react-router-dom";
 import UserMenu from './menu';
 
 import './header.css';
@@ -33,4 +34,4 @@ const Header = () => (
   </AntHeader>
 );
 
-export default Header;
+export default withRouter(Header);

@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import { apiGetMethod } from 'global_config/constant-global';
 
 export default async function getUnitOfMeasures() {
@@ -11,7 +11,7 @@ export default async function getUnitOfMeasures() {
 			url: 'api/UnitOfMeasure/ExamItems/Settings',
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		units = data;

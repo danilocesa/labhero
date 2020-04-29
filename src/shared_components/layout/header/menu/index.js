@@ -24,7 +24,7 @@ const menu = (
         onKeyDown={() => {auth.signout();}}
         tabIndex={0}
 			>
-						Logout
+        Logout
 			</a>
     </Menu.Item>
   </Menu>
@@ -33,6 +33,7 @@ const menu = (
 class UserMenu extends React.Component {
   render() {
     const LOGGEDIN_USER_DATA = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+
     if(LOGGEDIN_USER_DATA){
       return (
       <Dropdown overlay={menu} trigger={['click']}>
@@ -46,7 +47,7 @@ class UserMenu extends React.Component {
               <Avatar>{`${LOGGEDIN_USER_DATA.givenName.charAt(0)}${LOGGEDIN_USER_DATA.lastName.charAt(0)}`}</Avatar>
             </div>
             <div className="user-menu-icon">
-                  <Icon type="down" />
+              <Icon type="down" />
             </div>
           </div>
         </Button>

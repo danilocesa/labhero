@@ -11,8 +11,8 @@ import { ReactComponent as PleboIcon } from 'icons/syringe.svg';
 import { ReactComponent as InventoryIcon} from 'icons/inventory.svg';
 import { ReactComponent as SearchPatientIcon } from 'icons/searchpatient.svg';
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
-import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
-import { ReactComponent as EditIcon } from 'icons/edit.svg';
+// import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
+import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
 
 import { SELECTED_SIDER_KEY } from '../../../global_config/constant-global';

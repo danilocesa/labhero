@@ -39,6 +39,7 @@ const columns = [
 	  ];
 
 class SelectedTable extends React.Component {
+	
 	constructor(props) {
 		super(props);
 			this.state = {
@@ -90,6 +91,7 @@ class SelectedTable extends React.Component {
 			isDrawerVisible: false,
 		});
 	  };
+
 	  showDrawer = () => {
 		this.setState({
 			isDrawerVisible: true ,
@@ -98,6 +100,7 @@ class SelectedTable extends React.Component {
 			actionType : 'add',
 		});
 	};
+
 		displayDrawerUpdate = (record) => {
 		this.setState({
 			isDrawerVisible: true,
@@ -107,6 +110,7 @@ class SelectedTable extends React.Component {
 			patientInfo: record
 		});
 	}
+
 	render() {
 		const { loading = false } = this.props;
 		const { isDrawerVisible, actionType, drawerButton, patientInfo,drawerTitle } = this.state;

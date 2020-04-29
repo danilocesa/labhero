@@ -1,12 +1,12 @@
 /* eslint-disable func-names */
 import {apiGetMethod, apiAddress} from 'global_config/constant-global';
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export async function cityListAPI(provinceCode) {
   let cityList = [];
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: `${apiAddress.getCity}${provinceCode}`
     }).then(function(response){
@@ -26,7 +26,7 @@ export async function cityListAPI(provinceCode) {
 export async function provinceListAPI() {
   let provinceList = [];
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: apiAddress.getProvince
     }).then(function(response){
@@ -45,7 +45,7 @@ export async function provinceListAPI() {
 export async function townListAPI(cityCode) {
   let townList = [];
   try{
-    const axiosResponse = await axiosCall({
+    const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
       url: `${apiAddress.getTown}${cityCode}`
     }).then(function(response){

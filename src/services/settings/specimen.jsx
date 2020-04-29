@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export default async function fetchSpecimens() {
 	let specimens = [];
@@ -7,7 +7,7 @@ export default async function fetchSpecimens() {
 	try {
 		const url = `lab/Specimen`;
 
-		const response = await axiosCall({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: 'GET', url });
 		const { data } = await response;
 
 		specimens = data || [];

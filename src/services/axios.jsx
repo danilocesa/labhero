@@ -6,14 +6,17 @@ import login from 'services/login/login';
 // import jwtDecode from 'jwt-decode';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 
+const axiosLabInstance = axios.create();
+const axiosPhase2Instance = axios.create();
 
 export function setupAxiosInterceptors() {
 	/** BASE URL */
 	// axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
-	axios.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API; 
+	axiosLabInstance.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API; 
+	axiosPhase2Instance.defaults.baseURL = process.env.REACT_APP_PHASE2_API; 
 
 	/** REQUEST INTERCEPTOR */
-	axios.interceptors.request.use(config => {
+	axiosLabInstance.interceptors.request.use(config => {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
 
@@ -23,9 +26,14 @@ export function setupAxiosInterceptors() {
 		}};
 	});
 	
+	axiosPhase2Instance.interceptors.request.use(config => {
+    return { ...config, headers: { 
+			'content-type': 'application/json',	
+		}};
+	});
 
 	/** RESPONSE INTERCEPTOR */
-	axios.interceptors.response.use(undefined, async(err) => {
+	axiosLabInstance.interceptors.response.use(undefined, async(err) => {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
 
@@ -55,8 +63,19 @@ export function setupAxiosInterceptors() {
 	});
 }
 
-export default function axiosCall(axiosConfig) {
-	return axios({
+export function axiosLabAPI(axiosConfig) {
+	return axiosLabInstance({
+		method: axiosConfig.method,
+		url: axiosConfig.url,
+		data: axiosConfig.data,
+		params: axiosConfig.params,
+		headers: axiosConfig.headers,
+	});
+}
+
+
+export function axiosPhase2API(axiosConfig) {
+	return axiosPhase2Instance({
 		method: axiosConfig.method,
 		url: axiosConfig.url,
 		data: axiosConfig.data,

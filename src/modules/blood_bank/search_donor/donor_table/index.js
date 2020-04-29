@@ -3,18 +3,13 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Spin as AntSpin, Drawer as AntDrawer } from 'antd';
+import { Table as AntTable, Spin as AntSpin, Drawer as AntDrawer, Button, Col,Row,Input,Icon } from 'antd';
 import { withRouter } from 'react-router-dom';
 
-// @ts-ignore
-// import { Table as AntTable, Spin as AntSpin } from 'antd';
-
+import TablePager from 'shared_components/table_pager';
 import UpdatePatientForm from '../edit_donor_info';
 
-// CSS
-// import './table.css';
-import ReactDOM from 'react-dom';
-
+const {	Search } = Input;
 class SearchDonorTable extends React.Component {
 	
 	state = {
@@ -39,8 +34,8 @@ class SearchDonorTable extends React.Component {
 
 	// @ts-ignore
 	render() {
-		const { pageSize, loading } = this.props;
-		//CONSTANTS
+		const { pageSize, } = this.props;
+
 		const columns = [
 			{
 				title: 'LAST NAME',
@@ -104,7 +99,25 @@ class SearchDonorTable extends React.Component {
 		  ];
 		  
 		return (
+			<div>
+				<div className="settings-user-table-action">
+						<Row>
+							<Col span={12}>
+							<Search
+								placeholder="input search text"
+								onSearch={value => console.log(value)}
+								style={{ width: 200 }}
+							/>
+							</Col>
+							<Col span={12} style={{ textAlign: 'right' }}>
+								
+								<TablePager handleChange={this.handleSelectChange} />
+							</Col>
+						</Row>
+				</div>
+
 				<div className="search-patient-table">
+					
 					<AntTable 
 						pagination={{pageSize}} 
 						// @ts-ignore
@@ -126,6 +139,7 @@ class SearchDonorTable extends React.Component {
 						<UpdatePatientForm /> 
 					</AntDrawer>
 				</div>
+			</div>
 		);
 	}
 }

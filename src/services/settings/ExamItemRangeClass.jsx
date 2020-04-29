@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
 
 export async function createRangeClass(payload) {
@@ -12,7 +12,7 @@ export async function createRangeClass(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		createdRangeClass = data;
@@ -39,7 +39,7 @@ export async function updateRangeClass(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		updatedRangeClass = data;
@@ -66,7 +66,7 @@ export async function getAllRangeClass(payload) {
 			data: payload
 		}
 
-		const response = await axiosCall(content);
+		const response = await axiosLabAPI(content);
 		const { data } = await response;
 
 		rangeClass = data;

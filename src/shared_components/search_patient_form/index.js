@@ -8,7 +8,7 @@ import { Form, Button, Row, Col, DatePicker } from 'antd';
 import { AlphaNumInput, RegexInput } from 'shared_components/pattern_input';
 
 // CUSTOM MODULES
-import axiosCall from 'services/axiosCall';
+import { axiosLabAPI } from 'services/axios';
 import Message from 'shared_components/message';
 import { 
 	apiUrlPatientByID, 
@@ -50,7 +50,7 @@ class SearchPatientForm extends React.Component {
 	fetchPatients = async (patientName, patientID) => {
 		let patients = [];
 		try{
-			const response = await axiosCall({
+			const response = await axiosLabAPI({
 				method: apiGetMethod,
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
 			});
@@ -136,7 +136,7 @@ class SearchPatientForm extends React.Component {
 					{/* Request date */}
 					{ (enableRequestDate === true) ? 
 						(
-							<Col xs={24} sm={24} md={6} lg={4}>
+							<Col xs={24} sm={24} md={6} lg={4} style={{ marginTop: 20 }}>
 								<Form.Item label={fieldLabels.requestDate}>
 									<DatePicker 
 										defaultValue={moment()} 

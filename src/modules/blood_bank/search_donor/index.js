@@ -84,7 +84,8 @@ class SearchDonor extends React.Component{
                                         shape="round" 
                                         style={{
                                             width: '10%',
-                                            textAlign: 'center'
+                                            textAlign: 'center',
+                                            marginLeft: 1100
                                         }} 
                                         onClick={() => this.setState({showForm: true})}
                                     > 

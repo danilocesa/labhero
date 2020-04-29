@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import axiosCall from '../axiosCall';
+import { axiosLabAPI } from '../axios';
 
 export default async function fetchSection() {
 	let sections = [];
@@ -7,7 +7,7 @@ export default async function fetchSection() {
 	try {
 		const url = `lab/Section`;
 
-		const response = await axiosCall({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: 'GET', url });
 		const { data } = await response;
 
 		sections = data || [];
