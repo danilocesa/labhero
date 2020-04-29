@@ -156,7 +156,7 @@ class InventoryList extends React.Component {
       .includes(searchedVal);
   };
 
-  handleSearch = (evt) => {
+  handleSearch = evt => {
     evt.preventDefault();
 
     // eslint-disable-next-line react/prop-types
@@ -191,82 +191,84 @@ class InventoryList extends React.Component {
 
     return (
       <div>
-        <AntRow>
-          <AntCol span={24}>
-            <div className="panel-table-options" style={{ marginTop: 10 }}>
-              <AntRow>
-                <AntCol span={24} style={{ textAlign: "right" }}>
-                  <AntForm onSubmit={this.handleSearch}>
-                    {getFieldDecorator('search')(
-                      <Input
-                        allowClear
-                        // onSearch={value => this.onSearch(value)}
-                        // onChange={this.onChangeSearch}
-                        style={{ width: 200 }}
-                        className="panel-table-search-input"
-                      />
-                    )}
-                    
-                    <Button
-                      className="form-button"
-                      // block
-                      shape="round"
-                      type="primary"
-                      htmlType="submit"
-                      style={{ width: 120, marginLeft: 10, marginRight: 150 }}
-                      // onSearch={value => this.onSearch(value)}
-                    >
-                      SEARCH
-                    </Button>
-                    <Button
-                      type="primary"
-                      shape="round"
-                      style={{ marginRight: "15px" }}
-                      onClick={this.displayDrawerAdd}
-                    >
-                      <Icon type="plus" />
-                      {addInventoryList}
-                    </Button>
-                  </AntForm>
-                  <TablePager handleChange={this.handleSelectChange} />
-                </AntCol>
-              </AntRow>
-            </div>
-            <AntTable
-              style={{ textTransform: "uppercase" }}
-              className="settings-panel-table"
-              size={tableSize}
-              dataSource={this.state.data}
-              pagination={this.state.pagination}
-              loading={this.state.loading}
-              scroll={{ y: tableYScroll }}
-              columns={columns}
-              rowKey={record => record.key}
-              onRow={record => {
-                return {
-                  onDoubleClick: () => {
-                    this.displayDrawerUpdate(record);
-                  }
-                };
-              }}
-            />
-            <Drawer
-              title={this.state.drawerTitle}
-              visible={this.state.isDrawerVisible}
-              onClose={this.onClose}
-              width="30%"
-              destroyOnClose
-            >
-              <InventoryListForm
-                // @ts-ignore
-                actionType={actionType}
-                drawerButton={this.state.drawerButton}
-                panelInfo={this.state.panelInfo}
-                onCancel={this.onClose}
-              />
-            </Drawer>
-          </AntCol>
-        </AntRow>
+        <div
+          className="ant-row-flex ant-row-flex-left"
+          style={{ marginBottom: 20 }}
+        >
+          <h4 className="ant-typography">LIST OF INVENTORIES</h4>
+        </div>
+        <div className="panel-table-options" style={{ marginTop: 10 }}>
+          <AntRow>
+            <AntCol span={16} style={{ textAlign: "right" }}>
+              <AntForm onSubmit={this.handleSearch}>
+                {getFieldDecorator("search")(
+                  <Input
+                    allowClear
+                    // onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    style={{ width: 200 }}
+                    className="panel-table-search-input"
+                  />
+                )}
+                <Button
+                  className="form-button"
+                  block
+                  shape="round"
+                  type="primary"
+                  htmlType="submit"
+                  style={{ width: 120, marginLeft: 10 }}
+                >
+                  SEARCH
+                </Button>
+              </AntForm>
+            </AntCol>
+            <AntCol span={8} style={{ textAlign: "right" }}>
+              <Button
+                type="primary"
+                shape="round"
+                style={{ marginRight: "15px" }}
+                onClick={this.displayDrawerAdd}
+              >
+                <Icon type="plus" />
+                {addInventoryList}
+              </Button>
+              <TablePager handleChange={this.handleSelectChange} />
+            </AntCol>
+          </AntRow>
+        </div>
+        <AntTable
+          style={{ textTransform: "uppercase" }}
+          className="settings-panel-table"
+          size={tableSize}
+          dataSource={this.state.data}
+          pagination={this.state.pagination}
+          loading={this.state.loading}
+          scroll={{ y: tableYScroll }}
+          columns={columns}
+          rowKey={record => record.key}
+          onRow={record => {
+            return {
+              onDoubleClick: () => {
+                this.displayDrawerUpdate(record);
+              }
+            };
+          }}
+        />
+        <Drawer
+          title={this.state.drawerTitle}
+          visible={this.state.isDrawerVisible}
+          onClose={this.onClose}
+          width="30%"
+          destroyOnClose
+        >
+          <InventoryListForm
+            // @ts-ignore
+            actionType={actionType}
+            drawerButton={this.state.drawerButton}
+            panelInfo={this.state.panelInfo}
+            onCancel={this.onClose}
+          />
+        </Drawer>
       </div>
     );
   }
