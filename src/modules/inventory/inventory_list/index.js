@@ -156,9 +156,16 @@ class InventoryList extends React.Component {
       .includes(searchedVal);
   };
 
-  onSearch = value => {
-    const searchedVal = value.toLowerCase();
+  handleSearch = (evt) => {
+    evt.preventDefault();
+
+    // eslint-disable-next-line react/prop-types
+    const { form } = this.props;
     const { usersRef } = this.state;
+    // eslint-disable-next-line react/prop-types
+    const value = form.getFieldsValue().search;
+    console.log(value);
+    const searchedVal = value.toLowerCase();
 
     const filtered = usersRef.filter(item => {
       // eslint-disable-next-line camelcase
@@ -176,7 +183,12 @@ class InventoryList extends React.Component {
   };
 
   render() {
+    // eslint-disable-next-line react/prop-types
+    const { form } = this.props;
     const { actionType } = this.state;
+    // eslint-disable-next-line react/prop-types
+    const { getFieldDecorator } = form;
+
     return (
       <div>
         <AntRow>
@@ -184,34 +196,38 @@ class InventoryList extends React.Component {
             <div className="panel-table-options" style={{ marginTop: 10 }}>
               <AntRow>
                 <AntCol span={24} style={{ textAlign: "right" }}>
-                  <Search
-                    allowClear
-                    onSearch={value => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-                    style={{ width: 200 }}
-                    className="panel-table-search-input"
-                  />
-                  <Button
-                    className="form-button"
-                    // block
-                    shape="round"
-                    type="primary"
-                    htmlType="submit"
-                    style={{ width: 120, marginLeft: 10, marginRight: 150 }}
-                    // onSearch={value => this.onSearch(value)}
-                    onClick={value => this.onSearch(value)}
-                  >
-                    SEARCH
-                  </Button>
-                  <Button
-                    type="primary"
-                    shape="round"
-                    style={{ marginRight: "15px" }}
-                    onClick={this.displayDrawerAdd}
-                  >
-                    <Icon type="plus" />
-                    {addInventoryList}
-                  </Button>
+                  <AntForm onSubmit={this.handleSearch}>
+                    {getFieldDecorator('search')(
+                      <Input
+                        allowClear
+                        // onSearch={value => this.onSearch(value)}
+                        // onChange={this.onChangeSearch}
+                        style={{ width: 200 }}
+                        className="panel-table-search-input"
+                      />
+                    )}
+                    
+                    <Button
+                      className="form-button"
+                      // block
+                      shape="round"
+                      type="primary"
+                      htmlType="submit"
+                      style={{ width: 120, marginLeft: 10, marginRight: 150 }}
+                      // onSearch={value => this.onSearch(value)}
+                    >
+                      SEARCH
+                    </Button>
+                    <Button
+                      type="primary"
+                      shape="round"
+                      style={{ marginRight: "15px" }}
+                      onClick={this.displayDrawerAdd}
+                    >
+                      <Icon type="plus" />
+                      {addInventoryList}
+                    </Button>
+                  </AntForm>
                   <TablePager handleChange={this.handleSelectChange} />
                 </AntCol>
               </AntRow>
