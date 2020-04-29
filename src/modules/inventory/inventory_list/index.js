@@ -1,19 +1,261 @@
-import React, { Component } from "react";
-import PageTitle from "shared_components/page_title";
-import SearchForm from "modules/inventory/inventory_list/search_form";
-// eslint-disable-next-line import/no-named-as-default
-import InventoryListTable from "modules/inventory/inventory_list/inventory_table";
+// LiBRARY
+import React from "react";
+import {
+  Drawer,
+  Row as AntRow,
+  Col as AntCol,
+  Form as AntForm,
+  Table as AntTable,
+  Input,
+  Button,
+  Icon
+} from "antd";
+import {
+  tableSize,
+  buttonLabels,
+  addInventoryList,
+  drawerCategoryTitleUpdate,
+  drawerCategoryTitleAdd,
+  tableYScroll
+} from "modules/inventory/settings/settings";
+import TablePager from "shared_components/table_pager";
+import InventoryListForm from "./search_form";
 
-export class InventoryList extends Component {
+// CUSTOM MODULES
+//  CONSTANTS
+const { Search } = Input;
+
+const columns = [
+  {
+    title: "ITEM NAME",
+    dataIndex: "item_name",
+    key: "item_name",
+    width: 250,
+    sorter: (a, b) => a.item.localeCompare(b.item)
+  },
+  {
+    title: "QUANTITY",
+    dataIndex: "quantity",
+    key: "quantity",
+    width: 150,
+    sorter: (a, b) => a.quantity.localeCompare(b.quantity)
+  },
+  {
+    title: "THRESHOLD",
+    dataIndex: "threshold",
+    key: "threshold",
+    width: 150,
+    sorter: (a, b) => a.threshold.localeCompare(b.threshold)
+  }
+];
+
+class InventoryList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [
+        {
+          key: "1",
+          item_name: "Chicken Joy",
+          quantity: "250",
+          threshold: "50"
+        },
+        {
+          key: "2",
+          item_name: "Burger Mcdo",
+          quantity: "500",
+          threshold: "50"
+        },
+        {
+          key: "3",
+          item_name: "Mc Cafe",
+          quantity: "1250",
+          threshold: "50"
+        }
+      ],
+      usersRef: [
+        {
+          key: "1",
+          item_name: "Chicken Joy",
+          quantity: "250",
+          threshold: "50"
+        },
+        {
+          key: "2",
+          item_name: "Burger Mcdo",
+          quantity: "500",
+          threshold: "50"
+        },
+        {
+          key: "3",
+          item_name: "Mc Cafe",
+          quantity: "1250",
+          threshold: "50"
+        }
+      ],
+      actionType: "add"
+    };
+  }
+
+  handleSubmit = e => {
+    e.preventDefault();
+    // eslint-disable-next-line react/prop-types
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log("Received values of form: ", values);
+      }
+    });
+  };
+
+  handleReset = () => {
+    // eslint-disable-next-line react/prop-types
+    this.props.form.resetFields();
+  };
+
+  displayDrawerUpdate = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerCategoryTitleUpdate,
+      drawerButton: buttonLabels.update,
+      actionType: "update",
+      panelInfo: record
+    });
+  };
+
+  displayDrawerAdd = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerCategoryTitleAdd,
+      drawerButton: buttonLabels.create,
+      actionType: "add",
+      panelInfo: record
+    });
+  };
+
+  onClose = () => {
+    this.setState({
+      isDrawerVisible: false
+    });
+  };
+
+  handleSelectChange = value => {
+    console.log(value);
+    const { pagination } = this.state;
+    // eslint-disable-next-line radix
+    pagination.pageSize = parseInt(value);
+    this.setState({ pagination });
+  };
+
+  // Private Function
+  containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+
+    return searchFrom
+      .toString()
+      .toLowerCase()
+      .includes(searchedVal);
+  };
+
+  onSearch = value => {
+    const searchedVal = value.toLowerCase();
+    const { usersRef } = this.state;
+
+    const filtered = usersRef.filter(item => {
+      // eslint-disable-next-line camelcase
+      const { item_name } = item;
+
+      return this.containsString(item_name, searchedVal);
+    });
+
+    this.setState({ data: filtered });
+  };
+
+  onChangeSearch = event => {
+    const { usersRef } = this.state;
+    if (event.target.value === "") this.setState({ data: usersRef });
+  };
+
   render() {
+    const { actionType } = this.state;
     return (
       <div>
-        <PageTitle pageTitle="INVENTORY LIST" align="left" />
-        <SearchForm />
-        <InventoryListTable />
+        <AntRow>
+          <AntCol span={24}>
+            <div className="panel-table-options" style={{ marginTop: 10 }}>
+              <AntRow>
+                <AntCol span={24} style={{ textAlign: "right" }}>
+                  <Search
+                    allowClear
+                    onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    style={{ width: 200 }}
+                    className="panel-table-search-input"
+                  />
+                  <Button
+                    className="form-button"
+                    // block
+                    shape="round"
+                    type="primary"
+                    htmlType="submit"
+                    style={{ width: 120, marginLeft: 10, marginRight: 150 }}
+                    // onSearch={value => this.onSearch(value)}
+                    onClick={value => this.onSearch(value)}
+                  >
+                    SEARCH
+                  </Button>
+                  <Button
+                    type="primary"
+                    shape="round"
+                    style={{ marginRight: "15px" }}
+                    onClick={this.displayDrawerAdd}
+                  >
+                    <Icon type="plus" />
+                    {addInventoryList}
+                  </Button>
+                  <TablePager handleChange={this.handleSelectChange} />
+                </AntCol>
+              </AntRow>
+            </div>
+            <AntTable
+              style={{ textTransform: "uppercase" }}
+              className="settings-panel-table"
+              size={tableSize}
+              dataSource={this.state.data}
+              pagination={this.state.pagination}
+              loading={this.state.loading}
+              scroll={{ y: tableYScroll }}
+              columns={columns}
+              rowKey={record => record.key}
+              onRow={record => {
+                return {
+                  onDoubleClick: () => {
+                    this.displayDrawerUpdate(record);
+                  }
+                };
+              }}
+            />
+            <Drawer
+              title={this.state.drawerTitle}
+              visible={this.state.isDrawerVisible}
+              onClose={this.onClose}
+              width="30%"
+              destroyOnClose
+            >
+              <InventoryListForm
+                // @ts-ignore
+                actionType={actionType}
+                drawerButton={this.state.drawerButton}
+                panelInfo={this.state.panelInfo}
+                onCancel={this.onClose}
+              />
+            </Drawer>
+          </AntCol>
+        </AntRow>
       </div>
     );
   }
 }
 
-export default InventoryList;
+const InventoryCategories = AntForm.create()(InventoryList);
+
+export default InventoryCategories;

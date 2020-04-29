@@ -100,6 +100,10 @@ export const fieldLabels = {
   itemsUpcBarcode: "UPC BARCODE",
   ItemsItemDescription: "DESCRIPTION",
 
+  ItemListName: "ITEM NAME",
+  ItemListQuantity: "QUANTITY",
+  ItemListThreshold: "THRESHOLD"
+
   
 
 
@@ -124,5 +128,6 @@ export const addSupplierButton = 'ADD SUPPLIER';
 export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 export const addUnitMeasure = 'ADD UNIT OF MEASURE';
 export const addItems = 'ADD ITEM';
+export const addInventoryList = 'ADD INVENTORY';
 
 export const tableYScroll = globalTableYScroll;
