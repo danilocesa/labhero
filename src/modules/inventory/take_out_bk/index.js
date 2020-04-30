@@ -15,8 +15,12 @@ class Takeout extends React.Component {
 			<div>
 				<PageTitle pageTitle="INVENTORY / TAKEOUT" align="left" />
 				<Collapse bordered={false}>
+					<Panel header="Search" key="1">
 						<SearchForm />
-						{/* <TakeoutForm /> */}
+					</Panel>
+					<Panel header="Takeout Items" key="2">
+						<TakeoutForm />
+					</Panel>
 					<TakeoutTable />
 				</Collapse>
 				<Footer />
