@@ -115,7 +115,7 @@ class SearchForm extends React.Component {
 								</Form.Item>
 							</Col>
 						</Row>
-						<Row type="flex" align="bottom" gutter={48}>
+						<Row type="flex" align="top" gutter={48}>
 							<Col lg={8} md={8} sm={10} xs={24}>
 								<Form.Item label="FROM DATE - TO DATE">
 									{getFieldDecorator('dateSpan', { 
@@ -151,7 +151,7 @@ class SearchForm extends React.Component {
 								</Form.Item>
 							</Col>
 							<Col lg={8} md={8} sm={10} xs={24}>
-								<Form.Item>
+								<Form.Item style={{ marginTop: 40 }}>
 									<Button 
 										shape="round" 
 										onClick={this.onClickClear} 
