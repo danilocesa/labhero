@@ -163,7 +163,7 @@ class FillupRecipient extends React.Component{
                         <div className="center-form" style={{marginTop:'40px'}}>
                             <Row>
                                 <Col>
-                                    <Form.Item style={{marginTop:'-8px'}}>
+                                    <Form.Item style={{marginTop:'-1spx'}}>
                                         {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <ProvinceList
                                                 required
@@ -228,9 +228,6 @@ class FillupRecipient extends React.Component{
                                                     <NumberInput addonBefore="+ 63" />
                                             )}
                                     </Form.Item>
-
-
-                            
                         </div>
                     </Col>
                     <Col md={1} style={{ textAlign: 'center' }}>
