@@ -4,15 +4,71 @@
 /* eslint-disable func-names */
 // LIBRARY
 import React from "react";
-import { Form, Button, Row, Col, DatePicker, Select, Input, Icon } from "antd";
+import {
+  Form,
+  Button,
+  Row,
+  Col,
+  DatePicker,
+  Select,
+  Input,
+  Icon,
+  Table,
+  Drawer
+} from "antd";
 // CUSTOM MODULES
 import ClearFormFields from "shared_components/form_clear_button";
-import { addTakeout } from "modules/inventory/settings/settings";
+import {
+  addTakeout,
+  drawerTakeoutUpdate,
+  tableSize,
+  buttonLabels,
+  tableYScroll
+} from "modules/inventory/settings/settings";
 import { fieldRules } from "../settings";
+import TakeoutForm from "../Takeout_form";
 
 const { RangePicker } = DatePicker;
 
 const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+
+const columns = [
+  {
+    title: "LOT CODE",
+    dataIndex: "lot_code",
+    width: 150
+  },
+  {
+    title: "ITEM",
+    dataIndex: "item",
+    width: 250
+  },
+  {
+    title: "QUANTITY",
+    dataIndex: "quantity",
+    width: 150
+  },
+  {
+    title: "AMOUNT",
+    dataIndex: "amount",
+    width: 150
+  },
+  {
+    title: "EXPIRATION DATE",
+    dataIndex: "expiry_date",
+    width: 150
+  },
+  {
+    title: "STORAGE",
+    dataIndex: "storage",
+    width: 150
+  },
+  {
+    title: "SUPPLIER",
+    dataIndex: "supplier",
+    width: 150
+  }
+];
 
 class SearchPatientForm extends React.Component {
   constructor(props) {
@@ -20,7 +76,41 @@ class SearchPatientForm extends React.Component {
     this.state = {
       loading: false,
       value: undefined,
-      data: []
+      data: [
+        {
+          key: "1",
+          lot_code: "001",
+          item: "ITEM DESCRIPTION",
+          quantity: 200,
+          amount: 150.0,
+          expiry_date: "05/05/2020",
+          storage: "STORAGE 1",
+          supplier: "SUPPLIER 1",
+          width: 250
+        },
+        {
+          key: "2",
+          lot_code: "002",
+          item: "ITEM DESCRIPTION",
+          quantity: 100,
+          amount: 150.0,
+          expiry_date: "05/05/2020",
+          storage: "STORAGE 2",
+          supplier: "SUPPLIER 2",
+          width: 250
+        },
+        {
+          key: "3",
+          lot_code: "003",
+          item: "ITEM DESCRIPTION",
+          quantity: 500,
+          amount: 150.0,
+          expiry_date: "05/05/2020",
+          storage: "STORAGE 3",
+          supplier: "SUPPLIER 3",
+          width: 250
+        }
+      ]
     };
   }
 
@@ -40,14 +130,18 @@ class SearchPatientForm extends React.Component {
 
   handleAdd = () => {
     const { count, data } = this.state;
+    const { form } = this.props;
+    const { getFieldsValue } = form;
+    const fields = getFieldsValue();
+
     const newData = {
-      lot_code: "100",
-      item: "Potassium",
-      quantity: "Description",
-      amount: "P500.00",
-      expiry_date: "04/04/2020",
-      storage: "Storage 1",
-      supplier: "supplier 1"
+      lot_code: fields.lotCode,
+      item: fields.item,
+      quantity: fields.quantity,
+      amount: fields.amount,
+      expiry_date: fields.expiryDate,
+      storage: fields.storage,
+      supplier: fields.supplier
     };
     this.setState({
       data: [...data, newData],
@@ -56,11 +150,42 @@ class SearchPatientForm extends React.Component {
     console.log(newData);
   };
 
+  displayDrawerUpdate = record => {
+    this.setState({
+      isDrawerVisible: true,
+      drawerTitle: drawerTakeoutUpdate,
+      drawerButton: buttonLabels.update,
+      panelInfo: record
+    });
+  };
+
+  onChange = value => {
+    console.log(value);
+    this.setState({ value });
+  };
+
+  onClose = () => {
+    this.setState({
+      isDrawerVisible: false
+    });
+  };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
-    const { patientID, patientName } = getFieldsValue();
+    const {
+      patientID,
+      patientName,
+      lotCode,
+      item,
+      quantity,
+      amount,
+      supplier,
+	  storage,
+	  expiryDate,
+	  tranDate
+    } = getFieldsValue();
     const disabled = !(patientID || (patientName && patientName.length > 1));
     const { Option } = Select;
     const categoryData = ["Category1", "Category2", "Caegory3"];
@@ -77,12 +202,14 @@ class SearchPatientForm extends React.Component {
           </Col>
           <Col span={4}>
             <Form.Item label="TRANSACTION DATE">
-              <DatePicker style={{ width: "100%" }} />
+			{getFieldDecorator("tranDate", {
+                // rules: fieldRules.date
+              })(<DatePicker style={{ width: "100%" }} />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="LOT CODE">
-              {getFieldDecorator("lot_code", {
+              {getFieldDecorator("lotCode", {
                 rules: fieldRules.search
               })(<Input />)}
             </Form.Item>
@@ -110,7 +237,9 @@ class SearchPatientForm extends React.Component {
           </Col>
           <Col span={4}>
             <Form.Item label="EXPIRY DATE">
-              <DatePicker style={{ width: "100%" }} />
+              {getFieldDecorator("expiryDate", {
+                // rules: fieldRules.date
+              })(<DatePicker style={{ width: "100%" }} />)}
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -166,6 +295,36 @@ class SearchPatientForm extends React.Component {
               </Row>
             </Form.Item>
           </Col>
+          <Table
+            style={{ textTransform: "uppercase", marginTop: 30 }}
+            size={tableSize}
+            columns={columns}
+            // eslint-disable-next-line react/prop-types
+            dataSource={this.state.data}
+            scroll={{ y: tableYScroll }}
+            rowKey={record => record.examItemID}
+            onRow={record => {
+              return {
+                onDoubleClick: () => {
+                  this.displayDrawerUpdate(record);
+                }
+              };
+            }}
+          />
+          <Drawer
+            title={this.state.drawerTitle}
+            visible={this.state.isDrawerVisible}
+            onClose={this.onClose}
+            width="40%"
+            destroyOnClose
+          >
+            <TakeoutForm
+              // @ts-ignore
+              drawerButton={this.state.drawerButton}
+              panelInfo={this.state.panelInfo}
+              onCancel={this.onClose}
+            />
+          </Drawer>
         </Row>
       </Form>
     );
