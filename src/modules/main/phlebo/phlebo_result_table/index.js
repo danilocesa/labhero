@@ -98,7 +98,7 @@ class SearchPatientTable extends React.Component {
 					const { address, townName, cityMunicipalityName, provinceName } = row;
 
 					if(row.address)
-						return `${address}, ${townName}, ${cityMunicipalityName}, ${provinceName}`.toUpperCase();
+						return `${address || ''}, ${townName || ''}, ${cityMunicipalityName || ''}, ${provinceName || ''}`.toUpperCase();
 
 					return '';
 				}

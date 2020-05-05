@@ -68,10 +68,15 @@ class EditLabResult extends React.Component {
 					width="95%"
 					visible={isDisplayDrawer}
 				>
-					<EditResult 
-						patientInfo={patientInfo} 
-						examDetails={examDetails}
-					/> 
+					{
+						isDisplayDrawer &&
+						(
+							<EditResult 
+								patientInfo={patientInfo} 
+								examDetails={examDetails}
+							/> 
+						)
+					}
 				</Drawer>
 				<PrintResult 
 					sampleID={selectedSampleID}

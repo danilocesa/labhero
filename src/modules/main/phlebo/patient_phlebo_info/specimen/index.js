@@ -9,9 +9,8 @@ import PropTypes from 'prop-types';
 import { globalTableSize } from 'global_config/constant-global';
 
 // CUSTOM MODULES
-import patientPhleboSpecimensAPI from 'services/phlebo/specimenTracking/requestid';
-import patientPhleboCheckInSpecimensAPI from 'services/phlebo/specimenTracking/checkinspecimen';
-import printBarcodeSpecimenAPI from 'services/phlebo/specimenTracking/printBarcodeSpecimen';
+import { fetchRequestSpecimenToProcess, checkinSpecimen } from 'services/phlebo/specimenTracking';
+import printBarcodeLabel from 'services/phlebo/barcodeLabel';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { messagePrompts, buttonNames } from './settings';
 
@@ -99,7 +98,7 @@ class SpecimenList extends React.Component {
 	componentDidMount(){
 		const { patientInfo } = this.props;
 		this.setState({ isFetchingData: true }, async () => {
-			const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
+			const patientSpecimens = await fetchRequestSpecimenToProcess(patientInfo.requestID);
 
 			this.setState({ 
 				requestID: patientSpecimens.requestID,
@@ -120,7 +119,7 @@ class SpecimenList extends React.Component {
 			const { examRequests } = this.state;
 			let examRequestClone = JSON.parse(JSON.stringify(examRequests));
 
-			const saveExtraction = await patientPhleboCheckInSpecimensAPI({ 
+			const saveExtraction = await checkinSpecimen({ 
 				requestID, 
 				sectionID, 
 				specimenID, 
@@ -133,7 +132,7 @@ class SpecimenList extends React.Component {
 					message: `${messagePrompts.successExtraction} ${ saveExtraction.data.sampleSpecimenID}` 
 				});
 
-				const patientSpecimens = await patientPhleboSpecimensAPI(patientInfo.requestID);
+				const patientSpecimens = await fetchRequestSpecimenToProcess(patientInfo.requestID);
 
 				examRequestClone = patientSpecimens.examRequests;
 			} else{
@@ -153,9 +152,9 @@ class SpecimenList extends React.Component {
 	}
 
 	handlePrint = async (specimenID) =>{
-		const printBarcode = await printBarcodeSpecimenAPI(specimenID);
+		const printBarcode = await printBarcodeLabel(specimenID);
 
-		HttpCodeMessage({status: printBarcode.status, message: printBarcode.data});
+		HttpCodeMessage({ status: printBarcode.status, message: printBarcode.data });
 	}
 
 	render() {  
