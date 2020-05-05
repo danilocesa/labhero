@@ -1,11 +1,8 @@
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable func-names */
-/* eslint-disable array-callback-return */
+
 // @ts-nocheck
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, Row, Col, Typography, DatePicker, Radio, Button, Select, Drawer, List } from 'antd';
+import { Form, Row, Col } from 'antd';
 
 // IMAGES
 import { PatientImgPlaceholder } from 'images';
@@ -17,11 +14,6 @@ import DrawerButton from './form2_button';
 // CSS
 import './editprofile.css'; 
 
-// OTHER FILES
-// eslint-disable-next-line camelcase
-const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
-const dateFormat = 'MM/DD/YYYY';
 const DescriptionItem = ({ title, content }) => (
 	<div
 	  style={{
@@ -45,10 +37,6 @@ const DescriptionItem = ({ title, content }) => (
 	</div>
 );
 
-// CONSTANTS
-const { Text } = Typography;
-const { TextArea } = Input;
-const { Option } = Select;
 
 class EditDonorProfile extends React.Component {
 	state= {showForm: false}
@@ -69,10 +57,10 @@ class EditDonorProfile extends React.Component {
 		return(
 			<div>
 				<Form className="fillup-form">
-						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>DONOR'S PROFILE</p>
+						<p style={{ marginBottom: 24, fontWeight : 'bold', }}>DONORS PROFILE</p>
 						<Row gutter={12}>
-                            <Col span={6}>
-                                <div>
+							<Col span={6}>
+								<div>
 									<Col>
 										{' '}
 										<img src={PatientImgPlaceholder} alt="logo" style={{ height: 100, width: 100, paddingBottom: '1em' }} />
@@ -83,7 +71,7 @@ class EditDonorProfile extends React.Component {
 								</div>
 							</Col>
 							<Col span={9}>
-                                <div>
+								<div>
 									<Col>
 										<DescriptionItem title="LAST NAME" content="DOE" />
 									</Col>
@@ -99,7 +87,7 @@ class EditDonorProfile extends React.Component {
 								</div>
 							</Col>
 							<Col span={9}>
-                                <div>
+								<div>
 									<Col>
 										<DescriptionItem title="FIRST NAME" content="JOHN" />
 									</Col>
@@ -124,9 +112,6 @@ class EditDonorProfile extends React.Component {
 	}
 }
 
-EditDonorProfile.propTypes = {
-	patientInfo: PropTypes.object
-};
 
 EditDonorProfile.defaultProps = {
 	patientInfo() { return null; }

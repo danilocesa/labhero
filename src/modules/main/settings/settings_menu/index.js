@@ -39,6 +39,16 @@ const settingsItemData = [
 		image: LabExamRequestIcon,
 		link: '/settings/user-rights',
 		label: 'USER RIGHTS'
+	},
+	{
+		image: UserMaintenanceIcon,
+		link: '/settings/address',
+		label: 'ADDRESS'
+	},
+	{
+		image: UserMaintenanceIcon,
+		link: '/settings/Hospital',
+		label: 'HOSPITAL'
 	}
 ]
 

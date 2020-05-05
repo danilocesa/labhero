@@ -4,28 +4,12 @@ import { Form, Input, Button, Row, Col, Select } from 'antd';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import SearchDonorTable from './donor_table';
-//import UpdatePatientForm from './edit_donor_info';
 
 // CONSTANTS
 const { Option } = Select;
 
 class SearchDonor extends React.Component{
 
-    state = { visible: false };
-
-	showForm = () => {
-        return (
-            <div>
-                <Form className="search-patient-form">
-                    <Row>
-                        <Col style={{ marginTop: '20px' }}>
-                            <SearchDonorTable />
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        );
-    }
 
     render(){
         return(
@@ -85,17 +69,16 @@ class SearchDonor extends React.Component{
                                         style={{
                                             width: '10%',
                                             textAlign: 'center',
-                                            marginLeft: 1100
+                                            marginLeft:1100
                                         }} 
-                                        onClick={() => this.setState({showForm: true})}
                                     > 
                                         SEARCH 
                                     </Button>
-                                    {this.state.showForm ? this.showForm() : null}
                                 </Form.Item>
                             </Col>  
                         </Row>
                     </Form>
+                    <SearchDonorTable />
                 </div>
             </div>
         );
