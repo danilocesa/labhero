@@ -1,17 +1,28 @@
+/* eslint-disable no-unused-vars */
+// @ts-nocheck
 /* eslint-disable react/prop-types */
 /* eslint-disable func-names */
 // LIBRARY
 import React from "react";
-import { Form, Button, Row, Col, DatePicker, Select, Input } from "antd";
+import { Form, Button, Row, Col, DatePicker, Select, Input, Icon } from "antd";
 // CUSTOM MODULES
 import ClearFormFields from "shared_components/form_clear_button";
+import { addTakeout } from "modules/inventory/settings/settings";
 import { fieldRules } from "../settings";
 
 const { RangePicker } = DatePicker;
+
+const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+
 class SearchPatientForm extends React.Component {
-  state = {
-    loading: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      value: undefined,
+      data: []
+    };
+  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -22,12 +33,38 @@ class SearchPatientForm extends React.Component {
     });
   };
 
+  onChange = value => {
+    console.log(value);
+    this.setState({ value });
+  };
+
+  handleAdd = () => {
+    const { count, data } = this.state;
+    const newData = {
+      lot_code: "100",
+      item: "Potassium",
+      quantity: "Description",
+      amount: "P500.00",
+      expiry_date: "04/04/2020",
+      storage: "Storage 1",
+      supplier: "supplier 1"
+    };
+    this.setState({
+      data: [...data, newData],
+      count: count + 1
+    });
+    console.log(newData);
+  };
+
   render() {
     const { form } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
     const { patientID, patientName } = getFieldsValue();
     const disabled = !(patientID || (patientName && patientName.length > 1));
+    const { Option } = Select;
+    const categoryData = ["Category1", "Category2", "Caegory3"];
+
     return (
       <Form className="search-patient-form" onSubmit={this.handleSubmit}>
         <Row gutter={12} type="flex" justify="center">
@@ -40,9 +77,7 @@ class SearchPatientForm extends React.Component {
           </Col>
           <Col span={4}>
             <Form.Item label="TRANSACTION DATE">
-              {getFieldDecorator("transaction_date", {
-                rules: fieldRules.search
-              })(<DatePicker style={{ width: "100%" }} />)}
+              <DatePicker style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -75,23 +110,33 @@ class SearchPatientForm extends React.Component {
           </Col>
           <Col span={4}>
             <Form.Item label="EXPIRY DATE">
-              {getFieldDecorator("expiry_date", {
-                rules: fieldRules.search
-              })(<DatePicker style={{ width: "100%" }} />)}
+              <DatePicker style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="SUPPLIER">
               {getFieldDecorator("supplier", {
                 rules: fieldRules.search
-              })(<Select />)}
+              })(
+                <Select>
+                  <Option value="SUPPLIER 1">SUPPLIER 1</Option>
+                  <Option value="SUPPLIER 2">SUPPLIER 2</Option>
+                  <Option value="SUPPLIER 3">SUPPLIER 3</Option>
+                </Select>
+              )}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="STORAGE">
               {getFieldDecorator("storage", {
                 rules: fieldRules.section
-              })(<Select />)}
+              })(
+                <Select>
+                  <Option value="STORAGE 1">STORAGE 1</Option>
+                  <Option value="STORAGE 2">STORAGE 2</Option>
+                  <Option value="STORAGE 3">STORAGE 3</Option>
+                </Select>
+              )}
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -105,8 +150,18 @@ class SearchPatientForm extends React.Component {
                   htmlType="submit"
                   loading={loading}
                   style={{ width: 120 }}
+                  disabled
                 >
-                  SEARCH
+                  VOID
+                </Button>
+                <Button
+                  type="primary"
+                  shape="round"
+                  style={{ marginRight: "15px" }}
+                  onClick={this.handleAdd}
+                >
+                  <Icon />
+                  {addTakeout}
                 </Button>
               </Row>
             </Form.Item>
