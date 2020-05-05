@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 class PatientName extends React.Component {
   render() {
-     const { patientInfo } = this.props;   
+		 const { patientInfo } = this.props;  
+		 
      return (
 			<div style={{ marginBottom: '30px' }}>
 				<h1

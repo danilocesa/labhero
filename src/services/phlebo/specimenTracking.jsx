@@ -1,0 +1,80 @@
+import Message from 'shared_components/message';
+import { axiosLabAPI } from 'services/axios';
+import { apiPostMethod, apiGetMethod } from 'global_config/constant-global';
+
+
+
+export async function fetchExtracReqByPatientID({ requestDate, patientID }) {
+	try{
+		const content = {
+			method: apiGetMethod,
+			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}/patientid/${patientID}`,
+		}
+
+		const response = await axiosLabAPI(content);
+		const { data } = response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
+export async function fetchExtracReqByPatientName({ requestDate, patientName }) {
+	try{
+		const content = {
+			method: apiGetMethod,
+			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}/patientname/${patientName}`,
+		}
+
+		const response = await axiosLabAPI(content);
+		const { data } = response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
+
+export async function fetchRequestSpecimenToProcess(requestID) {
+	try{
+		const content = {
+			method: apiGetMethod,
+			url: `/lab/SpecimenTracking/phlebo/requestid/${requestID}`,
+		}
+
+		const response = await axiosLabAPI(content);
+		const { data } = response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
+export async function checkinSpecimen(payload) {
+	try{
+		const content = {
+			method: apiPostMethod,
+      url: `/lab/SpecimenTracking/phlebo/checkinspecimen`,
+      data: payload
+		}
+
+		const response = await axiosLabAPI(content);
+		
+		return response;
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
+

@@ -6,11 +6,12 @@ import moment from 'moment';
 import { Form, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 
 // CUSTOM MODULES
-import { axiosLabAPI } from 'services/axios';
-import CustomMessage from 'shared_components/message';
+import { 
+	fetchExtracReqByPatientID, 
+	fetchExtracReqByPatientName 
+} from 'services/phlebo/specimenTracking';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { RegexInput } from 'shared_components/pattern_input';
-import { apiUrlPhleboSearchPatient } from 'global_config/constant-global';
 
 // CSS
 import './search_patient_form.css';
@@ -33,13 +34,21 @@ class SearchPatientHeaderForm extends React.Component {
 	handleSubmit = async (event) => {  
 		event.preventDefault();
 
-		const { patientName, patientID } = this.state;
+		await this.populateTable();
+	}
+
+	populateTable = async () => {
+		const { patientName, patientID, selectedDateValue } = this.state;
 		const { populateExtractedPatients, populateForExtractionPatients } = this.props;
-		let patients = [];
+		let patients = {};
 		
 		this.setState({ loading: true });
-		patients = await this.fetchPatients(patientName, patientID); 
-		// populate patient by extracted or for extraction
+
+		if(patientID)
+			patients = await fetchExtracReqByPatientID({ requestDate: selectedDateValue, patientID });
+		else 
+			patients = await fetchExtracReqByPatientName({ requestDate: selectedDateValue, patientName });
+
 		this.setState({ loading: false });
 
 		populateExtractedPatients(patients.extracted);
@@ -49,21 +58,37 @@ class SearchPatientHeaderForm extends React.Component {
 			HttpCodeMessage({ status: 204 });
 	}
 
+	// populateTable = async () => {
+	// 	const { patientName, patientID } = this.state;
+	// 	const { populateExtractedPatients, populateForExtractionPatients } = this.props;
+	// 	let patients = [];
+		
+	// 	this.setState({ loading: true });
+	// 	patients = await this.fetchPatients(patientName, patientID); 
+	// 	// populate patient by extracted or for extraction
+	// 	this.setState({ loading: false });
 
-	fetchPatients = async (patientName, patientID) => {
-		let apiResponse;
-		try{
-			// eslint-disable-next-line max-len
-			const apiBaseUrl = `${apiUrlPhleboSearchPatient}${this.state.selectedDateValue}`;
-			const apiUrl = (patientID ? `${apiBaseUrl}/patientid/${patientID}` : `${apiBaseUrl}/patientname/${patientName}`);
-			apiResponse = await axiosLabAPI({ method: 'GET', url: apiUrl });
-		}
-		catch(error) {
-			CustomMessage.error();
-		}
+	// 	populateExtractedPatients(patients.extracted);
+	// 	populateForExtractionPatients(patients.forExtraction);
 
-		return apiResponse.data;
-	}
+	// 	if(patients.length < 1) 
+	// 		HttpCodeMessage({ status: 204 });
+	// }
+
+	// fetchPatients = async (patientName, patientID) => {
+	// 	let apiResponse;
+	// 	try{
+	// 		// eslint-disable-next-line max-len
+	// 		const apiBaseUrl = `${apiUrlPhleboSearchPatient}${this.state.selectedDateValue}`;
+	// 		const apiUrl = (patientID ? `${apiBaseUrl}/patientid/${patientID}` : `${apiBaseUrl}/patientname/${patientName}`);
+	// 		apiResponse = await axiosLabAPI({ method: 'GET', url: apiUrl });
+	// 	}
+	// 	catch(error) {
+	// 		CustomMessage.error();
+	// 	}
+
+	// 	return apiResponse.data;
+	// }
 
 	clearItems = async () => {
 		this.setState({
@@ -168,7 +193,7 @@ class SearchPatientHeaderForm extends React.Component {
 SearchPatientHeaderForm.propTypes = {
 	populateExtractedPatients: PropTypes.func.isRequired,
 	populateForExtractionPatients: PropTypes.func.isRequired,
-	clearPatients: PropTypes.func.isRequired
+	clearPatients: PropTypes.func.isRequired,
 };
 
 export default SearchPatientHeaderForm;

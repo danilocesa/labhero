@@ -47,7 +47,7 @@ const columns = [
 	{ 
 		title: 'ADDRESS', 
 		width: 450,
-		dataIndex: 'Address', 
+		render: (text, record) => `${record.address || ''} ${record.townName || ''} ${record.cityMunicipalityName || ''} ${record.provinceName || ''}`.toUpperCase()
 	},
 	{ 
 		title: 'SECTION', 

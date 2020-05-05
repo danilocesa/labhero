@@ -41,8 +41,6 @@ class EditResult extends React.Component {
 			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
 			const formatedResults = this.recontructExamItems(results.resultValues);
 
-			console.log(results);
-
 			this.setState({ 
 				results, 
 				formatedResults,
@@ -53,7 +51,6 @@ class EditResult extends React.Component {
 
 	async componentDidUpdate(prevProps) {
 		const { examDetails  } = this.props;
-		
 
 		if(examDetails.sampleSpecimenID !== prevProps.examDetails.sampleSpecimenID) {
 			// eslint-disable-next-line react/no-did-update-set-state

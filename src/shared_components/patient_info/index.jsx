@@ -1,13 +1,13 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react/jsx-closing-tag-location */
 // LIBRARY
-import React from "react";
+import React from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
-import patientPhleboSpecimensAPI from "services/phlebo/specimenTracking/requestid";
-import computeAge from "shared_components/age_computation";
+import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
+import computeAge from 'shared_components/age_computation';
 
 // CSS
 import './patient_info.css';
@@ -31,7 +31,7 @@ class PatientInfo extends React.Component {
 
 	async componentDidMount(){
 		const { patientInfo } = this.props
-		const patientInfoValue = await patientPhleboSpecimensAPI(patientInfo.requestID);
+		const patientInfoValue = await fetchRequestSpecimenToProcess(patientInfo.requestID);
 		const { 
 			hospitalRequestID, 
 			physician, 

@@ -136,8 +136,8 @@ class SectionHeader extends React.Component {
 
 			// Adds at the beginning of an array
 			SectionList.unshift(( 
-				<Radio.Button value="panel" key="panel">
-					PANEL 
+				<Radio.Button value="panel" key="panel" style={{ width: `calc(100%/${SectionList.length + 1})` }}>
+					PANEL  
 				</Radio.Button>
 			));
 

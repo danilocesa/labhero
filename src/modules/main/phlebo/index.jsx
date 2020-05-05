@@ -5,6 +5,10 @@ import { Drawer as AntDrawer, Tabs as AntTabs, Badge as AntBadge} from 'antd';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import SearchPatientTableHeader from 'shared_components/search_pager';
+import { 
+	fetchExtracReqByPatientID, 
+	fetchExtracReqByPatientName 
+} from 'services/phlebo/specimenTracking';
 import SearchPatientHeaderForm from './search_form/search_input';
 import SearchPatientTable from './phlebo_result_table';
 import PhleboPatientResult from './patient_phlebo_info';
@@ -14,13 +18,19 @@ import {moduleTitle, tablePageSize, drawerTitle, tabNames} from './settings';
 const { TabPane } = AntTabs;
 
 class Phlebo extends React.Component {
-	state = {   
-		extractedPatients: [], 
-		forExtractionPatients: [], 
-		pageSize: tablePageSize,   
-		loading: false,
-		showDrawer:false,
-		patientInfo: null,
+	constructor(props) {
+		super(props);
+
+		this.state = {   
+			extractedPatients: [], 
+			forExtractionPatients: [], 
+			pageSize: tablePageSize,   
+			loading: false,
+			showDrawer:false,
+			patientInfo: null,
+		}
+
+		this.searchForm = React.createRef();
 	}
 
 	handleChangeSize = (pageSize) => {
@@ -42,10 +52,6 @@ class Phlebo extends React.Component {
 		this.setState({ forExtractionPatients });
 	}
 
-	displayLoading = (isLoading) => {
-		this.setState({ loading: isLoading });
-	}
-
 	displayDrawer = (patientRecord) => {
 		this.setState({ 
 			showDrawer: true,
@@ -55,38 +61,31 @@ class Phlebo extends React.Component {
 
 	onClosePhleboPatientResultDrawer = () => {
     this.setState({
-			showDrawer:false
+			showDrawer: false,
+			loading: true
+		}, async () => {
+			// @ts-ignore
+			await this.searchForm.populateTable();
+			
+			this.setState({ loading: false });
 		});
-		// this.populateExtractedPatients();
-		// this.populateForExtractionPatients();
   }
 
   render() {
 		const { extractedPatients, forExtractionPatients, pageSize, loading, showDrawer, patientInfo } = this.state;
 		const forExtrationPatientLength = (forExtractionPatients === undefined || forExtractionPatients.length === 0 ? 0 : forExtractionPatients.length );
 		const extractedPatientLength = (extractedPatients === undefined || extractedPatients.length === 0 ? 0 : extractedPatients.length );
-		const patientDrawer = (
-			<div>
-				<AntDrawer
-					title={drawerTitle} 
-					onClose={this.onClosePhleboPatientResultDrawer}
-					width="95%"
-					visible={showDrawer}
-				>
-					<PhleboPatientResult patientInfo={patientInfo} />
-				</AntDrawer>
-			</div>
-		);
 
     return ( 
 			<div>
 				<div>
 					<PageTitle pageTitle={moduleTitle} />
 					<SearchPatientHeaderForm 
+						// @ts-ignore
+						ref={(instance) => this.searchForm = instance}
 						clearPatients={this.clearPatients}
 						populateExtractedPatients={this.populateExtractedPatients}
 						populateForExtractionPatients={this.populateForExtractionPatients}
-						displayLoading={this.displayLoading} 
 					/>
 					<br />
 					<AntTabs defaultActiveKey="1">
@@ -114,9 +113,6 @@ class Phlebo extends React.Component {
 							redirectUrl=""
 							drawer={this.displayDrawer}
 						/>
-						{
-							showDrawer ? ( patientDrawer ) : null
-						}
 						</TabPane>
 						<TabPane
 							tab={(
@@ -140,12 +136,21 @@ class Phlebo extends React.Component {
 								redirectUrl=""
 								drawer={this.displayDrawer}
 							/>
-							{
-								showDrawer ? ( patientDrawer ) : null
-							}
 						</TabPane>
 					</AntTabs>
-					
+					{
+						showDrawer &&
+						(
+							<AntDrawer
+								title={drawerTitle} 
+								onClose={this.onClosePhleboPatientResultDrawer}
+								width="95%"
+								visible
+							>
+								<PhleboPatientResult patientInfo={patientInfo} />
+							</AntDrawer>
+						)
+					}
 				</div>
 			</div>
     );

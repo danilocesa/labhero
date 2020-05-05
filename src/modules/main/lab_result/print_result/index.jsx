@@ -96,7 +96,7 @@ class PrintResult extends React.Component {
 
     return (
       <Drawer 
-        title="PRINT LABORATORY RESULT"
+        title="LABORATORY RESULT PRINT PREVIEW"
         width="700"
         placement="right"
         closable
