@@ -116,7 +116,8 @@ class EditableTable extends React.Component {
 					
 				return { 
 					...item, 
-					releasedResult: `${fieldsValue[key]}`,
+					// releasedResult: `${fieldsValue[key]}`,
+					releasedResult: fieldsValue[key],
 					unitOfMesureBase: item.unitOfMesureBase || "0 0",
 				};
 			});
