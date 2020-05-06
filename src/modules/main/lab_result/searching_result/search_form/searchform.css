@@ -7,3 +7,7 @@
 .labresult-search-form .ant-form-item input {
 	text-transform: uppercase;
 }
+
+.labresult-search-form .ant-form-item .ant-form-explain {
+	text-transform: none;
+}
