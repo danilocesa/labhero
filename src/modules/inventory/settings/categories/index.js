@@ -56,40 +56,40 @@ class InventoryCategoriesTemplate extends React.Component {
         {
           key: "1",
           categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          categories_name: "Category 1",
+          description: "Description 1"
         },
         {
           key: "2",
           categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          categories_name: "Category 2",
+          description: "Description 2"
         },
         {
           key: "3",
           categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          categories_name: "Category 3",
+          description: "Description 3"
         }
       ],
       usersRef: [
         {
           key: "1",
           categories_code: 1,
-          categories_name: "John Brown",
-          description: "Description"
+          categories_name: "Category 1",
+          description: "Description 1"
         },
         {
           key: "2",
           categories_code: 2,
-          categories_name: "Jim Green",
-          description: "Description"
+          categories_name: "Category 2",
+          description: "Description 2"
         },
         {
           key: "3",
           categories_code: 3,
-          categories_name: "Joe Black",
-          description: "Description"
+          categories_name: "Category 3",
+          description: "Description 3"
         }
       ],
       categories: [],

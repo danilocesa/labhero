@@ -53,35 +53,35 @@ class UnitofMeasureTemplate extends React.Component {
       data: [
         {
           key: "1",
-          unit_name: "Name 1",
-          symbol: "John Brown 1"
+          unit_name: "Liter",
+          symbol: "Symbol 1"
         },
         {
           key: "2",
-          unit_name: "Name 2",
-          symbol: "John Brown 2"
+          unit_name: "Galon",
+          symbol: "Symbol 2"
         },
         {
           key: "3",
-          unit_name: "Name 3",
-          symbol: "John Brown 3"
+          unit_name: "Box",
+          symbol: "Symbol 3"
         }
       ],
       usersRef: [
         {
           key: "1",
-          unit_name: "Name 1",
-          symbol: "John Brown 1"
+          unit_name: "Liter",
+          symbol: "Symbol 1"
         },
         {
           key: "2",
-          unit_name: "Name 2",
-          symbol: "John Brown 2"
+          unit_name: "Galon",
+          symbol: "Symbol 2"
         },
         {
           key: "3",
-          unit_name: "Name 3",
-          symbol: "John Brown 3"
+          unit_name: "Box",
+          symbol: "Symbol 3"
         }
       ],
       actionType:'add'

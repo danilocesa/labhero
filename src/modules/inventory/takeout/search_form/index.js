@@ -26,7 +26,6 @@ import {
   tableYScroll
 } from "modules/inventory/settings/settings";
 import { fieldRules } from "../settings";
-import TakeoutForm from "../Takeout_form";
 
 const { RangePicker } = DatePicker;
 
@@ -75,41 +74,42 @@ class SearchPatientForm extends React.Component {
     super(props);
     this.state = {
       loading: false,
+      // eslint-disable-next-line react/no-unused-state
       value: undefined,
       data: [
-        {
-          key: "1",
-          lot_code: "001",
-          item: "ITEM DESCRIPTION",
-          quantity: 200,
-          amount: 150.0,
-          expiry_date: "05/05/2020",
-          storage: "STORAGE 1",
-          supplier: "SUPPLIER 1",
-          width: 250
-        },
-        {
-          key: "2",
-          lot_code: "002",
-          item: "ITEM DESCRIPTION",
-          quantity: 100,
-          amount: 150.0,
-          expiry_date: "05/05/2020",
-          storage: "STORAGE 2",
-          supplier: "SUPPLIER 2",
-          width: 250
-        },
-        {
-          key: "3",
-          lot_code: "003",
-          item: "ITEM DESCRIPTION",
-          quantity: 500,
-          amount: 150.0,
-          expiry_date: "05/05/2020",
-          storage: "STORAGE 3",
-          supplier: "SUPPLIER 3",
-          width: 250
-        }
+        // {
+        //   key: "1",
+        //   lot_code: "001",
+        //   item: "ITEM DESCRIPTION",
+        //   quantity: 200,
+        //   amount: 150.0,
+        //   expiry_date: "05/05/2020",
+        //   storage: "STORAGE 1",
+        //   supplier: "SUPPLIER 1",
+        //   width: 250
+        // },
+        // {
+        //   key: "2",
+        //   lot_code: "002",
+        //   item: "ITEM DESCRIPTION",
+        //   quantity: 100,
+        //   amount: 150.0,
+        //   expiry_date: "05/05/2020",
+        //   storage: "STORAGE 2",
+        //   supplier: "SUPPLIER 2",
+        //   width: 250
+        // },
+        // {
+        //   key: "3",
+        //   lot_code: "003",
+        //   item: "ITEM DESCRIPTION",
+        //   quantity: 500,
+        //   amount: 150.0,
+        //   expiry_date: "05/05/2020",
+        //   storage: "STORAGE 3",
+        //   supplier: "SUPPLIER 3",
+        //   width: 250
+        // }
       ]
     };
   }
@@ -125,6 +125,7 @@ class SearchPatientForm extends React.Component {
 
   onChange = value => {
     console.log(value);
+    // eslint-disable-next-line react/no-unused-state
     this.setState({ value });
   };
 
@@ -150,24 +151,10 @@ class SearchPatientForm extends React.Component {
     console.log(newData);
   };
 
-  displayDrawerUpdate = record => {
-    this.setState({
-      isDrawerVisible: true,
-      drawerTitle: drawerTakeoutUpdate,
-      drawerButton: buttonLabels.update,
-      panelInfo: record
-    });
-  };
-
   onChange = value => {
     console.log(value);
+    // eslint-disable-next-line react/no-unused-state
     this.setState({ value });
-  };
-
-  onClose = () => {
-    this.setState({
-      isDrawerVisible: false
-    });
   };
 
   render() {
@@ -311,20 +298,6 @@ class SearchPatientForm extends React.Component {
               };
             }}
           />
-          <Drawer
-            title={this.state.drawerTitle}
-            visible={this.state.isDrawerVisible}
-            onClose={this.onClose}
-            width="40%"
-            destroyOnClose
-          >
-            <TakeoutForm
-              // @ts-ignore
-              drawerButton={this.state.drawerButton}
-              panelInfo={this.state.panelInfo}
-              onCancel={this.onClose}
-            />
-          </Drawer>
         </Row>
       </Form>
     );
