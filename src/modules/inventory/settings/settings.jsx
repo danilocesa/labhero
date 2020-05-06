@@ -22,6 +22,10 @@ export const drawerUnitAdd = 'ADD UNIT OF MEASURE';
 export const drawerUnitUpdate = 'UPDATE UNIT OF MEASURE';
 export const drawerItemsUpdate = 'UPDATE ITEM';
 export const drawerItemsAdd = 'ADD ITEM';
+export const drawerTakeoutTitleUpdate = 'UPDATE TAKEOUT';
+export const drawerTakeoutTitleAdd = 'ADD TAKEOUT';
+export const drawerTakeoutUpdate = 'UPDATE TAKEOUT';
+
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -129,5 +133,6 @@ export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 export const addUnitMeasure = 'ADD UNIT OF MEASURE';
 export const addItems = 'ADD ITEM';
 export const addInventoryList = 'ADD INVENTORY';
+export const addTakeout = 'ADD TAKEOUT';
 
 export const tableYScroll = globalTableYScroll;

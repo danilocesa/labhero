@@ -16,7 +16,6 @@ const settingsItemData = [
 		image: BBdonorRegIcon,
 		link: '/bloodbank/donor_registration',
 		label: 'DONOR REGISTRATION',
-		offset: 2
 	},
 	{
 		image: BBaddBloodReqIcon,
@@ -37,7 +36,7 @@ const settingsItemData = [
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
 		label: 'SETTINGS',
-	},
+	}
 ]
 
 class BloodBankMenu extends React.Component {
