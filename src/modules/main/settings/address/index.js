@@ -1,50 +1,44 @@
-// LiBRARY
+// @ts-nocheck
+// LIBRARY
 import React from 'react';
-import { Tabs as AntTabs} from 'antd';
-// CUSTOM MODULES
-import InventoryPageCrumb from 'modules/inventory/settings/shared_components/page_bread_crumb';
-import Province from './province'
-import City from './city'
-import Barangay from './barangay'
+import { Select } from 'antd'; 
+import ProvinceTable from 'modules/main/settings/hospital';
+import BarangayTable from './barangay'
+import CityTable from './city'
 
 
-//  CONSTANTS
-const { TabPane } = AntTabs;
-const pageTitleSettings = "SETTINGS /";
-const pageTitle = [
-  `${pageTitleSettings } PROVINCE`, 
-  `${pageTitleSettings } PROVINCE`,
-  `${pageTitleSettings } CITY`,
-  `${pageTitleSettings } BARANGAY`,
-]
 
-class settings extends React.Component {
-	state = { 
-    pageTitle: pageTitle[0]
+const { Option } = Select;
+
+function handleChange(value) {
+   if(value = "Province"){
+     return 
+     <div>
+         <ProvinceTable/>
+     </div>;
+   }else if (value="Barangay"){
+       return <BarangayTable />
+   } else (value ="City")
+   return <CityTable />
   }
 
-  handleTabChange = (key) => {
-    this.setState({ pageTitle: pageTitle[key] })
-  }
-
-  render() {
-    return ( 
-			<div>
-        <InventoryPageCrumb pageTitle={this.state.pageTitle} />
-        <AntTabs defaultActiveKey="1" onChange={this.handleTabChange}>
-          <TabPane tab='PROVINCE' key="1">
-            <Province />
-          </TabPane>
-          <TabPane tab='CITY' key="2">
-            <City />
-          </TabPane>
-          <TabPane tab='BARANGAY' key="3">
-            <Barangay />
-          </TabPane>
-        </AntTabs>
-			</div>
-    );
-  }
+class Address extends React.Component {
+	
+	render() {
+			return(
+                <div>
+                    <Select
+                        style={{ width: 120 }}
+                        onChange={handleChange}
+                    >
+                        <Option value="Barangay">Barangay</Option>
+                        <Option value="Province">Province</Option>
+                        <Option value="City">City</Option>
+                    </Select>				
+                </div>
+			)
+	}
 }
 
-export default settings;
+
+export default Address;
