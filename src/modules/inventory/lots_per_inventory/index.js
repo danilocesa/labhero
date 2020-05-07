@@ -27,11 +27,25 @@ const { Search } = Input;
 
 const columns = [
   {
-    title: "ITEM NAME",
-    dataIndex: "item_name",
-    key: "item_name",
-    width: 250,
+    title: "LOT CODE",
+    dataIndex: "lotCode",
+    key: "lotCode",
+    width: 150,
+    sorter: (a, b) => a.lotCode.localeCompare(b.lotCode)
+  },
+  {
+    title: "ITEM",
+    dataIndex: "itemName",
+    key: "itemName",
+    width: 150,
     sorter: (a, b) => a.item.localeCompare(b.item)
+  },
+  {
+    title: "ON HAND",
+    dataIndex: "onHand",
+    key: "onHand",
+    width: 150,
+    sorter: (a, b) => a.onHand.localeCompare(b.onHand)
   },
   {
     title: "QUANTITY",
@@ -41,56 +55,107 @@ const columns = [
     sorter: (a, b) => a.quantity.localeCompare(b.quantity)
   },
   {
-    title: "THRESHOLD",
-    dataIndex: "threshold",
-    key: "threshold",
+    title: "AMOUNT",
+    dataIndex: "amount",
+    key: "amount",
     width: 150,
-    sorter: (a, b) => a.threshold.localeCompare(b.threshold)
+    sorter: (a, b) => a.amount.localeCompare(b.amount)
+  },
+  {
+    title: "EXPIRATION DATE",
+    dataIndex: "expiryDate",
+    key: "expiryDate",
+    width: 150,
+    sorter: (a, b) => a.expiryDate.localeCompare(b.expiryDate)
+  },
+  {
+    title: "STORAGE",
+    dataIndex: "storage",
+    key: "storage",
+    width: 150,
+    sorter: (a, b) => a.storage.localeCompare(b.storage)
+  },
+  {
+    title: "SUPPLIER",
+    dataIndex: "supplier",
+    key: "supplier",
+    width: 150,
+    sorter: (a, b) => a.supplier.localeCompare(b.supplier)
   }
 ];
 
-class InventoryList extends React.Component {
+class LotsPerInventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [
         {
           key: "1",
-          item_name: "Biogesic",
-          quantity: "250",
-          threshold: "50"
+          lotCode: "0001",
+          itemName: "Biogesic",
+          onHand: "On Hand 1",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 1",
+          supplier: "Supplier 1"
         },
         {
           key: "2",
-          item_name: "Diatabs",
-          quantity: "500",
-          threshold: "50"
+          lotCode: "0002",
+          itemName: "Diatabs",
+          onHand: "On Hand 2",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 2",
+          supplier: "Supplier 2"
         },
         {
           key: "3",
-          item_name: "Vitamins",
-          quantity: "1250",
-          threshold: "50"
+          lotCode: "0003",
+          itemName: "Vitamins",
+          onHand: "On Hand 3",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 3",
+          supplier: "Supplier 3"
         }
       ],
       usersRef: [
         {
           key: "1",
-          item_name: "Biogesic",
-          quantity: "250",
-          threshold: "50"
+          lotCode: "0001",
+          itemName: "Biogesic",
+          onHand: "On Hand 1",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 1",
+          supplier: "Supplier 1"
         },
         {
           key: "2",
-          item_name: "Diatabs",
-          quantity: "500",
-          threshold: "50"
+          lotCode: "0002",
+          itemName: "Diatabs",
+          onHand: "On Hand 2",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 2",
+          supplier: "Supplier 2"
         },
         {
           key: "3",
-          item_name: "Vitamins",
-          quantity: "1250",
-          threshold: "50"
+          lotCode: "0003",
+          itemName: "Vitamins",
+          onHand: "On Hand 3",
+          quantity: 1,
+          amount: 100,
+          expiryDate: "05/05/2020",
+          storage: "Storage 3",
+          supplier: "Supplier 3"
         }
       ],
       actionType: "add"
@@ -163,15 +228,19 @@ class InventoryList extends React.Component {
     const { form } = this.props;
     const { usersRef } = this.state;
     // eslint-disable-next-line react/prop-types
-    const value = form.getFieldsValue().search;
+    const value = (form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem );
     console.log(value);
     const searchedVal = value.toLowerCase();
 
     const filtered = usersRef.filter(item => {
       // eslint-disable-next-line camelcase
-      const { item_name } = item;
+      const { lotCode,itemName } = item;
 
-      return this.containsString(item_name, searchedVal);
+      // return this.containsString(lotCode, searchedVal);
+      return (
+        this.containsString(lotCode, searchedVal) ||
+        this.containsString(itemName, searchedVal)
+      );
     });
 
     this.setState({ data: filtered });
@@ -192,21 +261,35 @@ class InventoryList extends React.Component {
     return (
       <div>
         <div
-          className="ant-row-flex ant-row-flex-left"
+          className="ant-row-flex ant-row-flex-center"
           style={{ marginBottom: 20 }}
         >
-          <h4 className="ant-typography">LIST OF INVENTORIES</h4>
+          <h4 style={{ textAlign: "center" }} className="ant-typography">
+            LOTS PER INVENTORY
+          </h4>
         </div>
         <div className="panel-table-options" style={{ marginTop: 10 }}>
           <AntRow>
             <AntCol span={16} style={{ textAlign: "right" }}>
               <AntForm onSubmit={this.handleSearch}>
-                {getFieldDecorator("search")(
+                {getFieldDecorator("searchByLot")(
                   <Input
                     allowClear
+                    placeholder="SEARCH BY LOT CODE"
                     // onSearch={value => this.onSearch(value)}
                     onChange={this.onChangeSearch}
-                    style={{ width: 200 }}
+                    style={{ width: 200, marginRight: 10 }}
+                    className="panel-table-search-input"
+                  />
+                )}
+                OR
+                {getFieldDecorator("searchByItem")(
+                  <Input
+                    allowClear
+                    placeholder="SEARCH BY ITEM"
+                    // onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    style={{ width: 200, marginLeft: 10 }}
                     className="panel-table-search-input"
                   />
                 )}
@@ -254,6 +337,21 @@ class InventoryList extends React.Component {
             };
           }}
         />
+        <AntCol span={8}>
+          <h1 style={{ float: "left" }}>
+            TOTAL ON HAND: <br /> 100
+          </h1>
+        </AntCol>
+        <AntCol span={8}>
+          <h1 style={{ float: "left" }}>
+            TOTAL QUANTITY: <br /> 100
+          </h1>
+        </AntCol>
+        <AntCol span={8}>
+          <h1 style={{ float: "left" }}>
+            TOTAL AMOUNT: <br /> 100
+          </h1>
+        </AntCol>
         <Drawer
           title={this.state.drawerTitle}
           visible={this.state.isDrawerVisible}
@@ -274,6 +372,6 @@ class InventoryList extends React.Component {
   }
 }
 
-const InventoryCategories = AntForm.create()(InventoryList);
+const InventoryCategories = AntForm.create()(LotsPerInventory);
 
 export default InventoryCategories;

@@ -55,40 +55,40 @@ class InventorySectionTemplate extends React.Component {
         {
           key: "1",
           section_code: 1,
-          section_name: "John Brown",
-          description: "Description"
+          section_name: "Section 1",
+          description: "Description 1"
         },
         {
           key: "2",
           section_code: 2,
-          section_name: "Jim Green",
-          description: "Description"
+          section_name: "Section 2",
+          description: "Description 2"
         },
         {
           key: "3",
           section_code: 3,
-          section_name: "Joe Black",
-          description: "Description"
+          section_name: "Section 3",
+          description: "Description 3"
         }
       ],
       usersRef: [
         {
           key: "1",
           section_code: 1,
-          section_name: "John Brown",
-          description: "Description"
+          section_name: "Section 1",
+          description: "Description 1"
         },
         {
           key: "2",
           section_code: 2,
-          section_name: "Jim Green",
-          description: "Description"
+          section_name: "Section 2",
+          description: "Description 2"
         },
         {
           key: "3",
           section_code: 3,
-          section_name: "Joe Black",
-          description: "Description"
+          section_name: "Section 3",
+          description: "Description 3"
         }
       ],
       actionType: "add"
