@@ -87,7 +87,7 @@ class BloodBank extends React.Component {
 
 
 	render() {
-		const { pagination, visible, drawerTitle, loading,patientInfo,actionType,drawerButton } = this.state;
+		const { pagination, visible, drawerTitle, loading,actionType,drawerButton } = this.state;
 			return(
 				<div>
 					<div className="settings-user-table-action">

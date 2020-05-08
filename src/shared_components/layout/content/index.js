@@ -56,11 +56,11 @@ const Content = () => (
 				{/* Search patients route */}
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
 				{/* Settings route */}
-				<PrivateRoute path="/settings" component={Settings} />
+				<Route path="/settings" component={Settings} />
 				{/* Inventory route */}
 				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
-				<PrivateRoute path="/bloodbank" component={BloodBank} />
+				<Route path="/bloodbank" component={BloodBank} />
 				<PrivateRoute exact path="/cashier" component={Cashier} />
 				<PrivateRoute path="/cashier/receipt" component={Receipt} />
 				<PrivateRoute path="/cashier/transactions" component={Transactions} />
