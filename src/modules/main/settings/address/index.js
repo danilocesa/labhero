@@ -1,10 +1,15 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Select, Table,Row } from 'antd'; 
+import { Select, Table,Row, Drawer, Col,Icon, Button, Input,Form } from 'antd'; 
 import PageTitle from 'shared_components/page_title';
+import TablePager from 'shared_components/table_pager';
+
+
 
 const { Option } = Select;
+const { Search } = Input;
+
 
 const provinceColumns = [
 	{
@@ -21,7 +26,7 @@ const provinceColumns = [
 		title: 'PROVINCE NAME',
 		dataIndex: 'province_name',
 		key: 3,
-    },
+  },
 ];
 
 const cityColumns = [
@@ -40,7 +45,6 @@ const cityColumns = [
 		dataIndex: 'city_name',
 		key: 3,
     }
-	
 ];
 
 const barangayColumns = [
@@ -58,8 +62,7 @@ const barangayColumns = [
 		title: 'BARANGAY NAME',
 		dataIndex: 'barangay_name',
 		key: 3,
-    }
-	
+  }	
 ];
 
 const provinceData = [
@@ -116,48 +119,116 @@ const barangayData = [
 	},
 ]
 
+const barangayLabel = {
+	id:"BARANGAY ID",
+	code:"BARANGAY CODE",
+	name:"BARANGAY NAME"
+};
+
+const cityLabel = {
+	id:"CITY ID",
+	code:"CITY CODE",
+	name:"CITY NAME"
+}
+
+const provinceLabel = {
+	id:"PROVINCE ID",
+	code:"PROVINCE CODE",
+	name:"PROVINCE NAME"
+}
+
 class Address extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			addressType: '',
-    }
+			label:'',
+   		}
 	}
 	      
 	onAddressChange = (value) => {
 		this.setState({addressType: value});
-	}
+		this.setState({label: value});
+	};
+
+	onClose = () => {
+		this.setState({
+			visible: false,
+		});
+	};
+
+	showDrawer = () => {
+		this.setState({
+			visible: true,
+			drawerTitle: "ADD",
+			drawerButton: "ADD",
+		});
+	};
+	
+	displayDrawerUpdate = () => {
+		this.setState({
+			visible: true,
+			drawerTitle: "UPDATE ",
+			drawerButton: "UPDATE",
+            
+		});
+  };
 
 	render() {
-
+		const { visible, drawerTitle,drawerButton } = this.state;
 		// eslint-disable-next-line no-nested-ternary
-		const selectedColumns = this.state.addressType === "Province" ? provinceColumns : (this.state.addressType === "City" ? cityColumns : barangayColumns);
-
+		const selectedColumns = this.state.addressType === "Province" 
+				? provinceColumns : (this.state.addressType === "City" 
+				? cityColumns : barangayColumns);
 		// eslint-disable-next-line no-nested-ternary
-		const selectedData = this.state.addressType === "Province" ? provinceData : (this.state.addressType === "City" ? cityData : barangayData);
+		const selectedlabel = this.state.label === "Province" 
+				? provinceLabel : (this.state.label === "City" 
+				? cityLabel : barangayLabel);
+		// eslint-disable-next-line no-nested-ternary
+		const selectedData = this.state.addressType === "Province" 
+				? provinceData : (this.state.addressType === "City" 
+				? cityData : barangayData);
 
 		return(
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle="EXAM REQUEST" />
-					<Row style={{ marginTop: 50 }}>
-				<Select
-						style={{ width: 120 }}
-						onChange={this.onAddressChange}
-				>
-						<Option value="Barangay">Barangay</Option>
-						<Option value="Province">Province</Option>
-						<Option value="City">City</Option>
-				</Select>
+					<PageTitle pageTitle="ADDRESS" />
+						<Row style={{ marginTop: 20 }}>
+							<Select
+									style={{ width: 300 }}
+									onChange={this.onAddressChange}
+							>
+									<Option value="Barangay">Barangay</Option>
+									<Option value="Province">Province</Option>
+									<Option value="City">City</Option>
+							</Select>
+						</Row>
+				</section>	
+				<div className="settings-user-table-action">
+					<Row>
+						<Col span={12}>
+							<Search
+								placeholder="input search text"
+								onSearch={value => value}
+								style={{ width: 200 }}
+							/>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" />ADD 
+							</Button>
+							<TablePager handleChange={this.handleSelectChange} />
+						</Col>
 					</Row>
-				</section>		
+				</div>	
 				<Table 
 					dataSource={selectedData}
-					// loading={loading}
-					// size={tableSize}
-					// scroll={{ y: tableYScroll }}
 					columns={selectedColumns} 
-					// pagination={pagination}
 					rowKey={record => record.userID}
 					onRow={(record) => {
 						return {     
@@ -171,11 +242,46 @@ class Address extends React.Component {
 							}
 						}
 					}}
-				/>		
+				/>	
+					<Drawer
+							title={drawerTitle}
+							width="30%"
+							visible={visible}
+							onClose={this.onClose}
+							destroyOnClose
+					> 
+						<Form name="basic" initialValues={{ remember: true }}>
+								<Form.Item label={selectedlabel.id}>
+									<Input />
+								</Form.Item>
+								<Form.Item label={selectedlabel.code}>
+									<Input />
+								</Form.Item>
+								<Form.Item label={selectedlabel.name}>
+									<Input />
+								</Form.Item>
+						</Form>
+						<section className="drawerFooter">
+								<Button 
+									shape="round" 
+									style={{ marginRight: 8, width: 120 }} 
+									onClick={this.onClose}
+								>
+									CANCEL
+								</Button>
+								<Button 
+									type="primary" 
+									shape="round" 
+									style={{ margin: 10, width: 120 }} 
+									htmlType="submit"
+								>
+									{drawerButton}
+								</Button>
+						</section>
+					</Drawer>	
 			</div>
 		)
 	}
 }
-
 
 export default Address;

@@ -142,11 +142,10 @@ class BloodBank extends React.Component {
 							onClose={this.onClose}
 							destroyOnClose
 						> 
-                        <QuestionTable 
-						actionType={actionType}
-						drawerButton={drawerButton} 
-						/>
-							
+							<QuestionTable 
+							actionType={actionType}
+							drawerButton={drawerButton} 
+							/>	
 						</Drawer>
 				</div>
 			)
