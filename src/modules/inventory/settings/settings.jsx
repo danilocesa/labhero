@@ -133,6 +133,7 @@ export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 export const addUnitMeasure = 'ADD UNIT OF MEASURE';
 export const addItems = 'ADD ITEM';
 export const addInventoryList = 'ADD INVENTORY';
-export const addTakeout = 'ADD TAKEOUT';
+export const addTakeout = 'TAKEOUT';
+export const addRestock = 'RESTOCK';
 
 export const tableYScroll = globalTableYScroll;

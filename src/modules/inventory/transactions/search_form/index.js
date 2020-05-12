@@ -5,15 +5,16 @@ import React from "react";
 import { Form, Button, Row, Col, DatePicker, Select, Input } from "antd";
 // CUSTOM MODULES
 import ClearFormFields from "shared_components/form_clear_button";
+import { AlphaNumInput, RegexInput } from "shared_components/pattern_input";
 import { fieldRules } from "../settings";
 
 const { RangePicker } = DatePicker;
 class SearchPatientForm extends React.Component {
   state = {
-    loading: false
+    loading: false,
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -22,41 +23,68 @@ class SearchPatientForm extends React.Component {
     });
   };
 
+  handleFocus = (event) => {
+    const { setFieldsValue } = this.props.form;
+
+    // if (event.target.name === "itemName") setFieldsValue({ patientName: "" });
+  };
+
   render() {
     const { enableRequestDate, form } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
-    const { patientID, patientName } = getFieldsValue();
-    const disabled = !(patientID || (patientName && patientName.length > 1));
+    const { itemName,transactionDate,section,tranType } = getFieldsValue();
+    const disabled = !(transactionDate || section || tranType || (itemName && itemName.length > 1));
+    console.log(disabled)
+    const { Option } = Select;
+
     return (
       <Form className="search-patient-form" onSubmit={this.handleSubmit}>
-        <Row gutter={12} type="flex" justify="left">
-          <Col span={24}>
-            <Form.Item label="TRANSACTION TYPE" style={{float: "right", marginRight: 20}}>
-              {getFieldDecorator("transaction_type", {
-                rules: fieldRules.section
-              })(<Select />)}
-            </Form.Item>
-          </Col>
-          <Col span={6}>
+        <Row gutter={12} type="flex" justify="center">
+          <Col span={4}>
             <Form.Item label="FROM DATE ~ TO DATE">
-              {getFieldDecorator("transaction_date", {
-                rules: fieldRules.section
+              {getFieldDecorator("transactionDate", {
+                rules: fieldRules.transactions,
               })(<RangePicker style={{ width: "100%" }} />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="SECTION">
               {getFieldDecorator("section", {
-                rules: fieldRules.section
-              })(<Select />)}
+                rules: fieldRules.transactions,
+              })(
+                <Select>
+                  <Option value="SECTION 1">SECTION 1</Option>
+                  <Option value="SECTION 2">SECTION 2</Option>
+                  <Option value="SECTION 3">SECTION 3</Option>
+                </Select>
+              )}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="ITEM">
-              {getFieldDecorator("item", {
-                rules: fieldRules.section
-              })(<Input />)}
+              {getFieldDecorator("itemName", {
+                rules: fieldRules.transactions
+              })(
+                <AlphaNumInput
+                  name="itemName"
+                  onFocus={this.handleFocus}
+                  maxLength={20}
+                />
+              )}
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item label="TRANSACTION TYPE">
+              {getFieldDecorator("tranType", {
+                rules: fieldRules.transactions,
+              })(
+                <Select>
+                  <Option value="TRANSACTION TYPE 1">TRANSACTION TYPE 1</Option>
+                  <Option value="TRANSACTION TYPE 2">TRANSACTION TYPE 2</Option>
+                  <Option value="TRANSACTION TYPE 3">TRANSACTION TYPE 3</Option>
+                </Select>
+              )}
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={6} lg={6}>
@@ -70,6 +98,7 @@ class SearchPatientForm extends React.Component {
                   htmlType="submit"
                   loading={loading}
                   style={{ width: 120 }}
+                  disabled={disabled}
                 >
                   SEARCH
                 </Button>
