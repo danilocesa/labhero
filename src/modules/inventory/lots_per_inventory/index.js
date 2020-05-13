@@ -8,7 +8,8 @@ import {
   Table as AntTable,
   Input,
   Button,
-  Icon
+  Icon,
+  Tag,
 } from "antd";
 import {
   tableSize,
@@ -16,13 +17,15 @@ import {
   addInventoryList,
   drawerCategoryTitleUpdate,
   drawerCategoryTitleAdd,
-  tableYScroll
+  tableYScroll,
 } from "modules/inventory/settings/settings";
 import TablePager from "shared_components/table_pager";
+import ClearFormFields from "shared_components/form_clear_button";
 import InventoryListForm from "./search_form";
 
 // CUSTOM MODULES
 //  CONSTANTS
+// eslint-disable-next-line no-unused-vars
 const { Search } = Input;
 
 const columns = [
@@ -31,57 +34,57 @@ const columns = [
     dataIndex: "lotCode",
     key: "lotCode",
     width: 150,
-    sorter: (a, b) => a.lotCode.localeCompare(b.lotCode)
+    sorter: (a, b) => a.lotCode.localeCompare(b.lotCode),
   },
   {
     title: "ITEM",
     dataIndex: "itemName",
     key: "itemName",
     width: 150,
-    sorter: (a, b) => a.item.localeCompare(b.item)
+    sorter: (a, b) => a.item.localeCompare(b.item),
   },
   {
     title: "ON HAND",
     dataIndex: "onHand",
     key: "onHand",
     width: 150,
-    sorter: (a, b) => a.onHand.localeCompare(b.onHand)
+    sorter: (a, b) => a.onHand.localeCompare(b.onHand),
   },
   {
     title: "QUANTITY",
     dataIndex: "quantity",
     key: "quantity",
     width: 150,
-    sorter: (a, b) => a.quantity.localeCompare(b.quantity)
+    sorter: (a, b) => a.quantity.localeCompare(b.quantity),
   },
   {
     title: "AMOUNT",
     dataIndex: "amount",
     key: "amount",
     width: 150,
-    sorter: (a, b) => a.amount.localeCompare(b.amount)
+    sorter: (a, b) => a.amount.localeCompare(b.amount),
   },
   {
     title: "EXPIRATION DATE",
     dataIndex: "expiryDate",
     key: "expiryDate",
     width: 150,
-    sorter: (a, b) => a.expiryDate.localeCompare(b.expiryDate)
+    sorter: (a, b) => a.expiryDate.localeCompare(b.expiryDate),
   },
   {
     title: "STORAGE",
     dataIndex: "storage",
     key: "storage",
     width: 150,
-    sorter: (a, b) => a.storage.localeCompare(b.storage)
+    sorter: (a, b) => a.storage.localeCompare(b.storage),
   },
   {
     title: "SUPPLIER",
     dataIndex: "supplier",
     key: "supplier",
     width: 150,
-    sorter: (a, b) => a.supplier.localeCompare(b.supplier)
-  }
+    sorter: (a, b) => a.supplier.localeCompare(b.supplier),
+  },
 ];
 
 class LotsPerInventory extends React.Component {
@@ -98,7 +101,7 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 1",
-          supplier: "Supplier 1"
+          supplier: "Supplier 1",
         },
         {
           key: "2",
@@ -109,7 +112,7 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 2",
-          supplier: "Supplier 2"
+          supplier: "Supplier 2",
         },
         {
           key: "3",
@@ -120,8 +123,8 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 3",
-          supplier: "Supplier 3"
-        }
+          supplier: "Supplier 3",
+        },
       ],
       usersRef: [
         {
@@ -133,7 +136,7 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 1",
-          supplier: "Supplier 1"
+          supplier: "Supplier 1",
         },
         {
           key: "2",
@@ -144,7 +147,7 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 2",
-          supplier: "Supplier 2"
+          supplier: "Supplier 2",
         },
         {
           key: "3",
@@ -155,14 +158,14 @@ class LotsPerInventory extends React.Component {
           amount: 100,
           expiryDate: "05/05/2020",
           storage: "Storage 3",
-          supplier: "Supplier 3"
-        }
+          supplier: "Supplier 3",
+        },
       ],
-      actionType: "add"
+      actionType: "add",
     };
   }
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
@@ -177,33 +180,33 @@ class LotsPerInventory extends React.Component {
     this.props.form.resetFields();
   };
 
-  displayDrawerUpdate = record => {
+  displayDrawerUpdate = (record) => {
     this.setState({
       isDrawerVisible: true,
       drawerTitle: drawerCategoryTitleUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
-      panelInfo: record
+      panelInfo: record,
     });
   };
 
-  displayDrawerAdd = record => {
+  displayDrawerAdd = (record) => {
     this.setState({
       isDrawerVisible: true,
       drawerTitle: drawerCategoryTitleAdd,
       drawerButton: buttonLabels.create,
       actionType: "add",
-      panelInfo: record
+      panelInfo: record,
     });
   };
 
   onClose = () => {
     this.setState({
-      isDrawerVisible: false
+      isDrawerVisible: false,
     });
   };
 
-  handleSelectChange = value => {
+  handleSelectChange = (value) => {
     console.log(value);
     const { pagination } = this.state;
     // eslint-disable-next-line radix
@@ -215,26 +218,24 @@ class LotsPerInventory extends React.Component {
   containsString = (searchFrom, searchedVal) => {
     if (searchFrom === null || searchFrom === "") return false;
 
-    return searchFrom
-      .toString()
-      .toLowerCase()
-      .includes(searchedVal);
+    return searchFrom.toString().toLowerCase().includes(searchedVal);
   };
 
-  handleSearch = evt => {
+  handleSearch = (evt) => {
     evt.preventDefault();
 
     // eslint-disable-next-line react/prop-types
     const { form } = this.props;
     const { usersRef } = this.state;
     // eslint-disable-next-line react/prop-types
-    const value = (form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem );
+    const value =
+      form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem;
     console.log(value);
     const searchedVal = value.toLowerCase();
 
-    const filtered = usersRef.filter(item => {
+    const filtered = usersRef.filter((item) => {
       // eslint-disable-next-line camelcase
-      const { lotCode,itemName } = item;
+      const { lotCode, itemName } = item;
 
       // return this.containsString(lotCode, searchedVal);
       return (
@@ -246,17 +247,22 @@ class LotsPerInventory extends React.Component {
     this.setState({ data: filtered });
   };
 
-  onChangeSearch = event => {
+  onChangeSearch = (event) => {
     const { usersRef } = this.state;
     if (event.target.value === "") this.setState({ data: usersRef });
   };
 
   render() {
-    // eslint-disable-next-line react/prop-types
     const { form } = this.props;
+    const { getFieldDecorator, getFieldsValue } = form;
+    const { loading } = this.state;
+    const { searchByLot, searchByItem } = getFieldsValue();
+    const disabled = !(
+      (searchByLot && searchByLot.length > 1) ||
+      (searchByItem && searchByItem.length > 1)
+    );
+    console.log(disabled);
     const { actionType } = this.state;
-    // eslint-disable-next-line react/prop-types
-    const { getFieldDecorator } = form;
 
     return (
       <div>
@@ -269,43 +275,53 @@ class LotsPerInventory extends React.Component {
           </h4>
         </div>
         <div className="panel-table-options" style={{ marginTop: 10 }}>
-          <AntRow>
-            <AntCol span={16} style={{ textAlign: "right" }}>
-              <AntForm onSubmit={this.handleSearch}>
-                {getFieldDecorator("searchByLot")(
-                  <Input
-                    allowClear
-                    placeholder="SEARCH BY LOT CODE"
-                    // onSearch={value => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-                    style={{ width: 200, marginRight: 10 }}
-                    className="panel-table-search-input"
-                  />
-                )}
-                OR
-                {getFieldDecorator("searchByItem")(
-                  <Input
-                    allowClear
-                    placeholder="SEARCH BY ITEM"
-                    // onSearch={value => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-                    style={{ width: 200, marginLeft: 10 }}
-                    className="panel-table-search-input"
-                  />
-                )}
+          <AntRow gutter={12} type="flex" justify="center">
+            <AntForm onSubmit={this.handleSearch}>
+              <AntCol span={6}>
+                <AntForm.Item label="LOT CODE">
+                  {getFieldDecorator("searchByLot")(
+                    <Input
+                      allowClear
+                      // onSearch={value => this.onSearch(value)}
+                      onChange={this.onChangeSearch}
+                      style={{ width: 200, marginRight: 10 }}
+                      className="panel-table-search-input"
+                    />
+                  )}
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={6}>
+                <AntForm.Item label="ITEM">
+                  {getFieldDecorator("searchByItem")(
+                    <Input
+                      allowClear
+                      // onSearch={value => this.onSearch(value)}
+                      onChange={this.onChangeSearch}
+                      style={{ width: 200, marginLeft: 10 }}
+                      className="panel-table-search-input"
+                    />
+                  )}
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={12}>
+                <ClearFormFields
+                  style={{ width: 120, marginTop: 42, marginLeft: 40 }}
+                  form={this.props.form}
+                />
                 <Button
                   className="form-button"
-                  block
                   shape="round"
                   type="primary"
                   htmlType="submit"
-                  style={{ width: 120, marginLeft: 10 }}
+                  loading={loading}
+                  style={{ width: 120, marginTop: 42 }}
+                  disabled={disabled}
                 >
                   SEARCH
                 </Button>
-              </AntForm>
-            </AntCol>
-            <AntCol span={8} style={{ textAlign: "right" }}>
+              </AntCol>
+            </AntForm>
+            <AntCol span={24} style={{ textAlign: "right" }}>
               <Button
                 type="primary"
                 shape="round"
@@ -328,12 +344,12 @@ class LotsPerInventory extends React.Component {
           loading={this.state.loading}
           scroll={{ y: tableYScroll }}
           columns={columns}
-          rowKey={record => record.key}
-          onRow={record => {
+          rowKey={(record) => record.key}
+          onRow={(record) => {
             return {
               onDoubleClick: () => {
                 this.displayDrawerUpdate(record);
-              }
+              },
             };
           }}
         />
