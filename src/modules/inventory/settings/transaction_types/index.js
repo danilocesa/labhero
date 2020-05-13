@@ -56,19 +56,19 @@ class InventorySectionTemplate extends React.Component {
         {
           key: "1",
           transaction_type_code: 1,
-          transaction_type_name: "John Brown",
+          transaction_type_name: "Cash",
           description: "Description"
         },
         {
           key: "2",
           transaction_type_code: 2,
-          transaction_type_name: "Jim Green",
+          transaction_type_name: "Card",
           description: "Description"
         },
         {
           key: "3",
           transaction_type_code: 3,
-          transaction_type_name: "Joe Black",
+          transaction_type_name: "Bit Coin",
           description: "Description"
         }
       ],
@@ -76,19 +76,19 @@ class InventorySectionTemplate extends React.Component {
         {
           key: "1",
           transaction_type_code: 1,
-          transaction_type_name: "John Brown",
+          transaction_type_name: "Cash",
           description: "Description"
         },
         {
           key: "2",
           transaction_type_code: 2,
-          transaction_type_name: "Jim Green",
+          transaction_type_name: "Card",
           description: "Description"
         },
         {
           key: "3",
           transaction_type_code: 3,
-          transaction_type_name: "Joe Black",
+          transaction_type_name: "Bit Coin",
           description: "Description"
         }
       ],

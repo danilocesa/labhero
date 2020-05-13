@@ -19,6 +19,7 @@ const columns = [
 		title: 'HOSPITAL ID',
 		dataIndex: 'province_id',
 		key: 1,
+		width: 200
 	},
 	{
 		title: 'HOSPITAL NAME',

@@ -54,40 +54,40 @@ class InventoryStorageTemplate extends React.Component {
         {
           key: "1",
           storage_id: 1,
-          storage_name: "John Brown",
-          storage_description: "New York No. 1 Lake Park"
+          storage_name: "Storage 1",
+          storage_description: "Description 1"
         },
         {
           key: "2",
           storage_id: 2,
-          storage_name: "Jim Green",
-          storage_description: "London No. 1 Lake Park"
+          storage_name: "Storage 2",
+          storage_description: "Description 2"
         },
         {
           key: "3",
           storage_id: 3,
-          storage_name: "Joe Black",
-          storage_description: "Sidney No. 1 Lake Park"
+          storage_name: "Storage 3",
+          storage_description: "Description 3"
         }
       ],
       usersRef: [
         {
           key: "1",
           storage_id: 1,
-          storage_name: "John Brown",
-          storage_description: "New York No. 1 Lake Park"
+          storage_name: "Storage 1",
+          storage_description: "Description 1"
         },
         {
           key: "2",
           storage_id: 2,
-          storage_name: "Jim Green",
-          storage_description: "London No. 1 Lake Park"
+          storage_name: "Storage 2",
+          storage_description: "Description 2"
         },
         {
           key: "3",
           storage_id: 3,
-          storage_name: "Joe Black",
-          storage_description: "Sidney No. 1 Lake Park"
+          storage_name: "Storage 3",
+          storage_description: "Description 3"
         }
       ],
       actionType:'add'

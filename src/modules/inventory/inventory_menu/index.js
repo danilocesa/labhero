@@ -24,8 +24,8 @@ const settingsItemData = [
   },
   {
     image: InvListLots,
-    link: "/inventory/itemsetup",
-    label: "Item Set Up"
+    link: "/inventory/lotsperinventory",
+    label: "Lots Per Inventory"
   },
   {
     image: InvRestock,
@@ -46,7 +46,12 @@ const settingsItemData = [
     image: InvSettings,
     link: "/inventory/settings",
 	label: "Settings"
-  },
+  }
+  // {
+  //   image: InvListLots,
+  //   link: "/inventory/itemsetup",
+  //   label: "Item Set Up"
+  // },
 ];
 
 class InventoryMenu extends React.Component {

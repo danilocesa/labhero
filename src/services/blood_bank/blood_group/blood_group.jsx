@@ -18,7 +18,8 @@ async function fetchInventoryItems() {
   catch(e) {
     Message.error();
 	}
-	
+  
+  
   return inventoryItems;
 }
 

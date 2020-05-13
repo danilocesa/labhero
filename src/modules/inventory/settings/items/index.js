@@ -66,24 +66,24 @@ class ItemsTemplate extends React.Component {
       data: [
         {
           key: "1",
-          item_name: "Jollibee",
-          category: "John Brown",
+          item_name: "Biogesic",
+          category: "Category 1",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"
         },
         {
           key: "2",
-          item_name: "Mcdo",
-          category: "Mc Kinley",
+          item_name: "Diatabs",
+          category: "Category 2",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"
         },
         {
           key: "3",
-          item_name: "Chowking",
-          category: "King Chow",
+          item_name: "Vitamins",
+          category: "Category 3",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"
@@ -92,24 +92,24 @@ class ItemsTemplate extends React.Component {
       usersRef: [
         {
           key: "1",
-          item_name: "Jollibee",
-          category: "John Brown",
+          item_name: "Biogesic",
+          category: "Category 1",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"
         },
         {
           key: "2",
-          item_name: "Mcdo",
-          category: "Mc Kinley",
+          item_name: "Diatabs",
+          category: "Category 2",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"
         },
         {
           key: "3",
-          item_name: "Chowking",
-          category: "King Chow",
+          item_name: "Vitamins",
+          category: "Category 3",
           section: "123456",
           uom: "10000100101001",
           sku: "10000100101001"

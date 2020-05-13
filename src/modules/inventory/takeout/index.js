@@ -10,11 +10,10 @@ import Footer from "./footer";
 const { Panel } = Collapse;
 
 class Takeout extends React.Component {
-
   render() {
     return (
       <div>
-        <PageTitle pageTitle="INVENTORY / TAKEOUT" align="left" />
+        <PageTitle pageTitle="INVENTORY TAKEOUT" align="CENTER" />
         <Collapse bordered={false}>
           <SearchForm />
           {/* <TakeoutForm /> */}
@@ -23,7 +22,7 @@ class Takeout extends React.Component {
         <Footer />
       </div>
     );
-  };
+  }
 }
 
 export default Takeout;

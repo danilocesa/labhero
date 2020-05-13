@@ -235,6 +235,7 @@ class LabExamRequest extends React.Component {
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
+		
 
 		return (
 			<div>

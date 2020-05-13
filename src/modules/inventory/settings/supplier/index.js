@@ -76,21 +76,21 @@ const data1 = [
   {
     key: "1",
     address: "Makati City",
-    description: "Masarap",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 250
   },
   {
     key: "2",
     address: "Taguig City",
-    description: "Delicios",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 250
   },
   {
     key: "3",
     address: "Pasay City",
-    description: "Yummy",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 150
   }
@@ -100,21 +100,21 @@ const data2 = [
   {
     key: "1",
     address: "Makati City",
-    description: "Masarap",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 250
   },
   {
     key: "2",
     address: "Taguig City",
-    description: "Delicios",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 250
   },
   {
     key: "3",
     address: "Pasay City",
-    description: "Yummy",
+    description: "NCR",
     email_address: "juandelacruz@myherohub.com",
     width: 150
   }
@@ -136,21 +136,21 @@ class InventorySupplierTemplate extends React.Component {
       data: [
         {
           key: "1",
-          supplier_name: "Jollibee",
+          supplier_name: "Supplier 1",
           contact_person: "John Brown",
           contact_number: "123456",
           tin: "10000100101001"
         },
         {
           key: "2",
-          supplier_name: "Mcdo",
+          supplier_name: "Supplier 2",
           contact_person: "Mc Kinley",
           contact_number: "123456",
           tin: "10000100101001"
         },
         {
           key: "3",
-          supplier_name: "Chowking",
+          supplier_name: "Supplier 3",
           contact_person: "King Chow",
           contact_number: "123456",
           tin: "10000100101001"
@@ -159,21 +159,21 @@ class InventorySupplierTemplate extends React.Component {
       usersRef: [
         {
           key: "1",
-          supplier_name: "Jollibee",
+          supplier_name: "Supplier 1",
           contact_person: "John Brown",
           contact_number: "123456",
           tin: "10000100101001"
         },
         {
           key: "2",
-          supplier_name: "Mcdo",
+          supplier_name: "Supplier 2",
           contact_person: "Mc Kinley",
           contact_number: "123456",
           tin: "10000100101001"
         },
         {
           key: "3",
-          supplier_name: "Chowking",
+          supplier_name: "Supplier 3",
           contact_person: "King Chow",
           contact_number: "123456",
           tin: "10000100101001"
