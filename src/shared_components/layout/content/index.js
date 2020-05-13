@@ -56,7 +56,7 @@ const Content = () => (
 				{/* Search patients route */}
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
 				{/* Settings route */}
-				<Route path="/settings" component={Settings} />
+				<PrivateRoute path="/settings" component={Settings} />
 				{/* Inventory route */}
 				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
