@@ -25,6 +25,7 @@ class DynamicInput extends React.Component {
 				<Input 
 					disabled={isLock}
 					{...otherProps}
+					maxLength={50}
 				/>
 			);
 		}
@@ -34,6 +35,7 @@ class DynamicInput extends React.Component {
 				<InputNumber 
 					disabled={isLock}
 					{...otherProps}
+					maxLength={20}
 				/>
 			);
 		}
@@ -93,6 +95,7 @@ class DynamicInput extends React.Component {
 				<TextArea 
 					disabled={isLock} 
 					{...otherProps}
+					maxLength={254}
 				/>
 			);
 		}

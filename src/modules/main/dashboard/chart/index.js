@@ -69,6 +69,7 @@ class LineChart extends React.Component {
 				London: 4.8,
 			},
 		];
+		
 		const ds = new DataSet();
 		const dv = ds.createView().source(data);
 		dv.transform({
@@ -82,6 +83,7 @@ class LineChart extends React.Component {
 				range: [0, 1],
 			},
 		};
+
 		return (
 			<div style={{ background: '#fafafc', paddingTop: 10, marginTop: 10 }}>
 				<Text strong style={{ marginLeft: 45 }}>
