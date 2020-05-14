@@ -25,7 +25,8 @@ export const drawerItemsAdd = 'ADD ITEM';
 export const drawerTakeoutTitleUpdate = 'UPDATE TAKEOUT';
 export const drawerTakeoutTitleAdd = 'ADD TAKEOUT';
 export const drawerTakeoutUpdate = 'UPDATE TAKEOUT';
-
+export const drawerLotInvTitleAdd = 'ADD LOT PER INVENTORY';
+export const drawerLotInvTitleUpdate = 'UPDATE LOT PER INVENTORY';
 
 export const messagePrompts = {
   noExamFound: "No exam request found!",
@@ -132,7 +133,7 @@ export const addSupplierButton = 'ADD SUPPLIER';
 export const addransactionTypeButton = 'ADD TRANSACTION TYPE';
 export const addUnitMeasure = 'ADD UNIT OF MEASURE';
 export const addItems = 'ADD ITEM';
-export const addInventoryList = 'ADD INVENTORY';
+export const addInventoryList = 'ADD LOT';
 export const addTakeout = 'TAKEOUT';
 export const addRestock = 'RESTOCK';
 

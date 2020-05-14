@@ -13,7 +13,7 @@ class Takeout extends React.Component {
   render() {
     return (
       <div>
-        <PageTitle pageTitle="INVENTORY TAKEOUT" align="CENTER" />
+        <PageTitle pageTitle="TAKEOUT" align="CENTER" />
         <Collapse bordered={false}>
           <SearchForm />
           {/* <TakeoutForm /> */}

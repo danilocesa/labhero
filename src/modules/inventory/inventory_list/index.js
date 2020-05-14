@@ -13,22 +13,15 @@ import {
 import {
   tableSize,
   buttonLabels,
-  addInventoryList,
-  drawerCategoryTitleUpdate,
-  drawerCategoryTitleAdd,
   tableYScroll,
   tablePageSize,
 } from "modules/inventory/settings/settings";
 // import TablePager from "shared_components/table_pager";
 import ClearFormFields from "shared_components/form_clear_button";
 import SearchPager from "shared_components/search_pager";
+import PageTitle from "shared_components/page_title";
 import InventoryListForm from "./search_form";
 
-// CUSTOM MODULES
-//  CONSTANTS
-// @ts-ignore
-// eslint-disable-next-line no-unused-vars
-const { Search } = Input;
 
 const columns = [
   {
@@ -120,7 +113,7 @@ class InventoryList extends React.Component {
   displayDrawerUpdate = (record) => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleUpdate,
+      drawerTitle: "UPDATE INVENTORY",
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record,
@@ -130,7 +123,7 @@ class InventoryList extends React.Component {
   displayDrawerAdd = (record) => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleAdd,
+      drawerTitle: "ADD INVENTORY",
       drawerButton: buttonLabels.create,
       actionType: "add",
       panelInfo: record,
@@ -195,14 +188,7 @@ class InventoryList extends React.Component {
 
     return (
       <div>
-        <div
-          className="ant-row-flex ant-row-flex-center"
-          style={{ marginBottom: 20 }}
-        >
-          <h4 className="ant-typography" justify="center">
-            LIST OF INVENTORIES
-          </h4>
-        </div>
+        <PageTitle pageTitle="LIST OF INVENTORIES" align="CENTER" />
         <div className="panel-table-options" style={{ marginTop: 10 }}>
           <AntRow gutter={12} type="flex" justify="center">
             <AntForm onSubmit={this.handleSearch}>
@@ -213,7 +199,7 @@ class InventoryList extends React.Component {
                       allowClear
                       // onSearch={value => this.onSearch(value)}
                       onChange={this.onChangeSearch}
-                      style={{ width: 200, marginRight: 10 }}
+                      style={{ width: 250, marginRight: 10 }}
                       className="panel-table-search-input"
                     />
                   )}
@@ -250,7 +236,7 @@ class InventoryList extends React.Component {
             onClick={this.displayDrawerAdd}
           >
             <Icon type="plus" />
-            {addInventoryList}
+            ADD INVENTORY
           </Button>
           <SearchPager
             pageSize={tablePageSize}

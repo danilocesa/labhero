@@ -7,14 +7,7 @@ class Transaction extends React.Component {
   render() {
     return (
       <div>
-        <div
-          className="ant-row-flex ant-row-flex-center"
-          style={{ marginBottom: 20 }}
-        >
-          <h4 style={{ textAlign: "center" }} className="ant-typography">
-		  INVENTORY / TRANSACTIONS
-          </h4>
-        </div>
+        <PageTitle pageTitle="TRANSACTIONS" align="CENTER" />
         <SearchForm />
         <SearchResult />
       </div>

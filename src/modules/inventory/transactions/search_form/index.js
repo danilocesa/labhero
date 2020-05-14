@@ -2,10 +2,10 @@
 /* eslint-disable func-names */
 // LIBRARY
 import React from "react";
-import { Form, Button, Row, Col, DatePicker, Select, Input } from "antd";
+import { Form, Button, Row, Col, DatePicker, Select } from "antd";
 // CUSTOM MODULES
 import ClearFormFields from "shared_components/form_clear_button";
-import { AlphaNumInput, RegexInput } from "shared_components/pattern_input";
+import { AlphaNumInput } from "shared_components/pattern_input";
 import { fieldRules } from "../settings";
 
 const { RangePicker } = DatePicker;
@@ -23,14 +23,13 @@ class SearchPatientForm extends React.Component {
     });
   };
 
-  handleFocus = (event) => {
-    const { setFieldsValue } = this.props.form;
+  handleFocus = () => {
 
     // if (event.target.name === "itemName") setFieldsValue({ patientName: "" });
   };
 
   render() {
-    const { enableRequestDate, form } = this.props;
+    const { form } = this.props;
     const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
     const { itemName,transactionDate,section,tranType } = getFieldsValue();
