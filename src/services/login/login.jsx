@@ -10,7 +10,7 @@ export default async function login(username, password) {
 			data: { username, password },
 			headers: { 
 				'content-type': 'application/json',
-				'authorization': `Bearer ${process.env.LAB_API_SECREY_KEY}`
+				'authorization': `Bearer ${process.env.REACT_APP_LAB_API_SECREY_KEY}`
 			}
 		});
 

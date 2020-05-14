@@ -1,0 +1,25 @@
+.installaion-module-card {
+  background: #FAFAFC;
+  min-height: 150px;
+  max-width: 180px;
+  width: 100%;
+  margin: auto;
+}
+
+.installaion-module-card .checkbox-container {
+  text-align: right;
+}
+
+.installaion-module-card img {
+  height: 45px;
+  width: auto;
+  display: block;
+  margin: auto;
+}
+
+.installaion-module-card span {
+  font-weight: bold; 
+  font-size: 15px;
+  display: block;
+  text-align: center;
+}

@@ -7,6 +7,7 @@ import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import URI from 'global_config/uri';
 import { AlphaNumInput } from 'shared_components/pattern_input';
+import Message from 'shared_components/message';
 import FIELD_RULES from './constants';
 
 import './login.css';
@@ -27,11 +28,11 @@ class Login extends React.Component {
 		event.preventDefault();
 
 		const { username, password } = this.props.form.getFieldsValue();
-
-		this.setState({ loading: true });
-
+		
 		this.props.form.validateFields(async (err) => {
 			if (!err) {
+				this.setState({ loading: true });
+
 				const response = await login(username, password);
 
 				this.setState({ loading: false });
@@ -43,13 +44,15 @@ class Login extends React.Component {
 					};
 					
 					sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-					message.success('You are now successfully logged in!', 1.5);
+					Message.success('You are now successfully logged in!', 1.5);
 					auth.authenticate();
 					this.redirectPage();
 				} 
+				else if(response && response.status === 400) { 
+					Message.error('Incorrect Username/Password');
+				}
 				else {
-					message.error('Incorrect Username/Password');
-					this.setState({ loading: false });
+					Message.error();
 				}
 			}
 		});
@@ -73,7 +76,7 @@ class Login extends React.Component {
   render() {
 		// eslint-disable-next-line react/prop-types
 		const { getFieldDecorator } = this.props.form;
-
+		
 		return (
 			<Layout>
 				<Spin spinning={this.state.loading}>

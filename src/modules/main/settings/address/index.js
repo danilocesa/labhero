@@ -2,9 +2,11 @@
 // LIBRARY
 import React from 'react';
 import { Select, Table,Row, Drawer, Col,Icon, Button, Input,Form } from 'antd'; 
+import { withRouter } from 'react-router-dom';
 import PageTitle from 'shared_components/page_title';
 import TablePager from 'shared_components/table_pager';
-
+import CityList from './city'
+import ProvinceList from './province'
 
 
 const { Option } = Select;
@@ -16,11 +18,13 @@ const provinceColumns = [
 		title: 'PROVINCE ID',
 		dataIndex: 'province_id',
 		key: 1,
+		width:210
 	},
 	{
 		title: 'PROVINCE CODE',
 		dataIndex: 'province_code',
 		key: 2,	
+		width:250
 	},
 	{
 		title: 'PROVINCE NAME',
@@ -34,17 +38,25 @@ const cityColumns = [
 		title: 'CITY ID',
 		dataIndex: 'city_id',
 		key: 1,
+		width:210
 	},
 	{
 		title: 'CITY CODE',
 		dataIndex: 'city_code',
 		key: 2,	
+		width:250
 	},
 	{
 		title: 'CITY NAME',
 		dataIndex: 'city_name',
 		key: 3,
-    }
+		width:200
+	},
+	{
+		title: 'PROVINCE',
+		dataIndex: 'province',
+		key: 3,
+	}
 ];
 
 const barangayColumns = [
@@ -52,15 +64,23 @@ const barangayColumns = [
 		title: 'BARANGAY ID',
 		dataIndex: 'barangay_id',
 		key: 1,
+		width:210
 	},
 	{
 		title: 'BARANGAY CODE',
 		dataIndex: 'barangay_code',
 		key: 2,	
+		width:250
 	},
 	{
 		title: 'BARANGAY NAME',
 		dataIndex: 'barangay_name',
+		key: 3,
+		width:200
+	},
+	{
+		title: 'CITY',
+		dataIndex: 'city',
 		key: 3,
   }	
 ];
@@ -137,18 +157,35 @@ const provinceLabel = {
 	name:"PROVINCE NAME"
 }
 
+const provincetitle = {
+	title:"ADD PROVINCE",
+}
+
+const citytitle = {
+	title:"ADD CITY",
+}
+
+const barangaytitle = {
+	title:"ADD BARANGAY",
+}
+
+
+
 class Address extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			addressType: '',
 			label:'',
+			title:'',
+			address:'',
    		}
 	}
 	      
 	onAddressChange = (value) => {
 		this.setState({addressType: value});
 		this.setState({label: value});
+		this.setState({title: value});
 	};
 
 	onClose = () => {
@@ -175,113 +212,132 @@ class Address extends React.Component {
   };
 
 	render() {
-		const { visible, drawerTitle,drawerButton } = this.state;
+		const { visible, drawerTitle,drawerButton, addressType, label, title, address } = this.state;
+		const { getFieldDecorator, getFieldsValue } = this.props.form;
 		// eslint-disable-next-line no-nested-ternary
-		const selectedColumns = this.state.addressType === "Province" 
-				? provinceColumns : (this.state.addressType === "City" 
+		const selectedColumns = addressType === "Province" 
+				? provinceColumns : (addressType === "City" 
 				? cityColumns : barangayColumns);
 		// eslint-disable-next-line no-nested-ternary
-		const selectedlabel = this.state.label === "Province" 
-				? provinceLabel : (this.state.label === "City" 
+		const selectedlabel = label === "Province" 
+				? provinceLabel : (label === "City" 
 				? cityLabel : barangayLabel);
 		// eslint-disable-next-line no-nested-ternary
-		const selectedData = this.state.addressType === "Province" 
-				? provinceData : (this.state.addressType === "City" 
+		const selectedData = addressType === "Province" 
+				? provinceData : (addressType === "City" 
 				? cityData : barangayData);
+		// eslint-disable-next-line no-nested-ternary
+		const selectedtitle = title === "Province" 
+				? provincetitle : (addressType === "City" 
+				? citytitle : barangaytitle);
 
 		return(
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 30 }}>
+				<section style={{ textAlign: 'center', marginTop: 5 }}>
 					<PageTitle pageTitle="ADDRESS" />
-						<Row style={{ marginTop: 20 }}>
-							<Select
-									style={{ width: 300 }}
-									onChange={this.onAddressChange}
-							>
-									<Option value="Barangay">Barangay</Option>
-									<Option value="Province">Province</Option>
-									<Option value="City">City</Option>
-							</Select>
+						<Row style={{ marginTop: 30 }}>
+						{getFieldDecorator('address', {
+								initialValue: addressType,
+								rules: "required",
+							})(
+								<Select
+										style={{ width: 300 }}
+										onChange={this.onAddressChange}
+								>
+										<Option value="Barangay">Barangay</Option>
+										<Option value="Province">Province</Option>
+										<Option value="City">City</Option>
+								</Select>
+						)};
 						</Row>
 				</section>	
-				<div className="settings-user-table-action">
-					<Row>
-						<Col span={12}>
-							<Search
-								placeholder="input search text"
-								onSearch={value => value}
-								style={{ width: 200 }}
-							/>
-						</Col>
-						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
-							>
-								<Icon type="plus" />ADD 
-							</Button>
-							<TablePager handleChange={this.handleSelectChange} />
-						</Col>
-					</Row>
-				</div>	
-				<Table 
-					dataSource={selectedData}
-					columns={selectedColumns} 
-					rowKey={record => record.userID}
-					onRow={(record) => {
-						return {     
-							onDoubleClick: () => {
-								const rec = [];
-								// eslint-disable-next-line no-restricted-syntax
-								for(const [key, value] of Object.entries(record)){
-									rec[key] = value;
-								}
-								this.displayDrawerUpdate(rec);
-							}
-						}
-					}}
-				/>	
-					<Drawer
-							title={drawerTitle}
-							width="30%"
-							visible={visible}
-							onClose={this.onClose}
-							destroyOnClose
-					> 
-						<Form name="basic" initialValues={{ remember: true }}>
-								<Form.Item label={selectedlabel.id}>
-									<Input />
-								</Form.Item>
-								<Form.Item label={selectedlabel.code}>
-									<Input />
-								</Form.Item>
-								<Form.Item label={selectedlabel.name}>
-									<Input />
-								</Form.Item>
-						</Form>
-						<section className="drawerFooter">
-								<Button 
-									shape="round" 
-									style={{ marginRight: 8, width: 120 }} 
-									onClick={this.onClose}
-								>
-									CANCEL
-								</Button>
+					<div className="settings-user-table-action">
+						<Row style={{ marginTop: 80 }}>
+							<Col span={12}>
+								<Search
+									placeholder="input search text"
+									onSearch={value => value}
+									style={{ width: 200 }}
+								/>
+							</Col>
+							<Col span={12} style={{ textAlign: 'right' }}>
 								<Button 
 									type="primary" 
 									shape="round" 
-									style={{ margin: 10, width: 120 }} 
-									htmlType="submit"
+									style={{ marginRight: '15px' }} 
+									onClick={this.showDrawer}
 								>
-									{drawerButton}
+									<Icon type="plus" /> {selectedtitle.title}
 								</Button>
-						</section>
-					</Drawer>	
+								<TablePager handleChange={this.handleSelectChange} />
+							</Col>
+						</Row>
+					</div>	
+					<Table 
+						dataSource={selectedData}
+						columns={selectedColumns} 
+						rowKey={record => record.userID}
+						onRow={(record) => {
+							return {     
+								onDoubleClick: () => {
+									const rec = [];
+									// eslint-disable-next-line no-restricted-syntax
+									for(const [key, value] of Object.entries(record)){
+										rec[key] = value;
+									}
+									this.displayDrawerUpdate(rec);
+								}
+							}
+						}}
+					/>	
+						<Drawer
+								title={drawerTitle}
+								width="30%"
+								visible={visible}
+								onClose={this.onClose}
+								destroyOnClose
+						> 
+							<Form name="basic" initialValues={{ remember: true }}>
+									<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
+										<Input />
+									</Form.Item>
+									<Form.Item label={selectedlabel.code} style={{marginTop:-20}}>
+										<Input />
+									</Form.Item>
+									<Form.Item label={selectedlabel.name} style={{marginTop:-20}}>
+										<Input />
+									</Form.Item>
+									<Form.Item style={{marginTop:-20}}>
+										
+								{title === "Province" 
+									? "": (title === "City" 
+									? <ProvinceList form={this.props.form} placeholder="Province" />  : <CityList form={this.props.form} placeholder="City" /> )
+								}
+									</Form.Item>
+							</Form>
+							<section className="drawerFooter">
+									<Button 
+										shape="round" 
+										style={{ marginRight: 8, width: 120 }} 
+										onClick={this.onClose}
+									>
+										CANCEL
+									</Button>
+									<Button 
+										type="primary" 
+										shape="round" 
+										style={{ margin: 10, width: 120 }} 
+										htmlType="submit"
+									>
+										{drawerButton}
+									</Button>
+							</section>
+						</Drawer>	
 			</div>
 		)
 	}
 }
 
-export default Address;
+
+
+export default Form.create()(withRouter(Address));;

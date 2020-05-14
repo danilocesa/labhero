@@ -4,13 +4,14 @@ import { Row, Col } from 'antd';
 import DashboardHeader from './header';
 import Metrics from './metric';
 import LineChart from './chart';
+import BarChart from './barchart';
 
 import {
   MetricRefreshLogo,
   MetricCheckLogo,
   MetricAddLogo,
   MetricHistoryLogo,
-} from "../../../images";
+} from "images";
 
 import './dashboard.css';
 
@@ -37,23 +38,10 @@ const metricsData = [
   },
 ]; 
 
-// const userNameLoggedIn = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
-// console.log(userNameLoggedIn);
-
 class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // btnTesting1: {
-      //     loading: false,
-      //     buttonText: "EXTRACT",
-      //     isDisabled: false
-      //   },
-      //   btnTesting2: {
-      //     loading: false,
-      //     buttonText: "EXTRACT",
-      //     isDisabled: false
-      //   },
       userNameLoggedIn: ''
     }
   }
@@ -84,6 +72,7 @@ class DashboardPage extends React.Component {
   
   render() {
     const MetricList = metricsData.map((item, index) => (
+      // eslint-disable-next-line react/no-array-index-key
       <Metrics key={index} image={item.image} value={item.value} label={item.label} />
     ));
 
@@ -91,23 +80,6 @@ class DashboardPage extends React.Component {
     return (
       <div>
         <Row>
-          {/* <Button 
-          id="btnTesting1" 
-          onClick={this.onClickBtn}
-          loading={this.state.btnTesting1.loading}
-          disabled={this.state.btnTesting1.isDisabled}
-          >
-            {this.state.btnTesting1.buttonText}
-          </Button>
-          <Button 
-          id="btnTesting2" 
-          onClick={this.onClickBtn}
-          loading={this.state.btnTesting2.loading}
-          disabled={this.state.btnTesting2.isDisabled}
-          >
-            {this.state.btnTesting2.buttonText}
-          </Button> */}
-          {/* <Button onClick={this.onClickBtn} loading={this.state.loading} disabled={this.state.disabled}>{this.state.buttonText}</Button> */}
           <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
         </Row>
         <Row type="flex" justify="start" style={{ marginTop: 20 }}>
@@ -115,7 +87,10 @@ class DashboardPage extends React.Component {
           <Col className="right-pane">
             <LineChart />
           </Col>
-        </Row>`
+        </Row>
+        {/* <Row>
+          <BarChart data={[5,100,20,3]} size={[700,500]} />
+        </Row> */}
       </div>
     );
   }
