@@ -101,6 +101,7 @@ class Actions extends React.Component {
 					type="primary"  
 					onClick={onPrint}
 					className="action-buttons"
+					disabled={(resultStatus !== 'Approve' && resultStatus !== 'Save')}
 				>
 					PRINT
 				</Button>

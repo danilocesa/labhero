@@ -13,8 +13,8 @@ const columns = [
 		render: (text) => text.replace(/\//g, '-') 
 	},
 	{ 
-		title: 'PATIENT ID', 
-		dataIndex: 'patientID', 
+		title: 'REQUEST ID', 
+		dataIndex: 'requestID', 
 		width: 120,
 	},
 	{ 
@@ -63,6 +63,7 @@ class MainTable extends React.Component {
 	
 	render() {
 		const { labResults, isLoading, pageSize } = this.props;
+
 		return (
 			<Table
 				className="test-results-table"

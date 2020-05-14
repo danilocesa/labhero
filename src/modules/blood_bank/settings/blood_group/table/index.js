@@ -1,6 +1,7 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
 
@@ -23,7 +24,7 @@ const columns = [
 	},
 	{
 		title: 'BLOOD GROUP',
-		dataIndex: 'blood_group',
+		dataIndex: 'item_name',
 		key: 2,	
 		width: 300
 	},
@@ -34,7 +35,7 @@ const columns = [
 	},
 ];
 
-class BloodBank extends React.Component {
+class BloodGroupTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -90,73 +91,81 @@ class BloodBank extends React.Component {
 
 	render() {
 		const { pagination, drawerButton, patientInfo, visible, drawerTitle, loading,actionType } = this.state;
-			return(
-				<div>
-					<div className="settings-user-table-action">
-						<Row>
-							<Col span={12}>
-							<Search
-								placeholder="input search text"
-								onSearch={value => console.log(value)}
-								style={{ width: 200 }}
-							/>
-							</Col>
-							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD BLOOD GROUP
-									
-								</Button>
-								<TablePager handleChange={this.handleSelectChange} />
-							</Col>
-						</Row>
-					</div>
-					<div className="settings-user-table">
-						<Table 
-							dataSource={this.state.data}
-							loading={loading}
-							size={tableSize}
-							scroll={{ y: tableYScroll }}
-							columns={columns} 
-							pagination={pagination}
-							rowKey={record => record.userID}
-							onRow={(record) => {
-								return {     
-									onDoubleClick: () => {
-										const rec = [];
-										// eslint-disable-next-line no-restricted-syntax
-										for(const [key, value] of Object.entries(record)){
-											rec[key] = value;
-										}
-										this.displayDrawerUpdate(rec);
-									}
-								}
-							}}
+		const { data } = this.props;
+
+		console.log('bloodgroup table', data);
+
+		return(
+			<div>
+				<div className="settings-user-table-action">
+					<Row>
+						<Col span={12}>
+						<Search
+							placeholder="input search text"
+							onSearch={value => console.log(value)}
+							style={{ width: 200 }}
 						/>
-					</div>    
-					{/* DRAWER */}
-						<Drawer
-							title={drawerTitle}
-							width="30%"
-							visible={visible}
-							onClose={this.onClose}
-							destroyOnClose
-						>
-							<UserAccountForm
-								actionType={actionType}
-								drawerButton={drawerButton} 
-								patientInfo={patientInfo}
-								onClose={this.onClose}
-							/>
-						</Drawer>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" /> ADD BLOOD GROUP
+								
+							</Button>
+							<TablePager handleChange={this.handleSelectChange} />
+						</Col>
+					</Row>
 				</div>
-			)
+				<div className="settings-user-table">
+					<Table 
+						// dataSource={this.state.data}
+						dataSource={data}
+						loading={loading}
+						size={tableSize}
+						scroll={{ y: tableYScroll }}
+						columns={columns} 
+						pagination={pagination}
+						rowKey={record => record.userID}
+						onRow={(record) => {
+							return {     
+								onDoubleClick: () => {
+									const rec = [];
+									// eslint-disable-next-line no-restricted-syntax
+									for(const [key, value] of Object.entries(record)){
+										rec[key] = value;
+									}
+									this.displayDrawerUpdate(rec);
+								}
+							}
+						}}
+					/>
+				</div>    
+				{/* DRAWER */}
+					<Drawer
+						title={drawerTitle}
+						width="30%"
+						visible={visible}
+						onClose={this.onClose}
+						destroyOnClose
+					>
+						<UserAccountForm
+							actionType={actionType}
+							drawerButton={drawerButton} 
+							patientInfo={patientInfo}
+							onClose={this.onClose}
+						/>
+					</Drawer>
+			</div>
+		)
 	}
 }
 
+BloodGroupTable.propTypes = {
+	data: PropTypes.array.isRequired
+};
 
-export default BloodBank;
+export default BloodGroupTable;

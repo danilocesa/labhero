@@ -15,9 +15,10 @@ const columns = [
 		render: (text) => text.replace(/\//g, '-')
 	},
 	{ 
-		title: 'PATIENT ID', 
-		dataIndex: 'patientID', 
+		title: 'REQUEST ID', 
+		dataIndex: 'requestID', 
 		width: 200,
+		fixed: 'left',
 	},
 	{ 
 		title: 'LAST NAME', 
@@ -83,7 +84,8 @@ class SectionTable extends React.Component {
 	render() {
 		const { pageSize } = this.state;
 		const { labResults, onClickTableRow } = this.props;
-		
+		console.log(labResults);
+
 		return (
 			<div>
 				<Row>

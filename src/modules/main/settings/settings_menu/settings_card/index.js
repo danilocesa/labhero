@@ -10,7 +10,7 @@ class SettingsCard extends React.Component {
 		const { image, link, label } = this.props;
 		
 		return (
-			<Link to={link}>
+			<Link to={link} style={{ marginTop: 15, display: 'block' }}>
 				<Card className="settings-item-card">
 					<div>
 							<img src={image} alt="settings icon" />

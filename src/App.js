@@ -17,10 +17,7 @@ import './App.css';
 const history = createBrowserHistory({ basename: process.env.PUBLIC_URL });
 
 class App extends Component {
-
 	render() {
-		console.log(window.config);
-
 		return (
 			<div>
 				<IdleTimerComponent />

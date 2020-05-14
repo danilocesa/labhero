@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { Row, Form, Input, Button, Layout, Col, message, Spin } from 'antd';
+import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
@@ -31,28 +31,26 @@ class Login extends React.Component {
 		
 		this.props.form.validateFields(async (err) => {
 			if (!err) {
-				this.setState({ loading: true });
-
-				const response = await login(username, password);
-
-				this.setState({ loading: false });
-
-				if(response && response.status === 200) {
+				try {
+					this.setState({ loading: true });
+					const response = await login(username, password);
+					this.setState({ loading: false });
+				
 					const loggedinUserData = {
 						...response.data,
 						password
 					};
 					
 					sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-					Message.success('You are now successfully logged in!', 1.5);
+					Message.success({ message: 'You are now successfully logged in!' });
 					auth.authenticate();
 					this.redirectPage();
-				} 
-				else if(response && response.status === 400) { 
-					Message.error('Incorrect Username/Password');
 				}
-				else {
-					Message.error();
+				catch(error) {
+						if(error.response.status === 401)
+							Message.error('Incorrect Username/Password');
+						else
+							Message.error();
 				}
 			}
 		});
