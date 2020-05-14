@@ -9,17 +9,18 @@ import {
   Input,
   Button,
   Icon,
-  Tag,
+  Form,
 } from "antd";
 import {
   tableSize,
   buttonLabels,
   addInventoryList,
-  drawerCategoryTitleUpdate,
-  drawerCategoryTitleAdd,
+  drawerLotInvTitleUpdate,
+  drawerLotInvTitleAdd,
   tableYScroll,
+  tablePageSize,
 } from "modules/inventory/settings/settings";
-import TablePager from "shared_components/table_pager";
+import SearchPager from "shared_components/search_pager";
 import ClearFormFields from "shared_components/form_clear_button";
 import InventoryListForm from "./search_form";
 
@@ -87,6 +88,56 @@ const columns = [
   },
 ];
 
+const columnsSummary = [
+  {
+    title: "",
+    dataIndex: "",
+    key: "",
+    width: 150,
+  },
+  {
+    title: "",
+    dataIndex: "",
+    key: "",
+    width: 150,
+  },
+  {
+    title: "TOTAL ON HAND:",
+    dataIndex: "onHand",
+    key: "onHand",
+    width: 150,
+  },
+  {
+    title: "TOTAL QUANTITY:",
+    dataIndex: "quantity",
+    key: "quantity",
+  },
+  {
+    title: "TOTAL AMOUNT:",
+    dataIndex: "amount",
+    key: "amount",
+  },
+  {
+    title: "",
+    dataIndex: "",
+    key: "",
+    width: 150,
+  },
+  {
+    title: "",
+    dataIndex: "",
+    key: "",
+    width: 150,
+  },
+  {
+    title: "",
+    dataIndex: "",
+    key: "",
+    width: 150,
+  },
+];
+
+
 class LotsPerInventory extends React.Component {
   constructor(props) {
     super(props);
@@ -96,7 +147,7 @@ class LotsPerInventory extends React.Component {
           key: "1",
           lotCode: "0001",
           itemName: "Biogesic",
-          onHand: "On Hand 1",
+          onHand: "1",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -107,7 +158,7 @@ class LotsPerInventory extends React.Component {
           key: "2",
           lotCode: "0002",
           itemName: "Diatabs",
-          onHand: "On Hand 2",
+          onHand: "2",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -118,7 +169,7 @@ class LotsPerInventory extends React.Component {
           key: "3",
           lotCode: "0003",
           itemName: "Vitamins",
-          onHand: "On Hand 3",
+          onHand: "3",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -131,7 +182,7 @@ class LotsPerInventory extends React.Component {
           key: "1",
           lotCode: "0001",
           itemName: "Biogesic",
-          onHand: "On Hand 1",
+          onHand: "1",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -142,7 +193,7 @@ class LotsPerInventory extends React.Component {
           key: "2",
           lotCode: "0002",
           itemName: "Diatabs",
-          onHand: "On Hand 2",
+          onHand: "2",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -153,7 +204,7 @@ class LotsPerInventory extends React.Component {
           key: "3",
           lotCode: "0003",
           itemName: "Vitamins",
-          onHand: "On Hand 3",
+          onHand: "3",
           quantity: 1,
           amount: 100,
           expiryDate: "05/05/2020",
@@ -164,6 +215,7 @@ class LotsPerInventory extends React.Component {
       actionType: "add",
     };
   }
+
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -183,7 +235,7 @@ class LotsPerInventory extends React.Component {
   displayDrawerUpdate = (record) => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleUpdate,
+      drawerTitle: drawerLotInvTitleUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
       panelInfo: record,
@@ -193,7 +245,7 @@ class LotsPerInventory extends React.Component {
   displayDrawerAdd = (record) => {
     this.setState({
       isDrawerVisible: true,
-      drawerTitle: drawerCategoryTitleAdd,
+      drawerTitle: drawerLotInvTitleAdd,
       drawerButton: buttonLabels.create,
       actionType: "add",
       panelInfo: record,
@@ -229,6 +281,7 @@ class LotsPerInventory extends React.Component {
     const { usersRef } = this.state;
     // eslint-disable-next-line react/prop-types
     const value =
+      // eslint-disable-next-line react/prop-types
       form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem;
     console.log(value);
     const searchedVal = value.toLowerCase();
@@ -252,17 +305,65 @@ class LotsPerInventory extends React.Component {
     if (event.target.value === "") this.setState({ data: usersRef });
   };
 
+  //  summaryData = () => {
+  //   let totalOnhand = 0;
+  //   let totalQty = 0;
+  //   let totalAmount = 0;
+  //   console.log(1)
+  //   this.state.data.forEach(i => {
+  //     totalOnhand += i.onhand;
+  //     totalQty += i.qty;
+  //     totalAmount += i.amount;
+  //     console.log(totalAmount)
+  //   });
+  //   console.log(totalOnhand)
+  //   console.log(totalQty)
+  //   console.log(totalAmount)
+  //   return  {
+  //     onHand: totalOnhand,
+  //     quantity: totalQty,
+  //     amount: totalAmount
+  //   }
+  // } 
+
+  summarySample = () => {
+    return "test";
+  }
+
   render() {
-    const { form } = this.props;
+    const { actionType } = this.state;
+    // eslint-disable-next-line react/prop-types
+    const {  form } = this.props;
+    // eslint-disable-next-line react/prop-types
     const { getFieldDecorator, getFieldsValue } = form;
-    const { loading } = this.state;
-    const { searchByLot, searchByItem } = getFieldsValue();
+    const { searchByItem, searchByLot } = getFieldsValue();
     const disabled = !(
-      (searchByLot && searchByLot.length > 1) ||
-      (searchByItem && searchByItem.length > 1)
+      (searchByItem && searchByItem.length > 1) ||
+      (searchByLot && searchByLot.length > 1)
     );
     console.log(disabled);
-    const { actionType } = this.state;
+
+    const summaryData = () => {
+      return "test";
+      // let totalOnhand = 0;
+      // let totalQty = 0;
+      // let totalAmount = 0;
+      // console.log(1)
+      // this.state.data.forEach(i => {
+      //   totalOnhand += i.onhand;
+      //   totalQty += i.qty;
+      //   totalAmount += i.amount;
+      //   console.log(totalAmount)
+      // });
+      // console.log(totalOnhand)
+      // console.log(totalQty)
+      // console.log(totalAmount)
+      // return  {
+      //   onHand: totalOnhand,
+      //   quantity: totalQty,
+      //   amount: totalAmount
+      // }
+    } 
 
     return (
       <div>
@@ -275,10 +376,10 @@ class LotsPerInventory extends React.Component {
           </h4>
         </div>
         <div className="panel-table-options" style={{ marginTop: 10 }}>
-          <AntRow gutter={12} type="flex" justify="center">
-            <AntForm onSubmit={this.handleSearch}>
-              <AntCol span={6}>
-                <AntForm.Item label="LOT CODE">
+          <AntForm onSubmit={this.handleSearch}>
+            <AntRow gutter={12} type="flex" justify="center">
+              <AntCol span={4}>
+                <Form.Item label="LOT">
                   {getFieldDecorator("searchByLot")(
                     <Input
                       allowClear
@@ -288,59 +389,75 @@ class LotsPerInventory extends React.Component {
                       className="panel-table-search-input"
                     />
                   )}
-                </AntForm.Item>
+                </Form.Item>
               </AntCol>
-              <AntCol span={6}>
-                <AntForm.Item label="ITEM">
+              <AntCol span={1}>
+                <Form.Item style={{ marginTop: 38, marginLeft: 10 }}>
+                  OR
+                </Form.Item>
+              </AntCol>
+              <AntCol span={4}>
+                <Form.Item label="ITEM">
                   {getFieldDecorator("searchByItem")(
                     <Input
                       allowClear
                       // onSearch={value => this.onSearch(value)}
                       onChange={this.onChangeSearch}
-                      style={{ width: 200, marginLeft: 10 }}
+                      style={{ width: 200 }}
                       className="panel-table-search-input"
                     />
                   )}
-                </AntForm.Item>
+                </Form.Item>
               </AntCol>
-              <AntCol span={12}>
-                <ClearFormFields
-                  style={{ width: 120, marginTop: 42, marginLeft: 40 }}
-                  form={this.props.form}
-                />
-                <Button
-                  className="form-button"
-                  shape="round"
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  style={{ width: 120, marginTop: 42 }}
-                  disabled={disabled}
-                >
-                  SEARCH
-                </Button>
+              <AntCol span={7} style={{ marginTop: 38 }}>
+                <Form.Item>
+                  <ClearFormFields
+                    form={this.props.form}
+                    style={{ marginLeft: 10 }}
+                  />
+                  <Button
+                    className="form-button"
+                    block
+                    shape="round"
+                    type="primary"
+                    htmlType="submit"
+                    style={{ width: 120 }}
+                    disabled={disabled}
+                  >
+                    SEARCH
+                  </Button>
+                </Form.Item>
               </AntCol>
-            </AntForm>
-            <AntCol span={24} style={{ textAlign: "right" }}>
-              <Button
-                type="primary"
-                shape="round"
-                style={{ marginRight: "15px" }}
-                onClick={this.displayDrawerAdd}
-              >
-                <Icon type="plus" />
-                {addInventoryList}
-              </Button>
-              <TablePager handleChange={this.handleSelectChange} />
-            </AntCol>
-          </AntRow>
+            </AntRow>
+          </AntForm>
         </div>
+        <AntCol span={24}>
+          <Button
+            type="primary"
+            shape="round"
+            style={{
+              marginLeft: "77%",
+              position: "absolute",
+              zIndex: 99,
+              marginTop: 36,
+            }}
+            onClick={this.displayDrawerAdd}
+          >
+            <Icon type="plus" />
+            {addInventoryList}
+          </Button>
+          <SearchPager
+            pageSize={tablePageSize}
+            pageTotal={this.state.data.length}
+            handleChange={this.handleSelectChange}
+          />
+        </AntCol>
         <AntTable
           style={{ textTransform: "uppercase" }}
           className="settings-panel-table"
           size={tableSize}
           dataSource={this.state.data}
-          pagination={this.state.pagination}
+          pagination={false}
           loading={this.state.loading}
           scroll={{ y: tableYScroll }}
           columns={columns}
@@ -353,26 +470,17 @@ class LotsPerInventory extends React.Component {
             };
           }}
         />
-        <AntCol span={8}>
-          <h1 style={{ float: "left" }}>
-            TOTAL ON HAND: <br /> 100
-          </h1>
-        </AntCol>
-        <AntCol span={8}>
-          <h1 style={{ float: "left" }}>
-            TOTAL QUANTITY: <br /> 100
-          </h1>
-        </AntCol>
-        <AntCol span={8}>
-          <h1 style={{ float: "left" }}>
-            TOTAL AMOUNT: <br /> 100
-          </h1>
-        </AntCol>
+        <h1>h1</h1>
+        <h1>{this.summarySample}</h1>
+        <AntTable 
+        columns={columnsSummary} 
+        // dataSource={this.summaryData}
+        />
         <Drawer
           title={this.state.drawerTitle}
           visible={this.state.isDrawerVisible}
           onClose={this.onClose}
-          width="30%"
+          width="40%"
           destroyOnClose
         >
           <InventoryListForm

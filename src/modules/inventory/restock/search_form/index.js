@@ -14,7 +14,7 @@ import {
   Input,
   Icon,
   Table,
-  Drawer
+  Drawer,
 } from "antd";
 // CUSTOM MODULES
 import ClearFormFields from "shared_components/form_clear_button";
@@ -23,7 +23,7 @@ import {
   drawerTakeoutUpdate,
   tableSize,
   buttonLabels,
-  tableYScroll
+  tableYScroll,
 } from "modules/inventory/settings/settings";
 import { fieldRules } from "../settings";
 
@@ -35,38 +35,38 @@ const columns = [
   {
     title: "LOT CODE",
     dataIndex: "lot_code",
-    width: 150
+    width: 150,
   },
   {
     title: "ITEM",
     dataIndex: "item",
-    width: 250
+    width: 250,
   },
   {
     title: "QUANTITY",
     dataIndex: "quantity",
-    width: 150
+    width: 150,
   },
   {
     title: "AMOUNT",
     dataIndex: "amount",
-    width: 150
+    width: 150,
   },
   {
     title: "EXPIRATION DATE",
     dataIndex: "expiry_date",
-    width: 150
+    width: 150,
   },
   {
     title: "STORAGE",
     dataIndex: "storage",
-    width: 150
+    width: 150,
   },
   {
     title: "SUPPLIER",
     dataIndex: "supplier",
-    width: 150
-  }
+    width: 150,
+  },
 ];
 
 class SearchPatientForm extends React.Component {
@@ -111,11 +111,11 @@ class SearchPatientForm extends React.Component {
         //   width: 250
         // }
       ],
-      EnableButton: false
+      EnableButton: false,
     };
   }
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -124,7 +124,7 @@ class SearchPatientForm extends React.Component {
     });
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log(value);
     // eslint-disable-next-line react/no-unused-state
     this.setState({ value });
@@ -143,17 +143,17 @@ class SearchPatientForm extends React.Component {
       amount: fields.amount,
       expiry_date: fields.expiryDate,
       storage: fields.storage,
-      supplier: fields.supplier
+      supplier: fields.supplier,
     };
     console.log(newData);
     this.setState({
       data: [...data, newData],
-      count: count + 1
+      count: count + 1,
     });
     console.log(newData);
   };
 
-  onChange = value => {
+  onChange = (value) => {
     console.log(value);
     // eslint-disable-next-line react/no-unused-state
     this.setState({ value });
@@ -164,18 +164,32 @@ class SearchPatientForm extends React.Component {
     const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
     const {
-      patientID,
-      patientName,
+      tranNo,
+      tranDate,
+      tranType,
       lotCode,
       item,
       quantity,
       amount,
+      expiryDate,
       supplier,
-	  storage,
-	  expiryDate,
-	  tranDate
+      storage,
     } = getFieldsValue();
-    const disabled = !(patientID || (patientName && patientName.length > 1));
+    const disabled = !(
+      tranNo ||
+      (tranNo && tranNo.length > 1) ||
+      tranDate ||
+      tranType ||
+      lotCode ||
+      tranNo ||
+      (lotCode && lotCode.length > 1) ||
+      (item && item.length > 1) ||
+      (quantity && quantity.length > 0) ||
+      (amount && amount.length > 0) ||
+      expiryDate ||
+      supplier ||
+      storage
+    );
     const { Option } = Select;
     const categoryData = ["Category1", "Category2", "Caegory3"];
 
@@ -184,14 +198,14 @@ class SearchPatientForm extends React.Component {
         <Row gutter={12} type="flex">
           <Col span={4}>
             <Form.Item label="TRANSACTION NO.">
-              {getFieldDecorator("transaction_no", {
-                rules: fieldRules.search
+              {getFieldDecorator("tranNo", {
+                rules: fieldRules.search,
               })(<Input />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="TRANSACTION DATE">
-			        {getFieldDecorator("tranDate", {
+              {getFieldDecorator("tranDate", {
                 // rules: fieldRules.search
               })(<DatePicker style={{ width: "100%" }} />)}
             </Form.Item>
@@ -199,7 +213,7 @@ class SearchPatientForm extends React.Component {
           <Col span={4}>
             <Form.Item label="TRANSACTION TYPE">
               {getFieldDecorator("tranType", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(
                 <Select>
                   <Option value="TRANSACTION TYPE 1">TRANSACTION TYPE 1</Option>
@@ -212,28 +226,28 @@ class SearchPatientForm extends React.Component {
           <Col span={4}>
             <Form.Item label="LOT CODE">
               {getFieldDecorator("lotCode", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(<Input />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="ITEM">
               {getFieldDecorator("item", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(<Input />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="QUANTITY">
               {getFieldDecorator("quantity", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(<Input />)}
             </Form.Item>
           </Col>
           <Col span={4}>
             <Form.Item label="AMOUNT">
               {getFieldDecorator("amount", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(<Input />)}
             </Form.Item>
           </Col>
@@ -247,7 +261,7 @@ class SearchPatientForm extends React.Component {
           <Col span={4}>
             <Form.Item label="SUPPLIER">
               {getFieldDecorator("supplier", {
-                rules: fieldRules.search
+                rules: fieldRules.search,
               })(
                 <Select>
                   <Option value="SUPPLIER 1">SUPPLIER 1</Option>
@@ -260,7 +274,7 @@ class SearchPatientForm extends React.Component {
           <Col span={4}>
             <Form.Item label="STORAGE">
               {getFieldDecorator("storage", {
-                rules: fieldRules.section
+                rules: fieldRules.section,
               })(
                 <Select>
                   <Option value="STORAGE 1">STORAGE 1</Option>
@@ -289,8 +303,8 @@ class SearchPatientForm extends React.Component {
                   type="primary"
                   shape="round"
                   style={{ marginRight: "15px" }}
-                  onClick={this.handleAdd} 
-                  disabled
+                  onClick={this.handleAdd}
+                  disabled={disabled}
                 >
                   <Icon />
                   {addRestock}
@@ -305,12 +319,12 @@ class SearchPatientForm extends React.Component {
             // eslint-disable-next-line react/prop-types
             dataSource={this.state.data}
             scroll={{ y: tableYScroll }}
-            rowKey={record => record.examItemID}
-            onRow={record => {
+            rowKey={(record) => record.examItemID}
+            onRow={(record) => {
               return {
                 onDoubleClick: () => {
                   this.displayDrawerUpdate(record);
-                }
+                },
               };
             }}
           />

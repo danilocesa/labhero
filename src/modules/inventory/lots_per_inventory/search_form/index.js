@@ -271,16 +271,6 @@ class InventoryListForm extends React.Component {
                   label="AMOUNT"
                   className={panelInfo ? null : "hide"}
                 >
-                  {getFieldDecorator("quantity", {
-                  })(<AntInput  />)}
-                </AntForm.Item>
-              </AntCol>
-
-              <AntCol span={12}>
-                <AntForm.Item
-                  label="AMOUNT"
-                  className={panelInfo ? null : "hide"}
-                >
                   {getFieldDecorator("amount", {
                   })(<AntInput  />)}
                 </AntForm.Item>
