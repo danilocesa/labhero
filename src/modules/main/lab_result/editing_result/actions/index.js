@@ -30,7 +30,7 @@ class Actions extends React.Component {
 
   onClickSave = async () => {
 		const { getLabResultFormValues, onSaveSuccess } = this.props;
-		const labResultFormValues = getLabResultFormValues();
+		const labResultFormValues = await getLabResultFormValues();
 		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		if(!labResultFormValues.form.hasError && !labResultFormValues.remarks.hasError) {
@@ -55,7 +55,7 @@ class Actions extends React.Component {
 	
 	onClickApprove = async () => {
 		const { getLabResultFormValues, onSaveSuccess, resultStatus } = this.props;
-		const labResultFormValues = getLabResultFormValues();
+		const labResultFormValues = await getLabResultFormValues();
 		const userSession = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const action = (resultStatus === 'Approve') ? 'Unapprove' : 'Approve';
 

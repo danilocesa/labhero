@@ -67,7 +67,7 @@ const columns = [
 	{ 
 		title: 'EXAM REQUESTED', 
 		fixed: 'right',
-		width: 350,
+		width: 300,
 		render: (record) => record.contents.examRequestNames
 	},
 ];
@@ -84,7 +84,6 @@ class SectionTable extends React.Component {
 	render() {
 		const { pageSize } = this.state;
 		const { labResults, onClickTableRow } = this.props;
-		console.log(labResults);
 
 		return (
 			<div>

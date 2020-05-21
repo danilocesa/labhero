@@ -57,7 +57,7 @@ class Tracker extends React.Component {
 			<Step
 				key={item.title}
 				title={item.description}
-				icon={<Icon type={item.icon} />}
+				icon={item.icon}
 			/>
 		));
 		const { active } = this.props;

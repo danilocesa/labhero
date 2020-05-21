@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu } from 'antd';
 import { Link } from 'react-router-dom';
 import URI from 'global_config/uri';
 import { ReactComponent as HomeIcon } from 'icons/home.svg';
@@ -15,8 +15,10 @@ import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
 import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
 
-import { SELECTED_SIDER_KEY } from '../../../global_config/constant-global';
+import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Icon from '@ant-design/icons';
 import './sider.css';
 
 const { Sider: AntSider } = Layout;
@@ -71,7 +73,6 @@ class Sider extends React.Component {
 									<Icon component={HomeIcon} />
 									<span>DASHBOARD</span>
 								</Link>
-								<span>HOME</span>
 							</Menu.Item>
 						)
 					}

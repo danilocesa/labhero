@@ -28,13 +28,18 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 class BaseForm extends React.Component { 	
-	state = {
-		hospitalLocationList: [],
-		hospitalPhysicianList: [],
-		isDisabledPersoFields: false,
-		initialPersoValue: {},
-		address: {}
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			hospitalLocationList: [],
+			hospitalPhysicianList: [],
+			isDisabledPersoFields: false,
+			address: {}
+		};
+
+		this.formRef = React.createRef();
+	}
 
 	componentDidMount() {
 		this.populateLocation();
@@ -49,30 +54,35 @@ class BaseForm extends React.Component {
 
 		// If user came from step 1 
 		if(location.state) {
-			const { dateOfBirth, patientID, provinceCode, cityMunicipalityCode, townCode } = location.state.record;
+			const { dateOfBirth, patientID, provinceCode, cityMunicipalityCode, townCode, address } = location.state.record;
 			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
 			const patientAge = this.computeAge(formattedDOB);
-
+			
 			this.setState({
-				initialPersoValue: { 
-					...location.state.record, 
-					patientAge,
-					dateOfBirth: formattedDOB
-				},
 				address: {
 					provinceCode,
 					cityMunicipalityCode,
 					townCode,
-					houseAddress: location.state.record.address
+					houseAddress: address
 				},
 				isDisabledPersoFields: patientID !== null
+			});
+
+			this.formRef.current.setFieldsValue({
+				...location.state.record, 
+				patientAge,
+				dateOfBirth: formattedDOB,
+				provinces: provinceCode,
+				city: cityMunicipalityCode,
+				town: townCode,
+				address
 			});
 		}
 		
 		// Else if user has pressed back button
 		else if(sessPersoInfo && sessOtherInfo) {
 			// eslint-disable-next-line react/prop-types
-			const { setFieldsValue } = this.props.form;
+			const { setFieldsValue } = this.formRef.current;
 			const personalInfo = JSON.parse(sessPersoInfo); 
 			const otherInfo = JSON.parse(sessOtherInfo); 
 			const { provinces, city, town, address, ...restPersoInfo } = personalInfo;
@@ -89,7 +99,11 @@ class BaseForm extends React.Component {
 				setFieldsValue({ 
 					...restPersoInfo, 
 					...otherInfo,
-					dateOfBirth: moment(personalInfo.dateOfBirth, 'MM-DD-YYYY')
+					dateOfBirth: moment(personalInfo.dateOfBirth, 'MM-DD-YYYY'),
+					provinces,
+					city,
+					town,
+					address
 				});
 			});
 		}
@@ -120,7 +134,7 @@ class BaseForm extends React.Component {
 
 	onDateChange = (date) => {
 		// eslint-disable-next-line react/prop-types
-		const { setFieldsValue } = this.props.form;
+		const { setFieldsValue } = this.formRef.current;
 		const patientAge = this.computeAge(date);
 
 		setFieldsValue({ patientAge });
@@ -131,78 +145,61 @@ class BaseForm extends React.Component {
 		return current && current > moment().endOf('day');
 	}
 
-	onSubmit = (event) => {
-		event.preventDefault();
+	onSubmit = () => {
+		// event.preventDefault();
 
 		const { hospitalPhysicianList, hospitalLocationList } = this.state; 
 		const { handleSubmit } = this.props;
 		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
+		const { getFieldsValue } = this.formRef.current;
+	
+		const fields = getFieldsValue();
+		const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
+		const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 
-		validateFieldsAndScroll((err) => {
-			if (!err) {
-				const fields = getFieldsValue();
-				const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
-				const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
+		fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
+		fields.locationName = location.name;
 
-				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
-				fields.locationName = location.name;
-
-				if(physician) {
-					fields.physicianName = `${physician.namePrefix} `;
-					fields.physicianName +=	`${physician.givenName} `; 
-					fields.physicianName +=	`${physician.middleName}. `;
-					fields.physicianName +=	`${physician.lastName}`;
-				}
-				
-				// Uppercase all fields
-				Object.keys(fields).forEach(key => {
-					const fieldValue = fields[key];
-					fields[key] = (typeof fieldValue === 'string') ? fieldValue.toUpperCase() : fieldValue;
-				});
-
-				handleSubmit(fields);
-			}
+		if(physician) {
+			fields.physicianName = `${physician.namePrefix} `;
+			fields.physicianName +=	`${physician.givenName} `; 
+			fields.physicianName +=	`${physician.middleName}. `;
+			fields.physicianName +=	`${physician.lastName}`;
+		}
+		
+		// Uppercase all fields
+		Object.keys(fields).forEach(key => {
+			const fieldValue = fields[key];
+			fields[key] = (typeof fieldValue === 'string') ? fieldValue.toUpperCase() : fieldValue;
 		});
+
+		handleSubmit(fields);
 	}
 
 	onProvinceChange = () => {
-		this.setState((state) => ({ 
-			address: { 
-				...state.address, 
-				cityMunicipalityCode: null,
-				townCode: null,
-				houseAddress: null 
-			} 
-		}));
+		this.formRef.current.setFieldsValue({
+			city: null,
+			town: null,
+			houseAddress: null 
+		});
 	}
 
 	onCityChange = () => {
-		this.setState((state) => ({ 
-			address: { 
-				...state.address, 
-				townCode: null,
-				houseAddress: null 
-			} 
-		}));
+		this.formRef.current.setFieldsValue({
+			town: null,
+			houseAddress: null 
+		});
 	}
 
 	render() {
 		const { 
 			isDisabledPersoFields, 
-			initialPersoValue, 
 			hospitalPhysicianList, 
 			hospitalLocationList,
 			address 
 		} = this.state;
 		
-		const { isLoading, form } = this.props;
-		const { getFieldDecorator, getFieldsValue } = form;
-		const { 
-			provinces: selectedProvinceCode, 
-			city: selectedCityCode, 
-			town: selectedTownCode
-		} = getFieldsValue();
+		const { isLoading } = this.props;
 		
 		const LocationList = hospitalLocationList.map((item) => (
 			<Option value={item.locationID} key={item.locationID}>
@@ -218,7 +215,12 @@ class BaseForm extends React.Component {
 
 		return (
 			<div style={{ marginTop: 50 }}>
-				<Form className="clr-fillup-form" onSubmit={this.onSubmit}>
+				<Form 
+					ref={this.formRef}
+					className="clr-fillup-form" 
+					layout="vertical"
+					onFinish={this.onSubmit} 
+				>
 					<Row gutter={12}>
 						<Col sm={7} md={7}>
 							<div className="left-form">
@@ -227,112 +229,113 @@ class BaseForm extends React.Component {
 								</div>
 								<Row gutter={12}>
 									<Col span={12}>
-										<Form.Item label={formLabels.hospitalID}>
-											{getFieldDecorator('hospitalID', { 
-												rules: FIELD_RULES.hospitalID,
-												initialValue: initialPersoValue.hospitalID
-											})(
-												<AlphaNumInput disabled={isDisabledPersoFields} maxLength={50} />
-											)}
+										<Form.Item 
+											name="hospitalID" 
+											label={formLabels.hospitalID}
+											rules={FIELD_RULES.hospitalID}
+										>
+											<AlphaNumInput 
+												disabled={isDisabledPersoFields} 
+												maxLength={50} 
+											/>
 										</Form.Item>
 									</Col>
 									<Col span={12}>
-										<Form.Item label={formLabels.patientID}>
-											{getFieldDecorator('patientID', {
-												initialValue: initialPersoValue.patientID
-											})(
-												<Input disabled />
-											)}
+										<Form.Item 
+											name="patientID"
+											label={formLabels.patientID} 
+										>
+											<Input disabled />
 										</Form.Item>
 									</Col>
 								</Row>
-								<Form.Item label={formLabels.email}>
-									{getFieldDecorator('emailAdd', { 
-										rules: FIELD_RULES.emailAdd,
-										initialValue: initialPersoValue.emailAdd
-									})(
-										<Input disabled={isDisabledPersoFields} maxLength={100} />
-									)}
+								<Form.Item 
+									name="emailAdd"
+									label={formLabels.email} 
+									rules={FIELD_RULES.emailAdd}
+								>
+									<Input 
+										disabled={isDisabledPersoFields} 
+										maxLength={100} 
+									/>
 								</Form.Item>
-								<Form.Item label={formLabels.firstName}>
-									{getFieldDecorator('givenName', { 
-										rules: FIELD_RULES.givenName, 
-										initialValue: initialPersoValue.givenName
-									})(
-										<RegexInput 
-											regex={/[A-Za-z0-9-. ]/}  
-											disabled={isDisabledPersoFields} 
-											maxLength={50} 
-										/>
-									)}
+								<Form.Item 
+									name="givenName"
+									label={formLabels.firstName} 
+									rules={FIELD_RULES.givenName}
+								>
+									<RegexInput 
+										regex={/[A-Za-z0-9-. ]/}  
+										disabled={isDisabledPersoFields} 
+										maxLength={50} 
+									/>
 								</Form.Item>
-								<Form.Item label={formLabels.middleName}>
-									{getFieldDecorator('middleName', { 
-										rules: FIELD_RULES.middleName,
-										initialValue: initialPersoValue.middleName
-									})(
-										<RegexInput 
-											regex={/[A-Za-z0-9-. ]/}  
-											disabled={isDisabledPersoFields} 
-											maxLength={15} 
-										/>
-									)}
+								<Form.Item 
+									name="middleName" 
+									label={formLabels.middleName}
+									rules={FIELD_RULES.middleName}
+								>
+									<RegexInput 
+										regex={/[A-Za-z0-9-. ]/}  
+										disabled={isDisabledPersoFields} 
+										maxLength={15} 
+									/>
 								</Form.Item>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label={formLabels.lastName}>
-											{getFieldDecorator('lastName', { 
-												rules: FIELD_RULES.lastName,
-												initialValue: initialPersoValue.lastName 
-											})(
-												<RegexInput 
-													regex={/[A-Za-z0-9-. ]/}  
-													disabled={isDisabledPersoFields} 
-													maxLength={50} 
-												/>
-											)}
+										<Form.Item 
+											name="lastName"
+											label={formLabels.lastName} 
+											rules={FIELD_RULES.lastName}
+										>
+											<RegexInput 
+												regex={/[A-Za-z0-9-. ]/}  
+												disabled={isDisabledPersoFields} 
+												maxLength={50} 
+											/>
 										</Form.Item>
 									</Col>
 									<Col span={6}>
-										<Form.Item label={formLabels.suffix}>
-											{getFieldDecorator('nameSuffix', { 
-												rules: FIELD_RULES.suffix, 
-												initialValue: initialPersoValue.suffix
-											})(
-												<RegexInput 
-													regex={/[A-z0-9 -]/} 
-													disabled={isDisabledPersoFields} 
-													maxLength={5} 
-												/>
-											)}
+										<Form.Item 
+											name="nameSuffix"
+											label={formLabels.suffix} 
+											rules={FIELD_RULES.suffix}
+										>
+											<RegexInput 
+												name="nameSuffix"
+												regex={/[A-z0-9 -]/} 
+												disabled={isDisabledPersoFields} 
+												maxLength={5} 
+											/>
 										</Form.Item>
 									</Col>
 								</Row>
 								<Row gutter={12}>
 									<Col span={18}>
-										<Form.Item label={formLabels.dateOfBirth}>
-											{getFieldDecorator('dateOfBirth', { 
-												rules: FIELD_RULES.dateOfBirth,
-												initialValue: initialPersoValue.dateOfBirth
-											})(
-												<DatePicker 
-													format="MM-DD-YYYY"
-													disabledDate={this.disabledDate}
-													style={{ width: '100%' }}
-													onChange={this.onDateChange}
-													disabled={isDisabledPersoFields}
-												/>
-											)}
+										<Form.Item 
+											name="dateOfBirth" 
+											label={formLabels.dateOfBirth} 
+											rules={FIELD_RULES.dateOfBirth}
+										>
+											<DatePicker 
+												format="MM-DD-YYYY"
+												disabledDate={this.disabledDate}
+												style={{ width: '100%' }}
+												onChange={this.onDateChange}
+												disabled={isDisabledPersoFields}
+											/>
 										</Form.Item>
 									</Col>
 									<Col span={6}>
-										<Form.Item label={formLabels.age}>
-											{getFieldDecorator('patientAge', { 
-												rules: FIELD_RULES.age,
-												initialValue: initialPersoValue.patientAge
-											})(
-												<Input disabled style={{ textAlign: 'center' }} />
-											)}
+										<Form.Item 
+											name="patientAge" 
+											label={formLabels.age}
+											rules={FIELD_RULES.age}
+										>
+											<Input 
+												disabled 
+												style={{ textAlign: 'center' }} 
+											/>
 										</Form.Item>
 									</Col>
 								</Row>
@@ -347,9 +350,10 @@ class BaseForm extends React.Component {
 									<Text strong>LOCATION AND GENDER</Text>
 								</div>
 								<Row>
-									<Col>
+									<Col span={24}>
 										<ProvinceList 
-											form={form}
+											form={this.formRef}
+											// form={form}
 											placeholder={selectDefaultOptions}
 											selectedProvince={address.provinceCode}
 											disabled={isDisabledPersoFields}
@@ -358,66 +362,84 @@ class BaseForm extends React.Component {
 									</Col>
 								</Row>
 								<Row>
-									<Col>
-										<CityList 
-											form={form}
-											placeholder={selectDefaultOptions}
-											provinceValue={selectedProvinceCode || address.cityMunicipalityCode}
-											selectedCity={address.cityMunicipalityCode}
-											disabled={isDisabledPersoFields}
-											onChange={this.onCityChange}
-										/>
+									<Col span={24}>
+										<Form.Item shouldUpdate>
+											{(form) => {
+												return (
+													<CityList 
+														form={form}
+														// form={form}
+														placeholder={selectDefaultOptions}
+														provinceValue={form.getFieldValue('provinces')}
+														selectedCity={address.cityMunicipalityCode}
+														disabled={isDisabledPersoFields}
+														onChange={this.onCityChange}
+													/>
+												);
+											}}
+										</Form.Item>
 									</Col>
 								</Row>
 								<Row>
-									<Col>
-										<TownList 
-											form={form}
-											placeholder={selectDefaultOptions}
-											cityValue={selectedCityCode || address.townCode}
-											selectedTown={address.townCode}
-											disabled={isDisabledPersoFields}
-										/>
+									<Col span={24}>
+										<Form.Item shouldUpdate>
+											{(form) => {
+												return (
+													<TownList 
+														placeholder={selectDefaultOptions}
+														cityValue={form.getFieldValue('city')}
+														disabled={isDisabledPersoFields}
+													/>
+												);
+											}}
+										</Form.Item>
 									</Col>
 								</Row>						
 								<Row>
-									<Col>
-										<HouseAddress 
-											form={form}
-											townValue={selectedTownCode}
-											fieldLabel={formLabels.unitNo.label}
-											fieldName={formLabels.unitNo.fieldName}
-											selectedValue={address.houseAddress}
-											disabled={isDisabledPersoFields}
-										/>
+									<Col span={24}>
+										<Form.Item shouldUpdate>
+											{(form) => {
+												return (
+													<HouseAddress 
+														form={form}
+														townValue={form.getFieldValue('town')}
+														fieldLabel={formLabels.unitNo.label}
+														fieldName={formLabels.unitNo.fieldName}
+														selectedValue={address.houseAddress}
+														disabled={isDisabledPersoFields}
+													/>
+												)
+											}}
+										</Form.Item>
 									</Col>
 								</Row>
-								<Form.Item label={formLabels.contactNumber}>
-									{getFieldDecorator('contactNumber', { 
-										rules: FIELD_RULES.contactNumber,
-										initialValue: initialPersoValue.contactNumber
-									})(
-										<NumberInput 
-											addonBefore="+ 63" 
-											maxLength={10} 
-											disabled={isDisabledPersoFields}
-										/>
-									)}
+								<Form.Item 
+									name="contactNumber"
+									label={formLabels.contactNumber}
+									rules={FIELD_RULES.contactNumber}
+								>
+									<NumberInput 
+										addonBefore="+ 63" 
+										maxLength={10} 
+										disabled={isDisabledPersoFields}
+									/>
 								</Form.Item>
-								<Form.Item label={formLabels.patientGender}>
-									{getFieldDecorator('sex', { 
-										rules: FIELD_RULES.gender, 
-										initialValue: initialPersoValue.sex
-									})(
-										<Radio.Group buttonStyle="solid" disabled={isDisabledPersoFields}>
-											<Radio.Button value="MALE" className="gender-radio-btn">
-												MALE
-											</Radio.Button>
-											<Radio.Button value="FEMALE" className="gender-radio-btn">
-												FEMALE
-											</Radio.Button>
-										</Radio.Group>
-									)}
+								<Form.Item 
+									name="sex"
+									label={formLabels.patientGender}
+									rules={FIELD_RULES.gender}
+								>
+									<Radio.Group 
+										buttonStyle="solid" 
+										disabled={isDisabledPersoFields}
+									>
+										<Radio.Button value="MALE" className="gender-radio-btn">
+											MALE
+										</Radio.Button>
+										<Radio.Button value="FEMALE" className="gender-radio-btn">
+											FEMALE
+										</Radio.Button>
+									</Radio.Group>
 								</Form.Item>
 							</div>
 						</Col>
@@ -429,54 +451,69 @@ class BaseForm extends React.Component {
 								<div style={{ padding: '10px 0px' }}>
 									<Text strong>OTHER INFORMATION</Text>
 								</div>
-								<Form.Item label={formLabels.location}>
-									{getFieldDecorator('locationID', { rules: FIELD_RULES.location })(
-										<Select placeholder="Select a location" allowClear>
-											{LocationList}
-										</Select>
-									)}
+								<Form.Item 
+									name="locationID"
+									label={formLabels.location}
+									rules={FIELD_RULES.location}
+								>
+									<Select 
+										placeholder="Select a location" 
+										allowClear
+									>
+										{LocationList}
+									</Select>
 								</Form.Item>
-								<Form.Item label={formLabels.physicianID}>
-									{getFieldDecorator('physicianID', { rules: FIELD_RULES.physicianId })(
-										<Select 
-											placeholder="Select a physician" 
-											allowClear
-										>
-											{PhysicianList}
-										</Select>
-									)}
+								<Form.Item 
+									name="physicianID" 
+									label={formLabels.physicianID}
+									rules={FIELD_RULES.physicianId}
+								>
+									<Select 
+										placeholder="Select a physician" 
+										allowClear
+									>
+										{PhysicianList}
+									</Select>
 								</Form.Item>
-								<Form.Item label={formLabels.visit}>
-									{getFieldDecorator('visit', { rules: FIELD_RULES.visit })(
-										<Input maxLength={100} />
-									)}
+								<Form.Item 
+									name="visit" 
+									label={formLabels.visit}
+									rules={FIELD_RULES.visit}
+								>
+									<Input maxLength={100} />
 								</Form.Item>
-								<Form.Item label={formLabels.chargeSlip}>
-									{getFieldDecorator('chargeSlip', { rules: FIELD_RULES.chargeSlip })(
-										<Input maxLength={100} />
-									)}
+								<Form.Item 
+									name="chargeSlip" 
+									label={formLabels.chargeSlip}
+									rules={FIELD_RULES.chargeSlip}
+								>
+									<Input maxLength={100} />
 								</Form.Item>
-								<Form.Item label={formLabels.officialReceipt}>
-									{getFieldDecorator('officialReceipt', { rules: FIELD_RULES.officialReceipt })(
-										<Input maxLength={100} />
-									)}
+								<Form.Item 
+									name="officialReceipt" 
+									label={formLabels.officialReceipt}
+									rules={FIELD_RULES.officialReceipt}
+								>
+									<Input maxLength={100} />
 								</Form.Item>
-								<Form.Item label={formLabels.bed}>
-									{getFieldDecorator('bed', { rules: FIELD_RULES.bed })(
-										<Input maxLength={100} />
-									)}
+								<Form.Item 
+									name="bed" 
+									label={formLabels.bed}
+									rules={FIELD_RULES.bed}
+								>
+									<Input maxLength={100} />
 								</Form.Item>
-								<Form.Item label={formLabels.comment}>
-									{getFieldDecorator('comment', { rules: FIELD_RULES.comment })(
-										<TextArea rows={3} maxLength={254} />
-									)}
+								<Form.Item 
+									name="comment"
+									label={formLabels.comment}
+									rules={FIELD_RULES.comment}
+								>
+									<TextArea rows={3} maxLength={254} />
 								</Form.Item>
 							</div>
 						</Col>
 					</Row>
-					<Row>
-						<FormButtons isLoading={isLoading} />
-					</Row>
+					<FormButtons isLoading={isLoading} />
 				</Form>
 			</div>
 		);
@@ -489,6 +526,8 @@ BaseForm.propTypes = {
 	isLoading: PropTypes.bool.isRequired
 };
 
-const FillupForm = Form.create()(withRouter(BaseForm));
+// const FillupForm = Form.create()(withRouter(BaseForm));
 
-export default FillupForm;
+// export default FillupForm;
+
+export default withRouter(BaseForm);

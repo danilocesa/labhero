@@ -242,6 +242,8 @@ class InventorySectionTemplate extends React.Component {
   }
 }
 
-const InventorySection = AntForm.create()(InventorySectionTemplate);
+// const InventorySection = AntForm.create()(InventorySectionTemplate);
 
-export default InventorySection;
+// export default InventorySection;
+
+export default InventorySectionTemplate;

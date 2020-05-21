@@ -163,4 +163,5 @@ FillupForm.defaultProps = {
 }
 
 
-export default Form.create()(FillupForm);
+// export default Form.create()(FillupForm);
+export default FillupForm;

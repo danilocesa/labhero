@@ -13,21 +13,33 @@ export const fieldRules = {
 };
 
 class PatientComment extends React.Component {
+  constructor(props) {
+    super(props);
+    
+    this.formRef = React.createRef();
+  }
+
   componentDidUpdate(prevProps) {
-    const { form, remarks } = this.props;
+    const { remarks } = this.props;
     if(prevProps.remarks !== remarks) {
-      form.setFieldsValue({ remarks });
+      this.formRef.current.setFieldsValue({ remarks });
     }
   }
 
-  getRemarks = () => {
-		const { form } = this.props;
+  getRemarks = async () => {
     let remarks = {};
 
-		form.validateFieldsAndScroll((err, fieldsValue) => {
+    await this.formRef.current.validateFields()
+    .then(values => {
       remarks = {
-        value: fieldsValue.remarks,
-        hasError: err !== null
+        value: values.remarks,
+        hasError: false
+      };
+    })
+    .catch(errorInfo => {
+      remarks = {
+        value: errorInfo.values.remarks,
+        hasError: errorInfo !== null
       };
     });
     
@@ -36,20 +48,30 @@ class PatientComment extends React.Component {
 
 
   render() {
-    const { form, resultStatus, onChangeResult } = this.props;
-    const { getFieldDecorator } = form;
+    const { resultStatus, onChangeResult } = this.props;
 
     return (
 			<div className="patient-comment">
-        <Form.Item label="REMARKS">
-          {getFieldDecorator('remarks', { rules: fieldRules.remarks })(
+        <Form ref={this.formRef} layout="vertical">
+          <Form.Item 
+            name="remarks"
+            label="REMARKS"
+            rules={fieldRules.remarks}
+          >
             <TextArea 
               rows={3} 
               disabled={resultStatus === 'Approve'}
               onChange={onChangeResult}
             />
-          )}
-        </Form.Item>
+            {/* {getFieldDecorator('remarks', { rules: fieldRules.remarks })(
+              <TextArea 
+                rows={3} 
+                disabled={resultStatus === 'Approve'}
+                onChange={onChangeResult}
+              />
+            )} */}
+          </Form.Item>
+        </Form>
 			</div>
     );
   }
@@ -65,4 +87,5 @@ PatientComment.defaultProps = {
   remarks: null
 };
 
-export default Form.create()(PatientComment);
+// export default Form.create()(PatientComment);
+export default PatientComment;

@@ -248,6 +248,8 @@ class InventoryStorageTemplate extends React.Component {
   }
 }
 
-const InventoryStorage = AntForm.create()(InventoryStorageTemplate);
+// const InventoryStorage = AntForm.create()(InventoryStorageTemplate);
 
-export default InventoryStorage;
+// export default InventoryStorage;
+
+export default InventoryStorageTemplate;

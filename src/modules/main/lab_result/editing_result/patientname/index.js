@@ -51,19 +51,17 @@ class PatientName extends React.Component {
 		    </Col>
 				<Col span={12}>
 			    <div style={{ textAlign: 'right', margin: '25px 0 20px 30px', fontSize: '12px' }}>
-				    <Row>
-					    <ButtonGroup>
-						    <Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
-							    <img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
-							      <span style={{ paddingLeft: '7px' }}>iResults</span>
-						    </Button>
+						<ButtonGroup>
+							<Button onClick={this.onIresultButtonClick} style={{ width: 120 }}>
+								<img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
+									<span style={{ paddingLeft: '7px' }}>iResults</span>
+							</Button>
 
-						    {/* <Button style={{ width: 120 }}>
-							    <img src={PrintLogo} className="print-logo" alt="Print Icon" />
-							    <span style={{ paddingLeft: '7px' }}>Print</span>
-						    </Button> */}
-					    </ButtonGroup>
-				    </Row>
+							{/* <Button style={{ width: 120 }}>
+								<img src={PrintLogo} className="print-logo" alt="Print Icon" />
+								<span style={{ paddingLeft: '7px' }}>Print</span>
+							</Button> */}
+						</ButtonGroup>
 			    </div>
 				</Col>
 				{

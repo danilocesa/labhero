@@ -208,6 +208,6 @@ SelectedTable.propTypes = {
 	onDragAndDropRow: PropTypes.func.isRequired
 };
 
-export default Form.create()(SelectedTable);
+// export default Form.create()(SelectedTable);
 
-
+export default SelectedTable;

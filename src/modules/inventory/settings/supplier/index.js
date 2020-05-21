@@ -333,6 +333,8 @@ class InventorySupplierTemplate extends React.Component {
   }
 }
 
-const InventorySupplier = AntForm.create()(InventorySupplierTemplate);
+// const InventorySupplier = AntForm.create()(InventorySupplierTemplate);
 
-export default InventorySupplier;
+// export default InventorySupplier;
+
+export default InventorySupplierTemplate;

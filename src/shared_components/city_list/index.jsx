@@ -34,16 +34,13 @@ class CityList extends React.Component {
 	}
 
 	fetchAndUpdateValues = () => {
-		const { provinceValue, selectedCity, form } = this.props;
-		const { setFieldsValue } = form;
+		const { provinceValue } = this.props;
 
 		this.setState({ loading: true }, () => {
 			const timer = setTimeout(async () => {
 				const cityListResponse = provinceValue ? await cityListAPI(provinceValue) : [];
 
-				this.setState({ loading: false, cityList: cityListResponse }, () => {
-					setFieldsValue({ city: selectedCity });
-				});
+				this.setState({ loading: false, cityList: cityListResponse });
 
 				clearTimeout(timer);
 			}, 300);
@@ -52,53 +49,46 @@ class CityList extends React.Component {
 
 
 	render(){
-		const { form, placeholder, selectedCity, onChange, disabled } = this.props;
-		const { getFieldDecorator } = form;
+		const { placeholder, onChange, disabled } = this.props;
 		const { cityList, loading } = this.state;
 		const isDisabled = disabled || cityList.length < 1;
 
 		return (
-			<Form.Item label="CITY" className="gutter-box">
-				<div className="treeselect-address">
-					{getFieldDecorator('city', { 
-						rules: [{ 
-							required: !isDisabled, 
-							message: errorMessage.required
-						}],
-						initialValue: cityList.length === 0 ? null : selectedCity
-					})(
-						<Select
-							loading={loading}
-							placeholder={placeholder}
-							allowClear
-							disabled={isDisabled}
-							onChange={onChange}
-						>
-							{cityList.map((item) => (
-								<Option value={item.cityMunicipalityCode} key={item.cityMunicipalityCode}>
-									{item.cityMunicipalityName}
-								</Option> 
-							))}
-						</Select>
-					)}
-				</div>
+			<Form.Item 
+				name="city" 
+				label="CITY" 
+				rules={[{ 
+					required: !isDisabled, 
+					message: errorMessage.required
+				}]}
+			>
+				<Select
+					loading={loading}
+					placeholder={placeholder}
+					allowClear
+					disabled={isDisabled}
+					onChange={onChange}
+				>
+					{cityList.map((item) => (
+						<Option value={item.cityMunicipalityCode} key={item.cityMunicipalityCode}>
+							{item.cityMunicipalityName}
+						</Option> 
+					))}
+				</Select>
 			</Form.Item>
 		);
 	}
 }
 
 CityList.propTypes = {
-	form : PropTypes.object.isRequired,
 	placeholder: PropTypes.string.isRequired,
 	provinceValue: PropTypes.string,
-	selectedCity: PropTypes.string,
 	onChange: PropTypes.func.isRequired,
 	disabled: PropTypes.bool
 };
 
 CityList.defaultProps = {
 	provinceValue: null,
-	selectedCity: null,
 	disabled: false
 }
 

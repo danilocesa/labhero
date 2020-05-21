@@ -38,13 +38,15 @@ class AllTable extends React.Component {
 					</Col>
 				</Row>
 		    <Row>
-					<MainTable 
-						isLoading={isLoading}
-						labResults={labResults}
-						pageSize={pageSize}
-						onClickTableRow={onClickTableRow}
-						onClickPrint={onClickPrint}
-					/>
+					<Col lg={24} xs={24}>
+						<MainTable 
+							isLoading={isLoading}
+							labResults={labResults}
+							pageSize={pageSize}
+							onClickTableRow={onClickTableRow}
+							onClickPrint={onClickPrint}
+						/>
+					</Col>
 		    </Row>
 	    </div>
     );

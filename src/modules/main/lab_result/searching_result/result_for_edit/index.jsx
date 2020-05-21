@@ -4,7 +4,7 @@ import { Drawer } from 'antd';
 import EditResult from 'modules/main/lab_result/editing_result';
 import LabResult from 'modules/main/lab_result/searching_result';
 import PrintResult from 'modules/main/lab_result/print_result';
-import { fetchLabResultExamItems } from 'services/lab_result/result';
+// import { fetchLabResultExamItems } from 'services/lab_result/result';
 
 class EditLabResult extends React.Component {
 	state = {
@@ -36,12 +36,12 @@ class EditLabResult extends React.Component {
 	}
 
 	onClickPrint = async (sampleID) => {
-		const results = await fetchLabResultExamItems(sampleID);
+		// const results = await fetchLabResultExamItems(sampleID);
 
 		this.setState({
 			isDisplayPrintPreview: true,
 			selectedSampleID: sampleID,
-			selectedResultStatus: results.status || null
+			// selectedResultStatus: results.status || null
 		});
 	}
 

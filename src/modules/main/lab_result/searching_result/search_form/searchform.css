@@ -1,6 +1,6 @@
 
 .labresult-search-form .ant-form-item {
-	margin-bottom: 0px;
+	margin-bottom: 15px;
 }
 
 .labresult-search-form .ant-form-item,
@@ -8,6 +8,6 @@
 	text-transform: uppercase;
 }
 
-.labresult-search-form .ant-form-item .ant-form-explain {
+.labresult-search-form .ant-form-item .ant-form-item-explain {
 	text-transform: none;
 }

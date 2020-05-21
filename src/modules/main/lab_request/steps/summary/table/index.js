@@ -9,13 +9,13 @@ import './table.css';
 const columns = [
 	{
 		title: 'PANEL',
-		dataIndex: 'selectedPanel.panelName',
+		dataIndex: ['selectedPanel', 'panelName'],
 		width: 200,
 		// align: 'center',
 	},
 	{
 		title: 'SECTION',
-		dataIndex: 'selectedSection.sectionName',
+		dataIndex: ['selectedSection', 'sectionName'],
 		width: 200,
 	},
 	{
@@ -26,7 +26,7 @@ const columns = [
 	},
 	{
 		title: 'SPECIMEN',
-		dataIndex: 'selectedSpecimen.specimenName',
+		dataIndex: ['selectedSpecimen', 'specimenName'],
 		width: 200,
 		// align: 'center',
 		render: text => text.toString().toUpperCase()

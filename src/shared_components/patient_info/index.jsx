@@ -8,12 +8,19 @@ import PropTypes from 'prop-types';
 // CUSTOM MODULES
 import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
 import computeAge from 'shared_components/age_computation';
+import { PatientImgPlaceholder } from 'images';
 
-// CSS
 import './patient_info.css';
 
-// IMAGES
-import { PatientImgPlaceholder } from 'images';
+const colLayout = {
+	xxl: { span: 12 },
+	xl: { span: 12 },
+	lg: { span: 12 },
+	sm: { span: 24 },
+	md: { span: 12 },
+	xs: { span: 12 }
+};
+
 
 class PatientInfo extends React.Component {
 
@@ -71,34 +78,28 @@ class PatientInfo extends React.Component {
 			<div className="info-container">
 				<span className="main-title">Personal Information</span>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							BIRTHDATE
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.props.patientInfo.dateOfBirth}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						BIRTHDATE
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.props.patientInfo.dateOfBirth}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							AGE
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{computeAge(this.props.patientInfo.dateOfBirth)}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						AGE
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{computeAge(this.props.patientInfo.dateOfBirth)}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							GENDER
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.props.patientInfo.sex}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						GENDER
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.props.patientInfo.sex}
+					</Col>
 				</Row>
 			</div>
 
@@ -106,84 +107,68 @@ class PatientInfo extends React.Component {
 			<div className="info-container">
 				<span className="main-title">Other Information</span>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							HOSPITAL ID
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.hospitalID}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						HOSPITAL ID
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.hospitalID}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							PHYSICIAN
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.physician}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						PHYSICIAN
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.physician}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							LOCATION
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.location}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						LOCATION
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.location}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							BED
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.bed}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						BED
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.bed}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							VISIT
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.visit}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						VISIT
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.visit}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							CHARGE SLIP
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.chargeSlip}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						CHARGE SLIP
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.chargeSlip}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-title">
-							RECEIPT
-						</Col>
-						<Col lg={{ span: 12 }} sm={{ span: 24 }} md={{ span: 12 }} xs={{ span: 12 }} className="info-item-text">
-							{this.state.receipt}
-						</Col>
-					</div>
+					<Col {...colLayout} className="info-title">
+						RECEIPT
+					</Col>
+					<Col {...colLayout} className="info-item-text">
+						{this.state.receipt}
+					</Col>
 				</Row>
 				<Row>
-					<div className="info-item">
-						<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} className="info-title">
-							COMMENT
-						</Col>
-						<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }}>
-							{this.state.comment}
-						</Col>
-					</div>
+					<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }} className="info-title">
+						COMMENT
+					</Col>
+					<Col lg={{ span: 24 }} sm={{ span: 24 }} md={{ span: 24 }}>
+						{this.state.comment}
+					</Col>
 				</Row>
   			</div>
      	</div>

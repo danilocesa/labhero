@@ -22,40 +22,35 @@ class Login extends React.Component {
 		this.state = {
 			loading: false
 		}
+
+		this.formRef = React.createRef();
 	}
 
-	handleSubmit = (event) => {
-		event.preventDefault();
-
-		const { username, password } = this.props.form.getFieldsValue();
+	handleSubmit = async () => {
+		const { username, password } = this.formRef.current.getFieldsValue();
 		
-		this.props.form.validateFields(async (err) => {
-			if (!err) {
-				try {
-					this.setState({ loading: true });
-					const response = await login(username, password);
-					this.setState({ loading: false });
-				
-					const loggedinUserData = {
-						...response.data,
-						password
-					};
-					
-					sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-					Message.success({ message: 'You are now successfully logged in!' });
-					auth.authenticate();
-					this.redirectPage();
-				}
-				catch(error) {
-						if(error.response.status === 401)
-							Message.error('Incorrect Username/Password');
-						else
-							Message.error();
-				}
-			}
-		});
-
+		try {
+			this.setState({ loading: true });
+			const response = await login(username, password);
+			this.setState({ loading: false });
 		
+			const loggedinUserData = {
+				...response.data,
+				password
+			};
+			
+			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
+			Message.success({ message: 'You are now successfully logged in!' });
+			auth.authenticate();
+			this.redirectPage();
+		}
+		catch(error) {
+				this.setState({ loading: false });
+				if(error.response && error.response.status === 401)
+					Message.error('Incorrect Username/Password');
+				else
+					Message.error();
+		}
 	}
 	
 	redirectPage = () => {
@@ -72,9 +67,6 @@ class Login extends React.Component {
 	
 
   render() {
-		// eslint-disable-next-line react/prop-types
-		const { getFieldDecorator } = this.props.form;
-		
 		return (
 			<Layout>
 				<Spin spinning={this.state.loading}>
@@ -84,36 +76,42 @@ class Login extends React.Component {
 						</Row>
 					</Header>
 					<Content>
-						<Row type="flex" align="middle">
-							<div className="login-form">
-								<Row type="flex" justify="center" align="middle">
-									<img src={CompanyLogo} alt="logo" className="login-logo-image" />
-								</Row>
-								<Row>
-									<Form onSubmit={this.handleSubmit}>
-										<Form.Item label="Username" className="login-input font12">
-											{getFieldDecorator('username', { 
-												rules: FIELD_RULES.Username,
-											})(
-												<AlphaNumInput maxLength={20} />
-											)}
-										</Form.Item>
-										<Form.Item label="Password">
-											{getFieldDecorator('password', { 
-												rules: FIELD_RULES.password, 
-											})(
-												<Input.Password type="password" maxLength={20} />
-											)}
-										</Form.Item>
-										<Form.Item style={{ marginBottom: 0 }}>
-											<Button type="primary" htmlType="submit" className="login-form-button" block>
-												SIGN IN TO MY ACCOUNT
-											</Button>
-										</Form.Item>
-									</Form>
-								</Row>
+						<div className="login-form">
+							<div style={{ textAlign: 'center' }}>
+								<img src={CompanyLogo} alt="logo" className="login-logo-image" />
 							</div>
-						</Row>
+							<Form 
+								onFinish={this.handleSubmit} 
+								ref={this.formRef} 
+								layout="vertical"
+							>
+								<Form.Item 
+									name="username" 
+									label="Username" 
+									className="login-input font12"
+								>
+									<AlphaNumInput maxLength={20} />
+									{/* {getFieldDecorator('username', { 
+										rules: FIELD_RULES.Username, 
+									})(
+										<AlphaNumInput maxLength={20} />
+									)} */}
+								</Form.Item>
+								<Form.Item name="password" label="Password">
+									{/* {getFieldDecorator('password', { 
+										rules: FIELD_RULES.password, 
+									})(
+										<Input.Password type="password" maxLength={20} />
+									)} */}
+									<Input.Password type="password" maxLength={20} />
+								</Form.Item>
+								<Form.Item style={{ marginBottom: 0 }}>
+									<Button type="primary" htmlType="submit" className="login-form-button" block>
+										SIGN IN TO MY ACCOUNT
+									</Button>
+								</Form.Item>
+							</Form>
+						</div>
 					</Content>
 				</Spin>
 			</Layout>
@@ -130,6 +128,6 @@ Login.defaultProps = {
 	form: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 }
 
-const LoginForm = Form.create({ name: 'normal_login' })(Login);
+// const LoginForm = Form.create({ name: 'normal_login' })(Login);
 
-export default LoginForm;
+export default Login;

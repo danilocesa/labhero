@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form, Switch, Button,  Row, Col, Icon, Drawer } from 'antd';
+import { Spin, Table, Input, Form, Switch, Button,  Row, Col, Icon, Drawer, Select } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -174,6 +174,6 @@ class SelectedTable extends React.Component {
 
 
 
-export default Form.create()(SelectedTable);
-
+// export default Form.create()(SelectedTable);
+export default SelectedTable;
 

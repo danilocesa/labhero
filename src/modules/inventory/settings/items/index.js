@@ -270,6 +270,8 @@ class ItemsTemplate extends React.Component {
   }
 }
 
-const Items = AntForm.create()(ItemsTemplate);
+// const Items = AntForm.create()(ItemsTemplate);
 
-export default Items;
+// export default Items;
+
+export default ItemsTemplate;

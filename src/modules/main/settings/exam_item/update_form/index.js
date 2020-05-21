@@ -368,4 +368,5 @@ UpdateForm.defaultProps = {
 	selectedSpecimenName: null
 };
 
-export default Form.create()(UpdateForm);
+// export default Form.create()(UpdateForm);
+export default UpdateForm;

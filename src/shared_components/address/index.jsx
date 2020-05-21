@@ -12,26 +12,20 @@ class houseAddressComponent extends React.Component{
 	};
 
 	componentDidMount() {
-		const { townValue, form, disabled, fieldName, selectedValue } = this.props;
-		const { setFieldsValue } = form;
+		const { townValue, disabled } = this.props;
 
 		this.setState({ 
-			isDisabled: disabled || townValue === null 
-		}, () => {
-			setFieldsValue({ [fieldName]: selectedValue });
+			isDisabled: disabled || townValue === null || townValue === ''
 		});
 	}
 
 	componentDidUpdate(prevProps) {
-		const { townValue, selectedValue, fieldName, form, disabled } = this.props;
-		const { setFieldsValue } = form;
+		const { townValue, disabled } = this.props;
 
 		if(prevProps.townValue !== townValue){
 			// eslint-disable-next-line react/no-did-update-set-state
 			this.setState({ 
-				isDisabled: disabled || townValue === null 
-			}, () => {
-				setFieldsValue({ [fieldName]: selectedValue });
+				isDisabled: disabled || townValue === null  || townValue === ''
 			});
 		}
 	}
@@ -40,29 +34,30 @@ class houseAddressComponent extends React.Component{
 		if(this.props.townValue){
 			return [{ required: true, message: errorMessage.required }];
 		}
+
 		return [{ required: false, message: errorMessage.required }];
 	}
 
 	render(){
-		const { form, fieldLabel, fieldName } = this.props;
+		const { fieldLabel, fieldName } = this.props;
 		const { isDisabled } = this.state;
-		const { getFieldDecorator } = form;
+		// const { getFieldDecorator } = form;
 
 		return(
-			<Form.Item label={fieldLabel}>
-				{getFieldDecorator(fieldName, {
-					rules: [
-						...this.houseUnitfieldRules(),
-						{ min: 2, message: errorMessage.minLength(2) },
-						{ max: 70, message: errorMessage.maxLength(70) }
-					]
-				})(
-					<Input 
-						disabled={isDisabled} 
-						maxLength={70} 
-						allowClear
-					/>
-				)}  
+			<Form.Item 
+				name={fieldName}
+				label={fieldLabel} 
+				rules={[
+					...this.houseUnitfieldRules(),
+					{ min: 2, message: errorMessage.minLength(2) },
+					{ max: 70, message: errorMessage.maxLength(70) }
+				]}
+			>
+				<Input 
+					disabled={isDisabled} 
+					maxLength={70} 
+					allowClear
+				/>
 			</Form.Item>
 		);
 	}
@@ -70,16 +65,13 @@ class houseAddressComponent extends React.Component{
 
 
 houseAddressComponent.propTypes = {
-	form : PropTypes.object.isRequired,
 	fieldLabel : PropTypes.string.isRequired,
 	fieldName: PropTypes.string.isRequired,
 	townValue: PropTypes.string,
-	selectedValue : PropTypes.string,
 	disabled: PropTypes.bool
 };
 
 houseAddressComponent.defaultProps = {
-	selectedValue: '',
 	townValue: '',
 	disabled: false
 };

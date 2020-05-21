@@ -72,11 +72,11 @@ class EditResult extends React.Component {
 		}
 	}
 
-	getFormValues = () => {
-		return {
-			form: { ...this.resultTable.getFormValues() },
-			remarks: { ...this.resultRemarks.getRemarks() }
-		};
+	getFormValues = async () => {
+		const remarks = await this.resultRemarks.getRemarks();
+		const form = this.resultTable.getFormValues();
+		
+		return { form: { ...form }, remarks };
 	}
 	
 	onChangeResult = () => {
@@ -150,7 +150,8 @@ class EditResult extends React.Component {
 					/>
 					<Spin spinning={isLoading}>
 						<TableResults 
-							wrappedComponentRef={(inst) => this.resultTable = inst} 
+							// wrappedComponentRef={(inst) => this.resultTable = inst} 
+							ref={(inst) => this.resultTable = inst} 
 							results={results.resultValues || []} 
 							resultStatus={results.status || ''}
 							formatedResults={formatedResults}
@@ -158,7 +159,8 @@ class EditResult extends React.Component {
 						/>
 					</Spin>
 					<PatientComment 
-						wrappedComponentRef={(inst) => this.resultRemarks = inst} 
+						// wrappedComponentRef={(inst) => this.resultRemarks = inst} 
+						ref={(inst) => this.resultRemarks = inst} 
 						remarks={results.remarks || null} 
 						resultStatus={results.status || ''}
 						onChangeResult={this.onChangeResult}

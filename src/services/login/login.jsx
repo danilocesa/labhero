@@ -16,7 +16,8 @@ export default async function login(username, password) {
 
 		data = response;
 	}
-	catch(e) {
+	catch(error) {
+		throw error;
 		// Message.error();
 	}
 

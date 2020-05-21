@@ -241,6 +241,8 @@ class UnitofMeasureTemplate extends React.Component {
   }
 }
 
-const UnitofMeasure = AntForm.create()(UnitofMeasureTemplate);
+// const UnitofMeasure = AntForm.create()(UnitofMeasureTemplate);
 
-export default UnitofMeasure;
+// export default UnitofMeasure;
+
+export default UnitofMeasureTemplate;

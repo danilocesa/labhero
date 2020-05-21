@@ -105,4 +105,6 @@ InputForm.propTypes = {
 	sectionId: PropTypes.number.isRequired,
 };
 
-export default Form.create()(InputForm);
+// export default Form.create()(InputForm);
+
+export default InputForm;

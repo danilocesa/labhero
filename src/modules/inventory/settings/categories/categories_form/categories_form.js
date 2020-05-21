@@ -298,6 +298,8 @@ PanelFormTemplate.defaultProps = {
   }
 };
 
-const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));
+// const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));
 
-export default PanelForm;
+// export default PanelForm;
+
+export default withRouter(PanelFormTemplate);

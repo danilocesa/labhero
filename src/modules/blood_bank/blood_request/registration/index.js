@@ -278,7 +278,7 @@ class FillupRecipient extends React.Component{
 
 
 
-const RecipientForm = Form.create()(withRouter(FillupRecipient));
+// const RecipientForm = Form.create()(withRouter(FillupRecipient));
 
-export default RecipientForm;
-// export default FillupRecipient;
+// export default RecipientForm;
+export default withRouter(FillupRecipient);

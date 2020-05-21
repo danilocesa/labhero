@@ -23,14 +23,20 @@ import './search_patient_form.css';
 const dateFormat = 'MM/DD/YYYY';
 
 class SearchPatientForm extends React.Component {
-	state = {
-		loading: false
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			loading: false
+		};
+
+		this.formRef = React.createRef();
+	}
 
 	handleSubmit = async (event) => {  
-		event.preventDefault();
+		// event.preventDefault();
 
-		const { getFieldsValue } = this.props.form;
+		const { getFieldsValue } = this.formRef.current;
 
 		const { patientID, patientName } = getFieldsValue();
 		const { populatePatients, storeSearchedVal } = this.props;
@@ -68,8 +74,8 @@ class SearchPatientForm extends React.Component {
 	}
 
 	clearInputs = async () => {
-		const { populatePatients, form } = this.props;
-		const { setFieldsValue } = form;
+		const { populatePatients } = this.props;
+		const { setFieldsValue } = this.formRef.current;
 		let patients = [];
 		
 		setFieldsValue({ patientID: '', patientName: '' });
@@ -79,7 +85,7 @@ class SearchPatientForm extends React.Component {
 	}
 
 	handleFocus = (event) => {
-		const { setFieldsValue } = this.props.form;
+		const { setFieldsValue } = this.formRef.current;
 
 		if(event.target.name === 'patientID')
 			setFieldsValue({ patientName: '' });
@@ -90,18 +96,27 @@ class SearchPatientForm extends React.Component {
 
 	render() {
 		const { enableRequestDate, form } = this.props;
-		const { getFieldDecorator, getFieldsValue } = form;
+		// const { getFieldsValue } = form;
 		const { loading } = this.state;
-		const { patientID, patientName } = getFieldsValue();
-		const disabled = !(patientID || (patientName && patientName.length > 1));
+		// const { patientID, patientName } = getFieldsValue();
+		// const disabled = !(patientID || (patientName && patientName.length > 1));
 
 		return (
-			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
+			<Form 
+				className="search-patient-form" 
+				onFinish={this.handleSubmit} 
+				ref={this.formRef}
+				layout="vertical"
+			>
 				<Row gutter={12} type="flex" justify="center">
 					{/* Patient id field */}
 					<Col xs={24} sm={24} md={6} lg={4}>
-						<Form.Item label={fieldLabels.patientID}>
-							{getFieldDecorator('patientID', { 
+						<Form.Item label={fieldLabels.patientID} name="patientID">
+							<AlphaNumInput 
+								onFocus={this.handleFocus}
+								maxLength={20}
+							/> 
+							{/* {getFieldDecorator('patientID', { 
 								rules: FIELD_RULES.patientId,
 							})(
 								<AlphaNumInput 
@@ -109,17 +124,23 @@ class SearchPatientForm extends React.Component {
 									onFocus={this.handleFocus}
 									maxLength={20}
 								/> 
-							)}
+							)} */}
 						</Form.Item>
 					</Col>
 					{/* Or */}
-					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 25 }}>
 						OR
 					</Col>
 					{/* Patient Name */}
 					<Col xs={24} sm={24} md={12} lg={7}>
-						<Form.Item label={fieldLabels.patientName}>
-							{getFieldDecorator('patientName', { 
+						<Form.Item label={fieldLabels.patientName} name="patientName">
+							<RegexInput 
+								regex={/[A-Za-z0-9, -]/} 
+								maxLength={100}
+								onFocus={this.handleFocus}
+								placeholder="Lastname, Firstname"
+							/>
+							{/* {getFieldDecorator('patientName', { 
 								rules: FIELD_RULES.patientName,
 								validateTrigger: 'onBlur'
 							})(
@@ -130,7 +151,7 @@ class SearchPatientForm extends React.Component {
 									onFocus={this.handleFocus}
 									placeholder="Lastname, Firstname"
 								/>
-							)}
+							)} */}
 						</Form.Item>
 					</Col>
 					{/* Request date */}
@@ -164,7 +185,7 @@ class SearchPatientForm extends React.Component {
 									shape="round" 
 									type="primary" 
 									htmlType="submit" 
-									disabled={disabled}
+									// disabled={disabled}
 									loading={loading}
 									style={{ width: 120 }}
 								>
@@ -190,4 +211,5 @@ SearchPatientForm.defaultProps = {
 	enableRequestDate: true,
 }
 
-export default Form.create()(SearchPatientForm);
+// export default Form.create()(SearchPatientForm);
+export default SearchPatientForm;

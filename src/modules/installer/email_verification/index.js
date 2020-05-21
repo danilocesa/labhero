@@ -47,4 +47,5 @@ EmailForm.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
 };
 
-export default Form.create()(EmailForm);
+// export default Form.create()(EmailForm);
+export default EmailForm;

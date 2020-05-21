@@ -120,6 +120,8 @@ RecipientProfile.defaultProps = {
 	patientInfo() { return null; }
 }
 
-const RecipientInfo = Form.create()(withRouter(RecipientProfile));
+// const RecipientInfo = Form.create()(withRouter(RecipientProfile));
 
-export default RecipientInfo;
+// export default RecipientInfo;
+
+export default withRouter(RecipientProfile);

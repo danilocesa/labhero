@@ -37,21 +37,13 @@ const RadioButton = Radio.Button;
 const dateFormat = 'MM/DD/YYYY';
 
 class EditProfile extends React.Component {
-	state = {
-		patientAddress: {} 
-	};
+	constructor(props) {
+		super(props);
 
-	componentDidMount() {
-		const { patientInfo } = this.props;
-
-		this.setState({
-			patientAddress: { 
-				provinceCode: patientInfo.provinceCode,
-				cityMunicipalityCode: patientInfo.cityMunicipalityCode,
-				townCode: patientInfo.townCode,
-				houseAddress: patientInfo.address 
-			} 
-		});
+		this.state = {
+			patientAddress: {}
+		};
+		this.formRef = React.createRef();
 	}
 
 	searchAddress = (input,treenode) => {
@@ -63,24 +55,18 @@ class EditProfile extends React.Component {
 	}
 
 	onProvinceChange = () => {
-		this.setState({ 
-			patientAddress: { 
-				cityMunicipalityCode: null,
-				townCode: null,
-				houseAddress: null 
-			} 
+		this.formRef.current.setFieldsValue({
+			city: null,
+			town: null,
+			address: null 
 		});
 	}
 
 	onCityChange = () => {
-		this.setState((state) => ({ 
-			patientAddress: { 
-				...state.patientAddress, 
-				cityMunicipalityCode: null,
-				townCode: null,
-				houseAddress: null 
-			} 
-		}));
+		this.formRef.current.setFieldsValue({
+			town: null,
+			address: null 
+		});
 	}
 
 	onChangePatientInfo = (event) => {
@@ -139,9 +125,9 @@ class EditProfile extends React.Component {
 	}
 
 	render() {
-		const { patientInfo, form } = this.props;
+		const { patientInfo } = this.props;
 		const { patientAddress } = this.state;
-		const { getFieldDecorator, getFieldsValue } = form;
+		// const { getFieldDecorator, getFieldsValue } = form;
 		const { 
 			emailAdd,
 			contactNumber,
@@ -153,34 +139,65 @@ class EditProfile extends React.Component {
 			suffix 
 		} = patientInfo;
 		const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
-		const { 
-			provinces: selectedProvinceCode, 
-			city: selectedCityCode, 
-			town: selectedTownCode
-		} = getFieldsValue();
+		// const { 
+		// 	provinces: selectedProvinceCode, 
+		// 	city: selectedCityCode, 
+		// 	town: selectedTownCode
+		// } = getFieldsValue();
+
+		console.log(patientInfo.address, formLabels.unitNo.fieldName);
 
 		return(
 			<div>
-				<Form className="patient-demo-fillup-form" onSubmit={this.onSubmit}>
+				<Form 
+					ref={this.formRef}
+					onFinish={this.onSubmit}
+					initialValues={{
+						...patientInfo,
+						provinces: patientInfo.provinceCode,
+						city: patientInfo.cityMunicipalityCode, 
+						town: patientInfo.townCode,
+						address: patientInfo.address
+					}}
+					className="patient-demo-fillup-form" 
+					layout="vertical"
+				>
 					<Row gutter={8}>
 						{/** Lastname */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.lastName}>
-							{getFieldDecorator('lastname', {
-								initialValue: lastName,
-								rules: fieldRules.lastname ,
-							})(
+							<Form.Item 
+								name="lastName" 
+								label={formLabels.lastName}
+								rules={fieldRules.lastname}
+							>
 								<RegexInput
 									regex={/[A-Za-z0-9-. ]/}  
 									maxLength={50}
 								/>
-							)}
+								{/* {getFieldDecorator('lastname', {
+									initialValue: lastName,
+									rules: fieldRules.lastname ,
+								})(
+									<RegexInput
+										regex={/[A-Za-z0-9-. ]/}  
+										maxLength={50}
+									/>
+								)} */}
 							</Form.Item>
 						</Col>
 						{/** Firstname */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.firstName}>
-								{getFieldDecorator('firstname', {
+							<Form.Item 
+								name="givenName"
+								label={formLabels.firstName}
+								rules={fieldRules.firstname}
+							>
+								<RegexInput 
+									regex={/[A-Za-z0-9-. ]/}  
+									onChange={this.onChangePatientInfo} 
+									maxLength={50}
+								/>
+								{/* {getFieldDecorator('firstname', {
 									initialValue: givenName,
 									rules: fieldRules.firstname,
 								})(
@@ -189,13 +206,17 @@ class EditProfile extends React.Component {
 										onChange={this.onChangePatientInfo} 
 										maxLength={50}
 									/>
-								)}
+								)} */}
 							</Form.Item>
 						</Col>
 						{/** Middlename */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.middleName}>
-								{getFieldDecorator('middlename', {
+							<Form.Item 
+								name="middlename"
+								label={formLabels.middleName}
+								rules={fieldRules.middlename}
+							>
+								{/* {getFieldDecorator('middlename', {
 									initialValue: middleName,
 									rules: fieldRules.middlename,
 								})(
@@ -204,13 +225,26 @@ class EditProfile extends React.Component {
 										onChange={this.onChangePatientInfo} 
 										maxLength={15}
 									/>
-								)}
+								)} */}
+								<RegexInput 
+									regex={/[A-Za-z0-9-. ]/}   
+									onChange={this.onChangePatientInfo} 
+									maxLength={15}
+								/>
 							</Form.Item>
 						</Col>
 						{/** Suffix */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.suffix}>
-								{getFieldDecorator('suffix', {
+							<Form.Item 
+								name="suffix"
+								label={formLabels.suffix}
+								rules={fieldRules.suffix}
+							>
+								<Input 
+									onChange={this.onChangePatientInfo} 
+									maxLength={5}
+								/>
+								{/* {getFieldDecorator('suffix', {
 									initialValue: suffix,
 									rules: fieldRules.suffix,
 								})(
@@ -218,13 +252,34 @@ class EditProfile extends React.Component {
 										onChange={this.onChangePatientInfo} 
 										maxLength={5}
 									/>
-								)}
+								)} */}
 							</Form.Item>
 						</Col>
 						{/** Gender */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.gender} className="gutter-box">
-								{getFieldDecorator('gender', {
+							<Form.Item 
+								name="gender"
+								className="gutter-box"
+								label={formLabels.gender} 
+								rules={fieldRules.gender}
+							>
+								<RadioGroup buttonStyle="solid" style={{ width:'100%', textAlign:'center' }} disabled>
+									<RadioButton 
+										style={{ width:'50%' }} 
+										value={genderOptions.male} 
+										checked={sex === genderOptions.male}
+									>
+										{genderOptions.male}
+									</RadioButton>
+									<RadioButton 
+										style={{ width:'50%' }} 
+										value={genderOptions.female} 
+										checked={sex === genderOptions.female}
+									>
+										{genderOptions.female}
+									</RadioButton>
+								</RadioGroup>
+								{/* {getFieldDecorator('gender', {
 									initialValue: this.props.patientInfo.sex,
 									rules: fieldRules.gender,
 								})(
@@ -244,16 +299,26 @@ class EditProfile extends React.Component {
 											{genderOptions.female}
 										</RadioButton>
 									</RadioGroup>
-								)}
+								)} */}
 							</Form.Item>
 						</Col>
 						{/** Date of birth */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Row gutter={8}>
 								<Col xs={24} sm={12} md={12} lg={12}>
-									<Form.Item label={formLabels.dateOfBirth}>
+									<Form.Item 
+										name="dateOfBirth" 
+										label={formLabels.dateOfBirth}
+										rules={fieldRules.dateOfBirth}
+									>
 										<div className="customDatePickerWidth">
-											{getFieldDecorator('dateOfBirth', { 
+											<DatePicker 
+												format={dateFormat}
+												style={{ width: '100%' }}
+												onChange={this.onDateChange}
+												disabled
+											/>
+											{/* {getFieldDecorator('dateOfBirth', { 
 												initialValue: dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null,
 												rules: fieldRules.dateOfBirth
 											})(
@@ -263,7 +328,7 @@ class EditProfile extends React.Component {
 													onChange={this.onDateChange}
 													disabled
 												/>
-											)}
+											)} */}
 										</div>
 									</Form.Item>
 								</Col>
@@ -271,46 +336,79 @@ class EditProfile extends React.Component {
 						</Col>
 						{/** Province */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<ProvinceList
-								form={form}
-								placeholder={selectDefaultOptions} 
+							<ProvinceList 
+								form={this.formRef}
+								// form={form}
+								placeholder={selectDefaultOptions}
 								selectedProvince={provinceCode}
 								onChange={this.onProvinceChange}
 							/>
-						</Col>2
+						</Col>
 						{/** City */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<CityList 
-								form={form}
-								placeholder={selectDefaultOptions} 
-								provinceValue={selectedProvinceCode || provinceCode}
-								selectedCity={cityMunicipalityCode}
-								onChange={this.onCityChange}
-							/>
+							<Form.Item shouldUpdate>
+								{(form) => {
+									return (
+										<CityList 
+											form={form}
+											// form={form}
+											placeholder={selectDefaultOptions}
+											provinceValue={form.getFieldValue('provinces')}
+											selectedCity={cityMunicipalityCode}
+											onChange={this.onCityChange}
+										/>
+									);
+								}}
+							</Form.Item>
 						</Col>
 						{/** Barangay */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<TownList 
-								form={form}
-								placeholder={selectDefaultOptions} 
-								cityValue={selectedCityCode || cityMunicipalityCode}
-								selectedTown={townCode}
-							/>
+							<Form.Item shouldUpdate>
+								{(form) => {
+									return (
+										<TownList 
+											placeholder={selectDefaultOptions}
+											cityValue={form.getFieldValue('city')}
+										/>
+									);
+								}}
+							</Form.Item>
 						</Col>
 						{/** Unit No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<HouseAddress 
+							<Form.Item shouldUpdate>
+								{(form) => {
+									return (
+										<HouseAddress 
+											form={form}
+											townValue={form.getFieldValue('town')}
+											fieldLabel={formLabels.unitNo.label}
+											fieldName={formLabels.unitNo.fieldName}
+											selectedValue={houseAddress}
+										/>
+									)
+								}}
+							</Form.Item>
+							{/* <HouseAddress 
 								form={form}
 								townValue={selectedTownCode || townCode}
 								fieldLabel={formLabels.unitNo.label}
 								fieldName={formLabels.unitNo.fieldName}
 								selectedValue={houseAddress}
-							/>
+							/> */}
 						</Col>
 						{/** Contact No. */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.contactNumber}>
-								{getFieldDecorator('contactNumber', { 
+							<Form.Item 
+								name="contactNumber"
+								label={formLabels.contactNumber}
+								rules={fieldRules.contactNumber}
+							>
+								<NumberInput 
+									addonBefore="+ 63" 
+									maxLength={10} 
+								/>
+								{/* {getFieldDecorator('contactNumber', { 
 									initialValue: contactNumber,
 									rules: fieldRules.contactNumber
 								 })(
@@ -318,18 +416,23 @@ class EditProfile extends React.Component {
 										addonBefore="+ 63" 
 										maxLength={10} 
 									/>
-								)}
+								)} */}
 							</Form.Item>
 						</Col>	
 						{/** Email address */}
 						<Col xs={24} sm={12} md={12} lg={12}>
-							<Form.Item label={formLabels.emailAddress}>
-							{getFieldDecorator('emailAdd', {
-								initialValue: emailAdd,
-								rules: fieldRules.emailAddress ,
-							})(
+							<Form.Item 
+								name="emailAdd" 
+								label={formLabels.emailAddress}
+
+							>
 								<Input maxLength={100} />
-							)}
+								{/* {getFieldDecorator('emailAdd', {
+									initialValue: emailAdd,
+									rules: fieldRules.emailAddress ,
+								})(
+									<Input maxLength={100} />
+								)} */}
 							</Form.Item>
 						</Col>	
 					</Row>
@@ -360,6 +463,7 @@ EditProfile.defaultProps = {
 	onCancel() { return null }
 }
 
-const UpdatePatientForm = Form.create()(withRouter(EditProfile));
+// const UpdatePatientForm = Form.create()(withRouter(EditProfile));
 
-export default UpdatePatientForm;
+// export default UpdatePatientForm;
+export default withRouter(EditProfile);

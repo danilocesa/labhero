@@ -158,13 +158,13 @@ class AddForm extends React.Component {
 			>
 				<Form onSubmit={this.onSubmit} className="exam-item-add-form">
 					<section style={{ marginBottom: 50 }}>
-						<Form.Item label={fieldLabels.examItemName}>
-							{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
+						<Form.Item label={fieldLabels.examItemName} rules={[{ required: true }]}>
+							{/* {getFieldDecorator('examItemName', { rules: fieldRules.examItemName })( */}
 								<RegexInput 
 									regex={/[A-Za-z0-9 -]/} 
 									maxLength={200} 
 								/>
-							)}
+							{/* )} */}
 						</Form.Item>
 						<Form.Item label={fieldLabels.examItemGeneralName}>
 							{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
@@ -280,4 +280,6 @@ AddForm.defaultProps = {
 	selectedSpecimenName: null
 };
 
-export default Form.create()(AddForm);
+// export default Form.create()(AddForm);
+
+export default AddForm;

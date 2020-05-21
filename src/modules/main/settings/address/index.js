@@ -338,6 +338,6 @@ class Address extends React.Component {
 	}
 }
 
+// export default Form.create()(withRouter(Address));
 
-
-export default Form.create()(withRouter(Address));;
+export default withRouter(Address);

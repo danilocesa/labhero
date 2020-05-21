@@ -65,12 +65,14 @@ class EditableTable extends React.Component {
 					</div>
 				),
       },
-    ];
+		];
+		
+		this.formRef = React.createRef();
   }
 
 	createFormInput = (record) => {
-		const { form, resultStatus, onChangeResult } = this.props;
-		const { getFieldDecorator } = form;
+		const { resultStatus, onChangeResult } = this.props;
+		// const { getFieldDecorator } = form;
 		// const { examItemOptions, releasedResult } = record;
 		// const defaultItemOption = examItemOptions.findIndex(item => item && item.examItemValueDefault === 1);
 		// const selectedItemOption = defaultItemOption === -1 ? null : defaultItemOption;
@@ -80,8 +82,15 @@ class EditableTable extends React.Component {
 
 
 		return (
-			<Form.Item>
-				{ getFieldDecorator(record.fieldName, { 	
+			<Form.Item name={record.fieldName} initialValue={record.releasedResult}>
+				<DynamicInput 
+					type={record.examItemTypeCode}
+					isLock={record.examRequestItemLock === 1 || resultStatus === 'Approve'}
+					itemOptions={record.examItemOptions}
+					maxLength={record.maxLength}
+					onChange={onChangeResult}
+				/>
+				{/* { getFieldDecorator(record.fieldName, { 	
 					initialValue: record.releasedResult,
 					// initialValue
 				})(
@@ -92,7 +101,7 @@ class EditableTable extends React.Component {
 						maxLength={record.maxLength}
 						onChange={onChangeResult}
 					/>
-				)}
+				)} */}
 			</Form.Item>
 		);
 	}
@@ -102,31 +111,27 @@ class EditableTable extends React.Component {
 	// data once an error validation appears
 	getFormValues = () => {
 		// eslint-disable-next-line react/prop-types
-		const { form, results } = this.props;
-		const { getFieldsValue, validateFieldsAndScroll } = form;
+		const { results } = this.props;
 		let labResults = null;
 
-		validateFieldsAndScroll(async(err) => {	
-			const fieldsValue = getFieldsValue();
-			const clonedResults = JSON.parse(JSON.stringify(results));
+		const fieldsValue = this.formRef.current.getFieldsValue();
+		const clonedResults = JSON.parse(JSON.stringify(results));
 
-
-			const combinedResults = clonedResults.map(item => {
-				const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
-					
-				return { 
-					...item, 
-					// releasedResult: `${fieldsValue[key]}`,
-					releasedResult: fieldsValue[key],
-					unitOfMesureBase: item.unitOfMesureBase || "0 0",
-				};
-			});
-			
-			labResults = {
-				results: combinedResults,
-				hasError: err !== null,
+		const combinedResults = clonedResults.map(item => {
+			const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
+				
+			return { 
+				...item, 
+				releasedResult: fieldsValue[key],
+				unitOfMesureBase: item.unitOfMesureBase || "0 0",
 			};
 		});
+		
+		labResults = {
+			results: combinedResults,
+			// hasError: err !== null,
+			hasError: false,
+		};
 
 		return labResults;
 	}
@@ -136,7 +141,7 @@ class EditableTable extends React.Component {
 
     return (
 			<div className="labresult-exam-item-table">
-				<Form>
+				<Form ref={this.formRef}>
 					<Table
 						dataSource={formatedResults}
 						columns={this.columns}
@@ -158,4 +163,5 @@ EditableTable.propTypes = {
 	onChangeResult: PropTypes.func.isRequired
 };
 
-export default Form.create()(EditableTable);
+// export default Form.create()(EditableTable);
+export default EditableTable;

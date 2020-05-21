@@ -224,6 +224,8 @@ class Transactions extends React.Component {
   }
 }
 
-const TransactionsValidation = Form.create()(Transactions);
+// const TransactionsValidation = Form.create()(Transactions);
 
-export default TransactionsValidation;
+// export default TransactionsValidation;
+
+export default Transactions;

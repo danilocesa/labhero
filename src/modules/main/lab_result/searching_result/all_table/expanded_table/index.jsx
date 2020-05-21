@@ -62,6 +62,7 @@ class ExpandedTable extends React.Component {
 						<Button 
 							loading={isPrintLoading[index]}
 							onClick={() => this.onClickPrint(record, index)}
+							disabled={record.specimenStatus !== 'Approve' && record.specimenStatus !== 'Save'}
 						>
 							Print
 						</Button>

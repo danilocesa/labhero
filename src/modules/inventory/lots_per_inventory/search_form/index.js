@@ -353,6 +353,8 @@ InventoryListForm.defaultProps = {
   }
 };
 
-const PanelForm = AntForm.create()(withRouter(InventoryListForm));
+// const PanelForm = AntForm.create()(withRouter(InventoryListForm));
 
-export default PanelForm;
+// export default PanelForm;
+
+export default withRouter(InventoryListForm);

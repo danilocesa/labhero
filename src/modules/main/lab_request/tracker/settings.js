@@ -1,4 +1,7 @@
-import { requestLinks } from '../../settings/lab_exam_request/settings';
+import React from 'react';
+import { requestLinks } from 'modules/main/settings/lab_exam_request/settings';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { SearchOutlined, FormOutlined, CheckSquareOutlined, IdcardOutlined } from '@ant-design/icons';
 
 export const trackerSettings={
 	requestTypes: {
@@ -8,22 +11,22 @@ export const trackerSettings={
 		{
 			title: 'Step 1',
 			description: 'Search Patient',
-			icon: 'search'
+			icon: <SearchOutlined />
 		},
 		{
 			title: 'Step 2',
 			description: 'Fill up',
-			icon: 'form'
+			icon: <FormOutlined />
 		},
 		{
 			title: 'Step 3',
 			description: 'Select Lab Test',
-			icon: 'check-square'
+			icon: <CheckSquareOutlined />
 		},
 		{
 			title: 'Step 4',
 			description: 'Summary',
-			icon: 'idcard'
+			icon: <IdcardOutlined />
 		}
 	],
 	links: {

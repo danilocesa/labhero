@@ -31,8 +31,8 @@ class SearchPatientHeaderForm extends React.Component {
 		});
 	}
 
-	handleSubmit = async (event) => {  
-		event.preventDefault();
+	handleSubmit = async () => {  
+		// event.preventDefault();
 
 		await this.populateTable();
 	}
@@ -116,7 +116,11 @@ class SearchPatientHeaderForm extends React.Component {
 		const disabled = !(patientID || (patientName && patientName.length > 1));
 
 		return (
-			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
+			<Form 
+				className="search-patient-form" 
+				layout="vertical"
+				onFinish={this.handleSubmit}
+			>
 				<Row gutter={12} type="flex" justify="center">
 					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item label="PATIENT ID">
@@ -130,7 +134,7 @@ class SearchPatientHeaderForm extends React.Component {
 							/> 
 						</Form.Item>
 					</Col>
-					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 30 }}>
+					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 24 }}>
 						OR
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={7}>

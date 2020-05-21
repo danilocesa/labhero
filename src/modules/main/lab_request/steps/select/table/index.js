@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as AntTable, Button, Tooltip } from 'antd';
 import { globalTableSize } from 'global_config/constant-global';
+import { CloseOutlined } from '@ant-design/icons';
 
 import './table.css';
 
 const createColumns = handleRemove => {
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
-			{/* <Button type="primary" size="small" icon="delete" onClick={handleRemove} /> */}
 			<Button type="primary" size="small" onClick={handleRemove}>
 				CLEAR
 			</Button>
@@ -18,7 +18,7 @@ const createColumns = handleRemove => {
 	return [
 		{
 			title: 'SECTION',
-			dataIndex: 'selectedSection.sectionName',
+			dataIndex: ['selectedSection', 'sectionName'],
 			width: 100,
 			sorter: (a, b) => a.selectedSection.sectionName.localeCompare(b.selectedSection.sectionName),
 		},
@@ -30,13 +30,13 @@ const createColumns = handleRemove => {
 		},
 		{
 			title: 'SPECIMEN',
-			dataIndex: 'selectedSpecimen.specimenName',
+			dataIndex: ['selectedSpecimen', 'specimenName'],
 			width: 100,
 			sorter: (a, b) => a.selectedSpecimen.specimenName.localeCompare(b.selectedSpecimen.specimenName),
 		},
 		{
 			title: 'PANEL',
-			dataIndex: 'selectedPanel.panelName',
+			dataIndex: ['selectedPanel', 'panelName'],
 			width: 100,
 			sorter: (a, b) => {
 				const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
@@ -74,9 +74,9 @@ class SelectTable extends React.Component {
 			action: selectedExam.isDisabled ? null : (
 				<Button 
 					type="dashed" 
-					icon="close" 
+					icon={<CloseOutlined />}
 					size="small" 
-					style={{ fontSize: 10 }}
+					// style={{ fontSize: 12 }}
 					onClick={() => removeSelectedExamByExam(selectedExam)}
 				/> 
 			)

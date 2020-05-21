@@ -193,4 +193,5 @@ DynamicForm.defaultProps = {
 	examItemValue: []
 }
 
-export default Form.create()(DynamicForm);;
+// export default Form.create()(DynamicForm);
+export default DynamicForm;

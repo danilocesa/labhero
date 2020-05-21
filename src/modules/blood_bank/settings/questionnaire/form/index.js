@@ -251,4 +251,5 @@ AddForm.defaultProps = {
 	selectedSpecimenId: null,
 };
 
-export default Form.create()(AddForm);
+// export default Form.create()(AddForm);
+export default AddForm;

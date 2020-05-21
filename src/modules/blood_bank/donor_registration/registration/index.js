@@ -260,6 +260,8 @@ return (
 }
 
 
-const FillupForm = Form.create()(withRouter(BaseForm));
+// const FillupForm = Form.create()(withRouter(BaseForm));
 
-export default FillupForm;
+// export default FillupForm;
+
+export default withRouter(BaseForm);

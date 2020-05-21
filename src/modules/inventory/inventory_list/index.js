@@ -282,6 +282,8 @@ class InventoryList extends React.Component {
   }
 }
 
-const InventoryCategories = AntForm.create()(InventoryList);
+// const InventoryCategories = AntForm.create()(InventoryList);
 
-export default InventoryCategories;
+// export default InventoryCategories;
+
+export default InventoryList;

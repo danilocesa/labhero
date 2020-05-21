@@ -333,4 +333,7 @@ class SearchPatientForm extends React.Component {
     );
   }
 }
-export default Form.create()(SearchPatientForm);
+
+// export default Form.create()(SearchPatientForm);
+
+export default SearchPatientForm;

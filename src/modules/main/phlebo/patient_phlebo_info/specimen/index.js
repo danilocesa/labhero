@@ -2,19 +2,18 @@
 // @ts-nocheck
 /* eslint-disable func-names */
 /* eslint-disable array-callback-return */
-// LIBRARY
 import React from 'react';
 import { Table, Button, Spin } from 'antd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PrinterOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { globalTableSize } from 'global_config/constant-global';
 
-// CUSTOM MODULES
 import { fetchRequestSpecimenToProcess, checkinSpecimen } from 'services/phlebo/specimenTracking';
 import printBarcodeLabel from 'services/phlebo/barcodeLabel';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { messagePrompts, buttonNames } from './settings';
 
-// CSS
 import './specimen.css';
 
 
@@ -68,7 +67,6 @@ class SpecimenList extends React.Component {
 							onClick={() => this.onClickExtract(row.sectionID, row.specimenID, index)}
 							loading={isLoading}
 							disabled={row.sampleSpecimenID}
-							className="extract-phlebo-btn"
 						>
 							{row.sampleSpecimenID ? buttonNames.extracted : buttonNames.extract} 
 						</Button>
@@ -83,9 +81,7 @@ class SpecimenList extends React.Component {
 					return(
 						<Button 
 							onClick={() => this.handlePrint(row.specimenID)} 
-							className="extract-phlebo-btn"
-							icon="printer"
-							style={{ fontSize: '24px' }}
+							icon={<PrinterOutlined />}
 							disabled={!row.sampleSpecimenID}
 						/>
 					)

@@ -30,7 +30,8 @@ class PrintResult extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    const { sampleID, resultStatus } = this.props;
+    // const { sampleID, resultStatus } = this.props;
+    const { sampleID } = this.props;
     
     if(prevProps.sampleID !== sampleID) {
       // eslint-disable-next-line react/no-did-update-set-state
@@ -45,7 +46,8 @@ class PrintResult extends React.Component {
         this.timer = setInterval(() => {
           const { isReadyToPrint } = this.state;
           
-          if(isReadyToPrint && (resultStatus === 'Save' || resultStatus === 'Approve')) {  
+          // if(isReadyToPrint && (resultStatus === 'Save' || resultStatus === 'Approve')) {  
+          if(isReadyToPrint) {  
             this.printResult();
 
             clearInterval(this.timer);

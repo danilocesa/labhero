@@ -120,33 +120,36 @@ InputForm.defaultProps = {
 
 // Here I bind the props value to the fields, this is used in update panel
 // to prevent manual setting of fields value in componentDidUpdate.
-export default Form.create({
-	mapPropsToFields(props) {
-		// @ts-ignore
-		const { examRequest } = props;
 
-    return {
-			examRequestName: Form.createFormField({ 
-				value: examRequest.examRequestName
-			}),
-			examRequestCode: Form.createFormField({ 
-				value: examRequest.examRequestCode
-			}),
-			examRequestLoinc: Form.createFormField({ 
-				value: examRequest.examRequestLoinc
-			}),
-			examRequestIntegrationCode: Form.createFormField({ 
-				value: examRequest.examRequestIntegrationCode
-			}),
-			examRequestSort: Form.createFormField({ 
-				value: examRequest.examRequestSort
-			}),
-			sectionID: Form.createFormField({ 
-				value: examRequest.sectionID
-			}),
-			specimenID: Form.createFormField({ 
-				value: examRequest.specimenID
-			})
-    };
-  },
-})(InputForm);
+// export default Form.create({
+// 	mapPropsToFields(props) {
+// 		// @ts-ignore
+// 		const { examRequest } = props;
+
+//     return {
+// 			examRequestName: Form.createFormField({ 
+// 				value: examRequest.examRequestName
+// 			}),
+// 			examRequestCode: Form.createFormField({ 
+// 				value: examRequest.examRequestCode
+// 			}),
+// 			examRequestLoinc: Form.createFormField({ 
+// 				value: examRequest.examRequestLoinc
+// 			}),
+// 			examRequestIntegrationCode: Form.createFormField({ 
+// 				value: examRequest.examRequestIntegrationCode
+// 			}),
+// 			examRequestSort: Form.createFormField({ 
+// 				value: examRequest.examRequestSort
+// 			}),
+// 			sectionID: Form.createFormField({ 
+// 				value: examRequest.sectionID
+// 			}),
+// 			specimenID: Form.createFormField({ 
+// 				value: examRequest.specimenID
+// 			})
+//     };
+//   },
+// })(InputForm);
+
+export default InputForm;

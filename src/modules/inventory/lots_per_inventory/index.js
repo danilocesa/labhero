@@ -496,6 +496,8 @@ class LotsPerInventory extends React.Component {
   }
 }
 
-const InventoryCategories = AntForm.create()(LotsPerInventory);
+// const InventoryCategories = AntForm.create()(LotsPerInventory);
 
-export default InventoryCategories;
+// export default InventoryCategories;
+
+export default LotsPerInventory;

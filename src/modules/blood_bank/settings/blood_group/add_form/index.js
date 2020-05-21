@@ -67,6 +67,7 @@ UserAccountForm.defaultProps = {
 	onClose() { return null}
 };
 
-const UserAccount = Form.create()(withRouter(UserAccountForm));
+// const UserAccount = Form.create()(withRouter(UserAccountForm));
 
-export default UserAccount;
+// export default UserAccount;
+export default withRouter(UserAccountForm);
