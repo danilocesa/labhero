@@ -147,6 +147,7 @@ class EditResult extends React.Component {
 					<PatientName 
 						patientInfo={patientInfo} 
 						sampleSpecimenID={examDetails.sampleSpecimenID || null}
+						specimenStatus={examDetails.specimenStatus}
 					/>
 					<Spin spinning={isLoading}>
 						<TableResults 
@@ -190,6 +191,7 @@ EditResult.propTypes = {
 	}).isRequired,
 	examDetails: PropTypes.shape({
 		sampleSpecimenID: PropTypes.string,
+		specimenStatus: PropTypes.string
 	}).isRequired
 };
 

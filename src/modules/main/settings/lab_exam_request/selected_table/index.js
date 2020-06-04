@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form, Switch, Button } from 'antd';
+import { Spin, Table, Input, Form, Switch } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -14,7 +14,7 @@ import DragableBodyRow from './drag_and_drop';
 // CSS
 import './selected_table.css';
 
-const {labels} = selectedTableConst;
+const { labels } = selectedTableConst;
 
 class SelectedTable extends React.Component {
 	
@@ -39,7 +39,6 @@ class SelectedTable extends React.Component {
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemGroup', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemGroup,
 					maxLength: 100
 				})
 			},
@@ -50,7 +49,6 @@ class SelectedTable extends React.Component {
 				render: (text, record) => this.createFormInput({
 					fieldName: 'examRequestItemFormula', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemFormula,
 					maxLength: 500
 				})
 			},
@@ -61,7 +59,6 @@ class SelectedTable extends React.Component {
 				render: (text, record) => this.createFormSwitch({
 					fieldName: 'examRequestItemLock', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemLock
 				})
 			},
 			{ 
@@ -71,16 +68,8 @@ class SelectedTable extends React.Component {
 				render: (text, record) => this.createFormSwitch({
 					fieldName: 'examRequestItemPrintable', 
 					examItemID: record.examItemID, 
-					initialValue: record.examRequestItemPrintable
 				})
-			},
-			// { 
-			// 	title: 'Sort',
-			// 	width: 70,
-			// 	render: (text, record, index) => {
-			// 		return <Input size="small" disabled value={index + 1} style={{ textAlign: 'center', width: 50 }} />;
-			// 	}
-			// },
+			}
 		];
 		
 		this.components = {
@@ -91,19 +80,26 @@ class SelectedTable extends React.Component {
 	}
 
 	getSelectedExamItems = () => {
+		const { data } = this.props;
 		const { getFieldsValue } = this.props.form;
 		const fieldsValue = getFieldsValue();
-		const { examRequestItemGroup, examRequestItemFormula, examRequestItemLock, examRequestItemPrintable } = fieldsValue;
 		const examItems = [];
+		
+		// const keys = data.map((item, index) => fieldsValue[`keys_${index}`]);
+		const keys = data.map((item, index) => ({ 
+			key: item.examItemID,
+			sortCount: index + 1
+		}));
 
-		fieldsValue.keys.forEach((key, index) => {
+		keys.forEach(({ key, sortCount }) => {
 			examItems.push({
 				examItemID: key,
-				examRequestItemGroup: examRequestItemGroup[key],
-				examRequestItemFormula: examRequestItemFormula[key],
-				examRequestItemLock: examRequestItemLock[key] ? 1 : 0,
-				examRequestItemPrintable: examRequestItemPrintable[key] ? 1 : 0,
-				examRequestItemSort: index + 1
+				examRequestItemGroup: fieldsValue[`examRequestItemGroup_${key}`],
+				examRequestItemFormula: fieldsValue[`examRequestItemFormula_${key}`],
+				examRequestItemLock: fieldsValue[`examRequestItemLock_${key}`] ? 1 : 0,
+				examRequestItemPrintable: fieldsValue[`examRequestItemPrintable_${key}`] ? 1 : 0,
+				// examRequestItemSort: index + 1
+				examRequestItemSort: sortCount
 			});
 		});
 
@@ -121,46 +117,44 @@ class SelectedTable extends React.Component {
 		onDragAndDropRow(updatedData.data);
   };
 
-	createFormInput = ({ fieldName, examItemID, initialValue, maxLength }) => {
-		const { form } = this.props;
-		const { getFieldDecorator } = form;
+
+	createFormInput = ({ fieldName, examItemID, maxLength }) => {
 
 		return (
-			<Form.Item className='ser-selected-table-row'>
-				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
-					// rules: [{ required: true }],
-					initialValue,
-				})(
-					<Input size="small" maxLength={maxLength || 524288} />
-				)}
+			<Form.Item 
+				name={`${fieldName}_${examItemID}`}
+				className="ser-selected-table-row"
+			>
+				<Input size="small" maxLength={maxLength || 524288} />
 			</Form.Item>
 		)
 	}
 
-	createFormSwitch = ({ fieldName, examItemID, initialValue }) => {
-		const { form } = this.props;
-		const { getFieldDecorator } = form;
-
+	createFormSwitch = ({ fieldName, examItemID }) => {
 		return (
-			<Form.Item className='ser-selected-table-row'>
-				{ getFieldDecorator(`${fieldName}[${examItemID}]`, { 	
-					initialValue:  initialValue === 1,
-					valuePropName: 'checked',
-				})(
-					<Switch />
-				)}
+			<Form.Item 
+				name={`${fieldName}_${examItemID}`}
+				className="ser-selected-table-row"
+				valuePropName="checked"
+			>
+				<Switch />
 			</Form.Item>
 		)
 	}
 	
 	createInvisibleKey = (examItemID, index) => {
-		const { form } = this.props;
-		const { getFieldDecorator } = form;
-
-		getFieldDecorator(`keys[${index}]`, { initialValue: examItemID });
-
-		return '';
+		return (
+			<Form.Item 
+				name={`keys_${index}`}
+				initialValue={examItemID}
+			>
+				<div className="hide">
+					<Input />
+				</div>
+			</Form.Item>
+		);
 	}
+
 
 	triggerValidation() {
 		const { validateFields } = this.props.form;
@@ -200,6 +194,7 @@ class SelectedTable extends React.Component {
 }
 
 SelectedTable.propTypes = {
+	form: PropTypes.object.isRequired,
 	data: PropTypes.arrayOf(PropTypes.shape({
 		examItemID: PropTypes.any.isRequired,
 		examItemName: PropTypes.string.isRequired,
@@ -208,6 +203,5 @@ SelectedTable.propTypes = {
 	onDragAndDropRow: PropTypes.func.isRequired
 };
 
-// export default Form.create()(SelectedTable);
 
 export default SelectedTable;

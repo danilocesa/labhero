@@ -81,6 +81,7 @@ class UserTable extends React.Component {
 			users: [],
 			pagination: {
 				pageSize: tablePageSize,
+				showSizeChanger: false
 			},
 			loading: false
 		}
@@ -200,7 +201,7 @@ class UserTable extends React.Component {
 						scroll={{ y: tableYScroll }}
 						columns={columns} 
 						dataSource={users}
-						pagination={pagination}
+						pagination={{ ...pagination, showSizeChanger: false }}
 						rowKey={record => record.userID}
 						onRow={(record) => {
 							return {     

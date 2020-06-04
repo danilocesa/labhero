@@ -3,7 +3,7 @@ import { axiosLabAPI } from 'services/axios';
 import { apiGetMethod } from 'global_config/constant-global';
 
 export default async function getInputTypeCode() {
-	let inputTypeCodes;
+	let inputTypeCodes = [];
 
 	try{
 		const content = {

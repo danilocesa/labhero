@@ -68,7 +68,7 @@ class MainTable extends React.Component {
 			<Table
 				className="test-results-table"
 				columns={columns}
-				pagination={{ pageSize }} 
+				pagination={{ pageSize, showSizeChanger: false }} 
 				expandedRowRender={this.expandedRowRender}
 				defaultExpandAllRows
 				dataSource={labResults}

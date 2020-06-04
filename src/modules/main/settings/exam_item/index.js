@@ -1,13 +1,15 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Row, Col, Input } from 'antd';
+import { Button, Row, Col, Input } from 'antd';
 
 // CUSTOM
 import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { fetchSections, fetchSpecimens, fetchExamitems } from 'services/settings/examItem';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PlusOutlined } from '@ant-design/icons';
 import ExamTable from './table';
 import AddForm from './add_form';
 import UpdateForm from './update_form';
@@ -85,21 +87,28 @@ class ExamItems extends React.Component {
 	}
 
 	onChangeSectionCode = (sectionId, option) => {
-		this.setState({ isLoading: true, selectedSectionId: sectionId }, async () => {
+		this.setState({ 
+			isLoading: true, 
+			selectedExamItemId: null,
+			selectedSectionId: sectionId 
+		}, async () => {
 			const { selectedSpecimenId: specimenID } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
-		
 			this.setState({ 
 				examItems, 
 				examItemsRef: examItems,
 				isLoading: false,
-				selectedSectionName: option.props.children 
+				selectedSectionName: option.props.children
 			});
 		});
 	}
 
 	onChangeSpecimen = (specimenID, option) => {
-		this.setState({ isLoading: true, selectedSpecimenId: specimenID }, async () => {
+		this.setState({ 
+			isLoading: true, 
+			selectedExamItemId: null,
+			selectedSpecimenId: specimenID 
+		}, async () => {
 			const { selectedSectionId: sectionId } = this.state;
 			const examItems = await fetchExamitems(sectionId, specimenID);
 
@@ -225,7 +234,7 @@ class ExamItems extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<Icon type="plus" /> {buttonNames.addExamItem}
+					<PlusOutlined /> {buttonNames.addExamItem}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -233,19 +242,21 @@ class ExamItems extends React.Component {
 
 		return (
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle={moduleTitle} />
-					<Row style={{ marginTop: 50 }}>
-					<DropDown 
-						label="SECTION"
-						placeholder="Select Section"
-						content={ddSections} 
-						onChange={this.onChangeSectionCode}
-						loading={isInitializing}
-						value={selectedSectionId}
-					/>
-					</Row>
-				</section>
+				<Row justify="center" style={{ marginTop: 30 }}>
+					<Col>
+						<PageTitle pageTitle={moduleTitle} />
+						<div style={{ marginTop: 50 }}>
+							<DropDown 
+								label="SECTION"
+								placeholder="Select Section"
+								content={ddSections} 
+								onChange={this.onChangeSectionCode}
+								loading={isInitializing}
+								value={selectedSectionId}
+							/>
+						</div>
+					</Col>
+				</Row>
 				<ActionSection 
 					leftContent={leftSection}
 					rightContent={rightSection}

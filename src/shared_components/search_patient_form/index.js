@@ -33,9 +33,7 @@ class SearchPatientForm extends React.Component {
 		this.formRef = React.createRef();
 	}
 
-	handleSubmit = async (event) => {  
-		// event.preventDefault();
-
+	handleSubmit = async () => {  
 		const { getFieldsValue } = this.formRef.current;
 
 		const { patientID, patientName } = getFieldsValue();
@@ -95,11 +93,9 @@ class SearchPatientForm extends React.Component {
 	}
 
 	render() {
-		const { enableRequestDate, form } = this.props;
-		// const { getFieldsValue } = form;
+		const { enableRequestDate } = this.props;
 		const { loading } = this.state;
-		// const { patientID, patientName } = getFieldsValue();
-		// const disabled = !(patientID || (patientName && patientName.length > 1));
+	
 
 		return (
 			<Form 
@@ -108,10 +104,14 @@ class SearchPatientForm extends React.Component {
 				ref={this.formRef}
 				layout="vertical"
 			>
-				<Row gutter={12} type="flex" justify="center">
+				<Row gutter={12} justify="center">
 					{/* Patient id field */}
 					<Col xs={24} sm={24} md={6} lg={4}>
-						<Form.Item label={fieldLabels.patientID} name="patientID">
+						<Form.Item 
+							name="patientID"
+							label={fieldLabels.patientID}
+							rules={FIELD_RULES.patientId}
+						>
 							<AlphaNumInput 
 								onFocus={this.handleFocus}
 								maxLength={20}
@@ -133,7 +133,12 @@ class SearchPatientForm extends React.Component {
 					</Col>
 					{/* Patient Name */}
 					<Col xs={24} sm={24} md={12} lg={7}>
-						<Form.Item label={fieldLabels.patientName} name="patientName">
+						<Form.Item
+							name="patientName"
+							validateTrigger="onBlur"
+							label={fieldLabels.patientName} 
+							rules={FIELD_RULES.patientName}
+						>
 							<RegexInput 
 								regex={/[A-Za-z0-9, -]/} 
 								maxLength={100}
@@ -170,28 +175,35 @@ class SearchPatientForm extends React.Component {
 					}
 					{/* Buttons */}
 					<Col xs={24} sm={24} md={6} lg={6} style={{ marginTop: 20 }}>
-						<Form.Item>
-							<Row>
-								<Button 
-									className="form-button"
-									shape="round" 
-									style={{ width: 120 }}
-									onClick={this.clearInputs} 
-								>
-									{buttonNames.clear}
-								</Button>
-								<Button 
-									className="form-button"
-									shape="round" 
-									type="primary" 
-									htmlType="submit" 
-									// disabled={disabled}
-									loading={loading}
-									style={{ width: 120 }}
-								>
-									{buttonNames.search}
-								</Button>
-							</Row>
+						<Form.Item shouldUpdate>
+							{({ getFieldsValue }) => {
+								const { patientID, patientName } = getFieldsValue();
+								const disabled = !(patientID || (patientName && patientName.length > 1));
+
+								return (
+									<Row>
+										<Button 
+											className="form-button"
+											shape="round" 
+											style={{ width: 120 }}
+											onClick={this.clearInputs} 
+										>
+											{buttonNames.clear}
+										</Button>
+										<Button 
+											className="form-button"
+											shape="round" 
+											type="primary" 
+											htmlType="submit" 
+											disabled={disabled}
+											loading={loading}
+											style={{ width: 120 }}
+										>
+											{buttonNames.search}
+										</Button>
+									</Row>
+								);
+							}}
 						</Form.Item>
 					</Col>
 				</Row>

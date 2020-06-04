@@ -89,6 +89,7 @@ class Login extends React.Component {
 									name="username" 
 									label="Username" 
 									className="login-input font12"
+									rules={FIELD_RULES.Username}
 								>
 									<AlphaNumInput maxLength={20} />
 									{/* {getFieldDecorator('username', { 
@@ -97,7 +98,11 @@ class Login extends React.Component {
 										<AlphaNumInput maxLength={20} />
 									)} */}
 								</Form.Item>
-								<Form.Item name="password" label="Password">
+								<Form.Item 
+									name="password" 
+									label="Password"
+									rules={FIELD_RULES.password}
+								>
 									{/* {getFieldDecorator('password', { 
 										rules: FIELD_RULES.password, 
 									})(

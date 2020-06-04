@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable react/prop-types */
 // LIBRARY
 import React from 'react';
@@ -50,9 +51,11 @@ class UpdateForm extends React.Component {
 			selectedItemTypeCode: null,
 			unitOfMeasures: [],
 			inputTypeCodes: [],
-			examItemValue: []
+			examItemValue: [],
+			examItemId: 0
 		}
 
+		this.formRef = React.createRef();
 		this.dynamicForm = React.createRef();
 	}
 	
@@ -87,44 +90,48 @@ class UpdateForm extends React.Component {
 			this.setState({ isFetchingData: true }, async() => {
 				const examItem = await fetchExamItem(secId, specId, examItemId);
 				
+
 				if(examItem) {
-					const { setFieldsValue } = this.props.form;
+					const { setFieldsValue } = this.formRef.current;
 					const { examItemTypeCode } = examItem;
 					const examItemValue = examItem.examItemValue || [];
 
 					// First.
 					// Assign value to the dynamic form only if the selected 
 					// type code is option or checkbox
+
 					this.setState({ 
 						selectedItemTypeCode: examItemTypeCode,
 						examItemValue
+					}, () => {
+						// Second. 
+						// Assign value to the fields that is always present on the form
+						setFieldsValue({ 
+							examItemName: examItem.examItemName,
+							examItemGeneralName: examItem.examItemGeneralName,
+							examItemTypeCode,
+							examItemIntegrationCode: examItem.examItemIntegrationCode
+						});
+
+						// Third. 
+						// Assign value to the fields that correspond to the selected
+						// item type code. E.g Alpha numeric, textarea, etc.
+						if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC) {
+							setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
+						}
+
+						if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC 
+							|| examItem.examItemTypeCode === EITC_NUMERIC 
+							|| examItem.examItemTypeCode === EITC_TEXT_AREA
+						){
+							const defaultVal = examItemValue.length > 0 ? examItemValue[0].examItemValueLabel : null;
+							setFieldsValue({ examItemTypeDefault: defaultVal });
+						}
+
+						// Fourth
+						// Assign examItemId
+						this.setState({ examItemId: examItem.examItemID });
 					});
-					
-					// Second. 
-					// Assign value to the fields that is always present on the form
-					setFieldsValue({ 
-						examItemId: examItem.examItemID,
-						examItemName: examItem.examItemName,
-						examItemGeneralName: examItem.examItemGeneralName,
-						examItemTypeCode,
-						examItemIntegrationCode: examItem.examItemIntegrationCode
-					});
-
-					// Third. 
-					// Assign value to the fields that correspond to the selected
-					// item type code. E.g Alpha numeric, textarea, etc.
-					if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC) {
-						setFieldsValue({ examItemUnitCode: examItem.examItemUnitCode });
-					}
-
-					if(examItem.examItemTypeCode === EITC_ALPHA_NUMERIC 
-						|| examItem.examItemTypeCode === EITC_NUMERIC 
-						|| examItem.examItemTypeCode === EITC_TEXT_AREA
-					){
-						const defaultVal = examItemValue.length > 0 ? examItemValue[0].examItemValueLabel : null;
-						setFieldsValue({ examItemTypeDefault: defaultVal });
-					}
-
 				}
 
 				this.setState({ isFetchingData: false });
@@ -135,7 +142,7 @@ class UpdateForm extends React.Component {
 
 
 	onChangeItemTypeCode = (itemTypeCode) => {
-		const { setFieldsValue } = this.props.form;
+		const { setFieldsValue } = this.formRef.current;
 
 		if(itemTypeCode === EITC_NUMERIC)
 			setFieldsValue({ examItemTypeDefault: '' });
@@ -143,64 +150,59 @@ class UpdateForm extends React.Component {
 		this.setState({ selectedItemTypeCode: itemTypeCode });
 	}
 
-	onSubmit = (event) => {
-		event.preventDefault();
-		
-		const { selectedItemTypeCode } = this.state;
-		// eslint-disable-next-line react/prop-types
-		const { onSuccess, form, selectedSectionId, selectedSpecimenId } = this.props;
-		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll } = form;
+	onSubmit = () => {
+		const { selectedItemTypeCode, examItemId } = this.state;
+		const { onSuccess, selectedSectionId, selectedSpecimenId } = this.props;
+		const { getFieldsValue } = this.formRef.current;
 
-		validateFieldsAndScroll((err) => {
-			const dynaFormFields = selectedItemTypeCode === EITC_OPTION || selectedItemTypeCode === EITC_CHECKBOX
-				// @ts-ignore	
-				? this.dynamicForm.getFormValues() 
-				: { hasError: false };
-				
-			if (!err && !dynaFormFields.hasError) {
-				const fields = getFieldsValue();
-				const examItemValueParam = [];
+		const fields = getFieldsValue();
+		// If checkbox or option get default & label in dynamic form
+		if(selectedItemTypeCode === EITC_OPTION || selectedItemTypeCode === EITC_CHECKBOX){  
+			const examItemValueParam = [];
+			const checkIndex = this.dynamicForm.getCheckedItemIndex();
+			const dynamicFields = this.dynamicForm.getFields();
 
-				if(selectedItemTypeCode === EITC_OPTION || selectedItemTypeCode === EITC_CHECKBOX){  
-					dynaFormFields.formValues.map(value=> (
-						examItemValueParam.push({
-							examItemValueDefault: value.isDefault ? 1 : 0,
-							examItemValueLabel: value.label
-						})
-					));
+			dynamicFields.forEach((item) => (
+				examItemValueParam.push({
+					examItemValueDefault: checkIndex === item.key ? 1 : 0,
+					examItemValueLabel: fields[`dynamicInputs_${item.key}`]
+				})
+			));
 
-					fields.examItemValue = examItemValueParam;
-				} 
+			fields.examItemValue = examItemValueParam;
+		} 
 
-				if(selectedItemTypeCode === EITC_ALPHA_NUMERIC || 
-					 selectedItemTypeCode === EITC_NUMERIC || 
-					 selectedItemTypeCode === EITC_TEXT_AREA ) {
-						fields.examItemValue = null;
+		if(selectedItemTypeCode === EITC_ALPHA_NUMERIC || 
+			selectedItemTypeCode === EITC_NUMERIC || 
+			selectedItemTypeCode === EITC_TEXT_AREA ) {
+				if(fields.examItemTypeDefault) {
+					fields.examItemValue = [{ 
+						examItemValueDefault: 1,
+						examItemValueLabel: fields.examItemTypeDefault
+					}];
+				}
+		}
 
-						if(fields.examItemTypeDefault) {
-							fields.examItemValue = [{ 
-								examItemValueDefault: 1,
-								examItemValueLabel: fields.examItemTypeDefault
-							}];
-						}
-			 	}
-
-				const payload = { 
-					...fields, 
-					sectionID: selectedSectionId,
-					specimenID: selectedSpecimenId
-				};
-
-				this.setState({ isLoading: true }, async () => {
-					const updatedExamItem = await updateExamItem(payload);
-					this.setState({ isLoading: false });
-					
-					if(updatedExamItem) 
-						onSuccess();
-				});
-			}
+		const payload = { 
+			examItemId,
+			examItemName: fields.examItemName,
+			examItemGeneralName: fields.examItemGeneralName,
+			examItemTypeCode: fields.examItemTypeCode,
+			examItemIntegrationCode: fields.examItemIntegrationCode,
+			examItemUnitCode: fields.examItemUnitCode,
+			examItemValue: fields.examItemValue,
+			sectionID: selectedSectionId,
+			specimenID: selectedSpecimenId
+		};
+		console.log(payload);
+		this.setState({ isLoading: true }, async () => {
+			const updatedExamItem = await updateExamItem(payload);
+			this.setState({ isLoading: false });
+			
+			if(updatedExamItem) 
+				onSuccess();
 		});
+		// });
 	}
 
 	render() {
@@ -210,14 +212,11 @@ class UpdateForm extends React.Component {
 			unitOfMeasures, 
 			inputTypeCodes, 
 			isFetchingData,
-			examItemValue
+			examItemValue,
+			examItemId
 		} = this.state;
 		
-		const { onClose, visible, form, selectedSectionName, selectedSpecimenName } = this.props;
-		const { getFieldDecorator, getFieldsValue } = form;
-		
-		const fieldsValue = getFieldsValue();
-		
+		const { onClose, visible, selectedSectionName, selectedSpecimenName } = this.props;
 		const UnitMeasureOptions = unitOfMeasures.map(unit => (
 			<Option value={unit.unitOfMeasureCode} key={unit.unitOfMeasureCode}>
 				{`${unit.unitOfMeasureCode} - ${unit.unitOfMesureBase}`}
@@ -230,8 +229,6 @@ class UpdateForm extends React.Component {
 			</Option>
 		));
 
-		getFieldDecorator('examItemId', { initialValue: 0 });
-
 		return (
 			<Drawer
 				title={`${drawerTitle.update} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
@@ -242,84 +239,113 @@ class UpdateForm extends React.Component {
 				visible={visible}
 			>
 				
-				<Form onSubmit={this.onSubmit} className="exam-item-update-form">
+				<Form 
+					ref={this.formRef}
+					onFinish={this.onSubmit} 
+					className="exam-item-update-form"
+					layout="vertical"
+				>
 					<Spin 
 						tip="Loading..."
 						spinning={isFetchingData}
 					>
 						<section style={{ marginBottom: 60 }}>
-							<Form.Item label={fieldLabels.examItemName}>
-								{getFieldDecorator('examItemName', { rules: fieldRules.examItemName })(
-									<RegexInput 
-										regex={/[A-z0-9 -]/} 
-										maxLength={200} 
-									/>
-								)}
+							<Form.Item 
+								name="examItemName" 
+								label={fieldLabels.examItemName}
+								rules={fieldRules.examItemName}
+							>
+								<RegexInput 
+									regex={/[A-z0-9 -]/} 
+									maxLength={200} 
+								/>
 							</Form.Item>
-							<Form.Item label={fieldLabels.examItemGeneralName}>
-								{getFieldDecorator('examItemGeneralName', { rules: fieldRules.examItemGeneralName })(
-									<RegexInput 
-										regex={/[A-z0-9 -]/} 
-										maxLength={50} 
-									/>
-								)}
+							<Form.Item 
+								name="examItemGeneralName" 
+								label={fieldLabels.examItemGeneralName}
+								rules={fieldRules.examItemGeneralName}
+							>
+								<RegexInput 
+									regex={/[A-z0-9 -]/} 
+									maxLength={50} 
+								/>
 							</Form.Item>
-							<Form.Item label={fieldLabels.examItemTypeCode}>
-								{getFieldDecorator('examItemTypeCode', { rules: fieldRules.examItemType })(
-									<Select onChange={this.onChangeItemTypeCode}>
-										{InputTypeCodeOptions}
-									</Select>
-								)}
+							<Form.Item 
+								name="examItemTypeCode" 
+								label={fieldLabels.examItemTypeCode}
+								rules={fieldRules.examItemType}
+							>
+								<Select onChange={this.onChangeItemTypeCode}>
+									{InputTypeCodeOptions}
+								</Select>
 							</Form.Item>
 							{ (selectedItemTypeCode === EITC_ALPHA_NUMERIC) &&  (
 								<>
-									<Form.Item label={fieldLabels.examItemUnitCode}>
-										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
-											<Select>{UnitMeasureOptions}</Select>
-										)}
+									<Form.Item 
+										name="examItemUnitCode"
+										label={fieldLabels.examItemUnitCode}
+										rules={fieldRules.unitOfMeasure}
+									>
+										<Select>{UnitMeasureOptions}</Select>
 									</Form.Item>
-									<Form.Item label={fieldLabels.examItemTypeDefault}>
-										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<AlphaNumInput maxLength={254} />
-										)}
+									<Form.Item 
+										name="examItemTypeDefault"
+										label={fieldLabels.examItemTypeDefault}
+										rules={fieldRules.examItemTypeDefault}
+									>
+										<AlphaNumInput maxLength={254} />
 									</Form.Item>
 								</>
 							)}
 							{ (selectedItemTypeCode === EITC_NUMERIC) &&  (
 								<>
-									<Form.Item label={fieldLabels.examItemUnitCode}>
-										{getFieldDecorator('examItemUnitCode', { rules: fieldRules.unitOfMeasure })(
-											<Select>{UnitMeasureOptions}</Select>
-										)}
+									<Form.Item 
+										name="examItemUnitCode"
+										label={fieldLabels.examItemUnitCode}
+										rules={fieldRules.unitOfMeasure}
+									>
+										<Select>{UnitMeasureOptions}</Select>
 									</Form.Item>
-									<Form.Item label={fieldLabels.examItemTypeDefault}>
-										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<NumberInput maxLength={254} />
-										)}
+									<Form.Item 
+										name="examItemTypeDefault"
+										label={fieldLabels.examItemTypeDefault}
+										rules={fieldRules.examItemTypeDefault}
+									>
+										<NumberInput maxLength={254} />
 									</Form.Item>
 								</>
 							)}
 							{ (selectedItemTypeCode === EITC_CHECKBOX || selectedItemTypeCode === EITC_OPTION) && (
-									// @ts-ignore
-									<DynamicForm 
-										wrappedComponentRef={(inst) => this.dynamicForm = inst} 
-										examItemValue={examItemValue}
-										examId={fieldsValue.examItemId}
-									/> 
+								<Form.Item shouldUpdate>
+									{(form) => {
+										return (
+											<DynamicForm 
+												ref={(inst) => this.dynamicForm = inst} 
+												form={form}
+												examItemValue={examItemValue}
+												examId={examItemId}
+											/> 
+										);
+									}}
+								</Form.Item>
 							)}
 							{ selectedItemTypeCode === EITC_TEXT_AREA && (
 								<>
-									<Form.Item label={fieldLabels.examItemTypeDefault}>
-										{getFieldDecorator('examItemTypeDefault', { rules: fieldRules.examItemTypeDefault })(
-											<TextArea maxLength={100} />
-										)}
+									<Form.Item 
+										name="examItemTypeDefault"
+										label={fieldLabels.examItemTypeDefault}
+										rules={fieldRules.examItemTypeDefault}
+									>
+										<TextArea maxLength={100} />
 									</Form.Item>
 								</>
 							)}
-							<Form.Item label={fieldLabels.examItemIntegrationCode}>
-								{getFieldDecorator('examItemIntegrationCode', { rules: fieldRules.integrationCode })(
-									<Input maxLength={100} />
-								)}
+							<Form.Item 
+								name="examItemIntegrationCode"
+								label={fieldLabels.examItemIntegrationCode}
+								rules={fieldRules.integrationCode}
+							>
+								<Input maxLength={100} />
 							</Form.Item>
 						</section>
 					</Spin>
@@ -368,5 +394,4 @@ UpdateForm.defaultProps = {
 	selectedSpecimenName: null
 };
 
-// export default Form.create()(UpdateForm);
 export default UpdateForm;

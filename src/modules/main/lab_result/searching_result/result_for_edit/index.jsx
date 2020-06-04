@@ -7,14 +7,20 @@ import PrintResult from 'modules/main/lab_result/print_result';
 // import { fetchLabResultExamItems } from 'services/lab_result/result';
 
 class EditLabResult extends React.Component {
-	state = {
+	constructor(props) {
+		super(props);
+
+		this.state = {
 			isDisplayDrawer: false,
 			isDisplayPrintPreview: false,
 			patientInfo: {},
 			examDetails: {},
 			selectedSampleID: null,
 			selectedResultStatus: null,
-	};
+		};
+
+		this.labResultRef = React.createRef();
+	}
 	
 	onClosePrintPreview = () => {
 		this.setState({
@@ -24,7 +30,9 @@ class EditLabResult extends React.Component {
 	}
 
 	onClosePatientInfoDrawer = () => {
-    this.setState({ isDisplayDrawer: false });
+		this.setState({ isDisplayDrawer: false });
+		
+		this.labResultRef.current.refreshTable();
 	}
 	
 	onClickTableRow = ({ patientInfo, examDetails }) => {
@@ -58,6 +66,7 @@ class EditLabResult extends React.Component {
 		return (
 			<div>
 				<LabResult 
+					ref={this.labResultRef}
 					pageTitle="LABORATORY RESULT"
 					onClickTableRow={this.onClickTableRow} 
 					onClickPrint={this.onClickPrint}

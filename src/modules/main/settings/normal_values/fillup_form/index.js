@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Input, InputNumber, Button, Select, Switch, Row, Col } from 'antd';
+import { Form, Input, InputNumber, Button, Select, Switch, Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchAgeBracketList } from 'services/settings/ageBracket';
 import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
 import { getAnalyzers } from 'services/settings/examItemRange';
 import FIELD_RULES from './constants';
-import { drawerTitle, fieldLabels, formMode, buttonNames} from '../settings';
+import { fieldLabels, formMode, buttonNames} from '../settings';
 
 import './fillup_form.css';
 
@@ -22,70 +22,52 @@ class FillupForm extends React.Component {
 			ageBrackets: [],
 			itemRangeClass: []
 		}
+
+		this.formRef = React.createRef();
 	}
 
 	async componentDidMount() {
+		const { moduleType, selectedSectionID } = this.props; 
 		const analyzers = await getAnalyzers();
 		const filteredAnalyzers = analyzers.filter(i => i.active);
 
 		this.setState({ analyzers: filteredAnalyzers });
+
+		if(moduleType === formMode.update) {
+			this.setFieldsValue();
+		}
+
+		await this.updateDropdownValues(selectedSectionID);
 	}
 
 	async componentDidUpdate(prevProps) {
-		const { moduleType, form, selectedItemRange, selectedSectionID } = this.props; 
-		const { setFieldsValue } = form;
-		const { examItemRangeID, examItemID, analyzerName, ageBracketLabel, rangeClassLabel, ...restItemRange } = selectedItemRange;
+		const { moduleType, selectedSectionID } = this.props; 
 
 		if(selectedSectionID !== prevProps.selectedSectionID) {
-			const ageBrackets = await fetchAgeBracketList();
-			const itemRangeClass = await getAllRangeClass();
-
-			const filteredAgeBrackets = ageBrackets.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
-			const filteredRangeClass = itemRangeClass.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
-
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ 
-				ageBrackets: filteredAgeBrackets, 
-				itemRangeClass: filteredRangeClass 
-			});
+			await this.updateDropdownValues(selectedSectionID);
 		}
 
 		if(moduleType === formMode.update) {
 			if(this.props.selectedItemRange.examItemRangeID !== prevProps.selectedItemRange.examItemRangeID) {
-				
-				setFieldsValue({
-					...restItemRange,
-					canRelease: selectedItemRange.canRelease === 1,
-					autoRelease: selectedItemRange.autoRelease === 1,
-				});
+				this.setFieldsValue();
 			}
 		}
 	}
 
-	onFormSubmit = (event) => {
-		event.preventDefault();
+	onFormSubmit = (fieldValues) => {
+		const { onSubmit } = this.props;
+		// const { getFieldsValue, validateFieldsAndScroll } = form;
 
-		const { form, onSubmit } = this.props;
-		const { getFieldsValue, validateFieldsAndScroll } = form;
+		this.setState({ isLoading: true }, async() => {
+			await onSubmit(fieldValues);
 
-		validateFieldsAndScroll((err) => {
-			if (!err) {
-				this.setState({ isLoading: true }, async() => {
-					const fieldValues = getFieldsValue();
-					
-					await onSubmit(fieldValues);
-
-					this.setState({ isLoading: false });
-				});
-			}
+			this.setState({ isLoading: false });
 		});
 	}
 
 	onChangeRelease = (isSelected) => {
-		const { form } = this.props;
-
 		if(!isSelected)
-			form.setFieldsValue({ autoRelease: false });
+			this.formRef.current.setFieldsValue({ autoRelease: false });
 	}
 
 	onBlurRangeLow = () => {
@@ -96,16 +78,16 @@ class FillupForm extends React.Component {
 
 	resetForm = () => {
 		// eslint-disable-next-line react/prop-types
-		const { resetFields } = this.props.form;
+		const { resetFields } = this.formRef.current;
 
 		resetFields();
 	}
 
 	// Private functions
 	validateRangeHigh = () => {
-		const { getFieldsValue } = this.props.form;
+		const { getFieldsValue } = this.formRef.current;
 		const { rangeLow, rangeHigh } = getFieldsValue();
-
+		
 		if(!rangeLow || !rangeHigh) {
 			return Promise.resolve();
 		}
@@ -117,21 +99,44 @@ class FillupForm extends React.Component {
 		return Promise.resolve();
 	}	
 
+	updateDropdownValues = async (selectedSectionID) => {
+		const ageBrackets = await fetchAgeBracketList();
+		const itemRangeClass = await getAllRangeClass();
+
+		const filteredAgeBrackets = ageBrackets.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
+		const filteredRangeClass = itemRangeClass.filter(item => (item.sectionID === selectedSectionID) && item.active === 1);
+
+		// eslint-disable-next-line react/no-did-update-set-state
+		this.setState({ 
+			ageBrackets: filteredAgeBrackets, 
+			itemRangeClass: filteredRangeClass 
+		});
+	}
+
+	setFieldsValue = () => {
+		const { selectedItemRange } = this.props;
+		const { examItemRangeID, examItemID, analyzerName, ageBracketLabel, rangeClassLabel, ...restItemRange } = selectedItemRange;
+
+		const { setFieldsValue } = this.formRef.current;
+
+		setFieldsValue({
+			...restItemRange,
+			canRelease: selectedItemRange.canRelease === 1,
+			autoRelease: selectedItemRange.autoRelease === 1,
+		});
+	}
+
 	render() {
 		const { isLoading, analyzers, ageBrackets, itemRangeClass } = this.state;
 		const { 
 			onClose, 
-			visible, 
-			form, 
 			moduleType,
 			examItemName,
 			examItemGeneralName,
-			selectedSectionName,
-			selectedSpecimenName,
 			examItemUnitCode
 		} = this.props;
 		
-		const { getFieldDecorator, getFieldsValue } = form;
+		// const { getFieldDecorator, getFieldsValue } = form;
 		const machineOptions = analyzers.map(i => (
 			<Option value={i.analyzerID} key={i.analyzerID}>
 				{i.analyzerName}
@@ -150,185 +155,278 @@ class FillupForm extends React.Component {
 			</Option>
 		));
 
-		const isReleaseSelected = getFieldsValue().canRelease;
-		const headerTitle = (moduleType === formMode.add) 
-												? drawerTitle.normalValue.add 
-												: drawerTitle.normalValue.update;
+		// const isReleaseSelected = getFieldsValue().canRelease;
 
 		return (
-			<Drawer
-				title={`${headerTitle} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
-				width="700"
-				placement="right"
-				closable
-				onClose={onClose}
-				visible={visible}
+			<Form 
+				ref={this.formRef}
+				onFinish={this.onFormSubmit} 
+				className="normal-values-fillup-form"
+				layout="vertical"
 			>
-				<Form onSubmit={this.onFormSubmit} className="normal-values-fillup-form">
-					<section style={{ marginBottom: 50 }}>
-						<section className="exam-item-info">
-							<Row gutter={16}>
-								<Col span={9} style={{ marginLeft: 10 }}>
-									<Form.Item label={fieldLabels.examItemName}>
-										<Input value={examItemName} disabled />
-									</Form.Item>
-								</Col>
-								<Col span={9}>
-									<Form.Item label={fieldLabels.examItemGeneralName}>
-										<Input value={examItemGeneralName} disabled />
-									</Form.Item>
-								</Col>
-								<Col span={5}>
-									<Form.Item label={fieldLabels.examItemUnitCode}>
-										<Input value={examItemUnitCode} disabled />
-									</Form.Item>
-								</Col>
-							</Row>
-						</section>
-						<section className="form-values">
-							<Row>
-								<Col span={8}>
-									<Form.Item label={fieldLabels.autoRelease} labelCol={{ span: 12 }}>
-										{getFieldDecorator('autoRelease', {
-											initialValue: true,
-											valuePropName: 'checked'
-										})(
-											<Switch disabled={!isReleaseSelected} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={8}>
-									<Form.Item label={fieldLabels.release} labelCol={{ span:12 }} wrapperCol={{ span:1 }}>
-										{getFieldDecorator('canRelease',{
-											initialValue: true,
-											valuePropName: 'checked'
-										})(
+				<section style={{ marginBottom: 50 }}>
+					<section className="exam-item-info">
+						<Row gutter={16}>
+							<Col span={9} style={{ marginLeft: 10 }}>
+								<Form.Item label={fieldLabels.examItemName}>
+									<Input value={examItemName} disabled />
+								</Form.Item>
+							</Col>
+							<Col span={8}>
+								<Form.Item label={fieldLabels.examItemGeneralName}>
+									<Input value={examItemGeneralName} disabled />
+								</Form.Item>
+							</Col>
+							<Col span={6}>
+								<Form.Item label={fieldLabels.examItemUnitCode}>
+									<Input value={examItemUnitCode} disabled />
+								</Form.Item>
+							</Col>
+						</Row>
+					</section>
+					<section className="form-values">
+						<Row>
+							<Col span={8}>
+								<Row align="middle">
+									<Col span={12}>
+										<Form.Item>
+											<span style={{ marginTop: -10, display: 'block' }}>
+												{fieldLabels.autoRelease} 
+											</span>
+										</Form.Item>
+									</Col>
+									<Col span={12}>
+										<Form.Item shouldUpdate>
+											{({ getFieldsValue }) => {
+												const isReleaseSelected = getFieldsValue().canRelease;
+
+												return (
+													<Form.Item 
+														name="autoRelease"
+														valuePropName="checked"
+														labelCol={{ span: 12 }}
+														initialValue
+													>
+														<Switch disabled={!isReleaseSelected} />
+													{/* {getFieldDecorator('autoRelease', {
+														initialValue: true,
+														valuePropName: 'checked'
+													})(
+														<Switch disabled={!isReleaseSelected} />
+													)} */}
+													</Form.Item>
+												);
+											}}
+										</Form.Item>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={8}>
+								<Row align="middle">
+									<Col span={10}>
+										<Form.Item>
+											<span>{fieldLabels.release}</span>
+										</Form.Item>
+									</Col>
+									<Col span={14}>
+										<Form.Item 
+											name="canRelease"
+											valuePropName="checked"
+											labelCol={{ span:12 }} 
+											wrapperCol={{ span:1 }}
+											initialValue
+										>
 											<Switch onChange={this.onChangeRelease} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={12} style={{ marginTop: 10 }}>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.gender}>
-										{getFieldDecorator('sex', { rules: FIELD_RULES.sex })(
-											<Select>
-												<Option value="ALL">ALL</Option>
-												<Option value="MALE">MALE</Option>
-												<Option value="FEMALE">FEMALE</Option>
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={8}>
-									<Form.Item label={fieldLabels.ageBracket}>
-										{getFieldDecorator('ageBracketID', { rules: FIELD_RULES.ageBracket })(
-											<Select>
-												{ ageBracketOptions }
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.machine}>
-										{getFieldDecorator('analyzerID', { rules: FIELD_RULES.analyzerID })(
-											<Select>
-												{machineOptions}
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.labelOfRange}>
-										{getFieldDecorator('rangeClassID', { rules: FIELD_RULES.rangeLabel })(
-											<Select>
-												{ itemRangeClassOptions }
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row>
-								<Col span={14}>							
-									<Form.Item label={fieldLabels.displayValue}>
-										{getFieldDecorator('displayValue', { rules: FIELD_RULES.displayValue })(
-											<Input maxLength={50} />
-										)}
-									</Form.Item>						
-								</Col>
-							</Row>
-							<Row gutter={8}>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.low}>
-										{getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
-											<InputNumber maxLength={8} onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.displayFlag}>
-										{getFieldDecorator('rangeLowFlagDisplay', { rules: FIELD_RULES.rangeLowFlagDisplay })(
-											<Input maxLength={50} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={8}>
-								<Col span={6}>
-									<Form.Item label={fieldLabels.high}>
-										{getFieldDecorator('rangeHigh', { 
-											rules: [
-												...FIELD_RULES.rangeHigh,
-												{ validator: this.validateRangeHigh }
-											]
-										})(
-											<InputNumber maxLength={8} style={{ width: '100%' }} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={14}>
-									<Form.Item label={fieldLabels.displayFlag}>
-										{getFieldDecorator('rangeHighFlagDisplay', { rules: FIELD_RULES.rangeHighFlagDisplay })(
-											<Input maxLength={50} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-						</section>
+											{/* {getFieldDecorator('canRelease',{
+												initialValue: true,
+												valuePropName: 'checked'
+											})(
+												<Switch onChange={this.onChangeRelease} />
+											)} */}
+										</Form.Item>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+						<Row gutter={12} style={{ marginTop: 10 }}>
+							<Col span={6}>
+								<Form.Item 
+									name="sex"
+									label={fieldLabels.gender}
+									rules={FIELD_RULES.sex}
+								>
+									<Select>
+										<Option value="ALL">ALL</Option>
+										<Option value="MALE">MALE</Option>
+										<Option value="FEMALE">FEMALE</Option>
+									</Select>
+									{/* {getFieldDecorator('sex', { rules: FIELD_RULES.sex })(
+										<Select>
+											<Option value="ALL">ALL</Option>
+											<Option value="MALE">MALE</Option>
+											<Option value="FEMALE">FEMALE</Option>
+										</Select>
+									)} */}
+								</Form.Item>
+							</Col>
+							<Col span={8}>
+								<Form.Item 
+									name="ageBracketID"
+									label={fieldLabels.ageBracket}
+									rules={FIELD_RULES.ageBracket}
+								>
+									<Select>
+										{ ageBracketOptions }
+									</Select>
+									{/* {getFieldDecorator('ageBracketID', { rules: FIELD_RULES.ageBracket })(
+										<Select>
+											{ ageBracketOptions }
+										</Select>
+									)} */}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>
+								<Form.Item 
+									name="analyzerID"
+									label={fieldLabels.machine}
+									rules={FIELD_RULES.analyzerID}
+								>
+									<Select>
+										{machineOptions}
+									</Select>
+									{/* {getFieldDecorator('analyzerID', { rules: FIELD_RULES.analyzerID })(
+										<Select>
+											{machineOptions}
+										</Select>
+									)} */}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>
+								<Form.Item 
+									name="rangeClassID"
+									label={fieldLabels.labelOfRange}
+									rules={FIELD_RULES.rangeLabel}
+								>
+									<Select>
+										{ itemRangeClassOptions }
+									</Select>
+									{/* {getFieldDecorator('rangeClassID', { rules: FIELD_RULES.rangeLabel })(
+										<Select>
+											{ itemRangeClassOptions }
+										</Select>
+									)} */}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row>
+							<Col span={14}>							
+								<Form.Item 
+									name="displayValue"
+									label={fieldLabels.displayValue}
+									rules={FIELD_RULES.displayValue}
+								>
+									<Input maxLength={50} />
+									{/* {getFieldDecorator('displayValue', { rules: FIELD_RULES.displayValue })(
+										<Input maxLength={50} />
+									)} */}
+								</Form.Item>						
+							</Col>
+						</Row>
+						<Row gutter={8}>
+							<Col span={6}>
+								<Form.Item 
+									name="rangeLow"
+									label={fieldLabels.low}
+									rules={FIELD_RULES.rangeLow}
+									dependencies={['rangeHigh']}
+								>
+									<InputNumber maxLength={8} style={{ width: '100%' }} />
+									{/* {getFieldDecorator('rangeLow', { rules: FIELD_RULES.rangeLow })(
+										<InputNumber maxLength={8} onBlur={this.onBlurRangeLow} style={{ width: '100%' }} />
+									)} */}
+								</Form.Item>
+							</Col>
+							<Col span={14}>
+								<Form.Item 
+									name="rangeLowFlagDisplay"
+									label={fieldLabels.displayFlag}
+									rules={FIELD_RULES.rangeLowFlagDisplay}
+								>
+									<Input maxLength={50} />
+									{/* {getFieldDecorator('rangeLowFlagDisplay', { rules: FIELD_RULES.rangeLowFlagDisplay })(
+										<Input maxLength={50} />
+									)} */}
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={8}>
+							<Col span={6}>
+								<Form.Item 
+									name="rangeHigh"
+									label={fieldLabels.high}
+									rules={[
+										...FIELD_RULES.rangeHigh,
+										{ validator: this.validateRangeHigh }
+									]}
+									dependencies={['rangeLow']}
+								>
+									<InputNumber maxLength={8} style={{ width: '100%' }} />
+									{/* {getFieldDecorator('rangeHigh', { 
+										rules: [
+											...FIELD_RULES.rangeHigh,
+											{ validator: this.validateRangeHigh }
+										]
+									})(
+										<InputNumber maxLength={8} style={{ width: '100%' }} />
+									)} */}
+								</Form.Item>
+							</Col>
+							<Col span={14}>
+								<Form.Item 
+									name="rangeHighFlagDisplay"
+									label={fieldLabels.displayFlag}
+									rules={FIELD_RULES.rangeHighFlagDisplay}
+								>
+									<Input maxLength={50} />
+									{/* {getFieldDecorator('rangeHighFlagDisplay', { rules: FIELD_RULES.rangeHighFlagDisplay })(
+										<Input maxLength={50} />
+									)} */}
+								</Form.Item>
+							</Col>
+						</Row>
 					</section>
-					<section className="drawerFooter">
-						<div>
-							<Button 
-								shape="round" 
-								style={{ margin: 10, width: 120 }}
-								onClick={onClose}
-							>
-								{buttonNames.cancel}
-							</Button>
-							<Button 
-								shape="round" 
-								type="primary" 
-								htmlType="submit"
-								loading={isLoading}
-								style={{ margin: 10, width: 120 }}
-							>
-								{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
-							</Button>
-						</div>
-					</section>
-				</Form>
-			</Drawer>
+				</section>
+				<section className="drawerFooter">
+					<div>
+						<Button 
+							shape="round" 
+							style={{ margin: 10, width: 120 }}
+							onClick={onClose}
+						>
+							{buttonNames.cancel}
+						</Button>
+						<Button 
+							shape="round" 
+							type="primary" 
+							htmlType="submit"
+							loading={isLoading}
+							style={{ margin: 10, width: 120 }}
+						>
+							{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
+						</Button>
+					</div>
+				</section>
+			</Form>
 		);
 	}
 }
 
 FillupForm.propTypes = {
 	moduleType: PropTypes.string.isRequired,
-	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
 	selectedSectionID: PropTypes.number,
@@ -369,7 +467,5 @@ FillupForm.defaultProps = {
 	selectedSectionID: null
 }
 
-
-// export default Form.create()(FillupForm);
 
 export default FillupForm;

@@ -46,12 +46,12 @@ class DynamicInput extends React.Component {
 				value: itemOption.examItemValueLabel
 			}));
 
-			const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
+			// const defaultValue = itemOptions.filter(itemOption => itemOption.examItemValueDefault === 1);
 
 			return (
 				<Checkbox.Group 
 					options={options}
-					defaultValue={defaultValue}
+					// defaultValue={defaultValue}
 					disabled={isLock}
 					{...otherProps}
 				/>

@@ -80,9 +80,12 @@ class EditableTable extends React.Component {
 		// 									 ? releasedResult
 		// 									 : selectedItemOption;
 
+		const initialValue = record.releasedResultMultiple 
+			? record.releasedResultMultiple 
+			: record.releasedResult;
 
 		return (
-			<Form.Item name={record.fieldName} initialValue={record.releasedResult}>
+			<Form.Item name={record.fieldName} initialValue={initialValue}>
 				<DynamicInput 
 					type={record.examItemTypeCode}
 					isLock={record.examRequestItemLock === 1 || resultStatus === 'Approve'}
@@ -119,10 +122,14 @@ class EditableTable extends React.Component {
 
 		const combinedResults = clonedResults.map(item => {
 			const key = Object.keys(fieldsValue).find(x => x === `${item.sampleSpecimenID}-${item.examItemID}`);
-				
+			const releasedResult = item.examItemTypeCode !== 'cb' ? fieldsValue[key] : null;
+			const releasedResultMultiple = item.examItemTypeCode === 'cb' ? fieldsValue[key] : null;
+			
 			return { 
 				...item, 
-				releasedResult: fieldsValue[key],
+				// releasedResult: fieldsValue[key],
+				releasedResult,
+				releasedResultMultiple,
 				unitOfMesureBase: item.unitOfMesureBase || "0 0",
 			};
 		});

@@ -8,6 +8,7 @@ import { getAllRangeClass, createRangeClass, updateRangeClass } from 'services/s
 import LabelRangeTable from './table';
 import FillupForm from './fillup_form';
 import { 
+	drawerTitle,
 	moduleTitle, 
 	buttonNames, 
 	tablePageSize, 
@@ -210,25 +211,41 @@ class LabelRangeDrawer extends React.Component{
 						onRowDblClick={this.onDblClickTableRow}
 					/>
 				</Drawer>
-				<FillupForm 
-					moduleType={formMode.add}
-					visible={isDisplayAddForm} 
+				<Drawer
+					title={`${drawerTitle.rangeClass.add} - ${selectedSectionName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
 					onClose={this.onExitAddForm} 
-					onSubmit={this.onSubmittingAddForm}
-					selectedSectionName={selectedSectionName}
-					selectedSectionId={selectedSectionId}
-					wrappedComponentRef={(inst) => this.addForm = inst}
-				/>
-				<FillupForm 
-					moduleType={formMode.update}
-					visible={isDisplayUpdateForm} 
+					visible={isDisplayAddForm}
+					className="label-class-drawer"
+				>
+					<FillupForm 
+						moduleType={formMode.add}
+						onClose={this.onExitAddForm} 
+						onSubmit={this.onSubmittingAddForm}
+						selectedSectionId={selectedSectionId}
+						ref={(inst) => this.addForm = inst}
+					/>
+				</Drawer>
+				<Drawer
+					title={`${drawerTitle.rangeClass.update} - ${selectedSectionName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
 					onClose={this.onExitUpdateForm} 
-					onSubmit={this.onSubmittingUpdateForm}
-					selectedSectionName={selectedSectionName}
-					selectedSectionId={selectedSectionId}
-					rangeClass={selectedRangeClass}
-					wrappedComponentRef={(inst) => this.updateForm = inst}
-				/>
+					visible={isDisplayUpdateForm}
+					className="label-class-drawer"
+				>
+					<FillupForm 
+						moduleType={formMode.update}
+						onClose={this.onExitUpdateForm} 
+						onSubmit={this.onSubmittingUpdateForm}
+						selectedSectionId={selectedSectionId}
+						rangeClass={selectedRangeClass}
+						ref={(inst) => this.updateForm = inst}
+					/>
+				</Drawer>
 			</div>
 		);
 	}

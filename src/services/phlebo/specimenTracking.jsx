@@ -40,6 +40,24 @@ export async function fetchExtracReqByPatientName({ requestDate, patientName }) 
 	}
 }
 
+export async function fetchExtracReqByDate({ requestDate }) {
+	try{
+		const content = {
+			method: apiGetMethod,
+			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}`,
+		}
+
+		const response = await axiosLabAPI(content);
+		const { data } = response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
 
 export async function fetchRequestSpecimenToProcess(requestID) {
 	try{

@@ -81,21 +81,26 @@ class PanelFormTemplate extends React.Component {
 
 	getSelectedExamRequest = async (iKey) => { 
 		let dataPanel = null;
+		
 		try{
 			dataPanel = await getPanelInfoAPI(iKey); 
 		} 
 		catch(e) {
 			HttpCodeMessage({status:500, message: e});
 		}
+
 		const selectedExamRequest = [];
 		// @ts-ignore
-		if(dataPanel.data.examRequests.length < 2 ){ return; } // Empty
+		// if(dataPanel.data.examRequests.length < 2 ){ return; } // Empty
+
 		// @ts-ignore
 		dataPanel.data.examRequests.map(function(valueSelectedExamRequest){
 			selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
 			return selectedExamRequest;
 		});
-		this.setState({selectedExamRequest});
+
+
+		this.setState({ selectedExamRequest });
 	};
 	
 	transferFilterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
@@ -104,28 +109,28 @@ class PanelFormTemplate extends React.Component {
     this.setState({ selectedExamRequest });
   };
 
-  onSubmit = (e) => {
-		e.preventDefault();
-		this.props.form.validateFields( (err, values) => {
-			if(err){ // Form validation error
-				return;
-			}
+  onSubmit = (values) => {
+		// this.props.form.validateFields( (err, values) => {
+			// if(err){ // Form validation error
+			// 	return;
+			// }
 
 			if (this.state.selectedExamRequest === undefined || this.state.selectedExamRequest.length === 0) {
-					this.setState({examRequestValidation:true});
-					return;
+				this.setState({ examRequestValidation: true });
+
+				return;
 			}
 
 			try{
 				this.setState({ loading:true });
 				// eslint-disable-next-line no-unused-expressions
-				this.props.drawerButton === buttonLabels.update ? this.updatePanel(values): this.createPanel(values);
+				this.props.drawerButton === buttonLabels.update ? this.updatePanel(values) : this.createPanel(values);
 			}	
 			catch(errCatch) {
-				HttpCodeMessage({status:500, message: e});
+				HttpCodeMessage({ status: 500 });
 			}
 				
-		});
+		// });
 	};
 
 	createPanel = async (fieldValues) => {
@@ -194,26 +199,44 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	render() {
-		const { getFieldDecorator } = this.props.form;
+		// const { getFieldDecorator } = this.props.form;
 		const { panelInfo, drawerButton } = this.props;
 
 		return(
 			<div> 
-				<AntForm onSubmit={this.onSubmit}>
+				<AntForm 
+					layout="vertical"
+					onFinish={this.onSubmit}
+				>
 					<section style={{ marginBottom: 50 }}>
 						<AntRow gutter={12}>
 							<AntCol span={12}>
-								<AntForm.Item label={fieldLabels.panel_id} className={panelInfo ? null : "hide"}>
-									{getFieldDecorator('panel_id', {
+								<AntForm.Item 
+									name="panel_id"
+									label={fieldLabels.panel_id} 
+									className={panelInfo ? null : "hide"}
+									initialValue={panelInfo.key}
+								>
+									<AntInput disabled />
+									{/* {getFieldDecorator('panel_id', {
 										initialValue: panelInfo.key
 									})(
 										<AntInput disabled />
-									)}	
+									)}	 */}
 								</AntForm.Item>
 							</AntCol>
 							<AntCol span={12}>
-								<AntForm.Item label={fieldLabels.panel_name}>
-									{getFieldDecorator('panel_name', {
+								<AntForm.Item 
+									name="panel_name"
+									label={fieldLabels.panel_name}
+									rules={fieldRules.panel_name}
+									initialValue={panelInfo.panel_name}
+								>
+									<RegexInput	
+										regex={/[A-Za-z0-9 -]/} 
+										maxLength={254} 
+									/>
+									{/* {getFieldDecorator('panel_name', {
 										initialValue: panelInfo.panel_name,
 										rules: fieldRules.panel_name,
 									})(
@@ -221,34 +244,55 @@ class PanelFormTemplate extends React.Component {
 											regex={/[A-Za-z0-9 -]/} 
 										 	maxLength={254} 
 										/>
-									)}	
+									)}	 */}
 								</AntForm.Item>
 							</AntCol>
 						</AntRow>
 						<AntRow gutter={12}>
 							<AntCol span={12}>
-								<AntForm.Item label={fieldLabels.panel_code}>
-								{getFieldDecorator('panel_code', {
-									initialValue: panelInfo.code,
-									rules: fieldRules.panel_code,
-								})(
+								<AntForm.Item 
+									name="panel_code"
+									label={fieldLabels.panel_code}
+									rules={fieldRules.panel_code}
+									initialValue={panelInfo.code}
+								>
 									<AlphaNumInput maxLength={50} />
-								)}	
+									{/* {getFieldDecorator('panel_code', {
+										initialValue: panelInfo.code,
+										rules: fieldRules.panel_code,
+									})(
+										<AlphaNumInput maxLength={50} />
+									)}	 */}
 								</AntForm.Item>
 							</AntCol>
 							<AntCol span={12}>
-								<AntForm.Item label={fieldLabels.panel_integration_code}>
-								{getFieldDecorator('panel_integration_code', {
-									initialValue: panelInfo.integration_code,
-									rules: fieldRules.panel_integration_code,
-								})(
+								<AntForm.Item 
+									name="panel_integration_code"
+									label={fieldLabels.panel_integration_code}
+									rules={fieldRules.panel_integration_code}
+									initialValue={panelInfo.integration_code}
+								>
 									<AntInput maxLength={50} />
-								)}	
+									{/* {getFieldDecorator('panel_integration_code', {
+										initialValue: panelInfo.integration_code,
+										rules: fieldRules.panel_integration_code,
+									})(
+										<AntInput maxLength={50} />
+									)}	 */}
 								</AntForm.Item>
 							</AntCol>
 						</AntRow>	
-						<AntForm.Item label={fieldLabels.panel_status}>
-							{getFieldDecorator('panel_status', {
+						<AntForm.Item 
+							name="panel_status"
+							label={fieldLabels.panel_status}
+							valuePropName="checked"
+							initialValue={panelInfo ? ( panelInfo.status === 1 ) : true}
+						>
+							<AntSwitch
+								checkedChildren="ENABLE"
+								unCheckedChildren="DISABLE"
+							/>
+							{/* {getFieldDecorator('panel_status', {
 								valuePropName: 'checked',
 								initialValue: panelInfo ? ( panelInfo.status === 1 ) : true
 							})(
@@ -257,7 +301,7 @@ class PanelFormTemplate extends React.Component {
 									unCheckedChildren="DISABLE"
 									// checked={panelInfo ? panelInfo.status : true}
 								/>
-							)}	
+							)}	 */}
 						</AntForm.Item>
 						<AntForm.Item label="EXAM REQUESTS">
 							{ this.state.examRequestValidation ? (
@@ -274,9 +318,11 @@ class PanelFormTemplate extends React.Component {
 									pageStart={0}
 									hasMore={!this.state.loading && this.state.hasMore}
 									useWindow={false}
-									
 								>
-									<AntCheckbox.Group onChange={this.handleSelectedExams} value={this.state.selectedExamRequest}>
+									<AntCheckbox.Group 
+										onChange={this.handleSelectedExams} 
+										value={this.state.selectedExamRequest}
+									>
 										<AntList 
 											size="small"
 											itemLayout="vertical" 
@@ -329,18 +375,12 @@ class PanelFormTemplate extends React.Component {
 PanelFormTemplate.propTypes = {
 	panelInfo: PropTypes.object,
 	drawerButton: PropTypes.string.isRequired,
-	form: PropTypes.object,
 	onCancel: PropTypes.func
 }
 
 PanelFormTemplate.defaultProps = {
 	panelInfo: null,
-	form() { return null},
 	onCancel() { return null}
 }
-
-// const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));
-
-// export default PanelForm;
 
 export default withRouter(PanelFormTemplate);

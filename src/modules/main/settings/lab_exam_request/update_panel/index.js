@@ -22,7 +22,8 @@ class UpdatePanel extends React.Component {
 			examList: [],
 			selectedExams: []
 		}
-	
+		
+		this.formRef = React.createRef();
 		this.selectedTable = React.createRef();
 		this.formFields = React.createRef();
 	}
@@ -50,50 +51,60 @@ class UpdatePanel extends React.Component {
 				const selectedExams = await fetchSelectedExamList(sectionId, specimenId, examRequestId);
 				const examList = await fetchExamList(sectionId, specimenId);
 				
+
 				this.setState({ 
 					examList: examList || [],
 					selectedExams,
 					isFetchingData: false
+				}, () => {
+					// Set fields value of selected table
+					const fieldsValue = {};
+
+					selectedExams.forEach((item, index) => {
+						fieldsValue[`keys_${index}`] = item.examItemID;
+						fieldsValue[`examRequestItemGroup_${item.examItemID}`] = item.examRequestItemGroup;
+						fieldsValue[`examRequestItemFormula_${item.examItemID}`] = item.examRequestItemFormula;
+						fieldsValue[`examRequestItemLock_${item.examItemID}`] = item.examRequestItemLock ? 1 : 0;
+						fieldsValue[`examRequestItemPrintable_${item.examItemID}`] = item.examRequestItemPrintable ? 1 : 0;
+						fieldsValue[`examRequestItemSort_${item.examItemID}`] = item.examRequestItemSort;
+					});
+
+					this.formRef.current.setFieldsValue(fieldsValue);
 				});
 			});
 		}
 	}
 	
-	onSubmit = (event) => {
-		event.preventDefault();
-
+	onSubmit = () => {
 		const { onSuccess, examRequest } = this.props;
 		const { examRequestID, examRequestActive } = examRequest;
 
-		// @ts-ignore
-		const isFormFieldsValidated = this.formFields.triggerValidation();
+		const selectedExamItems = this.selectedTable.current.getSelectedExamItems();
+	
+		const formFieldValues = this.formRef.current.getFieldsValue();
+		const payload = { 
+			examRequestID,
+			examRequestActive,
+			sectionID: formFieldValues.sectionID,
+			specimenID: formFieldValues.specimenID,
+			examRequestCode: formFieldValues.examRequestCode,
+			examRequestIntegrationCode: formFieldValues.examRequestIntegrationCode,
+			examRequestLoinc: formFieldValues.examRequestLoinc,
+			examRequestName: formFieldValues.examRequestName,
+			examRequestSort: formFieldValues.examRequestSort,
+			examItems: selectedExamItems 
+		}; 
 
-		if(isFormFieldsValidated) {
-			// @ts-ignore
-			const isSelExamValidated = this.selectedTable.triggerValidation();
 
-			if(isSelExamValidated) {
-				// @ts-ignore
-				const selectedExamItems = this.selectedTable.getSelectedExamItems();
-				// @ts-ignore
-				const formFieldValues = this.formFields.getFormValues();
-				const payload = { 
-					examRequestID,
-					examRequestActive,
-					...formFieldValues,  
-					examItems: selectedExamItems 
-				};
+		this.setState({ isLoading: true }, async() => {
+			const updatedExamRequest = await updateExamRequest(payload);
+			this.setState({ isLoading: false });
 
-				this.setState({ isLoading: true }, async() => {
-					const updatedExamRequest = await updateExamRequest(payload);
-					this.setState({ isLoading: false });
-
-					if(updatedExamRequest){
-						onSuccess();
-					}
-				});
+			if(updatedExamRequest){
+				onSuccess();
 			}
-		}
+		});
+		
 	}
 	
 	onDragAndDropRow = (selectedExams) => {
@@ -133,6 +144,10 @@ class UpdatePanel extends React.Component {
 	closeFormDrawer = () => {
 		const { closeForm } = this.props;
 
+		this.setState({ examList: [], selectedExams: [] }, () => {
+			this.formRef.current.resetFields();
+		});
+		
 		closeForm();
 	}
 
@@ -141,13 +156,13 @@ class UpdatePanel extends React.Component {
 		// eslint-disable-next-line react/prop-types
 		const { 
 			visible, 
-			sectionId, 
-			specimenId, 
 			examRequest, 
 			selectedSectionName, 
 			selectedSpecimenName 
 		} = this.props;
 
+		const selectedRowKeys = selectedExams.map(exam => exam ? exam.examItemID : null );
+		
 		return ( 
 			<Drawer
 				title={`${drawerTitle.update} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
@@ -157,13 +172,45 @@ class UpdatePanel extends React.Component {
 				onClose={this.closeFormDrawer}
 				visible={visible}
 			>
-				<Form onSubmit={this.onSubmit}>
+				<Form 
+					ref={this.formRef}
+					onFinish={this.onSubmit}
+					layout="vertical"
+					fields={[
+						{
+							name: 'examRequestName',
+							value: examRequest.examRequestName
+						},
+						{
+							name: 'examRequestCode',
+							value: examRequest.examRequestCode
+						},
+						{
+							name: 'specimenID',
+							value: examRequest.specimenID
+						},
+						{
+							name: 'sectionID',
+							value: examRequest.sectionID
+						},
+						{
+							name: 'examRequestLoinc',
+							value: examRequest.examRequestLoinc
+						},
+						{
+							name: 'examRequestIntegrationCode',
+							value: examRequest.examRequestIntegrationCode
+						},
+						{
+							name: 'examRequestSort',
+							value: examRequest.examRequestSort
+						}
+					]}
+				>
 					<section style={{ marginBottom: 50 }}>
 						<div style={{ margin: '0px 10px' }}>
 							<InputForm 
 								wrappedComponentRef={(inst) => this.formFields = inst}
-								sectionId={sectionId}
-								specimenId={specimenId}
 								examRequest={examRequest}
 							/>
 							<Row gutter={12}>
@@ -174,16 +221,17 @@ class UpdatePanel extends React.Component {
 										onSelect={this.onSelectSelectionTable}
 										onDeselect={this.onDeselectSelectionTable}
 										onSelectAll={this.onSelectAllSelectionTable}
-										selectedRowKeys={selectedExams.map(exam => exam ? exam.examItemID : null )}
+										selectedRowKeys={selectedRowKeys}
 									/>		
 								</Col>
 								<Col span={17}>
 									<SelectedTable 
-										wrappedComponentRef={(inst) => this.selectedTable = inst}
+										form={this.formRef.current || {}}
+										ref={this.selectedTable}
 										data={selectedExams}
 										onDragAndDropRow={this.onDragAndDropRow}
 										loading={false}
-									/>		
+									/>
 								</Col>
 							</Row>
 						</div>					

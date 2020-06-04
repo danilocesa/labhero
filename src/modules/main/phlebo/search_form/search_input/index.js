@@ -8,7 +8,8 @@ import { Form, Button, Row, Col, DatePicker as AntDatePicker } from 'antd';
 // CUSTOM MODULES
 import { 
 	fetchExtracReqByPatientID, 
-	fetchExtracReqByPatientName 
+	fetchExtracReqByPatientName,
+	fetchExtracReqByDate
 } from 'services/phlebo/specimenTracking';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { RegexInput } from 'shared_components/pattern_input';
@@ -46,8 +47,10 @@ class SearchPatientHeaderForm extends React.Component {
 
 		if(patientID)
 			patients = await fetchExtracReqByPatientID({ requestDate: selectedDateValue, patientID });
-		else 
+		else if(patientName)
 			patients = await fetchExtracReqByPatientName({ requestDate: selectedDateValue, patientName });
+		else
+			patients = await fetchExtracReqByDate({ requestDate: selectedDateValue });
 
 		this.setState({ loading: false });
 
@@ -113,7 +116,7 @@ class SearchPatientHeaderForm extends React.Component {
 
 	render() {
 		const { patientID, patientName, loading } = this.state;
-		const disabled = !(patientID || (patientName && patientName.length > 1));
+		// const disabled = !(patientID || (patientName && patientName.length > 1));
 
 		return (
 			<Form 
@@ -179,7 +182,7 @@ class SearchPatientHeaderForm extends React.Component {
 									shape="round" 
 									type="primary" 
 									htmlType="submit" 
-									disabled={disabled}
+									// disabled={disabled}
 									loading={loading}
 									style={{ width: 120 }}
 								>
