@@ -13,7 +13,10 @@ import {
 } from "antd";
 
 // CUSTOM MODULES
-import PageTitle from 'shared_components/page_title';
+import { RegexInput } from 'shared_components/pattern_input';
+import { fetchBloodGroupItems } from 'services/blood_bank/extraction'
+import PageTitle from 'shared_components/page_title'
+import Message from 'shared_components/message'
 import TablePager from "shared_components/table_pager"
 
 const { Text } = Typography
@@ -77,67 +80,110 @@ const expandedRow = row => {
 };
 
 class Extraction extends React.Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      Item: [],
+      loading: false,
+    };
+  }
+	
 	NextStep = () => {
     window.location.assign('/bloodbank/extraction/screening/step/1');
   };
 
   render() {
+    const { Item,loading } = this.state
     return (
       <div>
-        <PageTitle pageTitle="EXTRACTION/SCREENING" />
-          <Form className="search-patient-form" layout="vertical">
-            <Row gutter={10} style={{marginLeft:150, marginTop:30}}>
-              <Col span={5}>
-                <Form.Item label="DONOR'S ID" style={{ marginRight:10}}>
-                    <Input />
-                </Form.Item>
-              </Col>
-              <Text strong style={{marginTop:20}}>OR</Text>
-              <Col span={5}>
-                <Form.Item label="BLOOD GROUP" style={{marginLeft:10}}>
-                    <Input style={{width:300 }} />
-                </Form.Item>
-              </Col>
-              <Col span={5}>
-                <Form.Item style={{ marginTop:20 , marginLeft:90}}>
-                    <Button shape="round" style={{width:150}}> 
-                        CLEAR 
-                    </Button>
-                </Form.Item>
-              </Col>
-              <Col span={5}>
-                <Form.Item style={{marginTop:20, marginLeft:20 }}>
-                  <Button type="primary" shape="round" style={{width:150}}> 
-                      SEARCH 
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Form>
-          <Row>
-            <Col span={24}>
-              <div>
-                <Row style={{marginTop:-80}}>
-                  <Col span={12} style={{ textAlign: "Left", marginTop:100 }}>
-                    <div className="table-title">
-                      <div>
-                        <Text strong>SEARCH RESULTS</Text>
-                      </div>
+       <PageTitle pageTitle="DONOR REGISTRATION"  />
+        <Row>
+          <Col span={24}>
+            <div>
+              <Row>
+                <Col span={12} style={{ textAlign: "center", marginTop:50, marginLeft:300}}>
+                <Form 
+                  className="search-patient-form" 
+                  onFinish={this.handleSubmit} 
+                  ref={this.formRef}
+                  layout="vertical"
+                >
+                  <Row justify="center">
+                    <Col span={10}>
+                  <Row>
+                    <Col span={12}>
+                      <Form.Item label="PATIENT NAME" name="patientName">
+                        <RegexInput 
+                          regex={/[A-Za-z0-9, -]/} 
+                          maxLength={100}
+                          onFocus={this.handleFocus}
+                          placeholder="Lastname, Firstname"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                      <Form.Item label="PATIENT NAME" name="patientName">
+                        <RegexInput 
+                          regex={/[A-Za-z0-9, -]/} 
+                          maxLength={100}
+                          onFocus={this.handleFocus}
+                          placeholder="Lastname, Firstname"
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                    </Col>
+                    {/* Buttons */}
+                    <Col span={11} style={{marginTop:20}}>
+                      <Form.Item>
+                        <Row>
+                          <Button 
+                            className="form-button"
+                            shape="round" 
+                            style={{ width: 120, marginLeft:10 }}
+                            onClick={this.clearInputs} 
+                          >
+                            CLEAR
+                          </Button>
+                          <Button 
+									          loading={loading}
+                            className="form-button"
+                            shape="round" 
+                            type="primary" 
+                            htmlType="submit" 
+                            style={{ width: 120 }}
+                          >
+                            SEARCH
+                          </Button>
+                        </Row>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+                </Col>
+              </Row>
+              <Row style={{marginTop:-80}}>
+                <Col span={12} style={{ textAlign: "Left", marginTop:100 }}>
+                  <div className="table-title">
+                    <div>
+                      <Text strong>SEARCH RESULTS</Text>
+                    </div>
                       <div className="left">
                         <Text>Showing  items out of results</Text>
                       </div>
-                    </div>
-                  </Col>
-                  <Col span={12} style={{ textAlign: "right", marginTop:140 }}>
-                    <TablePager handleChange={this.handleSelectChange} />
-                  </Col>
-                </Row>
-              </div> 
-              <Table
+                  </div>
+                </Col>
+                <Col span={12} style={{ textAlign: "right", marginTop:140 }}>
+                  <TablePager handleChange={this.handleSelectChange} />
+                </Col>
+              </Row>
+            </div> 
+
+           
+            <Table
                 expandedRowRender={expandedRow}
                 style={{ textTransform: "uppercase" }}
-                dataSource={this.state.data}
+                dataSource={Item}
                 pagination={this.state.pagination}
                 loading={this.state.loading}
                 columns={columns}
@@ -148,9 +194,9 @@ class Extraction extends React.Component {
                     }
                   }
                 }}
-              />          
-            </Col>
-          </Row>
+              />    
+          </Col>
+        </Row>
       </div>
     );
   }
