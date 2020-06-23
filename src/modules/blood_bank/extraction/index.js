@@ -14,7 +14,7 @@ import {
 
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
-import { fetchBloodGroupItems } from 'services/blood_bank/extraction'
+import { fetchPatients } from 'services/blood_bank/extraction'
 import PageTitle from 'shared_components/page_title'
 import Message from 'shared_components/message'
 import TablePager from "shared_components/table_pager"
@@ -86,8 +86,25 @@ class Extraction extends React.Component {
       Item: [],
       loading: false,
     };
+    this.formRef = React.createRef();
   }
-	
+  
+  handleSubmit = async () => {  
+		const { getFieldsValue } = this.formRef.current;
+    const { patientID, patientName } = getFieldsValue()
+    let patients = [];
+
+    this.setState({ loading: true });
+		patients = await fetchPatients(patientName, patientID);  
+    this.setState({ 
+        loading: false,
+        Item: patients  
+    });
+
+    if(patients.length <= 0) 
+      Message.info('No results found');
+  }
+  
 	NextStep = () => {
     window.location.assign('/bloodbank/extraction/screening/step/1');
   };
@@ -111,17 +128,18 @@ class Extraction extends React.Component {
                   <Row justify="center">
                     <Col span={10}>
                   <Row>
-                    <Col span={12}>
-                      <Form.Item label="PATIENT NAME" name="patientName">
+                    <Col span={11}>
+                      <Form.Item label="DONOR'S ID" name="patientID">
                         <RegexInput 
                           regex={/[A-Za-z0-9, -]/} 
                           maxLength={100}
                           onFocus={this.handleFocus}
-                          placeholder="Lastname, Firstname"
+                          placeholder="Donor's ID"
                         />
                       </Form.Item>
                     </Col>
-                    <Col span={12}>
+                    <Text strong style={{marginTop:20}}>OR</Text>
+                    <Col span={11}>
                       <Form.Item label="PATIENT NAME" name="patientName">
                         <RegexInput 
                           regex={/[A-Za-z0-9, -]/} 

@@ -162,7 +162,7 @@ class SearchPatientForm extends React.Component {
 					</Col>
 					{/* Request date */}
 					{ (enableRequestDate === true) ? 
-						(
+						( 
 							<Col xs={24} sm={24} md={6} lg={4} style={{ marginTop: 20 }}>
 								<Form.Item label={fieldLabels.requestDate}>
 									<DatePicker 

@@ -115,12 +115,13 @@ class DonorRegistration extends React.Component {
   }
   
   NextStep = () => {
-    window.location.assign('/bloodbank/donor_registration/step/2/?label=SUBMIT');
+    this.props.history.push("/bloodbank/donor_registration/step/2",{label: "SUBMIT"});
   } 
 
   DoubleClick = (record) => {
-      record.label = "Update"
-      this.props.history.push("/bloodbank/donor_registration/step/2",record);
+    record.data = {record}
+    record.label = "UPDATE"
+    this.props.history.push("/bloodbank/donor_registration/step/2",record);
   }
 
   ExpandedRow = () => {

@@ -21,14 +21,20 @@ class FillUpForm extends React.Component {
   constructor(props) {
 		super(props);
     this.state = {
-      ButtonName:""
+      ButtonName:"",
+      record:[]
     };
   this.formRef = React.createRef();
   }
   
   componentDidMount() {
     const {label} = this.props.location.state
-    this.setState({ ButtonName: label});
+    const {data } = this.props.location.state
+    
+    this.setState({ 
+      ButtonName: label,
+      record:data
+    });
 	}
   
   computeAge = (date) => {
@@ -42,9 +48,7 @@ class FillUpForm extends React.Component {
     window.location.assign('/donor_registration/step/3');
   } 
 
-
   onFinish = async values => {
-  console.log("FillUpForm -> values", values)
     const { ButtonName } = this.state;
     const dateFormat = values.dateOfBirth.format('YYYY-MM-DD')
     const Data = {
@@ -122,8 +126,14 @@ class FillUpForm extends React.Component {
   }
  
   render() {
-      const { ButtonName } = this.state
-      console.log("FillUpForm -> render -> ButtonName", ButtonName)
+      const { ButtonName, record } = this.state
+      console.log("FillUpForm -> render -> record", record)
+      let newRecord = null;
+      if(record != null){
+       newRecord = record
+       console.log("FillUpForm -> render -> newRecord", newRecord)
+       console.log("FillUpForm -> render -> record", record.gender)
+      }
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
