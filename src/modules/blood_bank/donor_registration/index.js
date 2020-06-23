@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 // LiBRARY
 import React from "react";
+import { Redirect } from 'react-router-dom';
 import {
   Row,
   Col,
@@ -117,8 +118,9 @@ class DonorRegistration extends React.Component {
     window.location.assign('/bloodbank/donor_registration/step/2/?label=SUBMIT');
   } 
 
-  DoubleClick = () => {
-    window.location.assign(`/bloodbank/donor_registration/step/2?label=UPDATE`);   
+  DoubleClick = (record) => {
+      record.label = "Update"
+      this.props.history.push("/bloodbank/donor_registration/step/2",record);
   }
 
   ExpandedRow = () => {
