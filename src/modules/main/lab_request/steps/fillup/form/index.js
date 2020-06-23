@@ -37,7 +37,6 @@ class BaseForm extends React.Component {
 			isDisabledPersoFields: false,
 			address: {}
 		};
-
 		this.formRef = React.createRef();
 	}
 

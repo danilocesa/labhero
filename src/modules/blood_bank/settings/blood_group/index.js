@@ -1,5 +1,5 @@
 import React from 'react';
-import fetchInventoryItems from 'services/inventory/items';
+import fetchInventoryItems from 'services/blood_bank/blood_group';
 import BloodGroupTable from './table';
 
 class BloodGroup extends React.Component {
@@ -10,7 +10,8 @@ class BloodGroup extends React.Component {
 	async componentDidMount() {
 		const response = await fetchInventoryItems();
 		
-		this.setState({ inventoryItem: response.results });
+		this.setState({ inventoryItem: response});
+		console.log(response)
 	}
 
 	render() {

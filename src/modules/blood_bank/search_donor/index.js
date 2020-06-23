@@ -9,8 +9,6 @@ import SearchDonorTable from './donor_table';
 const { Option } = Select;
 
 class SearchDonor extends React.Component{
-
-
     render(){
         return(
             <div>

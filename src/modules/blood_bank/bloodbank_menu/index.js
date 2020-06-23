@@ -14,6 +14,11 @@ import './bloodbank-menu.css';
 const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
+		link: '/bloodbank/extraction/screening',
+		label: 'EXTRACTION/SCREENING',
+	},
+	{
+		image: BBdonorRegIcon,
 		link: '/bloodbank/donor_registration',
 		label: 'DONOR REGISTRATION',
 	},
@@ -36,7 +41,7 @@ const settingsItemData = [
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
 		label: 'SETTINGS',
-	}
+	},
 ]
 
 class BloodBankMenu extends React.Component {
