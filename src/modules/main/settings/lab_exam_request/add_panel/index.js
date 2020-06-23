@@ -23,6 +23,7 @@ class AddPanel extends React.Component {
 			selectedExams: []
 		}
 
+		this.formRef = React.createRef();
 		this.selectedTable = React.createRef();
 		this.formFields = React.createRef();
 	}
@@ -49,38 +50,33 @@ class AddPanel extends React.Component {
 		}
 	}
 
-	onSubmit = (event) => {
-		event.preventDefault();
-
+	onSubmit = () => {
 		const { onSuccess } = this.props;
+		const selectedExamItems = this.selectedTable.current.getSelectedExamItems();
+		const formFieldValues = this.formRef.current.getFieldsValue();
+		const payload = { 
+			sectionID: formFieldValues.sectionID,
+			specimenID: formFieldValues.specimenID,
+			examRequestCode: formFieldValues.examRequestCode,
+			examRequestIntegrationCode: formFieldValues.examRequestIntegrationCode,
+			examRequestLoinc: formFieldValues.examRequestLoinc,
+			examRequestName: formFieldValues.examRequestName,
+			examRequestSort: formFieldValues.examRequestSort,
+			examItems: selectedExamItems 
+		}; 
 
-		// @ts-ignore
-		const isFormFieldsValidated = this.formFields.triggerValidation();
+		this.setState({ isLoading: true }, async() => {
+			const createdExamRequest = await createExamRequest(payload);
+			this.setState({ isLoading: false });
 
-		if(isFormFieldsValidated) {
-			// @ts-ignore
-			const isSelExamValidated = this.selectedTable.triggerValidation();
-
-			if(isSelExamValidated) {
+			if(createdExamRequest){
+				onSuccess();
 				// @ts-ignore
-				const selectedExamItems = this.selectedTable.getSelectedExamItems();
-				// @ts-ignore
-				const formFieldValues = this.formFields.getFormValues();
-				const payload = { ...formFieldValues,  examItems: selectedExamItems }; 
-
-				this.setState({ isLoading: true }, async() => {
-					const createdExamRequest = await createExamRequest(payload);
-					this.setState({ isLoading: false });
-
-					if(createdExamRequest){
-						onSuccess();
-						// @ts-ignore
-						this.formFields.resetForm();
-						this.setState({ selectedExams: [] });
-					}
-				});
+				this.formRef.current.resetFields();
+				this.setState({ selectedExams: [] });
 			}
-		}
+		});
+
 	}
 
 	onSelectSelectionTable = (selectedExam) => {
@@ -126,8 +122,9 @@ class AddPanel extends React.Component {
 		const { closeForm } = this.props;
 
 		this.setState({ selectedExams: [] });
-		// @ts-ignore
-		this.formFields.resetForm();
+
+		this.formRef.current.resetFields();
+
 		closeForm();
 	}
 
@@ -136,6 +133,8 @@ class AddPanel extends React.Component {
 		const { sectionId , specimenId, selectedSectionName, selectedSpecimenName } = this.props;
 		// eslint-disable-next-line react/prop-types
 		const { visible } = this.props;
+
+		const selectedRowKeys = selectedExams.map(exam => exam.examItemID);
 
 		return (
 			<Drawer
@@ -146,14 +145,20 @@ class AddPanel extends React.Component {
 				onClose={this.closeFormDrawer}
 				visible={visible}
 			>
-				<Form onSubmit={this.onSubmit}>
+				<Form 
+					ref={this.formRef}
+					onFinish={this.onSubmit}
+					layout="vertical"
+				>
 					<section style={{ marginBottom: 50 }}>
 						<div style={{ margin: '0px 10px' }}>
-							<InputForm 
-								wrappedComponentRef={(inst) => this.formFields = inst}
-								sectionId={sectionId}
-								specimenId={specimenId}
-							/>
+							<Form.Item shouldUpdate>
+								<InputForm 
+									ref={this.formFields}
+									sectionId={sectionId}
+									specimenId={specimenId}
+								/>
+							</Form.Item>
 							<Row gutter={12}>
 								<Col span={7}>
 									<SelectionTable 
@@ -162,16 +167,17 @@ class AddPanel extends React.Component {
 										onSelect={this.onSelectSelectionTable}
 										onDeselect={this.onDeselectSelectionTable}
 										onSelectAll={this.onSelectAllSelectionTable}
-										selectedRowKeys={selectedExams.map(exam => exam.examItemID)}
+										selectedRowKeys={selectedRowKeys}
 									/>		
 								</Col>
 								<Col span={17}>
 									<SelectedTable 
-										wrappedComponentRef={(inst) => this.selectedTable = inst}
+										form={this.formRef.current || {}}
+										ref={this.selectedTable}
 										data={selectedExams}
 										onDragAndDropRow={this.onDragAndDropRow}
 										loading={false}
-									/>		
+									/>	
 								</Col>
 							</Row>
 						</div>

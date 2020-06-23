@@ -5,10 +5,6 @@ import { Drawer as AntDrawer, Tabs as AntTabs, Badge as AntBadge} from 'antd';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 import SearchPatientTableHeader from 'shared_components/search_pager';
-import { 
-	fetchExtracReqByPatientID, 
-	fetchExtracReqByPatientName 
-} from 'services/phlebo/specimenTracking';
 import SearchPatientHeaderForm from './search_form/search_input';
 import SearchPatientTable from './phlebo_result_table';
 import PhleboPatientResult from './patient_phlebo_info';

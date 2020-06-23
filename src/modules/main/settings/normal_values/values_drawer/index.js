@@ -13,6 +13,7 @@ import {
 import NormalValuesTable from './table';
 import FillupForm from '../fillup_form';
 import { 
+	drawerTitle,
 	moduleTitle, 
 	fieldLabels, 
 	buttonNames, 
@@ -175,7 +176,7 @@ class NormalValuesDrawer extends React.Component{
 					className="values-drawer"
 				>
 					<section className="values-drawer-examItemSection">
-						<Form>
+						<Form layout="vertical">
 							<Row gutter={16}>
 								<Col span={9} style={{ marginLeft: 10 }}>
 									<Form.Item label={fieldLabels.examItemName}>
@@ -217,35 +218,47 @@ class NormalValuesDrawer extends React.Component{
 						onRowDblClick={this.onDblClickTableRow}
 					/>
 				</Drawer>
-				<FillupForm 
-					moduleType={formMode.add}
-					visible={isDisplayAddForm} 
+				<Drawer
+					title={`${drawerTitle.normalValue.add} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
 					onClose={this.onExitAddForm} 
-					onSubmit={this.onSubmittingAddForm}
-					ageBrackets={ageBrackets}
-					selectedSectionID={selectedSectionID}
-					selectedSectionName={selectedSectionName}
-					selectedSpecimenName={selectedSpecimenName}
-					examItemName={selectedExamItem.examItemName}
-					examItemGeneralName={selectedExamItem.examItemGeneralName}
-					examItemUnitCode={selectedExamItem.examItemUnitCode}
-					wrappedComponentRef={(inst) => this.addForm = inst}
-				/>
-				<FillupForm 
-					moduleType={formMode.update}
-					visible={isDisplayUpdateForm} 
+					visible={isDisplayAddForm}
+				>
+					<FillupForm 
+						moduleType={formMode.add}
+						onClose={this.onExitAddForm} 
+						onSubmit={this.onSubmittingAddForm}
+						ageBrackets={ageBrackets}
+						selectedSectionID={selectedSectionID}
+						examItemName={selectedExamItem.examItemName}
+						examItemGeneralName={selectedExamItem.examItemGeneralName}
+						examItemUnitCode={selectedExamItem.examItemUnitCode}
+						ref={(inst) => this.addForm = inst}
+					/>
+				</Drawer>
+				<Drawer
+					title={`${drawerTitle.normalValue.update} - ${selectedSectionName} / ${selectedSpecimenName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
 					onClose={this.onExitUpdateForm} 
-					onSubmit={this.onSubmittingUpdateForm}
-					ageBrackets={filteredAgeBrackets}
-					selectedSectionID={selectedSectionID}
-					selectedSectionName={selectedSectionName}
-					selectedSpecimenName={selectedSpecimenName}
-					examItemName={selectedExamItem.examItemName}
-					examItemGeneralName={selectedExamItem.examItemGeneralName}
-					examItemUnitCode={selectedExamItem.examItemUnitCode}
-					wrappedComponentRef={(inst) => this.updateForm = inst}
-					selectedItemRange={selectedItemRange}
-				/>
+					visible={isDisplayUpdateForm}
+				>
+					<FillupForm 
+						moduleType={formMode.update}
+						onClose={this.onExitUpdateForm} 
+						onSubmit={this.onSubmittingUpdateForm}
+						ageBrackets={filteredAgeBrackets}
+						selectedSectionID={selectedSectionID}
+						examItemName={selectedExamItem.examItemName}
+						examItemGeneralName={selectedExamItem.examItemGeneralName}
+						examItemUnitCode={selectedExamItem.examItemUnitCode}
+						ref={(inst) => this.updateForm = inst}
+						selectedItemRange={selectedItemRange}
+					/>
+				</Drawer>
 			</div>
 		);
 	}

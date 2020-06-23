@@ -10,6 +10,7 @@ import DropDown from '../../shared/dropdown';
 import AgeBracketTable from './table';
 import FillupForm from './fillup_form';
 import { 
+	drawerTitle,
 	moduleTitle, 
 	buttonNames, 
 	tablePageSize, 
@@ -29,7 +30,6 @@ class AgeBracketDrawer extends React.Component{
 			isDisplayUpdateForm: false,
 			pageSize: tablePageSize,
 			ageBrackets: [],
-			// rangeClass: [],
 			selectedAgeBracket: {},
 			selectedSectionId: null,
 			selectedSectionName: null
@@ -58,7 +58,8 @@ class AgeBracketDrawer extends React.Component{
 	}
 	
 	onExitAddForm = () => {
-		this.addForm.resetForm();
+		console.log('add form did exit');
+		this.addForm.current.resetForm();
 
 		this.setState({ isDisplayAddForm: false });
 	}
@@ -83,7 +84,7 @@ class AgeBracketDrawer extends React.Component{
 
 		if(createdItem) {
 			Message.success({ message: messagePrompts.successCreatedAgeBracket });
-			this.addForm.resetForm();
+			this.addForm.current.resetForm();
 		
 			this.setState({ isLoading: true }, async() => {
 				const { selectedSectionId } = this.state;
@@ -114,7 +115,7 @@ class AgeBracketDrawer extends React.Component{
 
 		if(updatedItem) {
 			Message.success({ message: messagePrompts.successUpdateAgeBracket });
-			this.updateForm.resetForm();
+			this.updateForm.current.resetForm();
 		
 			this.setState({ isLoading: true, isDisplayUpdateForm: false }, async() => {
 				const { selectedSectionId } = this.state;
@@ -231,26 +232,42 @@ class AgeBracketDrawer extends React.Component{
 						onRowDblClick={this.onDblClickTableRow}
 					/>
 				</Drawer>
-				<FillupForm 
-					moduleType={formMode.add}
-					// rangeClass={rangeClass}
-					visible={isDisplayAddForm} 
-					onClose={this.onExitAddForm} 
-					onSubmit={this.onSubmittingAddForm}
-					selectedSectionName={selectedSectionName}
-					selectedSectionId={selectedSectionId}
-					wrappedComponentRef={(inst) => this.addForm = inst}
-				/>
-				<FillupForm 
-					moduleType={formMode.update}
-					// rangeClass={rangeClass}
-					visible={isDisplayUpdateForm} 
-					onClose={this.onExitUpdateForm} 
-					onSubmit={this.onSubmittingUpdateForm}
-					ageBracket={selectedAgeBracket}
-					selectedSectionName={selectedSectionName}
-					wrappedComponentRef={(inst) => this.updateForm = inst}
-				/>
+				<Drawer
+					title={`${drawerTitle.ageBracket.add} - ${selectedSectionName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
+					onClose={this.onExitAddForm}
+					visible={isDisplayAddForm}
+					className="age-bracket-drawer"
+				>
+					<FillupForm 
+						moduleType={formMode.add}
+						onClose={this.onExitAddForm} 
+						onSubmit={this.onSubmittingAddForm}
+						selectedSectionName={selectedSectionName}
+						selectedSectionId={selectedSectionId}
+						ref={this.addForm}
+					/>
+				</Drawer>
+				<Drawer
+					title={`${drawerTitle.ageBracket.update} - ${selectedSectionName}`.toUpperCase()}
+					width="700"
+					placement="right"
+					closable
+					onClose={this.onExitUpdateForm}
+					visible={isDisplayUpdateForm}
+					className="age-bracket-drawer"
+				>
+					<FillupForm 
+						moduleType={formMode.update}
+						onClose={this.onExitUpdateForm} 
+						onSubmit={this.onSubmittingUpdateForm}
+						ageBracket={selectedAgeBracket}
+						selectedSectionName={selectedSectionName}
+						ref={this.updateForm}
+					/>
+				</Drawer>
 			</div>
 		);
 	}

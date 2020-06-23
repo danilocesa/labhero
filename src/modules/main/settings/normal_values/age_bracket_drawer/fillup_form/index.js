@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Drawer, Form, Button, Select, Row, Col, Input, Switch } from 'antd';
+import { Form, Button, Select, Row, Col, Input, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { NumberInput } from 'shared_components/pattern_input';
-import { drawerTitle, fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
+import { fieldLabels, formMode, buttonNames, fieldRules} from '../../settings';
 
 import './fillup_form.css';
 
@@ -17,10 +17,29 @@ class FillupForm extends React.Component {
 		this.state = {
 			isLoading: false,
 		}
+
+		this.formRef = React.createRef();
+	}
+
+	componentDidMount() {
+		const { ageBracket } = this.props;
+		const form = this.formRef.current;
+
+		const { ageBracketLabel, bracketFrom, bracketFromUnit, bracketTo, bracketToUnit, active } = ageBracket;
+
+		form.setFieldsValue({ 
+			ageBracketLabel,
+			bracketFrom,
+			bracketFromUnit,
+			bracketTo,
+			bracketToUnit,
+			active: active === 1
+		});
 	}
 
 	componentDidUpdate(prevProps) {
-		const { ageBracket, form } = this.props;
+		const { ageBracket } = this.props;
+		const form = this.formRef.current;
 
 		if(ageBracket.ageBracketID !== prevProps.ageBracket.ageBracketID) {
 			const { ageBracketLabel, bracketFrom, bracketFromUnit, bracketTo, bracketToUnit, active } = ageBracket;
@@ -37,44 +56,23 @@ class FillupForm extends React.Component {
 	}
 
 	resetForm= () => {
-		const { resetFields } = this.props.form;
+		const { resetFields } = this.formRef.current;
 
 		resetFields();
 	}
 
-	onFormSubmit = (event) => {
-		event.preventDefault();
+	onFormSubmit = (fieldValues) => {
+		const { onSubmit } = this.props;
+		this.setState({ isLoading: true }, async() => {
+			await onSubmit({ ...fieldValues, active: fieldValues.active ? 1 : 0 });
 
-		const { form, onSubmit } = this.props;
-		const { getFieldsValue, validateFieldsAndScroll } = form;
-
-		validateFieldsAndScroll((err) => {
-			if (!err) {
-				this.setState({ isLoading: true }, async() => {
-					const fieldValues = getFieldsValue();
-
-					await onSubmit({ ...fieldValues, active: fieldValues.active ? 1 : 0 });
-
-					this.setState({ isLoading: false });
-				});
-			}
+			this.setState({ isLoading: false });
 		});
-	}
-
-	onBlurAgeUnits = () => {
-		const { getFieldsValue, validateFields } = this.props.form;
-		const { bracketFrom, bracketTo, bracketFromUnit, bracketToUnit } = getFieldsValue();
-
-		if(!bracketFrom || !bracketTo || !bracketFromUnit || !bracketToUnit) {
-			return;
-		}
-
-		validateFields(['bracketTo', 'bracketToUnit']);
 	}
 
 	// Private functions
 	validateAge = (rule, value, callback) => {
-		const { getFieldsValue } = this.props.form;
+		const { getFieldsValue } = this.formRef.current;
 		const { bracketFrom, bracketTo, bracketFromUnit, bracketToUnit } = getFieldsValue();
 
 		// Reference: https://momentjs.com/docs/#/manipulating/add/
@@ -98,154 +96,140 @@ class FillupForm extends React.Component {
 		const { isLoading } = this.state;
 		const { 
 			onClose, 
-			visible, 
-			form, 
 			moduleType,
-			selectedSectionName,
 			// rangeClass
 		} = this.props;
 
-		const { getFieldDecorator } = form;
-
-		const headerTitle = (moduleType === formMode.add) 
-												? drawerTitle.ageBracket.add 
-												: drawerTitle.ageBracket.update;
-
-		// const rangeClassOptions = rangeClass.map(item => (
-		// 	<Option value={item.rangeClassLabel}>{item.rangeClassLabel}</Option>
-		// ));
-
 		return (
-			<Drawer
-				title={`${headerTitle} - ${selectedSectionName}`.toUpperCase()}
-				width="700"
-				placement="right"
-				closable
-				onClose={onClose}
-				visible={visible}
-				className="age-bracket-drawer"
+			<Form 
+				ref={this.formRef}
+				onFinish={this.onFormSubmit} 
+				className="age-bracket-fillup-form"
+				layout="vertical"
 			>
-				<Form onSubmit={this.onFormSubmit} className="age-bracket-fillup-form">
-					<section style={{ marginBottom: 50 }}>
-						<section className="form-values">
-							{
-								(moduleType === formMode.update) && 
-								(
-									<Row>
-										<Col>
-											<Form.Item>
-												<span style={{ marginRight: 10 }}>ACTIVE:</span>
-												{getFieldDecorator('active', { valuePropName: 'checked' })(
-													<Switch />
-												)}
-											</Form.Item>
-										</Col>
-									</Row>
-								)
-							}
-							<Row style={{ marginTop: 10 }}>
-								<Col span={12}>
-									<Form.Item label={fieldLabels.ageBracketRangeLabel}>
-										{getFieldDecorator('ageBracketLabel', { 
-											rules: fieldRules.ageBracketRangeLabel
-										})(
-											<Input maxLength={20} />
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={12}>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketFrom}>
-										{getFieldDecorator('bracketFrom', {
-											rules: fieldRules.ageBracketFrom
-										})(
-											<NumberInput maxLength={3} onBlur={this.onBlurAgeUnits} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={10}>
-									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('bracketFromUnit', { 
-											rules: fieldRules.ageBracketUnit,
-										})(
-											<Select onBlur={this.onBlurAgeUnits}>
-												<Option value="DAYS">DAYS</Option>
-												<Option value="WEEKS">WEEKS</Option>
-												<Option value="MONTHS">MONTHS</Option>
-												<Option value="YEARS">YEARS</Option>
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-							<Row gutter={12}>
-								<Col span={4}>
-									<Form.Item label={fieldLabels.ageBracketTo}>
-										{getFieldDecorator('bracketTo', { 
-											rules: [
-												...fieldRules.ageBracketTo, 
-												{ validator: this.validateAge }
-											],
-											validateTrigger: 'onBlur'
-										})(
-											<NumberInput maxLength={3} onBlur={this.onBlurAgeUnits} />
-										)}
-									</Form.Item>
-								</Col>
-								<Col span={10}>
-									<Form.Item label={fieldLabels.ageBracketUnit}>
-										{getFieldDecorator('bracketToUnit', { 
-											rules: [
-												...fieldRules.ageBracketUnit,
-												{ validator: this.validateAge }
-											],
-											validateTrigger: 'onBlur'
-										})(
-											<Select onBlur={this.onBlurAgeUnits}>
-												<Option value="DAYS">DAYS</Option>
-												<Option value="WEEKS">WEEKS</Option>
-												<Option value="MONTHS">MONTHS</Option>
-												<Option value="YEARS">YEARS</Option>
-											</Select>
-										)}
-									</Form.Item>
-								</Col>
-							</Row>
-						</section>
+				<section style={{ marginBottom: 50 }}>
+					<section className="form-values">
+						{
+							(moduleType === formMode.update) && 
+							(
+								<Row align="middle">
+									<Col span={2}>
+										ACTIVE:
+									</Col>
+									<Col span={22}>
+										<Form.Item 
+											name="active"
+											valuePropName="checked"
+											initialValue
+										>
+											<Switch />
+										</Form.Item>
+									</Col>
+								</Row>
+							)
+						}
+						<Row style={{ marginTop: 10 }}>
+							<Col span={12}>
+								<Form.Item 
+									name="ageBracketLabel"
+									label={fieldLabels.ageBracketRangeLabel}
+									rules={fieldRules.ageBracketRangeLabel}
+								>
+									<Input maxLength={20} />
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={12}>
+							<Col span={4}>
+								<Form.Item 
+									name="bracketFrom"
+									label={fieldLabels.ageBracketFrom}
+									rules={fieldRules.ageBracketFrom}
+									dependencies={['bracketFrom', 'bracketFromUnit', 'bracketTo', 'bracketToUnit']}
+								>
+									<NumberInput maxLength={3} />
+								</Form.Item>
+							</Col>
+							<Col span={10}>
+								<Form.Item 
+									name="bracketFromUnit"
+									label={fieldLabels.ageBracketUnit}
+									rules={fieldRules.ageBracketUnit}
+									dependencies={['bracketFrom', 'bracketFromUnit', 'bracketTo', 'bracketToUnit']}
+								>
+									<Select>
+										<Option value="DAYS">DAYS</Option>
+										<Option value="WEEKS">WEEKS</Option>
+										<Option value="MONTHS">MONTHS</Option>
+										<Option value="YEARS">YEARS</Option>
+									</Select>
+								</Form.Item>
+							</Col>
+						</Row>
+						<Row gutter={12}>
+							<Col span={4}>
+								<Form.Item 
+									name="bracketTo"
+									label={fieldLabels.ageBracketTo}
+									rules={[
+										...fieldRules.ageBracketTo, 
+										{ validator: this.validateAge }
+									]}
+									dependencies={['bracketFrom', 'bracketFromUnit', 'bracketTo', 'bracketToUnit']}
+								>
+									<NumberInput maxLength={3} />
+								</Form.Item>
+							</Col>
+							<Col span={10}>
+								<Form.Item 
+									name="bracketToUnit"
+									label={fieldLabels.ageBracketUnit}
+									rules={[
+										...fieldRules.ageBracketUnit,
+										{ validator: this.validateAge }
+									]}
+									dependencies={['bracketFrom', 'bracketFromUnit', 'bracketTo', 'bracketToUnit']}
+								>
+									<Select>
+										<Option value="DAYS">DAYS</Option>
+										<Option value="WEEKS">WEEKS</Option>
+										<Option value="MONTHS">MONTHS</Option>
+										<Option value="YEARS">YEARS</Option>
+									</Select>
+								</Form.Item>
+							</Col>
+						</Row>
 					</section>
-					<section className="drawerFooter">
-						<div>
-							<Button 
-								shape="round" 
-								style={{ margin: 10, width: 120 }}
-								onClick={onClose}
-							>
-								{buttonNames.cancel}
-							</Button>
-							<Button 
-								shape="round" 
-								type="primary" 
-								htmlType="submit"
-								loading={isLoading}
-								style={{ margin: 10, width: 120 }}
-							>
-								{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
-							</Button>
-						</div>
-					</section>
-				</Form>
-			</Drawer>
+				</section>
+				<section className="drawerFooter">
+					<div>
+						<Button 
+							shape="round" 
+							style={{ margin: 10, width: 120 }}
+							onClick={onClose}
+						>
+							{buttonNames.cancel}
+						</Button>
+						<Button 
+							shape="round" 
+							type="primary" 
+							htmlType="submit"
+							loading={isLoading}
+							style={{ margin: 10, width: 120 }}
+						>
+							{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
+						</Button>
+					</div>
+				</section>
+			</Form>
 		);
 	}
 }
 
 FillupForm.propTypes = {
 	moduleType: PropTypes.string.isRequired,
-	visible: PropTypes.bool.isRequired,
 	onClose: PropTypes.func.isRequired,
 	onSubmit: PropTypes.func.isRequired,
-	selectedSectionName: PropTypes.string,
 	ageBracket: PropTypes.shape({
 		ageBracketID: PropTypes.number,
 		from: PropTypes.string,
@@ -253,14 +237,9 @@ FillupForm.propTypes = {
 		unitFrom: PropTypes.string,
 		unitTo: PropTypes.string
 	}),
-	// rangeClass: PropTypes.arrayOf(PropTypes.shape({
-	// 	rangeClassID: PropTypes.number.isRequired,
-	// 	rangeClassLabel: PropTypes.string.isRequired,
-	// })).isRequired
 };
 
 FillupForm.defaultProps = {
-	selectedSectionName: null,
 	ageBracket: {
 		ageBracketID: null,
 		from: null,
@@ -270,7 +249,5 @@ FillupForm.defaultProps = {
 	}
 }
 
-
-// export default Form.create()(FillupForm);
 
 export default FillupForm;

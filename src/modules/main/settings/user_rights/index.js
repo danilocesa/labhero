@@ -5,6 +5,8 @@ import { Button, Icon, Row, Col } from 'antd';
 
 import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PlusOutlined } from '@ant-design/icons';
 import Form from './form';
 import UserRightsTable from './table';
 import { moduleTitle, tablePageSize, buttonLabels } from './settings';
@@ -71,7 +73,7 @@ class UserRights extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<Icon type="plus" /> {buttonLabels.label4}
+					<PlusOutlined /> {buttonLabels.label4}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>

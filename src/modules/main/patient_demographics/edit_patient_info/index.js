@@ -41,7 +41,8 @@ class EditProfile extends React.Component {
 		super(props);
 
 		this.state = {
-			patientAddress: {}
+			patientAddress: {},
+			isLoading: false
 		};
 		this.formRef = React.createRef();
 	}
@@ -73,41 +74,32 @@ class EditProfile extends React.Component {
 		this.setState({[event.target.name]: event.target.value})
 	} 
 	
-	onSubmit = (e) => {
-		e.preventDefault();
-		// eslint-disable-next-line react/prop-types
-		const { getFieldsValue, validateFieldsAndScroll } = this.props.form;
-		validateFieldsAndScroll((err) => {
-			if (!err) {
-				const fields = getFieldsValue();
-				fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
-				try{
-					this.submitUpdatePatient(fields);
-				}
-				catch(error){
-					HttpCodeMessage({status: 500});
-				}
-			}
-		});
+	onSubmit = () => {
+		const fields = this.formRef.current.getFieldsValue();
+		fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
+
+		this.submitUpdatePatient(fields);
 	}
 
 	submitUpdatePatient = async (fields) => {
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 		const payload = {
-			"patientID": this.props.patientInfo.patientID,
-			"userID": loggedUserData.userID,
-			"lastName": fields.lastname.toString().toUpperCase(),
-			"givenName": fields.firstname.toString().toUpperCase(),
-			"middleName": fields.middlename.toString().toUpperCase(),
-			"sex": fields.gender.toString().toUpperCase(),
-			"dateOfBirth": fields.dateOfBirth,
-			"addressCode": fields.town,
-			"address": fields.address,
-			"emailAdd": fields.emailAdd,
-			"contactNumber" : fields.contactNumber
+			patientID: this.props.patientInfo.patientID,
+			userID: loggedUserData.userID,
+			lastName: fields.lastName.toString().toUpperCase(),
+			givenName: fields.givenName.toString().toUpperCase(),
+			middleName: fields.middleName.toString().toUpperCase(),
+			sex: fields.sex.toString().toUpperCase(),
+			dateOfBirth: fields.dateOfBirth,
+			addressCode: fields.town,
+			address: fields.address,
+			emailAdd: fields.emailAdd,
+			contactNumber : fields.contactNumber
 		};
 
+		this.setState({ isLoading: true });
 		const response = await updatePatientAPI(payload);
+		this.setState({ isLoading: false });
 
 		if(response.status === 200){
 			message.success(successMessages.update);
@@ -126,26 +118,9 @@ class EditProfile extends React.Component {
 
 	render() {
 		const { patientInfo } = this.props;
-		const { patientAddress } = this.state;
-		// const { getFieldDecorator, getFieldsValue } = form;
-		const { 
-			emailAdd,
-			contactNumber,
-			dateOfBirth,
-			sex,
-			givenName,
-			middleName,
-			lastName,
-			suffix 
-		} = patientInfo;
-		const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
-		// const { 
-		// 	provinces: selectedProvinceCode, 
-		// 	city: selectedCityCode, 
-		// 	town: selectedTownCode
-		// } = getFieldsValue();
-
-		console.log(patientInfo.address, formLabels.unitNo.fieldName);
+		const { patientAddress, isLoading } = this.state;
+		const { dateOfBirth: dob, sex } = patientInfo;
+		const { provinceCode, cityMunicipalityCode, houseAddress } = patientAddress;
 
 		return(
 			<div>
@@ -154,6 +129,7 @@ class EditProfile extends React.Component {
 					onFinish={this.onSubmit}
 					initialValues={{
 						...patientInfo,
+						dateOfBirth: dob ? moment(dob, 'MM-DD-YYYY') : null,
 						provinces: patientInfo.provinceCode,
 						city: patientInfo.cityMunicipalityCode, 
 						town: patientInfo.townCode,
@@ -212,7 +188,7 @@ class EditProfile extends React.Component {
 						{/** Middlename */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item 
-								name="middlename"
+								name="middleName"
 								label={formLabels.middleName}
 								rules={fieldRules.middlename}
 							>
@@ -258,7 +234,7 @@ class EditProfile extends React.Component {
 						{/** Gender */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item 
-								name="gender"
+								name="sex"
 								className="gutter-box"
 								label={formLabels.gender} 
 								rules={fieldRules.gender}
@@ -311,25 +287,23 @@ class EditProfile extends React.Component {
 										label={formLabels.dateOfBirth}
 										rules={fieldRules.dateOfBirth}
 									>
-										<div className="customDatePickerWidth">
+										<DatePicker 
+											format={dateFormat}
+											style={{ width: '100%' }}
+											onChange={this.onDateChange}
+											disabled
+										/>
+										{/* {getFieldDecorator('dateOfBirth', { 
+											initialValue: dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null,
+											rules: fieldRules.dateOfBirth
+										})(
 											<DatePicker 
 												format={dateFormat}
 												style={{ width: '100%' }}
 												onChange={this.onDateChange}
 												disabled
 											/>
-											{/* {getFieldDecorator('dateOfBirth', { 
-												initialValue: dateOfBirth ? moment(dateOfBirth, 'MM-DD-YYYY') : null,
-												rules: fieldRules.dateOfBirth
-											})(
-												<DatePicker 
-													format={dateFormat}
-													style={{ width: '100%' }}
-													onChange={this.onDateChange}
-													disabled
-												/>
-											)} */}
-										</div>
+										)} */}
 									</Form.Item>
 								</Col>
 							</Row>
@@ -338,7 +312,6 @@ class EditProfile extends React.Component {
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<ProvinceList 
 								form={this.formRef}
-								// form={form}
 								placeholder={selectDefaultOptions}
 								selectedProvince={provinceCode}
 								onChange={this.onProvinceChange}
@@ -351,7 +324,6 @@ class EditProfile extends React.Component {
 									return (
 										<CityList 
 											form={form}
-											// form={form}
 											placeholder={selectDefaultOptions}
 											provinceValue={form.getFieldValue('provinces')}
 											selectedCity={cityMunicipalityCode}
@@ -437,10 +409,20 @@ class EditProfile extends React.Component {
 						</Col>	
 					</Row>
 					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 10, width: 120 }} onClick={this.props.onCancel}>
+						<Button 
+							shape="round" 
+							style={{ marginRight: 10, width: 120 }} 
+							onClick={this.props.onCancel}
+						>
 							{drawerCancelButton}
 						</Button>
-						<Button shape="round" type="primary" htmlType="submit" style={{ margin: 10, width: 120 }}>
+						<Button 
+							shape="round" 
+							type="primary" 
+							htmlType="submit" 
+							loading={isLoading}
+							style={{ margin: 10, width: 120 }}
+						>
 							{drawerSubmitButton}
 						</Button>
 					</section>
@@ -453,17 +435,12 @@ class EditProfile extends React.Component {
 
 EditProfile.propTypes = {
 	patientInfo: PropTypes.object,
-	form: PropTypes.object,
 	onCancel: PropTypes.func
 };
 
 EditProfile.defaultProps = {
 	patientInfo() { return null; },
-	form() { return null; },
 	onCancel() { return null }
 }
 
-// const UpdatePatientForm = Form.create()(withRouter(EditProfile));
-
-// export default UpdatePatientForm;
 export default withRouter(EditProfile);

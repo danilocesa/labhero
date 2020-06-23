@@ -110,7 +110,7 @@ class SearchPatientTable extends React.Component {
 				<div>
 					<AntTable 
 						className="phlebo-result-table"
-						pagination={{pageSize}} 
+						pagination={{ pageSize, showSizeChanger: false }} 
 						size={globalTableSize}
 						// @ts-ignore
 						columns={columns} 

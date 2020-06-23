@@ -130,8 +130,7 @@ class AddForm extends React.Component {
 
 	render() {
 		const { isLoading } = this.state;
-		const { onClose, visible, form, type } = this.props;
-		const { getFieldDecorator } = form;
+		const { onClose, visible, type } = this.props;
     const tProps = {
       treeData,
       value: this.state.value,
@@ -154,20 +153,36 @@ class AddForm extends React.Component {
 				onClose={onClose}
 				visible={visible}
 			>
-				<Form onSubmit={this.onSubmit}>
+        <Form 
+          onFinish={this.onSubmit}
+          layout="vertical"
+        >
 					<section style={{ marginBottom: 50 }}>
-						<Form.Item label={fieldLabels.label1}>
-							{getFieldDecorator('userType', { rules: fieldRules.examItemName })(
+            <Form.Item 
+              name="userType"
+              label={fieldLabels.label1}
+              rules={fieldRules.examItemName}
+            >
+              <RegexInput 
+                regex={/[A-Za-z0-9 -]/} 
+                maxLength={200} 
+              />
+							{/* {getFieldDecorator('userType', { rules: fieldRules.examItemName })(
 								<RegexInput 
 									regex={/[A-Za-z0-9 -]/} 
                   maxLength={200} 
 								/>
-							)}
-						</Form.Item>
-            <Form.Item label={fieldLabels.label2}>
-							{getFieldDecorator('userDepartment', { rules: fieldRules.examItemName })(
+							)} */}
+            </Form.Item>  
+            <Form.Item 
+              name="userDepartment"
+              label={fieldLabels.label2}
+              rules={fieldRules.examItemName}
+            >
+              <TreeSelect {...tProps} />
+							{/* {getFieldDecorator('userDepartment', { rules: fieldRules.examItemName })(
 								<TreeSelect {...tProps} />
-							)}
+							)} */}
             </Form.Item>
 					</section>
 					<section className="drawerFooter">
@@ -190,7 +205,7 @@ class AddForm extends React.Component {
 							</Button>
 						</div>
 					</section>
-				</Form>
+        </Form> 
 			</Drawer>
 		);
 	}

@@ -95,7 +95,7 @@ export const fieldRules = {
 		{ min: 2, message: vdltnMessage.minLength(2) }
 	],
 	password: [
-		{ required: true, message: vdltnMessage.required },
+		// { required: true, message: vdltnMessage.required },
 		{ max: 12, message: vdltnMessage.maxLength(12) },
 		{ min: 3, message: vdltnMessage.minLength(2) }
 	],

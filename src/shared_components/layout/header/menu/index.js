@@ -3,8 +3,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Dropdown, Menu, Icon, Typography, Avatar, Button } from 'antd';
-
+import { Dropdown, Menu, Typography, Avatar, Button } from 'antd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { DownOutlined } from '@ant-design/icons';
 
 // CUSTOM MODULES
 import auth from 'services/login/auth';
@@ -47,7 +48,7 @@ class UserMenu extends React.Component {
               <Avatar>{`${LOGGEDIN_USER_DATA.givenName.charAt(0)}${LOGGEDIN_USER_DATA.lastName.charAt(0)}`}</Avatar>
             </div>
             <div className="user-menu-icon">
-              <Icon type="down" />
+              <DownOutlined />
             </div>
           </div>
         </Button>

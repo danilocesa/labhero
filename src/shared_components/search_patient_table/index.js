@@ -116,7 +116,7 @@ class SearchPatientTable extends React.Component {
 				<div className="search-patient-table">
 					<AntTable 
 						size={globalTableSize}
-						pagination={{pageSize}} 
+						pagination={{ pageSize, showSizeChanger: false }} 
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}

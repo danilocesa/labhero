@@ -1,8 +1,9 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Icon, Input } from 'antd';
-
+import { Row, Col, Button, Input } from 'antd';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
@@ -169,7 +170,11 @@ class LabExamRequest extends React.Component {
 	}
 
 	closeForm = () => {
-		this.setState({ isShowAddForm: false, isShowUpdateForm: false });
+		this.setState({ 
+			isShowAddForm: false, 
+			isShowUpdateForm: false,
+			selectedExamRequest: {}
+		});
 	}
 
 	// Private Function
@@ -198,8 +203,9 @@ class LabExamRequest extends React.Component {
 		} = this.state;
 		
 		const leftSection = (
-			<Row gutter={24}>
-				<Col span={24}>
+			// <Row gutter={24}>
+			// 	<Col span={24}>
+				<>
 					<DropDown 
 						size="small"
 						placeholder={placeHolders.specimenDropdown}
@@ -217,8 +223,9 @@ class LabExamRequest extends React.Component {
 						disabled={selectedSectionId == null}
 						className="exam-request-search-input"
 					/>
-				</Col>
-			</Row>
+				</>
+			// 	</Col>
+			// </Row>
 		);
 
 		const rightSection = (
@@ -230,7 +237,7 @@ class LabExamRequest extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId == null}
 				>
-					<Icon type="plus" />{buttonNames.addExam}
+					<PlusOutlined />{buttonNames.addExam}
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -239,19 +246,21 @@ class LabExamRequest extends React.Component {
 
 		return (
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle="EXAM REQUEST" />
-					<Row style={{ marginTop: 50 }}>
-						<DropDown 
-							label={labels.sectionLabel} 
-							placeholder={placeHolders.sectionDropdown}
-							content={ddSections} 
-							onChange={this.onChangeSection}
-							value={selectedSectionId}
-							loading={isInitializing}
-						/>
-					</Row>
-				</section>
+				<Row justify="center" style={{ marginTop: 30 }}>
+					<Col>
+						<PageTitle pageTitle="EXAM REQUEST" />
+						<Row style={{ marginTop: 50 }}>
+							<DropDown 
+								label={labels.sectionLabel} 
+								placeholder={placeHolders.sectionDropdown}
+								content={ddSections} 
+								onChange={this.onChangeSection}
+								value={selectedSectionId}
+								loading={isInitializing}
+							/>
+						</Row>
+					</Col>
+				</Row>
 				<SecondarySection 
 					leftContent={leftSection}
 					rightContent={rightSection}

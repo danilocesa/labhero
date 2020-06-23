@@ -74,7 +74,7 @@ class ExamTable extends React.Component {
 					<Table 
 						className="ser-search-table"
 						size={tableSize}
-						pagination={{pageSize}} 
+						pagination={{ pageSize, showSizeChanger: false }} 
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: tableYScroll }}

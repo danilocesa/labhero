@@ -99,7 +99,7 @@ class SectionTable extends React.Component {
 				<Table
 					className="lab-result-section-table"
 					columns={columns}
-					pagination={{ pageSize }} 
+					pagination={{ pageSize, showSizeChanger: false }} 
 					dataSource={labResults}
 					rowKey={record => record.contents.sampleSpecimenID}
 					scroll={{ x: 3000, y: 300 }}

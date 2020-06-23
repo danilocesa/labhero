@@ -3,19 +3,17 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Switch, Form, Button, Card as AntCard } from 'antd';
+import { Row, Col, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
 import { RegexInput } from 'shared_components/pattern_input';
 import errorMessage from 'global_config/error_messages';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { buttonNames } from '../settings';
+
 
 let id = 0;
 
 class DynamicForm extends React.Component {
 	state = {
 		checkedKey: 0,
-		fields: []
 	}
 	
 	componentDidMount() {
@@ -24,20 +22,18 @@ class DynamicForm extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		const { examId, examItemValue, form } = this.props;
+		
 		// This will run only when the user select in update form.
 		// This will be disregarded in add form.
 		if(examId !== prevProps.examId && examItemValue) {
 			const fieldKeys = examItemValue.map((item, index) => ({ key: index }));
+			const fieldValues = examItemValue.map((item) => item.examItemValueLabel);
 			const selectedIndex = examItemValue.findIndex(item => item.examItemValueDefault === 1);
-			const dynamicFields = {};
-			examItemValue.forEach((item, index) => {
-				dynamicFields[`dynamicInputs_${index}`] = item.examItemValueLabel;
-			});
 
-			// eslint-disable-next-line react/no-did-update-set-state
-			this.setState({ fields: fieldKeys }, () => {
+			// Render fields
+			form.setFieldsValue({ fields: fieldKeys }, () => {
 				// Assign field Values
-				form.setFieldsValue(dynamicFields);
+				form.setFieldsValue({ names: fieldValues });
 
 				// Assign checked switch
 				this.setState({ checkedKey: selectedIndex });
@@ -48,18 +44,42 @@ class DynamicForm extends React.Component {
 		}
 	}
 
-	getCheckedItemIndex = () => {
-		return this.state.checkedKey;
-	}
+	// This is use to get the values of this form up to its parent 
+	// component e.g(update/add form) to cancel the submitting of
+	// data once an error validation appears
+	getFormValues = () => {
+		const { checkedKey } = this.state;
+		// eslint-disable-next-line react/prop-types
+		const { form } = this.props;
+		const { getFieldsValue, validateFieldsAndScroll } = form;
+		let result = null;
 
-	getFields = () => {
-		return this.state.fields;
+		validateFieldsAndScroll(async(err) => {	
+			const fieldsValue = getFieldsValue();
+			const formValues = fieldsValue.names.map((data, index) => { 
+				return {
+					isDefault: index === checkedKey,
+					label: data
+				};
+			});
+
+			result = {
+				hasError: err !== null,
+				formValues
+			};
+		});
+
+		return result;
 	}
 
 	// This is use to remove dynamic field which corresponds
 	// to given index parameters
 	remove = (k) => {
-		const { checkedKey, fields } = this.state;
+		const { checkedKey } = this.state;
+		const { form } = this.props;
+		const { getFieldValue } = form;
+		
+		const fields = getFieldValue('fields');
     
 		if (fields.length === 1) {
 			return;
@@ -69,18 +89,20 @@ class DynamicForm extends React.Component {
 			this.setState({ checkedKey: fields[0].key });
 		}
 
-		this.setState({ fields: fields.filter(field => field.key !== k) });
+		form.setFieldsValue({
+			fields: fields.filter(field => field.key !== k),
+		});
   };
 
 
 	// This is use to add a dynamic field
   add = () => {
-		const { fields } = this.state;
-		
+		const { form } = this.props;
+		const fields = form.getFieldValue('fields');
+
 		// eslint-disable-next-line no-plusplus
 		const nextFields = fields.concat({ key: id++ });
-		
-		this.setState({ fields: nextFields });
+		form.setFieldsValue({ fields: nextFields });
 	};
 	
 	onSwitchChange = (checked, index) => {
@@ -91,7 +113,13 @@ class DynamicForm extends React.Component {
 	}
 
 	render() {
-		const { checkedKey, fields } = this.state;
+		// eslint-disable-next-line react/prop-types
+		// const { getFieldDecorator, getFieldValue } = this.props.form;
+		const { checkedKey } = this.state;
+
+		// getFieldDecorator('fields', { initialValue: [] });
+
+		const fields = getFieldValue('fields');
     const OptionFormItems = fields.map((field, index) => (
       // eslint-disable-next-line react/no-array-index-key
       <Form.Item key={field.key}>
@@ -106,33 +134,47 @@ class DynamicForm extends React.Component {
 								checked={checkedKey === field.key || field.examItemValueDefault === 1}
 								onChange={(checked) => this.onSwitchChange(checked, field.key)}	
 							/>
-							<MinusCircleOutlined
+							<Icon
 								className="dynamic-delete-button"
+								type="minus-circle-o"
 								onClick={() => this.remove(field.key)}
 							/>
 						</>	
 					)}
 				>
 					<Row>
-						<Col span={24}>
-							<Form.Item 
-								name={`dynamicInputs_${field.key}`}
-								validateTrigger={['onChange', 'onBlur']}
-								rules={[
-									{
-										required: true,
-										whitespace: true,
-										message: errorMessage.required
-									},
-									{
-										max: 254,
-										message: errorMessage.maxLength(254)
-									}
-								]}
-							>
+						<Form.Item 
+							name={`names[${field.key}]`}
+							rules={[
+								{
+									required: true,
+									whitespace: true,
+									message: errorMessage.required
+								},
+								{
+									max: 254,
+									message: errorMessage.maxLength(254)
+								}
+							]}
+						>
+							<Col span={24}>
 								<RegexInput regex={/[A-Za-z0-9 -]/} maxLength={254} />
-							</Form.Item>
-						</Col>
+								{/* {getFieldDecorator(`names[${field.key}]`, {
+									validateTrigger: ['onChange', 'onBlur'],
+									rules: [
+										{
+											required: true,
+											whitespace: true,
+											message: errorMessage.required
+										},
+										{
+											max: 254,
+											message: errorMessage.maxLength(254)
+										}
+									],
+								})(<RegexInput regex={/[A-Za-z0-9 -]/} maxLength={254} />)} */}
+							</Col>
+						</Form.Item>
 					</Row>
 				</AntCard>
       </Form.Item>
@@ -144,7 +186,7 @@ class DynamicForm extends React.Component {
 				{ OptionFormItems }
 				<Form.Item>
 					<Button type="dashed" onClick={this.add} style={{ width: '100%' }}>
-						<PlusOutlined /> {buttonNames.addField}
+						<Icon type="plus" /> {buttonNames.addField}
 					</Button>
 				</Form.Item>
 			</div>	
@@ -157,14 +199,13 @@ DynamicForm.propTypes = {
 	examItemValue: PropTypes.arrayOf(PropTypes.shape({
 		examItemValueDefault: PropTypes.number.isRequired,
 		examItemValueLabel: PropTypes.string.isRequired
-	})),
-	form: PropTypes.object
+	}))
 };
 
 DynamicForm.defaultProps = {
 	examId: null,
-	examItemValue: [],
-	form: {}
+	examItemValue: []
 }
 
+// export default Form.create()(DynamicForm);
 export default DynamicForm;

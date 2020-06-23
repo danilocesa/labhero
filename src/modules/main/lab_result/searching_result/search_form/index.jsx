@@ -25,7 +25,7 @@ class SearchForm extends React.Component {
 		this.formRef = React.createRef();
 	}
     
-	onClickSubmit = () => {
+	search = () => {
 		const { updateLabResults } = this.props;
 		const fieldsValue = this.formRef.current.getFieldsValue();
 		const { dateSpan, ...restProps } = fieldsValue;
@@ -75,7 +75,11 @@ class SearchForm extends React.Component {
 				<Col sm={22} xs={24}> 
 					<Form 
 						ref={this.formRef}
-						onFinish={this.onClickSubmit} 
+						onFinish={this.search} 
+						initialValues={{
+							dateSpan: [moment(new Date()), moment(new Date())],
+							status: 'All'
+						}}
 						id="searchlabtestresultform"
 						className="labresult-search-form"
 						layout="vertical"
@@ -97,9 +101,10 @@ class SearchForm extends React.Component {
 									rules={FIELD_RULES.patientName}
 								>
 									<RegexInput 
-										regex={/[A-Za-z0-9 -]/} 
+										regex={/[A-Za-z0-9, -]/} 
 										allowClear 
 										maxLength={100} 
+										placeholder="Lastname,Firstname"
 									/>
 									{/* {getFieldDecorator('patientName', { 
 										rules: FIELD_RULES.patientName,

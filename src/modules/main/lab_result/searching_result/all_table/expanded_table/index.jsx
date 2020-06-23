@@ -36,23 +36,29 @@ class ExpandedTable extends React.Component {
 		const { contents, ...restProps } = expandedData;
 		const columns = [
 			{
-				title: 'Section',
+				title: 'SECTION',
 				dataIndex: 'sectionName',
 				width: 150,
 			},
 			{ 
-				title: 'Sample ID No.', 
+				title: 'SAMPLE ID NO.', 
 				dataIndex: 'sampleSpecimenID', 
 				width: 170,
 			},
 			{ 
-				title: 'Specimen', 
+				title: 'SPECIMEN', 
 				dataIndex: 'specimenName', 
 				width: 150,
 			},
 			{ 
-				title: 'Exam Requested', 
+				title: 'EXAM REQUESTED', 
 				dataIndex: 'examRequestNames', 
+			},
+			{ 
+				title: 'STATUS', 
+				dataIndex: 'specimenStatus', 
+				width: 150,
+				render: (text) => `${text}`.toUpperCase()
 			},
 			{
 				title: '', 

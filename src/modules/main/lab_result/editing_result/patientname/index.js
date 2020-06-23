@@ -35,7 +35,7 @@ class PatientName extends React.Component {
 
 	
   render() {
-		const { patientInfo, sampleSpecimenID } = this.props;
+		const { patientInfo, sampleSpecimenID, specimenStatus  } = this.props;
 
     return (
 	    <Row>
@@ -44,9 +44,11 @@ class PatientName extends React.Component {
 				    <h1 style={{ marginBottom: '0', fontWeight: 'bold', letterSpacing: '1px', fontSize: '20px', textTransform:'uppercase' }}>
               {`${patientInfo.lastName}, ${patientInfo.givenName}`}
 				    </h1>
-				    <p style={{ color: '#ccc8c8', letterSpacing: '1px', fontSize: '13px' }}>
-              Sample ID: {sampleSpecimenID}
-				    </p>
+				    <div style={{ color: '#040404', letterSpacing: '1px', fontSize: '13px' }}>
+             <span>Sample ID: {sampleSpecimenID}</span>
+							<br />
+							<span>Current Status: {specimenStatus}</span>
+				    </div>
 			    </div>
 		    </Col>
 				<Col span={12}>
@@ -56,11 +58,6 @@ class PatientName extends React.Component {
 								<img src={IResultsIcon} className="print-logo" alt="iResults Icon" />
 									<span style={{ paddingLeft: '7px' }}>iResults</span>
 							</Button>
-
-							{/* <Button style={{ width: 120 }}>
-								<img src={PrintLogo} className="print-logo" alt="Print Icon" />
-								<span style={{ paddingLeft: '7px' }}>Print</span>
-							</Button> */}
 						</ButtonGroup>
 			    </div>
 				</Col>
@@ -90,7 +87,8 @@ PatientName.propTypes = {
 		givenName: PropTypes.string,
 		patientID: PropTypes.string,
 	}).isRequired,
-	sampleSpecimenID: PropTypes.string.isRequired
+	sampleSpecimenID: PropTypes.string.isRequired,
+	specimenStatus: PropTypes.string.isRequired,
 };
 
 export default PatientName;

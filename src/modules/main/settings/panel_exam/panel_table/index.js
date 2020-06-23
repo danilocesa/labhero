@@ -152,7 +152,6 @@ class PanelTable extends React.Component {
 	}
 
 	handleSelectChange = (value) => {
-		console.log(value);
 		const {pagination} = this.state; 
 		// eslint-disable-next-line radix
 		pagination.pageSize = parseInt(value);
@@ -191,7 +190,7 @@ class PanelTable extends React.Component {
 					className="settings-panel-exam-table"
 					size={tableSize}
 					dataSource={this.state.panelListState}
-					pagination={this.state.pagination}
+					pagination={{ ...this.state.pagination, showSizeChanger: false }}
 					loading={this.state.loading} 
 					columns={columns}
 					rowKey={record => record.key}

@@ -11,13 +11,17 @@ import SectionTable from './section_table';
 const { TabPane } = Tabs;
 
 class SearchResult extends React.Component {
-	
-	state = {
-		tabActiveKey: 'ALL',
-		sections: [],
-		labResults: [],
-		searchResults: []
-	};
+	constructor(props){
+		super(props);
+
+		this.state = {
+			tabActiveKey: 'ALL',
+			sections: [],
+			labResults: [],
+			searchResults: [],
+		};
+		this.searchFormRef = React.createRef();
+	}
 
 	async componentDidMount() {
 		const sections = await fetchSection();
@@ -50,6 +54,11 @@ class SearchResult extends React.Component {
 		this.setState({ searchResults, tabActiveKey: sectionCode });
 	}
 
+	refreshTable = () => {
+		// @ts-ignore
+		this.searchFormRef.current.search();
+	}
+
 	render() {
 		const { sections, labResults, searchResults, tabActiveKey } = this.state;
 		const { onClickTableRow, pageTitle, onClickPrint } = this.props;
@@ -68,6 +77,7 @@ class SearchResult extends React.Component {
 	    <Row type="flex" align="middle" justify="center">
 		    <Col xs={24}>
 					<SearchForm 
+						ref={this.searchFormRef}
 						pageTitle={pageTitle}
 						updateLabResults={this.updateLabResults} 
 					/>

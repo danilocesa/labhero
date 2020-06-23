@@ -236,34 +236,32 @@ class NormalValues extends React.Component {
 
 		return(
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<Row>
-						<Col span={8} offset={8}>
-							<PageTitle pageTitle={moduleTitle} />
-						</Col>
-						<Col span={8} style={{ textAlign: 'right' }}>
-							<DropDown 
-								size="small"
-								label="SETTINGS"
-								placeholder="SETTINGS"
-								content={settingsOptions} 
-								onChange={this.onChangeSettingsOption}
-								value={selectedSettings}
-							/>
-						</Col>
-					</Row>
-					
-					<Row style={{ marginTop: 50 }}>
+				<Row justify="center" style={{ marginTop: 30 }}>
+					<Col span={8} offset={8}>
+						<PageTitle pageTitle={moduleTitle} />
+					</Col>
+					<Col span={8} style={{ textAlign: 'right' }}>
 						<DropDown 
-							label="SECTION"
-							placeholder="Select Section"
-							content={ddSections} 
-							onChange={this.onChangeSectionCode}
-							loading={isInitializing}
-							value={selectedSectionId}
+							size="small"
+							label="SETTINGS"
+							placeholder="SETTINGS"
+							content={settingsOptions} 
+							onChange={this.onChangeSettingsOption}
+							value={selectedSettings}
 						/>
-					</Row>
-				</section>
+					</Col>
+				</Row>
+				
+				<Row justify="center" style={{ marginTop: 50 }}>
+					<DropDown 
+						label="SECTION"
+						placeholder="Select Section"
+						content={ddSections} 
+						onChange={this.onChangeSectionCode}
+						loading={isInitializing}
+						value={selectedSectionId}
+					/>
+				</Row>
 				<ActionSection 
 					leftContent={leftSection}
 					rightContent={rightSection}

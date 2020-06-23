@@ -55,7 +55,7 @@ class NormalValuesTable extends React.Component {
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
 						size={tableSize}
-						pagination={{pageSize}} 
+						pagination={{ pageSize, showSizeChanger: false }} 
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: tableYScroll }}
