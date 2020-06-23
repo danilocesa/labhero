@@ -27,14 +27,8 @@ class FillUpForm extends React.Component {
   }
   
   componentDidMount() {
-    const Path =  window.location.href 
-    const url = new URL(Path)
-    const button = url.searchParams.get("label");
-    console.log("FillUpForm -> componentDidMount -> button", button)
-
-    console.log(window.location.href);
-
-    this.setState({ ButtonName: button});
+    const {label} = this.props.location.state
+    this.setState({ ButtonName: label});
 	}
   
   computeAge = (date) => {
