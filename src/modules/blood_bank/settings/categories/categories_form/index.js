@@ -25,15 +25,22 @@ class UserAccountForm extends React.Component {
 
 		return(
 			<div style={{marginTop: -20}}>
-				<Form>
-				{this.props.actionType == "update"?
-					<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}} >
+				<Form 
+				layout="vertical"
+				>
+				{this.props.actionType == "update"? (
+    		<Form.Item 
+					label="ACTIVE" 
+					{...layout} 
+					style={{marginLeft:'-95px'}}
+     		>
 						<Switch />
-					</Form.Item>	
+					</Form.Item>
+  			 )	
 					:
-					 null
-    			  }
-				<div className="form-section" >
+					null
+    		}
+				<div className="form-section">
 					<Form.Item label="ORDER" style={{ marginTop:'-25px'}}>									
 							<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
 					</Form.Item>

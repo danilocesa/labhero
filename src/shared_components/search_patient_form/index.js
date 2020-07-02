@@ -45,7 +45,6 @@ class SearchPatientForm extends React.Component {
 		patients = await this.fetchPatients(patientName, patientID); 
 		this.setState({ loading: false });
 
-
 		populatePatients(patients);
 		storeSearchedVal(patientName, patientID);
 

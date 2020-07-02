@@ -2,27 +2,25 @@
 /* eslint-disable react/prop-types */
 // LiBRARY
 import React from "react";
-import { Redirect } from 'react-router-dom';
 import {
-  Row,
-  Col,
+  Row ,
+  Col ,
   Table,
+  Input,
   Button,
-  Steps,
   Typography,
-  Empty ,
   Form
 } from "antd";
 
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
+import { fetchPatients } from 'services/blood_bank/extraction'
 import PageTitle from 'shared_components/page_title'
-import TablePager from "shared_components/table_pager"
 import Message from 'shared_components/message'
-import { fetchPatients } from 'services/blood_bank/donor_registration'
+import TablePager from "shared_components/table_pager"
 
-const { Step } = Steps
 const { Text } = Typography
+
 const columns = [
   {
     title: "DONOR'S ID",
@@ -58,95 +56,64 @@ const columns = [
     title: "BLOOD TYPE",
     dataIndex: 'blood_type',
     key: 'blood_type'
-  },
-  {
-    title: "LAST EXTRACTED",
-    dataIndex: 'last_extracted',
-    key: 'last_extracted'
-  },
+  }
 ];
 
 const columns2 = [
   {
     title: "CONTACT NUMBER",
-    dataIndex: "mobile_no",
-    key: "mobile_no",
+    dataIndex: "contact_number",
+    key: "contact_number",
     width: 150
   },
   {
     title: "ADDRESS",
-    dataIndex: "unit_house_no",
-    key: "unit_house_no",
+    dataIndex: "address",
+    key: "address",
     width: 250
   },
 ];
 
-class DonorRegistration extends React.Component {
+const expandedRow = row => {
+  console.log(row);
+  return <Table columns={columns2} pagination={false} />;
+};
+
+class Extraction extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drawerButton: '',
+      Item: [],
       loading: false,
-      Item: []
     };
-
     this.formRef = React.createRef();
-  } 
-
-	async componentDidMount() {
-		const response = await fetchPatients();
-		console.log(response)
   }
-
-  handleSubmit = async () => {
-    const { getFieldsValue } = this.formRef.current;
-		const { patientName } = getFieldsValue();
+  
+  handleSubmit = async () => {  
+		const { getFieldsValue } = this.formRef.current;
+    const { patientID, patientName } = getFieldsValue()
     let patients = [];
-    
-		this.setState({ loading: true });
-		patients = await fetchPatients(patientName); 
+
+    this.setState({ loading: true });
+		patients = await fetchPatients(patientName, patientID);  
     this.setState({ 
         loading: false,
         Item: patients  
     });
 
-		if(patients.length <= 0) 
+    if(patients.length <= 0) 
       Message.info('No results found');
   }
   
-  NextStep = () => {
-    this.props.history.push("/bloodbank/donor_registration/step/2",{label: "SUBMIT"});
-  } 
-
-  DoubleClick = (record) => {
-    record.data = {record}
-    record.label = "UPDATE"
-    this.props.history.push("/bloodbank/donor_registration/step/2",record);
-  }
-
-  ExpandedRow = () => {
-    return <Table columns={columns2} pagination={false} dataSource={this.state.Item} />
-  }
-
-  clearInputs = async () => {
-		const { populatePatients } = this.props;
-		const { setFieldsValue } = this.formRef.current;
-		let patients = [];
-		setFieldsValue({ patientName: '' });
-		patients = []; 
-		populatePatients(patients);
-	}
+	NextStep = () => {
+    window.location.assign('/bloodbank/extraction/screening/step/1');
+  };
 
   render() {
     const { Item,loading } = this.state
     return (
       <div>
-        <PageTitle pageTitle="DONOR REGISTRATION"  />
-        <Steps size="small" current={0} style={{marginTop:50,paddingRight:200,paddingLeft:200}}>
-          <Step title="Search Donor"  />
-          <Step title="Fill Up" />
-          <Step title="Health Information" />
-        </Steps>
+       <PageTitle pageTitle="DONOR REGISTRATION"  />
         <Row>
           <Col span={24}>
             <div>
@@ -160,6 +127,19 @@ class DonorRegistration extends React.Component {
                 >
                   <Row justify="center">
                     <Col span={10}>
+                  <Row>
+                    <Col span={11}>
+                      <Form.Item label="DONOR'S ID" name="patientID">
+                        <RegexInput 
+                          regex={/[A-Za-z0-9, -]/} 
+                          maxLength={100}
+                          onFocus={this.handleFocus}
+                          placeholder="Donor's ID"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Text strong style={{marginTop:20}}>OR</Text>
+                    <Col span={11}>
                       <Form.Item label="PATIENT NAME" name="patientName">
                         <RegexInput 
                           regex={/[A-Za-z0-9, -]/} 
@@ -168,6 +148,8 @@ class DonorRegistration extends React.Component {
                           placeholder="Lastname, Firstname"
                         />
                       </Form.Item>
+                    </Col>
+                  </Row>
                     </Col>
                     {/* Buttons */}
                     <Col span={11} style={{marginTop:20}}>
@@ -215,43 +197,22 @@ class DonorRegistration extends React.Component {
               </Row>
             </div> 
 
-            {Item.length <= 0? (		
-              <Table
-              columns={columns}
-              locale={{
-                  emptyText: 
-                  (<div>
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                      <Button 
-                      className="form-button"
-                      shape="round" 
-                      onClick={this.NextStep}
-                      type="primary" 
-                      htmlType="submit" 
-                      style={{ width: 120, marginTop:-10 }}
-                      >
-                      ADD DONOR
-                      </Button>
-                   </div>)
-                }} 
-              /> 
-            )	
-						: (
-              <Table 
+           
+            <Table
+                expandedRowRender={expandedRow}
+                style={{ textTransform: "uppercase" }}
                 dataSource={Item}
-                expandedRowRender={this.ExpandedRow}
-                columns={columns} 
                 pagination={this.state.pagination}
-                rowKey={record => record.userID}
-                onRow={(record) => {
+                loading={this.state.loading}
+                columns={columns}
+                onRow={() => {
                   return {     
                     onDoubleClick: () => {
-                      this.DoubleClick(record)
+                      this.NextStep();
                     }
                   }
                 }}
-              />              
-          )}
+              />    
           </Col>
         </Row>
       </div>
@@ -259,5 +220,4 @@ class DonorRegistration extends React.Component {
   }
 }
 
-export default DonorRegistration;
-
+export default Extraction;
