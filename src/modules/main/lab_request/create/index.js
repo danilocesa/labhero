@@ -8,7 +8,7 @@ class CreateRequestPage extends React.Component {
 	render() {
 		return (
 			<div>
-				<StepPage requestType='create' moduleProfile="createRequest" />
+				<StepPage moduleType="create" />
 			</div>
 		);
 	}

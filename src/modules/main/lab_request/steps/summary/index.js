@@ -1,16 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import saveLabRequest from 'services/lab_request/labRequest';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
-import Restriction from '../clr_restriction/restriction';
-import Tracker from '../../tracker';
+import { moduleTitles, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
+import Restriction from 'modules/main/lab_request/steps/clr_restriction/restriction';
+import Tracker from 'modules/main/lab_request/tracker';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
-import { moduleTitles, requestTypes } from '../../../settings/lab_exam_request/settings';
 
-import { CLR_SEL_EXAMS, CLR_OTHER_INFO  } from '../constants';
+import { LR_SEL_EXAMS, LR_OTHER_INFO, LR_REQUEST_TYPE  } from 'modules/main/lab_request/steps/constants';
 
 class SummaryStep extends React.Component {
 	state = {
@@ -27,8 +26,8 @@ class SummaryStep extends React.Component {
 	}
 
 	async componentDidMount() {
-		const exams = JSON.parse(sessionStorage.getItem(CLR_SEL_EXAMS));
-		const otherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO));
+		const exams = JSON.parse(sessionStorage.getItem(LR_SEL_EXAMS));
+		const otherInfo = JSON.parse(sessionStorage.getItem(LR_OTHER_INFO));
 		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		this.setState({ exams, user, otherInfo });
@@ -41,6 +40,8 @@ class SummaryStep extends React.Component {
 			examID: exam.examID,
 			priority: ''
 		}));
+
+		console.log(payloadExams);
 
 		const payload = {
 			...otherInfo,
@@ -55,7 +56,7 @@ class SummaryStep extends React.Component {
 	render() {
 		const { exams } = this.state;
 		const { restriction } = this;
-		const moduleTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
+		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
 
 		if(restriction.hasAccess) {
 			return (

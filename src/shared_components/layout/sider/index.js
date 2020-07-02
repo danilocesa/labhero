@@ -14,7 +14,7 @@ import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
 // import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
 import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
-
+import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
 import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -22,31 +22,20 @@ import Icon from '@ant-design/icons';
 import './sider.css';
 
 const { Sider: AntSider } = Layout;
-const { SubMenu } = Menu;
 
 
 class Sider extends React.Component {
 	handleMenuClick = ({ key }) => {
-		// const isInventorySelected = Object.keys(URI.inventory.sub).some(i => URI.inventory.sub[i].key === key);
-		// const selectedKey = isInventorySelected ? URI.inventory.key : key;
-
 		const selectedKey = key.includes('inventory') ? 9 : key;
+	
 		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
 
 		// workaround to avoid delays in stepsPage
-
-		switch(key){
-				case '2':
-					sessionStorage.setItem('REQUEST_TYPE','create');
-					sessionStorage.setItem('MODULE_PROFILE','createRequest');
-					break;
-				case '3':	
-					sessionStorage.setItem('REQUEST_TYPE','edit');
-					sessionStorage.setItem('MODULE_PROFILE','editRequest');
-					break;
-				default:
-		}
-		// sessionStorage.setItem(SELECTED_SIDER_KEY, key);
+		if(key === '2') 
+			sessionStorage.setItem(LR_REQUEST_TYPE, 'create');
+		
+		if(key === '3')
+			sessionStorage.setItem(LR_REQUEST_TYPE, 'edit');
 	}
 	
 

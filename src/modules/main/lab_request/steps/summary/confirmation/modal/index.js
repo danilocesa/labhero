@@ -7,13 +7,14 @@ import { Modal, Row, Col } from 'antd';
 import { CheckIcon } from 'images';
 
 import {
-	CLR_SEL_EXAMS,
-	CLR_PERSONAL_INFO,
-	CLR_OTHER_INFO,
-	CLR_STEP_PROGRESS
-} from '../../../constants';
+	LR_SEL_EXAMS,
+	LR_PERSONAL_INFO,
+	LR_OTHER_INFO,
+	LR_STEP_PROGRESS,
+	LR_REQUEST_TYPE
+} from 'modules/main/lab_request/steps/constants';
 
-import {requestLinks, requestTypes} from '../../../../../settings/lab_exam_request/settings';
+import { requestLinks, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 
 class ConfirmationModal extends React.Component {
 	constructor(args) {
@@ -32,14 +33,14 @@ class ConfirmationModal extends React.Component {
 	componentWillUnmount() {
 		const { history } = this.props;
 
-		sessionStorage.removeItem(CLR_SEL_EXAMS);
-		sessionStorage.removeItem(CLR_PERSONAL_INFO);
-		sessionStorage.removeItem(CLR_OTHER_INFO);
-		sessionStorage.setItem(CLR_STEP_PROGRESS, String(1));
+		sessionStorage.removeItem(LR_SEL_EXAMS);
+		sessionStorage.removeItem(LR_PERSONAL_INFO);
+		sessionStorage.removeItem(LR_OTHER_INFO);
+		sessionStorage.setItem(LR_STEP_PROGRESS, String(1));
 
 		clearTimeout(this.timer);
 
-		if(sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create){
+		if(sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create){
 			history.push(requestLinks.create.step1);
 		}else{
 			history.push(requestLinks.edit.step1);
@@ -52,7 +53,7 @@ class ConfirmationModal extends React.Component {
 		return (
 			<div>
 				<Modal className="save-modal-container" centered visible={visible} footer={null}>
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Col>
 							<img
 								src={CheckIcon}

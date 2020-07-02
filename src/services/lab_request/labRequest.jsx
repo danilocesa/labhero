@@ -22,3 +22,87 @@ export default async function saveLabRequest(payload) {
 
 	return isSuccess;
 }
+
+export async function fetchPatientsByDate(date) {
+	let patients = [];
+	
+  try{
+    const response = await axiosLabAPI({
+      method: 'GET',
+      url: `lab/Request/editsearch/date/${date}`
+		});
+		
+		const { data } = response;
+
+		patients = data;
+  } 
+  catch(e) {
+    Message.error();
+	}
+	
+  return patients;
+}
+
+
+export async function fetchPatientsById({ id, date }) {
+	let patients = [];
+	
+  try{
+    const response = await axiosLabAPI({
+      method: 'GET',
+      url: `lab/Request/editsearch/pid/${id}/${date}`
+		});
+		
+		const { data } = response;
+
+		patients = data;
+  } 
+  catch(e) {
+    Message.error();
+	}
+	
+  return patients;
+}
+
+
+
+export async function fetchPatientsByName({ name, date }) {
+	let patients = [];
+	
+  try{
+    const response = await axiosLabAPI({
+      method: 'GET',
+      url: `lab/Request/editsearch/name/${name}/${date}`
+		});
+		
+		const { data } = response;
+
+		patients = data;
+  } 
+  catch(e) {
+    Message.error();
+	}
+	
+  return patients;
+}
+
+
+export async function fetchExamsByReqId(id) {
+	let exams = [];
+	
+  try{
+    const response = await axiosLabAPI({
+      method: 'GET',
+      url: `lab/Request/editexams/requestid/${id}`
+		});
+		
+		const { data } = response;
+
+		exams = data;
+  } 
+  catch(e) {
+    Message.error();
+	}
+	
+  return exams;
+}

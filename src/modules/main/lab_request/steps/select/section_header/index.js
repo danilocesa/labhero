@@ -1,9 +1,10 @@
 import React from 'react';
-import { Radio, Tooltip, Spin, Icon } from 'antd';
+import { Radio, Tooltip, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import fetchPanel from 'services/lab_request/labPanelExamRequesting';
 import fetchSection from 'services/shared/section';
 import { fetchPerSpecimens } from 'services/shared/examRequest';
+import { LoadingOutlined } from '@ant-design/icons';
 
 import './section_header.css';
 
@@ -12,7 +13,7 @@ const dynamicWidthStyle = (itemCount = 1) => ({
 });
 
 const Loading = () => {
-	const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+	const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 	
 	return (
 		<div style={{ textAlign: 'center' }}>

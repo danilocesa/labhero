@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, Typography, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
-
+import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
+import { requestLinks, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 import ConfirmationModal from '../confirmation/modal';
-import { requestLinks, requestTypes } from '../../../../settings/lab_exam_request/settings';
 
 const { Text } = Typography;
 
@@ -46,11 +46,13 @@ class Navigation extends React.Component {
 			<ConfirmationModal visible={isVisible} closeModal={this.closeModal} />
 		);
 
-		const dynamicLink = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create) ? requestLinks.create.step3: requestLinks.edit.step3;
+		const dynamicLink = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) 
+			? requestLinks.create.step3
+			: requestLinks.edit.step3;
 
 		return (
 			<div>
-				<Row type="flex" justify="end">
+				<Row justify="end">
 					<Col>
 						<Link to={dynamicLink}>
 							<Text>

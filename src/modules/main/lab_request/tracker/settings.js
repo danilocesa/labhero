@@ -3,9 +3,10 @@ import { requestLinks } from 'modules/main/settings/lab_exam_request/settings';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SearchOutlined, FormOutlined, CheckSquareOutlined, IdcardOutlined } from '@ant-design/icons';
 
-export const trackerSettings={
+export const trackerSettings = {
 	requestTypes: {
-		create: 'create'
+		create: 'create',
+		edit: 'edit'
 	},
 	stepItems : [
 		{

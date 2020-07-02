@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Button, Tooltip } from 'antd';
+import { Table as AntTable, Button, Tooltip, Typography } from 'antd';
 import { globalTableSize } from 'global_config/constant-global';
 import { CloseOutlined } from '@ant-design/icons';
+import { requestTypes } from 'modules/main/settings/lab_exam_request/settings';
+import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
 
 import './table.css';
 
+const { Text } = Typography; 
+
+const renderItem = (text, record) => {
+	const type = record.isLocked ? "secondary" : null;
+	
+	return <Text type={type}>{text}</Text>
+}
+
 const createColumns = handleRemove => {
+	const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
+ 
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
 			<Button type="primary" size="small" onClick={handleRemove}>
@@ -21,18 +33,21 @@ const createColumns = handleRemove => {
 			dataIndex: ['selectedSection', 'sectionName'],
 			width: 100,
 			sorter: (a, b) => a.selectedSection.sectionName.localeCompare(b.selectedSection.sectionName),
-		},
+			render: renderItem
+		},	
 		{
 			title: 'EXAM',
 			dataIndex: 'examName',
 			width: 150,
 			sorter: (a, b) => a.examName.localeCompare(b.examName),
+			render: renderItem
 		},
 		{
 			title: 'SPECIMEN',
 			dataIndex: ['selectedSpecimen', 'specimenName'],
 			width: 100,
 			sorter: (a, b) => a.selectedSpecimen.specimenName.localeCompare(b.selectedSpecimen.specimenName),
+			render: renderItem
 		},
 		{
 			title: 'PANEL',
@@ -44,9 +59,10 @@ const createColumns = handleRemove => {
 					
 				return aPanelName.localeCompare(bPanelName);
 			},
+			render: renderItem
 		},
 		{
-			title: RemoveBtn,
+			title: (reqType === requestTypes.edit) ? null : RemoveBtn,
 			dataIndex: 'action',
 			width: 100,
 			align: 'center'
@@ -71,15 +87,16 @@ class SelectTable extends React.Component {
 		const TableData = selectedExams.map(selectedExam => ({ 
 			key: selectedExam.examID,
 			...selectedExam,
-			action: selectedExam.isDisabled ? null : (
-				<Button 
-					type="dashed" 
-					icon={<CloseOutlined />}
-					size="small" 
-					// style={{ fontSize: 12 }}
-					onClick={() => removeSelectedExamByExam(selectedExam)}
-				/> 
-			)
+			action: (selectedExam.selectedPanel === null && !selectedExam.isLocked)
+				?  (
+						<Button 
+							type="dashed" 
+							icon={<CloseOutlined />}
+							size="small" 
+							onClick={() => removeSelectedExamByExam(selectedExam)}
+						/> 
+					)
+				:	null
 		}));
 
 		return (
