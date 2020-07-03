@@ -93,12 +93,11 @@ class SelectStep extends React.Component {
 		if(!componentDidMount && requestID && panelRef.length !== 0 && isFreshExams) {
 			this.setState({ componentDidMount: true });
 
-			console.log('component did update');
-
 			const qexams = await fetchExamsByReqId(requestID);
 			let zexams = [];
 			let zpanelContents = [];
-			let zpanelIDs = new Set();
+			let setPanelIDs = new Set();
+			let setContents = new Set();
 
 			qexams.forEach(tier1 => {
 				tier1.contents.forEach(tier2 => {
@@ -106,7 +105,6 @@ class SelectStep extends React.Component {
 					const tmpPanel = {};
 					const tmpSpecimen = {};
 					const tmpSection = {};
-
 					tmpSpecimen.specimenID = tier1.specimenID;
 					tmpSpecimen.specimenName = tier1.specimenName;
 
@@ -126,24 +124,32 @@ class SelectStep extends React.Component {
 					tmpRoot.selectedSection = tmpSection;
 					tmpRoot.isDisabled = false;
 					tmpRoot.isLocked = tier1.status !== "Open";
-
+					
 					zexams.push(tmpRoot);
-					zpanelIDs.add(tier2.panelID);
+					setPanelIDs.add(tier2.panelID);
+					
+					tier2.contents.forEach(item => setContents.add(item));
 				});
 			});
 
-			const selectedPanel = panelRef.filter(item => Array.from(zpanelIDs).includes(item.panelID));
+			// const selectedPanel = panelRef.filter(item => Array.from(zpanelIDs).includes(item.panelID));
 
-			selectedPanel.forEach(panelRef => {
-				panelRef.exams.forEach(exam => {
-					zpanelContents = zpanelContents.concat(exam.contents);
-				});
-			});
+
+			// selectedPanel.forEach(panelRef => {
+			// 	panelRef.exams.forEach(exam => {
+			// 		zpanelContents = zpanelContents.concat(exam.contents);
+			// 	});
+			// });
+
+			console.log('setContents', Array.from(setContents));
+
+			console.log('zpanelContents', zpanelContents);
 
 
 			this.setState({ 
 				selectedExams: zexams,
-				selectedContents: zpanelContents,
+				// selectedContents: zpanelContents,
+				selectedContents: Array.from(setContents),
 				selectedContentsByPanel: zpanelContents,
 			});
 		}
@@ -152,23 +158,28 @@ class SelectStep extends React.Component {
 	populateExams = (exams) => {
 		const { selectedExams, selectedContents } = this.state;
 
+
 		const processedExams = exams.map(exam => { 
+			console.log('populate Exam:', exam)
 			// const isSelected = selectedExams.some(item => exam.examCode === item.examCode);
 			const isSelected = selectedExams.some(item => exam.examID === item.examID);
 
 			const isDisabled = selectedExams.some(item => {
-				
 				const isInContents = selectedContents.some(selContent => exam.contents.includes(selContent));
 
 				if(item.examID === exam.examID && item.selectedPanel !== null)
 					return true;
 
+				if(item.examID === exam.examID && item.isLocked)
+					return true;
+
 				if(isInContents && !isSelected)
 					return true;
 
+			
+
 				return false
 			});
-
 			
 			return { ...exam, isSelected, isDisabled };
 		});
@@ -220,6 +231,8 @@ class SelectStep extends React.Component {
 		const panels = panelRef.map(ipanelRef => { 
 			let isDisabled = false;
 
+			console.log('ipanelRef', ipanelRef);
+			console.log(selectedExams);
 			// Check selected exams if it is present in the ipanelRef
 			// then set selected if its true
 			const isSelected = selectedExams.some(selectedExam => {
@@ -339,11 +352,10 @@ class SelectStep extends React.Component {
 		if(!isExistingContent)
 			newSelectedContents.push(...contents);
 
-
 		this.setState({ selectedContents: newSelectedContents }, () => {
 			// eslint-disable-next-line no-shadow
 			const { exams, selectedContents } = this.state;
-			
+
 			// Note. Disable exams that is in the selectedContents
 			const newExams = exams.map(exam => {
 				const isDisabled = selectedContents.some(item => {
