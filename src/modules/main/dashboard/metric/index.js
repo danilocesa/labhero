@@ -22,19 +22,21 @@ class Metrics extends React.Component {
     ));
 
     return (
-      <Card className="dashboard-metrics-con">
-        <Row>
-          <Col span={10} className="image-con">
-            {image}
-          </Col>
-          <Col span={14}>
-            <Row>
-              <Text strong className="text">{label}</Text>
-            </Row>
-            {ItemList}
-          </Col>
-        </Row>
-      </Card>
+      <div className="dashboard-metrics-con">
+        <Card >
+          <Row>
+            <Col span={10} className="image-con">
+              {image}
+            </Col>
+            <Col span={14}>
+              <Row>
+                <Text strong className="text">{label}</Text>
+              </Row>
+              {ItemList}
+            </Col>
+          </Row>
+        </Card>
+      </div>
     );
   }
 }

@@ -1,21 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Chart,
   Interval,
-  Tooltip,
-  Axis,
   Coordinate
 } from 'bizcharts';
+import { Empty } from 'antd';
 
-export default function Labelline() {
-  const data = [
-    { item: 'Pending', percent: 0.4 },
-    { item: 'Within 2 Hours', percent: 0.21 },
-    { item: 'Morethan 2 Hours', percent: 0.17 },
-  ];
 
+export default function PieChart(props) {
   const cols = {
-    percent: {
+    count: {
       formatter: val => {
         val = val * 100 + '%';
         return val;
@@ -23,27 +18,47 @@ export default function Labelline() {
     },
   };
 
-
   return (
-    <Chart height={400} data={data} scale={cols} autoFit>
+    <Chart 
+      height={200} 
+      data={props.data} 
+      scale={cols} 
+      width={250}
+      pure
+      autoFit
+      placeholder={props.placeHolder || Empty}
+    >
       <Coordinate type="theta" radius={0.75} />
-      <Tooltip showTitle={false} />
-      <Axis visible={false} />
       <Interval
-        position="percent"
+        position="count"
         adjust="stack"
-        color="item"
-        // size={3}
+        color={['item', (item) => {
+          if(item === 'Within 2 Hours')
+            // #009645 - Green | #6395F9 - Blue
+            return '#6395F9';
+
+          if(item === 'Morethan 2 Hours')
+            // #FFBC00- Yellow | #ff7979-  Red
+            return '#ff7979';
+
+          return '#CBDEFF'; 
+        }]} 
         style={{
           lineWidth: 1,
           stroke: '#fff',
         }}
         label={['*', {
-          content: (data) => {
-            return `${data.item}: ${data.percent * 100}%`;
-          },
+          content: (data) => data.count,
         }]}
       />
     </Chart>
   );
 }
+
+PieChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape({
+    item: PropTypes.string,
+    count: PropTypes.number
+  })),
+  placeHolder: PropTypes.node
+};

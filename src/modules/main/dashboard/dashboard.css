@@ -1,22 +1,43 @@
-/* .left-pane {
-  max-width: 450px;
-}
 
-.right-pane {
-  max-width: 800px;
-} */
-
-.dashboard-metric-icon {
+.dashboard-main-wrapper .dashboard-metric-icon {
   font-size: 60px;
 }
 
-/* @media screen and (max-width: 800px) {
-  .left-pane {
-    width: 100%;
-    text-align: center;
-  }
+.dashboard-main-wrapper .main-pane {
+  display: flex;
+}
 
-  .right-pane {
-    width: 100%;
-  }
-} */
+.dashboard-main-wrapper .main-pane .legend-con {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.dashboard-main-wrapper .main-pane .legend-con .ant-badge-status-dot {
+  width: 15px;
+  height: 15px;
+}
+
+.dashboard-main-wrapper .main-pane .legend-con > div {
+  margin-left: 20px;
+}
+
+.dashboard-main-wrapper .main-pane .chart-con {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.dashboard-main-wrapper .main-pane .chart-con > div {
+  width: 250px;
+  text-align: center;
+  padding-top: 10px;
+  margin: 5px;
+}
+
+.piechart-no-data {
+  margin-top: 40px;
+}
+

@@ -141,10 +141,6 @@ class SelectStep extends React.Component {
 			// 	});
 			// });
 
-			console.log('setContents', Array.from(setContents));
-
-			console.log('zpanelContents', zpanelContents);
-
 
 			this.setState({ 
 				selectedExams: zexams,
@@ -160,7 +156,6 @@ class SelectStep extends React.Component {
 
 
 		const processedExams = exams.map(exam => { 
-			console.log('populate Exam:', exam)
 			// const isSelected = selectedExams.some(item => exam.examCode === item.examCode);
 			const isSelected = selectedExams.some(item => exam.examID === item.examID);
 
@@ -231,8 +226,6 @@ class SelectStep extends React.Component {
 		const panels = panelRef.map(ipanelRef => { 
 			let isDisabled = false;
 
-			console.log('ipanelRef', ipanelRef);
-			console.log(selectedExams);
 			// Check selected exams if it is present in the ipanelRef
 			// then set selected if its true
 			const isSelected = selectedExams.some(selectedExam => {
