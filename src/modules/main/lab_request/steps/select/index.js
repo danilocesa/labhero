@@ -152,8 +152,8 @@ class SelectStep extends React.Component {
 	}
 
 	populateExams = (exams) => {
+		console.log('populateExams has been triggered');
 		const { selectedExams, selectedContents } = this.state;
-
 
 		const processedExams = exams.map(exam => { 
 			// const isSelected = selectedExams.some(item => exam.examCode === item.examCode);
@@ -171,13 +171,14 @@ class SelectStep extends React.Component {
 				if(isInContents && !isSelected)
 					return true;
 
-			
-
 				return false
 			});
-			
-			return { ...exam, isSelected, isDisabled };
+
+			const isLocked = selectedExams.some(item => item.examID === exam.examID && item.isLocked);
+
+			return { ...exam, isSelected, isDisabled, isLocked };
 		});
+
 
 		this.setState({ exams: processedExams });
 	}
@@ -399,6 +400,7 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
+		console.log('removeSelectedExamByPanel has triggered');
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
 		const filteredExams = selectedExams.filter(item => {
@@ -422,6 +424,8 @@ class SelectStep extends React.Component {
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
+		console.log('removeSelectedExamByExam has triggered');
+
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
 		const targetExam = exams.find(exam => examID === exam.examID);
@@ -459,9 +463,11 @@ class SelectStep extends React.Component {
 	// when removing exam from selected exam table(right).
 	// Private function
 	unselectExams = (unselectedExams) => {
+		console.log('unselectExams has triggered');
 		const { exams, selectedContents, selectedExams } = this.state;
 
 		const processedExams = exams.map(exam => { 
+			console.log('exam', exam);
 			// Check if current exam is in the unselected exams
 			const isExistInUExam = unselectedExams.some(uexam => exam.examID === uexam.examID);
 			const isExistInContents = selectedContents.some(selContent => {
@@ -471,7 +477,7 @@ class SelectStep extends React.Component {
 				return exam.examID === selExam.examID && selExam.selectedPanel !== null
 			});
 			const isSelectedExam = selectedExams.some(selExam => exam.examID === selExam.examID);
-			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel; 
+			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel || exam.isLocked; 
 
 			if(isExistInUExam) 
 				return { ...exam, isSelected: false, isDisabled };
