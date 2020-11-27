@@ -6,7 +6,6 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
-import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
 import computeAge from 'shared_components/age_computation'
 
 
@@ -34,37 +33,11 @@ class PatientInfo extends React.Component {
 	};
 
 
-	async componentDidMount(){
-		const { patientInfo } = this.props
-		const patientInfoValue = await fetchRequestSpecimenToProcess(patientInfo.requestID);
-		const { 
-			hospitalRequestID, 
-			physician, 
-			bed, 
-			visit, 
-			chargeSlip, 
-			officialReceipt, 
-			comment, 
-			location  
-		} = patientInfoValue;
-		
 
-
-		this.setState({
-			hospitalID: 	hospitalRequestID || '-',
-			physician: 		physician
-										? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`.toUpperCase() 
-										: '-',
-			bed: 					bed || '-',
-			visit: 				visit || '-',
-			chargeSlip: 	chargeSlip || '-',
-			receipt:      officialReceipt || '-',
-			comment:      comment || '-',
-			location: 		location !== undefined ? location.name.toString().toUpperCase() : '-'
-		});
-	}
 
   render() {
+		const {data} = this.props
+    console.log("PatientInfo -> render -> data", data)
     return (
 	    <div className="patient-info-shared">
 			{/* Personal Information */}
@@ -75,7 +48,7 @@ class PatientInfo extends React.Component {
 						BIRTHDATE
 					</Col>
 					<Col {...colLayout} className="info-item-text">
-						{this.props.patientInfo.dateOfBirth}
+					{data.record.birth_date}
 					</Col>
 				</Row>
 				<Row>
@@ -83,7 +56,7 @@ class PatientInfo extends React.Component {
 						AGE
 					</Col>
 					<Col {...colLayout} className="info-item-text">
-						{computeAge(this.props.patientInfo.dateOfBirth)}
+						{data.record.age}
 					</Col>
 				</Row>
 				<Row>
@@ -91,7 +64,7 @@ class PatientInfo extends React.Component {
 						GENDER
 					</Col>
 					<Col {...colLayout} className="info-item-text">
-						{this.props.patientInfo.sex}
+						{data.record.gender}
 					</Col>
 				</Row>
 			</div>
@@ -170,11 +143,8 @@ class PatientInfo extends React.Component {
 }    
 
 PatientInfo.propTypes = {
-	patientInfo: PropTypes.object
+	data: PropTypes.object.isRequired
 };
 
-PatientInfo.defaultProps = {
-	patientInfo: {}
-}
 
 export default PatientInfo;

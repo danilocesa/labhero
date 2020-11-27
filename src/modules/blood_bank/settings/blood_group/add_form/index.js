@@ -3,7 +3,7 @@ import React from 'react'
 import {  Switch, Form, Input, Button} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
-import HttpCodeMessage from 'shared_components/message_http_status';
+import HttpCodeMessage from 'shared_components/message_http_status'
 import { createBloodGroupAPI, updateBloodGroupAPI } from 'services/blood_bank/blood_group';
 import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
 

@@ -65,8 +65,9 @@ class TownList extends React.Component {
 					allowClear
 				>
 					{townList.map((item) => (
+						
 						<Option value={item.barangay_id} key={item.brgy_code}>
-							{item.brgy_name}
+							{item.barangay_name}
 						</Option>
 					))}
 				</Select>

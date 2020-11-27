@@ -104,115 +104,131 @@ class Extraction extends React.Component {
     if(patients.length <= 0) 
       Message.info('No results found');
   }
-  
-	NextStep = () => {
-    window.location.assign('/bloodbank/extraction/screening/step/1');
-  };
+
+  handleChangeSize = (pageSize) => {
+		this.setState({pageSize});
+	}  
+
+  NextStep = (record) => {
+    console.log("Extraction -> NextStep -> record", record)
+    record.data = {record}
+    this.props.history.push("/bloodbank/extraction/screening/step/1",record);
+  }
 
   render() {
-    const { Item,loading } = this.state
+    const { Item,loading,pageSize } = this.state
+    console.log("Extraction -> render -> pageSize", pageSize)
+    const items = Item.length > pageSize ? pageSize : Item.length;
     return (
       <div>
-       <PageTitle pageTitle="DONOR REGISTRATION"  />
+       <PageTitle pageTitle="EXTRACTION/SCREENING"  />
         <Row>
           <Col span={24}>
-            <div>
-              <Row>
-                <Col span={12} style={{ textAlign: "center", marginTop:50, marginLeft:300}}>
-                <Form 
-                  className="search-patient-form" 
-                  onFinish={this.handleSubmit} 
-                  ref={this.formRef}
-                  layout="vertical"
-                >
-                  <Row justify="center">
-                    <Col span={10}>
-                  <Row>
-                    <Col span={11}>
-                      <Form.Item label="DONOR'S ID" name="patientID">
-                        <RegexInput 
-                          regex={/[A-Za-z0-9, -]/} 
-                          maxLength={100}
-                          onFocus={this.handleFocus}
-                          placeholder="Donor's ID"
-                        />
-                      </Form.Item>
-                    </Col>
-                    <Text strong style={{marginTop:20}}>OR</Text>
-                    <Col span={11}>
-                      <Form.Item label="PATIENT NAME" name="patientName">
-                        <RegexInput 
-                          regex={/[A-Za-z0-9, -]/} 
-                          maxLength={100}
-                          onFocus={this.handleFocus}
-                          placeholder="Lastname, Firstname"
-                        />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                    </Col>
-                    {/* Buttons */}
-                    <Col span={11} style={{marginTop:20}}>
-                      <Form.Item>
-                        <Row>
-                          <Button 
-                            className="form-button"
-                            shape="round" 
-                            style={{ width: 120, marginLeft:10 }}
-                            onClick={this.clearInputs} 
-                          >
-                            CLEAR
-                          </Button>
-                          <Button 
-									          loading={loading}
-                            className="form-button"
-                            shape="round" 
-                            type="primary" 
-                            htmlType="submit" 
-                            style={{ width: 120 }}
-                          >
-                            SEARCH
-                          </Button>
-                        </Row>
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form>
-                </Col>
-              </Row>
-              <Row style={{marginTop:-80}}>
-                <Col span={12} style={{ textAlign: "Left", marginTop:100 }}>
-                  <div className="table-title">
-                    <div>
-                      <Text strong>SEARCH RESULTS</Text>
-                    </div>
-                      <div className="left">
-                        <Text>Showing  items out of results</Text>
-                      </div>
+            <Col span={12} style={{ textAlign: "center", marginTop:30, marginLeft:50}}>
+              <Form 
+                className="search-patient-form" 
+                onFinish={this.handleSubmit} 
+                ref={this.formRef}
+                layout="vertical"
+              >
+                <Row justify="center">
+                  {/* Search Input */}
+                  <Col>
+                    <Row>
+                      <Col span={9}>
+                        <Form.Item label="DONOR'S ID" name="patientID" style={{marginLeft:30}}>
+                          <RegexInput 
+                            style={{width:200}}
+                            regex={/[A-Za-z0-9, -]/} 
+                            maxLength={100}
+                            onFocus={this.handleFocus}
+                            placeholder="Donor's ID"
+                          />
+                        </Form.Item>
+                      </Col>
+                      <Text strong style={{marginTop:20, marginLeft:10}}>OR</Text>
+                      <Col span={9}>
+                        <Form.Item label="DONOR'S NAME" name="patientName" style={{marginLeft:10}}>
+                          <RegexInput 
+                          style={{width:350}}
+                            regex={/[A-Za-z0-9, -]/} 
+                            maxLength={100}
+                            onFocus={this.handleFocus}
+                            placeholder="Lastname, Firstname"
+                          />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Col>
+                  {/* Buttons */}
+                  <Col style={{marginTop:18, marginRight:-450}}>
+                    <Form.Item shouldUpdate> 
+                    {({ getFieldsValue }) => {
+                    const { patientID, patientName } = getFieldsValue();
+                    const disabled = !(patientID || (patientName && patientName.length > 1));
+                    return (
+                      <Row>
+                        <Button 
+                          className="form-button"
+                          shape="round" 
+                          style={{ width: 120, marginLeft:10 }}
+                          onClick={this.clearInputs} 
+                        >
+                          CLEAR
+                        </Button>
+                        <Button 
+                          loading={loading}
+                          className="form-button"
+                          shape="round" 
+                          type="primary" 
+                          htmlType="submit" 
+                          style={{ width: 120 }}
+                          disabled={disabled}
+                        >
+                          SEARCH
+                        </Button>
+                      </Row>
+                    )
+                    }}
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+            {/* Table Header */}
+            <Row style={{marginTop:-80}}>
+              <Col span={12} style={{ textAlign: "Left", marginTop:100 }}>
+                <div className="table-title">
+                  <div>
+                    <Text strong>SEARCH RESULTS</Text>
                   </div>
-                </Col>
-                <Col span={12} style={{ textAlign: "right", marginTop:140 }}>
-                  <TablePager handleChange={this.handleSelectChange} />
-                </Col>
-              </Row>
-            </div> 
-
-           
+                    <div className="left">
+                    <Text>Showing {pageSize} items out of results {Item.length} </Text>
+                    </div>
+                </div>
+              </Col>
+              <Col span={12} style={{ textAlign: "right", marginTop:140 }}>
+                <TablePager handleChange={this.handleChangeSize} />
+              </Col>
+            </Row>
+            {/* Table */}
             <Table
-                expandedRowRender={expandedRow}
-                style={{ textTransform: "uppercase" }}
-                dataSource={Item}
-                pagination={this.state.pagination}
-                loading={this.state.loading}
-                columns={columns}
-                onRow={() => {
-                  return {     
-                    onDoubleClick: () => {
-                      this.NextStep();
-                    }
+              expandedRowRender={expandedRow}
+              style={{ textTransform: "uppercase" }}
+              dataSource={Item}
+              
+              pagination={{ pageSize }}
+              loading={this.state.loading}
+              columns={columns}
+              rowKey={record => record.userID}
+              onRow={(record) => {
+                return {     
+                  onDoubleClick: () => {
+                    this.NextStep(record)
                   }
-                }}
-              />    
+                }
+              }}
+            />    
           </Col>
         </Row>
       </div>

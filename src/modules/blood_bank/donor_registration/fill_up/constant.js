@@ -58,8 +58,8 @@ export const FIELD_RULES = {
 };
 
 export const messagePrompts = {
-  successCreateUser: "Successfully created! Reloading page...",
-  successUpdateUser: "Update successful! Reloading page..."
+  successCreateUser: "Successfully created!",
+  successUpdateUser: "Update successful!"
 }
 
 export const formLabels = {

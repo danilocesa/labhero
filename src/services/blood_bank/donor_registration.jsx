@@ -34,6 +34,7 @@ export async function createDonor(Data) {
 		}).then(response => {
       return response;
     });
+
     // @ts-ignore
     createUserAccount = axiosResponse;
   } 
@@ -45,14 +46,14 @@ export async function createDonor(Data) {
 }
 
 export async function updateDonor(Data) {
-  console.log("updateDonor -> updateDonor", updateDonor)
   let updateBloodGroup = [];
-  const bloodGroupId = Data.blood_group_id;
+  const bloodGroupId = Data.donor_id;
+  console.log("updateDonor -> bloodGroupId", bloodGroupId)
 
 try{
   const content = {
-          method: apiPutMethod,
-          url:`bloodbank/donor/update/${bloodGroupId}/`,
+    method: apiPutMethod,
+    url:`bloodbank/donor/update/${bloodGroupId}/`,
     data: Data
   }
 
@@ -68,14 +69,14 @@ catch(error) {
 return updateBloodGroup;
 }
 
-export async function fetchPatients(patientName) {
+export async function fetchPatients(patientName ,donor_id) {
   let patients = [];
   try{
     const response = await axiosPhase2API({
       method: apiGetMethod,
-      url: `bloodbank/donor/search/?search=${patientName}`
+      url: (patientName ? `bloodbank/donor/search/?search=${patientName}` : `bloodbank/donor/search/by_id/${donor_id}`) 
     });
-    const { data } = await response;
+    const { data } = response;
     patients = data;
   }
   catch(error) {

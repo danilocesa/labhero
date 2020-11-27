@@ -1,33 +1,49 @@
 /* eslint-disable func-names */
 import React from 'react';
-import { Steps, Typography,Col,Row,Collapse,Divider,Checkbox,InputNumber,Switch, Select,Input } from "antd";
+import { 
+  Steps, 
+  Typography,
+  Col,
+  Row,
+  Form,
+  Checkbox,
+  InputNumber,
+  Switch, 
+  Select,
+  Input, 
+  Button 
+} from "antd";
 import { fetchAdditionalFields,  }  from "services/blood_bank/donor_registration";
 
 import PageTitle from 'shared_components/page_title';
+
+
+// ICON
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 
 const { Step } = Steps
 const { Option } = Select
 const { TextArea } = Input
 const { Title  } = Typography
-const { Panel } = Collapse;
 
 
 class HealthInformation extends React.Component {
-    // eslint-disable-next-line no-useless-constructor
-    constructor(props) {
-      super(props);
-      // this.generateFieldType = this.generateFieldType.bind(this);
-    }
+  // eslint-disable-next-line no-useless-constructor
+  constructor(props) {
+    super(props);
+    // this.generateFieldType = this.generateFieldType.bind(this);
+  }
   
-    state = {
-      // eslint-disable-next-line react/no-unused-state
-      categoryData: {},
-      additionalFields: {},
-    };
+  state = {
+    // eslint-disable-next-line react/no-unused-state
+    categoryData: {},
+    additionalFields: {},
+  };
 
-    componentDidMount() {
-      this.getCategoryData();
-    }
+  componentDidMount() {
+    this.getCategoryData();
+  }
     
   getCategoryData = async () => {
     try{
@@ -54,7 +70,7 @@ class HealthInformation extends React.Component {
     let cust_fld_obj = [];
     const custFieldArray = [];
       
-    Object.keys(additionalFields).forEach(function (key,val){
+    Object.keys(additionalFields).forEach(function (key){
       // eslint-disable-next-line camelcase
       cust_fld_obj = additionalFields[key].cust_fld_format;
     });
@@ -67,8 +83,12 @@ class HealthInformation extends React.Component {
             custFieldArray.push(
               <Row>
                 <Col>
-                  <Divider>{key.field_label}</Divider>
-                    <InputNumber min={1} max={10} defaultValue={1} />
+                    <Form.Item
+                     label={key.field_label}
+                     name="`"
+                    >
+                    <InputNumber min={1} max={10} defaultValue={1} style={{width:150, marginLeft:60}} />
+                    </Form.Item>
                 </Col>
               </Row>) 
             break;
@@ -76,13 +96,16 @@ class HealthInformation extends React.Component {
             custFieldArray.push(
               <Row>
                 <Col>
-                  <Divider>{key.field_label}</Divider>
-                    <Checkbox.Group style={{ width: '100%' }}>
-                      { key.field_list_values.map(function(listValue){
-                        return <Checkbox value={listValue.list_value}>{listValue.list_value}</Checkbox>
-                      })
-                      }
-                    </Checkbox.Group>
+                    <Form.Item
+                     label={key.field_label}
+                    >
+                      <Checkbox.Group style={{ width: '100%' }}>
+                        { key.field_list_values.map(function(listValue){
+                          return <Checkbox value={listValue.list_value}>{listValue.list_value}</Checkbox>
+                        })
+                        }
+                      </Checkbox.Group>
+                    </Form.Item>
                 </Col>
               </Row>
             )
@@ -91,12 +114,15 @@ class HealthInformation extends React.Component {
             custFieldArray.push(
               <Row>
                 <Col>
-                  <Divider>{key.field_label}</Divider>
+                    <Form.Item
+                     label={key.field_label}
+                    >
                     <Select>
                       {key.field_list_values.map(function(listValue){
                         return <Option value={listValue.list_id}>{listValue.list_value}</Option>
                       })}
                     </Select>
+                    </Form.Item>
                 </Col>
               </Row>
             )
@@ -105,8 +131,11 @@ class HealthInformation extends React.Component {
               return custFieldArray.push(
                 <Row>
                   <Col>
-                    <Divider>{key.field_label}</Divider>
+                    <Form.Item
+                     label={key.field_label}
+                    >
                      <TextArea rows={4} />
+                    </Form.Item>
                   </Col>
                 </Row>
               );
@@ -114,8 +143,11 @@ class HealthInformation extends React.Component {
               return custFieldArray.push(
                 <Row>
                   <Col>
-                    <Divider>{key.field_label}</Divider>
+                    <Form.Item
+                     label={key.field_label}
+                    >
                     <Switch defaultChecked />
+                    </Form.Item>
                   </Col>
                 </Row>
               );
@@ -123,9 +155,13 @@ class HealthInformation extends React.Component {
             custFieldArray.push(
               <Row>
                 <Col>
-                  <Divider>{key.field_label}</Divider>
-                   <Input placeholder="Text" />
+                    <Form.Item
+                     label={key.field_label}
+                    >
+                   <Input placeholder="Text" style={{width:150}} />
+                    </Form.Item>
                 </Col>
+
               </Row>
             )
             break;
@@ -145,19 +181,30 @@ class HealthInformation extends React.Component {
           <Steps 
             size="small" 
             current={2} 
-            style={{ marginTop:50, paddingRight:200, paddingLeft:200}}
+            labelPlacement="vertical"
+            style={{ marginTop:20, paddingRight:200, paddingLeft:200}}
           >
-            <Step title="Search Donor"  />
-            <Step title="Fill Up" />
-            <Step title="Health Information" />
+             <Step title="Search Donor" icon={<SearchOutlined />}  />
+            <Step title="Fill Up" icon={<ContainerOutlined />} />
+            <Step title="Health Information" icon={<MedicineBoxOutlined />} />
           </Steps>
-          <Title level={4} style={{marginLeft:100 , marginTop:20}}>HEALTH INFORMATION</Title>
-
-          <Collapse defaultActiveKey={['1']}>
-            <Panel header="Additional fields" key="1">
+          <Title level={4} style={{marginLeft:50 , marginTop:40}}>HEALTH INFORMATION</Title>
+          <Form
+            name="basic"
+            layout='vertical'
+          >
+              <div style={{marginLeft:90}}>
               {this.generateAdditionalFields()}
-            </Panel>
-          </Collapse>
+              </div>
+            <div style={{marginTop:40, marginRight:50}}>
+              <Button type="primary" style={{float: 'right'}}>
+                Submit
+              </Button>
+              <Button type="link" style={{float: 'right'}}>
+                Back
+              </Button>
+            </div>
+          </Form>
       </div>
 		)
 	}	

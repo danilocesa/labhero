@@ -1,5 +1,5 @@
 import React from "react"
-import { Table, Input  } from 'antd'
+import { Table, Input , Button } from 'antd'
 
 // CUSTOM MODULES
 
@@ -39,6 +39,9 @@ class ForScreening extends React.Component {
           REMARK
           <TextArea rows={4} style={{height:90}} />
         </div>
+        <Button type="primary" shape="round" style={{float: 'right', marginTop:-20}} htmlType="submit">
+          EXTRACT
+        </Button>
       </div>
     )
   }

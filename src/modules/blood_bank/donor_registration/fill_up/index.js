@@ -5,6 +5,12 @@ import PageTitle from 'shared_components/page_title'
 import moment from 'moment'
 import { NumberInput } from 'shared_components/pattern_input'
 import { createDonor,updateDonor } from 'services/blood_bank/donor_registration'
+
+// ICON
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
+import { User } from 'images/bloodbank';
+
 import CityList from './city_list'
 import TownList from './town_list'
 import ProvinceList from './province_list'
@@ -30,6 +36,7 @@ class FillUpForm extends React.Component {
   componentDidMount() {
     const {label} = this.props.location.state
     const {data } = this.props.location.state
+    console.log("FillUpForm -> componentDidMount -> data", data)
     
     this.setState({ 
       ButtonName: label,
@@ -54,18 +61,20 @@ class FillUpForm extends React.Component {
     const Data = {
       donor_id :values.donor_id,
       first_name :values.First_name,
-      Middle_name :values.Middle_name,
+      middle_name :values.Middle_name,
       last_name:values.Last_name,
-      Suffix:values.suffix,
+      suffix:values.suffix,
       birth_date:dateFormat,
       age:values.Age,
       gender:values.Gender,
-      street_name:values.street_name,   
+      address_line_2:values.street_name,   
       barangay:values.town,
-      unit_house_no:values.house,
+      address_line_1:values.house,
       mobile_no:values.mobile_no,
       created_by:1,
+      blood_type_name:'Sample'
     };
+    console.log(Data,"DATA")
     if(ButtonName === 'SUBMIT'){
     const createdUserResponse = await createDonor(Data);
 			// @ts-ignore
@@ -75,12 +84,11 @@ class FillUpForm extends React.Component {
 					// @ts-ignore
 					status: createdUserResponse.status,	
 					duration: 3, 
-					onClose: () => window.location.reload() 
+					// onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
 				}
 				HttpCodeMessage(httpMessageConfig);	
       }	
-    }
-      else {
+    }else {
         Data.donor_id = values.donor_id;
 				const updateUserResponse =  await updateDonor(Data).catch(reason => console.log('TCL->', reason));
 				// @ts-ignore)
@@ -90,7 +98,7 @@ class FillUpForm extends React.Component {
 						// @ts-ignore
 						status: updateUserResponse.status,
 						duration: 3, 
-						onClose: () => window.location.reload() 
+						onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
 					}
 					HttpCodeMessage(httpMessageConfig);
 				}
@@ -126,23 +134,36 @@ class FillUpForm extends React.Component {
   }
  
   render() {
-      const { ButtonName, record } = this.state
-      console.log("FillUpForm -> render -> record", record)
-      let newRecord = null;
-      if(record != null){
-       newRecord = record
-       console.log("FillUpForm -> render -> newRecord", newRecord)
-       console.log("FillUpForm -> render -> record", record.gender)
-      }
+
+    const date = moment("2014-02-27T10:00:00").format('DD-MM-YYYY');
+    const dateMonthAsWord = moment("2014-02-27T10:00:00").format('DD-MMM-YYYY');
+    
+      const { ButtonName } = this.state
+
     return (
+      
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-          <Steps size="small" current={1} style={{marginTop:20,paddingRight:200,paddingLeft:200}}>
-            <Step status="finish" title="Search Donor" />
-            <Step title="Fill Up" />
-            <Step title="Health Information" />
+          <Steps size="small" current={1} style={{marginTop:20,paddingRight:200,paddingLeft:200}} labelPlacement="vertical">
+            <Step title="Search Donor" icon={<SearchOutlined />}  />
+            <Step title="Fill Up" icon={<ContainerOutlined />} />
+            <Step title="Health Information" icon={<MedicineBoxOutlined />} />
           </Steps>
         <Form 
+          initialValues={{ 
+            donor_id:this.props.location.state.donor_id,
+            First_name:this.props.location.state.first_name,
+            Middle_name:this.props.location.state.middle_name,
+            Last_name:this.props.location.state.last_name,
+            suffix:this.props.location.state.suffix,
+            Age:this.props.location.state.age,
+            Gender:this.props.location.state.gender,
+            mobile_no:this.props.location.state.mobile_no,
+            town:this.props.location.state.barangay,
+            house:this.props.location.state.address_line_1,
+            street_name:this.props.location.state.address_line_2,
+            provinces:this.props.location.state.provinces,
+          }}
           ref={this.formRef}
           className="clr-fillup-form" 
           layout="vertical"
@@ -154,13 +175,17 @@ class FillUpForm extends React.Component {
               <div className="left-form">
               <div style={{ padding: '1px 0px', marginTop:20 }}>
                   <Text strong>PERSONAL INFORMATION</Text>
+                  <div style={{marginTop:40}}>
+                  <img src={User} alt="logo" style={{ height: 250, width: 300 }} />
+                  </div>
               </div>
-              </div>
+              </div>  
             </Col>
             <Col sm={7} md={7}>
               <div className="center-form" style={{marginTop:'40px'}}>
                   <Form.Item 
                     name='donor_id'
+                    style={{ display: 'none' }}
                   >
                     <Input />
                   </Form.Item>
@@ -199,7 +224,6 @@ class FillUpForm extends React.Component {
                     <Form.Item 
                       name="dateOfBirth" 
                       label={formLabels.dateOfBirth} 
-                      rules={FIELD_RULES.dateOfBirth}
                     >
                       <DatePicker 
                         format="YYYY-MM-DD"
@@ -227,8 +251,8 @@ class FillUpForm extends React.Component {
                   name='Gender'
                 >
                   <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="MALE">MALE</Radio.Button>
-                    <Radio.Button value="FEMALE">FEMALE</Radio.Button>
+                    <Radio.Button value="M">MALE</Radio.Button>
+                    <Radio.Button value="F">FEMALE</Radio.Button>
                   </Radio.Group>
                 </Form.Item>  
                 <Form.Item 
@@ -287,11 +311,13 @@ class FillUpForm extends React.Component {
                   }}
                 </Form.Item>
                 <Form.Item 
-                  label="STREET NAME" 
+                  label="Address Line 2" 
                   style={{marginTop:'-5px'}}
                   name='street_name'
                 >
-                  <Input />
+                  <Input  
+                  placeholder=" Appartment, Unit, Building Floor, etc"
+                  />
                 </Form.Item>
               </div>
             </Col>

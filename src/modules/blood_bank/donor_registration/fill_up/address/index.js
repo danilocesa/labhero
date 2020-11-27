@@ -1,3 +1,4 @@
+
 // @ts-nocheck
 // LIBRARY
 import React from "react";
@@ -44,7 +45,7 @@ class houseAddressComponent extends React.Component{
 
 		return(
 			<Form.Item 
-				label="HOUSE NO./UNIT/FLOOR NO. BLDG. NAME"
+				label="Address Line 1"
 				name="house"
 				rules={[
 					...this.houseUnitfieldRules(),
@@ -53,6 +54,7 @@ class houseAddressComponent extends React.Component{
 				]}
 			>
 				<Input 
+					placeholder="Street No, Street Name"
 					disabled={isDisabled} 
 					maxLength={70} 
 					allowClear

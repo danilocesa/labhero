@@ -3,26 +3,7 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { apiGetMethod,apiPostMethod,apiPutMethod } from 'global_config/constant-global';
-
-
-export async function fetchDonor() {
-	let inventoryItems = [];
-	
-  try{
-    const response = await axiosPhase2API({
-      method: apiGetMethod,
-      url: 'bloodbank/donor/'
-		});
-		
-		const { data } = response;
-    inventoryItems = data;
-  } 
-  catch(e) {
-    Message.error();
-	}
-	
-  return inventoryItems;
-}
+import HttpCodeMessage from 'shared_components/message_http_status'
 
 export async function fetchPatients(patientName, patientID) {
   let patients = [];
@@ -32,7 +13,7 @@ export async function fetchPatients(patientName, patientID) {
       url: (patientID ? `bloodbank/extraction/search/by_id/${patientID}` : `bloodbank/extraction/search/?search=${patientName}`) 
     });
     const { data } = await response;
-    patients = data;
+    patients = data
   }
   catch(error) {
     Message.error();
@@ -40,4 +21,22 @@ export async function fetchPatients(patientName, patientID) {
   return patients;
 } 
 
+export async function createExtractionAPI(payload) {
+	let createUserAccount = [];
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: apiPostMethod,
+      url: `bloodbank/extraction/create/`,
+      data: payload
+		}).then(response => {
+      return response;
+    });
+    // @ts-ignore
+    createUserAccount = axiosResponse;
+  } 
+  catch(e) {
+    HttpCodeMessage({status: 500, message: e});
+	}
 
+	return createUserAccount;
+}

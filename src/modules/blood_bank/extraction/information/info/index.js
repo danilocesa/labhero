@@ -3,23 +3,22 @@ import PropTypes from 'prop-types';
 import PatientInfo from './patient_info';
 
 class Info extends React.Component {
+  
 
   render() {
+    const {data} = this.props
     return (
       <div className='verticalinfo'>
-        <PatientInfo patientInfo={this.props.patientInfo} />
+        <PatientInfo data={data} />
       </div>
     )
   }
 }
 
 Info.propTypes = {
-	patientInfo: PropTypes.object
+	data: PropTypes.object.isRequired
 };
 
-Info.defaultProps = {
-	patientInfo() { return null; }
-}
 
 
 export default Info;
