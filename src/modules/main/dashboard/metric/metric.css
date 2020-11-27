@@ -1,21 +1,22 @@
-.metrics {
-  background: #fafafc !important;
-  border: 0 !important;
-  padding: 15px 0px !important;
-  width: 200px;
-  text-align: center;
-  display: inline-block;
-  margin: 10px 25px 20px 0px !important;
-}
-
-.metrics img {
-  width: 30px;
-  height: 30px;
-}
-
-.metric-value {
-  display: block;
+.dashboard-metrics-con { 
   margin-top: 10px;
-  font-size: 26px;
-  font-weight: bolder;
+  width: 320px;
+}
+
+.dashboard-metrics-con .ant-card {
+  line-height: 1.3 !important;
+}
+
+.dashboard-metrics-con .ant-card-body {
+  padding: 10px 0px;
+}
+
+.dashboard-metrics-con .image-con {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-metrics-con .text {
+  /* font-size: 16px */
 }

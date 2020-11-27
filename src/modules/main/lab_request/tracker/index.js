@@ -1,13 +1,17 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Steps, Icon, Row, Col } from 'antd';
+import { withRouter } from 'react-router-dom';
+import { Steps, Row, Col, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { LR_REQUEST_TYPE, LR_STEP_PROGRESS } from 'modules/main/lab_request/steps/constants';
 import TrackerModal from './tracker_modal';
 import TrackerSettings from './settings';
 
 // CSS
 import './tracker.css';
 
+const { confirm } = Modal;
 const { Step } = Steps;
 const { requestTypes } = TrackerSettings;
 const { links } = TrackerSettings;
@@ -16,30 +20,29 @@ const { links } = TrackerSettings;
 // eslint-disable-next-line react/prefer-stateless-function
 class Tracker extends React.Component {
 	state = {
-		current: 0,
 		modalVisibility: false
 	};
 
-	onClickTracker = clickedStep => {	
-		const { active } = this.props;
-
-		if(active === 0)
-			return;
+	onClickTracker = (clickedStep) => {	
+		const { active, history } = this.props;
 
 		if(active !== 0 && clickedStep === 0) { 
-			this.setState({ modalVisibility: true });
+			this.showPromiseConfirm();
+			// this.setState({ modalVisibility: true });
+
+			return;
 		}
-		else {
-			const targetUrl = `${this.getLink()}/${clickedStep}`;
-			
-			window.location.assign(targetUrl);
-		}
+
+		sessionStorage.setItem(LR_STEP_PROGRESS, clickedStep + 1);
+
+		history.push(`${this.getLink()}/${clickedStep + 1}`);
 	}
 
 	onOk = () => {
+		const {  history } = this.props;
 		const targetUrl = `${this.getLink()}/1`;
 
-		window.location.assign(targetUrl);
+		history.push(targetUrl);
 	}
 
 	onCancel = () => {
@@ -48,10 +51,21 @@ class Tracker extends React.Component {
 
 	// Private Function
 	getLink = () => {
-		return (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? links.createRequest : links.editRequest )
+		return (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create ? links.createRequest : links.editRequest )
 	};
 
+	showPromiseConfirm = () => {
+		confirm({
+			title: 'Do you want to go back to searching of patient?',
+			icon: <ExclamationCircleOutlined />,
+			okText: 'Go Back',
+			onOk: this.onOk,
+			onCancel() {},
+		});
+	}
+
 	render() {
+		const	isInEditMode = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.edit;
 		const items = TrackerSettings.stepItems;
 		const StepItems = items.map(item => (
 			<Step
@@ -61,8 +75,8 @@ class Tracker extends React.Component {
 			/>
 		));
 		const { active } = this.props;
-		const { current, modalVisibility } = this.state;
-	
+		const { modalVisibility } = this.state;
+
 		return (
 			<div>
 				<Row>
@@ -70,9 +84,9 @@ class Tracker extends React.Component {
 						<Steps
 							size="small"
 							labelPlacement="vertical"
-							current={active || current}
+							current={active}
 							style={{ marginTop: 20 }}
-							// onChange={this.onClickTracker}
+							onChange={isInEditMode && active !== 0 ? this.onClickTracker : null}
 						>
 							{StepItems}
 						</Steps>
@@ -82,7 +96,7 @@ class Tracker extends React.Component {
 					onCancel={this.onCancel} 
 					onOK={this.onOk} 
 					visibility={modalVisibility} 
-					current={active || current} 
+					current={active} 
 				/>
 			</div>
 		);
@@ -98,4 +112,4 @@ Tracker.defaultProps = {
 	requestType: null
 };
 
-export default Tracker;
+export default withRouter(Tracker);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col, Typography } from 'antd';
 import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
-import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
+import { LR_PERSONAL_INFO, LR_OTHER_INFO } from 'modules/main/lab_request/steps/constants';
 
 import './section.css';
 
@@ -46,8 +46,8 @@ class SummarySection extends React.Component {
 	
 	async componentDidMount() {
 		const { personalInfo, otherInfo } = this.state;
-		const sessPersInfo = JSON.parse(sessionStorage.getItem(CLR_PERSONAL_INFO)) || personalInfo;
-		const sessOtherInfo = JSON.parse(sessionStorage.getItem(CLR_OTHER_INFO)) || otherInfo;
+		const sessPersInfo = JSON.parse(sessionStorage.getItem(LR_PERSONAL_INFO)) || personalInfo;
+		const sessOtherInfo = JSON.parse(sessionStorage.getItem(LR_OTHER_INFO)) || otherInfo;
 		
 		const hospitalLocations = await hospitalLocationAPI();
 		const physicians = await hospitalPhysiciansAPI();

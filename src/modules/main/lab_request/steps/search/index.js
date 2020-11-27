@@ -1,32 +1,32 @@
 // LIBRARY
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 // CUSTOM
 import { 
-	CLR_PERSONAL_INFO, 
-	CLR_OTHER_INFO, 
-	CLR_SEL_EXAMS,	
-	REQUEST_TYPE,
-	MODULE_PROFILE
+	LR_PERSONAL_INFO, 
+	LR_OTHER_INFO, 
+	LR_SEL_EXAMS,	
+	LR_REQUEST_TYPE,
+	LR_STEP_PROGRESS,
+	LR_SEL_CONTENTS, 
+	LR_SEL_PANEL_CONTENTS,
+	LR_IS_EXAM_UPDATED
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from 'modules/main/lab_request/tracker';
-import { 
-	moduleTitles, 
-	requestTypes, 
-	requestLinks 
-} from 'modules/main/settings/lab_exam_request/settings';
-import SearchForm from './form';
+import { moduleTitles, requestTypes, requestLinks } from 'modules/main/settings/lab_exam_request/settings';
+import SearchFormCreate from './form_for_create';
+import SearchFormEdit from './form_for_edit';
 import TableHeader from './table_header';
-import Table from './table';
+import Table from 'shared_components/search_patient_table';
 import ButtonLink from './link';
 import { tablePageSize } from '../settings';
 
 
 class SearchStep extends React.Component {
 	state = { 
-		searchedPatientName: '',
-		searchedPatientID: '',
+		searchCount: 0,
 		patients: [],
 		pageSize: tablePageSize,
 		loading: false,
@@ -34,22 +34,46 @@ class SearchStep extends React.Component {
 	
 
 	componentDidMount() {
-		sessionStorage.removeItem(CLR_PERSONAL_INFO);
-		sessionStorage.removeItem(CLR_OTHER_INFO);
-		sessionStorage.removeItem(CLR_SEL_EXAMS);
-		sessionStorage.removeItem(REQUEST_TYPE);
-		sessionStorage.removeItem(MODULE_PROFILE);
+		sessionStorage.removeItem(LR_PERSONAL_INFO);
+		sessionStorage.removeItem(LR_OTHER_INFO);
+		sessionStorage.removeItem(LR_SEL_EXAMS);
+		sessionStorage.removeItem(LR_SEL_CONTENTS);
+		sessionStorage.removeItem(LR_SEL_PANEL_CONTENTS);
 	}
 
-	updateSearchedValue = (patientId, patientName) => {
-		this.setState({
-			searchedPatientID: patientId || '',
-			searchedPatientName: patientName || ''
-		});
+	updateSearchCount = (patientId, patientName) => {
+		const { searchCount } = this.state;
+
+		this.setState({ searchCount: searchCount + 1 });
 	}
 
 	handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
+	}
+
+	handleTableDoubleClick = (record) => {
+		const { history } = this.props;
+		const redirectUrl = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create)
+			? requestLinks.create.step2 
+			: requestLinks.edit.step2;
+
+		delete record.dateCreated;
+		delete record.addressID;
+
+		// Save personal and other info to session storage
+		// for edit module
+		if(record.requestHeader) {
+			const { requestHeader, ...persoInfo } = record;
+			const { userID, requestDateTime, ...otherInfo } = record.requestHeader;
+
+			sessionStorage.setItem(LR_PERSONAL_INFO, JSON.stringify(persoInfo));
+			sessionStorage.setItem(LR_OTHER_INFO, JSON.stringify(otherInfo));
+		}
+
+		sessionStorage.setItem(LR_IS_EXAM_UPDATED, String(0));
+		sessionStorage.setItem(LR_STEP_PROGRESS, String(2));
+
+		history.push(redirectUrl, { record });
 	}
 
 	populatePatients = (patients) => {
@@ -62,15 +86,16 @@ class SearchStep extends React.Component {
 
 	dynamicModuleTitle = () =>{
 		// @ts-ignore
-		const pageTitle = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? moduleTitles.create : moduleTitles.edit)
+		const pageTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create ? moduleTitles.create : moduleTitles.edit);
+		
 		return pageTitle;
 	}
 
 	render() {
-		const { patients, pageSize, loading, searchedPatientID, searchedPatientName } = this.state;
+		const { patients, pageSize, loading, searchCount } = this.state;
 	
-		const redirectUrl = (sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? requestLinks.create.step2 : requestLinks.edit.step2)
-		
+		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
+
 		return (
 			<div>
 				<PageTitle pageTitle={this.dynamicModuleTitle()} />
@@ -79,11 +104,24 @@ class SearchStep extends React.Component {
 					requestType={requestTypes.create}	
 				/>
 				<div style={{ marginTop: 60 }}>
-					<SearchForm 
-						populatePatients={this.populatePatients}
-						displayLoading={this.displayLoading} 
-						updateSearchedValue={this.updateSearchedValue}
-					/>
+					{
+						reqType === requestTypes.create && (
+							<SearchFormCreate 
+								populatePatients={this.populatePatients}
+								displayLoading={this.displayLoading} 
+								updateSearchCount={this.updateSearchCount}
+							/>
+						)
+					}
+					{
+						reqType === requestTypes.edit && (
+							<SearchFormEdit
+								populatePatients={this.populatePatients}
+								displayLoading={this.displayLoading} 
+								updateSearchCount={this.updateSearchCount}
+							/>
+						)
+					}
 					<TableHeader 
 						pageSize={pageSize}
 						pageTotal={patients.length} 
@@ -93,21 +131,17 @@ class SearchStep extends React.Component {
 						data={patients}
 						pageSize={pageSize}
 						loading={loading} 
-						redirectUrl={redirectUrl}
-						SearchedPatientId={searchedPatientID}
-						SearchedPatientName={searchedPatientName}
+						handleDoubleClick={this.handleTableDoubleClick}
 					/>
 				</div>
 				{ 
-				// @ts-ignore
-				sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create ? (
-					<ButtonLink dataLength={patients.length} />
-				) : null
+					(reqType === requestTypes.create && searchCount > 0) && (
+						<ButtonLink dataLength={patients.length} />
+					)
 				}
-				
 			</div>
 		);
 	}
 }
 
-export default SearchStep;
+export default withRouter(SearchStep);

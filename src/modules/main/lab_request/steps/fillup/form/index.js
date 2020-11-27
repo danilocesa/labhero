@@ -14,7 +14,7 @@ import CityList from 'shared_components/city_list';
 import TownList from 'shared_components/town_list';
 import HouseAddress from 'shared_components/address';
 import { AlphaNumInput, NumberInput, RegexInput } from 'shared_components/pattern_input';
-import { CLR_PERSONAL_INFO, CLR_OTHER_INFO } from '../../constants';
+import { LR_PERSONAL_INFO, LR_OTHER_INFO } from 'modules/main/lab_request/steps/constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
 
 import FormButtons from './form_buttons';
@@ -48,12 +48,20 @@ class BaseForm extends React.Component {
 
 	populateFields = () => {
 		const { location } = this.props;
-		const sessPersoInfo = sessionStorage.getItem(CLR_PERSONAL_INFO);
-		const sessOtherInfo = sessionStorage.getItem(CLR_OTHER_INFO);
+		const sessPersoInfo = sessionStorage.getItem(LR_PERSONAL_INFO);
+		const sessOtherInfo = sessionStorage.getItem(LR_OTHER_INFO);
 
 		// If user came from step 1 
 		if(location.state) {
-			const { dateOfBirth, patientID, provinceCode, cityMunicipalityCode, townCode, address } = location.state.record;
+			const { 
+				dateOfBirth, 
+				patientID, 
+				provinceCode, 
+				cityMunicipalityCode, 
+				townCode, 
+				address, 
+				requestHeader 
+			} = location.state.record;
 			const formattedDOB = moment(dateOfBirth, 'MM-DD-YYYY');
 			const patientAge = this.computeAge(formattedDOB);
 			
@@ -67,6 +75,7 @@ class BaseForm extends React.Component {
 				isDisabledPersoFields: patientID !== null
 			});
 
+			// Set fields value of personal informmations
 			this.formRef.current.setFieldsValue({
 				...location.state.record, 
 				patientAge,
@@ -76,9 +85,26 @@ class BaseForm extends React.Component {
 				town: townCode,
 				address
 			});
+
+			// Set Other Information fields value if records came from edit search module
+			if(requestHeader) {
+				const { locationID, physicianID, visit, chargeSlip, officialReceipt, bed, comment } = requestHeader;
+
+				this.formRef.current.setFieldsValue({
+					locationID,
+					physicianID: physicianID ? physicianID : null,
+					visit,
+					chargeSlip,
+					officialReceipt,
+					bed,
+					comment
+				});
+			}
 		}
 		
 		// Else if user has pressed back button
+		// OR
+		// User is in edit module
 		else if(sessPersoInfo && sessOtherInfo) {
 			// eslint-disable-next-line react/prop-types
 			const { setFieldsValue } = this.formRef.current;
@@ -98,6 +124,7 @@ class BaseForm extends React.Component {
 				setFieldsValue({ 
 					...restPersoInfo, 
 					...otherInfo,
+					physicianID: otherInfo.physicianID ? otherInfo.physicianID : null,
 					dateOfBirth: moment(personalInfo.dateOfBirth, 'MM-DD-YYYY'),
 					provinces,
 					city,
@@ -145,8 +172,6 @@ class BaseForm extends React.Component {
 	}
 
 	onSubmit = () => {
-		// event.preventDefault();
-
 		const { hospitalPhysicianList, hospitalLocationList } = this.state; 
 		const { handleSubmit } = this.props;
 		// eslint-disable-next-line react/prop-types
@@ -155,7 +180,7 @@ class BaseForm extends React.Component {
 		const fields = getFieldsValue();
 		const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 		const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
-
+		
 		fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
 		fields.locationName = location.name;
 
@@ -166,6 +191,7 @@ class BaseForm extends React.Component {
 			fields.physicianName +=	`${physician.lastName}`;
 		}
 		
+
 		// Uppercase all fields
 		Object.keys(fields).forEach(key => {
 			const fieldValue = fields[key];

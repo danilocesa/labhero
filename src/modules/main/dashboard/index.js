@@ -1,96 +1,174 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Typography, Empty, Badge } from 'antd';
+import Moment from 'moment';
+import Icon from '@ant-design/icons';
+import { ClockCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { ReactComponent as CheckIcon } from 'icons/check-icon.svg';
+import fetchKPIs from 'services/dashboard/dashboard';
+import fetchSections from 'services/shared/section';
 
 import DashboardHeader from './header';
 import Metrics from './metric';
-import LineChart from './chart';
-import BarChart from './barchart';
-
-import {
-  MetricRefreshLogo,
-  MetricCheckLogo,
-  MetricAddLogo,
-  MetricHistoryLogo,
-} from "images";
+import PieChart from './chart/piechart';
 
 import './dashboard.css';
 
+const { Text } = Typography;
+
 const metricsData = [
   {
-    image: MetricRefreshLogo,
+    image: <ClockCircleOutlined className="dashboard-metric-icon" />,
     value: 12,
-    label: 'Ongoing Test',
+    label: 'PENDING',
   },
   {
-    image: MetricAddLogo,
+    image: <ExclamationCircleOutlined className="dashboard-metric-icon" style={{ color: '#FAAD14' }} />,
     value: 270,
-    label: 'New Requests',
+    label: 'MORE THAN 2 HOURS',
   },
   {
-    image: MetricHistoryLogo,
+    image: <Icon component={CheckIcon} className="dashboard-metric-icon" />,
     value: 10,
-    label: 'Pending Requests',
+    label: 'WITHIN 2 HOURS',
   },
-  {
-    image: MetricCheckLogo,
-    value: 1028, 
-    label: 'Veritifed Status',
-  },
+ 
 ]; 
 
 class DashboardPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userNameLoggedIn: ''
+      user: {},
+      kpis: [],
+      sections: []
     }
   }
 
-  componentDidMount = () => {
-    const userName = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
-    this.setState({ userNameLoggedIn: userName });
+  async componentDidMount() {
+    const user = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
+    // const today = Moment(new Date()).format("YYYYMMDD");
+    const today = "20200703";
+    const responseKPIs = await fetchKPIs(today);
+    const sections = await fetchSections();
+
+    const kpiPending = responseKPIs.find(item => item.category === 'PendingRequest');
+    const kpiWithin = responseKPIs.find(item => item.category === 'WithinTwoHours');
+    const kpiMorethan = responseKPIs.find(item => item.category === 'MorethanTwoHours');
+    let kpis = [];
+
+    kpis.push({ 
+      ...kpiPending, 
+      label: 'PENDING',
+      image: <ClockCircleOutlined className="dashboard-metric-icon" style={{ color: '#A4B4CF' }} /> 
+    });
+
+    kpis.push({ 
+      ...kpiMorethan, 
+      label: 'MORE THAN 2 HOURS',
+      // #FFBC00 - Yellow | #ff7979 - Red
+      image: <ExclamationCircleOutlined className="dashboard-metric-icon" style={{ color: '#ff7979' }} /> 
+    });
+
+    kpis.push({ 
+      ...kpiWithin, 
+      label: 'WITHIN 2 HOURS',
+      // #009645 - Green
+      image: <Icon component={CheckIcon} className="dashboard-metric-icon" />
+    });
+
+
+    const mappedSections = sections.map(section => {
+      const pending = kpiPending ? kpiPending.data.find(i => i.sectionCode === section.sectionCode) : null; 
+      const within = kpiWithin ? kpiWithin.data.find(i => i.sectionCode === section.sectionCode) : null; 
+      const morethan = kpiMorethan ? kpiMorethan.data.find(i => i.sectionCode === section.sectionCode) : null; 
+
+      return {
+        sectionName: section.sectionName,
+        pending: pending ? pending.records : 0,
+        morethan: morethan ? morethan.records : 0,
+        within: within ? within.records : 0
+      };
+    });
+
+    this.setState({ user, kpis, sections: mappedSections });
   }
   
-  onClickBtn = evt => {
-    const buttonId = evt.target.id;
-    this.setState({
-      [buttonId]: {
-        loading: true
-      }
-    });
-    setTimeout(() => {
-      this.setState({
-        [buttonId]: {
-          buttonText: "EXTRACTED",
-          isDisabled: true,
-          loading: false
-        }
-      });
-    }, 2000);
-    console.log(buttonId);
-  };
-  
   render() {
-    const MetricList = metricsData.map((item, index) => (
+    const { user, kpis, sections } = this.state;
+
+    const MetricList = kpis.map((item, index) => (
       // eslint-disable-next-line react/no-array-index-key
-      <Metrics key={index} image={item.image} value={item.value} label={item.label} />
+      <Metrics 
+        key={index} 
+        image={item.image} 
+        value={item.value} 
+        label={item.label} 
+        data={item.data}
+      />
     ));
 
-    const userNameInfo = this.state.userNameLoggedIn
+
+    const PieCharts = sections.map(item => {
+      const hasNoData = (
+        Number(item.pending) === 0 &&
+        Number(item.morethan) === 0 &&
+        Number(item.within) === 0
+      );
+      
+      const data = hasNoData ? [] : [
+        { item: 'Pending', count: Number(item.pending) },
+        { item: 'Morethan 2 Hours', count: 1 },
+        { item: 'Within 2 Hours', count: Number(item.within) }
+      ];
+
+      const Placeholder = () => (
+        <div className="piechart-no-data">
+          <Empty 
+            description={(
+              <>
+                <div><Text strong>{item.sectionName}</Text></div>
+                <div><Text>No Data</Text></div>
+              </>
+            )} 
+          />
+        </div>
+      );
+
+      return (
+        <div>
+          { !hasNoData && <Text strong>{item.sectionName}</Text> }
+          <PieChart data={data} placeHolder={<Placeholder />} />
+        </div>
+      );
+    });
+
     return (
-      <div>
+      <div className="dashboard-main-wrapper">
         <Row>
-          <DashboardHeader user={userNameInfo ? userNameInfo.givenName : null} />
+          <DashboardHeader user={user ? user.givenName : null} />
         </Row>
-        <Row type="flex" justify="start" style={{ marginTop: 20 }}>
-          <Col className="left-pane">{MetricList}</Col>
-          <Col className="right-pane">
-            <LineChart />
-          </Col>
-        </Row>
-        {/* <Row>
-          <BarChart data={[5,100,20,3]} size={[700,500]} />
-        </Row> */}
+        <div className="main-pane">
+          <div>{MetricList}</div>
+          <div>
+            <div className="legend-con">
+              <div>
+                <Text strong>LEGEND:</Text>
+              </div>
+              <div>
+                <Badge color="#CBDEFF" text="Pending" /> 
+              </div>
+              <div>
+                <Badge color="#6395F9" text="Within 2 Hours" /> 
+              </div>
+              <div>
+                <Badge color="#ff7979" text="Morethan 2 Hours" /> 
+              </div>
+            </div>
+            <div className="chart-con">
+              {PieCharts}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

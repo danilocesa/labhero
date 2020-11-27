@@ -6,21 +6,13 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Button, Row, Col, DatePicker } from 'antd';
 import { AlphaNumInput, RegexInput } from 'shared_components/pattern_input';
-
-// CUSTOM MODULES
-import { axiosLabAPI } from 'services/axios';
 import Message from 'shared_components/message';
-import { 
-	apiUrlPatientByID, 
-	apiUrlPatientByName, 
-	apiGetMethod
-} from 'global_config/constant-global';
-import { buttonNames, fieldLabels, FIELD_RULES } from './settings';
+import { fetchPatientsByDate, fetchPatientsById, fetchPatientsByName } from 'services/lab_request/labRequest';
+import { FIELD_RULES } from './constant';
 
 // CSS
-import './search_patient_form.css';
+import './form_for_edit.css';
 
-const dateFormat = 'MM/DD/YYYY';
 
 class SearchPatientForm extends React.Component {
 	constructor(props) {
@@ -33,49 +25,51 @@ class SearchPatientForm extends React.Component {
 		this.formRef = React.createRef();
 	}
 
-	handleSubmit = async () => {  
-		const { getFieldsValue } = this.formRef.current;
+	handleSubmit = async (formValue) => {  
+    const { populatePatients, updateSearchCount } = this.props;
+    const { patientID, patientName, requestDate } = formValue;
+    const requestDateString = requestDate.format('YYYYMMDD');
+    const isByDate = !patientID && !patientName;
+    const isByName = patientName && requestDate;
+    const isById = patientID && requestDate;
 
-		const { patientID, patientName } = getFieldsValue();
-		
-		const { populatePatients, storeSearchedVal } = this.props;
 		let patients = [];
-		
-		this.setState({ loading: true });
-		patients = await this.fetchPatients(patientName, patientID); 
+    let response = null;
+    
+    this.setState({ loading: true });
+    
+    if(isByDate)
+      response = await fetchPatientsByDate(requestDateString); 
+
+    if(isByName)
+      response = await fetchPatientsByName({ name: patientName, date: requestDateString }); 
+
+    if(isById)
+      response = await fetchPatientsById({ id: patientID, date: requestDateString }); 
+
 		this.setState({ loading: false });
 
-		populatePatients(patients);
-		storeSearchedVal(patientName, patientID);
+    patients = response && response.map(item => ({ 
+			...item.patientDemographics, 
+			requestHeader: item.requestHeader 
+		}));
+
+    populatePatients(patients);
+		updateSearchCount();
 
 		if(patients.length <= 0) 
 			Message.info('No results found');
-	}
-
-	fetchPatients = async (patientName, patientID) => {
-		let patients = [];
-		try{
-			const response = await axiosLabAPI({
-				method: apiGetMethod,
-        url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
-			});
-
-			const { data } = await response;
-			
-			patients = data ? data.patient : [];
-		}
-		catch(error) {
-			Message.error();
-		}
-
-		return patients;
 	}
 
 	clearInputs = async () => {
 		const { populatePatients } = this.props;
 		const { setFieldsValue } = this.formRef.current;
 		
-		setFieldsValue({ patientID: '', patientName: '' });
+		setFieldsValue({ 
+      patientID: '', 
+      patientName: '',
+      requestDate: moment()
+    });
 
 		populatePatients([]);
 	}
@@ -93,7 +87,6 @@ class SearchPatientForm extends React.Component {
 	}
 
 	render() {
-		const { enableRequestDate } = this.props;
 		const { loading } = this.state;
 	
 		return (
@@ -104,11 +97,10 @@ class SearchPatientForm extends React.Component {
 				layout="vertical"
 			>
 				<Row gutter={12} justify="center">
-					{/* Patient id field */}
 					<Col xs={24} sm={24} md={6} lg={4}>
 						<Form.Item 
 							name="patientID"
-							label={fieldLabels.patientID}
+							label="PATIENT ID"
 							rules={FIELD_RULES.patientId}
 						>
 							<AlphaNumInput 
@@ -117,16 +109,14 @@ class SearchPatientForm extends React.Component {
 							/> 
 						</Form.Item>
 					</Col>
-					{/* Or */}
 					<Col xs={24} sm={24} md={1} lg={1} style={{ textAlign: 'center', marginTop: 25 }}>
 						OR
 					</Col>
-					{/* Patient Name */}
 					<Col xs={24} sm={24} md={12} lg={7}>
 						<Form.Item
 							name="patientName"
 							validateTrigger="onBlur"
-							label={fieldLabels.patientName} 
+							label="PATIENT NAME" 
 							rules={FIELD_RULES.patientName}
 						>
 							<RegexInput 
@@ -137,26 +127,22 @@ class SearchPatientForm extends React.Component {
 							/>
 						</Form.Item>
 					</Col>
-					{/* Request date */}
-					{ (enableRequestDate === true) ? 
-						(
-							<Col xs={24} sm={24} md={6} lg={4} style={{ marginTop: 18 }}>
-								<Form.Item label={fieldLabels.requestDate}>
-									<DatePicker 
-										defaultValue={moment()} 
-										format={dateFormat} 
-										style={{ width: '100%' }}
-									/>
-								</Form.Item>
-							</Col>
-						) : null 
-					}
-					{/* Buttons */}
+          <Col xs={24} sm={24} md={6} lg={4}>
+            <Form.Item 
+              name="requestDate" 
+              label="DATE"
+              initialValue={moment()}
+            >
+              <DatePicker 
+                format="MM/DD/YYYY" 
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+          </Col>
 					<Col xs={24} sm={24} md={6} lg={6} style={{ marginTop: 18 }}>
 						<Form.Item shouldUpdate>
 							{({ getFieldsValue }) => {
-								const { patientID, patientName } = getFieldsValue();
-								const disabled = !(patientID || (patientName && patientName.length > 1));
+								const { requestDate } = getFieldsValue();
 
 								return (
 									<Row>
@@ -166,18 +152,18 @@ class SearchPatientForm extends React.Component {
 											style={{ width: 120 }}
 											onClick={this.clearInputs} 
 										>
-											{buttonNames.clear}
+											CLEAR
 										</Button>
 										<Button 
 											className="form-button"
 											shape="round" 
 											type="primary" 
 											htmlType="submit" 
-											disabled={disabled}
+											disabled={!requestDate}
 											loading={loading}
 											style={{ width: 120 }}
 										>
-											{buttonNames.search}
+											SEARCH
 										</Button>
 									</Row>
 								);
@@ -192,13 +178,9 @@ class SearchPatientForm extends React.Component {
 
 SearchPatientForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	storeSearchedVal: PropTypes.func,
-	enableRequestDate: PropTypes.bool
+	updateSearchCount: PropTypes.func.isRequired,
 };
 
-SearchPatientForm.defaultProps = {
-	storeSearchedVal() { return null; },
-	enableRequestDate: true,
-}
+
 
 export default SearchPatientForm;

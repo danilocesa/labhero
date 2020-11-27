@@ -3,25 +3,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { withRouter } from 'react-router-dom';
-import { Icon } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { LR_STEP_PROGRESS } from 'modules/main/lab_request/steps/constants'; 
 
 // CSS
 import './link.css';
-
-// CONSTANTS
-import { 
-	CLR_STEP_PROGRESS,
-	CLR_SEARCHED_ID,
-	CLR_SEARCHED_NAME	
-} from '../../constants'; 
 
 class ButtonLink extends React.Component {
 	onClick = () => {
 		const { history } = this.props;
 
-		sessionStorage.setItem(CLR_STEP_PROGRESS, String(2));
-		sessionStorage.removeItem(CLR_SEARCHED_ID);
-		sessionStorage.removeItem(CLR_SEARCHED_NAME);
+		sessionStorage.setItem(LR_STEP_PROGRESS, String(2));
 		
 		history.push('/request/create/step/2');
 	}
@@ -38,7 +30,7 @@ class ButtonLink extends React.Component {
 					className="ButtonLink"
 					onClick={this.onClick}
 				>
-					<Icon type="plus" />
+					<PlusOutlined />
 					<span style={{ marginLeft: 5 }}>CREATE REQUEST</span>
 				</button>
 			</div>

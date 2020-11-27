@@ -2,13 +2,12 @@
 // LIBRARY
 import React from 'react';
 import { Drawer } from 'antd';
-import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
+import SearchPatientTable from 'shared_components/search_patient_table';
 import Search from './search_form';
 import SearchPatientTableHeader from './table_header';
-import SearchPatientTable from './search_table_results';
 import UpdatePatientForm from './edit_patient_info';
 import {moduleTitle, tablePageSize,drawerUpdateTitle} from './settings';
 
@@ -68,9 +67,10 @@ class SearchPatient extends React.Component {
 					<SearchPatientTable 
 						data={patients}
 						pageSize={pageSize}
-						loading={loading} 
-						redirectUrl=""
-						drawer={this.displayDrawer}
+						loading={loading}
+						handleDoubleClick={this.displayDrawer} 
+						// redirectUrl=""
+						// drawer={this.displayDrawer}
 					/>
 					{
 						showDrawer ? (
@@ -93,13 +93,13 @@ class SearchPatient extends React.Component {
 }
 
 
-SearchPatientTable.propTypes={
-  state: PropTypes.bool.isRequired
-};
+// SearchPatientTable.propTypes={
+//   state: PropTypes.bool.isRequired
+// };
 
-SearchPatientTable.defaultProps={
-  state: false
-}
+// SearchPatientTable.defaultProps={
+//   state: false
+// }
 
 
 export default SearchPatient;

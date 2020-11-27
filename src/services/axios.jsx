@@ -11,8 +11,8 @@ const axiosPhase2Instance = axios.create();
 
 export function setupAxiosInterceptors() {
 	/** BASE URL */
-	// axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
-	axiosLabInstance.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API; 
+	axios.defaults.baseURL = process.env.REACT_APP_LAB_API;
+	// axiosLabInstance.defaults.baseURL = process.env.REACT_APP_TMP_LAB_API; 
 	axiosPhase2Instance.defaults.baseURL = process.env.REACT_APP_PHASE2_API; 
 
 	/** REQUEST INTERCEPTOR */
