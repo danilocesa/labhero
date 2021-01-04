@@ -10,7 +10,6 @@ import { createDonor,updateDonor } from 'services/blood_bank/donor_registration'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 import { User } from 'images/bloodbank';
-
 import CityList from './city_list'
 import TownList from './town_list'
 import ProvinceList from './province_list'
@@ -63,6 +62,7 @@ class FillUpForm extends React.Component {
       first_name :values.First_name,
       middle_name :values.Middle_name,
       last_name:values.Last_name,
+      is_active:'1',
       suffix:values.suffix,
       birth_date:dateFormat,
       age:values.Age,
@@ -84,7 +84,7 @@ class FillUpForm extends React.Component {
 					// @ts-ignore
 					status: createdUserResponse.status,	
 					duration: 3, 
-					// onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
+				 onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
 				}
 				HttpCodeMessage(httpMessageConfig);	
       }	
@@ -134,14 +134,8 @@ class FillUpForm extends React.Component {
   }
  
   render() {
-
-    const date = moment("2014-02-27T10:00:00").format('DD-MM-YYYY');
-    const dateMonthAsWord = moment("2014-02-27T10:00:00").format('DD-MMM-YYYY');
-    
-      const { ButtonName } = this.state
-
+    const { ButtonName } = this.state
     return (
-      
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
           <Steps size="small" current={1} style={{marginTop:20,paddingRight:200,paddingLeft:200}} labelPlacement="vertical">

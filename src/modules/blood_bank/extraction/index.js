@@ -93,9 +93,9 @@ class Extraction extends React.Component {
 		const { getFieldsValue } = this.formRef.current;
     const { patientID, patientName } = getFieldsValue()
     let patients = [];
-
     this.setState({ loading: true });
-		patients = await fetchPatients(patientName, patientID);  
+    patients = await fetchPatients(patientName, patientID);  
+    
     this.setState({ 
         loading: false,
         Item: patients  
@@ -117,7 +117,6 @@ class Extraction extends React.Component {
 
   render() {
     const { Item,loading,pageSize } = this.state
-    console.log("Extraction -> render -> pageSize", pageSize)
     const items = Item.length > pageSize ? pageSize : Item.length;
     return (
       <div>
@@ -216,7 +215,6 @@ class Extraction extends React.Component {
               expandedRowRender={expandedRow}
               style={{ textTransform: "uppercase" }}
               dataSource={Item}
-              
               pagination={{ pageSize }}
               loading={this.state.loading}
               columns={columns}

@@ -45,6 +45,27 @@ export async function createDonor(Data) {
 	return createUserAccount;
 }
 
+export async function createHealthInformation(Data) {
+  let HealthInformation = [];
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: apiPostMethod,
+      url: `/bloodbank/health_info/create/`,
+      data: Data
+		}).then(response => {
+      return response;
+    });
+
+    // @ts-ignore
+    HealthInformation = axiosResponse;
+  } 
+  catch(e) {
+   Message.error();
+	}
+
+	return HealthInformation;
+}
+
 export async function updateDonor(Data) {
   let updateBloodGroup = [];
   const bloodGroupId = Data.donor_id;
@@ -70,19 +91,19 @@ return updateBloodGroup;
 }
 
 export async function fetchPatients(patientName ,donor_id) {
-  let patients = [];
+  let Patient = '';
   try{
     const response = await axiosPhase2API({
       method: apiGetMethod,
       url: (patientName ? `bloodbank/donor/search/?search=${patientName}` : `bloodbank/donor/search/by_id/${donor_id}`) 
     });
-    const { data } = response;
-    patients = data;
+    const { data } = await response;
+    Patient = data
   }
   catch(error) {
     Message.error();
   }
-  return patients;
+  return Patient;
 } 
 
 export async function fetchAdditionalFields() {
@@ -93,7 +114,6 @@ export async function fetchAdditionalFields() {
       method: apiGetMethod,
       url: `bloodbank/health_info/initialize/`
     });
-
 		const { data } = response;
     inventoryItems = data;
   } 

@@ -7,8 +7,6 @@ import { Row, Col, Icon, Switch, Form, Button, Card as AntCard } from 'antd';
 import { RegexInput } from 'shared_components/pattern_input';
 import errorMessage from 'global_config/error_messages';
 
-
-
 let id = 0;
 
 class DynamicForm extends React.Component {

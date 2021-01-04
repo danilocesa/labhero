@@ -80,13 +80,7 @@ class FillupRecipient extends React.Component{
     render(){
         const { form } = this.props;
 		const { patientAddress } = this.state;
-		const { getFieldsValue,getFieldDecorator } = form;
-		const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
-		const { 
-			provinces: selectedProvinceCode, 
-			city: selectedCityCode, 
-			town: selectedTownCode
-        } = getFieldsValue();
+        const { provinceCode, cityMunicipalityCode, townCode, houseAddress } = patientAddress;
         return(
             <div style={{ marginTop: 50 }}>
             <Form className="clr-fillup-form">
@@ -97,62 +91,44 @@ class FillupRecipient extends React.Component{
                                 <Text strong>PERSONAL INFORMATION</Text>
                             </div>
                                 <Form.Item label="FIRST NAME">
-                                    {getFieldDecorator('firstName', { rules: FIELD_RULES.firstName })(
-                                            <Input />
-                                    )}
+                                    <Input />
                                 </Form.Item>
                                 <Form.Item label="MIDDLE NAME">
-                                    {getFieldDecorator('middleName', { rules: FIELD_RULES.middleName })(
                                             <Input />
-                                    )}
                                 </Form.Item>
                             <Row gutter={12}>
                                 <Col span={18}>
                                 <Form.Item label="LAST NAME">
-                                            {getFieldDecorator('lastName', { rules: FIELD_RULES.lastName })(
-                                                <Input />
-                                            )}
+                                      <Input />
                                 </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                 <Form.Item label="SUFFIX">
-                                            {getFieldDecorator('suffix', { rules: FIELD_RULES.suffix })(
-                                                <Input maxLength={1} />
-                                            )}
+                                    <Input maxLength={1} />
                                 </Form.Item>
                                 </Col>
                             </Row>
                             <Row gutter={12}>
                                 <Col span={18}>
                                 <Form.Item label="DATE OF BIRTH">
-                                    {getFieldDecorator('dateOfBirth', { 
-                                        rules: FIELD_RULES.dateOfBirth
-                                    })(
                                         <DatePicker 
                                             format="MM-DD-YYYY"
                                             style={{ width: '100%' }}
                                             onChange={this.onDateChange}
                                         />
-                                    )}
                                 </Form.Item>
                                 </Col>
                                 <Col span={6}>
                                 <Form.Item label="AGE">
-                                    {getFieldDecorator('patientAge', { 
-                                        rules: FIELD_RULES.age
-                                    })(
                                         <Input disabled style={{ textAlign: 'center' }} />
-                                    )}
                                 </Form.Item>
                                 </Col>
                             </Row> 
                             <Form.Item label="PATIENT'S GENDER">
-                                {getFieldDecorator('gender', { rules: FIELD_RULES.gender })(
                                     <Radio.Group buttonStyle="solid">
                                         <Radio.Button value="MALE">MALE</Radio.Button>
                                         <Radio.Button value="FEMALE">FEMALE</Radio.Button>
                                     </Radio.Group>
-                                )}
                             </Form.Item>
                         </div>
                     </Col>
@@ -164,7 +140,6 @@ class FillupRecipient extends React.Component{
                             <Row>
                                 <Col>
                                     <Form.Item style={{marginTop:'-1spx'}}>
-                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <ProvinceList
                                                 required
                                                 form={form}
@@ -172,61 +147,49 @@ class FillupRecipient extends React.Component{
                                                 selectedProvince={provinceCode}
                                                 onChange={this.onProvinceChange}
                                             />
-                                        )}
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <Form.Item style={{marginTop:'-8px'}}>
-                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <CityList 
                                                 required
                                                 form={form}
                                                 placeholder={selectDefaultOptions} 
-                                                provinceValue={selectedProvinceCode || provinceCode}
                                                 selectedCity={cityMunicipalityCode}
                                                 onChange={this.onCityChange}
                                             />
-                                        )}
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <Form.Item style={{marginTop:'-8px'}}>
-                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <TownList 
                                                 required
                                                 form={form}
                                                 placeholder={selectDefaultOptions} 
-                                                cityValue={selectedCityCode || cityMunicipalityCode}
                                                 selectedTown={townCode}
                                             />
-                                        )}
                                     </Form.Item>
                                 </Col>
                             </Row>						
                             <Row>
                                 <Col>
                                     <Form.Item style={{marginTop:'-8px'}}>
-                                        {getFieldDecorator('address', { rules: FIELD_RULES.address })(
                                             <HouseAddress
                                                 required 
                                                 form={form}
-                                                townValue={selectedTownCode || townCode}
                                                 fieldLabel="HOUSE NO./UNIT/FLOOR NO.,BLDG NAME,"
                                                 fieldName={formLabels.unitNo.fieldName}
                                                 selectedValue={houseAddress}
                                             />
-                                        )}
                                     </Form.Item>
                                 </Col>
                             </Row>
                                     <Form.Item label="CONTACT NUMBER" style={{marginTop:'-8px'}}>
-                                            {getFieldDecorator('contactNumber', { rules: FIELD_RULES.contactNumber })(
-                                                    <NumberInput addonBefore="+ 63" />
-                                            )}
+                                              <NumberInput addonBefore="+ 63" />
                                     </Form.Item>
                         </div>
                     </Col>
@@ -239,9 +202,6 @@ class FillupRecipient extends React.Component{
                                     <Text strong>HEALTH INFORMATION</Text>
                         </div>
                         <Form.Item label="BLOOD GROUP">
-                                        {getFieldDecorator('bloddGroup', { 
-                                                rules: FIELD_RULES.bloodGroup
-                                            })(
                                                 <Select placeholder="Select your blood group" allowClear>
                                                 <Option value="A+">A+</Option>
                                                 <Option value="O+">O+</Option>
@@ -252,20 +212,15 @@ class FillupRecipient extends React.Component{
                                                 <Option value="B-">B-</Option>
                                                 <Option value="AB-">AB-</Option>
                                                 </Select>
-                                        )}
                         </Form.Item>
                         <Form.Item label="UNIT OF BLOOD">
-                                        {getFieldDecorator('bloodBag', { rules: FIELD_RULES.bloodBag })(
-                                                <NumberInput />
-                                        )}
+                            <NumberInput />
                                     </Form.Item>
                                     <Form.Item label="REQUIRED DATE">
-                                        {getFieldDecorator('requiredDate', { rules: FIELD_RULES.requiredDate })(
-                                            <DatePicker 
+                                        <DatePicker 
                                                format="MM-DD-YYYY"
                                                style={{ width: '100%' }}
                                             />
-                                        )}
                                     </Form.Item>
                         </div>
                     </Col>

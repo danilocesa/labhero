@@ -14,6 +14,7 @@ export async function fetchPatients(patientName, patientID) {
     });
     const { data } = await response;
     patients = data
+    console.log(patients,"data")
   }
   catch(error) {
     Message.error();

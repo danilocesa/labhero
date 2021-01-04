@@ -3,66 +3,60 @@ import { axiosPhase2API } from 'services/axios';
 import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 
-export default async function fetchCategoriesList() {
-	let CategoriesItems = [];
+
+export default async function fetchQuestionnareList() {
+	let QuestionnareItems = [];
 	
   try{
     const response = await axiosPhase2API({
       method: apiGetMethod,
-			url: `/bloodbank/Categories/`,
+			url: `/bloodbank/questionnare/`,
 		});
 		
 		const { data } = response;
-    CategoriesItems = data;
+    QuestionnareItems = data;
   } 
   catch(e) {
     Message.error();
  	}
-  return CategoriesItems;
+  return QuestionnareItems;
 }
 
-export async function createCategoriesAPI(payload) {
-  console.log(payload,"payload")
-	let createCategories = [];
+export async function createQuestionnareAPI(payload) {
+	let createQuestionnare = [];
   try{
     const axiosResponse = await axiosPhase2API({
       method: apiPostMethod,
-      url: `/bloodbank/Categories/create/`,
+      url: `/bloodbank/questionnare/create/`,
       data: payload
 		}).then(response => {
       return response;
     });
-
-    console.log("API response",axiosResponse)
     // @ts-ignore
-    createCategories = axiosResponse;
+    createQuestionnare = axiosResponse;
   } 
   catch(e) {
     HttpCodeMessage({status: 500, message: e});
 	}
-
-	return createCategories;
+	return createQuestionnare;
 }
 
-export async function updateCategoriesAPI(payload) {
-  console.log(payload.categories_id,"payload api")
-  let updateCategories = [];
-  const CategoryId = payload.categories_id;
+export async function updateQuestionnareAPI(payload) {
+  let updateQuestionnare = [];
+  const QuestionnareId = payload.questionnare_id;
 
   try{
     const content = {
             method: apiPutMethod,
-            url:`/bloodbank/Categories/update/${CategoryId}/`,
+            url:`/bloodbank/questionnare/update/${QuestionnareId}/`,
       data: payload
     }
     const response = await axiosPhase2API(content);
     // @ts-ignore
-    updateCategories = await response;
+    updateQuestionnare = await response;
   }
   catch(error) {
     Message.error();  
   }
-  return updateCategories;
+  return updateQuestionnare;
 }
-
-

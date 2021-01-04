@@ -1,11 +1,10 @@
-/* eslint-disable react/prop-types */
-// LIBRARY
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Spin, Table, Input, Form, Switch, Button,  Row, Col, Icon, Drawer, Select } from 'antd';
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
+import HTML5Backend from 'react-dnd-html5-backend';
+import TablePager from 'shared_components/table_pager';
+import fetchCategoriesList from 'services/blood_bank/categories';
+import {  Table, Input, Button,  Row, Col,  Drawer, Icon } from 'antd';
 
 // CUSTOM
 import DragableBodyRow from './drag_and_drop'
@@ -18,111 +17,153 @@ const { Search } = Input;
 const columns = [
 		{
 		  title: 'ID',
-		  dataIndex: 'id',
-		  key: 'id',
+		  dataIndex: 'categories_id',
+		  key: 'categories_id',
 		},
 		{
 		  title: 'ORDER',
-		  dataIndex: 'order',
-		  key: 'order',
+		  dataIndex: 'categories_order',
+			key: 'categories_order',
+			sorter: (a, b) => a.categories_id - b.categories_id,
 		},
 		{
 		  title: 'CATEGORY NAME',
-		  dataIndex: 'category_name',
-		  key: 'category_name',
+		  dataIndex: 'categories_name',
+			key: 'categories_name',
+			sorter: (a, b) => a.categories_order.localeCompare(b.categories_order),
 		},
 		{
 			title: 'DESCRIPTION',
-			dataIndex: 'description',
-			key: 'description',
+			dataIndex: 'categories_desc',
+			key: 'categories_desc',
 		},
 	  ];
 
 class SelectedTable extends React.Component {
-	
-	constructor(props) {
-		super(props);
-			this.state = {
-				data: [
-				{
-					id: '1',
-					order: 'John Brown',
-					category_name: 32,
-					description: 'New York No. 1 Lake Park',
-				},
-				{
-					id: '2',
-					order: 'Jim Green',
-					category_name: 42,
-					description: 'London No. 1 Lake Park',
-				},
-				{
-					id: '3',
-					order: 'Joe Black',
-					category_name: 32,
-					description: 'Sidney No. 1 Lake Park',
-				},
-				],
-		isDrawerVisible	: false,
-		actionType:'add',
-	  }
-	}
-	  components = {
+		constructor(props) {
+			super(props);
+				this.state = {
+					categoriesItem: [],
+					isDrawerVisible	: false,
+					actionType:'add',
+					selectedCategories:{},
+				}
+				console.log(this.state.categoriesItem,'PROPS')
+		}
+		
+		components = {
 		body: {
 		  row: DragableBodyRow,
 		},
 	  };
 
 	  moveRow = (dragIndex, hoverIndex) => {
-		const { data } = this.state;
-		const dragRow = data[dragIndex];
-	
-		this.setState(
-		  update(this.state, {
-			data: {
-			  $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
-			},
-		  }),
-		);
+		const { categoriesItem } = this.state;
+		const dragRow = categoriesItem[dragIndex];
+			this.setState(
+				update(this.state, {
+					categoriesItem: {
+					$splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
+				},
+				}),
+			);
 	  };
 	  
 	  onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
+			this.setState({
+				isDrawerVisible: false,
+			});
 	  };
 
-	  showDrawer = () => {
-		this.setState({
-			isDrawerVisible: true ,
-			drawerTitle: "ADD CATEGORY",
-			drawerButton: "ADD",
-			actionType : 'add',
-		});
-	};
+	  showDrawer = (record) => {
+			this.setState({
+				isDrawerVisible: true ,
+				drawerTitle: "ADD CATEGORY",
+				drawerButton: "ADD",
+				actionType : 'add',
+				selectedCategories: record
+			});
+		};
+
+		onSearch = (value) => {
+			const searchedVal = value.toLowerCase();
+			const { usersRef } = this.state;
+	
+			const filtered = usersRef.filter((item) => {
+				// eslint-disable-next-line camelcase
+				const { categories_order } = item;
+	
+				return (
+					this.containsString(categories_order, searchedVal)
+				);
+			});
+			this.setState({ categoriesItem: filtered });
+		};
+
+		onChangeSearch = (event) => {
+			const { usersRef } = this.state;
+			if (event.target.value === "") this.setState({ categoriesItem: usersRef });
+		};
+	
+		// Private Function
+		containsString = (searchFrom, searchedVal) => {
+			if (searchFrom === null || searchFrom === "") return false;
+			return searchFrom.toString().toLowerCase().includes(searchedVal);
+		};
+		
+		handleSelectChange = (value) => {
+			// eslint-disable-next-line react/no-access-state-in-setstate
+			const pagination = {...this.state.pagination};
+			// eslint-disable-next-line radix
+			pagination.pageSize = parseInt(value);
+			this.setState({ pagination });
+		};
 
 		displayDrawerUpdate = (record) => {
-		this.setState({
-			isDrawerVisible: true,
-			drawerTitle: "UPDATE CATEGORY",
-			drawerButton: "UPDATE",
-			actionType:'update',
-			patientInfo: record
-		});
-	}
+			this.setState({
+				isDrawerVisible: true,
+				drawerTitle: "UPDATE CATEGORY",
+				drawerButton: "UPDATE",
+				actionType:'update',
+				selectedCategories: record
+			});
+		}
+
+		async componentDidMount() {
+			const response = await fetchCategoriesList();
+			console.log(response,'response')
+			this.setState({ 
+				categoriesItem: response,
+				usersRef:response,
+				pagination: response.length,
+				loading:false
+			});
+		}
 
 	render() {
-		const { loading = false } = this.props;
-		const { isDrawerVisible, actionType, drawerButton, patientInfo,drawerTitle } = this.state;
+		const { 
+			loading = false
+		} = this.props;
+		const { 
+			isDrawerVisible, 
+			actionType, 
+			drawerButton, 
+			patientInfo,
+			drawerTitle,
+			pagination,
+			selectedCategories 
+		} = this.state;
 		return (
-			<div >
+			<div>
 				<div className="settings-user-table-action">
 					<Row>
 						<Col span={12}>
 							<Search
-								placeholder="input search text"
-								onSearch={value => value}
+								allowClear
+								onSearch={(value) => this.onSearch(value)}
+								onChange={this.onChangeSearch}
 								style={{ width: 200 }}
+								className="panel-table-search-input"
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
@@ -132,8 +173,10 @@ class SelectedTable extends React.Component {
 								style={{ marginRight: '15px' }} 
 								onClick={this.showDrawer}
 							>
-								<Icon type="plus"/>ADD CATEGORY
+								<Icon type="plus" /> ADD CATEGORY
+								
 							</Button>
+							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
 				</div>
@@ -141,9 +184,9 @@ class SelectedTable extends React.Component {
 					<Table
 						loading={loading}
 						columns={columns}
-						dataSource={this.state.data}
+						dataSource={this.state.categoriesItem}
 						components={this.components}
-						pagination={false} 
+						pagination={pagination}
 						onRow={(record, index) => ({
 							index,
 							onDoubleClick: () => { 
@@ -158,13 +201,14 @@ class SelectedTable extends React.Component {
 							visible={isDrawerVisible}
 							onClose={this.onClose}
 							destroyOnClose
-						>
-							<CategoriesForm
-								actionType={actionType}
-								drawerButton={drawerButton} 
-								patientInfo={patientInfo}
-								onClose={this.onClose}
-							/>
+					>
+						<CategoriesForm
+							selectedCategories={selectedCategories} 
+							actionType={actionType}
+							drawerButton={drawerButton} 
+							patientInfo={patientInfo}
+							onClose={this.onClose}
+						/>
 					</Drawer>
 				</DndProvider>	
 			</div>
@@ -172,8 +216,5 @@ class SelectedTable extends React.Component {
 	}
 }
 
-
-
-// export default Form.create()(SelectedTable);
 export default SelectedTable;
 

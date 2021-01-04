@@ -69,8 +69,6 @@ const columns = [
   },
 ];
 
-
-
 class DonorRegistration extends React.Component {
   constructor(props) {
     super(props);
@@ -78,10 +76,8 @@ class DonorRegistration extends React.Component {
       loading: false,
       Item: [],
     };
-
     this.formRef = React.createRef();
   } 
-
 
   handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
@@ -90,10 +86,9 @@ class DonorRegistration extends React.Component {
   handleSubmit = async () => {
     const { getFieldsValue } = this.formRef.current;
 		const { patientName,donor_id } = getFieldsValue();
-    let patients = [];
 		this.setState({ loading: true });
-		patients = await fetchPatients(patientName, donor_id); 
-    console.log("DonorRegistration -> handleSubmit -> patients", patients)
+    const patients = await fetchPatients(patientName, donor_id); 
+    console.log("Patients", patients)
     this.setState({ 
         loading: false,
         Item: patients  
@@ -141,10 +136,7 @@ class DonorRegistration extends React.Component {
 
   render() {
     const { Item,loading,pageSize } = this.state
-    console.log("DonorRegistration -> render -> Item", Item)
-    Item.length = ""
-		
-    
+    console.log(Item,"ITEM")
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
@@ -244,7 +236,7 @@ class DonorRegistration extends React.Component {
             </Row> 
             {/* Table */}
             <Table 
-              dataSource={Item ? Item : null}
+              dataSource={Item}
               expandableRowIcon={<text type="right" />}
               expandedRowRender={this.ExpandedRow}
               columns={columns} 

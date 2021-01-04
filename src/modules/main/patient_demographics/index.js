@@ -93,13 +93,4 @@ class SearchPatient extends React.Component {
 }
 
 
-// SearchPatientTable.propTypes={
-//   state: PropTypes.bool.isRequired
-// };
-
-// SearchPatientTable.defaultProps={
-//   state: false
-// }
-
-
 export default SearchPatient;

@@ -7,8 +7,8 @@ import HttpCodeMessage from 'shared_components/message_http_status'
 import { createBloodGroupAPI, updateBloodGroupAPI } from 'services/blood_bank/blood_group';
 import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
 
-
 // CSS
+
 import './form.css';
 
 const { TextArea } = Input;
@@ -29,11 +29,8 @@ class BloodGroupForm extends React.Component {
 			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
-
-		console.log(payload)
 		if(drawerButton === drawerAdd){
 			const createdUserResponse = await createBloodGroupAPI(payload);
-			console.log("createUserResponse: ",createdUserResponse);
 			// @ts-ignore
 			if(createdUserResponse.status === 201){
 				const httpMessageConfig = {
@@ -60,41 +57,38 @@ class BloodGroupForm extends React.Component {
 					HttpCodeMessage(httpMessageConfig);
 				}
 			}
-
 	};
     
 	render() {
 		const { drawerButton,selectedBloodGroup } = this.props;
 			return(
-				<div>
+				<div style={{marginTop: -10}}>
 					<Form 
-						layout="vertical"
-						initialValues={{ 
-							is_active:selectedBloodGroup.is_active === true ,
-							blood_group_id:selectedBloodGroup.blood_group_id,
-							blood_group_code:selectedBloodGroup.blood_group_code,
-							blood_group:selectedBloodGroup.blood_group,
-							blood_description:selectedBloodGroup.blood_description 
-						}}
-						onFinish={this.onFinish} 
-						style={{marginTop:-20}}	
-					>
-						{this.props.actionType == "update"? (		
+							layout="vertical"
+							initialValues={{ 
+								is_active:selectedBloodGroup.is_active === true ,
+								blood_group_id:selectedBloodGroup.blood_group_id,
+								blood_group_code:selectedBloodGroup.blood_group_code,
+								blood_group:selectedBloodGroup.blood_group,
+								blood_description:selectedBloodGroup.blood_description 
+							}}
+							onFinish={this.onFinish}       
+						>
+							{this.props.drawerButton == "UPDATE"? (		
+								<Form.Item 
+									label="ACTIVE" 
+									{...layout} 
+									valuePropName='checked' 
+									name='is_active'
+								>
+									<Switch />
+								</Form.Item>
+							)	
+							:
+							null
+							}
+							<div className="form-section">
 							<Form.Item 
-								label="ACTIVE" 
-								{...layout} 
-								valuePropName='checked' 
-								name='is_active'
-							>
-								<Switch />
-							</Form.Item>
-						)	
-						:
-						null
-						}
-						<div className="form-section">
-							<Form.Item 
-								label="BLOOD GROUP ID" 
 								name='blood_group_id'
 								style={{marginTop:-20 }}
 							>
@@ -123,14 +117,14 @@ class BloodGroupForm extends React.Component {
 							</Form.Item>
 						</div>
 						<section className="drawerFooter">
-							<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose()}>
-								{buttonLabels.cancel}
-							</Button>
-							<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-								{drawerButton}
-							</Button>
-						</section>
-					</Form>
+					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+						{buttonLabels.cancel}
+					</Button>
+					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+						{drawerButton}
+					</Button>
+				</section>
+						</Form>
 				</div>
 			);
 	}
@@ -144,11 +138,5 @@ BloodGroupForm.propTypes = {
 	selectedBloodGroup:PropTypes.object.isRequired,
 	form: PropTypes.object
 }
-
-BloodGroupForm.defaultProps = {
-	form(){ return null; },
-	onClose() { return null}
-};
-
 
 export default withRouter(BloodGroupForm);

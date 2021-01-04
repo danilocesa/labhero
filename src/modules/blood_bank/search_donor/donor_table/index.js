@@ -9,32 +9,28 @@ import TablePager from 'shared_components/table_pager';
 
 const { Search } = Input;
 
-class SearchDonorTable extends React.Component {
+class SearchDonorTable extends React.Component {	
+		state = {
+			showPatientInfo: false,
+			// eslint-disable-next-line react/no-unused-state
+			showLoading: true,
+			isLoading: false
+		};
 	
-	state = {
-		showPatientInfo: false,
-		// eslint-disable-next-line react/no-unused-state
-		showLoading: true,
-		isLoading: false
-	};
-	
-	// Custom function
-	onSampleIDClick = () => {
-		this.setState({
-		  showPatientInfo: true,
-		});
+		onSampleIDClick = () => {
+			this.setState({
+				showPatientInfo: true,
+			});
 	  }
 
 	  onClosePatientInfoDrawer = () => {
-		this.setState({
-		  showPatientInfo: false,
-		});
-	  }
-
-	// @ts-ignore
+			this.setState({
+				showPatientInfo: false,
+			});
+		}
+		
 	render() {
 		const { pageSize, } = this.props;
-
 		const columns = [
 			{
 				title: 'ID',
@@ -71,7 +67,6 @@ class SearchDonorTable extends React.Component {
 				dataIndex: 'address',
 			},
 		];
-
 		const data = [
 			{
 				id:'1',
@@ -104,27 +99,24 @@ class SearchDonorTable extends React.Component {
 				address: 'Quezon City',
 			},
 		  ];
-		  
 		return (
 		<div>
-				<div style={{ marginLeft:1050 , marginBottom:10, marginTop:10 }}>
-				
-							<TablePager handleChange={this.handleSelectChange} />
-						
+				<div style={{ marginLeft:1200 , marginBottom:10, marginTop:'50px' }}>
+					<TablePager handleChange={this.handleSelectChange} />
 				</div>
 				<div className="settings-user-table">
-				<AntTable 
-					pagination={{pageSize}} 
-					// @ts-ignore
-					columns={columns} 
-					dataSource={data} 
-					scroll={{ y: 260 }}
-					onRow={(record, rowIndex) => {
-						return {
-							onDoubleClick: this.onSampleIDClick, // double click row
-						};
-					}}
-				/>
+					<AntTable 
+						pagination={{pageSize}} 
+						// @ts-ignore
+						columns={columns} 
+						dataSource={data} 
+						scroll={{ y: 260 }}
+						onRow={(record, rowIndex) => {
+							return {
+								onDoubleClick: this.onSampleIDClick, // double click row
+							};
+						}}
+					/>
 				</div>    	
 		</div>
 		);

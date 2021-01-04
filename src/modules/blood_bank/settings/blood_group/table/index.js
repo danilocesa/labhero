@@ -1,6 +1,8 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
@@ -61,8 +63,8 @@ class BloodGroupTable extends React.Component {
 		this.setState({ 
 			bloodgroupItem: response,
 			usersRef:response,
-		pagination: response.length,
-		loading:false
+			pagination: response.length,
+			loading:false
 		});
 	
 	}
@@ -74,13 +76,13 @@ class BloodGroupTable extends React.Component {
 		});
 	};
 
-	showDrawer = () => {
+	showDrawer = (record) => {
 		this.setState({
 			visible: true,
 			drawerTitle: "ADD BLOOD GROUP",
-			drawerButton: drawerAdd,
+			drawerButton: 'ADD',
 			actionType : 'add',
-			patientInfo: [],
+			selectedBloodGroup: record,
 		});
 	};
 
@@ -88,19 +90,15 @@ class BloodGroupTable extends React.Component {
 		this.setState({
 			visible: true,
 			drawerTitle: "UPDATE BLOOD GROUP",
-			drawerButton: drawerUpdate,
+			drawerButton: 'UPDATE',
 			actionType:'update',
-			selectedBloodGroup:record // 3. set natin yung state ng record
-			
+			selectedBloodGroup:record
 		});
 	}
-
-
 
   onSearch = (value) => {
     const searchedVal = value.toLowerCase();
 		const { usersRef } = this.state;
-
     const filtered = usersRef.filter((item) => {
       // eslint-disable-next-line camelcase
       const { blood_group } = item;
@@ -109,19 +107,17 @@ class BloodGroupTable extends React.Component {
         this.containsString(blood_group, searchedVal)
       );
     });
-    this.setState({ bloodgroupItem: filtered });
+		this.setState({ bloodgroupItem: filtered });
   };
 
   onChangeSearch = (event) => {
     const { usersRef } = this.state;
-
     if (event.target.value === "") this.setState({ bloodgroupItem: usersRef });
   };
 
 	// Private Function
   containsString = (searchFrom, searchedVal) => {
     if (searchFrom === null || searchFrom === "") return false;
-
     return searchFrom.toString().toLowerCase().includes(searchedVal);
   };
 	
@@ -143,8 +139,8 @@ class BloodGroupTable extends React.Component {
 			selectedBloodGroup, 
 			actionType,
 			bloodgroupItem,
-			loading } = this.state;
-			
+			loading 
+		} = this.state;
 		return(
 			<div>
 				<div className="settings-user-table-action">
@@ -172,6 +168,7 @@ class BloodGroupTable extends React.Component {
 						</Col>
 					</Row>
 				</div>
+				<DndProvider backend={HTML5Backend}>
 				<div className="settings-user-table">
 					<Table 
 						loading={loading}
@@ -206,6 +203,7 @@ class BloodGroupTable extends React.Component {
 							onClose={this.onClose}
 						/>
 					</Drawer>
+				</DndProvider>
 			</div>
 		)
 	}

@@ -1,8 +1,9 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
+import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import fetchQuestionnareList from 'services/blood_bank/questionnaire';
 
 // CUSTOM
 import QuestionTable from '../form'
@@ -14,23 +15,19 @@ const { Search } = Input;
 const columns = [
 	{
 		title: 'ID',
-		dataIndex: 'id',
-		key: 1,
+		dataIndex: 'questionnare_id',
 	},
 	{
 		title: 'CATEGORY',
-		dataIndex: 'category',
-		key: 2,	
-    },
-    {
+		dataIndex: 'question_order',
+  },
+  {
 		title: 'QUESTION',
 		dataIndex: 'question',
-		key: 2,	
 	},
 	{
-		title: 'ANSWER',
-		dataIndex: 'description',
-		key: 3,
+		title: 'QUESTION TYPE',
+		dataIndex: 'ques_type',
 	},
 ];
 
@@ -38,34 +35,28 @@ class BloodBank extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [
-				{
-					id: '1',
-					blood_group: 32,
-					description: 'New York No. 1 Lake Park',
-				},
-				{
-					id: '2',
-					blood_group: 'Jim Green',
-					description: 'London No. 1 Lake Park',
-				},
-				{
-					id: '3',
-					blood_group: 'Joe Black',
-					description: 'Sidney No. 1 Lake Park',
-				},
-				],
+			QuestionnareItem: [],
 			actionType:'add',
 			drawerTitle: '',
+			selectedCategories:{},
 		}
 	}
 	
-	showDrawer = () => {
+	async componentDidMount() {
+		const response = await fetchQuestionnareList();
+		this.setState({ 
+			QuestionnareItem: response,
+			usersRef:response,
+		});
+	}
+
+	showDrawer = (record) => {
 		this.setState({
 			visible: true,
 			drawerTitle: "ADD QUESTION",
 			drawerButton: "ADD",
 			actionType : 'add',
+			selectedCategories: record
 		});
 	};
 
@@ -75,46 +66,82 @@ class BloodBank extends React.Component {
 		});
 	};
 
-	displayDrawerUpdate = () => {
+	displayDrawerUpdate = (record) => {
 		this.setState({
 			visible: true,
 			drawerTitle: "UPDATE QUESTION",
 			drawerButton: "UPDATE",
 			actionType:'update',
-            
+			selectedCategories: record
 		});
-    };
+	};
+	
+	onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
 
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { question_order } = item;
+
+			return (
+				this.containsString(question_order, searchedVal)
+			);
+		});
+		this.setState({ QuestionnareItem: filtered });
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ QuestionnareItem: usersRef });
+	};
+
+	// Private Function
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
+	
+	handleSelectChange = (value) => {
+		// eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+	};
 
 	render() {
-		const { pagination, visible, drawerTitle, loading,actionType,drawerButton } = this.state;
+		const { pagination, visible, drawerTitle, loading,actionType,drawerButton,QuestionnareItem,selectedCategories } = this.state;
 			return(
 				<div>
 					<div className="settings-user-table-action">
-						<Row>
-							<Col span={12}>
+					<Row>
+						<Col span={12}>
 							<Search
-								placeholder="input search text"
-								onSearch={value => console.log(value)}
+								allowClear
+								onSearch={(value) => this.onSearch(value)}
+								onChange={this.onChangeSearch}
 								style={{ width: 200 }}
+								className="panel-table-search-input"
 							/>
-							</Col>
-							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD QUESTION
-								</Button>
-								<TablePager handleChange={this.handleSelectChange} />
-							</Col>
-						</Row>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" /> ADD QUESTIONNAIRE
+								
+							</Button>
+							<TablePager handleChange={this.handleSelectChange} />
+						</Col>
+					</Row>
 					</div>
 					<div className="settings-user-table">
 						<Table 
-							dataSource={this.state.data}
+							dataSource={QuestionnareItem}
 							loading={loading}
 							size={tableSize}
 							columns={columns} 
@@ -143,6 +170,7 @@ class BloodBank extends React.Component {
 							destroyOnClose
 						> 
 							<QuestionTable 
+							selectedCategories={selectedCategories}
 							actionType={actionType}
 							drawerButton={drawerButton} 
 							/>	
