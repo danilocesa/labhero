@@ -67,49 +67,17 @@ class SearchDonorTable extends React.Component {
 				dataIndex: 'address',
 			},
 		];
-		const data = [
-			{
-				id:'1',
-				key: '1',
-				lastName: 'DOE',
-				givenName: 'JOHN',
-				middleName: 'GREEN',
-				dateOfBirth: '10/02/1997',
-				gender: 'Male',
-				address: 'Quezon City',
-			},
-			{
-				id:'2',
-				key: '2',
-				lastName: 'DOE',
-				givenName: 'JANE',
-				middleName: 'SMITH',
-				dateOfBirth: '10/03/1997',
-				gender: 'Female',
-				address: 'Quezon City',
-			},
-			{
-				id:'3',
-				key: '3',
-				lastName: 'DOE',
-				givenName: 'JANE',
-				middleName: 'SMITH',
-				dateOfBirth: '10/03/1997',
-				gender: 'Female',
-				address: 'Quezon City',
-			},
-		  ];
+		
 		return (
 		<div>
-				<div style={{ marginLeft:1200 , marginBottom:10, marginTop:'50px' }}>
-					<TablePager handleChange={this.handleSelectChange} />
+				<div style={{marginBottom:10, marginTop:'50px' }}>
+				<TablePager handleChange={this.handleSelectChange} />
 				</div>
 				<div className="settings-user-table">
 					<AntTable 
 						pagination={{pageSize}} 
 						// @ts-ignore
 						columns={columns} 
-						dataSource={data} 
 						scroll={{ y: 260 }}
 						onRow={(record, rowIndex) => {
 							return {

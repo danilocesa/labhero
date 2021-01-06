@@ -16,7 +16,6 @@ class SearchDonor extends React.Component{
                 <div>
                     <PageTitle pageTitle="SEARCH DONOR" />
                     <HeaderSearchDonor />
-                    <SearchDonorTable />
                 </div>
             </div>
         );
