@@ -22,10 +22,10 @@ class BloodGroupForm extends React.Component {
 	onFinish = async values => {
 		const { drawerButton } = this.props;
     const payload = {
-			blood_group_id :values.blood_group_id,
-			blood_group_code :values.blood_group_code,
-			blood_group :values.blood_group,
-			blood_description : values.blood_description,
+			blood_type_id :values.blood_group_id,
+			blood_group :values.blood_group_code,
+			blood_type :values.blood_group,
+			blood_desc : values.blood_description,
 			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
@@ -62,15 +62,16 @@ class BloodGroupForm extends React.Component {
 	render() {
 		const { drawerButton,selectedBloodGroup } = this.props;
 			return(
-				<div style={{marginTop: -10}}>
+				<div>
 					<Form 
 							layout="vertical"
+							className="exam-item-add-form"
 							initialValues={{ 
 								is_active:selectedBloodGroup.is_active === true ,
-								blood_group_id:selectedBloodGroup.blood_group_id,
-								blood_group_code:selectedBloodGroup.blood_group_code,
-								blood_group:selectedBloodGroup.blood_group,
-								blood_description:selectedBloodGroup.blood_description 
+								blood_group_id:selectedBloodGroup.blood_type_id,
+								blood_group_code:selectedBloodGroup.blood_group,
+								blood_group:selectedBloodGroup.blood_type,
+								blood_description:selectedBloodGroup.blood_desc 
 							}}
 							onFinish={this.onFinish}       
 						>
@@ -80,6 +81,7 @@ class BloodGroupForm extends React.Component {
 									{...layout} 
 									valuePropName='checked' 
 									name='is_active'
+									style={{marginBottom:'-40px'}}
 								>
 									<Switch />
 								</Form.Item>
@@ -90,21 +92,20 @@ class BloodGroupForm extends React.Component {
 							<div className="form-section">
 							<Form.Item 
 								name='blood_group_id'
-								style={{marginTop:-20 }}
 							>
 									<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 							</Form.Item>
 							<Form.Item	 
 								label="BLOOD GROUP CODE" 
 								name='blood_group_code'
-								style={{marginTop:-20 }}
+								style={{marginTop:-15}}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />		
 							</Form.Item>
 							<Form.Item 
 								label="BLOOD GROUP NAME" 
 								name='blood_group' 
-								style={{marginTop:-20}}
+								style={{marginTop:-25}}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />
 							</Form.Item>

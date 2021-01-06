@@ -81,7 +81,6 @@ class HealthInformation extends React.Component {
     Object.keys(additionalFields).forEach(function (key){
       // eslint-disable-next-line camelcase
       cust_fld_obj = additionalFields[key].cust_fld_format;
-      console.log('KEY',key)
     });
     // eslint-disable-next-line camelcase
     if(cust_fld_obj){

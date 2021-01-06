@@ -20,22 +20,22 @@ import UserAccountForm from '../add_form';
 const { Search } = Input;
 const columns = [
 	{
-		title: 'BLOOD GROUP CODE',
-		dataIndex: 'blood_group_code',
+		title: 'BLOOD GROUP',
+		dataIndex: 'blood_group',
 		key: '1',
 		width: 200,
 		sorter: (a, b) => a.blood_group_id - b.blood_group_id,
 	},
 	{
-		title: 'BLOOD GROUP NAME',
-		dataIndex: 'blood_group',
+		title: 'BLOOD TYPE',
+		dataIndex: 'blood_type',
 		key: 2,	
 		width: 300,
 		sorter: (a, b) => a.blood_group.localeCompare(b.blood_group),
 	},
 	{
 		title: 'DESCRIPTION',
-		dataIndex: 'blood_description',
+		dataIndex: 'blood_desc',
 		key: 3,
 	},
 ];
@@ -66,7 +66,6 @@ class BloodGroupTable extends React.Component {
 			pagination: response.length,
 			loading:false
 		});
-	
 	}
 
 	onClose = () => {
