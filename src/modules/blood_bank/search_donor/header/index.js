@@ -1,7 +1,7 @@
 import React from 'react' 
 import Message from 'shared_components/message'
 import { Form, Input, Button, Row, Col, Select,Table } from 'antd'
-import { fetchPatients } from 'services/blood_bank/search_donor'
+import { fetchPatients,fetchCityList } from 'services/blood_bank/search_donor'
 import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
@@ -52,25 +52,27 @@ class Header_Search_Donor extends React.Component{
       loading: false,
       Item: [],
       bloodgroupItem: [],
+      Cityitem:[],
+      lastresponse:[]
     };
     this.formRef = React.createRef();
   } 
 
   async componentDidMount() {
-		this.setState({loading:true});
+    const CityList = await fetchCityList();
+    this.setState({loading:true});
     const response = await fetchbloodgroupitems();
-    console.log("RESPONSE", response)
 		this.setState({ 
-			bloodgroupItem: response,
+      Cityitem:CityList,
+      bloodgroupItem: response,
 		});
   }
-  
 
   handleSubmit = async () => {
     const { getFieldsValue } = this.formRef.current;
-    const { donors_id,Blood_group } = getFieldsValue();
+    const { donors_id,Blood_group,location } = getFieldsValue();
 		this.setState({ loading: true });
-    const patients = await fetchPatients(donors_id, Blood_group); 
+    const patients = await fetchPatients(donors_id, Blood_group,location); 
     console.log("Patients", patients)
     this.setState({ 
         loading: false,
@@ -84,14 +86,21 @@ class Header_Search_Donor extends React.Component{
   
   render(){
     
-    const { bloodgroupItem , Item} = this.state
+    const { bloodgroupItem , Item, Cityitem} = this.state
+    console.log(Cityitem,"responseCity")
     let bloodgroupList = bloodgroupItem.length > 0
 		&& bloodgroupItem.map((item, i) => {
 		return (
 			<option key={i} value={item.blood_type_id}>{item.blood_type}</option>
 		)
   	}, this);
-
+    let CityList = Cityitem.length > 0
+		&& Cityitem.map((item, i) => {
+		return (
+			<option key={i} value={item.barangay_id}>{item.city_name}</option>
+		)
+    }, this);
+    
       return(
           <div>
             <Form className="search-patient-form" ref={this.formRef}  onFinish={this.handleSubmit} style={{marginLeft:150,marginTop:50}}>
@@ -106,7 +115,7 @@ class Header_Search_Donor extends React.Component{
                 <Col span={6} order={2}>
                   <div>
                     <Form.Item label="BLOOD GROUP" name='Blood_group'>
-                      <Select>
+                      <Select  placeholder="Select your Blood Type" allowClear>
                         {bloodgroupList}
                       </Select>
                     </Form.Item>
@@ -114,24 +123,9 @@ class Header_Search_Donor extends React.Component{
                 </Col>
                 <Col span={6} order={3}>
                   <div>
-                    <Form.Item label="LOCATION">
+                    <Form.Item label="LOCATION" name='location'>
                       <Select placeholder="Select your location" allowClear>
-                        <Option value="Caloocan">Caloocan</Option>
-                        <Option value="Las Pinas">Las Pinas</Option>
-                        <Option value="Makati">Makati</Option>
-                        <Option value="Malabon">Malabon</Option>
-                        <Option value="Mandaluyong">Mandaluyong</Option>
-                        <Option value="City of Manila">City of Manila</Option>
-                        <Option value="Marikina">Marikina</Option>
-                        <Option value="Muntinlupa">Muntinlupa</Option>
-                        <Option value="Navotas">Navotas</Option>
-                        <Option value="Parañaque">Parañaque</Option>
-                        <Option value="Pasay">Pasay</Option>
-                        <Option value="Pasig">Pasig</Option>
-                        <Option value="Quezon City">Quezon City</Option>
-                        <Option value="San Juan">San Juan</Option>
-                        <Option value="Taguig">Taguig</Option>
-                        <Option value="Valenzuela">Valenzuela</Option>
+                        {CityList}
                       </Select>
                     </Form.Item>
                   </div>

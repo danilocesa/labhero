@@ -184,7 +184,7 @@ class DonorRegistration extends React.Component {
                       </Row>
                   </Col>
                   {/* Buttons */}
-                  <Col>
+                  <Col style={{marginTop:18, marginRight:-450}}>
                     <Form.Item shouldUpdate> 
                     {({ getFieldsValue }) => {
                     const { donor_id, patientName } = getFieldsValue();
