@@ -4,23 +4,73 @@ import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { apiGetMethod } from 'global_config/constant-global';
 
-export async function fetchPatients(donors_id, Blood_group,location) {
-  console.log(donors_id,Blood_group,location,'INPUT DATA IN JSX')
-  let Patient = '';
+export async function fetchDonors(donor_id, Blood_group,location) {
+  console.log(donor_id,Blood_group,location,'INPUT DATA IN JSX')
+  let bloodgroup = [], donors_id = [], city = [];
+  if(Blood_group){ // If blood group field has value
+    bloodgroup = await fetchDonorByBloodType(Blood_group);
+  }
+  if(donor_id){ //If donor id field has value
+    donors_id = await fetchDonorByDonorId(donor_id);
+    
+  }
+  if(location){ //If location field has value
+    city = await fetchDonorByLocation(location);
+  }
+
+  const donors_result =[ ...bloodgroup, ...donors_id, ...city];
+  const result = donors_result.filter((thing, index, self) => self.findIndex(t => t.donor_id === thing.donor_id) === index) 
+  return result;
+} 
+
+export async function fetchDonorByBloodType(blood_group){
+  let bloodGroup = null;
   try{
     const response = await axiosPhase2API({
       method: apiGetMethod,
-      url: 
-      (Blood_group ? `bloodbank/search_donor/by_bloodtype/${Blood_group}` : `bloodbank/search_donor/by_id/${donors_id}`) 
+      url: `bloodbank/search_donor/by_bloodtype/${blood_group}` 
     });
     const { data } = await response;
-    Patient = data
+    bloodGroup = data
   }
   catch(error) {  
     Message.error();
   }
-  return Patient;
-} 
+  return bloodGroup;
+}
+
+export async function fetchDonorByDonorId(donor_id){
+  let donorID = null;
+  try{
+    const response = await axiosPhase2API({
+      method: apiGetMethod,
+      url: `bloodbank/search_donor/by_id/${donor_id}` 
+    });
+    const { data } = await response;
+    donorID = data
+  }
+  catch(error) {  
+    Message.error();
+  }
+  return donorID;
+}
+
+export async function fetchDonorByLocation(location){
+  let locationVar = null;
+  try{
+    const response = await axiosPhase2API({
+      method: apiGetMethod,
+      url: `bloodbank/search_donor/by_city/${location}` 
+    });
+    const { data } = await response;
+    locationVar = data
+  }
+  catch(error) {  
+    Message.error();
+  }
+  return locationVar;
+}
+
 
 export async function fetchCityList() {
   let townList = [];
@@ -33,7 +83,6 @@ export async function fetchCityList() {
     });
     // @ts-ignore
     const { data } = axiosResponse;
-    console.log(data)
     townList = data || [];
   } 
   catch(e) {
