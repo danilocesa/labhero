@@ -173,7 +173,7 @@ class DonorRegistration extends React.Component {
                         <Col span={9}>
                           <Form.Item label="DONOR'S NAME" name="patientName" style={{marginLeft:10}}>
                             <RegexInput 
-                            style={{width:350}}
+                              style={{width:350}}
                               regex={/[A-Za-z0-9, -]/} 
                               maxLength={100}
                               onFocus={this.handleFocus}

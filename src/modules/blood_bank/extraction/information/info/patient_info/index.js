@@ -32,9 +32,6 @@ class PatientInfo extends React.Component {
 		location: '-'
 	};
 
-
-
-
   render() {
 		const {data} = this.props
     console.log("PatientInfo -> render -> data", data)
