@@ -15,7 +15,7 @@ class CityForm extends React.Component {
 			return(
 				<div style={{marginTop: -20}}>
 					<Form>
-						{this.props.actionType == "update"? 
+						{this.props.actionType === "update"? 
 							<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}}>
 									<Switch />
 							</Form.Item>	

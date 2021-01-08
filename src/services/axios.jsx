@@ -36,7 +36,8 @@ export function setupAxiosInterceptors() {
 
 	axiosReportInstance.interceptors.request.use(config => {
     return { ...config, headers: { 
-			'content-type': 'application/json',	
+			'content-type': 'application/json',
+			'APIKEY': process.env.REACT_APP_REPORT_API_KEY
 		}};
 	});
 

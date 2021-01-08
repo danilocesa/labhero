@@ -212,8 +212,8 @@ class Address extends React.Component {
   };
 
 	render() {
-		const { visible, drawerTitle,drawerButton, addressType, label, title, address } = this.state;
-		const { getFieldDecorator, getFieldsValue } = this.props.form;
+		const { visible, drawerTitle,drawerButton, addressType, label, title } = this.state;
+		const { getFieldDecorator } = this.props.form;
 		// eslint-disable-next-line no-nested-ternary
 		const selectedColumns = addressType === "Province" 
 				? provinceColumns : (addressType === "City" 

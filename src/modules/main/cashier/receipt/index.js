@@ -1,22 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import image1 from "./image1.png";
 import image2 from "./image2.png";
 import image3 from "./image3.png";
 import {
-  Layout,
   Table,
-  Menu,
   Card,
   Row,
   Col,
-  Modal,
-  Collapse
+  Collapse,
+  Button
 } from "antd";
 
 import "./breakdown.css";
-const { Header, Footer, Sider, Content } = Layout;
-const { SubMenu } = Menu;
-const { Panel } = Collapse;
 const styles = {
   rootContainer: {
     backgroundColor: "#1A1A1D",
@@ -47,7 +42,7 @@ const columns = [
     title: "Item",
     dataIndex: "item",
     key: "name",
-    render: text => <a>{text}</a>
+    render: text => <Button type="link">{text}</Button>
   },
   {
     title: "",
@@ -118,10 +113,11 @@ class Breakdown extends React.Component {
                 width: 300,
                 marginTop: 2,
                 height: 550,
-                marginLeft: 10
+                marginLeft: 10,
+                ...styles.card
               }}
               // @ts-ignore
-              style={styles.card}
+              // style={styles.card}
               bodyStyle={styles.cardBody}
             >
               <Collapse accordion>

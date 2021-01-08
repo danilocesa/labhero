@@ -4,7 +4,7 @@ import { Modal, Row, Col, Button } from 'antd';
 import TrackerModalSettings from './settings';
 
 const { labels } = TrackerModalSettings;
-const { info } = Modal;
+
 
 class TrackerModal extends React.Component{
 

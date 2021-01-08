@@ -5,7 +5,10 @@ import { Form, Select } from 'antd';
 
 // CUSTOM
 import { provinceListAPI } from 'services/shared/address';
-import { FIELD_RULES, LABEL_TITLE } from './settings';
+import { 
+	// FIELD_RULES, 
+	LABEL_TITLE 
+} from './settings';
 
 const { Option } = Select;
 

@@ -1,23 +1,17 @@
-import React, { Component } from "react";
-import { Route, Switch, Link } from "react-router-dom";
+import React from "react";
 import moment from "moment";
 import {
   Layout,
   Table,
-  Menu,
-  Card,
   Row,
   Col,
-  Collapse,
   DatePicker,
   Button,
   Form,
-  Select
 } from "antd";
 
 import {
   RegexInput,
-  AlphaNumInput,
   NumberInput
 } from "shared_components/pattern_input";
 
@@ -25,12 +19,6 @@ import FIELD_RULES from "./constants.js";
 
 import "./breakdown.css";
 
-const { RangePicker } = DatePicker;
-const dateFormat = "YYYY/MM/DD";
-const monthFormat = "YYYY/MM";
-const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
-const { SubMenu } = Menu;
-const { Panel } = Collapse;
 
 const columns = [
   {

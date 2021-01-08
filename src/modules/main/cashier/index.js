@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { CAviewallIcon, CAviewrequestIcon, CAsearchcategoryIcon } from "images";
-import { Layout, Menu, Card, Row, Col, Modal, Button, Input } from "antd";
+import { Layout, Card, Row, Col, Modal, Button } from "antd";
 import "./cashier.css";
 import { NumberInput } from "shared_components/pattern_input";
 

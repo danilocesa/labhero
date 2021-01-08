@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input, Checkbox, Select, InputNumber } from 'antd';
-import { RegexInput } from 'shared_components/pattern_input';
 import { 
 	EITC_ALPHA_NUMERIC,
 	EITC_NUMERIC,

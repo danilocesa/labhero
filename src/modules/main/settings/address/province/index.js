@@ -31,7 +31,7 @@ class ProvinceListComponent extends React.Component {
 	}
 
 	render(){
-		const { form, placeholder, selectedProvince, disabled, onChange } = this.props;
+		const { form, placeholder, selectedProvince, onChange } = this.props;
 		const { getFieldDecorator } = form;
 		const { provinceList, loading } = this.state;
 		
