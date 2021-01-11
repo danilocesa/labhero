@@ -53,20 +53,12 @@ class CityList extends React.Component {
 
 	render(){
 		const { form, placeholder, selectedCity, onChange, disabled } = this.props;
-		const { getFieldDecorator } = form;
 		const { cityList, loading } = this.state;
 		const isDisabled = disabled || cityList.length < 1;
 
 		return (
 			<Form.Item label="CITY UNDER" className="gutter-box">
 				<div className="treeselect-address">
-					{getFieldDecorator('city', { 
-						rules: [{ 
-							required: !isDisabled, 
-							message: errorMessage.required
-						}],
-						initialValue: cityList.length === 0 ? null : selectedCity
-					})(
 						<Select
 							loading={loading}
 							placeholder={placeholder}

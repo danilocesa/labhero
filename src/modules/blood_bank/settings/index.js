@@ -6,7 +6,7 @@ import InventoryPageCrumb from 'modules/inventory/settings/shared_components/pag
 import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
-
+import QuestionType from './question_types'
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -16,6 +16,7 @@ const pageTitle = [
   `${pageTitleSettings } CATEGORIES`,
   `${pageTitleSettings } QUESTIONNAIRE`,
   `${pageTitleSettings } BLOOD GROUP`,
+  `${pageTitleSettings } QUESTION TYPES`,
 ]
 
 class settings extends React.Component {
@@ -40,6 +41,9 @@ class settings extends React.Component {
           </TabPane>
           <TabPane tab="BLOOD GROUP" key="3">
             <BloodGroup />
+          </TabPane>
+          <TabPane tab="QUESTION TYPES" key="4">
+            <QuestionType />
           </TabPane>
         </AntTabs>
 			</div>
