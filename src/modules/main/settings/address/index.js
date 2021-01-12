@@ -212,7 +212,7 @@ class Address extends React.Component {
   };
 
 	render() {
-		const { visible, drawerTitle,drawerButton, addressType, label, title } = this.state
+		const { visible, drawerTitle,drawerButton, addressType, label, title } = this.state;
 		// eslint-disable-next-line no-nested-ternary
 		const selectedColumns = addressType === "Province" 
 				? provinceColumns : (addressType === "City" 

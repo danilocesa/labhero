@@ -35,14 +35,12 @@ class CityList extends React.Component {
 
 	fetchAndUpdateValues = () => {
 		const { provinceValue, selectedCity, form } = this.props;
-		const { setFieldsValue } = form;
 
 		this.setState({ loading: true }, () => {
 			const timer = setTimeout(async () => {
 				const cityListResponse = provinceValue ? await cityListAPI(provinceValue) : [];
 
 				this.setState({ loading: false, cityList: cityListResponse }, () => {
-					setFieldsValue({ city: selectedCity });
 				});
 
 				clearTimeout(timer);
@@ -71,7 +69,6 @@ class CityList extends React.Component {
 								</Option> 
 							))}
 						</Select>
-					)}
 				</div>
 			</Form.Item>
 		);

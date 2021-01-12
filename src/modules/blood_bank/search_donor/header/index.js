@@ -1,7 +1,7 @@
 import React from 'react' 
 import Message from 'shared_components/message'
 import { Form, Input, Button, Row, Col, Select,Table } from 'antd'
-import { fetchPatients,fetchCityList } from 'services/blood_bank/search_donor'
+import { fetchDonors,fetchCityList } from 'services/blood_bank/search_donor'
 import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
@@ -41,7 +41,7 @@ const columns = [
   },
   {
     title: 'ADDRESS',
-    dataIndex: 'barangay',
+    dataIndex: 'city_name',
   },
 ];
 
@@ -63,23 +63,23 @@ class Header_Search_Donor extends React.Component{
     this.setState({loading:true});
     const response = await fetchbloodgroupitems();
 		this.setState({ 
-      Cityitem:CityList,
-      bloodgroupItem: response,
+      Cityitem:CityList.sort((a,b)=>(a.city_name > b.city_name) ? 1: -1),
+      bloodgroupItem: response.sort((a,b)=>(a.blood_type > b.blood_type) ? 1: -1),
 		});
   }
 
   handleSubmit = async () => {
     const { getFieldsValue } = this.formRef.current;
-    const { donors_id,Blood_group,location } = getFieldsValue();
+    const { donors_id,blood_group,location_field } = getFieldsValue();
 		this.setState({ loading: true });
-    const patients = await fetchPatients(donors_id, Blood_group,location); 
-    console.log("Patients", patients)
+    const donors = await fetchDonors(donors_id, blood_group ,location_field); 
+    console.log("Donors", donors)
     this.setState({ 
         loading: false,
-        Item: patients  
+        Item: donors  
     });
 
-		if(patients.length <= 0) 
+		if(donors.length <= 0) 
       Message.info('No results found');
   }
 
@@ -87,7 +87,6 @@ class Header_Search_Donor extends React.Component{
   render(){
     
     const { bloodgroupItem , Item, Cityitem} = this.state
-    console.log(Cityitem,"responseCity")
     let bloodgroupList = bloodgroupItem.length > 0
 		&& bloodgroupItem.map((item, i) => {
 		return (
@@ -100,7 +99,6 @@ class Header_Search_Donor extends React.Component{
 			<option key={i} value={item.barangay_id}>{item.city_name}</option>
 		)
     }, this);
-    
       return(
           <div>
             <Form className="search-patient-form" ref={this.formRef}  onFinish={this.handleSubmit} style={{marginLeft:150,marginTop:50}}>
@@ -108,13 +106,13 @@ class Header_Search_Donor extends React.Component{
                 <Col span={6} order={1}>
                   <div>
                     <Form.Item label="DONOR'S I D" name='donors_id'>
-                        <Input/>
+                        <Input type="number" />
                     </Form.Item>
                   </div>
                 </Col>
                 <Col span={6} order={2}>
                   <div>
-                    <Form.Item label="BLOOD GROUP" name='Blood_group'>
+                    <Form.Item label="BLOOD GROUP" name='blood_group'>
                       <Select  placeholder="Select your Blood Type" allowClear>
                         {bloodgroupList}
                       </Select>
@@ -123,7 +121,7 @@ class Header_Search_Donor extends React.Component{
                 </Col>
                 <Col span={6} order={3}>
                   <div>
-                    <Form.Item label="LOCATION" name='location'>
+                    <Form.Item label="LOCATION" name='location_field'>
                       <Select placeholder="Select your location" allowClear>
                         {CityList}
                       </Select>
@@ -131,18 +129,23 @@ class Header_Search_Donor extends React.Component{
                   </div>
                 </Col>
                 <Col span={6} order={4}>
-                  <div>
-                    <Form.Item>
-                      <Button 
-                          type="primary" 
-                          shape="round" 
-                          htmlType="submit" 
-                      > SEARCH 
-                      </Button>
-                    </Form.Item>
-                  </div>
+                  <Form.Item shouldUpdate>
+                    {({ getFieldsValue }) => {
+                      const { donors_id, blood_group, location_field } = getFieldsValue();
+                      const disabled = !(donors_id || blood_group || location_field );
+                      return (
+                        <Button 
+                            type="primary" 
+                            shape="round" 
+                            htmlType="submit" 
+                            disabled={disabled}
+                        > SEARCH 
+                        </Button>
+                      )
+                    }}
+                  </Form.Item>
                 </Col>
-              </Row>  
+              </Row>
             </Form>
             <div style={{marginBottom:10, marginTop:'50px' }}>
              <TablePager handleChange={this.handleSelectChange} />
