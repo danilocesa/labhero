@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Typography, Empty, Badge } from 'antd';
-import Moment from 'moment';
+// import Moment from 'moment';
 import Icon from '@ant-design/icons';
 import { ClockCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactComponent as CheckIcon } from 'icons/check-icon.svg';
@@ -15,24 +15,24 @@ import './dashboard.css';
 
 const { Text } = Typography;
 
-const metricsData = [
-  {
-    image: <ClockCircleOutlined className="dashboard-metric-icon" />,
-    value: 12,
-    label: 'PENDING',
-  },
-  {
-    image: <ExclamationCircleOutlined className="dashboard-metric-icon" style={{ color: '#FAAD14' }} />,
-    value: 270,
-    label: 'MORE THAN 2 HOURS',
-  },
-  {
-    image: <Icon component={CheckIcon} className="dashboard-metric-icon" />,
-    value: 10,
-    label: 'WITHIN 2 HOURS',
-  },
+// const metricsData = [
+//   {
+//     image: <ClockCircleOutlined className="dashboard-metric-icon" />,
+//     value: 12,
+//     label: 'PENDING',
+//   },
+//   {
+//     image: <ExclamationCircleOutlined className="dashboard-metric-icon" style={{ color: '#FAAD14' }} />,
+//     value: 270,
+//     label: 'MORE THAN 2 HOURS',
+//   },
+//   {
+//     image: <Icon component={CheckIcon} className="dashboard-metric-icon" />,
+//     value: 10,
+//     label: 'WITHIN 2 HOURS',
+//   },
  
-]; 
+// ]; 
 
 class DashboardPage extends React.Component {
   constructor(props) {

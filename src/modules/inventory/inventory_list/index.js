@@ -2,26 +2,23 @@
 import React from "react";
 import {
   Drawer,
-  Row as AntRow,
-  Col as AntCol,
-  Form as AntForm,
-  Table as AntTable,
+  Row,
+  Col,
+  Form,
+  Table,
   Input,
   Button,
-  Icon,
 } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import {
   tableSize,
   buttonLabels,
   tableYScroll,
   tablePageSize,
 } from "modules/inventory/settings/settings";
-// import TablePager from "shared_components/table_pager";
-import ClearFormFields from "shared_components/form_clear_button";
 import SearchPager from "shared_components/search_pager";
 import PageTitle from "shared_components/page_title";
 import InventoryListForm from "./search_form";
-
 
 const columns = [
   {
@@ -50,6 +47,7 @@ const columns = [
 class InventoryList extends React.Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     this.state = {
       data: [
         {
@@ -154,10 +152,8 @@ class InventoryList extends React.Component {
   handleSearch = (evt) => {
     evt.preventDefault();
 
-    // eslint-disable-next-line react/prop-types
     const { form } = this.props;
     const { usersRef } = this.state;
-    // eslint-disable-next-line react/prop-types
     const value = form.getFieldsValue().search;
     console.log(value);
     const searchedVal = value.toLowerCase();
@@ -174,56 +170,70 @@ class InventoryList extends React.Component {
 
   onChangeSearch = (event) => {
     const { usersRef } = this.state;
-    if (event.target.value === "") this.setState({ data: usersRef });
+
+    if (event.target.value === '') 
+      this.setState({ data: usersRef });
   };
+
+  clearSearch = () => {
+    this.formRef.current.setFieldsValue({ itemName: '' });
+  }
 
   render() {
     // eslint-disable-next-line react/prop-types
-    const { form } = this.props;
     const { actionType } = this.state;
-    const { getFieldDecorator, getFieldsValue } = form;
-    const { search } = getFieldsValue();
-    const disabled = !(search && search.length > 1);
-    console.log(disabled);
+    // const { form } = this.props;
+    // const { getFieldDecorator, getFieldsValue } = form;
+    // const { search } = getFieldsValue();
+    // const disabled = !(search && search.length > 1);
+    const disabled = false;
 
     return (
       <div>
         <PageTitle pageTitle="LIST OF INVENTORIES" align="CENTER" />
         <div className="panel-table-options" style={{ marginTop: 10 }}>
-          <AntRow gutter={12} type="flex" justify="center">
-            <AntForm onSubmit={this.handleSearch}>
-              <AntCol span={24}>
-                <AntForm.Item label="ITEM NAME">
-                  {getFieldDecorator("search")(
-                    <Input
-                      allowClear
-                      // onSearch={value => this.onSearch(value)}
-                      onChange={this.onChangeSearch}
-                      style={{ width: 250, marginRight: 10 }}
-                      className="panel-table-search-input"
-                    />
-                  )}
-                  <ClearFormFields
-                    onClick={this.onChangeSearch}
-                    form={this.props.form}
+          <Form 
+            ref={this.formRef}
+            onFinish={this.handleSearch}
+          >
+            <Row gutter={12} justify="center">
+              <Col>
+                <Form.Item 
+                  name="itemName"
+                  label="ITEM NAME"
+                >
+                  <Input
+                    allowClear
+                    onChange={this.onChangeSearch}
+                    style={{ width: 250, marginRight: 10 }}
+                    className="panel-table-search-input"
                   />
-                  <Button
-                    className="form-button"
-                    block
-                    shape="round"
-                    type="primary"
-                    htmlType="submit"
-                    style={{ width: 120 }}
-                    disabled={disabled}
-                  >
-                    SEARCH
-                  </Button>
-                </AntForm.Item>
-              </AntCol>
-            </AntForm>
-          </AntRow>
+                </Form.Item>
+              </Col>
+              <Col>
+                <Button
+                  shape="round" 
+                  style={{ width: 120 }}
+                  onClick={this.clearSearch}
+                >
+                  CLEAR
+                </Button>
+                <Button
+                  className="form-button"
+                  block
+                  shape="round"
+                  type="primary"
+                  htmlType="submit"
+                  style={{ width: 120, marginLeft: 10 }}
+                  disabled={disabled}
+                >
+                  SEARCH
+                </Button>
+              </Col>
+            </Row>
+          </Form>
         </div>
-        <AntCol span={24}>
+        <Col span={24}>
           <Button
             type="primary"
             shape="round"
@@ -231,20 +241,21 @@ class InventoryList extends React.Component {
               marginLeft: "73%",
               position: "absolute",
               zIndex: 99,
-              marginTop: 36,
+              marginTop: 15,
             }}
             onClick={this.displayDrawerAdd}
           >
-            <Icon type="plus" />
+            <PlusOutlined />
             ADD INVENTORY
           </Button>
+
           <SearchPager
             pageSize={tablePageSize}
             pageTotal={this.state.data.length}
-            handleChange={this.handleSelectChange}
+            handleChangeSize={this.handleSelectChange}
           />
-        </AntCol>
-        <AntTable
+        </Col>
+        <Table
           style={{ textTransform: "uppercase" }}
           className="settings-panel-table"
           size={tableSize}
@@ -282,8 +293,5 @@ class InventoryList extends React.Component {
   }
 }
 
-// const InventoryCategories = AntForm.create()(InventoryList);
-
-// export default InventoryCategories;
 
 export default InventoryList;

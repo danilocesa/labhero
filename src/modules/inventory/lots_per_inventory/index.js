@@ -8,9 +8,9 @@ import {
   Table as AntTable,
   Input,
   Button,
-  Icon,
   Form,
 } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import {
   tableSize,
   buttonLabels,
@@ -21,8 +21,9 @@ import {
   tablePageSize,
 } from "modules/inventory/settings/settings";
 import SearchPager from "shared_components/search_pager";
-import ClearFormFields from "shared_components/form_clear_button";
 import InventoryListForm from "./search_form";
+
+import "./inventory_list.css";
 
 // CUSTOM MODULES
 //  CONSTANTS
@@ -141,6 +142,7 @@ const columnsSummary = [
 class LotsPerInventory extends React.Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     this.state = {
       data: [
         {
@@ -227,10 +229,6 @@ class LotsPerInventory extends React.Component {
     });
   };
 
-  handleReset = () => {
-    // eslint-disable-next-line react/prop-types
-    this.props.form.resetFields();
-  };
 
   displayDrawerUpdate = (record) => {
     this.setState({
@@ -281,8 +279,8 @@ class LotsPerInventory extends React.Component {
     const { usersRef } = this.state;
     // eslint-disable-next-line react/prop-types
     const value =
-      // eslint-disable-next-line react/prop-types
-      form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem;
+    // eslint-disable-next-line react/prop-types
+    form.getFieldsValue().searchByLot || form.getFieldsValue().searchByItem;
     console.log(value);
     const searchedVal = value.toLowerCase();
 
@@ -305,6 +303,10 @@ class LotsPerInventory extends React.Component {
     if (event.target.value === "") this.setState({ data: usersRef });
   };
 
+  clearSearch = () => {
+    this.formRef.current.setFieldsValue({ itemName: '' });
+  }
+
   //  summaryData = () => {
   //   let totalOnhand = 0;
   //   let totalQty = 0;
@@ -326,44 +328,16 @@ class LotsPerInventory extends React.Component {
   //   }
   // } 
 
-  summarySample = () => {
-    return "test";
-  }
-
   render() {
-    const { actionType } = this.state;
-    // eslint-disable-next-line react/prop-types
-    const {  form } = this.props;
-    // eslint-disable-next-line react/prop-types
-    const { getFieldDecorator, getFieldsValue } = form;
-    const { searchByItem, searchByLot } = getFieldsValue();
-    const disabled = !(
-      (searchByItem && searchByItem.length > 1) ||
-      (searchByLot && searchByLot.length > 1)
-    );
-    console.log(disabled);
 
-    const summaryData = () => {
-      return "test";
-      // let totalOnhand = 0;
-      // let totalQty = 0;
-      // let totalAmount = 0;
-      // console.log(1)
-      // this.state.data.forEach(i => {
-      //   totalOnhand += i.onhand;
-      //   totalQty += i.qty;
-      //   totalAmount += i.amount;
-      //   console.log(totalAmount)
-      // });
-      // console.log(totalOnhand)
-      // console.log(totalQty)
-      // console.log(totalAmount)
-      // return  {
-      //   onHand: totalOnhand,
-      //   quantity: totalQty,
-      //   amount: totalAmount
-      // }
-    } 
+    const { actionType } = this.state;
+    // const { searchByItem, searchByLot } = getFieldsValue();
+    // const disabled = !(
+    //   (searchByItem && searchByItem.length > 1) ||
+    //   (searchByLot && searchByLot.length > 1)
+    // );
+
+    const disabled = false;
 
     return (
       <div>
@@ -375,46 +349,59 @@ class LotsPerInventory extends React.Component {
             LOTS PER INVENTORY
           </h4>
         </div>
-        <div className="panel-table-options" style={{ marginTop: 10 }}>
-          <AntForm onSubmit={this.handleSearch}>
-            <AntRow gutter={12} type="flex" justify="center">
-              <AntCol span={4}>
-                <Form.Item label="LOT">
-                  {getFieldDecorator("searchByLot")(
-                    <Input
-                      allowClear
-                      // onSearch={value => this.onSearch(value)}
-                      onChange={this.onChangeSearch}
-                      style={{ width: 200, marginRight: 10 }}
-                      className="panel-table-search-input"
-                    />
-                  )}
+        <div className="lot-per-inventory" style={{ marginTop: 10 }}>
+          <AntForm 
+            ref={this.formRef}
+            onFinish={this.handleSearch}
+          >
+            <AntRow gutter={12} justify="center">
+              <AntCol>
+                <Form.Item 
+                  name="searchByLot"
+                  label="LOT"
+                  labelCol={{ span: 24 }}
+                  className="no-padding"
+                >
+                  <Input
+                    allowClear
+                    // onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                    className="panel-table-search-input"
+                  />
                 </Form.Item>
               </AntCol>
-              <AntCol span={1}>
-                <Form.Item style={{ marginTop: 38, marginLeft: 10 }}>
+              <AntCol>
+                <Form.Item style={{ marginTop: 32 }}>
                   OR
                 </Form.Item>
               </AntCol>
-              <AntCol span={4}>
-                <Form.Item label="ITEM">
-                  {getFieldDecorator("searchByItem")(
-                    <Input
-                      allowClear
-                      // onSearch={value => this.onSearch(value)}
-                      onChange={this.onChangeSearch}
-                      style={{ width: 200 }}
-                      className="panel-table-search-input"
-                    />
-                  )}
+              <AntCol>
+                <Form.Item 
+                  name="searchByItem"
+                  label="ITEM"
+                  labelCol={{ span: 24 }}
+                  className="no-padding"
+                >
+                  <Input
+                    allowClear
+                    // onSearch={value => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+                  />
                 </Form.Item>
               </AntCol>
-              <AntCol span={7} style={{ marginTop: 38 }}>
-                <Form.Item>
-                  <ClearFormFields
-                    form={this.props.form}
-                    style={{ marginLeft: 10 }}
-                  />
+              <AntCol>
+                <div style={{ marginTop: 32 }}>
+                  <Button
+                    shape="round" 
+                    style={{ width: 120 }}
+                    onClick={this.clearSearch}
+                  >
+                    CLEAR
+                  </Button>
+                </div>
+              </AntCol>
+              <AntCol>
+                <div style={{ marginTop: 32 }}>
                   <Button
                     className="form-button"
                     block
@@ -426,7 +413,7 @@ class LotsPerInventory extends React.Component {
                   >
                     SEARCH
                   </Button>
-                </Form.Item>
+                </div>
               </AntCol>
             </AntRow>
           </AntForm>
@@ -436,20 +423,21 @@ class LotsPerInventory extends React.Component {
             type="primary"
             shape="round"
             style={{
-              marginLeft: "77%",
+              width: 120,
+              marginLeft: "75%",
               position: "absolute",
               zIndex: 99,
-              marginTop: 36,
+              marginTop: 18,
             }}
             onClick={this.displayDrawerAdd}
           >
-            <Icon type="plus" />
+            <PlusOutlined />
             {addInventoryList}
           </Button>
           <SearchPager
             pageSize={tablePageSize}
             pageTotal={this.state.data.length}
-            handleChange={this.handleSelectChange}
+            handleChangeSize={this.handleSelectChange}
           />
         </AntCol>
         <AntTable
@@ -470,21 +458,19 @@ class LotsPerInventory extends React.Component {
             };
           }}
         />
-        <h1>h1</h1>
-        <h1>{this.summarySample}</h1>
+       
         <AntTable 
-        columns={columnsSummary} 
-        // dataSource={this.summaryData}
+          columns={columnsSummary} 
+          // dataSource={this.summaryData}
         />
         <Drawer
           title={this.state.drawerTitle}
           visible={this.state.isDrawerVisible}
           onClose={this.onClose}
-          width="40%"
+          width="30%"
           destroyOnClose
         >
           <InventoryListForm
-            // @ts-ignore
             actionType={actionType}
             drawerButton={this.state.drawerButton}
             panelInfo={this.state.panelInfo}
@@ -495,9 +481,5 @@ class LotsPerInventory extends React.Component {
     );
   }
 }
-
-// const InventoryCategories = AntForm.create()(LotsPerInventory);
-
-// export default InventoryCategories;
 
 export default LotsPerInventory;

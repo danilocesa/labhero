@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Drawer, Button } from 'antd';
-import { PrintLogo, IResultsIcon } from 'images';
+import { IResultsIcon } from 'images';
 import Iresults from 'modules/main/iresults';
 
 import './patientname.css';

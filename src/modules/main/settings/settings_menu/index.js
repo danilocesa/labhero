@@ -26,7 +26,7 @@ const settingsItemData = [
 		label: 'PANEL EXAM'
 	},
 	{
-		image: NormalValuesIcon,
+		image: LabExamRequestIcon,
 		link: '/settings/normal-values',
 		label: 'NORMAL VALUES'
 	},
@@ -36,7 +36,7 @@ const settingsItemData = [
 		label: 'USER MAINTENANCE'
 	},
 	{
-		image: LabExamRequestIcon,
+		image: UserMaintenanceIcon,
 		link: '/settings/user-rights',
 		label: 'USER RIGHTS'
 	},
@@ -47,8 +47,13 @@ const settingsItemData = [
 	},
 	{
 		image: UserMaintenanceIcon,
-		link: '/settings/Hospital',
+		link: '/settings/hospital',
 		label: 'HOSPITAL'
+	},
+	{
+		image: NormalValuesIcon,
+		link: '/settings/reports',
+		label: 'REPORTS'
 	}
 ]
 

@@ -4,7 +4,7 @@ import { Row, Button, Col } from "antd";
 class Footer extends React.Component {
   render() {
     return (
-      <Row type="flex" style={{ marginTop: 10 }}>
+      <Row style={{ marginTop: 10 }}>
         <Col span={8}>
           <h1 style={{ float: "right" }}>
             TOTAL QUANTITY: <br /> 100
@@ -21,11 +21,9 @@ class Footer extends React.Component {
             shape="round"
             type="primary"
             htmlType="submit"
-            style={{ width: 140, fontSize: 12, height: 35, float: "right" }}
+            style={{ fontSize: 12, float: "right" }}
           >
-            PROCESS
-            <br />
-            TRANSACTION
+            PROCESS TRANSACTION
           </Button>
         </Col>
       </Row>

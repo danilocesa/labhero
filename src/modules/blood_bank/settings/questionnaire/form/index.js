@@ -70,6 +70,7 @@ class AddForm extends React.Component {
 		return (
 			<div>
 				<Form 
+					layout="vertical"
 					onFinish={this.onFinish} 
 					className="exam-item-add-form" 
 					style={{marginTop: -20}}
@@ -84,11 +85,10 @@ class AddForm extends React.Component {
 				{this.props.drawerButton == "UPDATE"? (
 					<Form.Item 
 						label="ACTIVE" 
-						{...layout} 
 						valuePropName='checked'
 						name='is_active'
 						style={{marginBottom:'-40px'}}
-					>	 
+					>	 	
 							<Switch />
 					</Form.Item>
 					)	
@@ -98,28 +98,27 @@ class AddForm extends React.Component {
 				<div className="form-section">
 					<Form.Item 
 						name='questionnare_id'
-						style={{marginTop:-20 }}
 					>
 						<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 					</Form.Item>
 					<Form.Item 
 						label="QUESTION ORDER" 
-						style={{ marginTop:'-15px'}}
 						name='question_order'
+						style={{ marginTop:'-15px'}}
 					>									
-							<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
+							<Input style={{  textTransform: 'uppercase' }}  />
 					</Form.Item>
 					<Form.Item 
 						label="QUESTION" 
-						style={{ marginTop:'-25px'}}
 						name='question'
+						style={{ marginTop:'-25px'}}
 					>
-							<Input style={{ textTransform: 'uppercase',marginTop: 10 }} />
+							<Input style={{ textTransform: 'uppercase'}} />
 					</Form.Item>
 					<Form.Item 
-						label="QUESTION TYPE" 
-						style={{ marginTop:'-25px'}}
+						label="QUESTION TYPE" 	
 						name='ques_type'
+						style={{ marginTop:'-20px'}}
 					>
 								<TextArea rows={5} />
 					</Form.Item>

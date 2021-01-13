@@ -8,7 +8,7 @@ export async function cityListAPI(provinceCode) {
   try{
     const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
-      url: `${apiAddress.getCity}${provinceCode}`
+      url: `/cities/by_prov/${provinceCode}`
     }).then(function(response){
       return response;
 		});
@@ -28,7 +28,7 @@ export async function provinceListAPI() {
   try{
     const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
-      url: apiAddress.getProvince
+      url: `/provinces/`
     }).then(function(response){
       return response;
     });
@@ -47,7 +47,7 @@ export async function townListAPI(cityCode) {
   try{
     const axiosResponse = await axiosLabAPI({
       method: apiGetMethod,
-      url: `${apiAddress.getTown}${cityCode}`
+      url: `/barangays/by_city/${cityCode}`
     }).then(function(response){
       return response;
     });

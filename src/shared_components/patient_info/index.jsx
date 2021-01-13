@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 // CUSTOM MODULES
 import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
 import computeAge from 'shared_components/age_computation';
-import { PatientImgPlaceholder } from 'images';
+// import { PatientImgPlaceholder } from 'images';
 
 import './patient_info.css';
 

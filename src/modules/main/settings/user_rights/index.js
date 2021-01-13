@@ -1,7 +1,7 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Row, Col } from 'antd';
+import { Button, Row, Col } from 'antd';
 
 import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';

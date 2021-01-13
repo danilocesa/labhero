@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Row, Col, Typography, Button, Divider } from 'antd';
-import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon } from 'images';
+import { Row, Col, Typography, Button, Divider } from 'antd';
+import { LabExamRequestIcon, NormalValuesIcon } from 'images';
 import ModuleCard from './module_card';
 
 const { Title } = Typography;

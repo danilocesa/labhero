@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   TreeSelect,
@@ -8,17 +8,13 @@ import {
   Row,
   Button,
   Input,
-  InputNumber
 } from "antd";
 import "./categories.css";
 
 import {
-  RegexInput,
-  AlphaNumInput,
   NumberInput
 } from "shared_components/pattern_input";
 
-const { TreeNode } = TreeSelect;
 
 const { Search } = Input;
 
@@ -28,7 +24,7 @@ const columns = [
     value: "0-0",
     dataIndex: "item",
     key: "name",
-    render: text => <a>{text}</a>
+    render: text => <Button type="link">{text}</Button>
   },
   {
     title: "Particulars",
@@ -164,7 +160,7 @@ class Categories extends React.Component {
         </div>
         <div
           className="cashier-category-select-category"
-          style={{ width: 400 }}
+          // style={{ width: 400 }}
         >
           <Row>
             <div className="selection">
