@@ -4,6 +4,11 @@ import errorMessage from 'global_config/error_messages';
 
 
 // UserMaintenance Variables
+
+export const drawerAdd = 'ADD';
+export const drawerUpdate = 'UPDATE';
+
+
 export const moduleTitle = 'PANEL EXAM';
 
 export const drawerAddTitle = 'ADD PANEL';
@@ -31,7 +36,9 @@ export const drawerLotInvTitleUpdate = 'UPDATE LOT PER INVENTORY';
 export const messagePrompts = {
   noExamFound: "No exam request found!",
   successCreatePanel: "Successfully created! Reloading page...",
-  successUpdatePanel: "Update successful! Reloading page..."
+  successUpdatePanel: "Update successful! Reloading page...",
+
+  successAddCategoryInv: " Successful!"
 }
 
 export const fieldRules = {

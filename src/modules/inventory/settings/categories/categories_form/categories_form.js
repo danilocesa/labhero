@@ -9,20 +9,24 @@ import {
   Button as AntButton,
   Switch as AntSwitch,
   Row as AntRow,
-  Col as AntCol
+  Col as AntCol,
 } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 // CUSTOM MODULES
 import HttpCodeMessage from "shared_components/message_http_status";
-import { fetchExamRequestList } from "services/shared/examRequest";
+
 import {
-  createdPanelAPI,
-  updatePanelListAPI,
-  getPanelInfoAPI
-} from "services/settings/panelExamRequesting";
-import { messagePrompts, buttonLabels, fieldLabels } from "../../settings";
+  updateInventoryItems,
+  createInventoryItems,
+} from "services/inventory/inventoryCategory";
+import {
+  messagePrompts,
+  buttonLabels,
+  fieldLabels,
+  drawerAdd,
+} from "../../settings";
 
 // CSS
 import "./category_form.css";
@@ -37,220 +41,122 @@ class PanelFormTemplate extends React.Component {
   state = {
     // eslint-disable-next-line react/no-unused-state
     examRequestData: [],
-    selectedExamRequest: [],
+    SelectedCategoryRequest: [],
     loading: false,
-    examRequestValidation: false
+    examRequestValidation: false,
   };
 
-  componentDidMount() {
-    this.getExamRequest();
+  handleSubmit = () => {
+    // event.preventDefault(); event
+    const { form, drawerButton, panelInfo } = this.props;
 
-    if (this.props.drawerButton === buttonLabels.update) {
-      // Get selected examrequest in db for update
-      if (this.props.panelInfo) {
-        this.getSelectedExamRequest(this.props.panelInfo.key);
-      }
-    }
-  }
+    form.validateFields(async (err, values) => {
+      if (!err) {
+        const vData = {
+          category_id: panelInfo.category_id,
+          category_code: values.category_code.toUpperCase(),
+          category_desc: values.category_desc.toUpperCase(),
+          category_name: values.category_name.toUpperCase(),
+          is_active: values.active === "checked" ? true : false,
+          created_by: 1,
+        };
 
-  getExamRequest = async () => {
-    // Get all exam request
-    const examRequestListData = await fetchExamRequestList();
-    if (examRequestListData.status !== 200) {
-      HttpCodeMessage({
-        status: examRequestListData.status,
-        message: messagePrompts.noExamFound
-      });
-    }
+        if (drawerButton === drawerAdd) {
+          const createdUserResponse = await createInventoryItems(vData);
+          console.log("createUserAPI:", createdUserResponse);
 
-    // Assign to state
-    const examRequestData = [];
-    examRequestListData.data.map(function(valueExamRequest, indexExamRequest) {
-      examRequestData[indexExamRequest] = {
-        key: valueExamRequest.examRequestID,
-        title: valueExamRequest.examRequestName,
-        chosen: Math.random() * 2 > 1
-      };
-      return examRequestData;
-    });
-    this.setState({ examRequestData });
-  };
+          if (createdUserResponse.status === 201) {
+            const httpMessageConfig = {
+              message: messagePrompts.successAddCategoryInv,
+              // @ts-ignore
+              status: createdUserResponse.status,
+              duration: 3,
+              onClose: () => this.props.onCancel(),
+            };
+            HttpCodeMessage(httpMessageConfig);
+          }
+        } else {
+          // vData.category_code = values.category_code;
+          const updatecategoryResponse = await updateInventoryItems(
+            vData
+          ).catch((reason) => console.log("TCL->", reason));
 
-  getSelectedExamRequest = async iKey => {
-    let dataPanel = null;
-    try {
-      dataPanel = await getPanelInfoAPI(iKey);
-    } catch (e) {
-      HttpCodeMessage({ status: 500, message: e });
-    }
-    const selectedExamRequest = [];
-    // @ts-ignore
-    if (dataPanel.data.examRequests.length < 2) {
-      return;
-    } // Empty
-    // @ts-ignore
-    dataPanel.data.examRequests.map(function(valueSelectedExamRequest) {
-      selectedExamRequest.push(valueSelectedExamRequest.examRequestID);
-      return selectedExamRequest;
-    });
-    this.setState({ selectedExamRequest });
-  };
-
-  transferFilterOption = (inputValue, option) =>
-    option.description.indexOf(inputValue) > -1;
-
-  handleSelectedExams = selectedExamRequest => {
-    this.setState({ selectedExamRequest });
-  };
-
-  onSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (err) {
-        // Form validation error
-        return;
-      }
-
-      if (
-        this.state.selectedExamRequest === undefined ||
-        this.state.selectedExamRequest.length === 0
-      ) {
-        this.setState({ examRequestValidation: true });
-        return;
-      }
-
-      try {
-        this.setState({ loading: true });
-        // eslint-disable-next-line no-unused-expressions
-        this.props.drawerButton === buttonLabels.update
-          ? this.updatePanel(values)
-          : this.createPanel(values);
-      } catch (errCatch) {
-        HttpCodeMessage({ status: 500, message: e });
+          if (updatecategoryResponse.status === 200) {
+            const httpMessageConfig = {
+              message: messagePrompts.successUpdateUser,
+              // @ts-ignore
+              status: updatecategoryResponse.status,
+              duration: 3,
+              onClose: () => this.props.onCancel(),
+            };
+            HttpCodeMessage(httpMessageConfig);
+          }
+        }
       }
     });
-  };
-
-  createPanel = async fieldValues => {
-    const payload = {
-      panelRequestName: fieldValues.panel_name,
-      panelRequestCode: fieldValues.panel_code,
-      panelRequestIntegrationCode: fieldValues.panel_integration_code,
-      panelRequestActive: fieldValues.panel_status ? 1 : 0,
-      examRequests: this.state.selectedExamRequest
-    };
-
-    const response = await createdPanelAPI(payload);
-
-    // @ts-ignore
-    if (response.status === 201) {
-      this.setState({ loading: false });
-      const httpMessageConfig = {
-        message: messagePrompts.successCreatePanel,
-        // @ts-ignore
-        status: response.status,
-        duration: 3,
-        onClose: () => window.location.reload()
-      };
-      HttpCodeMessage(httpMessageConfig);
-    }
-  };
-
-  updatePanel = async fieldValues => {
-    const payload = {
-      panelRequestID: fieldValues.panel_id,
-      panelRequestName: fieldValues.panel_name,
-      panelRequestCode: fieldValues.panel_code,
-      panelRequestIntegrationCode: fieldValues.panel_integration_code,
-      panelRequestActive: fieldValues.panel_status ? 1 : 0,
-      examRequests: this.state.selectedExamRequest
-    };
-
-    const response = await updatePanelListAPI(payload);
-
-    // @ts-ignore
-    if (response.status === 200) {
-      this.setState({ loading: false });
-      const httpMessageConfig = {
-        message: messagePrompts.successUpdatePanel,
-        // @ts-ignore
-        status: response.status,
-        duration: 3,
-        onClose: () => window.location.reload()
-      };
-      HttpCodeMessage(httpMessageConfig);
-    }
-  };
-
-  handleInfiniteOnLoad = () => {
-    const { data } = this.state;
-    this.setState({
-      loading: true
-    });
-    if (data.length > 14) {
-      this.setState({
-        hasMore: false,
-        loading: false
-      });
-    }
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { panelInfo, drawerButton } = this.props;
-
+    const disabled = panelInfo.is_active === true;
+    const disableField = !(drawerButton === drawerAdd);
+    console.log("value from table", panelInfo);
     return (
       <div className="inventory-category-drawer">
-        <AntForm onSubmit={this.onSubmit}>
+        <AntForm
+          layout="vertical"
+          onFinish={this.handleSubmit}
+          initialValues={{
+            category_code: panelInfo.category_code,
+            category_name: panelInfo.category_name,
+            category_desc: panelInfo.category_desc,
+          }}
+        >
           <section style={{ marginBottom: 50 }}>
             <AntRow gutter={12}>
               {this.props.actionType === "update" ? (
                 <AntRow>
-                  <div style={{float: "left"}}>
-                  <AntCol xs={24} sm={24}>
-                    <AntForm.Item
-                      label={fieldLabels.is_active}
-                      labelCol={{ span: 14 }}
-                      wrapperCol={{ span: 1 }}
-                    >
-                      {getFieldDecorator("active", {
-                        valuePropName: "checked",
-                        initialValue: panelInfo ? panelInfo.status === 1 : true
-                      })(<AntSwitch />)}
-                    </AntForm.Item>
-                  </AntCol>
+                  <div style={{ float: "left" }}>
+                    <AntCol xs={24} sm={24}>
+                      <AntForm.Item
+                        label={fieldLabels.is_active}
+                        // labelCol={{ span: 14 }}
+                        // wrapperCol={{ span: 1 }}
+                        name="active"
+                      >
+                        <AntSwitch defaultChecked={disabled} />
+                      </AntForm.Item>
+                    </AntCol>
                   </div>
-                  
                 </AntRow>
-              ) :
-              null}
-              
-              <AntForm.Item
-                label={fieldLabels.categories_code}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("categories_code", {
-                  initialValue: panelInfo.key
-                })(<AntInput disabled />)}
-              </AntForm.Item>
-
-              <AntForm.Item
-                label={fieldLabels.categories_name}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("categories_name", {
-                  initialValue: panelInfo.key
-                })(<AntInput />)}
-              </AntForm.Item>
-
-              <AntForm.Item
-                label={fieldLabels.categories_description}
-                className={panelInfo ? null : "hide"}
-              >
-                {getFieldDecorator("categories_description", {
-                  initialValue: panelInfo.key
-                })(<TextArea rows={4} />)}
-              </AntForm.Item>
+              ) : null}
+              <AntCol span={24}>
+                <AntForm.Item
+                  label={fieldLabels.categories_code}
+                  className={panelInfo ? null : "hide"}
+                  name="category_code"
+                >
+                  <AntInput disabled={disableField} />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={24}>
+                <AntForm.Item
+                  label={fieldLabels.categories_name}
+                  className={panelInfo ? null : "hide"}
+                  name="category_name"
+                >
+                  <AntInput />
+                </AntForm.Item>
+              </AntCol>
+              <AntCol span={24}>
+                <AntForm.Item
+                  label={fieldLabels.categories_description}
+                  className={panelInfo ? null : "hide"}
+                  name="category_desc"
+                >
+                  <TextArea rows={4} />
+                </AntForm.Item>
+              </AntCol>
             </AntRow>
           </section>
           <section className="drawerFooter">
@@ -285,7 +191,9 @@ PanelFormTemplate.propTypes = {
   form: PropTypes.object,
   // eslint-disable-next-line react/require-default-props
   actionType: PropTypes.string,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onClose: PropTypes.func,
 };
 
 PanelFormTemplate.defaultProps = {
@@ -295,11 +203,12 @@ PanelFormTemplate.defaultProps = {
   },
   onCancel() {
     return null;
-  }
+  },
+  onClose() {
+    return null;
+  },
 };
 
 // const PanelForm = AntForm.create()(withRouter(PanelFormTemplate));
-
-// export default PanelForm;
 
 export default withRouter(PanelFormTemplate);
