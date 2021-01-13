@@ -5,7 +5,7 @@ import { axiosPhase2API } from 'services/axios';
 import { apiGetMethod,apiPostMethod,apiPutMethod } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status'
 
-export async function fetchPatients(patientName, patientID) {
+export default async function fetchPatients(patientName, patientID) {
   let patients = [];
   try{
     const response = await axiosPhase2API({
@@ -41,3 +41,20 @@ export async function createExtractionAPI(payload) {
 
 	return createUserAccount;
 }
+
+export async function fetchHeaderData(ID) {
+  let patients = [];
+  console.log(ID,"console from integration")
+  try{
+    const response = await axiosPhase2API({
+      method: apiGetMethod,
+      url: `/bloodbank/screen_extract/by_donor_id/${ID}/` 
+    });
+    const { data } = await response;
+    patients = data
+  }
+  catch(error) {
+    Message.error();
+  }
+  return patients;
+} 

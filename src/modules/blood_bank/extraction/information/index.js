@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Typography, Table,Tabs  } from 'antd';
+import{ fetchHeaderData }from 'services/blood_bank/extraction'
 
 import ForScreening from './for_screening'
 import ForExtraction from './for_extraction'
@@ -8,52 +9,72 @@ import RightSide from './info'
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
+
 const columns = [
   {
     title: 'DATE CREATED',
-    key: 'name',
+    dataIndex: '',
   },
   {
     title: 'BAG ID',
-    dataIndex: 'age',
-    key: 'age',
+    dataIndex: 'blood_bag',
   },
   {
     title: 'STATUS',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'status'
   },
   {
     title: 'SCREENING FLAG',
-    dataIndex: 'address',
-    key: 'address',
+    dataIndex: 'screening_flag' 
   },
 ];
+
+
 
 class ExtractionInformation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      DataFromHeader:[]
      };
     this.formRef = React.createRef();
   }
 
+  async componentDidMount() {
+    const ID = this.props.location.state.donor_id
+    const response = await fetchHeaderData(ID);
+  
+    const data = response.map(item => {
+      const { status_screened, status_extracted } = item;
+      const bothSelected = status_screened && status_extracted;
+  
+      const str1 = status_screened ? 'SCREENED' : '';
+      const str2 = bothSelected ? 'SCREENED,EXTRACTED ' : '';
+      const str3 = status_extracted ? 'EXTRACTED' : ''
+      const status = str1 + str2 + str3;
+  
+      return { ...item, status };
+    })
+    this.setState({
+      DataFromHeader: data
+    })
+  }
+
   expandedRow = () => {
+    const {DataFromHeader} = this.state
     return (   
       <div>
       <Tabs defaultActiveKey="1">
-          <TabPane tab="FOR SCREENING" key="1">
-            <ForScreening  />
-          </TabPane>
-          <TabPane tab="FOR EXTRACTION" key="2">
-            <ForExtraction 
-              data={this.props.location.state}
-            />
-          </TabPane>
+        <TabPane tab="FOR SCREENING" key="1">
+          <ForScreening  />
+        </TabPane>
+        <TabPane tab="FOR EXTRACTION" key="2">
+          <ForExtraction data={this.props.location.state}/>
+        </TabPane>
       </Tabs>
       </div>
-    );
+    )
   };
 
   NextStep = () => {
@@ -62,7 +83,8 @@ class ExtractionInformation extends React.Component {
 
 	render() {
     const { data } = this.props.location.state
-    console.log(this.props.location.state.data.record,"data")
+    const { DataFromHeader } = this.state
+    console.log(DataFromHeader.status)
     return(
       <div>
         <Row>
@@ -77,6 +99,7 @@ class ExtractionInformation extends React.Component {
               <Text strong style={{marginTop:-50}} > DONOR'S ID: {this.props.location.state.donor_id} </Text>
             </div>
             <Table
+              dataSource={DataFromHeader}
               expandedRowRender={this.expandedRow}
               style={{ textTransform: "uppercase" }}
               columns={columns}
