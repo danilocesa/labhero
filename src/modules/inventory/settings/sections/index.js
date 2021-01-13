@@ -6,7 +6,6 @@ import TablePager from "shared_components/table_pager";
 import {
   Row as AntRow,
   Col as AntCol,
-  Form as AntForm,
   Table as AntTable,
   Input,
   Button,

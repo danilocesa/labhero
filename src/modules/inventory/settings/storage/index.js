@@ -4,12 +4,11 @@ import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
-  Form as AntForm,
   Table as AntTable,
   Input,
-  Button,
-  Icon
+  Button
 } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import TablePager from "shared_components/table_pager";
 import {
   drawerStorageTitleUpdate,
@@ -201,7 +200,7 @@ class InventoryStorageTemplate extends React.Component {
                     style={{ marginRight: "15px" }}
                     onClick={this.displayDrawerAdd}
                   >
-                    <Icon type="plus" />
+                    <PlusOutlined />
                     {addStorageButton}
                   </Button>
                   <TablePager handleChange={this.handleSelectChange} />

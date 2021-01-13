@@ -6,13 +6,12 @@ import TablePager from "shared_components/table_pager";
 import {
   Row as AntRow,
   Col as AntCol,
-  Form as AntForm,
   Table as AntTable,
   Input,
   Button,
-  Icon,
   Drawer
 } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 import {
   buttonLabels,
   addransactionTypeButton,
@@ -203,7 +202,7 @@ class InventorySectionTemplate extends React.Component {
                     style={{ marginRight: "15px" }}
                     onClick={this.displayDrawerAdd}
                   >
-                    <Icon type="plus" />
+                    <PlusOutlined />
                     {addransactionTypeButton}
                   </Button>
                   <TablePager handleChange={this.handleSelectChange} />

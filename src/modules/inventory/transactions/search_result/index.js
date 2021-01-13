@@ -2,13 +2,10 @@
 import React from "react";
 import { Spin, Table } from "antd";
 import {
-  globalTableSize,
   globalTableYScroll,
 } from "global_config/constant-global";
 import SearchPager from "shared_components/search_pager";
 import {
-  tableSize,
-  tableYScroll,
   tablePageSize,
 } from "modules/inventory/settings/settings";
 const columns = [

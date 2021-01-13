@@ -12,24 +12,17 @@ import {
   DatePicker,
   Select,
   Input,
-  Icon,
   Table,
-  Drawer,
 } from "antd";
+import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM MODULES
-import ClearFormFields from "shared_components/form_clear_button";
 import {
   addRestock,
-  drawerTakeoutUpdate,
   tableSize,
-  buttonLabels,
   tableYScroll,
 } from "modules/inventory/settings/settings";
-import { fieldRules } from "../settings";
 
-const { RangePicker } = DatePicker;
-
-const OPTIONS = ["Apples", "Nails", "Bananas", "Helicopters"];
+import './index.css';
 
 const columns = [
   {
@@ -130,11 +123,8 @@ class SearchPatientForm extends React.Component {
     this.setState({ value });
   };
 
-  handleAdd = () => {
+  handleAdd = (fields) => {
     const { count, data } = this.state;
-    const { form } = this.props;
-    const { getFieldsValue } = form;
-    const fields = getFieldsValue();
 
     const newData = {
       lot_code: fields.lotCode,
@@ -145,12 +135,11 @@ class SearchPatientForm extends React.Component {
       storage: fields.storage,
       supplier: fields.supplier,
     };
-    console.log(newData);
+
     this.setState({
       data: [...data, newData],
       count: count + 1,
     });
-    console.log(newData);
   };
 
   onChange = (value) => {
@@ -160,166 +149,187 @@ class SearchPatientForm extends React.Component {
   };
 
   render() {
-    const { form } = this.props;
-    const { getFieldDecorator, getFieldsValue } = form;
     const { loading } = this.state;
-    const {
-      tranNo,
-      tranDate,
-      tranType,
-      lotCode,
-      item,
-      quantity,
-      amount,
-      expiryDate,
-      supplier,
-      storage,
-    } = getFieldsValue();
-    const disabled = !(
-      tranNo ||
-      (tranNo && tranNo.length > 1) ||
-      tranDate ||
-      tranType ||
-      lotCode ||
-      tranNo ||
-      (lotCode && lotCode.length > 1) ||
-      (item && item.length > 1) ||
-      (quantity && quantity.length > 0) ||
-      (amount && amount.length > 0) ||
-      expiryDate ||
-      supplier ||
-      storage
-    );
+    // const {
+    //   tranNo,
+    //   tranDate,
+    //   tranType,
+    //   lotCode,
+    //   item,
+    //   quantity,
+    //   amount,
+    //   expiryDate,
+    //   supplier,
+    //   storage,
+    // } = getFieldsValue();
+    // const disabled = !(
+    //   tranNo ||
+    //   (tranNo && tranNo.length > 1) ||
+    //   tranDate ||
+    //   tranType ||
+    //   lotCode ||
+    //   tranNo ||
+    //   (lotCode && lotCode.length > 1) ||
+    //   (item && item.length > 1) ||
+    //   (quantity && quantity.length > 0) ||
+    //   (amount && amount.length > 0) ||
+    //   expiryDate ||
+    //   supplier ||
+    //   storage
+    // );
+    const disabled = false;
+
     const { Option } = Select;
-    const categoryData = ["Category1", "Category2", "Caegory3"];
 
     return (
-      <Form className="search-patient-form" onSubmit={this.handleSubmit}>
+      <Form 
+        labelCol={{ span: 24 }}
+        onFinish={this.handleSubmit}
+        className="restock-inv-search-form"
+      >
         <Row gutter={12} type="flex">
           <Col span={4}>
-            <Form.Item label="TRANSACTION NO.">
-              {getFieldDecorator("tranNo", {
-                rules: fieldRules.search,
-              })(<Input />)}
+            <Form.Item 
+              name="tranNo"
+              label="TRANSACTION NO."
+              className="no-padding"
+            >
+              <Input />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="TRANSACTION DATE">
-              {getFieldDecorator("tranDate", {
-                // rules: fieldRules.search
-              })(<DatePicker style={{ width: "100%" }} />)}
+            <Form.Item 
+              name="tranDate"
+              label="TRANSACTION DATE"
+              className="no-padding"
+            >
+              <DatePicker style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="TRANSACTION TYPE">
-              {getFieldDecorator("tranType", {
-                rules: fieldRules.search,
-              })(
-                <Select>
-                  <Option value="TRANSACTION TYPE 1">TRANSACTION TYPE 1</Option>
-                  <Option value="TRANSACTION TYPE 2">TRANSACTION TYPE 2</Option>
-                  <Option value="TRANSACTION TYPE 3">TRANSACTION TYPE 3</Option>
-                </Select>
-              )}
+            <Form.Item 
+              name="tranType"
+              label="TRANSACTION TYPE"
+              className="no-padding"
+            >
+              <Select>
+                <Option value="TRANSACTION TYPE 1">TRANSACTION TYPE 1</Option>
+                <Option value="TRANSACTION TYPE 2">TRANSACTION TYPE 2</Option>
+                <Option value="TRANSACTION TYPE 3">TRANSACTION TYPE 3</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="LOT CODE">
-              {getFieldDecorator("lotCode", {
-                rules: fieldRules.search,
-              })(<Input />)}
+            <Form.Item 
+              name="lotCode"
+              label="LOT CODE"
+              className="no-padding"
+            >
+              <Input />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="ITEM">
-              {getFieldDecorator("item", {
-                rules: fieldRules.search,
-              })(<Input />)}
+            <Form.Item 
+              name="item"
+              label="ITEM"
+              className="no-padding"
+            >
+              <Input />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="QUANTITY">
-              {getFieldDecorator("quantity", {
-                rules: fieldRules.search,
-              })(<Input />)}
+            <Form.Item 
+              name="quantity"
+              label="QUANTITY"
+              className="no-padding"
+            >
+              <Input />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="AMOUNT">
-              {getFieldDecorator("amount", {
-                rules: fieldRules.search,
-              })(<Input />)}
+            <Form.Item 
+              name="amount"
+              label="AMOUNT"
+              className="no-padding"
+            >
+              <Input />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="EXPIRY DATE">
-              {getFieldDecorator("expiryDate", {
-                // rules: fieldRules.date
-              })(<DatePicker style={{ width: "100%" }} />)}
+            <Form.Item 
+              name="expiryDate"
+              label="EXPIRY DATE"
+              className="no-padding"
+            >
+              <DatePicker style={{ width: "100%" }} />
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="SUPPLIER">
-              {getFieldDecorator("supplier", {
-                rules: fieldRules.search,
-              })(
-                <Select>
-                  <Option value="SUPPLIER 1">SUPPLIER 1</Option>
-                  <Option value="SUPPLIER 2">SUPPLIER 2</Option>
-                  <Option value="SUPPLIER 3">SUPPLIER 3</Option>
-                </Select>
-              )}
+            <Form.Item 
+              name="supplier"
+              label="SUPPLIER"
+              className="no-padding"
+            >
+              <Select>
+                <Option value="SUPPLIER 1">SUPPLIER 1</Option>
+                <Option value="SUPPLIER 2">SUPPLIER 2</Option>
+                <Option value="SUPPLIER 3">SUPPLIER 3</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={4}>
-            <Form.Item label="STORAGE">
-              {getFieldDecorator("storage", {
-                rules: fieldRules.section,
-              })(
-                <Select>
-                  <Option value="STORAGE 1">STORAGE 1</Option>
-                  <Option value="STORAGE 2">STORAGE 2</Option>
-                  <Option value="STORAGE 3">STORAGE 3</Option>
-                </Select>
-              )}
+            <Form.Item 
+              name="storage"
+              label="STORAGE"
+              className="no-padding"
+            >
+              <Select>
+                <Option value="STORAGE 1">STORAGE 1</Option>
+                <Option value="STORAGE 2">STORAGE 2</Option>
+                <Option value="STORAGE 3">STORAGE 3</Option>
+              </Select>
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item style={{ marginTop: 20, float: "right" }}>
-              <Row>
-                <ClearFormFields form={this.props.form} />
-                <Button
-                  className="form-button"
-                  shape="round"
-                  type="primary"
-                  htmlType="submit"
-                  loading={loading}
-                  style={{ width: 120 }}
-                  disabled
-                >
-                  VOID
-                </Button>
-                <Button
-                  type="primary"
-                  shape="round"
-                  style={{ marginRight: "15px" }}
-                  onClick={this.handleAdd}
-                  disabled={disabled}
-                >
-                  <Icon />
-                  {addRestock}
-                </Button>
-              </Row>
-            </Form.Item>
+            <div style={{ marginTop: 32 }}>
+              <Button
+                shape="round" 
+                style={{ width: 120 }}
+                onClick={this.clearSearch}
+              >
+                CLEAR
+              </Button>
+              <Button
+                className="form-button"
+                shape="round"
+                type="primary"
+                htmlType="submit"
+                loading={loading}
+                style={{ width: 120, marginLeft: 15 }}
+                disabled
+              >
+                VOID
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                style={{ marginLeft: 15 }}
+                onClick={this.handleAdd}
+                disabled={disabled}
+              >
+                <PlusOutlined />
+                {addRestock}
+              </Button>
+            </div>
           </Col>
           <Table
-            style={{ textTransform: "uppercase", marginTop: 30 }}
+            style={{ textTransform: "uppercase", marginTop: 10 }}
             size={tableSize}
             columns={columns}
             // eslint-disable-next-line react/prop-types
             dataSource={this.state.data}
             scroll={{ y: tableYScroll }}
-            rowKey={(record) => record.examItemID}
+            rowKey={(record) => record.lot_code}
             onRow={(record) => {
               return {
                 onDoubleClick: () => {
@@ -334,6 +344,5 @@ class SearchPatientForm extends React.Component {
   }
 }
 
-// export default Form.create()(SearchPatientForm);
 
 export default SearchPatientForm;

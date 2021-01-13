@@ -1,0 +1,7 @@
+.lots-per-inventory-form .ant-form-item {
+  margin-bottom: 5px;
+}
+
+.lots-per-inventory-form .no-padding .ant-col-24.ant-form-item-label {
+  padding: 0px;
+}
