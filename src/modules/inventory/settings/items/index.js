@@ -7,13 +7,11 @@ import {
   Drawer,
   Row as AntRow,
   Col as AntCol,
-  Form as AntForm,
   Button as AntButton,
   Table as AntTable,
-  Input,
-  Icon
+  Input
 } from "antd";
-
+import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM MODULES
 import TablePager from "shared_components/table_pager";
 import {
@@ -225,7 +223,7 @@ class ItemsTemplate extends React.Component {
                     style={{ marginRight: "15px" }}
                     onClick={this.displayDrawerAdd}
                   >
-                    <Icon type="plus" />
+                    <PlusOutlined />
                     {addItems}
                   </AntButton>
                   <TablePager handleChange={this.handleSelectChange} />
@@ -253,7 +251,7 @@ class ItemsTemplate extends React.Component {
               title={this.state.drawerTitle}
               visible={this.state.isDrawerVisible}
               onClose={this.onClose}
-              width="70%"
+              width="50%"
               destroyOnClose
             >
               <ItemsForm
@@ -270,8 +268,5 @@ class ItemsTemplate extends React.Component {
   }
 }
 
-// const Items = AntForm.create()(ItemsTemplate);
-
-// export default Items;
 
 export default ItemsTemplate;

@@ -4,4 +4,8 @@
 
 .inventory-transaction-drawer .ant-form-item {
     margin-bottom: 5px;
-  }
+}
+
+.inventory-transaction-drawer .no-padding .ant-col-24.ant-form-item-label {
+    padding: 0px;
+}

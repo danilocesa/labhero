@@ -5,96 +5,87 @@ import React from 'react';
 import { Form, Button, Row, Col, DatePicker, Select, Input } from 'antd';
 // CUSTOM MODULES
 import ClearFormFields from 'shared_components/form_clear_button';
-import { 
+import { fieldRules } from '../settings';
 
 
-	fieldRules
 
-} from '../settings';
 class SearchPatientForm extends React.Component {
 	state = {
 		loading: false
 	};
 	
-	handleSubmit = e => {
-		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-		  if (!err) {
-			console.log('Received values of form: ', values);
-		  }
-		});
-	  };
-
-
+	handleSubmit = () => {
+		
+	};
 
 	render() {
-		const { form } = this.props;
-		const { getFieldDecorator } = form;
-		const { loading } = this.state;
 		return (
-			<Form className="search-patient-form" onSubmit={this.handleSubmit}>
-				<Row gutter={12} type="flex" justify="center">
-				<Col span={6}>
-						<Form.Item label="SECTION">
-							{getFieldDecorator('section', { 
-								rules: fieldRules.section
-							})(
+			<Form 
+				className="search-patient-form" 
+				onFinish={this.handleSubmit}
+			>
+				<Row gutter={12} justify="center">
+					<Col span={6}>
+						<Form.Item 
+							name="section"
+							label="SECTION"
+							rules={fieldRules.section}
+						>
 							<DatePicker style={{ width: '100%' }} />
-							)}
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="ITEM CODE">
-							{getFieldDecorator('item_code', { 
-								rules: fieldRules.item_code
-							})(
-								<Select/>
-							)}
+						<Form.Item 
+							name="item_code"
+							label="ITEM CODE"
+							rules={fieldRules.item_code}
+						>
+							<Select/>
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="ITEM NAME">
-							{getFieldDecorator('item_name', { 
-								rules: fieldRules.item_name
-							})(
-								<Input 	/>
-							)}
+						<Form.Item 
+							name="item_name"
+							label="ITEM NAME"
+							rules={fieldRules.item_name}
+						>
+							<Input 	/>
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="UNIT">
-							{getFieldDecorator('unit', { 
-								rules: fieldRules.unit
-							})(
-								<Input />
-							)}
+						<Form.Item 
+							name="unit" 
+							label="UNIT"
+							rules={fieldRules.unit}
+						>
+							<Input />
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="THRESHOLD">
-							{getFieldDecorator('threshold', { 
-								rules: fieldRules.threshold
-							})(
-								<Input />
-							)}
+						<Form.Item 
+							name="threshold"
+							label="THRESHOLD"
+							rules={fieldRules.threshold}
+						>
+							<Input />
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="THRESHOLD">
-							{getFieldDecorator('thresholds', { 
-								rules: fieldRules.thresholds
-							})(
-								<Input />
-							)}
+						<Form.Item 
+							name="thresholds" 
+							label="THRESHOLD"
+							rules={fieldRules.thresholds}
+						>
+							<Input />
 						</Form.Item>
 					</Col>
 					<Col span={4}>
-						<Form.Item label="SUPPLY">
-							{getFieldDecorator('supply', { 
-								rules: fieldRules.supply
-							})(
-								<Input />
-							)}
+						<Form.Item 
+							name="supply"
+							label="SUPPLY"
+							rules={fieldRules.supply}
+						>
+							<Input />
 						</Form.Item>
 					</Col>
 					<Col xs={24} sm={24} md={6} lg={6}>
@@ -119,5 +110,4 @@ class SearchPatientForm extends React.Component {
 	}
 }
 
-// export default Form.create()(SearchPatientForm);
 export default SearchPatientForm;

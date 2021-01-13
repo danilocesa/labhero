@@ -21,11 +21,9 @@ class Footer extends React.Component {
             shape="round"
             type="primary"
             htmlType="submit"
-            style={{ width: 140, fontSize: 12, height: 35, float: "right" }}
+            style={{ fontSize: 12, height: 35, float: "right" }}
           >
-            PROCESS
-            <br />
-            TRANSACTION
+            PROCESS TRANSACTION
           </Button>
         </Col>
       </Row>
