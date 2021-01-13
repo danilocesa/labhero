@@ -213,7 +213,6 @@ class Address extends React.Component {
 
 	render() {
 		const { visible, drawerTitle,drawerButton, addressType, label, title } = this.state;
-		const { getFieldDecorator } = this.props.form;
 		// eslint-disable-next-line no-nested-ternary
 		const selectedColumns = addressType === "Province" 
 				? provinceColumns : (addressType === "City" 
@@ -236,10 +235,6 @@ class Address extends React.Component {
 				<section style={{ textAlign: 'center', marginTop: 5 }}>
 					<PageTitle pageTitle="ADDRESS" />
 						<Row style={{ marginTop: 30 }}>
-						{getFieldDecorator('address', {
-								initialValue: addressType,
-								rules: "required",
-							})(
 								<Select
 										style={{ width: 300 }}
 										onChange={this.onAddressChange}
@@ -248,7 +243,6 @@ class Address extends React.Component {
 										<Option value="Province">Province</Option>
 										<Option value="City">City</Option>
 								</Select>
-						)};
 						</Row>
 				</section>	
 					<div className="settings-user-table-action">
@@ -337,7 +331,5 @@ class Address extends React.Component {
 		)
 	}
 }
-
-// export default Form.create()(withRouter(Address));
 
 export default withRouter(Address);

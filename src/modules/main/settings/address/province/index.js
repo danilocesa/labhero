@@ -32,14 +32,9 @@ class ProvinceListComponent extends React.Component {
 
 	render(){
 		const { form, placeholder, selectedProvince, onChange } = this.props;
-		const { getFieldDecorator } = form;
 		const { provinceList, loading } = this.state;
 		
 		const provinceSelections = (
-			getFieldDecorator('provinces', { 
-				rules: FIELD_RULES,
-				initialValue: provinceList.length === 0 ? null : selectedProvince
-			})(
 				<Select
 					loading={loading}
 					placeholder={placeholder}
@@ -52,7 +47,6 @@ class ProvinceListComponent extends React.Component {
 						</Option>
 					))}
 				</Select>
-			)
 		);
 
 		return (

@@ -8,15 +8,6 @@ import RightSide from './info'
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-const dataSource = [
-  {
-    key: '1',
-    name: 'Mike',
-    age: 32,
-    address: '10 Downing Street',
-  }
-];
-
 const columns = [
   {
     title: 'DATE CREATED',
@@ -88,7 +79,6 @@ class ExtractionInformation extends React.Component {
             <Table
               expandedRowRender={this.expandedRow}
               style={{ textTransform: "uppercase" }}
-              dataSource={dataSource}
               columns={columns}
               pagination={false} 
             /> 

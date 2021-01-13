@@ -45,19 +45,12 @@ class TownList extends React.Component {
 
 	render(){
 		const { form, placeholder, disabled } = this.props;
-		const { getFieldDecorator } = form;
 		const { townList, loading } = this.state;
 		const isDisabled = disabled || townList.length < 1;
 
 		return (
 			<Form.Item label="BARANGAY" className="gutter-box">
 				<div className="treeselect-address">
-					{getFieldDecorator('town', { 
-						rules: [{
-							required: !isDisabled,
-							message: errorMessage.required
-						}] 
-					})(	
 						<Select
 							loading={loading}
 							placeholder={placeholder}
@@ -70,7 +63,6 @@ class TownList extends React.Component {
 								</Option>
 							))}
 						</Select>
-					)}
 				</div>
 			</Form.Item>
 		);
