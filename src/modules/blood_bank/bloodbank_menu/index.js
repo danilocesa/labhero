@@ -14,13 +14,13 @@ import './bloodbank-menu.css';
 const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/extraction/screening',
-		label: 'EXTRACTION/SCREENING',
+		link: '/bloodbank/donor_registration',
+		label: 'DONOR REGISTRATION',
 	},
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/donor_registration',
-		label: 'DONOR REGISTRATION',
+		link: '/bloodbank/extraction/screening',
+		label: 'EXTRACTION/SCREENING',
 	},
 	{
 		image: BBaddBloodReqIcon,
@@ -32,11 +32,11 @@ const settingsItemData = [
 		link: '../bloodbank/blood_recipient',
 		label: 'BLOOD RECIPIENT'
 	},
-	{
-		image: BBsearchDonorIcon,
-		link: '/bloodbank/search_donor',
-		label: 'SEARCH DONOR'
-	},
+	// {
+	// 	image: BBsearchDonorIcon,
+	// 	link: '/bloodbank/search_donor',
+	// 	label: 'SEARCH DONOR'
+	// },
 	{
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
