@@ -22,23 +22,26 @@ const { Text } = Typography;
 
 
 class FillUpForm extends React.Component {
-
   constructor(props) {
-		super(props);
+    super(props);
+    
+    const { label } = props.location.state;
+
     this.state = {
-      ButtonName:"",
-      record:[]
+      ButtonName: label,
+      record:[],
+      disabled: true
     };
   this.formRef = React.createRef();
   }
   
   componentDidMount() {
-    const {label} = this.props.location.state
-    const {data } = this.props.location.state
-    console.log("FillUpForm -> componentDidMount -> data", data)
+    const { label } = this.props.location.state;
+    const { data } = this.props.location.state;
     
+
+
     this.setState({ 
-      ButtonName: label,
       record:data
     });
 	}
@@ -55,6 +58,7 @@ class FillUpForm extends React.Component {
   } 
 
   onFinish = async values => {
+    console.log(values,"values")
     const { ButtonName } = this.state;
     const dateFormat = values.dateOfBirth.format('YYYY-MM-DD')
     const Data = {
@@ -125,16 +129,21 @@ class FillUpForm extends React.Component {
 		const { setFieldsValue } = this.formRef.current;
 		const Age = this.computeAge(date);
 
-		setFieldsValue({ Age });
+    setFieldsValue({ Age });
   }
-  
+   
   disabledDate = (current) => {
 		// Prevent select days after today and today
 		return current && current > moment().endOf('day');
   }
  
   render() {
+    const UpdateAge = this.computeAge(this.props.location.state.birth_date);
     const { ButtonName } = this.state
+    console.log(ButtonName);
+    const dateFormat = 'YYYY/MM/DD';
+    console.log(this.props.location.state,"DATE");
+
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
@@ -145,18 +154,20 @@ class FillUpForm extends React.Component {
           </Steps>
         <Form 
           initialValues={{ 
-            donor_id:this.props.location.state.donor_id,
-            First_name:this.props.location.state.first_name,
-            Middle_name:this.props.location.state.middle_name,
-            Last_name:this.props.location.state.last_name,
-            suffix:this.props.location.state.suffix,
-            Age:this.props.location.state.age,
-            Gender:this.props.location.state.gender,
-            mobile_no:this.props.location.state.mobile_no,
-            town:this.props.location.state.barangay,
-            house:this.props.location.state.address_line_1,
-            street_name:this.props.location.state.address_line_2,
-            provinces:this.props.location.state.provinces,
+            donor_id: this.props.location.state.donor_id,
+            First_name: this.props.location.state.first_name,
+            Middle_name: this.props.location.state.middle_name,
+            Last_name: this.props.location.state.last_name,
+            suffix: this.props.location.state.suffix,
+            Gender: this.props.location.state.gender,
+            mobile_no: this.props.location.state.mobile_no,
+            town: this.props.location.state.barangay_name,
+            house: this.props.location.state.address_line_1,
+            street_name: this.props.location.state.address_line_2,
+            provinces: this.props.location.state.province_name,
+            city: this.props.location.state.city_name,
+            Age: UpdateAge,
+            dateOfBirth: ButtonName==="UPDATE" ? moment(this.props.location.state.birth_date, 'YYYY-MM-DD') : ''
           }}
           ref={this.formRef}
           className="clr-fillup-form" 
@@ -186,12 +197,16 @@ class FillUpForm extends React.Component {
                   <Form.Item 
                     label="FIRST NAME"
                     name='First_name'
+                    rules={[{ required: true, message: 'Please input your First Name!' }]}
                   >
-                    <Input />
+                    <Input 
+                    
+                    />
                   </Form.Item>
                   <Form.Item 
                     label="MIDDLE NAME"
                     name='Middle_name'
+                    rules={[{ required: true, message: 'Please input your Middle Name!' }]}
                   >
                     <Input />
                   </Form.Item>
@@ -200,6 +215,7 @@ class FillUpForm extends React.Component {
                     <Form.Item 
                     label="LAST NAME"
                     name='Last_name'
+                    rules={[{ required: true, message: 'Please input your Last Name!' }]}
                     >
                       <Input />
                     </Form.Item>
@@ -214,19 +230,38 @@ class FillUpForm extends React.Component {
                   </Col>
                 </Row>
                 <Row gutter={12}>
-                  <Col span={18}>
-                    <Form.Item 
-                      name="dateOfBirth" 
-                      label={formLabels.dateOfBirth} 
-                    >
-                      <DatePicker 
-                        format="YYYY-MM-DD"
-                        disabledDate={this.disabledDate}
-                        style={{ width: '100%' }}
-                        onChange={this.onDateChange}
-                      />
-                    </Form.Item>
-                  </Col>
+                <Col span={18}>
+                {
+                  ButtonName == "UPDATE"
+                  ? 
+                    (		
+                      <Form.Item 
+                        name="dateOfBirth" 
+                        label={formLabels.dateOfBirth} 
+                      >
+                        <DatePicker 
+                          style={{ width: '100%' }}
+                          format="MM-DD-YYYY"
+                          disabled
+                          //defaultValue={moment(this.props.location.state.birth_date, dateFormat)}
+                        />
+                      </Form.Item>
+                    )	
+                  : 
+                    (
+                      <Form.Item 
+                        name="dateOfBirth" 
+                        label={formLabels.dateOfBirth} 
+                      >
+                        <DatePicker 
+                          format="MM-DD-YYYY"
+                          onChange={this.onDateChange}
+                          style={{ width: '100%' }}
+                        />
+                      </Form.Item>
+                    )
+                }
+                </Col>
                   <Col span={6}>
                     <Form.Item 
                         name="Age" 
@@ -240,19 +275,36 @@ class FillUpForm extends React.Component {
                     </Form.Item>
                   </Col>
                 </Row> 
-                <Form.Item 
-                  label="PATIENT'S GENDER"
-                  name='Gender'
-                >
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="M">MALE</Radio.Button>
-                    <Radio.Button value="F">FEMALE</Radio.Button>
-                  </Radio.Group>
-                </Form.Item>  
+
+                {ButtonName == "UPDATE"? (		
+                  <Form.Item 
+                    label="PATIENT'S GENDER"
+                    name='Gender'
+                    rules={[{ required: true, message: 'Please input your Gender!' }]}
+                  >
+                    <Radio.Group buttonStyle="solid">
+                      <Radio.Button value="M" disabled>MALE</Radio.Button>
+                      <Radio.Button value="F" disabled>FEMALE</Radio.Button>
+                    </Radio.Group>
+                  </Form.Item>
+                  )	
+                  :
+                  <Form.Item 
+                    label="PATIENT'S GENDER"
+                    name='Gender'
+                    rules={[{ required: true, message: 'Please input your Gender!' }]}
+                  >
+                    <Radio.Group buttonStyle="solid">
+                      <Radio.Button value="M">MALE</Radio.Button>
+                      <Radio.Button value="F">FEMALE</Radio.Button>
+                    </Radio.Group>
+                  </Form.Item>
+                }
                 <Form.Item 
                   label="CONTACT NUMBER" 
                   style={{marginTop:'-5px'}}
                   name='mobile_no'
+                  rules={[{ required: true, message: 'Please input your Contact Number!' }]}
                 >
                   <NumberInput addonBefore="+ 63" />
                 </Form.Item> 
@@ -263,14 +315,26 @@ class FillUpForm extends React.Component {
             </Col>
             <Col sm={7} md={7}>
               <div className="right-form" style={{marginTop:'40px'}}>
-                <Form.Item name='province'>
-                <ProvinceList 
-                  form={this.formRef}
-                  placeholder={selectDefaultOptions}
-                  onChange={this.onProvinceChange}
-                />
+                <Form.Item 
+                  name='provinces' 
+                   rules={[{ 
+                    required: true, 
+                    message: 'Please input your Town!' 
+                  }]}   
+                >
+                  <ProvinceList 
+                    form={this.formRef}
+                    placeholder={selectDefaultOptions}
+                    onChange={this.onProvinceChange}
+                  />
                 </Form.Item>
-                <Form.Item shouldUpdate>
+                <Form.Item  
+                  rules={[{ 
+                    required: true,
+                     message: 'Please input your City!' 
+                    }]} 
+                  shouldUpdate
+                >
                   {(form) => {
                     return (
                       <CityList 
@@ -282,24 +346,37 @@ class FillUpForm extends React.Component {
                     );
                   }}
                 </Form.Item>
-                <Form.Item shouldUpdate>
+                <Form.Item 
+                  rules={[{ 
+                    required: true, 
+                    message: 'Please input your Town!' 
+                  }]} 
+                  shouldUpdate
+                >
                   {(form) => { 
                     return (
                       <TownList 
                         placeholder={selectDefaultOptions}
                         cityValue={form.getFieldValue('city')}
+                        fieldName='city'
                       />
                     );
                   }}
                 </Form.Item>
-                <Form.Item shouldUpdate>
+                <Form.Item   
+                  rules={[{ 
+                    required: true, 
+                    message: 'Please input your Address!'
+                  }]} 
+                  shouldUpdate
+                >
                   {(form) => {
                     return (
                       <HouseAddress 
                         form={form}
                         townValue={form.getFieldValue('town')}
                         fieldLabel={formLabels.unitNo.label}
-                        fieldName={formLabels.unitNo.fieldName}
+                        fieldName='house'
                       />
                     )
                   }}
@@ -310,7 +387,7 @@ class FillUpForm extends React.Component {
                   name='street_name'
                 >
                   <Input  
-                  placeholder=" Appartment, Unit, Building Floor, etc"
+                    placeholder=" Appartment, Unit, Building Floor, etc"
                   />
                 </Form.Item>
               </div>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {  
 	Form, 
 	Input, 
-	Select,
+	InputNumber ,
 	Switch,
 	Button 
 } from 'antd';
@@ -106,7 +106,7 @@ class AddForm extends React.Component {
 						name='question_order'
 						style={{ marginTop:'-15px'}}
 					>									
-							<Input style={{  textTransform: 'uppercase' }}  />
+							<InputNumber  style={{  textTransform: 'uppercase' }}  />
 					</Form.Item>
 					<Form.Item 
 						label="QUESTION" 
@@ -120,7 +120,7 @@ class AddForm extends React.Component {
 						name='ques_type'
 						style={{ marginTop:'-20px'}}
 					>
-								<TextArea rows={5} />
+								<InputNumber />
 					</Form.Item>
 				</div>			
 					<section className="drawerFooter">

@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react'
-import {  Switch, Form, Input, Button} from 'antd'
+import {  Switch, Form, Input, Button,InputNumber } from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'

@@ -67,17 +67,15 @@ export async function createHealthInformation(Data) {
 }
 
 export async function updateDonor(Data) {
+  console.log(Data,"DATA from API")
   let updateBloodGroup = [];
   const bloodGroupId = Data.donor_id;
-  console.log("updateDonor -> bloodGroupId", bloodGroupId)
-
 try{
   const content = {
     method: apiPutMethod,
-    url:`bloodbank/donor/update/${bloodGroupId}/`,
+    url:`/bloodbank/health_info/update/${bloodGroupId}/`,
     data: Data
   }
-
   const response = await axiosPhase2API(content);
   // @ts-ignore
   updateBloodGroup = await response;

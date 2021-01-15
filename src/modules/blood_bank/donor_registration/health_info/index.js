@@ -203,17 +203,16 @@ class HealthInformation extends React.Component {
               <div style={{marginLeft:90}}>
                 {this.generateAdditionalFields()}
               </div>
-              <div style={{marginTop:40, marginRight:50}}>
+              <div style={{marginTop:40, float: 'right'}}>
               <Form.Item>
                 <Button 
                   type="primary" 
-                  style={{float: 'right'}}
                   htmlType="submit" 
                 >
                   Submit
                 </Button>
               </Form.Item>
-                <Button type="link" style={{float: 'right'}}>
+                <Button type="link" >
                   Back
                 </Button>
               </div>

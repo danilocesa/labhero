@@ -79,7 +79,6 @@ class BloodGroupForm extends React.Component {
 								<Form.Item 
 									label="ACTIVE" 
 									{...layout} 
-									valuePropName='checked' 
 									name='is_active'
 									style={{marginBottom:'-40px'}}
 								>
