@@ -27,11 +27,11 @@ const settingsItemData = [
 		link: '/bloodbank/blood_request',
 		label: 'ADD BLOOD BANK REQUEST'
 	},
-	{
-		image: BBrecipientIcon,
-		link: '../bloodbank/blood_recipient',
-		label: 'BLOOD RECIPIENT'
-	},
+	// {
+	// 	image: BBrecipientIcon,
+	// 	link: '../bloodbank/blood_recipient',
+	// 	label: 'BLOOD RECIPIENT'
+	// },
 	{
 		image: BBsearchDonorIcon,
 		link: '/bloodbank/search_donor',
@@ -41,6 +41,11 @@ const settingsItemData = [
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
 		label: 'SETTINGS',
+	},
+	{
+		image: BBrecipientIcon,
+		link: '/bloodbank/blood_inventory',
+		label: 'BLOOD INVENTORY',
 	},
 ]
 
