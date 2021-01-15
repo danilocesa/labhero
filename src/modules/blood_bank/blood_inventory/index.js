@@ -96,7 +96,7 @@ class Extraction extends React.Component {
     const { bagID, patientName } = getFieldsValue();
     let patients = [];
     this.setState({ loading: true });
-    patients = await fetchPatients(patientName, bagID);
+    // patients = await fetchPatients(patientName, bagID);
 
     this.setState({
       loading: false,
