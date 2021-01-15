@@ -27,7 +27,7 @@ export async function createBloodGroupAPI(payload) {
   try{
     const axiosResponse = await axiosPhase2API({
       method: apiPostMethod,
-      url: `bloodbank/donor/create/`,
+      url: `bloodbank/bloodgroup/create/`,
       data: payload
 		}).then(response => {
       return response;
