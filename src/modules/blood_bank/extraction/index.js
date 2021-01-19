@@ -117,7 +117,7 @@ class Extraction extends React.Component {
 
   render() {
     const { Item,loading,pageSize } = this.state
-    const items = Item.length > pageSize ? pageSize : Item.length;
+
     return (
       <div>
        <PageTitle pageTitle="EXTRACTION/SCREENING"  />

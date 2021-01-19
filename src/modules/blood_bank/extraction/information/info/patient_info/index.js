@@ -5,8 +5,6 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
-// CUSTOM MODULES
-import computeAge from 'shared_components/age_computation'
 
 
 const colLayout = {
@@ -34,8 +32,10 @@ class PatientInfo extends React.Component {
 
   render() {
 		const {data} = this.props
-    console.log("PatientInfo -> render -> data", data)
-    return (
+
+		console.log(data);
+
+		return (
 	    <div className="patient-info-shared">
 			{/* Personal Information */}
 			<div className="info-container">

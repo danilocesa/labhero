@@ -35,13 +35,20 @@ class ForScreening extends React.Component {
         <Table 
           columns={columns} 
         />
-        <div style={{ padding:50 }}>
-          REMARK
-          <TextArea rows={4} style={{height:90}} />
+        <div>
+          REMARKS
+          <TextArea rows={6} />
         </div>
-        <Button type="primary" shape="round" style={{float: 'right', marginTop:-20}} htmlType="submit">
-          EXTRACT
-        </Button>
+        <div style={{ marginTop: 20, textAlign: 'right' }}>
+          <Button 
+            type="primary" 
+            shape="round" 
+            htmlType="submit"
+            style={{ width: 120 }}
+          >
+            EXTRACT
+          </Button>
+        </div>
       </div>
     )
   }

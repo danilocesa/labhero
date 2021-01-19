@@ -1,33 +1,33 @@
 import React from 'react';
-import { Row, Col, Typography, Table,Tabs  } from 'antd';
-import{ fetchHeaderData }from 'services/blood_bank/extraction'
+import { Row, Col, Typography, Table, Tabs  } from 'antd';
+import{ fetchHeaderData }from 'services/blood_bank/extraction';
 
-import ForScreening from './for_screening'
-import ForExtraction from './for_extraction'
+import ForScreening from './for_screening_tab';
+import ForExtraction from './for_extraction_tab';
 import RightSide from './info'
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
 
-const columns = [
-  {
-    title: 'DATE CREATED',
-    dataIndex: '',
-  },
-  {
-    title: 'BAG ID',
-    dataIndex: 'blood_bag',
-  },
-  {
-    title: 'STATUS',
-    dataIndex: 'status'
-  },
-  {
-    title: 'SCREENING FLAG',
-    dataIndex: 'screening_flag' 
-  },
-];
+// const columns = [
+//   {
+//     title: 'DATE CREATED',
+//     dataIndex: '',
+//   },
+//   {
+//     title: 'BAG ID',
+//     dataIndex: 'blood_bag',
+//   },
+//   {
+//     title: 'STATUS',
+//     dataIndex: 'status'
+//   },
+//   {
+//     title: 'SCREENING FLAG',
+//     dataIndex: 'screening_flag' 
+//   },
+// ];
 
 
 
@@ -61,30 +61,14 @@ class ExtractionInformation extends React.Component {
     })
   }
 
-  expandedRow = () => {
-    const {DataFromHeader} = this.state
-    return (   
-      <div>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="FOR SCREENING" key="1">
-          <ForScreening  />
-        </TabPane>
-        <TabPane tab="FOR EXTRACTION" key="2">
-          <ForExtraction data={this.props.location.state}/>
-        </TabPane>
-      </Tabs>
-      </div>
-    )
-  };
-
   NextStep = () => {
     window.location.assign('/bloodbank/extraction/screening');
   };
 
 	render() {
-    const { data } = this.props.location.state
-    const { DataFromHeader } = this.state
-    console.log(DataFromHeader.status)
+    const { data, donor_id } = this.props.location.state;
+    // const { DataFromHeader } = this.state;
+
     return(
       <div>
         <Row>
@@ -96,15 +80,24 @@ class ExtractionInformation extends React.Component {
           <Col span={18} style={{marginLeft:20}}>
             <div>
               <Title level={2}>{this.props.location.state.last_name}, {this.props.location.state.first_name}</Title>
-              <Text strong style={{marginTop:-50}} > DONOR'S ID: {this.props.location.state.donor_id} </Text>
+              {/* <Text strong style={{marginTop:-50}} > DONOR'S ID: {this.props.location.state.donor_id} </Text> */}
             </div>
-            <Table
+            {/* <Table
               dataSource={DataFromHeader}
-              expandedRowRender={this.expandedRow}
               style={{ textTransform: "uppercase" }}
               columns={columns}
               pagination={false} 
-            /> 
+            />  */}
+            <div>
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="FOR SCREENING" key="1">
+                  <ForScreening  />
+                </TabPane>
+                <TabPane tab="FOR EXTRACTION" key="2">
+                  <ForExtraction donorID={donor_id}/>
+                </TabPane>
+              </Tabs>
+            </div>
           </Col>
         </Row>
         

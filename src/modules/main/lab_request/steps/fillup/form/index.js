@@ -551,8 +551,5 @@ BaseForm.propTypes = {
 	isLoading: PropTypes.bool.isRequired
 };
 
-// const FillupForm = Form.create()(withRouter(BaseForm));
-
-// export default FillupForm;
 
 export default withRouter(BaseForm);
