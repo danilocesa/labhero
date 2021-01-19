@@ -11,55 +11,49 @@ import {
 } from "antd";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
+import { buttonLabels, fieldLabels } from "../settings";
 
-import { buttonLabels, fieldLabels } from "../../settings";
+// import "./index.css";
 
-// CSS
-import "./category_form.css";
-
-const { TextArea } = AntInput;
-class CategoriesForm extends React.Component {
+class BloodInventoryDetails extends React.Component {
+  // eslint-disable-next-line no-useless-constructor
   constructor(props) {
     super(props);
-
-    this.state = {
-      loading: false,
-    };
-
-    this.formRef = React.createRef();
   }
 
-  
-
-  componentDidMount() {
-  
-  }
-
-
-  onSubmit = e => {
-  
+  state = {
+    loading: false,
   };
 
+  componentDidMount() {
+
+  }
+ 
+  onSubmit = () => {
+   
+  };
 
   render() {
     const { drawerButton } = this.props;
 
     return (
-      <div className="inventory-category-form">
+      <div className="lots-per-inventory-form">
         <AntForm 
-          ref={this.formRef}
           labelCol={{ span: 24 }}
-          onFinish={this.onSubmit}
+          labelAlign="left"
+          onSubmit={this.onSubmit}
         >
           <section style={{ marginBottom: 50 }}>
             {
               this.props.actionType === "update" 
-              ? (
+              ? 
+                (
                   <div style={{float: "left"}}>
                     <AntForm.Item
                       name="active"
                       label={fieldLabels.is_active}
                       labelCol={{ span: 14 }}
+                      wrapperCol={{ span: 1 }}
                     >
                       <AntSwitch />
                     </AntForm.Item>
@@ -67,30 +61,63 @@ class CategoriesForm extends React.Component {
                 ) 
               : null
             }
-            
+
             <AntForm.Item
-              name="categories_code"
-              label={fieldLabels.categories_code}
+              name="bagID"
+              label="BAG ID"
               className="no-padding"
             >
               <AntInput disabled />
             </AntForm.Item>
 
             <AntForm.Item
-              name="categories_name"
-              label={fieldLabels.categories_name}
+              name="bloodType"
+              label="BLOOD TYPE"
               className="no-padding"
             >
-              <AntInput />
+              <AntInput  />
             </AntForm.Item>
 
             <AntForm.Item
-              name="categories_description"
-              label={fieldLabels.categories_description}
+              name="storage"
+              label="STORAGE"
               className="no-padding"
             >
-              <TextArea rows={4} />
+              <AntInput  />
             </AntForm.Item>
+
+            <AntForm.Item
+              name="dateExtracted"
+              label="DATE EXTRACTED"
+              className="no-padding"
+            >
+              <AntInput  />
+            </AntForm.Item>
+
+            <AntForm.Item
+              name="expirationDate"
+              label="EXPIRATION DATE"
+              className="no-padding"
+            >
+              <AntInput  />
+            </AntForm.Item>
+
+            <AntForm.Item
+              name="hospitalName"
+              label="HOSPITAL"
+              className="no-padding"
+            >
+              <AntInput  />
+            </AntForm.Item>
+
+            <AntForm.Item
+              name="donorID"
+              label="DONOR ID"
+              className="no-padding"
+            >
+              <AntInput disabled />
+            </AntForm.Item>
+
           </section>
           <section className="drawerFooter">
             <div>
@@ -118,21 +145,16 @@ class CategoriesForm extends React.Component {
   }
 }
 
-CategoriesForm.propTypes = {
+BloodInventoryDetails.propTypes = {
+  panelInfo: PropTypes.object,
   drawerButton: PropTypes.string.isRequired,
   actionType: PropTypes.string,
-  onCancel: PropTypes.func,
-  // eslint-disable-next-line react/no-unused-prop-types
-  onClose: PropTypes.func,
+  onCancel: PropTypes.func
 };
 
-CategoriesForm.defaultProps = {
-  onCancel() {
-    return null;
-  },
-  onClose() {
-    return null;
-  },
+BloodInventoryDetails.defaultProps = {
+  panelInfo: null,
+  onCancel() { return null; }
 };
 
-export default withRouter(CategoriesForm);
+export default withRouter(BloodInventoryDetails);

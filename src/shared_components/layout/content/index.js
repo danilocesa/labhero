@@ -58,14 +58,14 @@ const Content = () => (
 				{/* Settings route */}
 				<Route path="/settings" component={Settings} />
 				{/* Inventory route */}
-				<PrivateRoute path="/inventory" component={Inventory} />
+				<Route path="/inventory" component={Inventory} />
 				{/* 404 page route */}
 				<Route path="/bloodbank" component={BloodBank} />
-				<PrivateRoute exact path="/cashier" component={Cashier} />
-				<PrivateRoute path="/cashier/receipt" component={Receipt} />
-				<PrivateRoute path="/cashier/transactions" component={Transactions} />
-				<PrivateRoute path="/cashier/categories" component={Categories} />
-				<PrivateRoute path="/cashier/summary" component={Summary} />
+				<Route exact path="/cashier" component={Cashier} />
+				<Route path="/cashier/receipt" component={Receipt} />
+				<Route path="/cashier/transactions" component={Transactions} />
+				<Route path="/cashier/categories" component={Categories} />
+				<Route path="/cashier/summary" component={Summary} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>

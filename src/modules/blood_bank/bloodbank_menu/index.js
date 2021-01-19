@@ -32,6 +32,11 @@ const settingsItemData = [
 		link: '/bloodbank/settings',
 		label: 'SETTINGS',
 	},
+	{
+		image: BBrecipientIcon,
+		link: '/bloodbank/blood_inventory',
+		label: 'BLOOD INVENTORY',
+	},
 ]
 
 class BloodBankMenu extends React.Component {

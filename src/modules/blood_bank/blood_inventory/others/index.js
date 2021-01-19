@@ -14,7 +14,7 @@ import {
 
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchPatients  from 'services/blood_bank/extraction'
+import { fetchPatients } from 'services/blood_bank/extraction'
 import PageTitle from 'shared_components/page_title'
 import Message from 'shared_components/message'
 import TablePager from "shared_components/table_pager"
@@ -117,7 +117,7 @@ class Extraction extends React.Component {
 
   render() {
     const { Item,loading,pageSize } = this.state
-
+    const items = Item.length > pageSize ? pageSize : Item.length;
     return (
       <div>
        <PageTitle pageTitle="EXTRACTION/SCREENING"  />

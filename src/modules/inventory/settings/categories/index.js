@@ -17,97 +17,69 @@ import {
   addCategoriesButton,
   drawerCategoryTitleUpdate,
   drawerCategoryTitleAdd,
-  tableYScroll
+  tableYScroll,
+  tablePageSize,
 } from "modules/inventory/settings/settings";
+
+import {getInventoryItems} from "services/inventory/inventoryCategory";
+import { withRouter } from 'react-router-dom';
 import CategoriesForm from "./categories_form/categories_form";
 
-// CUSTOM MODULES
+
 //  CONSTANTS
 const { Search } = Input;
-
 
 const columns = [
   {
     title: "CATEGORY CODE",
-    dataIndex: "categories_code",
-    key: "categories_code",
-    width: 100
+    dataIndex: "category_code",
+    key: "category_code",
+    width: 100,
+    sorter: (a, b) => a.category_code.localeCompare(b.category_code)
   },
   {
     title: "CATEGORY NAME",
-    dataIndex: "categories_name",
-    key: "categories_name",
-    width: 150
+    dataIndex: "category_name",
+    key: "category_name",
+    width: 150,
+    sorter: (a, b) => a.category_name.localeCompare(b.category_name)
   },
   {
     title: "DESCRIPTION",
-    dataIndex: "description",
-    key: "description",
-    width: 250
-  }
+    dataIndex: "category_desc",
+    key: "category_desc",
+    width: 250,
+    sorter: (a, b) => a.category_desc.localeCompare(b.category_desc)
+  },
 ];
+
 
 class InventoryCategoriesTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        {
-          key: "1",
-          categories_code: 1,
-          categories_name: "Category 1",
-          description: "Description 1"
-        },
-        {
-          key: "2",
-          categories_code: 2,
-          categories_name: "Category 2",
-          description: "Description 2"
-        },
-        {
-          key: "3",
-          categories_code: 3,
-          categories_name: "Category 3",
-          description: "Description 3"
-        }
-      ],
-      usersRef: [
-        {
-          key: "1",
-          categories_code: 1,
-          categories_name: "Category 1",
-          description: "Description 1"
-        },
-        {
-          key: "2",
-          categories_code: 2,
-          categories_name: "Category 2",
-          description: "Description 2"
-        },
-        {
-          key: "3",
-          categories_code: 3,
-          categories_name: "Category 3",
-          description: "Description 3"
-        }
-      ],
-      categories: [],
+      data: [],
+      panelInfo: null,
+      selectedRowKey: null,
+      usersRef: [],
+      loading: false,
       actionType: "add",
-      
+      pagination: {
+				pageSize: tablePageSize,
+			},
     };
   }
 
-  componentDidMount() {
-    fetch('https://labheroapidev-nqvkwb2gnq-de.a.run.app/inventory/categories')
-    .then(res => res.json())
-    .then((data) => {
-      this.setState({ categories: data.result })
-    })
-    console.log(this.state.categories);
-    // .catch(console.log)
-  };
-  
-  handleSubmit = e => {
+  async componentDidMount() {
+    this.setState({loading:true});
+    const response = await getInventoryItems();
+
+    this.setState({ data: response.results, usersRef: response.results, loading:false });
+
+    console.log(response);
+  }
+
+  handleSubmit = (e) => {
     e.preventDefault();
     // eslint-disable-next-line react/prop-types
     this.props.form.validateFields((err, values) => {
@@ -117,40 +89,38 @@ class InventoryCategoriesTemplate extends React.Component {
     });
   };
 
- 
-
   handleReset = () => {
     // eslint-disable-next-line react/prop-types
     this.props.form.resetFields();
   };
 
-  displayDrawerUpdate = record => {
+  displayDrawerUpdate = (record) => {
     this.setState({
       isDrawerVisible: true,
       drawerTitle: drawerCategoryTitleUpdate,
       drawerButton: buttonLabels.update,
       actionType: "update",
-      panelInfo: record
+      panelInfo: record,
     });
   };
 
-  displayDrawerAdd = record => {
+  displayDrawerAdd = (record) => {
     this.setState({
       isDrawerVisible: true,
       drawerTitle: drawerCategoryTitleAdd,
       drawerButton: buttonLabels.create,
       actionType: "add",
-      panelInfo: record
+      panelInfo: record,
     });
   };
 
   onClose = () => {
     this.setState({
-      isDrawerVisible: false
+      isDrawerVisible: false,
     });
   };
 
-  handleSelectChange = value => {
+  handleSelectChange = (value) => {
     console.log(value);
     const { pagination } = this.state;
     // eslint-disable-next-line radix
@@ -162,38 +132,33 @@ class InventoryCategoriesTemplate extends React.Component {
   containsString = (searchFrom, searchedVal) => {
     if (searchFrom === null || searchFrom === "") return false;
 
-    return searchFrom
-      .toString()
-      .toLowerCase()
-      .includes(searchedVal);
+    return searchFrom.toString().toLowerCase().includes(searchedVal);
   };
 
-  onSearch = value => {
+  onSearch = (value) => {
     const searchedVal = value.toLowerCase();
     const { usersRef } = this.state;
 
-    const filtered = usersRef.filter(item => {
+    const filtered = usersRef.filter((item) => {
       // eslint-disable-next-line camelcase
-      const { categories_code, categories_name, description } = item;
+      const { category_name } = item;
 
       return (
-        this.containsString(categories_code, searchedVal) ||
-        this.containsString(categories_name, searchedVal) ||
-        this.containsString(description, searchedVal)
+        this.containsString(category_name, searchedVal)
       );
     });
 
     this.setState({ data: filtered });
   };
 
-  onChangeSearch = event => {
+  onChangeSearch = (event) => {
     const { usersRef } = this.state;
 
     if (event.target.value === "") this.setState({ data: usersRef });
   };
 
   render() {
-    const { actionType } = this.state;
+    const { actionType, pagination } = this.state;
     return (
       <div>
         <AntRow>
@@ -203,7 +168,7 @@ class InventoryCategoriesTemplate extends React.Component {
                 <AntCol span={12}>
                   <Search
                     allowClear
-                    onSearch={value => this.onSearch(value)}
+                    onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
                     style={{ width: 200 }}
                     className="panel-table-search-input"
@@ -228,16 +193,20 @@ class InventoryCategoriesTemplate extends React.Component {
               className="settings-panel-table"
               size={tableSize}
               dataSource={this.state.data}
-              pagination={this.state.pagination}
+              pagination={pagination}
               loading={this.state.loading}
               scroll={{ y: tableYScroll }}
               columns={columns}
-              rowKey={record => record.key}
-              onRow={record => {
+              rowKey={(record) => record.key}
+              onRow={(record) => {
                 return {
                   onDoubleClick: () => {
                     this.displayDrawerUpdate(record);
-                  }
+                    this.setState({
+                      selectedRowKey: record.key,
+                      actionType: "update",
+                    });
+                  },
                 };
               }}
             />
@@ -250,6 +219,7 @@ class InventoryCategoriesTemplate extends React.Component {
             >
               <CategoriesForm
                 // @ts-ignore
+                selectedID={this.state.selectedRowKey}
                 actionType={actionType}
                 drawerButton={this.state.drawerButton}
                 panelInfo={this.state.panelInfo}
@@ -263,8 +233,12 @@ class InventoryCategoriesTemplate extends React.Component {
   }
 }
 
+// InventoryCategoriesTemplate.propTypes = {
+// 	handleSubmit: PropTypes.func.isRequired,
+// 	location: ReactRouterPropTypes.location.isRequired,
+// 	isLoading: PropTypes.bool.isRequired
+// };
+
 // const InventoryCategories = AntForm.create()(InventoryCategoriesTemplate);
 
-// export default InventoryCategories;
-
-export default InventoryCategoriesTemplate;
+export default withRouter(InventoryCategoriesTemplate);

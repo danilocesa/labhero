@@ -37,27 +37,6 @@ class ProvinceListComponent extends React.Component {
 		const { placeholder, disabled, onChange } = this.props;
 		const { provinceList, loading } = this.state;
 		
-		// const provinceSelections = (
-		// 	getFieldDecorator('provinces', { 
-		// 		rules: FIELD_RULES,
-		// 		initialValue: provinceList.length === 0 ? null : selectedProvince
-		// 	})(
-		// 		<Select
-		// 			loading={loading}
-		// 			placeholder={placeholder}
-		// 			disabled={disabled}
-		// 			onChange={onChange}
-		// 			allowClear
-		// 		>
-		// 			{provinceList.map((item) => (
-		// 				<Option value={item.provinceCode} key={item.provinceCode}>
-		// 					{item.provinceName}
-		// 				</Option>
-		// 			))}
-		// 		</Select>
-		// 	)
-		// );
-
 		return (
 			<Form.Item 
 				name="provinces"
