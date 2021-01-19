@@ -18,43 +18,6 @@ const layout = {
 
 class BloodTypesForm extends React.Component {
 
-	onFinish = async values => {
-		const { drawerButton } = this.props;
-    const payload = {
-			ques_type_id :values.ques_type_id,
-			ques_order :values.ques_order,
-			ques_type_name :values.ques_type_name,  
-			created_by:1
-		};
-		if(drawerButton === drawerAdd){
-			const createdUserResponse = await createData(payload);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
-			}else {
-				payload.ques_type_id = values.ques_type_id
-				const updateUserResponse =  await updateData(payload).catch(reason => console.log('TCL->', reason));
-				// @ts-ignore)
-				if(updateUserResponse.status === 200){
-					const httpMessageConfig = {
-						message: messagePrompts.successUpdateUser,
-						// @ts-ignore
-						status: updateUserResponse.status,
-						duration: 3, 
-						onClose: () => window.location.reload() 
-					}
-					HttpCodeMessage(httpMessageConfig);
-				}
-			}
-	};
     
 	render() {
 		const { drawerButton,selectedTypes } = this.props;
@@ -63,13 +26,7 @@ class BloodTypesForm extends React.Component {
 				<div>
 					<Form 
 							layout="vertical"
-							className="exam-item-add-form"
-							initialValues={{ 
-								ques_type_id:selectedTypes.ques_type_id,
-								ques_order:selectedTypes.ques_order,
-								ques_type_name:selectedTypes.ques_type_name,
-							}}
-							onFinish={this.onFinish}       
+							className="exam-item-add-form"   
 						>
 							{
 								this.props.drawerButton == "UPDATE"? 
@@ -110,10 +67,10 @@ class BloodTypesForm extends React.Component {
 						</div>
 						<section className="drawerFooter">
 					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-						{buttonLabels.cancel}
+						CANCEL
 					</Button>
 					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-						{drawerButton}
+						ADD
 					</Button>
 				</section>
 						</Form>

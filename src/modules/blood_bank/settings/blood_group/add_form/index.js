@@ -95,23 +95,33 @@ class BloodGroupForm extends React.Component {
 									<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 							</Form.Item>
 							<Form.Item	 
-								label="BLOOD GROUP CODE" 
+								label="BLOOD GROUP" 
 								name='blood_group_code'
 								style={{marginTop:-15}}
+								rules={[
+									{
+										required: true,
+										message: 'Please input your username!',
+									},
+								]}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />		
 							</Form.Item>
 							<Form.Item 
-								label="BLOOD GROUP NAME" 
+								label="BLOOD TYPE" 
 								name='blood_group' 
-								style={{marginTop:-25}}
+								rules={[
+									{
+										required: true,
+										message: 'Please input your username!',
+									},
+								]}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />
 							</Form.Item>
 							<Form.Item 
 								label="DESCRIPTION" 
 								name='blood_description'
-								style={{marginTop:-20}}
 							>
 									<TextArea rows={5} />
 							</Form.Item>

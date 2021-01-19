@@ -15,28 +15,33 @@ import {
 	tableYScroll,
 	tablePageSize
 } from '../settings';
-import UserAccountForm from '../add_form';
+import UserAccountForm from '../form';
 
 const { Search } = Input;
 const columns = [
 	{
-		title: 'BLOOD GROUP',
-		dataIndex: 'blood_group',
-		key: '1',
-		width: 200,
-		sorter: (a, b) => a.blood_group_id - b.blood_group_id,
+		title: 'ID',
 	},
 	{
-		title: 'BLOOD TYPE',
-		dataIndex: 'blood_type',
-		key: 2,	
-		width: 300,
-		sorter: (a, b) => a.blood_group.localeCompare(b.blood_group),
+		title: 'NAME',
 	},
 	{
-		title: 'DESCRIPTION',
-		dataIndex: 'blood_desc',
-		key: 3,
+		title: 'CONV LOW',
+	},
+	{
+		title: 'CONV HIGH',
+	},
+	{
+		title: 'CONV UNIT',
+	},
+	{
+		title: 'S1 LOW',
+	},
+	{
+		title: 'S1 LOW',
+	},
+	{
+		title: 'S1 LOW',
 	},
 ];
 
@@ -142,6 +147,8 @@ class BloodGroupTable extends React.Component {
 			loading ,
 			pagination1
 		} = this.state;
+		console.log(pagination,"pagination")
+		console.log(pagination1,"pagination1")
 		return(
 			<div>
 				<div className="settings-user-table-action">
@@ -171,6 +178,7 @@ class BloodGroupTable extends React.Component {
 				</div>
 				<DndProvider backend={HTML5Backend}>
 				<div className="settings-user-table">
+
 				{
 					pagination1 == 0
 					? 
@@ -178,6 +186,8 @@ class BloodGroupTable extends React.Component {
 							<Table 
 								loading={loading}
 								dataSource={bloodgroupItem}
+								//size={tableSize}
+								//scroll={{ y: tableYScroll }}
 								columns={columns} 
 								//pagination={pagination}
 								rowKey={record => record.userID}
@@ -195,8 +205,10 @@ class BloodGroupTable extends React.Component {
 							<Table 
 								loading={loading}
 								dataSource={bloodgroupItem}
+								//size={tableSize}
 								scroll={{ y: tableYScroll }}
 								columns={columns} 
+								//pagination={pagination}
 								rowKey={record => record.userID}
 								onRow={(record) => {
 									return {     

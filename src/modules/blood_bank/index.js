@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 
 import BloodBankMenu from './bloodbank_menu'
 import DonorRegistration from './donor_registration'
-import BloodRecipient from './blood_recipient'
 import BloodRequest from './blood_request';
 import SearchDonor from './search_donor';
 import FillUp from './donor_registration/fill_up';
@@ -20,7 +19,6 @@ class BloodBank extends React.Component {
 				<Route exact path="/bloodbank" component={BloodBankMenu} />
 				<Route exact path="/bloodbank/donor_registration/step/2" component={FillUp} />
 				<Route exact path="/bloodbank/donor_registration" component={DonorRegistration} />
-				<Route exact path="/bloodbank/blood_recipient" component={BloodRecipient} />
 				<Route exact path="/bloodbank/blood_request" component={BloodRequest} />
 				<Route exact path="/bloodbank/search_donor" component={SearchDonor} />
 				<Route exact path="/bloodbank/extraction/screening" component={Extraction} />

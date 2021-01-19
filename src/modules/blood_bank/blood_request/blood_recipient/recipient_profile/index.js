@@ -16,6 +16,10 @@ class RecipientList extends React.Component {
 		// eslint-disable-next-line react/no-unused-state
 		showLoading: true,
 	};
+
+	async componentDidMount(){
+		
+	}
 	
 	// Custom function
 	showDrawer = () => {

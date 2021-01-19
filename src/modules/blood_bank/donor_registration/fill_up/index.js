@@ -24,9 +24,7 @@ const { Text } = Typography;
 class FillUpForm extends React.Component {
   constructor(props) {
     super(props);
-    
-    const { label } = props.location.state;
-
+      const { label } = props.location.state;
     this.state = {
       ButtonName: label,
       record:[],
@@ -38,8 +36,6 @@ class FillUpForm extends React.Component {
   componentDidMount() {
     const { label } = this.props.location.state;
     const { data } = this.props.location.state;
-    
-
 
     this.setState({ 
       record:data

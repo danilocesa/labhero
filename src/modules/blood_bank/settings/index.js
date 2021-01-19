@@ -7,6 +7,7 @@ import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
 import QuestionType from './question_types'
+import Normal_Values from './normal_values'
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -17,6 +18,7 @@ const pageTitle = [
   `${pageTitleSettings } QUESTIONNAIRE`,
   `${pageTitleSettings } BLOOD GROUP`,
   `${pageTitleSettings } QUESTION TYPES`,
+  `${pageTitleSettings } NORMAL VALUES`,
 ]
 
 class settings extends React.Component {
@@ -44,6 +46,9 @@ class settings extends React.Component {
           </TabPane>
           <TabPane tab="QUESTION TYPES" key="4">
             <QuestionType />
+          </TabPane>
+          <TabPane tab="NORMAL VALUES" key="5">
+            <Normal_Values />
           </TabPane>
         </AntTabs>
 			</div>
