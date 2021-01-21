@@ -4,7 +4,7 @@ import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import { BBdonorRegIcon, BBaddBloodReqIcon } from 'images';
+import { BBdonorRegIcon, BBaddBloodReqIcon, BBrecipientIcon } from 'images';
 import BloodBankCard from './bloodbank_card';
 
 
@@ -24,7 +24,7 @@ const settingsItemData = [
 	},
 	{
 		image: BBaddBloodReqIcon,
-		link: '/bloodbank/blood_request',
+		link: '/bloodbank/blood_request/search',
 		label: 'ADD BLOOD BANK REQUEST'
 	},
 	{

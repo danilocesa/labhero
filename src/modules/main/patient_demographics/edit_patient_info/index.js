@@ -10,10 +10,10 @@ import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd'
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
-import ProvinceList from 'shared_components/province_list';
-import CityList from 'shared_components/city_list';
-import TownList from 'shared_components/town_list';
-import HouseAddress from 'shared_components/address';
+import ProvinceList from 'shared_components/lh_province';
+import CityList from 'shared_components/lh_city';
+import TownList from 'shared_components/lh_town';
+import HouseAddress from 'shared_components/lh_address';
 import { RegexInput, NumberInput } from 'shared_components/pattern_input';
 import updatePatientAPI from 'services/shared/patient';
 import {

@@ -14,7 +14,7 @@ import CityList from './city_list'
 import TownList from './town_list'
 import ProvinceList from './province_list'
 import HouseAddress from './address'
-import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant'
+import { FIELD_RULES, selectDefaultOptions, formLabels, messagePrompts } from './constant'
 
 const { Step } = Steps
 const { Text } = Typography;

@@ -60,26 +60,5 @@ export const FIELD_RULES = {
 	bloodBag: [
 		{ required: true, message: 'This field is required.' },
 	],
-	dateCollected: [
-		{ required: true, message: 'This field is required.' }
-	],
-	bodyWeight: [
-		{ required: true, message: 'This field is required.' }
-	],
-	pulseRate: [
-		{ required: true, message: 'This field is required.' }
-	],
-	bloodPressure: [
-		{ required: true, message: 'This field is required.' }
-	],
-	hemoglobin: [
-		{ required: true, message: 'This field is required.' }
-	],
-	bodyTemperature: [
-		{ required: true, message: 'This field is required.' }
-	],
-	bagWeight: [
-		{ required: true, message: 'This field is required.' }
-	],
 };
 

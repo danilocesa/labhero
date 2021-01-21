@@ -9,10 +9,10 @@ import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select }
 // CUSTOM MODULES
 import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
-import ProvinceList from 'shared_components/province_list';
-import CityList from 'shared_components/city_list';
-import TownList from 'shared_components/town_list';
-import HouseAddress from 'shared_components/address';
+import ProvinceList from 'shared_components/lh_province';
+import CityList from 'shared_components/lh_city';
+import TownList from 'shared_components/lh_town';
+import HouseAddress from 'shared_components/lh_address';
 import { AlphaNumInput, NumberInput, RegexInput } from 'shared_components/pattern_input';
 import { LR_PERSONAL_INFO, LR_OTHER_INFO } from 'modules/main/lab_request/steps/constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
