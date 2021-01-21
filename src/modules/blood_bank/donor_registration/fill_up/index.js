@@ -234,6 +234,10 @@ class FillUpForm extends React.Component {
                       <Form.Item 
                         name="dateOfBirth" 
                         label={formLabels.dateOfBirth} 
+                        rules={[{ 
+                          required: true, 
+                          message: 'Please input your Date of Birth!' 
+                        }]} 
                       >
                         <DatePicker 
                           style={{ width: '100%' }}
@@ -248,6 +252,10 @@ class FillUpForm extends React.Component {
                       <Form.Item 
                         name="dateOfBirth" 
                         label={formLabels.dateOfBirth} 
+                        rules={[{ 
+                          required: true, 
+                          message: 'Please input your Date of Birth!' 
+                        }]}   
                       >
                         <DatePicker 
                           format="MM-DD-YYYY"
@@ -271,7 +279,6 @@ class FillUpForm extends React.Component {
                     </Form.Item>
                   </Col>
                 </Row> 
-
                 {ButtonName == "UPDATE"? (		
                   <Form.Item 
                     label="PATIENT'S GENDER"

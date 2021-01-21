@@ -73,7 +73,7 @@ export async function updateDonor(Data) {
 try{
   const content = {
     method: apiPutMethod,
-    url:`/bloodbank/health_info/update/${bloodGroupId}/`,
+    url:`bloodbank/donor/update/${bloodGroupId}/`,
     data: Data
   }
   const response = await axiosPhase2API(content);

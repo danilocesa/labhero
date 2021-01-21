@@ -11,6 +11,7 @@ import Information from './extraction/information'
 import HealthInformation from './donor_registration/health_info';
 import Settings from './settings';
 import BloodInventory from './blood_inventory';
+import Printing from './blood_request/printing';
 
 class BloodBank extends React.Component {
 	render() {
@@ -26,6 +27,7 @@ class BloodBank extends React.Component {
 				<Route exact path="/bloodbank/extraction/screening/step/1" component={Information} />
 				<Route exact path="/bloodbank/donor_registration/step/3" component={HealthInformation} />
 				<Route exact path="/bloodbank/blood_inventory" component={BloodInventory} />
+				<Route exact path="/bloodbank/PRINTING" component={Printing} />
 			</Switch>
 		)
 	}	

@@ -23,6 +23,7 @@ import PageTitle from 'shared_components/page_title'
 import TablePager from "shared_components/table_pager"
 import Message from 'shared_components/message'
 import { fetchPatients } from 'services/blood_bank/donor_registration'
+import items_form from "modules/inventory/settings/items/items_form/items_form";
 
 const { Step } = Steps
 const { Text } = Typography
@@ -54,18 +55,23 @@ const columns = [
   },
   {
     title: "DATE OF BIRTH",
-    dataIndex: 'date_of_birth',
+    dataIndex: 'birth_date',
     key: 6
+  },
+  {
+    title: "ADDRESS",
+    dataIndex: 'barangay_name',
+    key: 7
   },
   {
     title: "BLOOD TYPE",
     dataIndex: 'blood_type',
-    key: 7
+    key: 8
   },
   {
     title: "LAST EXTRACTED",
     dataIndex: 'last_extracted',
-    key: 8
+    key: 9
   },
 ];
 
@@ -74,10 +80,15 @@ class DonorRegistration extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      Item: [],
+      Item: [0],
     };
     this.formRef = React.createRef();
   } 
+
+  componentDidMount(){
+    const {Item} = this.state
+    this.setState({ length: Item.length});
+  }
 
   handleChangeSize = (pageSize) => {
 		this.setState({pageSize});
@@ -129,14 +140,12 @@ class DonorRegistration extends React.Component {
   }
 
   clearInputs = async () => {
-		const { setFieldsValue } = this.formRef.current;
-		setFieldsValue({ patientName: '' });
+    window.location.reload(false);
   }
   
 
   render() {
-    const { Item,loading,pageSize } = this.state
-    console.log(Item,"ITEM")
+    const { Item,loading,pageSize,length } = this.state
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
@@ -187,31 +196,31 @@ class DonorRegistration extends React.Component {
                   <Col style={{marginTop:18, marginRight:-450}}>
                     <Form.Item shouldUpdate> 
                     {({ getFieldsValue }) => {
-                    const { donor_id, patientName } = getFieldsValue();
-                    const disabled = !(donor_id || (patientName && patientName.length > 0));
-                    return (
-                      <Row>
-                        <Button 
-                          className="form-button"
-                          shape="round" 
-                          style={{ width: 120, marginLeft:10 }}
-                          onClick={this.clearInputs} 
-                        >
-                          CLEAR
-                        </Button>
-                        <Button 
-                          loading={loading}
-                          className="form-button"
-                          shape="round" 
-                          type="primary" 
-                          htmlType="submit" 
-                          style={{ width: 120 }}
-                          disabled={disabled}
-                        >
-                          SEARCH
-                        </Button>
-                      </Row>
-                    )
+                      const { donor_id, patientName } = getFieldsValue();
+                      const disabled = !(donor_id || (patientName && patientName.length > 0));
+                      return (
+                        <Row>
+                          <Button 
+                            className="form-button"
+                            shape="round" 
+                            style={{ width: 120, marginLeft:10 }}
+                            onClick={this.clearInputs} 
+                          >
+                            CLEAR
+                          </Button>
+                          <Button 
+                            loading={loading}
+                            className="form-button"
+                            shape="round" 
+                            type="primary" 
+                            htmlType="submit" 
+                            style={{ width: 120 }}
+                            disabled={disabled}
+                          >
+                            SEARCH
+                          </Button>
+                        </Row>
+                      )
                     }}
                     </Form.Item>
                   </Col>
@@ -236,6 +245,7 @@ class DonorRegistration extends React.Component {
             </Row> 
             {/* Table */}
             <Table 
+            style={{textTransform: 'uppercase'}}
               dataSource={Item}
               expandableRowIcon={<text type="right" />}
               expandedRowRender={this.ExpandedRow}

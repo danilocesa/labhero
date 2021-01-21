@@ -33,9 +33,14 @@ const settingsItemData = [
 		label: 'SETTINGS',
 	},
 	{
-		image: BBrecipientIcon,
+		image: BBdonorRegIcon,
 		link: '/bloodbank/blood_inventory',
 		label: 'BLOOD INVENTORY',
+	},
+	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/PRINTING',
+		label: 'PRINTING',
 	},
 ]
 
