@@ -81,6 +81,7 @@ class DonorRegistration extends React.Component {
     this.state = {
       loading: false,
       Item: [0],
+      record:{}
     };
     this.formRef = React.createRef();
   } 
@@ -117,6 +118,9 @@ class DonorRegistration extends React.Component {
     record.data = {record}
     record.label = "UPDATE"
     this.props.history.push("/bloodbank/donor_registration/step/2",record);
+    this.setState({
+      record:record
+    })
   }
 
   ExpandedRow = () => {
@@ -245,7 +249,7 @@ class DonorRegistration extends React.Component {
             </Row> 
             {/* Table */}
             <Table 
-            style={{textTransform: 'uppercase'}}
+              style={{textTransform: 'uppercase'}}
               dataSource={Item}
               expandableRowIcon={<text type="right" />}
               expandedRowRender={this.ExpandedRow}
@@ -258,14 +262,14 @@ class DonorRegistration extends React.Component {
                   <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                     {Item.length >= 0? (	
                       <Button 
-                      className="form-button"
-                      shape="round" 
-                      onClick={this.NextStep}
-                      type="link"
-                      htmlType="submit" 
-                      style={{ width: 120, marginTop:-10 }}
-                      >
-                      REGISTER
+                        className="form-button"
+                        shape="round" 
+                        onClick={this.NextStep}
+                        type="link"
+                        htmlType="submit" 
+                        style={{ width: 120, marginTop:-10 }}
+                        >
+                        REGISTER
                       </Button>
                       )
                       :null

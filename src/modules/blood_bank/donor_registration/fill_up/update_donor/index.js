@@ -1,129 +1,28 @@
-import React from "react"
-import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from "antd";
-import HttpCodeMessage from 'shared_components/message_http_status'
-import PageTitle from 'shared_components/page_title'
-import moment from 'moment'
-import { NumberInput } from 'shared_components/pattern_input'
-import { createDonor,updateDonor } from 'services/blood_bank/donor_registration'
-
-// ICON
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
+import React from 'react';
 import { User } from 'images/bloodbank';
-import CityList from 'shared_components/phase2_city'
-import TownList from 'shared_components/phase2_town';
-import ProvinceList from 'shared_components/phase2_province'
-import HouseAddress from './address'
-import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant'
+import PropTypes from 'prop-types'
+import moment from 'moment'
+import HouseAddress from '../address'
+import CityList from '../city_list'
+import TownList from '../town_list'
+import ProvinceList from '../province_list'
+import { NumberInput } from 'shared_components/pattern_input'
+import { FIELD_RULES, selectDefaultOptions, formLabels, messagePrompts } from '../constant'
+import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from "antd";
 
-const { Step } = Steps
 const { Text } = Typography;
-
-
-
-class FillUpForm extends React.Component {
+class FillUpDonorUpdate extends React.Component {
   constructor(props) {
     super(props);
-      const { label } = props.location.state;
-    this.state = {
-      ButtonName: label,
-      record:[],
-      disabled: true
-    };
-  this.formRef = React.createRef();
+    this.formRef = React.createRef();
   }
-  
-  componentDidMount() {
-    const { label } = this.props.location.state;
-    const { data } = this.props.location.state;
 
-    this.setState({ 
-      record:data
-    });
-	}
-  
   computeAge = (date) => {
 		const years = Math.floor(moment().diff(date, 'years', true));
 		const age = years > 0 ? years : '---';
 	
 		return age;
   }
-
-  NextStep = () => {
-    window.location.assign('/donor_registration/step/3');
-  } 
-
-  onFinish = async values => {
-    console.log(values,"values")
-    const { ButtonName } = this.state;
-    const dateFormat = values.dateOfBirth.format('YYYY-MM-DD')
-    const Data = {
-      donor_id :values.donor_id,
-      first_name :values.First_name,
-      middle_name :values.Middle_name,
-      last_name:values.Last_name,
-      is_active:'1',
-      suffix:values.suffix,
-      birth_date:dateFormat,
-      age:values.Age,
-      gender:values.Gender,
-      address_line_2:values.street_name,   
-      barangay:values.town,
-      address_line_1:values.house,
-      mobile_no:values.mobile_no,
-      created_by:1,
-      blood_type_name:'Sample'
-    };
-    console.log(Data,"DATA")
-    if(ButtonName === 'SUBMIT'){
-    const createdUserResponse = await createDonor(Data);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-				 onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
-				}
-				HttpCodeMessage(httpMessageConfig);	
-      }	
-    }else {
-        Data.donor_id = values.donor_id;
-				const updateUserResponse =  await updateDonor(Data).catch(reason => console.log('TCL->', reason));
-				// @ts-ignore)
-				if(updateUserResponse.status === 200){
-					const httpMessageConfig = {
-						message: messagePrompts.successUpdateUser,
-						// @ts-ignore
-						status: updateUserResponse.status,
-						duration: 3, 
-						onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
-					}
-					HttpCodeMessage(httpMessageConfig);
-				}
-      }
-  }
-
-  onProvinceChange = () => {
-		this.formRef.current.setFieldsValue({
-      city:null,
-			town: null,
-      houseAddress: null,
-      street_name:null,
-      house:null
-		});
-  }
-  
-  onCityChange = () => {
-		this.formRef.current.setFieldsValue({
-			town: null,
-      houseAddress: null,
-      street_name:null,
-      house:null
-		});
-  }
-
 
   onDateChange = (date) => {
 		// eslint-disable-next-line react/prop-types
@@ -132,49 +31,38 @@ class FillUpForm extends React.Component {
 
     setFieldsValue({ Age });
   }
-   
-  disabledDate = (current) => {
-		// Prevent select days after today and today
-		return current && current > moment().endOf('day');
-  }
- 
-  render() {
-    const UpdateAge = this.computeAge(this.props.location.state.birth_date);
-    const { ButtonName } = this.state
-    console.log(ButtonName);
-    const dateFormat = 'YYYY/MM/DD';
-    console.log(this.props.location.state,"DATE");
 
+  onProvinceChange = () => {
+		this.formRef.current.setFieldsValue({
+			city: null,
+			town: null,
+			houseAddress: null 
+		});
+  }
+  
+  onCityChange = () => {
+		this.formRef.current.setFieldsValue({
+			town: null,
+			houseAddress: null 
+		});
+  }
+
+  render() {
+    const {selectedrecord} = this.props
+    console.log(selectedrecord)
+    const UpdateAge = this.computeAge(selectedrecord.birth_date);
     return (
       <div>
-        <PageTitle pageTitle="DONOR REGISTRATION"  />
-          <Steps size="small" current={1} style={{marginTop:20,paddingRight:200,paddingLeft:200}} labelPlacement="vertical">
-            <Step title="Search Donor" icon={<SearchOutlined />}  />
-            <Step title="Fill Up" icon={<ContainerOutlined />} />
-            <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-          </Steps>
         <Form 
-          initialValues={{ 
-            donor_id: this.props.location.state.donor_id,
-            First_name: this.props.location.state.first_name,
-            Middle_name: this.props.location.state.middle_name,
-            Last_name: this.props.location.state.last_name,
-            suffix: this.props.location.state.suffix,
-            Gender: this.props.location.state.gender,
-            mobile_no: this.props.location.state.mobile_no,
-            town: this.props.location.state.barangay_name,
-            house: this.props.location.state.address_line_1,
-            street_name: this.props.location.state.address_line_2,
-            //provinces: this.props.location.state.province_name,
-            //city: this.props.location.state.city_name,
-            Age: UpdateAge,
-            dateOfBirth: ButtonName==="UPDATE" ? moment(this.props.location.state.birth_date, 'YYYY-MM-DD') : ''
-          }}
           ref={this.formRef}
           className="clr-fillup-form" 
           layout="vertical"
           style={{marginTop:30}}
           onFinish={this.onFinish}
+          // initialValues={{ 
+          //   donor_id: selectedrecord.donor_id,
+          //   First_name: selectedrecord.first_name,
+          // }}
         > 
           <Row gutter={12}>
             <Col sm={7} md={7}>
@@ -232,43 +120,20 @@ class FillUpForm extends React.Component {
                 </Row>
                 <Row gutter={12}>
                 <Col span={18}>
-                {
-                  ButtonName == "UPDATE"
-                  ? 
-                    (		
-                      <Form.Item 
-                        name="dateOfBirth" 
-                        label={formLabels.dateOfBirth} 
-                        rules={[{ 
-                          required: true, 
-                          message: 'Please input your Date of Birth!' 
-                        }]} 
-                      >
-                        <DatePicker 
-                          style={{ width: '100%' }}
-                          format="MM-DD-YYYY"
-                          disabled
-                        />
-                      </Form.Item>
-                    )	
-                  : 
-                    (
-                      <Form.Item 
-                        name="dateOfBirth" 
-                        label={formLabels.dateOfBirth} 
-                        rules={[{ 
-                          required: true, 
-                          message: 'Please input your Date of Birth!' 
-                        }]}   
-                      >
-                        <DatePicker 
-                          format="MM-DD-YYYY"
-                          onChange={this.onDateChange}
-                          style={{ width: '100%' }}
-                        />
-                      </Form.Item>
-                    )
-                }
+                  <Form.Item 
+                    name="dateOfBirth" 
+                    label={formLabels.dateOfBirth} 
+                    rules={[{ 
+                      required: true, 
+                      message: 'Please input your Date of Birth!' 
+                    }]}   
+                  >
+                    <DatePicker 
+                      format="MM-DD-YYYY"
+                      onChange={this.onDateChange}
+                      style={{ width: '100%' }}
+                    />
+                  </Form.Item>
                 </Col>
                   <Col span={6}>
                     <Form.Item 
@@ -283,19 +148,6 @@ class FillUpForm extends React.Component {
                     </Form.Item>
                   </Col>
                 </Row> 
-                {ButtonName == "UPDATE"? (		
-                  <Form.Item 
-                    label="PATIENT'S GENDER"
-                    name='Gender'
-                    rules={[{ required: true, message: 'Please input your Gender!' }]}
-                  >
-                    <Radio.Group buttonStyle="solid">
-                      <Radio.Button value="M" disabled>MALE</Radio.Button>
-                      <Radio.Button value="F" disabled>FEMALE</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                  )	
-                  :
                   <Form.Item 
                     label="PATIENT'S GENDER"
                     name='Gender'
@@ -306,7 +158,6 @@ class FillUpForm extends React.Component {
                       <Radio.Button value="F">FEMALE</Radio.Button>
                     </Radio.Group>
                   </Form.Item>
-                }
                 <Form.Item 
                   label="CONTACT NUMBER" 
                   style={{marginTop:'-5px'}}
@@ -321,7 +172,7 @@ class FillUpForm extends React.Component {
               <Divider className="divider" type="vertical" style={{ height: 500 }} />
             </Col>
             <Col sm={7} md={7}>
-              <div className="right-form" style={{marginTop:'40px'}}>
+            <div className="right-form" style={{marginTop:'40px'}}>
                 <Form.Item 
                   name='provinces' 
                    rules={[{ 
@@ -403,14 +254,18 @@ class FillUpForm extends React.Component {
           <Divider orientation="right">
               <Form.Item>
                 <Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-                  {ButtonName}
+                  UPDATE
                 </Button>
               </Form.Item>
           </Divider>
         </Form>
       </div>
-    )
+    );
   }
 }
 
-export default FillUpForm;
+FillUpDonorUpdate.propTypes = {
+	selectedrecord:PropTypes.object.isRequired
+}
+
+export default FillUpDonorUpdate;

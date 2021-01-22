@@ -6,7 +6,7 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 // CUSTOM MODULES
-import computeAge from 'shared_components/age_computation'
+import computeAge from 'libraries/age_computation'
 
 
 const colLayout = {

@@ -67,9 +67,7 @@ class HealthInformation extends React.Component {
     
     } catch(e){
      console.log("HealthInformation -> getCategoryData -> e", e)
-      
     }
-   
   };
 
   generateAdditionalFields = () => {
