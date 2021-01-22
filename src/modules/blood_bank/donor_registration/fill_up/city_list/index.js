@@ -51,7 +51,7 @@ class CityList extends React.Component {
 
 
 	render(){
-		const { placeholder, onChange, disabled } = this.props;
+		const { placeholder, onChange, disabled,cityedata } = this.props;
 		const { cityList, loading } = this.state;
 		const isDisabled = disabled || cityList.length < 1;
 
@@ -65,6 +65,7 @@ class CityList extends React.Component {
 				}]}
 			>
 				<Select
+				defaultValue={cityedata}
 					loading={loading}
 					placeholder={placeholder}
 					allowClear
@@ -86,7 +87,8 @@ CityList.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	provinceValue: PropTypes.number,
 	onChange: PropTypes.func.isRequired,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	citydata:PropTypes.string
 };
 
 CityList.defaultProps = {

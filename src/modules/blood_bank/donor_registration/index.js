@@ -80,15 +80,18 @@ class DonorRegistration extends React.Component {
     super(props);
     this.state = {
       loading: false,
-      Item: [0],
-      record:{}
+      Item: [],
+      record:{},
+      ExpandedRow:false,
+      //pageSize:null
+      length:1
     };
     this.formRef = React.createRef();
   } 
 
   componentDidMount(){
     const {Item} = this.state
-    this.setState({ length: Item.length});
+    //this.setState({ length: Item.length});
   }
 
   handleChangeSize = (pageSize) => {
@@ -103,7 +106,8 @@ class DonorRegistration extends React.Component {
     console.log("Patients", patients)
     this.setState({ 
         loading: false,
-        Item: patients  
+        Item: patients ,
+        length:0
     });
 
 		if(patients.length <= 0) 
@@ -150,6 +154,7 @@ class DonorRegistration extends React.Component {
 
   render() {
     const { Item,loading,pageSize,length } = this.state
+    console.log(length,"length")
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
@@ -252,15 +257,15 @@ class DonorRegistration extends React.Component {
               style={{textTransform: 'uppercase'}}
               dataSource={Item}
               expandableRowIcon={<text type="right" />}
-              expandedRowRender={this.ExpandedRow}
+              //expandedRowRender={this.ExpandedRow}
               columns={columns} 
-              pagination={{ pageSize }}
+              pagination={{pageSize}}
               rowKey={record => record.donor_id}
               locale={{
                 emptyText: 
                 (<div>
                   <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    {Item.length >= 0? (	
+                    {length <= 0? (	
                       <Button 
                         className="form-button"
                         shape="round" 

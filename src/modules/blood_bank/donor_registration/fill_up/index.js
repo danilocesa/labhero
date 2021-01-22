@@ -10,9 +10,9 @@ import { createDonor,updateDonor } from 'services/blood_bank/donor_registration'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 import { User } from 'images/bloodbank';
-import CityList from 'shared_components/phase2_city'
-import TownList from 'shared_components/phase2_town';
-import ProvinceList from 'shared_components/phase2_province'
+import CityList from './city_list'
+import TownList from './town_list';
+import ProvinceList from './province_list'
 import HouseAddress from './address'
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant'
 
@@ -28,7 +28,9 @@ class FillUpForm extends React.Component {
     this.state = {
       ButtonName: label,
       record:[],
-      disabled: true
+      disabled: true,
+      provincedata:this.props.location.state.province_name,
+      cityedata:this.props.location.state.city_name
     };
   this.formRef = React.createRef();
   }
@@ -50,7 +52,7 @@ class FillUpForm extends React.Component {
   }
 
   NextStep = () => {
-    window.location.assign('/donor_registration/step/3');
+    window.location.assign('/bloodbank/donor_registration/step/3');
   } 
 
   onFinish = async values => {
@@ -112,18 +114,29 @@ class FillUpForm extends React.Component {
       houseAddress: null,
       street_name:null,
       house:null
-		});
+    });
+    this.setState({
+      disabled:false
+    })
   }
-  
+
+  changeText = () => {
+    this.setState({
+      disabled:false
+    })
+  }
+
   onCityChange = () => {
 		this.formRef.current.setFieldsValue({
 			town: null,
       houseAddress: null,
       street_name:null,
       house:null
-		});
+    });
+    this.setState({
+      disabled:false
+    })
   }
-
 
   onDateChange = (date) => {
 		// eslint-disable-next-line react/prop-types
@@ -140,10 +153,8 @@ class FillUpForm extends React.Component {
  
   render() {
     const UpdateAge = this.computeAge(this.props.location.state.birth_date);
-    const { ButtonName } = this.state
-    console.log(ButtonName);
+    const { ButtonName,disabled,provincedata,cityedata } = this.state
     const dateFormat = 'YYYY/MM/DD';
-    console.log(this.props.location.state,"DATE");
 
     return (
       <div>
@@ -193,7 +204,7 @@ class FillUpForm extends React.Component {
                     name='donor_id'
                     style={{ display: 'none' }}
                   >
-                    <Input />
+                    <Input onChange={this.changeText}/>
                   </Form.Item>
                   <Form.Item 
                     label="FIRST NAME"
@@ -201,7 +212,7 @@ class FillUpForm extends React.Component {
                     rules={[{ required: true, message: 'Please input your First Name!' }]}
                   >
                     <Input 
-                    
+                      onChange={this.changeText}
                     />
                   </Form.Item>
                   <Form.Item 
@@ -209,7 +220,7 @@ class FillUpForm extends React.Component {
                     name='Middle_name'
                     rules={[{ required: true, message: 'Please input your Middle Name!' }]}
                   >
-                    <Input />
+                    <Input onChange={this.changeText}/>
                   </Form.Item>
                 <Row gutter={12}>
                   <Col span={18}>
@@ -218,7 +229,7 @@ class FillUpForm extends React.Component {
                     name='Last_name'
                     rules={[{ required: true, message: 'Please input your Last Name!' }]}
                     >
-                      <Input />
+                      <Input onChange={this.changeText}/>
                     </Form.Item>
                   </Col>
                   <Col span={6}>
@@ -226,7 +237,7 @@ class FillUpForm extends React.Component {
                     label="SUFFIX"
                     name='suffix'
                   >
-                    <Input maxLength={1} />
+                    <Input maxLength={1} onChange={this.changeText}/>
                   </Form.Item>
                   </Col>
                 </Row>
@@ -248,6 +259,7 @@ class FillUpForm extends React.Component {
                           style={{ width: '100%' }}
                           format="MM-DD-YYYY"
                           disabled
+                          onChange={this.changeText}
                         />
                       </Form.Item>
                     )	
@@ -265,6 +277,7 @@ class FillUpForm extends React.Component {
                           format="MM-DD-YYYY"
                           onChange={this.onDateChange}
                           style={{ width: '100%' }}
+                          onChange={this.changeText}
                         />
                       </Form.Item>
                     )
@@ -278,7 +291,8 @@ class FillUpForm extends React.Component {
                     >
                       <Input 
                         disabled 
-                        style={{ textAlign: 'center' }} 
+                        style={{ textAlign: 'center' }}
+                        onChange={this.changeText}   
                       />
                     </Form.Item>
                   </Col>
@@ -313,7 +327,7 @@ class FillUpForm extends React.Component {
                   name='mobile_no'
                   rules={[{ required: true, message: 'Please input your Contact Number!' }]}
                 >
-                  <NumberInput addonBefore="+ 63" />
+                  <NumberInput addonBefore="+ 63" onChange={this.changeText} />
                 </Form.Item> 
               </div>
             </Col>
@@ -330,6 +344,7 @@ class FillUpForm extends React.Component {
                   }]}   
                 >
                   <ProvinceList 
+                    provincedata={provincedata}
                     form={this.formRef}
                     placeholder={selectDefaultOptions}
                     onChange={this.onProvinceChange}
@@ -345,6 +360,7 @@ class FillUpForm extends React.Component {
                   {(form) => {
                     return (
                       <CityList 
+                        cityedata={cityedata}
                         form={form}
                         placeholder={selectDefaultOptions}
                         provinceValue={form.getFieldValue('provinces')}
@@ -395,17 +411,34 @@ class FillUpForm extends React.Component {
                 >
                   <Input  
                     placeholder=" Appartment, Unit, Building Floor, etc"
+                    onChange={this.changeText} 
                   />
                 </Form.Item>
               </div>
             </Col>
           </Row>
           <Divider orientation="right">
-              <Form.Item>
-                <Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-                  {ButtonName}
-                </Button>
-              </Form.Item>
+            <Row>
+              <Col span={12}>
+                {ButtonName == "UPDATE"? (		
+                  <Form.Item>
+                    <Button type="primary" onClick={this.NextStep} shape="round" style={{ margin: 10, width: 120,marginLeft:-10 }}>
+                      NEXT
+                    </Button>
+                  </Form.Item>
+                  )	
+                  :
+                  null
+                }
+              </Col>
+              <Col span={12}>
+                <Form.Item>
+                  <Button type="primary" disabled={disabled} shape="round" style={{ margin: 10, width: 120,  }} htmlType="submit">
+                    {ButtonName}
+                  </Button>
+                </Form.Item>
+              </Col>
+            </Row>
           </Divider>
         </Form>
       </div>
