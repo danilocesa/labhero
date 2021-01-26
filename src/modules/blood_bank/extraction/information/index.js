@@ -6,7 +6,7 @@ import ForScreening from './for_screening_tab';
 import ForExtraction from './for_extraction_tab';
 import RightSide from './info'
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 const { TabPane } = Tabs;
 
 
@@ -66,8 +66,11 @@ class ExtractionInformation extends React.Component {
   };
 
 	render() {
-    const { data, donor_id } = this.props.location.state;
+    const { state: donorDetail } = this.props.location;
+    const { data, last_name, first_name } = donorDetail;
     // const { DataFromHeader } = this.state;
+
+    console.log(this.props.location.state);
 
     return(
       <div>
@@ -79,7 +82,7 @@ class ExtractionInformation extends React.Component {
           </Col>
           <Col span={18} style={{marginLeft:20}}>
             <div>
-              <Title level={2}>{this.props.location.state.last_name}, {this.props.location.state.first_name}</Title>
+              <Title level={2}>{last_name}, {first_name}</Title>
               {/* <Text strong style={{marginTop:-50}} > DONOR'S ID: {this.props.location.state.donor_id} </Text> */}
             </div>
             {/* <Table
@@ -94,7 +97,7 @@ class ExtractionInformation extends React.Component {
                   <ForScreening  />
                 </TabPane>
                 <TabPane tab="FOR EXTRACTION" key="2">
-                  <ForExtraction donorID={donor_id}/>
+                  <ForExtraction donorDetail={donorDetail} />
                 </TabPane>
               </Tabs>
             </div>

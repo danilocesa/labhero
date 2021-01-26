@@ -25,7 +25,7 @@ export default async function fetchPatients(patientName, patientID) {
 } 
 
 export async function createExtraction(payload) {
-  let result = [];
+  let result = null;
   
   try{
     const axiosResponse = await axiosPhase2API({
@@ -34,12 +34,12 @@ export async function createExtraction(payload) {
       data: payload
 		});
 
-    const { data } = await axiosResponse;
+    const response = await axiosResponse;
 
-    result = data;
+    result = response;
   } 
   catch(e) {
-    HttpCodeMessage({ status: 500, message: e });
+    result = false;
 	}
 
 	return result;

@@ -19,11 +19,11 @@ import {messagePrompts } from './constant'
 import PageTitle from 'shared_components/page_title';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
-import { createHealthInformation } from 'services/blood_bank/donor_registration'
-const { Step } = Steps
-const { Option } = Select
-const { TextArea } = Input
-const { Title  } = Typography
+import { createHealthInformation } from 'services/blood_bank/donor_registration';
+const { Step } = Steps;
+const { Option } = Select;
+const { TextArea } = Input;
+const { Title  } = Typography;
 
 class HealthInformation extends React.Component {
   // eslint-disable-next-line no-useless-constructor
@@ -43,15 +43,20 @@ class HealthInformation extends React.Component {
   }
 
   onFinish = async values => {
-  const { additionalFields } = this.state;
-  console.log('additionalFields',additionalFields)
+    const { additionalFields } = this.state;
+    console.log('additionalFields', additionalFields);
+
     let cust_fld_obj = [];
     const custFieldArray = [];
-    Object.keys(additionalFields).forEach(function (key){
+
+    Object.keys(additionalFields).forEach(function (key) {
       // eslint-disable-next-line camelcase
       cust_fld_obj = additionalFields[key].cust_fld_format;
     });
-    
+
+    await createHealthInformation({
+
+    })
   }
     
   getCategoryData = async () => {

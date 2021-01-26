@@ -13,6 +13,7 @@ import BloodInventory from './blood_inventory';
 import SearchRequest from './blood_request/search';
 import CreateRequest from './blood_request/creation';
 import ProductList from './blood_product/product_list';
+import ProductDetail from './blood_product/product_detail';
 
 class BloodBank extends React.Component {
 	render() {
@@ -30,7 +31,8 @@ class BloodBank extends React.Component {
 				<Route exact path="/bloodbank/donor_registration/step/3" component={HealthInformation} />
 				<Route exact path="/bloodbank/blood_inventory" component={BloodInventory} />
 				<Route exact path="/bloodbank/blood_product" component={ProductList} />
-			</Switch>
+				<Route exact path="/bloodbank/blood_product/detail" component={ProductDetail} />
+			</Switch> 
 		)
 	}	
 }
