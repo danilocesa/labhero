@@ -31,7 +31,8 @@ class ProvinceListComponent extends React.Component {
 	}
 
 	render(){
-		const { placeholder, disabled, onChange } = this.props;
+		const { placeholder, disabled, onChange,provincedata } = this.props;
+		console.log(provincedata,"")
 		const { provinceList, loading } = this.state;
 
 		return (
@@ -40,6 +41,7 @@ class ProvinceListComponent extends React.Component {
 				label={LABEL_TITLE} 
 			>
 				<Select
+					defaultValue={provincedata}
 					loading={loading}
 					placeholder={placeholder}
 					disabled={disabled}
@@ -62,6 +64,7 @@ ProvinceListComponent.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	onChange: PropTypes.func.isRequired,
+	provincedata:PropTypes.string
 };
 
 ProvinceListComponent.defaultProps = {

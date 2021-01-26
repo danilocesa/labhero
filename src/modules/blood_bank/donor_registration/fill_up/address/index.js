@@ -41,8 +41,6 @@ class houseAddressComponent extends React.Component{
 
 	render(){
 		const { isDisabled } = this.state;
-		// const { getFieldDecorator } = form;
-
 		return(
 			<Form.Item 
 				label="Address Line 1"

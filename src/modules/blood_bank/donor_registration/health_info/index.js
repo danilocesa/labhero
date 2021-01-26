@@ -11,7 +11,8 @@ import {
   Switch, 
   Select,
   Input, 
-  Button 
+  Button,
+  Divider
 } from "antd";
 import { fetchAdditionalFields,  }  from "services/blood_bank/donor_registration";
 import HttpCodeMessage from 'shared_components/message_http_status'
@@ -72,9 +73,7 @@ class HealthInformation extends React.Component {
     
     } catch(e){
      console.log("HealthInformation -> getCategoryData -> e", e)
-      
     }
-   
   };
 
   generateAdditionalFields = () => {
@@ -184,6 +183,10 @@ class HealthInformation extends React.Component {
     return cust_fld_obj ? custFieldArray: null;
 
   };
+
+  NextStep = () => {
+    window.location.assign('/bloodbank/donor_registration/step/2');
+  } 
   
 	render() {
 		return(
@@ -205,22 +208,22 @@ class HealthInformation extends React.Component {
             layout='vertical'
             onFinish={this.onFinish}
           >
-              <div style={{marginLeft:90}}>
-                {this.generateAdditionalFields()}
+            <div style={{marginLeft:90, marginTop:60}}>
+              {this.generateAdditionalFields()}
+            </div>
+            <Divider orientation="right">
+              <div style={{ margin: 10, width: 120,marginLeft:-10 }}>
+                <Form.Item>
+                  <Button 
+                    type="primary" 
+                    htmlType="submit" 
+                    shape="round"
+                  >
+                    Submit
+                  </Button>
+                </Form.Item>
               </div>
-              <div style={{marginTop:40, float: 'right'}}>
-              <Form.Item>
-                <Button 
-                  type="primary" 
-                  htmlType="submit" 
-                >
-                  Submit
-                </Button>
-              </Form.Item>
-                <Button type="link" >
-                  Back
-                </Button>
-              </div>
+            </Divider>
           </Form>
       </div>
 		)
