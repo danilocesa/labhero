@@ -9,15 +9,17 @@ import {
   Input,
   Button,
   Typography,
-  Form
+  Form,
+  Drawer
 } from "antd";
 
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchRequest from 'services/blood_bank/blood_recipient'
-import PageTitle from 'shared_components/page_title'
-import Message from 'shared_components/message'
-import TablePager from "shared_components/table_pager"
+import fetchRequest from 'services/blood_bank/blood_recipient';
+import PageTitle from 'shared_components/page_title';
+import Message from 'shared_components/message';
+import TablePager from 'shared_components/table_pager';
+import BloodRequestDetails from '../detail';
 
 const { Text } = Typography
 
@@ -196,31 +198,26 @@ class BloodRequestSearch extends React.Component {
             />    
           </Col>
         </Row>
-<<<<<<< HEAD
-        <DndProvider backend={HTML5Backend}>
-          <Table 
-            dataSource={dataSource} 
-            columns={columns} 
-            onRow={(record) => {
-              return {     
-                onDoubleClick: () => {
-                  this.displayDrawerUpdate(record);
-                }
+        {/* <Table 
+          dataSource={dataSource} 
+          columns={columns} 
+          onRow={(record) => {
+            return {     
+              onDoubleClick: () => {
+                this.displayDrawerUpdate(record);
               }
-            }}
-          />	
-            <Drawer
-              title="REQUEST INFORMATION"
-              width="500"
-              visible={visible || true}
-              onClose={this.onClose}
-              destroyOnClose
-            >
-              <Detail onClose={this.onClose} />
-            </Drawer>
-        </DndProvider>
-=======
->>>>>>> 1fb6a96f312b3cfcbc0492d1f6b4d97fa02549ef
+            }
+          }}
+        />	 */}
+        <Drawer
+          title="REQUEST INFORMATION"
+          width="500"
+          visible={true}
+          onClose={this.onClose}
+          destroyOnClose
+        >
+          <BloodRequestDetails onClose={this.onClose} />
+        </Drawer>
       </div>
     );
   }
