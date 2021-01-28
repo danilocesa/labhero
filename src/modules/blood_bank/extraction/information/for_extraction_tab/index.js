@@ -4,9 +4,8 @@ import moment from 'moment';
 import { Input, Row, Col,Form , InputNumber, Button,DatePicker  } from 'antd';
 
 // CUSTOM MODULES
-import HttpCodeMessage from 'shared_components/message_http_status'
-import { createExtraction, fetchExtractionById } from 'services/blood_bank/extraction'
-import { messagePrompts } from './settings'
+import HttpCodeMessage from 'shared_components/message_http_status';
+import { createExtraction, fetchExtractionById } from 'services/blood_bank/extraction';
 
 
 const { TextArea } = Input;
@@ -16,11 +15,22 @@ class ForExtractionTab extends React.Component {
     super(props);
 
     this.formRef = React.createRef();
-    this.state = { isAlreadyExtracted: false };
+    this.state = { 
+      isAlreadyExtracted: false,
+      isLoading: false
+    };
   }
 
   async componentDidMount() {
-    const extractionDetail = await fetchExtractionById(13);
+    const { donorDetail } = this.props;
+    
+    if(donorDetail.extraction_id !== null) {
+      this.fetchExtractionDetail(donorDetail.extraction_id);
+    }
+  }
+
+  fetchExtractionDetail = async (extractionID) => {
+    const extractionDetail = await fetchExtractionById(extractionID);
 
     if(extractionDetail !== null) {
       const formFields = {
@@ -31,42 +41,44 @@ class ForExtractionTab extends React.Component {
 
       this.formRef.current.setFieldsValue(formFields);
 
-      this.setState({ isAlreadyExtracted: true })
+      this.setState({ isAlreadyExtracted: true });
     }
   }
 
-
   onSubmitForm = async (formValues) => {
-    const { donorID } = this.props;
+    const { donorDetail } = this.props;
+
 
     const payload = {
-      donor: donorID,
-      health_info: 1,
-			bag_count: formValues.bags,
-			expiration_date: '2020-12-12',
-      extracted_date: moment(new Date()).format('YYYY-MM-DD'),
-      remark: formValues.remark,
+      donor: donorDetail.donor_id,
+      health_info: donorDetail.health_info_id,
+      remarks: formValues.remarks || null,
       created_by: 1,
       extracted_by: 1
     };
 
+    this.setState({ isLoading: true });
+
     const APIresponse = await createExtraction(payload);
     // @ts-ignore
-    if(APIresponse.status === 201){
-      const httpMessageConfig = {
-        message: messagePrompts.successCreateUser,
-        // @ts-ignore
-        status: APIresponse.status,	
-        duration: 3, 
-        onClose: () => window.location.reload() 
-      }
+    const { status } = APIresponse;
+    this.setState({ isLoading: false });
+
+    console.log(APIresponse, 'test');
+
+    if(status === 201){
+      HttpCodeMessage({
+        message: 'Succesfully Extracted!',
+        status: status,
+        duration: 3,
+      });
       
-      HttpCodeMessage(httpMessageConfig);	
+      this.fetchExtractionDetail(1);
     }	
   }
 
   render() {
-    const { isAlreadyExtracted } = this.state;
+    const { isAlreadyExtracted, isLoading } = this.state;
 
     return (
       <div>
@@ -85,7 +97,7 @@ class ForExtractionTab extends React.Component {
           <Row gutter={12}>
             <Col span={6}>
               <Form.Item
-                name="bag_id" 
+                name="blood_bag_id" 
                 label="BAG ID"
               >
                 <Input disabled />
@@ -125,7 +137,7 @@ class ForExtractionTab extends React.Component {
           <Row>
             <Col span={24}>
               <Form.Item 
-                name="remark"
+                name="remarks"
                 label="REMARKS" 
               >
                 <TextArea 
@@ -142,6 +154,7 @@ class ForExtractionTab extends React.Component {
               htmlType="submit"
               style={{ width: 120 }}
               disabled={isAlreadyExtracted}
+              loading={isLoading}
             >
               EXTRACT
             </Button>
@@ -154,7 +167,11 @@ class ForExtractionTab extends React.Component {
 
 
 ForExtractionTab.propTypes = {
-	donorID: PropTypes.number.isRequired
+  donorDetail: PropTypes.shape({
+    donor_id: PropTypes.number,
+    health_info_id: PropTypes.number.isRequired,
+    extraction_id: PropTypes.number
+  }).isRequired
 }
 
 export default ForExtractionTab;

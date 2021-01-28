@@ -6,7 +6,6 @@ import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 
 
-
 const colLayout = {
 	xxl: { span: 12 },
 	xl: { span: 12 },
@@ -31,9 +30,7 @@ class PatientInfo extends React.Component {
 	};
 
   render() {
-		const {data} = this.props
-
-		console.log(data);
+		const {data} = this.props;
 
 		return (
 	    <div className="patient-info-shared">

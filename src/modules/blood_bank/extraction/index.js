@@ -14,10 +14,10 @@ import {
 
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchPatients  from 'services/blood_bank/extraction'
-import PageTitle from 'shared_components/page_title'
-import Message from 'shared_components/message'
-import TablePager from "shared_components/table_pager"
+import fetchPatients  from 'services/blood_bank/extraction';
+import PageTitle from 'shared_components/page_title';
+import Message from 'shared_components/message';
+import TablePager from 'shared_components/table_pager';
 
 const { Text } = Typography
 
@@ -75,7 +75,6 @@ const columns2 = [
 ];
 
 const expandedRow = row => {
-  console.log(row);
   return <Table columns={columns2} pagination={false} />;
 };
 
@@ -111,12 +110,12 @@ class Extraction extends React.Component {
 
   NextStep = (record) => {
     console.log("Extraction -> NextStep -> record", record)
-    record.data = {record}
-    this.props.history.push("/bloodbank/extraction/screening/step/1",record);
+    record.data = {record};
+    this.props.history.push("/bloodbank/extraction/screening/step/1", record);
   }
 
   render() {
-    const { Item,loading,pageSize } = this.state
+    const { Item, loading, pageSize } = this.state;
 
     return (
       <div>
@@ -162,33 +161,35 @@ class Extraction extends React.Component {
                   {/* Buttons */}
                   <Col style={{marginTop:18, marginRight:-450}}>
                     <Form.Item shouldUpdate> 
-                    {({ getFieldsValue }) => {
-                    const { patientID, patientName } = getFieldsValue();
-                    const disabled = !(patientID || (patientName && patientName.length > 1));
-                    return (
-                      <Row>
-                        <Button 
-                          className="form-button"
-                          shape="round" 
-                          style={{ width: 120, marginLeft:10 }}
-                          onClick={this.clearInputs} 
-                        >
-                          CLEAR
-                        </Button>
-                        <Button 
-                          loading={loading}
-                          className="form-button"
-                          shape="round" 
-                          type="primary" 
-                          htmlType="submit" 
-                          style={{ width: 120 }}
-                          disabled={disabled}
-                        >
-                          SEARCH
-                        </Button>
-                      </Row>
-                    )
-                    }}
+                    {
+                      ({ getFieldsValue }) => {
+                        const { patientID, patientName } = getFieldsValue();
+                        const disabled = !(patientID || (patientName && patientName.length > 1));
+                        return (
+                          <Row>
+                            <Button 
+                              className="form-button"
+                              shape="round" 
+                              style={{ width: 120, marginLeft:10 }}
+                              onClick={this.clearInputs} 
+                            >
+                              CLEAR
+                            </Button>
+                            <Button 
+                              loading={loading}
+                              className="form-button"
+                              shape="round" 
+                              type="primary" 
+                              htmlType="submit" 
+                              style={{ width: 120 }}
+                              disabled={disabled}
+                            >
+                              SEARCH
+                            </Button>
+                          </Row>
+                        );
+                      }
+                    }
                     </Form.Item>
                   </Col>
                 </Row>
