@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Input, Row, Col,Form , InputNumber, Button,DatePicker  } from 'antd';
 
-// CUSTOM MODULES
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createExtraction, fetchExtractionById } from 'services/blood_bank/extraction';
-
+import { getUserAccountById } from 'services/settings/userAccount';
 
 const { TextArea } = Input;
 
@@ -33,10 +33,13 @@ class ForExtractionTab extends React.Component {
     const extractionDetail = await fetchExtractionById(extractionID);
 
     if(extractionDetail !== null) {
+      const userAccount = await getUserAccountById(extractionDetail.extracted_by);
+
       const formFields = {
         ...extractionDetail,
         extracted_date: moment(extractionDetail.extracted_date),
-        expiration_date: moment(extractionDetail.expiration_date)
+        expiration_date: moment(extractionDetail.expiration_date),
+        extracted_by: `${userAccount.lastName} ${userAccount.givenName}`
       };
 
       this.formRef.current.setFieldsValue(formFields);
@@ -47,7 +50,7 @@ class ForExtractionTab extends React.Component {
 
   onSubmitForm = async (formValues) => {
     const { donorDetail } = this.props;
-
+    // const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
       donor: donorDetail.donor_id,
@@ -55,16 +58,17 @@ class ForExtractionTab extends React.Component {
       remarks: formValues.remarks || null,
       created_by: 1,
       extracted_by: 1
+      // created_by: loggedinUser.userID,
+      // extracted_by: loggedinUser.userID
     };
 
     this.setState({ isLoading: true });
 
     const APIresponse = await createExtraction(payload);
     // @ts-ignore
-    const { status } = APIresponse;
+    const { status, data } = APIresponse;
     this.setState({ isLoading: false });
 
-    console.log(APIresponse, 'test');
 
     if(status === 201){
       HttpCodeMessage({
@@ -73,7 +77,7 @@ class ForExtractionTab extends React.Component {
         duration: 3,
       });
       
-      this.fetchExtractionDetail(1);
+      this.fetchExtractionDetail(data.extraction_id);
     }	
   }
 

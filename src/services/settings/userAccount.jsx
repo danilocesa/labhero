@@ -64,3 +64,23 @@ export async function getUserAccountsAPI(){
   return getUserAccounts;
 
 }
+
+export async function getUserAccountById(id){
+  let userAccount = null;
+	
+  try{
+    const response = await axiosLabAPI({
+      method: apiGetMethod,
+		  url: `/lab/UserAccount/UserId/${id}`
+    });
+    
+    const { data } = response;
+    userAccount = data;
+  } 
+  catch(e) {
+    HttpCodeMessage({ status: 500, message: e });
+	}
+	
+  return userAccount;
+
+}

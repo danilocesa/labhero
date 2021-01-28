@@ -80,8 +80,12 @@ class BloodRequestSearch extends React.Component{
 		});
 	};
   
+  handleChangeSize = () => {
+
+  }
+
   render(){
-    const { visible,drawerTitle } = this.state;
+    const { visible, drawerTitle } = this.state;
     
     return(
         <div>
@@ -180,9 +184,9 @@ class BloodRequestSearch extends React.Component{
             }}
           />	
             <Drawer
-              title={drawerTitle}
-              width="30%"
-              visible={visible}
+              title="REQUEST INFORMATION"
+              width="500"
+              visible={visible || true}
               onClose={this.onClose}
               destroyOnClose
             >
