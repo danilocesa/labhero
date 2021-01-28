@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import TablePager from 'shared_components/table_pager';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import { Row, Col, Table, Button, Input, Icon, Drawer,Select,Divider } from 'antd';
 import fetchQuestionnareList from 'services/blood_bank/questionnaire';
 
 // CUSTOM
@@ -12,6 +12,7 @@ import {
 } from '../settings';
 
 const { Search } = Input;
+const { Option } = Select;
 const columns = [
 	{
 		title: 'ID',
@@ -115,6 +116,13 @@ class BloodBank extends React.Component {
 			return(
 				<div>
 					<div className="settings-user-table-action">
+					<Divider plain>
+						<Select style={{ width: 200 }}>
+							<Option value="Categories">
+								Categories
+							</Option>
+						</Select>
+					</Divider>
 					<Row>
 						<Col span={12}>
 							<Search
@@ -170,9 +178,9 @@ class BloodBank extends React.Component {
 							destroyOnClose
 						> 
 							<QuestionTable 
-							selectedCategories={selectedCategories}
-							actionType={actionType}
-							drawerButton={drawerButton} 
+								selectedCategories={selectedCategories}
+								actionType={actionType}
+								drawerButton={drawerButton} 
 							/>	
 						</Drawer>
 				</div>

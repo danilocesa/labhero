@@ -15,12 +15,10 @@ import {
   Divider
 } from "antd";
 import { fetchAdditionalFields,  }  from "services/blood_bank/donor_registration";
-import HttpCodeMessage from 'shared_components/message_http_status'
-import {messagePrompts } from './constant'
+
 import PageTitle from 'shared_components/page_title';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
-import { createHealthInformation } from 'services/blood_bank/donor_registration'
 const { Step } = Steps
 const { Option } = Select
 const { TextArea } = Input
@@ -226,3 +224,4 @@ class HealthInformation extends React.Component {
 }
 
 export default HealthInformation;	
+ 

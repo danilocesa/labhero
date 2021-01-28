@@ -13,11 +13,11 @@ import Normal_Values from './normal_values'
 const { TabPane } = AntTabs;
 const pageTitleSettings = "BLOODBANK /";
 const pageTitle = [
-  `${pageTitleSettings } CATEGORIES`, 
+  `${pageTitleSettings } BLOOD GROUP`, 
+  `${pageTitleSettings } BLOOD GROUP`,
+  `${pageTitleSettings } BLOOD TYPES`,
   `${pageTitleSettings } CATEGORIES`,
   `${pageTitleSettings } QUESTIONNAIRE`,
-  `${pageTitleSettings } BLOOD GROUP`,
-  `${pageTitleSettings } QUESTION TYPES`,
   `${pageTitleSettings } NORMAL VALUES`,
 ]
 
@@ -35,17 +35,17 @@ class settings extends React.Component {
 			<div>
         <InventoryPageCrumb pageTitle={this.state.pageTitle} />
         <AntTabs defaultActiveKey="1" onChange={this.handleTabChange}>
-          <TabPane tab="CATEGORIES" key="1">
-            <BloocBankCategories />
-          </TabPane>
-          <TabPane tab="QUESTIONNAIRE" key="2">
-            <Questionnaire />
-          </TabPane>
-          <TabPane tab="BLOOD GROUP" key="3">
+          <TabPane tab="BLOOD GROUP" key="1">
             <BloodGroup />
           </TabPane>
-          <TabPane tab="QUESTION TYPES" key="4">
+          <TabPane tab="BLOOD TYPES" key="2">
             <QuestionType />
+          </TabPane>
+          <TabPane tab="CATEGORIES" key="3">
+            <BloocBankCategories />
+          </TabPane>
+          <TabPane tab="QUESTIONNAIRE" key="4">
+            <Questionnaire />
           </TabPane>
           <TabPane tab="NORMAL VALUES" key="5">
             <Normal_Values />

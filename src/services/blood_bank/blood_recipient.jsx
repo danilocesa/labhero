@@ -2,21 +2,18 @@ import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
 
-export default async function fetchBloodGroupItems() {
-	let bloodgroupItems = [];
-	
+export default async function fetchRequest(name ,request_id) {
+  let Patient = '';
   try{
     const response = await axiosPhase2API({
       method: apiGetMethod,
-			url: `bloodbank/bloodgroup/search/`,
-		});
-		
-		const { data } = response;
-    bloodgroupItems = data;
-  } 
-  catch(e) {
+      url: (name ? `/blood_recipient/bloodrecipient/search/?search=${name}` : `/blood_recipient/bloodrecipient/search/by_id/${request_id}/`) 
+    });
+    const { data } = await response;
+    Patient = data
+  }
+  catch(error) {
     Message.error();
- 	}
-  
-  return bloodgroupItems;
-}
+  }
+  return Patient;
+} 

@@ -23,7 +23,6 @@ import PageTitle from 'shared_components/page_title'
 import TablePager from "shared_components/table_pager"
 import Message from 'shared_components/message'
 import { fetchPatients } from 'services/blood_bank/donor_registration'
-import items_form from "modules/inventory/settings/items/items_form/items_form";
 
 const { Step } = Steps
 const { Text } = Typography
@@ -182,7 +181,6 @@ class DonorRegistration extends React.Component {
                               style={{width:200}}
                               regex={/[A-Za-z0-9, -]/} 
                               maxLength={100}
-                              onFocus={this.handleFocus}
                               placeholder="Donor's ID"
                             />
                           </Form.Item>
@@ -194,7 +192,6 @@ class DonorRegistration extends React.Component {
                               style={{width:350}}
                               regex={/[A-Za-z0-9, -]/} 
                               maxLength={100}
-                              onFocus={this.handleFocus}
                               placeholder="Lastname, Firstname"
                             />
                           </Form.Item>
@@ -257,7 +254,6 @@ class DonorRegistration extends React.Component {
               style={{textTransform: 'uppercase'}}
               dataSource={Item}
               expandableRowIcon={<text type="right" />}
-              //expandedRowRender={this.ExpandedRow}
               columns={columns} 
               pagination={{pageSize}}
               rowKey={record => record.donor_id}
