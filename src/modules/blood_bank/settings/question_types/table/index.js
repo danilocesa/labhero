@@ -185,7 +185,6 @@ class BloodType extends React.Component {
 								loading={loading}
 								dataSource={Item}
 								columns={columns} 
-								//pagination={pagination}
 								rowKey={record => record.userID}
 								onRow={(record) => {
 									return {     
@@ -213,7 +212,7 @@ class BloodType extends React.Component {
 								}}
 							/>
 						)
-				}	
+					}	
           </div>    
           {/* DRAWER */}
             <Drawer

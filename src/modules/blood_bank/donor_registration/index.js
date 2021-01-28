@@ -153,7 +153,7 @@ class DonorRegistration extends React.Component {
 
   render() {
     const { Item,loading,pageSize,length } = this.state
-    console.log(length,"length")
+    console.log("🚀 ~ file: index.js ~ line 156 ~ DonorRegistration ~ render ~ length", length)
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
@@ -261,7 +261,7 @@ class DonorRegistration extends React.Component {
                 emptyText: 
                 (<div>
                   <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                    {length <= 0? (	
+                    {length < 0? (	
                       <Button 
                         className="form-button"
                         shape="round" 
@@ -273,7 +273,8 @@ class DonorRegistration extends React.Component {
                         REGISTER
                       </Button>
                       )
-                      :null
+                      :
+                      null
                     }
                  </div>)
               }} 

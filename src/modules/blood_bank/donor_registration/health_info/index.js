@@ -43,6 +43,7 @@ class HealthInformation extends React.Component {
   }
 
   onFinish = async values => {
+    
     const { additionalFields } = this.state;
     console.log('additionalFields', additionalFields);
 
@@ -52,11 +53,10 @@ class HealthInformation extends React.Component {
     Object.keys(additionalFields).forEach(function (key) {
       // eslint-disable-next-line camelcase
       cust_fld_obj = additionalFields[key].cust_fld_format;
+      console.log("🚀 ~ file: index.js ~ line 56 ~ HealthInformation ~ cust_fld_obj", cust_fld_obj)
     });
 
-    await createHealthInformation({
-
-    })
+    await createHealthInformation()
   }
     
   getCategoryData = async () => {
@@ -107,6 +107,7 @@ class HealthInformation extends React.Component {
                 <Col>
                     <Form.Item
                      label={key.field_label}
+                     name='CB'
                     >
                       <Checkbox.Group style={{ width: '100%' }}>
                         { key.field_list_values.map(function(listValue){
@@ -125,6 +126,7 @@ class HealthInformation extends React.Component {
                 <Col>
                     <Form.Item
                      label={key.field_label}
+                     name='OP'
                     >
                     <Select>
                       {key.field_list_values.map(function(listValue){
@@ -142,6 +144,7 @@ class HealthInformation extends React.Component {
                   <Col>
                     <Form.Item
                      label={key.field_label}
+                     name='TA'
                     >
                      <TextArea rows={4} />
                     </Form.Item>
@@ -154,6 +157,7 @@ class HealthInformation extends React.Component {
                   <Col>
                     <Form.Item
                      label={key.field_label}
+                     name='RD'
                     >
                     <Switch defaultChecked />
                     </Form.Item>
@@ -166,7 +170,7 @@ class HealthInformation extends React.Component {
                 <Col>
                     <Form.Item
                      label={key.field_label}
-                     name={key.field_name}
+                     name='text'
                     >
                       <Input placeholder="Text" style={{width:150}} />
                     </Form.Item>
