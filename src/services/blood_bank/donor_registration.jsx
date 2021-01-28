@@ -45,13 +45,14 @@ export async function createDonor(Data) {
 	return createUserAccount;
 }
 
-export async function createHealthInformation(Data) {
+export async function createHealthInformation() {
+
   let HealthInformation = [];
   try{
     const axiosResponse = await axiosPhase2API({
       method: apiPostMethod,
       url: `/bloodbank/health_info/create/`,
-      data: Data
+      //data: 
 		}).then(response => {
       return response;
     });
@@ -65,6 +66,7 @@ export async function createHealthInformation(Data) {
 
 	return HealthInformation;
 }
+
 
 export async function updateDonor(Data) {
   console.log(Data,"DATA from API")

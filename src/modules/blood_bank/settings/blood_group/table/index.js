@@ -27,13 +27,6 @@ const columns = [
 		sorter: (a, b) => a.blood_group_id - b.blood_group_id,
 	},
 	{
-		title: 'BLOOD TYPE',
-		dataIndex: 'blood_type',
-		key: 2,	
-		width: 300,
-		sorter: (a, b) => a.blood_group.localeCompare(b.blood_group),
-	},
-	{
 		title: 'DESCRIPTION',
 		dataIndex: 'blood_desc',
 		key: 3,

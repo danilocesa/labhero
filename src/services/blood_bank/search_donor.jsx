@@ -6,7 +6,10 @@ import { apiGetMethod } from 'global_config/constant-global';
 
 export async function fetchDonors(donor_id, Blood_group,location) {
   console.log(donor_id,Blood_group,location,'INPUT DATA IN JSX')
-  let bloodgroup = [], donors_id = [], city = [];
+  let bloodgroup = [], 
+  donors_id = [], 
+  city = [];
+  
   if(Blood_group){ // If blood group field has value
     bloodgroup = await fetchDonorByBloodType(Blood_group);
   }

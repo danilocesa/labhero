@@ -277,7 +277,6 @@ class FillUpForm extends React.Component {
                           format="MM-DD-YYYY"
                           onChange={this.onDateChange}
                           style={{ width: '100%' }}
-                          onChange={this.changeText}
                         />
                       </Form.Item>
                     )
@@ -337,11 +336,7 @@ class FillUpForm extends React.Component {
             <Col sm={7} md={7}>
               <div className="right-form" style={{marginTop:'40px'}}>
                 <Form.Item 
-                  name='provinces' 
-                   rules={[{ 
-                    required: true, 
-                    message: 'Please input your Town!' 
-                  }]}   
+                  name='provinces'   
                 >
                   <ProvinceList 
                     provincedata={provincedata}

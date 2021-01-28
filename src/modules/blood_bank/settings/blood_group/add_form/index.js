@@ -18,6 +18,12 @@ const layout = {
   };
 
 class BloodGroupForm extends React.Component {
+	constructor(props) {
+    super(props);
+    this.state = {
+			disabled: true,
+    };
+	} 
 
 	onFinish = async values => {
 		const { drawerButton } = this.props;
@@ -58,8 +64,15 @@ class BloodGroupForm extends React.Component {
 				}
 			}
 	};
-    
+		
+	onDisable = () => {
+    this.setState({
+      disabled:false
+    })
+  }
+
 	render() {
+		const { disabled } =this.state
 		const { drawerButton,selectedBloodGroup } = this.props;
 			return(
 				<div>
@@ -69,7 +82,6 @@ class BloodGroupForm extends React.Component {
 							initialValues={{ 
 								is_active:selectedBloodGroup.is_active === true ,
 								blood_group_id:selectedBloodGroup.blood_type_id,
-								blood_group_code:selectedBloodGroup.blood_group,
 								blood_group:selectedBloodGroup.blood_type,
 								blood_description:selectedBloodGroup.blood_desc 
 							}}
@@ -82,7 +94,7 @@ class BloodGroupForm extends React.Component {
 									name='is_active'
 									style={{marginBottom:'-40px'}}
 								>
-									<Switch />
+									<Switch onChange={this.onDisable}/>
 								</Form.Item>
 							)	
 							:
@@ -94,19 +106,6 @@ class BloodGroupForm extends React.Component {
 							>
 									<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 							</Form.Item>
-							<Form.Item	 
-								label="BLOOD GROUP" 
-								name='blood_group_code'
-								style={{marginTop:-15}}
-								rules={[
-									{
-										required: true,
-										message: 'Please input your username!',
-									},
-								]}
-							>
-									<Input style={{ textTransform: 'uppercase'}} />		
-							</Form.Item>
 							<Form.Item 
 								label="BLOOD TYPE" 
 								name='blood_group' 
@@ -117,20 +116,20 @@ class BloodGroupForm extends React.Component {
 									},
 								]}
 							>
-									<Input style={{ textTransform: 'uppercase'}} />
+									<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
 							</Form.Item>
 							<Form.Item 
 								label="DESCRIPTION" 
 								name='blood_description'
 							>
-									<TextArea rows={5} />
+									<TextArea rows={5} onChange={this.onDisable}/>
 							</Form.Item>
 						</div>
 						<section className="drawerFooter">
 					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
 						{buttonLabels.cancel}
 					</Button>
-					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+					<Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
 						{drawerButton}
 					</Button>
 				</section>
