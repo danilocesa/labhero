@@ -1,12 +1,12 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod } from 'global_config/constant-global';
+import { API_GET_METHOD } from 'global_config/constant-global';
 
 export default async function fetchRequest(name ,request_id) {
   let Patient = '';
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: (name ? `/blood_recipient/bloodrecipient/search/?search=${name}` : `/blood_recipient/bloodrecipient/search/by_id/${request_id}/`) 
     });
     const { data } = await response;
@@ -24,7 +24,7 @@ export async function fetchBloodRecipientById(recipientID) {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
 			url: `blood_recipient/bloodrecipient/search/by_id/${recipientID}`,
 		});
 		

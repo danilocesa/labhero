@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 
 
@@ -9,7 +9,7 @@ export async function getInventoryItems() {
 	const pageSize = 100;
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `inventory/categories/?page_size=${pageSize}`
 		});
 		
@@ -29,7 +29,7 @@ export async function createInventoryItems(vData) {
 
 	try{
 		const content = {
-            method: apiPostMethod,
+            method: API_POST_METHOD,
             url: 'inventory/categories/create/',
 			data: vData
 		}
@@ -51,7 +51,7 @@ export async function updateInventoryItems(vData) {
     console.log(vData);
 	try{
 		const content = {
-            method: apiPutMethod,
+            method: API_PUT_METHOD,
             url: `inventory/categories/update/${categoryId}/`,
 			data: vData
 		}
@@ -73,7 +73,7 @@ export async function searchInventoryItems(value) {
     const categoryName = value.category_name
   try{
     const content = {
-        method: apiGetMethod,
+        method: API_GET_METHOD,
         url: `inventory/categories/?search=${categoryName}`,
         data: searchCategoryItems
     }

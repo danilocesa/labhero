@@ -12,12 +12,11 @@ import {
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 import PageTitle from 'shared_components/page_title';
 import { fetchAdditionalFields }  from 'services/blood_bank/donor_registration';
-import { createHealthInformation } from 'services/blood_bank/donor_registration';
+import { createHealthInformation } from 'services/blood_bank/health_info';
 import DynamicFields from './dynamic_fields';
 
 
 const { Step } = Steps;
-
 const { Title  } = Typography;
 
 

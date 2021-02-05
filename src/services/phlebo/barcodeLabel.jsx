@@ -1,11 +1,11 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiGetMethod } from 'global_config/constant-global';
+import { API_GET_METHOD } from 'global_config/constant-global';
 
 export default async function printBarcodeLabel(specimenID) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/BarcodeLabel/reprintlabel/${specimenID}`,
 		}
 

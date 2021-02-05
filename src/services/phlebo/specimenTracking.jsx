@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiPostMethod, apiGetMethod } from 'global_config/constant-global';
+import { API_POST_METHOD, API_GET_METHOD } from 'global_config/constant-global';
 
 
 
 export async function fetchExtracReqByPatientID({ requestDate, patientID }) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}/patientid/${patientID}`,
 		}
 
@@ -25,7 +25,7 @@ export async function fetchExtracReqByPatientID({ requestDate, patientID }) {
 export async function fetchExtracReqByPatientName({ requestDate, patientName }) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}/patientname/${patientName}`,
 		}
 
@@ -43,7 +43,7 @@ export async function fetchExtracReqByPatientName({ requestDate, patientName }) 
 export async function fetchExtracReqByDate({ requestDate }) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/SpecimenTracking/phlebo/requestdate/${requestDate}`,
 		}
 
@@ -62,7 +62,7 @@ export async function fetchExtracReqByDate({ requestDate }) {
 export async function fetchRequestSpecimenToProcess(requestID) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/SpecimenTracking/phlebo/requestid/${requestID}`,
 		}
 
@@ -80,7 +80,7 @@ export async function fetchRequestSpecimenToProcess(requestID) {
 export async function checkinSpecimen(payload) {
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
       url: `/lab/SpecimenTracking/phlebo/checkinspecimen`,
       data: payload
 		}
