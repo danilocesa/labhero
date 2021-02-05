@@ -1,6 +1,6 @@
-import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
 
-export const tablePageSize = globalTablePageSize;
+export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;
 export const moduleTitle = 'USER TYPES';

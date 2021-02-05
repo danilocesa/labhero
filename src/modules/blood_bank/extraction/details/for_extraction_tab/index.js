@@ -50,16 +50,14 @@ class ForExtractionTab extends React.Component {
 
   onSubmitForm = async (formValues) => {
     const { donorDetail } = this.props;
-    // const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
       donor: donorDetail.donor_id,
       health_info: donorDetail.health_info_id,
       remarks: formValues.remarks || null,
-      created_by: 1,
-      extracted_by: 1
-      // created_by: loggedinUser.userID,
-      // extracted_by: loggedinUser.userID
+      created_by: loggedinUser.userID,
+      extracted_by: loggedinUser.userID
     };
 
     this.setState({ isLoading: true });
@@ -109,8 +107,8 @@ class ForExtractionTab extends React.Component {
             </Col>
             <Col span={6}>
               <Form.Item 
-                name="expiration_date"
-                label="EXPIRY DATE" 
+                name="extracted_date"
+                label="EXTRACTED DATE" 
               >
                 <DatePicker 
                   disabled  
@@ -120,8 +118,8 @@ class ForExtractionTab extends React.Component {
             </Col>
             <Col span={6}>
               <Form.Item 
-                name="extracted_date"
-                label="EXTRACTED DATE" 
+                name="expiration_date"
+                label="EXPIRY DATE" 
               >
                 <DatePicker 
                   disabled  

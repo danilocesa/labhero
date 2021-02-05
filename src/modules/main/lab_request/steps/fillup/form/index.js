@@ -393,7 +393,6 @@ class BaseForm extends React.Component {
 												return (
 													<CityList 
 														form={form}
-														// form={form}
 														placeholder={selectDefaultOptions}
 														provinceValue={form.getFieldValue('provinces')}
 														selectedCity={address.cityMunicipalityCode}

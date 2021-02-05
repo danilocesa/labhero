@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Table } from 'antd';
 import Pager from 'shared_components/search_pager';
-import { globalTablePageSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 
 import './index.css';
 
@@ -74,7 +74,7 @@ const columns = [
 
 class SectionTable extends React.Component {
 	state = {
-		pageSize: globalTablePageSize,
+		pageSize: GLOBAL_TABLE_PAGE_SIZE,
 	};
 	
 	onChangePageSize = (pageSize) => {

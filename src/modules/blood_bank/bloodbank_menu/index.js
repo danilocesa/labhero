@@ -4,7 +4,7 @@ import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import { BBdonorRegIcon, BBaddBloodReqIcon, BBrecipientIcon } from 'images';
+import { BBdonorRegIcon, BBaddBloodReqIcon } from 'images';
 import BloodBankCard from './bloodbank_card';
 
 
@@ -14,12 +14,12 @@ import './bloodbank-menu.css';
 const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/donor_registration',
+		link: '/bloodbank/donor_registration/step/1',
 		label: 'DONOR REGISTRATION',
 	},
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/extraction/screening',
+		link: '/bloodbank/extraction/search',
 		label: 'EXTRACTION/SCREENING',
 	},
 	{

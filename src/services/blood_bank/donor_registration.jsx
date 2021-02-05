@@ -69,28 +69,28 @@ export async function createHealthInformation() {
 
 
 export async function updateDonor(Data) {
-  console.log(Data,"DATA from API")
   let updateBloodGroup = [];
   const bloodGroupId = Data.donor_id;
-try{
-  const content = {
-    method: apiPutMethod,
-    url:`bloodbank/donor/update/${bloodGroupId}/`,
-    data: Data
+  
+  try{
+    const content = {
+      method: apiPutMethod,
+      url:`bloodbank/donor/update/${bloodGroupId}/`,
+      data: Data
+    }
+    const response = await axiosPhase2API(content);
+    // @ts-ignore
+    updateBloodGroup = await response;
+
   }
-  const response = await axiosPhase2API(content);
-  // @ts-ignore
-  updateBloodGroup = await response;
+  catch(error) {
+    Message.error();
+  }
 
-}
-catch(error) {
-  Message.error();
+  return updateBloodGroup;
 }
 
-return updateBloodGroup;
-}
-
-export async function fetchPatients(patientName ,donor_id) {
+export async function searchDonors(patientName ,donor_id) {
   let Patient = '';
   try{
     const response = await axiosPhase2API({
@@ -135,7 +135,6 @@ export async function fetchBarangayList(city_id) {
     });
     // @ts-ignore
     const { data } = axiosResponse;
-    console.log("fetchBarangayList -> data", data)
     townList = data || [];
   } 
   catch(e) {

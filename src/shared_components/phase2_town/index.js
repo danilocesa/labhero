@@ -45,14 +45,15 @@ class TownList extends React.Component {
 	}
 
 	render(){
-		const { placeholder, disabled } = this.props;
+		const { placeholder, disabled, initialValue } = this.props;
 		const { townList, loading } = this.state;
 		const isDisabled = disabled || townList.length < 1;
 
 		return (
 			<Form.Item 
-				name="town" 
+				name="barangay" 
 				label="BARANGAY"
+				// initialValue={initialValue}
 				rules={[{
 					required: !isDisabled,
 					message: errorMessage.required
@@ -66,7 +67,7 @@ class TownList extends React.Component {
 				>
 					{
 						townList.map((item) => (
-							<Option value={item.barangay_id} key={item.brgy_code}>
+							<Option value={item.barangay_id} key={item.barangay_id}>
 								{item.barangay_name}
 							</Option>
 						))
@@ -80,12 +81,14 @@ class TownList extends React.Component {
 TownList.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	cityValue: PropTypes.number,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	initialValue: PropTypes.number,
 };
 
 TownList.defaultProps = {
 	cityValue: null,
-	disabled: false
+	disabled: false,
+	initialValue: null
 }
 
 

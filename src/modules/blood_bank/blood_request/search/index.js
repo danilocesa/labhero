@@ -198,17 +198,6 @@ class BloodRequestSearch extends React.Component {
             />    
           </Col>
         </Row>
-        {/* <Table 
-          dataSource={dataSource} 
-          columns={columns} 
-          onRow={(record) => {
-            return {     
-              onDoubleClick: () => {
-                this.displayDrawerUpdate(record);
-              }
-            }
-          }}
-        />	 */}
         <Drawer
           title="REQUEST INFORMATION"
           width="500"

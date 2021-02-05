@@ -33,7 +33,6 @@ export async function createBloodGroupAPI(payload) {
       return response;
     });
 
-    console.log("API response",axiosResponse)
     // @ts-ignore
     createUserAccount = axiosResponse;
   } 
@@ -48,22 +47,21 @@ export async function updateBloodGroupAPI(payload) {
   let updateBloodGroup = [];
   const bloodGroupId = payload.blood_group_id;
 
-try{
-  const content = {
-          method: apiPutMethod,
-          url:`bloodbank/bloodgroup/update/${bloodGroupId}/`,
-    data: payload
+  try{
+    const content = {
+      method: apiPutMethod,
+      url:`bloodbank/bloodgroup/update/${bloodGroupId}/`,
+      ata: payload
+    }
+
+    const response = await axiosPhase2API(content);
+    // @ts-ignore
+    updateBloodGroup = await response;
+  }
+  catch(error) {
+    Message.error();
   }
 
-  const response = await axiosPhase2API(content);
-  // @ts-ignore
-  updateBloodGroup = await response;
-
-}
-catch(error) {
-  Message.error();
-}
-
-return updateBloodGroup;
+  return updateBloodGroup;
 }
 

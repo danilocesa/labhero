@@ -56,8 +56,6 @@ class BloodRequestDetails extends React.Component {
   render(){
     const { recipientDetail, requestDetails, loading } = this.state;
 
-    console.log(requestDetails);
-
     const ProductList = requestDetails.map(item => (
       <Row key={item.blood_product_id}>
         <Col span={10}>

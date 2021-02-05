@@ -1,4 +1,4 @@
-import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
 import vdltnMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
@@ -54,7 +54,7 @@ export const fieldLabels = {
 	userRights: "USER RIGHTS"
 }
 
-export const tablePageSize = globalTablePageSize;
+export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;
 

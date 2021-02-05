@@ -39,6 +39,7 @@ class CityList extends React.Component {
 		this.setState({ loading: true }, () => {
 			const timer = setTimeout(async () => {
 				const cityListResponse = provinceValue ? await fetchCityList(provinceValue) : [];
+
 				this.setState({
 					 loading: false, 
 					 cityList: cityListResponse 
@@ -86,12 +87,12 @@ CityList.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	provinceValue: PropTypes.number,
 	onChange: PropTypes.func.isRequired,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
 };
 
 CityList.defaultProps = {
 	provinceValue: null,
-	disabled: false
+	disabled: false,
 }
 
 export default CityList;
