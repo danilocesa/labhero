@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export async function fetchHealthInfoById(id) {
 	let healthInfo = {};
@@ -8,7 +8,7 @@ export async function fetchHealthInfoById(id) {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `health_info/${id}`,
+			url: `/bloodbank/health_info/${id}`,
 		});
 		
 		const { data } = response;
@@ -21,24 +21,42 @@ export async function fetchHealthInfoById(id) {
   return healthInfo;
 }
 
-export async function createHealthInformation() {
+export async function createHealthInformation(payload) {
+  let response = null;
 
-  let HealthInformation = [];
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
       url: `/bloodbank/health_info/create/`,
-      //data: 
-		}).then(response => {
-      return response;
-    });
+      data: payload
+		});
 
-    // @ts-ignore
-    HealthInformation = axiosResponse;
-  } 
+    response = axiosResponse;
+  }
   catch(e) {
-   Message.error();
+    return false;
 	}
 
-	return HealthInformation;
+	return response;
+}
+
+
+
+export async function updateHealthInformation(payload) {
+  let response = null;
+
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: API_PUT_METHOD,
+      url: `/bloodbank/health_info/update/${payload.id}/`,
+      data: payload
+		});
+
+    response = axiosResponse;
+  }
+  catch(e) {
+    return false;
+	}
+
+	return response;
 }

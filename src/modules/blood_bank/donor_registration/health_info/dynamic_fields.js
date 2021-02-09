@@ -1,113 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, InputNumber, Form, Checkbox, Select, Input, Switch } from 'antd';
+import errorMessage from 'global_config/error_messages';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-class HealthInfoDynamicFields extends React.Component {
+const tmpDropdownOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
-  generateAdditionalFields = () => {
-    const { additionalFields } = this.props;
-    let cust_fld_obj = [];
-    const custFieldArray = [];
+const generateDynamicField = (paramObject, isDisabled) => {
+    if(paramObject.field_type === 'nu') {
+      return <InputNumber style={{ width: 150 }} />
+    }
       
-    Object.keys(additionalFields).forEach(key => {
-      cust_fld_obj = additionalFields[key].cust_fld_format;
-    });
-    
-    if(cust_fld_obj){
-      cust_fld_obj.map(function(key){
-        switch(key.field_type){
-          case 'nu': 
-            custFieldArray.push(
-              <Col>
-                <Form.Item label={key.field_label}>
-                  <InputNumber style={{ width: 150 }} />
-                </Form.Item>
-              </Col>
-            ) 
-          break;
-          case 'cb':
-            custFieldArray.push(
-              <Col>
-                <Form.Item
-                  label={key.field_label}
-                  name="CB"
-                >
-                  <Checkbox.Group style={{ width: '100%' }}>
-                    { 
-                      key.field_list_values.map(listValue => (
-                        <Checkbox value={listValue.list_value}>{listValue.list_value}</Checkbox>
-                      ))
-                    }
-                  </Checkbox.Group>
-                </Form.Item>
-              </Col>
-            )
-          break;
-          case 'op':
-            custFieldArray.push(
-              <Col>
-                <Form.Item
-                  label={key.field_label}
-                  name="OP"
-                >
-                <Select>
-                  {key.field_list_values.map(function(listValue){
-                    return <Option value={listValue.list_id}>{listValue.list_value}</Option>
-                  })}
-                </Select>
-                </Form.Item>
-              </Col>
-            )
-          break;
-          case 'ta':
-            return custFieldArray.push(
-              <Col>
-                <Form.Item
-                  label={key.field_label}
-                  name="TA"
-                >
-                  <TextArea rows={4} />
-                </Form.Item>
-              </Col>
-            );
-          case 'rd':
-            return custFieldArray.push(
-              <Col>
-                <Form.Item
-                  label={key.field_label}
-                  name="RD"
-                >
-                  <Switch defaultChecked />
-                </Form.Item>
-              </Col>
-            );
-          default:
-            custFieldArray.push(
-              <Col>
-                <Form.Item
-                  label={key.field_label}
-                  name="text"
-                >
-                  <Input placeholder="Text" />
-                </Form.Item>
-              </Col>
-            )
-          break;
-        }
-        return true;
-      });
+    if(paramObject.field_type === 'cb') {
+      return (
+        <Checkbox.Group style={{ width: '100%' }}>
+          { 
+            paramObject.field_list_values.map(listValue => (
+              <Checkbox value={listValue.list_value} key={listValue.list_value}>
+                {listValue.list_value}
+              </Checkbox>
+            ))
+          }
+        </Checkbox.Group>
+      );
+    }
+
+    if(paramObject.field_type === 'op') {
+      return (
+        <Select style={{ width: 150 }} disabled={isDisabled}>
+          {tmpDropdownOptions.map(item => (
+            <Option value={item} key={item}>{item}</Option>
+          ))}
+          {/* {paramObject.field_list_values.map(function(listValue){
+            return <Option value={listValue.list_id}>{listValue.list_value}</Option>
+          })} */}
+        </Select>
+      );
+    }
+
+    if(paramObject.field_type === 'ta') {
+      return (
+        <TextArea rows={4} />
+      );
+    }
+
+    if(paramObject.field_type === 'rd') {
+      return (
+        <Switch defaultChecked />
+      );
     }
     
-    return cust_fld_obj ? custFieldArray : null;
-  };
-  
+    return (
+      <Input placeholder="Text" />
+    );
+}
+
+class HealthInfoDynamicFields extends React.Component {
   render() {
+    const { fields, isUpdate } = this.props;
+    
+    const Fields = fields
+      ? fields[0].cust_fld_format.map(item => {
+          const isDisabled = (item.field_name === 'blood_type' && isUpdate);
+
+          return (
+            <Col key={item.field_name}>
+              <Form.Item
+                label={item.field_label}
+                name={item.field_name}
+                rules={[{ required: item.field_is_required, message: errorMessage.required }]}
+              >
+                {generateDynamicField(item, isDisabled)}
+              </Form.Item>
+            </Col>
+          );
+        })
+      : null;
+
     return(
       <Row gutter={24}>
-        {this.generateAdditionalFields()}
+        {Fields}
       </Row>
     );
   }
@@ -115,7 +89,8 @@ class HealthInfoDynamicFields extends React.Component {
 
 
 HealthInfoDynamicFields.propTypes = {
-  additionalFields: PropTypes.array.isRequired
+  fields: PropTypes.array,
+  isUpdate: PropTypes.bool.isRequired
 }
 
 export default HealthInfoDynamicFields;

@@ -91,6 +91,7 @@ class DonorRegSearch extends React.Component {
       actionType: (donorName === '') ? 'byID' : 'byName'
     });
 
+
 		if(donors.length <= 0) 
       Message.info('No results found');
   }

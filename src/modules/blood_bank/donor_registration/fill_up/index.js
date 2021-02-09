@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from 'antd';
@@ -45,15 +46,19 @@ class FillUpForm extends React.Component {
 
   initCreateDonor = async (data) => {
     const { history } = this.props;
+    const { updateInitialValues } = this.state;
     const createdUserResponse = await createDonor(data);
 
     if(createdUserResponse.status === 201){
       const httpMessageConfig = {
         message: messagePrompts.successCreateUser,
-        // @ts-ignore
+       
         status: createdUserResponse.status,	
         duration: 1, 
-        onClose: () => history.push('/bloodbank/donor_registration/step/3')
+        onClose: () => history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: createdUserResponse.data.donor_id
+        })
       }
       
       HttpCodeMessage(httpMessageConfig);	
@@ -62,6 +67,7 @@ class FillUpForm extends React.Component {
 
   initUpdateDonor = async (data) => {
     const { history } = this.props;
+    const { updateInitialValues } = this.state;
     const updateUserResponse =  await updateDonor(data);
     // @ts-ignore)
     if(updateUserResponse.status === 200){
@@ -70,12 +76,16 @@ class FillUpForm extends React.Component {
         // @ts-ignore
         status: updateUserResponse.status,
         duration: 1, 
-        onClose: () => history.push('/bloodbank/donor_registration/step/3')
+        onClose: () => history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: updateInitialValues.donor_id
+        })
       }
 
       HttpCodeMessage(httpMessageConfig);
     }
   }
+
 
   onFinish = async (formData) => {
     const { history } = this.props;
@@ -98,9 +108,6 @@ class FillUpForm extends React.Component {
       updateInitialValues.suffix === formData.suffix 
     );
 
-
-    console.log(isUnchanged);
-
     const payload = {
       ...formData,
       birth_date: formData.birth_date.format('YYYY-MM-DD'),
@@ -110,7 +117,10 @@ class FillUpForm extends React.Component {
 
     if(formData.donor_id) {
       if(isUnchanged) 
-        history.push('/bloodbank/donor_registration/step/3')   
+        history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: updateInitialValues.donor_id
+        });   
       else
         await this.initUpdateDonor({ ...payload, is_active: 1 });
 
@@ -124,19 +134,20 @@ class FillUpForm extends React.Component {
     this.formRef.current.setFieldsValue({
 			city: null,
 			barangay: null,
-			houseAddress: null 
+			address_line_1: null,
+      address_line_2: null 
 		});
   }
 
   onCityChange = () => {
 		this.formRef.current.setFieldsValue({
 			barangay: null,
-			houseAddress: null 
+			address_line_1: null,
+      address_line_2: null
 		});
 	}
 
   onDateChange = (date) => {
-		// eslint-disable-next-line react/prop-types
 		const { setFieldsValue } = this.formRef.current;
 		const age = this.computeAge(date);
 
