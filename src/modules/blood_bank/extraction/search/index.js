@@ -109,6 +109,18 @@ class Extraction extends React.Component {
 		this.setState({ pageSize });
 	}  
 
+  clearInputs = () => {
+    const { setFieldsValue } = this.formRef.current;
+
+    this.setState({ data: [] });
+    
+    setFieldsValue({ 
+      donorID: '',
+      donorName: ''
+    });
+  }
+
+
   redirect = (record) => {
     this.props.history.push('/bloodbank/extraction/details', record);
   }
@@ -191,7 +203,7 @@ class Extraction extends React.Component {
           </Row>
         </Form>
         <SearchPager 
-          handleChange={this.handleChangeTableSize}
+          handleChangeSize={this.handleChangeTableSize}
           pageTotal={data.length}
           pageSize={pageSize}
         />

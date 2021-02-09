@@ -23,7 +23,7 @@ class ForExtractionTab extends React.Component {
 
   async componentDidMount() {
     const { donorDetail } = this.props;
-    
+
     if(donorDetail.extraction_id !== null) {
       this.fetchExtractionDetail(donorDetail.extraction_id);
     }
@@ -172,7 +172,7 @@ ForExtractionTab.propTypes = {
   donorDetail: PropTypes.shape({
     donor_id: PropTypes.number,
     health_info_id: PropTypes.number.isRequired,
-    extraction_id: PropTypes.number
+    extraction_id: PropTypes.any
   }).isRequired
 }
 
