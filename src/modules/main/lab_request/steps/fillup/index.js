@@ -111,14 +111,14 @@ class FillupStep extends React.Component {
 	goToNextPage = () => {
 		const { history } = this.props;
 
-		if(sessionStorage.getItem('REQUEST_TYPE') === requestTypes.create)
+		if(sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create)
 			history.push(requestLinks.create.step3);
 		else 
 			history.push(requestLinks.edit.step3);
 	}
 
 	dynamicModuleTitle = () =>{
-		const reqType = sessionStorage.getItem('REQUEST_TYPE');
+		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 		const pageTitle = (reqType === requestTypes.create || reqType === undefined)
 			? moduleTitles.create 
 			: moduleTitles.edit;

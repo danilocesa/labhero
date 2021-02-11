@@ -99,6 +99,7 @@ class SelectStep extends React.Component {
 			let setPanelIDs = new Set();
 			let setContents = new Set();
 
+
 			qexams.forEach(tier1 => {
 				tier1.contents.forEach(tier2 => {
 					const tmpRoot = {};

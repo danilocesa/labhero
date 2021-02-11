@@ -46,7 +46,8 @@ class SearchPatientForm extends React.Component {
 		this.setState({ loading: false });
 
 		populatePatients(patients);
-		storeSearchedVal(patientName, patientID);
+
+		storeSearchedVal(patientID, patientName);
 
 		if(patients.length <= 0) 
 			Message.info('No results found');

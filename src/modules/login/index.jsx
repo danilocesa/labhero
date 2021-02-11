@@ -1,7 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import { withRouter } from 'react-router-dom';
 import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
+import { CompanyLogo } from 'images';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
@@ -12,7 +12,6 @@ import FIELD_RULES from './constants';
 
 import './login.css';
 
-import { CompanyLogo } from '../../images';
 
 const { Header, Content } = Layout;
 
@@ -41,6 +40,7 @@ class Login extends React.Component {
 			
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
 			Message.success({ message: 'You are now successfully logged in!' });
+
 			auth.authenticate();
 			this.redirectPage();
 		}
@@ -62,7 +62,7 @@ class Login extends React.Component {
 				selectedLink = URI[k].link;
 		});
 
-		this.props.history.push(selectedLink); 
+		this.props.history.push('/dashboard'); 
 	}
 	
 
@@ -92,22 +92,12 @@ class Login extends React.Component {
 									rules={FIELD_RULES.Username}
 								>
 									<AlphaNumInput maxLength={20} />
-									{/* {getFieldDecorator('username', { 
-										rules: FIELD_RULES.Username, 
-									})(
-										<AlphaNumInput maxLength={20} />
-									)} */}
 								</Form.Item>
 								<Form.Item 
 									name="password" 
 									label="Password"
 									rules={FIELD_RULES.password}
 								>
-									{/* {getFieldDecorator('password', { 
-										rules: FIELD_RULES.password, 
-									})(
-										<Input.Password type="password" maxLength={20} />
-									)} */}
 									<Input.Password type="password" maxLength={20} />
 								</Form.Item>
 								<Form.Item style={{ marginBottom: 0 }}>
@@ -124,15 +114,7 @@ class Login extends React.Component {
 	}
 }
 
-Login.propTypes = {
-	history:ReactRouterPropTypes.history.isRequired,
-	form: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-}
 
-Login.defaultProps = {
-	form: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-}
 
-// const LoginForm = Form.create({ name: 'normal_login' })(Login);
 
-export default Login;
+export default withRouter(Login);
