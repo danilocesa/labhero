@@ -8,7 +8,7 @@ export const LR_SEARCHED_ID = 'LR_SEARCHED_ID';
 export const LR_STEP_PROGRESS = 'LR_STEP_PROGRESS';
 export const LR_REQUEST_TYPE = 'LR_REQ_TYPE';
 export const LR_IS_EXAM_UPDATED = 'LR_EXAM_UPDATED_WHILE_EDITTING';
-
+export const LR_EDIT_SEL_EXAM_REF = 'LR_EDIT_SEL_EXAM_REF';
 
 
 

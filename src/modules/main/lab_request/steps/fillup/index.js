@@ -8,7 +8,7 @@ import { pick } from 'lodash';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
 import createPatientInfo from 'services/lab_request/patient';
-import Restriction from 'modules/main/lab_request/steps/clr_restriction/restriction';
+import Restriction from 'modules/main/lab_request/steps/lr_restriction/restriction';
 import Tracker from 'modules/main/lab_request/tracker';
 import { requestTypes, requestLinks, moduleTitles } from 'modules/main/settings/lab_exam_request/settings';
 import { 

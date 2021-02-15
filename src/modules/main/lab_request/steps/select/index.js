@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Spin } from 'antd';
 
 import PageTitle from 'shared_components/page_title';
-import Restriction from 'modules/main/lab_request/steps/clr_restriction/restriction';
+import Restriction from 'modules/main/lab_request/steps/lr_restriction/restriction';
 import Tracker from 'modules/main/lab_request/tracker';
 import { 
 	LR_SEL_EXAMS, 
@@ -11,7 +11,8 @@ import {
 	LR_SEL_PANEL_CONTENTS, 
 	LR_OTHER_INFO, 
 	LR_REQUEST_TYPE,
-	LR_IS_EXAM_UPDATED
+	LR_IS_EXAM_UPDATED,
+	LR_EDIT_SEL_EXAM_REF
 } from 'modules/main/lab_request/steps/constants';
 import { moduleTitles, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 import { fetchExamsByReqId } from 'services/lab_request/labRequest';
@@ -142,18 +143,19 @@ class SelectStep extends React.Component {
 			// 	});
 			// });
 
+			// Store raw exams from API to local storage
+			sessionStorage.setItem(LR_EDIT_SEL_EXAM_REF, JSON.stringify(zexams))
 
 			this.setState({ 
 				selectedExams: zexams,
 				// selectedContents: zpanelContents,
 				selectedContents: Array.from(setContents),
-				selectedContentsByPanel: zpanelContents,
+				selectedContentsByPanel: zpanelContents
 			});
 		}
 	}
 
 	populateExams = (exams) => {
-		console.log('populateExams has been triggered');
 		const { selectedExams, selectedContents } = this.state;
 
 		const processedExams = exams.map(exam => { 
@@ -401,7 +403,6 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
-		console.log('removeSelectedExamByPanel has triggered');
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
 		const filteredExams = selectedExams.filter(item => {
@@ -425,7 +426,6 @@ class SelectStep extends React.Component {
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
-		console.log('removeSelectedExamByExam has triggered');
 
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
@@ -464,11 +464,9 @@ class SelectStep extends React.Component {
 	// when removing exam from selected exam table(right).
 	// Private function
 	unselectExams = (unselectedExams) => {
-		console.log('unselectExams has triggered');
 		const { exams, selectedContents, selectedExams } = this.state;
 
 		const processedExams = exams.map(exam => { 
-			console.log('exam', exam);
 			// Check if current exam is in the unselected exams
 			const isExistInUExam = unselectedExams.some(uexam => exam.examID === uexam.examID);
 			const isExistInContents = selectedContents.some(selContent => {
@@ -499,6 +497,7 @@ class SelectStep extends React.Component {
 			selectedContents, 
 			selectedContentsByPanel,
 			selectedSection, 
+			rawExamsRef,
 			exams, 
 			panels, 
 			isLoading 

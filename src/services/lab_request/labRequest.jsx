@@ -3,7 +3,7 @@ import { axiosLabAPI } from '../axios';
 import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
 
-export default async function saveLabRequest(payload) {
+export async function createLabRequest(payload) {
 	let isSuccess = false;
 	
 	try {
@@ -24,6 +24,31 @@ export default async function saveLabRequest(payload) {
 
 	return isSuccess;
 }
+
+
+export async function updateLabRequest(payload) {
+	let isSuccess = false;
+	
+	try {
+		const response = await axiosLabAPI({ 
+			method: API_POST_METHOD, 
+			url: 'lab/Request/editexams',
+			data: payload
+		});
+
+		// eslint-disable-next-line no-unused-vars
+		const { data } = await response;
+
+		isSuccess = true;
+	} catch (e) {
+		Message.error();
+		isSuccess = false;
+	}
+
+	return isSuccess;
+}
+
+
 
 export async function fetchPatientsByDate(date) {
 	let patients = [];

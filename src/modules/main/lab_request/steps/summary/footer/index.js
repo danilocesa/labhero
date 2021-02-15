@@ -6,14 +6,17 @@ import Navigation from './navigation';
 
 class SummaryFooter extends React.Component {
 	render() {
-		const { saveExams } = this.props;
+		const { saveForCreate, saveForEdit } = this.props;
 
 		return (
 			<Row>
 				<Col span={16} offset={4}>
 					<Row>
 						<Col span={12} offset={12}>
-							<Navigation saveExams={saveExams} />
+							<Navigation 
+								saveForCreate={saveForCreate} 
+								saveForEdit={saveForEdit}
+							/>
 						</Col>
 					</Row>
 				</Col>
@@ -23,7 +26,8 @@ class SummaryFooter extends React.Component {
 }
 
 SummaryFooter.propTypes = {
-	saveExams: PropTypes.func.isRequired
+	saveForCreate: PropTypes.func.isRequired,
+	saveForEdit:  PropTypes.func.isRequired,
 }
 
 export default SummaryFooter;
