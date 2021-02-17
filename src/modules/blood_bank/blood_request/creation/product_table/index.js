@@ -16,6 +16,11 @@ class ProductTable extends React.Component {
     }
   }
 
+  
+  getSelectedProducts = () => {
+    return this.state.selectedProducts;
+  }
+
   onChangeProduct = (value) => {
     this.setState({ isProductEmpty: value === null });
   }

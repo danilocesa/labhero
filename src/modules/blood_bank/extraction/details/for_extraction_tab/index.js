@@ -88,7 +88,7 @@ class ForExtractionTab extends React.Component {
           ref={this.formRef}
           layout="vertical"
           onFinish={this.onSubmitForm} 
-        >   
+        > 
           <Form.Item 
             name="bag_count"
             label="NO. OF BAGS" 
@@ -108,7 +108,7 @@ class ForExtractionTab extends React.Component {
             <Col span={6}>
               <Form.Item 
                 name="extracted_date"
-                label="EXTRACTED DATE" 
+                label="EXTRACTED DATE"
               >
                 <DatePicker 
                   disabled  
@@ -143,7 +143,7 @@ class ForExtractionTab extends React.Component {
                 label="REMARKS" 
               >
                 <TextArea 
-                  rows={6} 
+                  rows={4} 
                   disabled={isAlreadyExtracted}
                 />
               </Form.Item>

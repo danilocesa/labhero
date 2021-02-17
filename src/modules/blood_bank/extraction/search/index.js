@@ -18,6 +18,8 @@ import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
 import SearchPager from 'shared_components/search_pager';
 
+import './index.css';
+
 const { Text } = Typography;
 
 const columns = [
@@ -47,11 +49,13 @@ const columns = [
   },
   {
     title: "ADDRESS",
-    dataIndex: 'barangay_name',
+    render: record => (
+      `${record.province_name} ${record.city_name} ${record.barangay_name} ${record.address_line_1} ${record.address_line_2}`
+    )
   },
   {
     title: "BLOOD TYPE",
-    dataIndex: 'blood_type_name',
+    render: record => record.custom_fields_list.field_value
   },
   {
     title: "LAST EXTRACTED",
@@ -74,13 +78,13 @@ class Extraction extends React.Component {
   handleSubmit = async () => {  
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
-    let patients = [];
+
     this.setState({ loading: true });
-    patients = await fetchPatients(donorName, donorID);  
+    const patients = await fetchPatients(donorName, donorID);  
     
     this.setState({ 
       loading: false,
-      data: patients  
+      data: patients 
     });
 
     if(patients.length <= 0) 
@@ -122,7 +126,10 @@ class Extraction extends React.Component {
 
 
   redirect = (record) => {
-    this.props.history.push('/bloodbank/extraction/details', record);
+    this.props.history.push('/bloodbank/extraction/details', { 
+      ...record, 
+      bloodtype: record.custom_fields_list.field_value 
+    });
   }
 
   render() {
@@ -134,19 +141,20 @@ class Extraction extends React.Component {
         <Form 
           onFinish={this.handleSubmit} 
           ref={this.formRef}
+          className="blood-extract-search-form"
           layout="vertical"
+          style={{ marginTop: 20 }}
         >
           <Row 
             justify="center" 
             align="middle"
-            style={{ marginTop: 20 }}
             gutter={12}
           >
             <Col>
               <Form.Item label="DONOR'S ID" name="donorID" style={{marginLeft:30}}>
                 <RegexInput 
                   style={{width:200}}
-                  regex={/[A-Za-z0-9, -]/} 
+                  regex={/[0-9]/} 
                   maxLength={100}
                   onFocus={this.onFocusDonorId}
                   placeholder="Donor's ID"
@@ -154,12 +162,14 @@ class Extraction extends React.Component {
               </Form.Item>
             </Col>
             <Col>
-              <Text strong style={{ marginTop: 20, marginLeft:10 }}>OR</Text>
+              <div style={{ marginTop: 5 }}>
+                <Text strong>OR</Text>
+              </div>
             </Col>
             <Col>
-              <Form.Item label="DONOR'S NAME" name="donorName" style={{marginLeft:10}}>
+              <Form.Item label="DONOR'S NAME" name="donorName">
                 <RegexInput 
-                  style={{width:350}}
+                  style={{ width:350 }}
                   regex={/[A-Za-z0-9, -]/} 
                   maxLength={100}
                   onFocus={this.onFocusDonorName}

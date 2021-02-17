@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { API_GET_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
 export default async function fetchRequest(name ,request_id) {
   let Patient = '';
@@ -36,4 +36,23 @@ export async function fetchBloodRecipientById(recipientID) {
  	}
   
   return bloodrecipient;
+}
+
+export async function createBloodRecipient(payload) {
+	let result = null;
+	
+  try{
+    const response = await axiosPhase2API({
+      method: API_POST_METHOD,
+			url: `/bloodrecipient/create/`,
+      data: payload
+		});
+		
+		result = response;
+  } 
+  catch(e) {
+    return false;
+ 	}
+  
+  return result;
 }

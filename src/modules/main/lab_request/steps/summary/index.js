@@ -63,46 +63,57 @@ class SummaryStep extends React.Component {
 		const { otherInfo, user, examRef, exams } = this.state;
 		
 
-		console.log(examRef, 'exams ref');
-		console.log(exams, 'selected exams');
+		// console.log(examRef, 'exams ref');
+		// console.log(exams, 'selected exams');
 
-		const examRefIDs = examRef.map(item => item.examID);
-		const selectedExamIDs = exams.map(item => item.examID);
-		const newExams = [];
-		const removedExams = [];
+		// const examRefIDs = examRef.map(item => item.examID);
+		// const selectedExamIDs = exams.map(item => item.examID);
+		// const newExams = [];
+		// const removedExams = [];
 
-		exams.forEach(x => {
-			if(examRefIDs.includes(x.examID) === false) 
-				newExams.push({
-					sectionID: x.selectedSection.sectionID,
-					sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-					sampleSpecimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-					panelID: x.selectedPanel ? x.selectedPanel.panelID : 0,
-					examID: x.examID,
-					priority: ''
-				});
-		});
+		// exams.forEach(x => {
+		// 	if(examRefIDs.includes(x.examID) === false) 
+		// 		newExams.push({
+		// 			sectionID: x.selectedSection.sectionID,
+		// 			sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+		// 			sampleSpecimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+		// 			panelID: x.selectedPanel ? x.selectedPanel.panelID : 0,
+		// 			examID: x.examID,
+		// 			priority: ''
+		// 		});
+		// });
 
-		examRef.forEach(x => {
-			if(selectedExamIDs.includes(x.examID) === false) 
-				removedExams.push({
-					sectionID: x.selectedSection.sectionID,
-					sectionName: x.selectedSection.sectionName,
-					sectionCode: x.selectedSection.sectionCode,
-					specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-					specimenName: x.selectedSpecimen ? x.selectedSpecimen.specimenName : '',
-				});
-		});
+		// examRef.forEach(x => {
+		// 	if(selectedExamIDs.includes(x.examID) === false) 
+		// 		removedExams.push({
+		// 			sectionID: x.selectedSection.sectionID,
+		// 			sectionName: x.selectedSection.sectionName,
+		// 			sectionCode: x.selectedSection.sectionCode,
+		// 			specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+		// 			specimenName: x.selectedSpecimen ? x.selectedSpecimen.specimenName : '',
+		// 		});
+		// });
+
+		const selectedExams = exams.map(x => ({
+			sectionID: x.selectedSection.sectionID,
+			sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+			sampleSpecimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+			panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
+			examID: x.examID,
+			priority: ''
+		}));
 
 		const payload = {
 			...otherInfo,
 			requestDateTime: moment().format('yyyy-MM-DD hh:mm:ss'),
 			userID: user.userID,
-			exams: newExams,
-			remove: removedExams,
+			exams: selectedExams,
+			remove: [],
 			physicianID: otherInfo.physicianID ? otherInfo.physicianID : 0 
 		};
 		
+		console.log(JSON.stringify(payload));
+
 		return updateLabRequest(payload);
 	}
 

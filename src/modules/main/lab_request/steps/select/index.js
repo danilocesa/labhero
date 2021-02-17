@@ -79,6 +79,7 @@ class SelectStep extends React.Component {
 	async componentDidUpdate(prevProps) {
 		const { componentDidMount, panelRef } = this.state;
 
+		console.log('component did update');
 		// Variables for Edit Module
 		const sessOtherInfo = sessionStorage.getItem(LR_OTHER_INFO);
 		const sessExamUpdated = sessionStorage.getItem(LR_IS_EXAM_UPDATED);
@@ -93,7 +94,7 @@ class SelectStep extends React.Component {
 		// -When session exams is not updated upon the process of editting
 		if(!componentDidMount && requestID && panelRef.length !== 0 && isFreshExams) {
 			this.setState({ componentDidMount: true });
-
+			
 			const qexams = await fetchExamsByReqId(requestID);
 			let zexams = [];
 			let zpanelContents = [];
@@ -134,14 +135,17 @@ class SelectStep extends React.Component {
 				});
 			});
 
-			// const selectedPanel = panelRef.filter(item => Array.from(zpanelIDs).includes(item.panelID));
 
+			const selectedPanel = panelRef.filter(item => Array.from(setPanelIDs).includes(item.panelID));
 
-			// selectedPanel.forEach(panelRef => {
-			// 	panelRef.exams.forEach(exam => {
-			// 		zpanelContents = zpanelContents.concat(exam.contents);
-			// 	});
-			// });
+			console.log('selectedPanel', selectedPanel);
+
+			selectedPanel.forEach(panelRef => {
+				panelRef.exams.forEach(exam => {
+					zpanelContents = zpanelContents.concat(exam.contents);
+				});
+			});
+
 
 			// Store raw exams from API to local storage
 			sessionStorage.setItem(LR_EDIT_SEL_EXAM_REF, JSON.stringify(zexams))
@@ -164,20 +168,24 @@ class SelectStep extends React.Component {
 
 			const isDisabled = selectedExams.some(item => {
 				const isInContents = selectedContents.some(selContent => exam.contents.includes(selContent));
-
-				if(item.examID === exam.examID && item.selectedPanel !== null)
+				
+				if(item.examID === exam.examID && item.selectedPanel !== null) {
 					return true;
+				}
 
-				if(item.examID === exam.examID && item.isLocked)
+				if(item.examID === exam.examID && item.isLocked){
 					return true;
+				}
 
-				if(isInContents && !isSelected)
+				if(isInContents && !isSelected){
 					return true;
+				}
 
 				return false
 			});
 
 			const isLocked = selectedExams.some(item => item.examID === exam.examID && item.isLocked);
+
 
 			return { ...exam, isSelected, isDisabled, isLocked };
 		});
@@ -308,6 +316,7 @@ class SelectStep extends React.Component {
 	// the list of exams table (left) into selected exams table (right).
 	// Used when selecting panel
 	addSelectedExamByPanel = ({ panelID }) => {
+		console.log('addSelectedExamByPanel');
 		const { panelRef, selectedContents } = this.state;
 		const selectedPanel = panelRef.find(item => item.panelID === panelID);
 		let newSelectedContents = []; 
@@ -403,6 +412,8 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
+		console.log('removeSelectedExamByPanel');
+		
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
 		const filteredExams = selectedExams.filter(item => {
@@ -414,6 +425,7 @@ class SelectStep extends React.Component {
 		const filteredContents = selectedContents.filter(a => {
 			return !selectedContentsByPanel.some(b => a === b);
 		});
+
 
 		this.setState({ 
 			selectedExams: filteredExams, 

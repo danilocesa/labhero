@@ -74,10 +74,10 @@ class ExtractionInformation extends React.Component {
     return(
       <div>
         <Row>
-          <Col span={5}>
+          <Col md={7} xxl={5}>
             <PatientInfo data={donorDetail} />
           </Col>
-          <Col span={18} style={{marginLeft:20}}>
+          <Col md={16} xxl={10} style={{marginLeft:20}}>
             <div>
               <Title level={4}>{`${last_name}, ${first_name}`.toUpperCase()}</Title>
             </div>

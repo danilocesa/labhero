@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, InputNumber, Form, Checkbox, Select, Input, Switch } from 'antd';
+import { Row, Col, Form, Checkbox, Select, Input, Switch } from 'antd';
+import { NumberInput } from 'shared_components/pattern_input';
 import errorMessage from 'global_config/error_messages';
 
 const { TextArea } = Input;
@@ -10,7 +11,7 @@ const tmpDropdownOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
 const generateDynamicField = (paramObject, isDisabled) => {
     if(paramObject.field_type === 'nu') {
-      return <InputNumber style={{ width: 150 }} />
+      return <NumberInput style={{ width: 150 }} />
     }
       
     if(paramObject.field_type === 'cb') {

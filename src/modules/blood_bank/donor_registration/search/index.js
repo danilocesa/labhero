@@ -18,6 +18,9 @@ import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
 
+
+import './index.css';
+
 const { Step } = Steps
 const { Text } = Typography
 const columns = [
@@ -153,7 +156,7 @@ class DonorRegSearch extends React.Component {
           <Step title="Health Information" icon={<MedicineBoxOutlined />} />
         </Steps>
         <Form 
-          className="search-patient-form" 
+          className="blood-donor-reg-search-form" 
           onFinish={this.handleSubmit} 
           ref={this.formRef}
           layout="vertical"
@@ -171,7 +174,7 @@ class DonorRegSearch extends React.Component {
               </Form.Item>
             </Col>
             <Col>
-              <div style={{ marginTop: 15 }}>
+              <div style={{ marginTop: 5 }}>
                 <Text strong>OR</Text>
               </div>
             </Col>
@@ -187,7 +190,7 @@ class DonorRegSearch extends React.Component {
               </Form.Item>
             </Col>
             <Col>
-              <div style={{ marginTop: 15 }}>
+              <div style={{ marginTop: 25 }}>
                 <Form.Item shouldUpdate> 
                   {({ getFieldsValue }) => {
                     const { donorId, donorName } = getFieldsValue();
@@ -209,7 +212,7 @@ class DonorRegSearch extends React.Component {
                           shape="round" 
                           type="primary" 
                           htmlType="submit" 
-                          style={{ width: 120 }}
+                          style={{ width: 120, marginLeft: 15 }}
                           disabled={disabled}
                         >
                           SEARCH

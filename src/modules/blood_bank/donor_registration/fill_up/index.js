@@ -188,7 +188,7 @@ class FillUpForm extends React.Component {
               <div className="left-form">
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
-                  <img src={User} alt="logo" style={{ height: 150, width: '100%' }} />
+                  <img src={User} alt="logo" style={{ height: 140, width: 140 }} />
                 </Row>
                 <Form.Item 
                   name="donor_id"
@@ -200,7 +200,7 @@ class FillUpForm extends React.Component {
                   label="FIRST NAME"
                   name="first_name"
                   rules={FIELD_RULES.firstName}
-                  style={{ marginTop: 10 }}
+                  style={{ marginTop: 17 }}
                 >
                   <RegexInput regex={/[A-Za-z0-9-. ]/} maxLength={50} />
                 </Form.Item>
@@ -233,6 +233,7 @@ class FillUpForm extends React.Component {
                       name="nameSuffix"
                       regex={/[A-z0-9 -]/} 
                       maxLength={5} 
+                      style={{ marginTop: 1}}
                     />
                   </Form.Item>
                   </Col>
