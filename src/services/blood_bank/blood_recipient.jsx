@@ -44,7 +44,7 @@ export async function createBloodRecipient(payload) {
   try{
     const response = await axiosPhase2API({
       method: API_POST_METHOD,
-			url: `/bloodrecipient/create/`,
+			url: `/blood_recipient/bloodrecipient/create/`,
       data: payload
 		});
 		

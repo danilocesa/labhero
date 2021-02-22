@@ -12,7 +12,7 @@ import PageTitle from 'shared_components/page_title';
 import ProvinceList from 'shared_components/phase2_province';
 import CityList from 'shared_components/phase2_city';
 import TownList from 'shared_components/phase2_town';
-import { User } from 'images/bloodbank';
+import { User as UserImg } from 'images/bloodbank';
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
 
 const { Step } = Steps
@@ -188,7 +188,7 @@ class FillUpForm extends React.Component {
               <div className="left-form">
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
-                  <img src={User} alt="logo" style={{ height: 140, width: 140 }} />
+                  <img src={UserImg} alt="logo" style={{ height: 140, width: 140 }} />
                 </Row>
                 <Form.Item 
                   name="donor_id"

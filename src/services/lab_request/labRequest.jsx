@@ -32,7 +32,7 @@ export async function updateLabRequest(payload) {
 	try {
 		const response = await axiosLabAPI({ 
 			method: API_POST_METHOD, 
-			url: 'lab/Request/editexams',
+			url: 'lab/Request/editrequest',
 			data: payload
 		});
 

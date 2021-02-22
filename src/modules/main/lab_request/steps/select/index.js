@@ -122,6 +122,7 @@ class SelectStep extends React.Component {
 					tmpRoot.examID = tier2.examID;
 					tmpRoot.examName = tier2.examRequestName;
 					tmpRoot.examCode = tier2.examRequestCode;
+					tmpRoot.sampleSpecimenID = tier2.sampleSpecimenID;
 					tmpRoot.selectedPanel = tier2.panelID ? tmpPanel : null;
 					tmpRoot.selectedSpecimen = tmpSpecimen;
 					tmpRoot.selectedSection = tmpSection;
@@ -508,8 +509,7 @@ class SelectStep extends React.Component {
 			selectedExams, 
 			selectedContents, 
 			selectedContentsByPanel,
-			selectedSection, 
-			rawExamsRef,
+			selectedSection,
 			exams, 
 			panels, 
 			isLoading 
@@ -517,6 +517,7 @@ class SelectStep extends React.Component {
 		const { restriction } = this;
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
+		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
 
 		if(restriction.hasAccess) {
 			return (
@@ -566,7 +567,7 @@ class SelectStep extends React.Component {
 						selectedExams={selectedExams}
 						selectedContents={selectedContents}
 						selectedPanelContents={selectedContentsByPanel}
-						disabled={selectedExams.length === 0}
+						disabled={disabled}
 					/>
 				</div>
 			);

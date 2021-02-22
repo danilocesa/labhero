@@ -28,38 +28,42 @@ const columns = [
     dataIndex: "donor_id",
   },
   {
-    title: "LAST NAME",
+    title: 'LAST NAME',
     dataIndex: "last_name",
   },
   {
-    title: "FIRST NAME",
+    title: 'FIRST NAME',
     dataIndex: "first_name",
   },
   {
-    title: "MIDDLE NAME",
+    title: 'MIDDLE NAME',
     dataIndex: 'middle_name',
   },
   {
-    title: "GENDER",
+    title: 'GENDER',
     dataIndex: "gender",
   },
   {
-    title: "DATE OF BIRTH",
+    title: 'DATE OF BIRTH',
     dataIndex: 'birth_date',
   },
   {
-    title: "ADDRESS",
+    title: 'ADDRESS',
     render: record => (
       `${record.province_name} ${record.city_name} ${record.barangay_name} ${record.address_line_1} ${record.address_line_2}`
     )
   },
   {
-    title: "BLOOD TYPE",
+    title: 'BLOOD TYPE',
     render: record => record.custom_fields_list.field_value
   },
   {
-    title: "LAST EXTRACTED",
+    title: 'LAST EXTRACTED',
     dataIndex: 'last_extracted',
+  },
+  {
+    title: 'status',
+    dataIndex: 'status',
   }
 ];
 
@@ -218,16 +222,19 @@ class Extraction extends React.Component {
           pageSize={pageSize}
         />
         <Table
+          className="blood-extract-search-table"
           style={{ textTransform: 'uppercase', marginTop: 10 }}
           dataSource={data}
           pagination={{ pageSize }}
           loading={this.state.loading}
           columns={columns}
           rowKey={record => record.donor_id}
+          rowClassName={(record) => record.status === 'expired' ? 'disabled-row' : ''}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
-                this.redirect(record)
+                if(record.status !== 'expired')
+                  this.redirect(record)
               }
             }
           }}

@@ -73,6 +73,7 @@ Navigation.propTypes = {
 	selectedExams: PropTypes.arrayOf(PropTypes.shape({
 		examID: PropTypes.number.isRequired,
 		examName: PropTypes.string.isRequired,
+		sampleSpecimenID: PropTypes.number,
 		selectedSection: PropTypes.shape({
 			sectionID: PropTypes.number.isRequired,
 			sectionName: PropTypes.string.isRequired,
