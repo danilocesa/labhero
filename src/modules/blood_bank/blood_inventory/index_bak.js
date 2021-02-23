@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 // LiBRARY
 import React from "react";
-import { Row, Col, Table, Input, Button, Typography, Form, Select, Drawer } from "antd";
+import { Row, Col, Table, Button, Typography, Form, Select, Drawer } from "antd";
 
 // CUSTOM MODULES
 import { NumberInput } from "shared_components/pattern_input";
