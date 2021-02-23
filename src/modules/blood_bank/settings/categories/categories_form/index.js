@@ -17,8 +17,15 @@ const layout = {
   };
   
 class UserAccountForm extends React.Component {
+	constructor(props) {
+    super(props);
+    this.state = {
+			disabled: true,
+    };
+	} 
 
-		onFinish = async values => {
+	onFinish = async values => {
+  console.log("file: index.js ~ line 28 ~ UserAccountForm ~ values", (values.is_active === true) ? 1 : 0)
 			const { drawerButton } = this.props;
 			const payload = {
 				categories_id :values.category_id,
@@ -57,73 +64,72 @@ class UserAccountForm extends React.Component {
 				}
 			}
 	};
+
+	onDisable = () => {
+    this.setState({
+      disabled:false
+    })
+  }
     
 	render() {
+		const {disabled} = this.state
 		const { drawerButton,selectedCategories} = this.props;
+    console.log("file: index.js ~ line 76 ~ UserAccountForm ~ render ~ selectedCategories", selectedCategories.is_active)
 		return(
 			<div style={{marginTop: -10}}>
 				<Form 
 					layout="vertical"
 					onFinish={this.onFinish} 
 					initialValues={{ 
-						is_active:selectedCategories.is_active === true ,
+						is_active:selectedCategories.is_active ===  true,
 						categories_id:selectedCategories.categories_id,
 						category_name:selectedCategories.categories_name,
 						order:selectedCategories.categories_order,
 						desc:selectedCategories.categories_desc,
 					}}
 				>
-					{this.props.drawerButton == "UPDATE"? (
-					<Form.Item 
-						label="ACTIVE" 
-						{...layout} 
-						valuePropName='checked'
-						name='is_active'
-						style={{marginBottom:'-40px'}}
-					>	 
-							<Switch />
-					</Form.Item>
-					)	
+					{
+						this.props.drawerButton == "UPDATE"? (
+
+							<Form.Item label="ACTIVE" name='is_active'valuePropName='checked'	>	 
+								<Switch onChange={this.onDisable}/>
+							</Form.Item>
+						)	
 						:
-						null
+							null
 					}
-				<div className="form-section">
-					<Form.Item 
-						name='categories_id'
-						style={{marginTop:-20 }}
-					>
+
+					<Form.Item 	name='categories_id'>
 						<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 					</Form.Item>
-					<Form.Item 
-						label="ORDER" 
-						style={{ marginTop:'-15px'}}
-						name='order'
-					>									
-							<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
-					</Form.Item>
-					<Form.Item 
-						label="CATEGORY NAME" 
-						style={{ marginTop:'-25px'}}
-						name='category_name'
-					>
-							<Input style={{ textTransform: 'uppercase',marginTop: 10 }} />
-					</Form.Item>
-					<Form.Item 
-						label="DESCRIPTION" 
-						style={{ marginTop:'-25px'}}
-						name='desc'
-					>
-								<TextArea rows={5} />
-					</Form.Item>
-				</div>
-				<section className="drawerFooter">
-					<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-						{buttonLabels.cancel}
-					</Button>
-					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-						{drawerButton}
-					</Button>
-				</section>
+
+					<div style={{marginTop:-50}}>
+
+						<Form.Item rules={[{ required: true, message: 'Please input your Category Order!' }]}label="ORDER" name='order'>									
+							<Input style={{  textTransform: 'uppercase'}}   onChange={this.onDisable}/>
+						</Form.Item>
+
+						<Form.Item rules={[{ required: true, message: 'Please input your Category Name!' }]} label="CATEGORY NAME" name='category_name'	>
+							<Input style={{ textTransform: 'uppercase' }}  onChange={this.onDisable}/>
+						</Form.Item>
+
+						<Form.Item label="DESCRIPTION" name='desc'>
+							<TextArea rows={5} />
+						</Form.Item>
+
+					</div>
+
+					<section className="drawerFooter">
+
+						<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+							{buttonLabels.cancel}
+						</Button>
+
+						<Button  disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+							{drawerButton}
+						</Button>
+
+					</section>
 				</Form>
 			</div>
 		);

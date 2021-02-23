@@ -3,8 +3,9 @@ import { DndProvider } from 'react-dnd';
 import update from 'immutability-helper';
 import HTML5Backend from 'react-dnd-html5-backend';
 import TablePager from 'shared_components/table_pager';
+import { PlusOutlined } from '@ant-design/icons';
 import fetchCategoriesList from 'services/blood_bank/categories';
-import {  Table, Input, Button,  Row, Col,  Drawer, Icon } from 'antd';
+import {  Table, Input, Button,  Row, Col,  Drawer } from 'antd';
 
 // CUSTOM
 import DragableBodyRow from './drag_and_drop'
@@ -24,13 +25,11 @@ const columns = [
 		  title: 'ORDER',
 		  dataIndex: 'categories_order',
 			key: 'categories_order',
-			sorter: (a, b) => a.categories_id - b.categories_id,
 		},
 		{
 		  title: 'CATEGORY NAME',
 		  dataIndex: 'categories_name',
 			key: 'categories_name',
-			sorter: (a, b) => a.categories_order.localeCompare(b.categories_order),
 		},
 		{
 			title: 'DESCRIPTION',
@@ -48,13 +47,12 @@ class SelectedTable extends React.Component {
 					actionType:'add',
 					selectedCategories:{},
 				}
-				console.log(this.state.categoriesItem,'PROPS')
 		}
 		
 		components = {
-		body: {
-		  row: DragableBodyRow,
-		},
+			body: {
+				row: DragableBodyRow,
+			},
 	  };
 
 	  moveRow = (dragIndex, hoverIndex) => {
@@ -91,10 +89,10 @@ class SelectedTable extends React.Component {
 	
 			const filtered = usersRef.filter((item) => {
 				// eslint-disable-next-line camelcase
-				const { categories_order } = item;
+				const { categories_name } = item;
 	
 				return (
-					this.containsString(categories_order, searchedVal)
+					this.containsString(categories_name, searchedVal)
 				);
 			});
 			this.setState({ categoriesItem: filtered });
@@ -159,10 +157,11 @@ class SelectedTable extends React.Component {
 					<Row>
 						<Col span={12}>
 							<Search
+								placeholder="Search By Category Name"
 								allowClear
 								onSearch={(value) => this.onSearch(value)}
 								onChange={this.onChangeSearch}
-								style={{ width: 200 }}
+								style={{ width: 300 }}
 								className="panel-table-search-input"
 							/>
 						</Col>
@@ -172,8 +171,9 @@ class SelectedTable extends React.Component {
 								shape="round" 
 								style={{ marginRight: '15px' }} 
 								onClick={this.showDrawer}
+								icon={<PlusOutlined />}
 							>
-								<Icon type="plus" /> ADD CATEGORY
+							 ADD CATEGORY
 								
 							</Button>
 							<TablePager handleChange={this.handleSelectChange} />
@@ -182,6 +182,7 @@ class SelectedTable extends React.Component {
 				</div>
 				<DndProvider backend={HTML5Backend}>
 					<Table
+						style={{textTransform:'uppercase'}}
 						loading={loading}
 						columns={columns}
 						dataSource={this.state.categoriesItem}

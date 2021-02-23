@@ -7,6 +7,7 @@ import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
 import QuestionType from './question_types'
+import Storage from './storage'
 import Normal_Values from './normal_values'
 
 //  CONSTANTS
@@ -47,7 +48,10 @@ class settings extends React.Component {
           <TabPane tab="QUESTIONNAIRE" key="4">
             <Questionnaire />
           </TabPane>
-          <TabPane tab="NORMAL VALUES" key="5">
+          <TabPane tab="STORAGE" key="5">
+            <Storage />
+          </TabPane>
+          <TabPane tab="NORMAL VALUES" key="6">
             <Normal_Values />
           </TabPane>
         </AntTabs>
