@@ -45,7 +45,7 @@ class HealthInformation extends React.Component {
   }
 
   onFinish = async (formFields) => {
-    const { donor_id, health_info_id } = this.props.location.state;
+    const { donor_id } = this.props.location.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 
@@ -62,16 +62,8 @@ class HealthInformation extends React.Component {
     };
 
     this.setState({ loading: true });
-
-    if(health_info_id) 
-      await this.updateHealthInfo({ 
-        ...payload, 
-        id: health_info_id,
-        last_updated_by: loggedinUser.userID
-      });
-
-    else
-      await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID });
+ 
+    await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID });
     
     this.setState({ loading: false });
   }

@@ -13,7 +13,7 @@ import {
 
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchPatients  from 'services/blood_bank/extraction';
+import fetchDonors  from 'services/blood_bank/extraction';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
 import SearchPager from 'shared_components/search_pager';
@@ -25,7 +25,7 @@ const { Text } = Typography;
 const columns = [
   {
     title: "DONOR'S ID",
-    dataIndex: "donor_id",
+    dataIndex: "donor",
   },
   {
     title: 'LAST NAME',
@@ -84,14 +84,14 @@ class Extraction extends React.Component {
     const { donorID, donorName } = getFieldsValue()
 
     this.setState({ loading: true });
-    const patients = await fetchPatients(donorName, donorID);  
+    const donors = await fetchDonors(donorName, donorID);  
     
     this.setState({ 
       loading: false,
-      data: patients 
+      data: donors 
     });
 
-    if(patients.length <= 0) 
+    if(donors.length <= 0) 
       Message.info('No results found');
   }
 
@@ -132,7 +132,8 @@ class Extraction extends React.Component {
   redirect = (record) => {
     this.props.history.push('/bloodbank/extraction/details', { 
       ...record, 
-      bloodtype: record.custom_fields_list.field_value 
+      bloodtype: record.custom_fields_list.field_value,
+      donor_id: record.donor
     });
   }
 
@@ -229,11 +230,11 @@ class Extraction extends React.Component {
           loading={this.state.loading}
           columns={columns}
           rowKey={record => record.donor_id}
-          rowClassName={(record) => record.status === 'expired' ? 'disabled-row' : ''}
+          rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
-                if(record.status !== 'expired')
+                if(record.status.toUpperCase()  !== 'EXPIRED')
                   this.redirect(record)
               }
             }

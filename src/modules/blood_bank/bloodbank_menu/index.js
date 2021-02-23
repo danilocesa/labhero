@@ -34,7 +34,7 @@ const settingsItemData = [
 	},
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/blood_inventory',
+		link: '/bloodbank/blood_inventory/search',
 		label: 'BLOOD INVENTORY',
 	},
 	{

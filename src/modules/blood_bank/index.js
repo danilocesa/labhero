@@ -9,7 +9,8 @@ import DonorRegFillUp from './donor_registration/fill_up';
 import ExtractionSearch from './extraction/search';
 import ExtractionDetail from './extraction/details';
 import Settings from './settings';
-import BloodInventory from './blood_inventory';
+import BloodInventory from './blood_inventory/search';
+import BloodInventory1 from './blood_inventory';
 import Printing from './blood_request/printing';
 import SearchRequest from './blood_request/search';
 import CreateRequest from './blood_request/creation';
@@ -30,10 +31,11 @@ class BloodBank extends React.Component {
 				<Route exact path="/bloodbank/search_donor" component={SearchDonor} />
 				<Route exact path="/bloodbank/extraction/search" component={ExtractionSearch} />
 				<Route exact path="/bloodbank/extraction/details" component={ExtractionDetail} />
-				<Route exact path="/bloodbank/blood_inventory" component={BloodInventory} />
+				<Route exact path="/bloodbank/blood_inventory/search" component={BloodInventory} />
 				<Route exact path="/bloodbank/PRINTING" component={Printing} />
 				<Route exact path="/bloodbank/blood_product" component={ProductList} />
 				<Route exact path="/bloodbank/blood_product/detail" component={ProductDetail} />
+				<Route exact path="/bloodbank/blood_inventory" component={BloodInventory1} />
 			</Switch> 
 		)
 	}	
