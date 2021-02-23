@@ -1,47 +1,40 @@
-import React from "react"
-import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from "antd";
-import HttpCodeMessage from 'shared_components/message_http_status'
-import PageTitle from 'shared_components/page_title'
-import moment from 'moment'
-import { NumberInput } from 'shared_components/pattern_input'
-import { createDonor,updateDonor } from 'services/blood_bank/donor_registration'
-
-// ICON
-// eslint-disable-next-line import/no-extraneous-dependencies
+// @ts-nocheck
+import React from 'react';
+import { withRouter } from 'react-router-dom';
+import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from 'antd';
 import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
-import { User } from 'images/bloodbank';
-import CityList from './city_list'
-import TownList from './town_list';
-import ProvinceList from './province_list'
-import HouseAddress from './address'
-import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant'
+import moment from 'moment';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { createDonor, updateDonor } from 'services/blood_bank/donor_registration';
+import { NumberInput, RegexInput } from 'shared_components/pattern_input';
+import HttpCodeMessage from 'shared_components/message_http_status';
+import PageTitle from 'shared_components/page_title';
+import ProvinceList from 'shared_components/phase2_province';
+import CityList from 'shared_components/phase2_city';
+import TownList from 'shared_components/phase2_town';
+import { User as UserImg } from 'images/bloodbank';
+import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
 
 const { Step } = Steps
 const { Text } = Typography;
 
 
-
 class FillUpForm extends React.Component {
   constructor(props) {
     super(props);
-      const { label } = props.location.state;
+
     this.state = {
-      ButtonName: label,
-      record:[],
       disabled: true,
-      provincedata:this.props.location.state.province_name,
-      cityedata:this.props.location.state.city_name
+      updateInitialValues: {}
     };
-  this.formRef = React.createRef();
+
+    this.formRef = React.createRef();
   }
   
   componentDidMount() {
-    const { label } = this.props.location.state;
-    const { data } = this.props.location.state;
+    const { state } = this.props.location;
 
-    this.setState({ 
-      record:data
-    });
+    this.setState({ updateInitialValues: state });
 	}
   
   computeAge = (date) => {
@@ -51,312 +44,268 @@ class FillUpForm extends React.Component {
 		return age;
   }
 
-  NextStep = () => {
-    window.location.assign('/bloodbank/donor_registration/step/3');
-  } 
+  initCreateDonor = async (data) => {
+    const { history } = this.props;
+    const { updateInitialValues } = this.state;
+    const createdUserResponse = await createDonor(data);
 
-  onFinish = async values => {
-    console.log(values,"values")
-    const { ButtonName } = this.state;
-    const dateFormat = values.dateOfBirth.format('YYYY-MM-DD')
-    const Data = {
-      donor_id :values.donor_id,
-      first_name :values.First_name,
-      middle_name :values.Middle_name,
-      last_name:values.Last_name,
-      is_active:'1',
-      suffix:values.suffix,
-      birth_date:dateFormat,
-      age:values.Age,
-      gender:values.Gender,
-      address_line_2:values.street_name,   
-      barangay:values.town,
-      address_line_1:values.house,
-      mobile_no:values.mobile_no,
-      created_by:1,
-      blood_type_name:'Sample'
-    };
-    console.log(Data,"DATA")
-    if(ButtonName === 'SUBMIT'){
-    const createdUserResponse = await createDonor(Data);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-				 onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
-				}
-				HttpCodeMessage(httpMessageConfig);	
-      }	
-    }else {
-        Data.donor_id = values.donor_id;
-				const updateUserResponse =  await updateDonor(Data).catch(reason => console.log('TCL->', reason));
-				// @ts-ignore)
-				if(updateUserResponse.status === 200){
-					const httpMessageConfig = {
-						message: messagePrompts.successUpdateUser,
-						// @ts-ignore
-						status: updateUserResponse.status,
-						duration: 3, 
-						onClose: () => window.location.assign('/bloodbank/donor_registration/step/3')
-					}
-					HttpCodeMessage(httpMessageConfig);
-				}
+    if(createdUserResponse.status === 201){
+      const httpMessageConfig = {
+        message: messagePrompts.successCreateUser,
+       
+        status: createdUserResponse.status,	
+        duration: 1, 
+        onClose: () => history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: createdUserResponse.data.donor_id
+        })
       }
+      
+      HttpCodeMessage(httpMessageConfig);	
+    }	
+  }
+
+  initUpdateDonor = async (data) => {
+    const { history } = this.props;
+    const { updateInitialValues } = this.state;
+    const updateUserResponse =  await updateDonor(data);
+    // @ts-ignore)
+    if(updateUserResponse.status === 200){
+      const httpMessageConfig = {
+        message: messagePrompts.successUpdateUser,
+        // @ts-ignore
+        status: updateUserResponse.status,
+        duration: 1, 
+        onClose: () => history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: updateInitialValues.donor_id
+        })
+      }
+
+      HttpCodeMessage(httpMessageConfig);
+    }
+  }
+
+
+  onFinish = async (formData) => {
+    const { history } = this.props;
+    const { updateInitialValues } = this.state;
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
+    const isUnchanged = (
+      updateInitialValues.address_line_1 === formData.address_line_1 &&
+      updateInitialValues.address_line_2 === formData.address_line_2 &&
+      updateInitialValues.barangay === formData.barangay &&
+      updateInitialValues.city_id === formData.city &&
+      updateInitialValues.province_id === formData.provinces &&
+      updateInitialValues.birth_date === formData.birth_date.format('YYYY-MM-DD') &&
+      updateInitialValues.donor_id === formData.donor_id &&
+      updateInitialValues.first_name === formData.first_name &&
+      updateInitialValues.middle_name === formData.middle_name &&
+      updateInitialValues.last_name === formData.last_name &&
+      updateInitialValues.gender === formData.gender &&
+      updateInitialValues.mobile_no === formData.mobile_no &&
+      updateInitialValues.suffix === formData.suffix 
+    );
+
+    const payload = {
+      ...formData,
+      birth_date: formData.birth_date.format('YYYY-MM-DD'),
+      created_by: loggedinUser.userID,
+    };
+  
+
+    if(formData.donor_id) {
+      if(isUnchanged) 
+        history.push('/bloodbank/donor_registration/step/3', { 
+          health_info_id: updateInitialValues.health_info_id,
+          donor_id: updateInitialValues.donor_id
+        });   
+      else
+        await this.initUpdateDonor({ ...payload, is_active: 1 });
+
+      return;
+    }
+
+    await this.initCreateDonor(payload);
   }
 
   onProvinceChange = () => {
-		this.formRef.current.setFieldsValue({
-      city:null,
-			town: null,
-      houseAddress: null,
-      street_name:null,
-      house:null
-    });
-    this.setState({
-      disabled:false
-    })
-  }
-
-  changeText = () => {
-    this.setState({
-      disabled:false
-    })
+    this.formRef.current.setFieldsValue({
+			city: null,
+			barangay: null,
+			address_line_1: null,
+      address_line_2: null 
+		});
   }
 
   onCityChange = () => {
 		this.formRef.current.setFieldsValue({
-			town: null,
-      houseAddress: null,
-      street_name:null,
-      house:null
-    });
-    this.setState({
-      disabled:false
-    })
-  }
+			barangay: null,
+			address_line_1: null,
+      address_line_2: null
+		});
+	}
 
   onDateChange = (date) => {
-		// eslint-disable-next-line react/prop-types
 		const { setFieldsValue } = this.formRef.current;
-		const Age = this.computeAge(date);
+		const age = this.computeAge(date);
 
-    setFieldsValue({ Age });
-  }
-   
-  disabledDate = (current) => {
-		// Prevent select days after today and today
-		return current && current > moment().endOf('day');
+    setFieldsValue({ age });
   }
  
   render() {
-    const UpdateAge = this.computeAge(this.props.location.state.birth_date);
-    const { ButtonName,disabled,provincedata,cityedata } = this.state
-    const dateFormat = 'YYYY/MM/DD';
+    const { state } = this.props.location;
 
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-          <Steps size="small" current={1} style={{marginTop:20,paddingRight:200,paddingLeft:200}} labelPlacement="vertical">
-            <Step title="Search Donor" icon={<SearchOutlined />}  />
-            <Step title="Fill Up" icon={<ContainerOutlined />} />
-            <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-          </Steps>
+        <Row justify="center" style={{ marginTop: 10 }}>
+          <Col span={14}>
+            <Steps size="small" current={1} labelPlacement="vertical">
+              <Step title="Search Donor" icon={<SearchOutlined />}  />
+              <Step title="Fill Up" icon={<ContainerOutlined />} />
+              <Step title="Health Information" icon={<MedicineBoxOutlined />} />
+            </Steps>
+          </Col>
+        </Row>
         <Form 
           initialValues={{ 
-            donor_id: this.props.location.state.donor_id,
-            First_name: this.props.location.state.first_name,
-            Middle_name: this.props.location.state.middle_name,
-            Last_name: this.props.location.state.last_name,
-            suffix: this.props.location.state.suffix,
-            Gender: this.props.location.state.gender,
-            mobile_no: this.props.location.state.mobile_no,
-            town: this.props.location.state.barangay_name,
-            house: this.props.location.state.address_line_1,
-            street_name: this.props.location.state.address_line_2,
-            //provinces: this.props.location.state.province_name,
-            //city: this.props.location.state.city_name,
-            Age: UpdateAge,
-            dateOfBirth: ButtonName==="UPDATE" ? moment(this.props.location.state.birth_date, 'YYYY-MM-DD') : ''
+            ...state,
+            age: state.birth_date ? this.computeAge(state.birth_date) : null,
+            birth_date: state.birth_date ? moment(state.birth_date, 'YYYY-MM-DD') : null,
+            provinces: state.province_id,
+            city: state.city_id,
           }}
           ref={this.formRef}
+          onFinish={this.onFinish}
           className="clr-fillup-form" 
           layout="vertical"
-          style={{marginTop:30}}
-          onFinish={this.onFinish}
+          style={{ marginTop: 10 }}
         > 
           <Row gutter={12}>
             <Col sm={7} md={7}>
               <div className="left-form">
-              <div style={{ padding: '1px 0px', marginTop:20 }}>
-                  <Text strong>PERSONAL INFORMATION</Text>
-                  <div style={{marginTop:40}}>
-                  <img src={User} alt="logo" style={{ height: 250, width: 300 }} />
-                  </div>
-              </div>
-              </div>  
-            </Col>
-            <Col sm={7} md={7}>
-              <div className="center-form" style={{marginTop:'40px'}}>
-                  <Form.Item 
-                    name='donor_id'
-                    style={{ display: 'none' }}
-                  >
-                    <Input onChange={this.changeText}/>
-                  </Form.Item>
-                  <Form.Item 
-                    label="FIRST NAME"
-                    name='First_name'
-                    rules={[{ required: true, message: 'Please input your First Name!' }]}
-                  >
-                    <Input 
-                      onChange={this.changeText}
-                    />
-                  </Form.Item>
-                  <Form.Item 
-                    label="MIDDLE NAME"
-                    name='Middle_name'
-                    rules={[{ required: true, message: 'Please input your Middle Name!' }]}
-                  >
-                    <Input onChange={this.changeText}/>
-                  </Form.Item>
+                <Text strong>PERSONAL INFORMATION</Text>
+                <Row style={{ marginTop: 10 }}>
+                  <img src={UserImg} alt="logo" style={{ height: 140, width: 140 }} />
+                </Row>
+                <Form.Item 
+                  name="donor_id"
+                  style={{ display: 'none' }}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item 
+                  label="FIRST NAME"
+                  name="first_name"
+                  rules={FIELD_RULES.firstName}
+                  style={{ marginTop: 17 }}
+                >
+                  <RegexInput regex={/[A-Za-z0-9-. ]/} maxLength={50} />
+                </Form.Item>
+                <Form.Item 
+                  label="MIDDLE NAME"
+                  name="middle_name"
+                  rules={FIELD_RULES.middleName}
+                >
+                  <RegexInput 
+										regex={/[A-Za-z0-9-. ]/}   
+										maxLength={15} 
+									/>
+                </Form.Item>
                 <Row gutter={12}>
                   <Col span={18}>
                     <Form.Item 
                     label="LAST NAME"
-                    name='Last_name'
-                    rules={[{ required: true, message: 'Please input your Last Name!' }]}
-                    >
-                      <Input onChange={this.changeText}/>
+                    name="last_name"
+                    rules={FIELD_RULES.lastName}
+                  >
+                      <RegexInput regex={/[A-Za-z0-9-. ]/} maxLength={50} />
                     </Form.Item>
                   </Col>
                   <Col span={6}>
                   <Form.Item 
                     label="SUFFIX"
-                    name='suffix'
+                    name="suffix"
                   >
-                    <Input maxLength={1} onChange={this.changeText}/>
+                    <RegexInput 
+                      name="nameSuffix"
+                      regex={/[A-z0-9 -]/} 
+                      maxLength={5} 
+                      style={{ marginTop: 1}}
+                    />
                   </Form.Item>
                   </Col>
                 </Row>
+              </div>  
+            </Col>
+            <Col md={1} style={{ textAlign: 'center' }}>
+              <Divider className="divider" type="vertical" style={{ height: 400 }} />
+            </Col>
+            <Col sm={7} md={7}>
+              <div className="center-form">
                 <Row gutter={12}>
-                <Col span={18}>
-                {
-                  ButtonName == "UPDATE"
-                  ? 
-                    (		
-                      <Form.Item 
-                        name="dateOfBirth" 
-                        label={formLabels.dateOfBirth} 
-                        rules={[{ 
-                          required: true, 
-                          message: 'Please input your Date of Birth!' 
-                        }]} 
-                      >
-                        <DatePicker 
-                          style={{ width: '100%' }}
-                          format="MM-DD-YYYY"
-                          disabled
-                          onChange={this.changeText}
-                        />
-                      </Form.Item>
-                    )	
-                  : 
-                    (
-                      <Form.Item 
-                        name="dateOfBirth" 
-                        label={formLabels.dateOfBirth} 
-                        rules={[{ 
-                          required: true, 
-                          message: 'Please input your Date of Birth!' 
-                        }]}   
-                      >
-                        <DatePicker 
-                          format="MM-DD-YYYY"
-                          onChange={this.onDateChange}
-                          style={{ width: '100%' }}
-                        />
-                      </Form.Item>
-                    )
-                }
-                </Col>
+                  <Col span={18}>
+                    <Form.Item 
+                      name="birth_date" 
+                      label={formLabels.dateOfBirth} 
+                      rules={FIELD_RULES.dateOfBirth}   
+                    >
+                      <DatePicker 
+                        format="MM-DD-YYYY"
+                        onChange={this.onDateChange}
+                        style={{ width: '100%' }}
+                      />
+                    </Form.Item>
+                  </Col>
                   <Col span={6}>
                     <Form.Item 
-                        name="Age" 
-                        label={formLabels.age}
-                        rules={FIELD_RULES.age}
+                      name="age" 
+                      label={formLabels.age}
+                      rules={FIELD_RULES.age}
                     >
                       <Input 
                         disabled 
                         style={{ textAlign: 'center' }}
-                        onChange={this.changeText}   
                       />
                     </Form.Item>
                   </Col>
                 </Row> 
-                {ButtonName == "UPDATE"? (		
-                  <Form.Item 
-                    label="PATIENT'S GENDER"
-                    name='Gender'
-                    rules={[{ required: true, message: 'Please input your Gender!' }]}
-                  >
-                    <Radio.Group buttonStyle="solid">
-                      <Radio.Button value="M" disabled>MALE</Radio.Button>
-                      <Radio.Button value="F" disabled>FEMALE</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                  )	
-                  :
-                  <Form.Item 
-                    label="PATIENT'S GENDER"
-                    name='Gender'
-                    rules={[{ required: true, message: 'Please input your Gender!' }]}
-                  >
-                    <Radio.Group buttonStyle="solid">
-                      <Radio.Button value="M">MALE</Radio.Button>
-                      <Radio.Button value="F">FEMALE</Radio.Button>
-                    </Radio.Group>
-                  </Form.Item>
-                }
                 <Form.Item 
                   label="CONTACT NUMBER" 
-                  style={{marginTop:'-5px'}}
-                  name='mobile_no'
-                  rules={[{ required: true, message: 'Please input your Contact Number!' }]}
+                  name="mobile_no"
+                  rules={FIELD_RULES.contactNumber}
+                  style={{ marginTop: 15 }}
                 >
-                  <NumberInput addonBefore="+ 63" onChange={this.changeText} />
+                  <NumberInput addonBefore="+ 63" maxLength={10} />
                 </Form.Item> 
-              </div>
-            </Col>
-            <Col md={1} style={{ textAlign: 'center' }}>
-              <Divider className="divider" type="vertical" style={{ height: 500 }} />
-            </Col>
-            <Col sm={7} md={7}>
-              <div className="right-form" style={{marginTop:'40px'}}>
                 <Form.Item 
-                  name='provinces'   
+                  label="PATIENT'S GENDER"
+                  name="gender"
+                  rules={FIELD_RULES.gender}
+                  style={{ marginTop: 25 }}
                 >
+                  <Radio.Group buttonStyle="solid">
+                    <Radio.Button value="M" style={{ width: 100, textAlign: 'center' }}>MALE</Radio.Button>
+                    <Radio.Button value="F" style={{ width: 100, textAlign: 'center' }}>FEMALE</Radio.Button>
+                  </Radio.Group>
+                </Form.Item>
+                <div style={{ marginTop: 15 }}>
                   <ProvinceList 
-                    provincedata={provincedata}
                     form={this.formRef}
                     placeholder={selectDefaultOptions}
                     onChange={this.onProvinceChange}
+                    rules={FIELD_RULES.province}
                   />
-                </Form.Item>
-                <Form.Item  
-                  rules={[{ 
-                    required: true,
-                     message: 'Please input your City!' 
-                    }]} 
-                  shouldUpdate
+                </div>
+                <Form.Item 
+                  style={{ marginTop: 15 }}
+                  shouldUpdate  
                 >
                   {(form) => {
                     return (
                       <CityList 
-                        cityedata={cityedata}
-                        form={form}
                         placeholder={selectDefaultOptions}
                         provinceValue={form.getFieldValue('provinces')}
                         onChange={this.onCityChange}
@@ -364,81 +313,62 @@ class FillUpForm extends React.Component {
                     );
                   }}
                 </Form.Item>
-                <Form.Item 
-                  rules={[{ 
-                    required: true, 
-                    message: 'Please input your Town!' 
-                  }]} 
-                  shouldUpdate
-                >
+              </div>
+            </Col>
+            <Col md={1} style={{ textAlign: 'center' }}>
+              <Divider className="divider" type="vertical" style={{ height: 400 }} />
+            </Col>
+            <Col sm={7} md={7}>
+              <div className="right-form">
+                <Form.Item shouldUpdate>
                   {(form) => { 
                     return (
                       <TownList 
                         placeholder={selectDefaultOptions}
                         cityValue={form.getFieldValue('city')}
-                        fieldName='city'
+                        fieldName="barangay"
+                        initialValue={state.barangay}
                       />
                     );
                   }}
                 </Form.Item>
-                <Form.Item   
-                  rules={[{ 
-                    required: true, 
-                    message: 'Please input your Address!'
-                  }]} 
-                  shouldUpdate
+                <Form.Item 
+                  label="Address Line 1" 
+                  name="address_line_1"
+                  rules={FIELD_RULES.addr_line_1}
                 >
-                  {(form) => {
-                    return (
-                      <HouseAddress 
-                        form={form}
-                        townValue={form.getFieldValue('town')}
-                        fieldLabel={formLabels.unitNo.label}
-                        fieldName='house'
-                      />
-                    )
-                  }}
+                  <Input  
+                    placeholder="HOUSE NO./UNIT/FLOOR NO. BLDG. NAME"
+                  />
                 </Form.Item>
                 <Form.Item 
                   label="Address Line 2" 
-                  style={{marginTop:'-5px'}}
-                  name='street_name'
+                  name="address_line_2"
+                  style={{ marginTop: 15 }}
                 >
                   <Input  
                     placeholder=" Appartment, Unit, Building Floor, etc"
-                    onChange={this.changeText} 
                   />
                 </Form.Item>
               </div>
             </Col>
           </Row>
-          <Divider orientation="right">
-            <Row>
-              <Col span={12}>
-                {ButtonName == "UPDATE"? (		
-                  <Form.Item>
-                    <Button type="primary" onClick={this.NextStep} shape="round" style={{ margin: 10, width: 120,marginLeft:-10 }}>
-                      NEXT
-                    </Button>
-                  </Form.Item>
-                  )	
-                  :
-                  null
-                }
-              </Col>
-              <Col span={12}>
-                <Form.Item>
-                  <Button type="primary" disabled={disabled} shape="round" style={{ margin: 10, width: 120,  }} htmlType="submit">
-                    {ButtonName}
-                  </Button>
-                </Form.Item>
-              </Col>
-            </Row>
-          </Divider>
+          <Row justify="end">
+            <Form.Item>
+              <Button 
+                type="primary" 
+                shape="round" 
+                style={{ marginRight: 90, width: 120 }}
+                htmlType="submit"
+              >
+                NEXT
+              </Button>
+            </Form.Item>
+          </Row>
         </Form>
       </div>
     )
   }
 }
 
-export default FillUpForm;
+export default withRouter(FillUpForm);

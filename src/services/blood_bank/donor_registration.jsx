@@ -2,7 +2,7 @@
 /* eslint-disable func-names */
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod,apiPostMethod,apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 
 export async function fetchDonor() {
@@ -10,7 +10,7 @@ export async function fetchDonor() {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: 'bloodbank/donor/'
 		});
 		
@@ -28,7 +28,7 @@ export async function createDonor(Data) {
   let createUserAccount = [];
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiPostMethod,
+      method: API_POST_METHOD,
       url: `bloodbank/donor/create/`,
       data: Data
 		}).then(response => {
@@ -45,56 +45,34 @@ export async function createDonor(Data) {
 	return createUserAccount;
 }
 
-export async function createHealthInformation() {
-
-  let HealthInformation = [];
-  try{
-    const axiosResponse = await axiosPhase2API({
-      method: apiPostMethod,
-      url: `/bloodbank/health_info/create/`,
-      //data: 
-		}).then(response => {
-      return response;
-    });
-
-    // @ts-ignore
-    HealthInformation = axiosResponse;
-  } 
-  catch(e) {
-   Message.error();
-	}
-
-	return HealthInformation;
-}
-
 
 export async function updateDonor(Data) {
-  console.log(Data,"DATA from API")
   let updateBloodGroup = [];
   const bloodGroupId = Data.donor_id;
-try{
-  const content = {
-    method: apiPutMethod,
-    url:`bloodbank/donor/update/${bloodGroupId}/`,
-    data: Data
+  
+  try{
+    const content = {
+      method: API_PUT_METHOD,
+      url:`bloodbank/donor/update/${bloodGroupId}/`,
+      data: Data
+    }
+    const response = await axiosPhase2API(content);
+    // @ts-ignore
+    updateBloodGroup = await response;
+
   }
-  const response = await axiosPhase2API(content);
-  // @ts-ignore
-  updateBloodGroup = await response;
+  catch(error) {
+    Message.error();
+  }
 
-}
-catch(error) {
-  Message.error();
+  return updateBloodGroup;
 }
 
-return updateBloodGroup;
-}
-
-export async function fetchPatients(patientName ,donor_id) {
+export async function searchDonors(patientName ,donor_id) {
   let Patient = '';
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: (patientName ? `bloodbank/donor/search/?search=${patientName}` : `bloodbank/donor/search/by_id/${donor_id}`) 
     });
     const { data } = await response;
@@ -111,7 +89,7 @@ export async function fetchAdditionalFields() {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `bloodbank/health_info/initialize/`
     });
 		const { data } = response;
@@ -128,14 +106,13 @@ export async function fetchBarangayList(city_id) {
   let townList = [];
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/general_settings/barangays/by_city/${city_id}`
     }).then(function(response){
       return response;
     });
     // @ts-ignore
     const { data } = axiosResponse;
-    console.log("fetchBarangayList -> data", data)
     townList = data || [];
   } 
   catch(e) {
@@ -147,9 +124,10 @@ export async function fetchBarangayList(city_id) {
 
 export async function fetchCityList(province_id) {
   let cityList = [];
+
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/general_settings/cities/by_prov/${province_id}`
     }).then(function(response){
       return response;
@@ -162,14 +140,16 @@ export async function fetchCityList(province_id) {
   catch(e) {
     Message.error();
   }
+
   return cityList;
 }
 
 export async function fetchProvinceList() {
   let provinceList = [];
+
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/general_settings/provinces/`
     }).then(function(response){
       return response;
@@ -181,5 +161,6 @@ export async function fetchProvinceList() {
   catch(e) {
     Message.error();
   }
+  
   return provinceList;
 }

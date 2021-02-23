@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod } from 'global_config/constant-global';
+import { API_GET_METHOD } from 'global_config/constant-global';
 
 
 async function fetchInventoryItems() {
@@ -8,7 +8,7 @@ async function fetchInventoryItems() {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: 'inventory/items/'
 		});
 		

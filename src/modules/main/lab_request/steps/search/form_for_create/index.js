@@ -9,7 +9,7 @@ import { LR_SEARCHED_NAME, LR_SEARCHED_ID, LR_REQUEST_TYPE } from 'modules/main/
 
 class SearchForm extends React.Component {
 	render() {
-		const { populatePatients, displayLoading, updateSearchCount } = this.props;
+		const { populatePatients, displayLoading, storeSearchedVal } = this.props;
 		const sessionPatientId = sessionStorage.getItem(LR_SEARCHED_ID);
 		const sessionPatientName = sessionStorage.getItem(LR_SEARCHED_NAME);
 		const isEditting = sessionStorage.getItem(LR_REQUEST_TYPE) === 'edit';
@@ -17,7 +17,7 @@ class SearchForm extends React.Component {
 		return (
 			<SearchPatientForm 
 				populatePatients={populatePatients}
-				storeSearchedVal={updateSearchCount}
+				storeSearchedVal={storeSearchedVal}
 				displayLoading={displayLoading}
 				sessionPatientId={sessionPatientId}
 				sessionPatientName={sessionPatientName}
@@ -30,7 +30,7 @@ class SearchForm extends React.Component {
 SearchForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
 	displayLoading: PropTypes.func.isRequired,
-	updateSearchCount: PropTypes.func.isRequired
+	storeSearchedVal: PropTypes.func.isRequired
 };
 
 

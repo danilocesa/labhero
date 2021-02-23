@@ -47,6 +47,13 @@ class SearchPatient extends React.Component {
     });
   }
 
+	
+	onSuccessUpdateInfo = () => {
+		this.setState({ 
+			showDrawer: false, 
+			patients: []
+		});
+	}
 
   render() {
     const { patients, pageSize, loading, showDrawer, patientInfo } = this.state;
@@ -80,7 +87,11 @@ class SearchPatient extends React.Component {
 								width="50%"
 								visible={showDrawer}
 							>
-								<UpdatePatientForm patientInfo={patientInfo} onCancel={this.onClosePatientResultDrawer} />
+								<UpdatePatientForm 
+									patientInfo={patientInfo} 
+									onCancel={this.onClosePatientResultDrawer}
+									onSuccess={this.onSuccessUpdateInfo}
+								/>
 							</Drawer>
 						)
 						:

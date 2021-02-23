@@ -13,7 +13,7 @@ import Message from 'shared_components/message';
 import { 
 	apiUrlPatientByID, 
 	apiUrlPatientByName, 
-	apiGetMethod
+	API_GET_METHOD
 } from 'global_config/constant-global';
 import { buttonNames, fieldLabels, FIELD_RULES } from './settings';
 
@@ -46,7 +46,8 @@ class SearchPatientForm extends React.Component {
 		this.setState({ loading: false });
 
 		populatePatients(patients);
-		storeSearchedVal(patientName, patientID);
+
+		storeSearchedVal(patientID, patientName);
 
 		if(patients.length <= 0) 
 			Message.info('No results found');
@@ -56,7 +57,7 @@ class SearchPatientForm extends React.Component {
 		let patients = [];
 		try{
 			const response = await axiosLabAPI({
-				method: apiGetMethod,
+				method: API_GET_METHOD,
         url: (patientID ? `${apiUrlPatientByID}${patientID}` : `${apiUrlPatientByName}${patientName}`)
 			});
 

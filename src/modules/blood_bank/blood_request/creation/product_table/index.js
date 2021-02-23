@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Row, Col, Select, Button, InputNumber, Form, Typography } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import fetchBloodProducts from 'services/blood_bank/blood_product';
 
 const { Text } = Typography;
 
@@ -11,9 +12,19 @@ class ProductTable extends React.Component {
     this.state = { 
       isProductEmpty: true,
       isQtyEmpty: true,
-      productList: ['CBC', 'PLASMA', 'PLT'],
+      productList: [],
       selectedProducts: [] 
     }
+  }
+
+  async componentDidMount() {
+		const productList = await fetchBloodProducts();
+
+		this.setState({ productList });
+	}
+  
+  getSelectedProducts = () => {
+    return this.state.selectedProducts;
   }
 
   onChangeProduct = (value) => {
@@ -28,12 +39,15 @@ class ProductTable extends React.Component {
     const { form } = this.props;
 
     form.current
-    .validateFields(['product', 'qty'])
+    .validateFields(['product_id', 'quantity'])
     .then(values => {
       const { selectedProducts, productList } = this.state;
-      const { product, qty } = values;
-      const clonedSelected = [...selectedProducts, { product, qty }];
-      const filteredProducts = productList.filter(iproduct => product !== iproduct);
+      const { product_id, quantity } = values;
+
+      const selectedProduct = productList.find(i => i.blood_product_id);
+
+      const clonedSelected = [...selectedProducts, { ...selectedProduct, quantity }];
+      const filteredProducts = productList.filter(product => product.blood_product_id !== product_id);
 
       this.setState({ 
         selectedProducts: clonedSelected,
@@ -42,15 +56,19 @@ class ProductTable extends React.Component {
         isQtyEmpty: true
       });
 
-      form.current.setFieldsValue({ product: null, qty: null });
+      form.current.setFieldsValue({ product_id: null, quantity: null });
     });
   }
 
   onRemove = (itemDetail, itemIndex) => {
     const { selectedProducts, productList } = this.state;
+    const { quantity, ...restItemDetail } = itemDetail;
+
 
     const filteredProducts = selectedProducts.filter((item, index) => index !== itemIndex);
-    const newProductList = [...productList, itemDetail.product];
+    const newProductList = [...productList, restItemDetail];
+
+    console.log(newProductList);
 
     this.setState({ 
       selectedProducts: filteredProducts,
@@ -59,11 +77,11 @@ class ProductTable extends React.Component {
   }
 
   render() {
-    const { selectedProducts, productList, isProductEmpty, isQtyEmpty } = this.state;
+    const { selectedProducts, isProductEmpty, isQtyEmpty, productList } = this.state;
     const isRequired = (selectedProducts.length === 0);
     const Options = productList.map(product => (
-      <Select.Option value={product} key={product}>
-        {product}
+      <Select.Option value={product.blood_product_id} key={product.blood_product_id}>
+        {product.blood_product_name}
       </Select.Option>
     ));
 
@@ -72,7 +90,7 @@ class ProductTable extends React.Component {
         <Row gutter={8}>
           <Col span={16}>
             <Form.Item 
-              name="product"
+              name="product_id"
               label="PRODUCT"
               rules={[{ required: isRequired }]}
             >
@@ -86,13 +104,14 @@ class ProductTable extends React.Component {
           </Col>
           <Col span={8}>
             <Form.Item 
-              name="qty"
+              name="quantity"
               label="QTY"
               rules={[{ required: isRequired }]}
             >
               <InputNumber 
                 onChange={this.onChangeQty}
                 style={{ width: '100%' }} 
+                min={1}
               />
             </Form.Item>
           </Col>
@@ -118,7 +137,7 @@ class ProductTable extends React.Component {
                 <CloseOutlined onClick={() => this.onRemove(item, index)}/>
               ]}
             >
-              {item.qty} x {item.product}
+              {item.quantity} x {item.blood_product_name}
             </List.Item>
           )}
         />

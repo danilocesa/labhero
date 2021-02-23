@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 
 export default async function fetchCategoriesList() {
@@ -8,7 +8,7 @@ export default async function fetchCategoriesList() {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
 			url: `/bloodbank/Categories/`,
 		});
 		
@@ -22,18 +22,16 @@ export default async function fetchCategoriesList() {
 }
 
 export async function createCategoriesAPI(payload) {
-  console.log(payload,"payload")
 	let createCategories = [];
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiPostMethod,
+      method: API_POST_METHOD,
       url: `/bloodbank/Categories/create/`,
       data: payload
 		}).then(response => {
       return response;
     });
 
-    console.log("API response",axiosResponse)
     // @ts-ignore
     createCategories = axiosResponse;
   } 
@@ -45,13 +43,12 @@ export async function createCategoriesAPI(payload) {
 }
 
 export async function updateCategoriesAPI(payload) {
-  console.log(payload.categories_id,"payload api")
   let updateCategories = [];
   const CategoryId = payload.categories_id;
 
   try{
     const content = {
-            method: apiPutMethod,
+            method: API_PUT_METHOD,
             url:`/bloodbank/Categories/update/${CategoryId}/`,
       data: payload
     }

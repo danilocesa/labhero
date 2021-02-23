@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export async function fetchAgeBracketList() {
 	let ageBrackList = null;
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `lab/AgeBracket`,
 		}
 
@@ -29,7 +29,7 @@ export async function createAgeBracket(payload) {
 
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: '/lab/AgeBracket',
 			data: payload
 		}
@@ -56,7 +56,7 @@ export async function updateAgeBracket(payload) {
 
 	try{
 		const content = {
-			method: apiPutMethod,
+			method: API_PUT_METHOD,
 			url: '/lab/AgeBracket',
 			data: payload
 		}

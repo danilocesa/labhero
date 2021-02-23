@@ -2,14 +2,13 @@
 /* eslint-disable func-names */
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod, apiPostMethod } from 'global_config/constant-global';
-import HttpCodeMessage from 'shared_components/message_http_status'
+import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
 export default async function fetchPatients(patientName, patientID) {
   let patients = [];
   try {
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: (patientID ? `bloodbank/extraction/search/by_id/${patientID}` : `bloodbank/extraction/search/?search=${patientName}`) 
     });
 
@@ -29,7 +28,7 @@ export async function createExtraction(payload) {
   
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiPostMethod,
+      method: API_POST_METHOD,
       url: `bloodbank/extraction/create/`,
       data: payload
 		});
@@ -50,7 +49,7 @@ export async function fetchHeaderData(ID) {
  
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/bloodbank/screen_extract/by_donor_id/${ID}/` 
     });
     const { data } = await response;
@@ -67,7 +66,7 @@ export async function fetchExtractionById(extractionId) {
  
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/bloodbank/extraction/${extractionId}/` 
     });
 

@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export async function createExamItemRage(payload) {
 	let createdItemRange = null;
 
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: `/lab/ExamItemRange`,
 			data: payload
 		}
@@ -32,7 +32,7 @@ export async function updateExamItemRage(payload) {
 
 	try{
 		const content = {
-			method: apiPutMethod,
+			method: API_PUT_METHOD,
 			url: `/lab/ExamItemRange`,
 			data: payload
 		}
@@ -54,7 +54,7 @@ export async function getAnalyzers() {
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/ExamItemRange/Settings/Analyzers`,
 		}
 
@@ -76,7 +76,7 @@ export async function getAllItemRanges(ExamItemID) {
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/ExamItemRange/Settings/ExamItemID/${ExamItemID}`,
 		}
 

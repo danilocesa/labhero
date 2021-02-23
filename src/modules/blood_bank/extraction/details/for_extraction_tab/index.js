@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Input, Row, Col,Form , InputNumber, Button,DatePicker  } from 'antd';
 
-// CUSTOM MODULES
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createExtraction, fetchExtractionById } from 'services/blood_bank/extraction';
-
+import { getUserAccountById } from 'services/settings/userAccount';
 
 const { TextArea } = Input;
 
@@ -23,7 +23,7 @@ class ForExtractionTab extends React.Component {
 
   async componentDidMount() {
     const { donorDetail } = this.props;
-    
+
     if(donorDetail.extraction_id !== null) {
       this.fetchExtractionDetail(donorDetail.extraction_id);
     }
@@ -33,10 +33,13 @@ class ForExtractionTab extends React.Component {
     const extractionDetail = await fetchExtractionById(extractionID);
 
     if(extractionDetail !== null) {
+      const userAccount = await getUserAccountById(extractionDetail.extracted_by);
+
       const formFields = {
         ...extractionDetail,
         extracted_date: moment(extractionDetail.extracted_date),
-        expiration_date: moment(extractionDetail.expiration_date)
+        expiration_date: moment(extractionDetail.expiration_date),
+        extracted_by: `${userAccount.lastName} ${userAccount.givenName}`
       };
 
       this.formRef.current.setFieldsValue(formFields);
@@ -47,24 +50,23 @@ class ForExtractionTab extends React.Component {
 
   onSubmitForm = async (formValues) => {
     const { donorDetail } = this.props;
-
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
       donor: donorDetail.donor_id,
       health_info: donorDetail.health_info_id,
       remarks: formValues.remarks || null,
-      created_by: 1,
-      extracted_by: 1
+      created_by: loggedinUser.userID,
+      extracted_by: loggedinUser.userID
     };
 
     this.setState({ isLoading: true });
 
     const APIresponse = await createExtraction(payload);
     // @ts-ignore
-    const { status } = APIresponse;
+    const { status, data } = APIresponse;
     this.setState({ isLoading: false });
 
-    console.log(APIresponse, 'test');
 
     if(status === 201){
       HttpCodeMessage({
@@ -73,7 +75,7 @@ class ForExtractionTab extends React.Component {
         duration: 3,
       });
       
-      this.fetchExtractionDetail(1);
+      this.fetchExtractionDetail(data.extraction_id);
     }	
   }
 
@@ -86,7 +88,7 @@ class ForExtractionTab extends React.Component {
           ref={this.formRef}
           layout="vertical"
           onFinish={this.onSubmitForm} 
-        >   
+        > 
           <Form.Item 
             name="bag_count"
             label="NO. OF BAGS" 
@@ -105,8 +107,8 @@ class ForExtractionTab extends React.Component {
             </Col>
             <Col span={6}>
               <Form.Item 
-                name="expiration_date"
-                label="EXPIRY DATE" 
+                name="extracted_date"
+                label="EXTRACTED DATE"
               >
                 <DatePicker 
                   disabled  
@@ -116,8 +118,8 @@ class ForExtractionTab extends React.Component {
             </Col>
             <Col span={6}>
               <Form.Item 
-                name="extracted_date"
-                label="EXTRACTED DATE" 
+                name="expiration_date"
+                label="EXPIRY DATE" 
               >
                 <DatePicker 
                   disabled  
@@ -141,7 +143,7 @@ class ForExtractionTab extends React.Component {
                 label="REMARKS" 
               >
                 <TextArea 
-                  rows={6} 
+                  rows={4} 
                   disabled={isAlreadyExtracted}
                 />
               </Form.Item>
@@ -170,7 +172,7 @@ ForExtractionTab.propTypes = {
   donorDetail: PropTypes.shape({
     donor_id: PropTypes.number,
     health_info_id: PropTypes.number.isRequired,
-    extraction_id: PropTypes.number
+    extraction_id: PropTypes.any
   }).isRequired
 }
 

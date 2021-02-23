@@ -1,11 +1,11 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiPostMethod, apiGetMethod } from 'global_config/constant-global';
+import { API_POST_METHOD, API_GET_METHOD } from 'global_config/constant-global';
 
 export async function fetchLabResult(payload) {
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: `/lab/Result/searchresult`,
 			data: payload
 		}
@@ -25,7 +25,7 @@ export async function fetchLabResult(payload) {
 export async function fetchLabResultExamItems(specimenId) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/Result/editresult/samplespecimenid/${specimenId}`,
 		}
 
@@ -43,7 +43,7 @@ export async function fetchLabResultExamItems(specimenId) {
 export async function saveLabResult(payload) {
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: `/lab/Result/saveresult`,
 			data: payload
 		}
@@ -68,7 +68,7 @@ export async function saveLabResult(payload) {
 export async function getPrintPreview(spcmid) {
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/Result/printpreview/samplespecimenid/${spcmid}`,
 		}
 

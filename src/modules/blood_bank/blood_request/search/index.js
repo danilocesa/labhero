@@ -6,20 +6,22 @@ import {
   Row ,
   Col ,
   Table,
-  Input,
   Button,
   Typography,
-  Form
+  Form,
+  Drawer
 } from "antd";
-
+import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM MODULES
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchRequest from 'services/blood_bank/blood_recipient'
-import PageTitle from 'shared_components/page_title'
-import Message from 'shared_components/message'
-import TablePager from "shared_components/table_pager"
+import fetchRequest from 'services/blood_bank/blood_recipient';
+import PageTitle from 'shared_components/page_title';
+import Message from 'shared_components/message';
+import SearchPager from 'shared_components/search_pager';
+import BloodRequestDetails from '../detail';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 
-const { Text } = Typography
+const { Text, Link } = Typography
 
 const columns = [
   {
@@ -58,20 +60,25 @@ class BloodRequestSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      Item: [],
+      data: [],
       loading: false,
+      displayDrawer: false,
+      pageSize: GLOBAL_TABLE_PAGE_SIZE
     };
     this.formRef = React.createRef();
   }
   
   handleSubmit = async () => {  
 		const { getFieldsValue } = this.formRef.current;
-    const { patientID, patientName } = getFieldsValue()
+    const { patientID, patientName } = getFieldsValue();
+
     this.setState({ loading: true });
+
     const patients = await fetchRequest(patientName, patientID);
+
     this.setState({ 
-        loading: false,
-        Item: patients  
+      loading: false,
+      data: patients
     });
 
     if(patients.length <= 0) 
@@ -82,63 +89,73 @@ class BloodRequestSearch extends React.Component {
 		this.setState({pageSize});
 	}  
 
+  onRowDoubleClick = (record) => {
+    this.setState({ displayDrawer: true });
+  } 
+
+  onCloseDrawer = () => {
+    this.setState({ displayDrawer: false });
+  }
+
+  redirect = () => {
+    this.props.history.push('/bloodbank/blood_request/create');
+  }
 
   render() {
-    const { Item,loading,pageSize } = this.state
+    const { data, loading, pageSize, displayDrawer } = this.state
 
     return (
       <div>
-       <PageTitle pageTitle="BLOOD REQUEST"/>
-        <Row>
-          <Col span={24}>
-            <Col span={12} style={{ textAlign: "center", marginTop:30, marginLeft:50}}>
-              <Form 
-                className="search-patient-form" 
-                onFinish={this.handleSubmit} 
-                ref={this.formRef}
-                layout="vertical"
-              >
-                <Row justify="center">
-                  {/* Search Input */}
-                  <Col>
-                    <Row>
-                      <Col span={9}>
-                        <Form.Item label="DONOR'S ID" name="patientID" style={{marginLeft:30}}>
-                          <RegexInput 
-                            style={{width:200}}
-                            regex={/[A-Za-z0-9, -]/} 
-                            maxLength={100}
-                            onFocus={this.handleFocus}
-                            placeholder="Donor's ID"
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Text strong style={{marginTop:20, marginLeft:10}}>OR</Text>
-                      <Col span={9}>
-                        <Form.Item label="DONOR'S NAME" name="patientName" style={{marginLeft:10}}>
-                          <RegexInput 
-                            style={{width:350}}
-                            regex={/[A-Za-z0-9, -]/} 
-                            maxLength={100}
-                            onFocus={this.handleFocus}
-                            placeholder="Lastname, Firstname"
-                          />
-                        </Form.Item>
-                      </Col>
-                    </Row>
-                  </Col>
-                  {/* Buttons */}
-                  <Col style={{marginTop:18, marginRight:-450}}>
-                    <Form.Item shouldUpdate> 
-                    {({ getFieldsValue }) => {
+        <PageTitle pageTitle="BLOOD REQUEST"/>
+        
+        <Form 
+          className="search-patient-form" 
+          onFinish={this.handleSubmit} 
+          ref={this.formRef}
+          layout="vertical"
+          style={{ marginTop: 30 }}
+        >
+          <Row gutter={12} align="middle" justify="center">
+            <Col>
+              <Form.Item label="ID" name="patientID">
+                <RegexInput 
+                  style={{width:200}}
+                  regex={/[A-Za-z0-9, -]/} 
+                  maxLength={100}
+                  onFocus={this.handleFocus}
+                  placeholder="Donor's ID"
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <div style={{ marginTop: 15 }}>
+                <Text strong>OR</Text>
+              </div>
+            </Col>
+            <Col>
+              <Form.Item label="NAME" name="patientName">
+                <RegexInput 
+                  style={{ width: 300 }}
+                  regex={/[A-Za-z0-9, -]/} 
+                  maxLength={100}
+                  onFocus={this.handleFocus}
+                  placeholder="Donor's ID"
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <div style={{ marginTop: 15 }}>
+                <Form.Item shouldUpdate> 
+                  {({ getFieldsValue }) => {
                     const { patientID, patientName } = getFieldsValue();
-                    const disabled = !(patientID || (patientName && patientName.length > 1));
+                    const disabled = !(patientID || (patientName && patientName.length > 0));
+
                     return (
                       <Row>
                         <Button 
                           className="form-button"
                           shape="round" 
-                          style={{ width: 120, marginLeft:10 }}
+                          style={{ width: 120, marginLeft: 10 }}
                           onClick={this.clearInputs} 
                         >
                           CLEAR
@@ -156,46 +173,52 @@ class BloodRequestSearch extends React.Component {
                         </Button>
                       </Row>
                     )
-                    }}
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
+                  }}
+                </Form.Item>
+              </div>
             </Col>
-            {/* Table Header */}
-            <Row style={{marginTop:-80}}>
-              <Col span={12} style={{ textAlign: "Left", marginTop:100 }}>
-                <div className="table-title">
-                  <div>
-                    <Text strong>SEARCH RESULTS</Text>
-                  </div>
-                    <div className="left">
-                    <Text>Showing {pageSize} items out of results {Item.length} </Text>
-                    </div>
-                </div>
-              </Col>
-              <Col span={12} style={{ textAlign: "right", marginTop:140 }}>
-                <TablePager handleChange={this.handleChangeSize} />
-              </Col>
-            </Row>
-            {/* Table */}
-            <Table
-              style={{ textTransform: "uppercase" }}
-              dataSource={Item}
-              pagination={{ pageSize }}
-              loading={this.state.loading}
-              columns={columns}
-              rowKey={record => record.userID}
-              onRow={(record) => {
-                return {     
-                  onDoubleClick: () => {
-                    this.NextStep(record)
-                  }
-                }
-              }}
-            />    
-          </Col>
+          </Row>  
+        </Form>
+            
+            
+        <SearchPager 
+          handleChangeSize={this.handleChangeSize}
+          pageTotal={data.length}
+          pageSize={pageSize}
+        />
+            
+        <Table
+          style={{ textTransform: "uppercase" }}
+          dataSource={data}
+          pagination={{ pageSize }}
+          loading={this.state.loading}
+          columns={columns}
+          rowKey={record => record.recipient_id}
+          onRow={(record) => {
+            return {     
+              onDoubleClick: () => {
+                this.onRowDoubleClick(record)
+              }
+            }
+          }}
+        />  
+        
+        <Row justify="center" style={{ marginTop: 30 }}>
+          <Link onClick={this.redirect}>
+            <PlusOutlined />
+            <span style={{ marginLeft: 5 }}>CREATE REQUEST</span>
+          </Link>
         </Row>
+
+        <Drawer
+          title="REQUEST INFORMATION"
+          width="500"
+          visible={displayDrawer}
+          onClose={this.onCloseDrawer}
+          destroyOnClose
+        >
+          <BloodRequestDetails onClose={this.onCloseDrawer} />
+        </Drawer>
       </div>
     );
   }

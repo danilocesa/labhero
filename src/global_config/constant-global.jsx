@@ -2,9 +2,9 @@
 
 
 // API Methods
-export const apiGetMethod = 'GET';
-export const apiPostMethod = 'POST';
-export const apiPutMethod = 'PUT';
+export const API_GET_METHOD = 'GET';
+export const API_POST_METHOD = 'POST';
+export const API_PUT_METHOD = 'PUT';
 
 // API's
 export const apiURL = '----------';
@@ -56,7 +56,7 @@ export const EITC_OPTION = 'op';
 export const EITC_TEXT_AREA = 'ta';
 
 // Table settings
-export const globalTablePageSize = 10;
+export const GLOBAL_TABLE_PAGE_SIZE = 10;
 export const globalTableSize = 'default';
 export const globalTableYScroll = 260;
 

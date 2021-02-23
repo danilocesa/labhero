@@ -18,7 +18,12 @@ const { Text } = Typography;
 
 class Navigation extends React.Component {
 	onClickNext = () => {
-		const { history, selectedExams, selectedContents, selectedPanelContents } = this.props;
+		const { 
+			history, 
+			selectedExams, 
+			selectedContents, 
+			selectedPanelContents
+		} = this.props;
 
 		sessionStorage.setItem(LR_IS_EXAM_UPDATED, String(1));
 		sessionStorage.setItem(LR_SEL_EXAMS, JSON.stringify(selectedExams));
@@ -68,6 +73,7 @@ Navigation.propTypes = {
 	selectedExams: PropTypes.arrayOf(PropTypes.shape({
 		examID: PropTypes.number.isRequired,
 		examName: PropTypes.string.isRequired,
+		sampleSpecimenID: PropTypes.number,
 		selectedSection: PropTypes.shape({
 			sectionID: PropTypes.number.isRequired,
 			sectionName: PropTypes.string.isRequired,
@@ -78,7 +84,7 @@ Navigation.propTypes = {
 		}).isRequired
 	})).isRequired,
 	selectedContents: PropTypes.arrayOf(PropTypes.string).isRequired,
-	selectedPanelContents: PropTypes.arrayOf(PropTypes.string).isRequired
+	selectedPanelContents: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default withRouter(Navigation);

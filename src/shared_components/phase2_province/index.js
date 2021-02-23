@@ -31,13 +31,14 @@ class ProvinceListComponent extends React.Component {
 	}
 
 	render(){
-		const { placeholder, disabled, onChange } = this.props;
+		const { placeholder, disabled, onChange, rules } = this.props;
 		const { provinceList, loading } = this.state;
 
 		return (
 			<Form.Item 
 				name="provinces"
 				label={LABEL_TITLE} 
+				rules={rules}
 			>
 				<Select
 					loading={loading}
@@ -48,7 +49,7 @@ class ProvinceListComponent extends React.Component {
 					style={{ width: '100%' }}
 				>
 					{provinceList.map((item) => (
-						<Option value={item.province} key={item.province_id}>
+						<Option value={item.province_id} key={item.province_id}>
 							{item.province_name}
 						</Option>
 					))}
@@ -62,10 +63,12 @@ ProvinceListComponent.propTypes = {
 	placeholder: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	onChange: PropTypes.func.isRequired,
+	rules: PropTypes.array,
 };
 
 ProvinceListComponent.defaultProps = {
 	disabled: false,
+	rules: [],
 }
 
 

@@ -19,12 +19,12 @@ class ButtonLink extends React.Component {
 	}
 
 	render() {
-		const { dataLength } = this.props;
+		// const { dataLength } = this.props;
 
-		if(dataLength > 0) return null;
+		// if(dataLength > 0) return null;
 
 		return (
-			<div style={{ textAlign: 'center', marginTop: 15 }}>
+			<div style={{ textAlign: 'center' }}>
 				<button 
 					type="button" 
 					className="ButtonLink"
@@ -39,7 +39,7 @@ class ButtonLink extends React.Component {
 }
 
 ButtonLink.propTypes = { 
-	dataLength: PropTypes.number.isRequired,
+	// dataLength: PropTypes.number.isRequired,
 	history: ReactRouterPropTypes.history.isRequired
 }
 

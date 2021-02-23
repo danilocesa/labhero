@@ -15,12 +15,17 @@ class Navigation extends React.Component {
 	};
 
 	onClickPrint = () => {
-		const { saveExams } = this.props;
+		const { saveForCreate, saveForEdit } = this.props;
+		let isSuccess = false;
 
 		this.setState({ isLoading: true }, async () => {
-			const isSuccess = await saveExams();
+			if(sessionStorage.getItem(LR_REQUEST_TYPE) === 'edit')
+				isSuccess = await saveForEdit();
+			else
+				isSuccess = await saveForCreate();
 
-			if(isSuccess) this.showModal();
+			if(isSuccess) 
+				this.showModal();
 
 			this.setState({ isLoading: false });
 		});
@@ -79,7 +84,8 @@ class Navigation extends React.Component {
 }
 
 Navigation.propTypes = {
-	saveExams: PropTypes.func.isRequired
+	saveForCreate: PropTypes.func.isRequired,
+	saveForEdit:  PropTypes.func.isRequired,
 }
 
 export default Navigation;
