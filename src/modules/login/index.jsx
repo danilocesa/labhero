@@ -57,12 +57,14 @@ class Login extends React.Component {
 		// Redirect to current session module or to dashboard module
 		let selectedLink = URI.dashboard.link;
 
+
 		Object.keys(URI).forEach(k => {
+			console.log(URI[k].key.toString())
 			if(URI[k].key.toString() === sessionStorage.SELECTED_SIDER_KEY)
 				selectedLink = URI[k].link;
 		});
 
-		this.props.history.push('/dashboard'); 
+		this.props.history.push(selectedLink); 
 	}
 	
 
