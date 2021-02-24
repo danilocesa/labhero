@@ -25,7 +25,7 @@ const { Text } = Typography;
 const columns = [
   {
     title: "DONOR'S ID",
-    dataIndex: "donor",
+    dataIndex: "donor_id",
   },
   {
     title: 'LAST NAME',
@@ -132,8 +132,7 @@ class Extraction extends React.Component {
   redirect = (record) => {
     this.props.history.push('/bloodbank/extraction/details', { 
       ...record, 
-      bloodtype: record.custom_fields_list.field_value,
-      donor_id: record.donor
+      bloodtype: record.custom_fields_list.field_value
     });
   }
 

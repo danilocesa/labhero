@@ -1,19 +1,62 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Form, Select, Button } from 'antd';
 import { NumberInput } from 'shared_components/pattern_input';
+import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
+import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 
 const { Option } = Select;
 
-function SearchForm() {
+function SearchForm({ onSearch }) {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
-  
+  const [bloodStorage, setBloodStorage] = useState([]);
+  const [bloodTypes, setBloodTypes] = useState([]);
 
-  function handleSubmit(){}
+  const StorageOptions = bloodStorage.map(item => (
+    <Option key={item.blood_storage_id} value={item.blood_storage_id}>
+      {item.storage_name}
+    </Option>
+  ));
+
+  const BloodTypeOptions = bloodTypes.map(item => (
+    <Option key={item.blood_type_id} value={item.blood_type_id}>
+      {item.blood_type}
+    </Option>
+  ));
+
+  function handleSubmit(formValues){
+    const payload = {
+      blood_type__blood_type: formValues.bloodType,
+      blood_storage__storage_name:formValues.storage,
+      blood_bag: formValues.bagID
+    };
+
+    onSearch(payload);
+  }
 
   function handleFocus(){}
 
-  function clearSearch(){}
+  function clearSearch(){
+    const { setFieldsValue } = formRef.current;
+
+    setFieldsValue({ bagID: null, bloodType: null, storage: null });
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const bloodStorage = await fetchBloodStorage();
+      const bloodTypes = await fetchBloodTypes();
+
+      setBloodStorage(bloodStorage);
+      setBloodTypes(bloodTypes);
+    }
+
+    setLoading(true);
+    fetchData();
+    setLoading(false);
+  }, []) 
+
+
 
   return (
     <Form
@@ -45,9 +88,7 @@ function SearchForm() {
               className="no-padding"
             >
               <Select style={{ width: 100, marginRight: 10 }}>
-                <Option value="bloodType1">A</Option>
-                <Option value="bloodType2">B</Option>
-                <Option value="bloodType3">AB</Option>
+                {BloodTypeOptions}
               </Select>
             </Form.Item>
           </Col>
@@ -58,9 +99,7 @@ function SearchForm() {
               className="no-padding"
             >
               <Select style={{ width: 200 }}>
-                <Option value="Storage1">Storage 1</Option>
-                <Option value="Storage2">Storage 2</Option>
-                <Option value="Storage3">Storage 3</Option>
+                {StorageOptions}
               </Select>
             </Form.Item>
           </Col>

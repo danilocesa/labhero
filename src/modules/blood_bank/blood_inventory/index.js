@@ -11,7 +11,7 @@ import PageTitle from "shared_components/page_title";
 import Message from "shared_components/message";
 import TablePager from "shared_components/table_pager";
 
-import BloodInventoryDetailsForm from "./blood_inventory_details";
+import BloodInventoryDetailsForm from "./item_detail/index_bak";
 
 import {
   tableSize,
