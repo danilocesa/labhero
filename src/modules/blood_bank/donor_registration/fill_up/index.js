@@ -111,9 +111,8 @@ class FillUpForm extends React.Component {
     const payload = {
       ...formData,
       birth_date: formData.birth_date.format('YYYY-MM-DD'),
-      created_by: loggedinUser.userID,
+      
     };
-  
 
     if(formData.donor_id) {
       if(isUnchanged) 
@@ -121,13 +120,21 @@ class FillUpForm extends React.Component {
           health_info_id: updateInitialValues.health_info_id,
           donor_id: updateInitialValues.donor_id
         });   
-      else
-        await this.initUpdateDonor({ ...payload, is_active: 1 });
+      else {
+        await this.initUpdateDonor({ 
+          ...payload, 
+          is_active: 1,
+          last_updated_by: loggedinUser.userID
+        });
+      }
 
       return;
     }
 
-    await this.initCreateDonor(payload);
+    await this.initCreateDonor({ 
+      ...payload,
+      created_by: loggedinUser.userID
+    });
   }
 
   onProvinceChange = () => {
@@ -202,7 +209,11 @@ class FillUpForm extends React.Component {
                   rules={FIELD_RULES.firstName}
                   style={{ marginTop: 17 }}
                 >
-                  <RegexInput regex={/[A-Za-z0-9-. ]/} maxLength={50} />
+                  <RegexInput 
+                    regex={/[A-Za-z0-9-. ]/} 
+                    maxLength={50} 
+                    disabled={state.donor_id}
+                  />
                 </Form.Item>
                 <Form.Item 
                   label="MIDDLE NAME"
@@ -212,6 +223,7 @@ class FillUpForm extends React.Component {
                   <RegexInput 
 										regex={/[A-Za-z0-9-. ]/}   
 										maxLength={15} 
+                    disabled={state.donor_id && state.gender !== 'F'}
 									/>
                 </Form.Item>
                 <Row gutter={12}>
@@ -221,7 +233,11 @@ class FillUpForm extends React.Component {
                     name="last_name"
                     rules={FIELD_RULES.lastName}
                   >
-                      <RegexInput regex={/[A-Za-z0-9-. ]/} maxLength={50} />
+                      <RegexInput 
+                        regex={/[A-Za-z0-9-. ]/} 
+                        maxLength={50} 
+                        disabled={state.donor_id && state.gender !== 'F'}
+                      />
                     </Form.Item>
                   </Col>
                   <Col span={6}>
@@ -234,6 +250,7 @@ class FillUpForm extends React.Component {
                       regex={/[A-z0-9 -]/} 
                       maxLength={5} 
                       style={{ marginTop: 1}}
+                      disabled={state.donor_id}
                     />
                   </Form.Item>
                   </Col>
@@ -256,6 +273,7 @@ class FillUpForm extends React.Component {
                         format="MM-DD-YYYY"
                         onChange={this.onDateChange}
                         style={{ width: '100%' }}
+                        disabled={state.donor_id}
                       />
                     </Form.Item>
                   </Col>
@@ -286,7 +304,10 @@ class FillUpForm extends React.Component {
                   rules={FIELD_RULES.gender}
                   style={{ marginTop: 25 }}
                 >
-                  <Radio.Group buttonStyle="solid">
+                  <Radio.Group 
+                    buttonStyle="solid" 
+                    disabled={state.donor_id}
+                  >
                     <Radio.Button value="M" style={{ width: 100, textAlign: 'center' }}>MALE</Radio.Button>
                     <Radio.Button value="F" style={{ width: 100, textAlign: 'center' }}>FEMALE</Radio.Button>
                   </Radio.Group>

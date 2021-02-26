@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Switch, Input, Button } from 'antd';
 import { getInventoryById } from 'services/blood_bank/blood_inventory';
 
-function InventoryDetail({ invDetail, actionType, onCancel }) {
+function InventoryDetail({ invDetail  }) {
   const [loading, setLoading] = useState(false);
 
   function onSubmit() {}
@@ -27,26 +27,8 @@ function InventoryDetail({ invDetail, actionType, onCancel }) {
         initialValues={invDetail}
       >
         <section style={{ marginBottom: 50 }}>
-          {
-            actionType === "update" 
-            ? 
-              (
-                <div style={{float: "left"}}>
-                  <Form.Item
-                    name="active"
-                    label="ACTIVE"
-                    labelCol={{ span: 14 }}
-                    wrapperCol={{ span: 1 }}
-                  >
-                    <Switch />
-                  </Form.Item>
-                </div>
-              ) 
-            : null
-          }
-
           <Form.Item
-            name="bag_id"
+            name="blood_bag"
             label="BAG ID"
             className="no-padding"
           >
@@ -54,7 +36,7 @@ function InventoryDetail({ invDetail, actionType, onCancel }) {
           </Form.Item>
 
           <Form.Item
-            name="blood_type"
+            name="blood_type_name"
             label="BLOOD TYPE"
             className="no-padding"
           >
@@ -62,7 +44,7 @@ function InventoryDetail({ invDetail, actionType, onCancel }) {
           </Form.Item>
 
           <Form.Item
-            name="storage"
+            name="storage_name"
             label="STORAGE"
             className="no-padding"
           >
@@ -78,7 +60,7 @@ function InventoryDetail({ invDetail, actionType, onCancel }) {
           </Form.Item>
 
           <Form.Item
-            name="expiration_date"
+            name="expiry_date"
             label="EXPIRATION DATE"
             className="no-padding"
           >

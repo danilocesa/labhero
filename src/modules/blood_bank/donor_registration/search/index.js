@@ -56,7 +56,7 @@ const columns = [
   },
   {
     title: "BLOOD TYPE",
-    dataIndex: 'blood_type_name',
+    render: record => record.custom_fields_list.field_value
   },
   {
     title: "LAST EXTRACTED",

@@ -4,18 +4,18 @@ import { Table } from 'antd';
 const columns = [
   {
     title: "BAG ID",
-    dataIndex: "bag_id",
-    key: "bag_id",
+    dataIndex: "blood_bag",
+    key: "blood_bag",
   },
   {
     title: "BLOOD TYPE",
-    dataIndex: "blood_type",
-    key: "blood_type",
+    dataIndex: "blood_type_name",
+    key: "blood_type_name",
   },
   {
     title: "STORAGE",
-    dataIndex: "storage",
-    key: "storage",
+    dataIndex: "storage_name",
+    key: "storage_name",
   },
   {
     title: "DATE EXTRACTED",
@@ -39,7 +39,7 @@ function SearchTable(props){
       pagination={{ pageSize }}
       loading={loading}
       columns={columns}
-      rowKey={(record) => record.userID}
+      rowKey={(record) => record.blood_bag}
       onRow={(record) => {
         return {
           onDoubleClick: () => {

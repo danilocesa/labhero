@@ -25,21 +25,24 @@ function SearchForm({ onSearch }) {
   ));
 
   function handleSubmit(formValues){
-    const payload = {
-      blood_type__blood_type: formValues.bloodType,
-      blood_storage__storage_name:formValues.storage,
-      blood_bag: formValues.bagID
-    };
+    let payload = {};
+
+    if(formValues.blood_type)
+      payload.blood_type__blood_type = formValues.blood_type;
+
+    if(formValues.storage)
+      payload.blood_storage__storage_name = formValues.storage;
+
+    if(formValues.bag_id)
+      payload.blood_bag = formValues.bag_id;
 
     onSearch(payload);
   }
 
-  function handleFocus(){}
-
   function clearSearch(){
     const { setFieldsValue } = formRef.current;
 
-    setFieldsValue({ bagID: null, bloodType: null, storage: null });
+    setFieldsValue({ bag_id: null, blood_type: null, storage: null });
   }
 
   useEffect(() => {
@@ -70,20 +73,19 @@ function SearchForm({ onSearch }) {
           <Col>
             <Form.Item
               label="BAG ID"
-              name="bagID"
+              name="bag_id"
               style={{ marginRight: 10 }}
             >
               <NumberInput
                 style={{ width: 100 }}
                 maxLength={10}
-                onFocus={handleFocus}
                 placeholder="BAG ID"
               />
             </Form.Item>
           </Col>  
           <Col>
             <Form.Item
-              name="bloodType"
+              name="blood_type"
               label="BLOOD TYPE"
               className="no-padding"
             >
@@ -106,11 +108,9 @@ function SearchForm({ onSearch }) {
           <Col>
             <Form.Item shouldUpdate>
               {({ getFieldsValue }) => {
-                const { bagID, patientName } = getFieldsValue();
-                const disabled = !(
-                  bagID ||
-                  (patientName && patientName.length > 1)
-                );
+                const { bag_id, blood_type, storage } = getFieldsValue();
+                const disabled = !( bag_id || blood_type || storage);
+
                 return (
                   <Row>
                     <Button

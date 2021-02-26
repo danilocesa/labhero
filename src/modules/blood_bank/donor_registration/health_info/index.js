@@ -113,7 +113,7 @@ class HealthInformation extends React.Component {
         fieldValue[element.field_name] = element.field_value;
       });
 
-      setFieldsValue({ ...fieldValue });
+      setFieldsValue({ blood_type: fieldValue.blood_type });
     }
   }
   
