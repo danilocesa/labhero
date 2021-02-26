@@ -55,7 +55,7 @@ const columns = [
   },
   {
     title: 'BLOOD TYPE',
-    render: record => record.custom_fields_list.field_value
+    dataIndex: 'blood_type'
   },
   {
     title: 'LAST EXTRACTED',
@@ -130,10 +130,7 @@ class Extraction extends React.Component {
 
 
   redirect = (record) => {
-    this.props.history.push('/bloodbank/extraction/details', { 
-      ...record, 
-      bloodtype: record.custom_fields_list.field_value
-    });
+    this.props.history.push('/bloodbank/extraction/details', record);
   }
 
   render() {

@@ -22,7 +22,7 @@ class PatientInfo extends React.Component {
 		const { data } = this.props;
 
 		return (
-	    <Card size="small" style={{ backgroundColor: '#E2E2E2', padding: 10, height: 300 }}>
+	    <Card size="small" style={{ backgroundColor: '#E2E2E2', padding: 10, minHeight: 300 }}>
 				<span className="main-title">Personal Information</span>
 				<Row  style={{ marginTop: 20 }}>
 					<Col span={10} className="info-title">
@@ -37,7 +37,7 @@ class PatientInfo extends React.Component {
 						BLOOD TYPE
 					</Col>
 					<Col span={14} className="info-item-text">
-						{data.bloodtype}
+						{data.blood_type}
 					</Col>
 				</Row>
 				<Row>
@@ -70,6 +70,30 @@ class PatientInfo extends React.Component {
 					</Col>
 					<Col span={14} className="info-item-text">
 						{data.gender}
+					</Col>
+				</Row>
+				<Row>
+					<Col span={10} className="info-title">
+						BODY WEIGHT
+					</Col>
+					<Col span={14} className="info-item-text">
+						{data.body_weight} kg
+					</Col>
+				</Row>
+				<Row>
+					<Col span={10} className="info-title">
+						BLOOD PRESSURE
+					</Col>
+					<Col span={14} className="info-item-text">
+						{data.blood_pressure}
+					</Col>
+				</Row>
+				<Row>
+					<Col span={10} className="info-title">
+						PULSE RATE
+					</Col>
+					<Col span={14} className="info-item-text">
+						{data.pulse_rate} / min
 					</Col>
 				</Row>
      	</Card>
