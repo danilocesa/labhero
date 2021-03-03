@@ -58,8 +58,8 @@ const columns = [
     dataIndex: 'blood_type'
   },
   {
-    title: 'LAST EXTRACTED',
-    dataIndex: 'last_extracted',
+    title: 'DATE CREATED',
+    dataIndex: 'date_created',
   },
   {
     title: 'status',
