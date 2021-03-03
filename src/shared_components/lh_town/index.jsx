@@ -63,6 +63,7 @@ class TownList extends React.Component {
 					placeholder={placeholder}
 					disabled={isDisabled}
 					allowClear
+					onChange={(evt) => console.log(evt)}
 				>
 					{townList.map((item) => (
 						<Option value={item.townCode} key={item.townCode}>

@@ -11,9 +11,7 @@ export const apiURL = '----------';
 // Patient
 export const apiUrlPatientByID = "lab/Patient/id/";
 export const apiUrlPatientByName = "lab/Patient/name/";
-export const apiPatient = {
-    url : 'lab/Patient/'
-};
+
 // Phlebo
 export const apiUrlPhlebo = "lab/SpecimenTracking/phlebo/"
 export const apiUrlPhleboSearchPatient = `${apiUrlPhlebo}requestdate/`;
@@ -35,7 +33,7 @@ export const apiExamRequest = {
 };
 
 // Address
-export const apiAddress = {
+export const ADDRESS_API_URL = {
     getProvince : 'lab/Address/Provinces',
     getCity     : 'lab/Address/CityMunicipalities/provincecode/',
     getTown     : 'lab/Address/Towns/citymunicipalitycode/'

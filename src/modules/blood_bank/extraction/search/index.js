@@ -50,7 +50,7 @@ const columns = [
   {
     title: 'ADDRESS',
     render: record => (
-      `${record.province_name} ${record.city_name} ${record.barangay_name} ${record.address_line_1} ${record.address_line_2}`
+      `${record.address_line_1} ${record.address_line_2} ${record.barangay_name} ${record.city_name} ${record.province_name} `
     )
   },
   {
