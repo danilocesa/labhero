@@ -6,15 +6,12 @@ import { Row, Col, Table, Input, Button, Typography, Form, Select, Drawer } from
 
 // CUSTOM MODULES
 import { NumberInput } from "shared_components/pattern_input";
+import { fetchPatients } from "services/blood_bank/extraction";
 import PageTitle from "shared_components/page_title";
 import Message from "shared_components/message";
 import TablePager from "shared_components/table_pager";
-import DropDown from './others/dropdown_bloodInventory';
-import DropDownStorage from './others/dropdown_storage';
 
 import BloodInventoryDetailsForm from "./item_detail/index_bak";
-
-import {getBloodType, getBloodInventory, getStorage} from "services/blood_bank/blood_inventory";
 
 import {
   tableSize,
@@ -30,18 +27,18 @@ const { Option } = Select;
 const columns = [
   {
     title: "BAG ID",
-    dataIndex: "blood_bag",
-    key: "blood_bag",
+    dataIndex: "bag_id",
+    key: "bag_id",
   },
   {
     title: "BLOOD TYPE",
-    dataIndex: "blood_type_name",
-    key: "blood_type_name",
+    dataIndex: "blood_type",
+    key: "blood_type",
   },
   {
     title: "STORAGE",
-    dataIndex: "storage_name",
-    key: "storage_name",
+    dataIndex: "storage",
+    key: "storage",
   },
   {
     title: "DATE EXTRACTED",
@@ -90,25 +87,23 @@ class Extraction extends React.Component {
         },
       ],
       loading: false,
-      selectedBloodId: null,
-      bloodTypeLov: [],
     };
     this.formRef = React.createRef();
   }
 
   handleSubmit = async () => {
     const { getFieldsValue } = this.formRef.current;
-    const { bagID, bloodType, storage } = getFieldsValue();
-    let blood = [];
+    const { bagID, patientName } = getFieldsValue();
+    let patients = [];
     this.setState({ loading: true });
-    blood = await getBloodInventory(bagID, bloodType, storage);
+    // patients = await fetchPatients(patientName, bagID);
 
     this.setState({
       loading: false,
-      Item: blood,
+      Item: patients,
     });
 
-    if (blood.length <= 0) Message.info("No results found");
+    if (patients.length <= 0) Message.info("No results found");
   };
 
   handleChangeSize = (pageSize) => {
@@ -135,38 +130,8 @@ class Extraction extends React.Component {
     });
   };
 
-  async componentDidMount() {
-    this.setState({loading:true});
-    const bloodType = await getBloodType();
-    const storage = await getStorage();
-    const bloodInventory = await getBloodInventory();
-
-    this.setState({ bloodTypeLov: bloodType, storageLov: storage, bloodInventoryDetails: bloodInventory, loading:false /*response.results, usersRef: response.results,*/ });
-    
-    console.log(bloodInventory);
-    // console.log(this.state.bloodTypeLov);
-  }
-
-  getBloodType = (sectionId, option) => {
-		this.setState({ 
-			isLoading: true, 
-			selectedExamItemId: null,
-			// selectedBloodId: BloodId 
-		}, async () => {
-			// const { selectedSpecimenId: specimenID } = this.state;
-			// const examItems = await fetchExamitems(sectionId, specimenID);
-			this.setState({ 
-				// examItems, 
-				// examItemsRef: examItems,
-				// isLoading: false,
-				selectedSectionName: option.props//.children
-			});
-		});
-	}
-
   render() {
-    const { Item, loading, pageSize, bloodTypeLov, storageLov, bloodInventoryDetails } = this.state;
-    
+    const { Item, loading, pageSize } = this.state;
     const items = Item.length > pageSize ? pageSize : Item.length;
     return (
       <div>
@@ -205,14 +170,11 @@ class Extraction extends React.Component {
                           label="BLOOD TYPE"
                           className="no-padding"
                         >
-                          <DropDown  style={{ width: 100, marginRight: 10 }}
-                            onChange={this.onChangeBloodType}
-                            size="small"
-                            placeholder=""
-                            content={bloodTypeLov} //data
-                            value={null}
-                            // loading={isInitializing} 
-                          />
+                          <Select style={{ width: 100, marginRight: 10 }}>
+                            <Option value="bloodType1">A</Option>
+                            <Option value="bloodType2">B</Option>
+                            <Option value="bloodType3">AB</Option>
+                          </Select>
                         </Form.Item>
                       </Col>
                       <Col>
@@ -221,14 +183,11 @@ class Extraction extends React.Component {
                           label="STORAGE"
                           className="no-padding"
                         >
-                          <DropDownStorage  style={{ width: 100, marginRight: 10, color: 'red' }}
-                            // onChange={this.onChangeBloodType}
-                            size="small"
-                            placeholder=""
-                            content={storageLov} //data
-                            value={null}
-                            // loading={isInitializing} 
-                          />
+                          <Select style={{ width: 200 }}>
+                            <Option value="Storage1">Storage 1</Option>
+                            <Option value="Storage2">Storage 2</Option>
+                            <Option value="Storage3">Storage 3</Option>
+                          </Select>
                         </Form.Item>
                       </Col>
                     </Row>
@@ -293,7 +252,7 @@ class Extraction extends React.Component {
             <Table
               // expandedRowRender={expandedRow}
               style={{ textTransform: "uppercase" }}
-              dataSource={bloodInventoryDetails}
+              dataSource={Item}
               pagination={{ pageSize }}
               loading={this.state.loading}
               columns={columns}

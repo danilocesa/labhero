@@ -60,7 +60,7 @@ const Content = () => (
 				{/* Inventory route */}
 				<Route path="/inventory" component={Inventory} />
 				{/* 404 page route */}
-				<PrivateRoute path="/bloodbank" component={BloodBank} />
+				<Route path="/bloodbank" component={BloodBank} />
 				<Route exact path="/cashier" component={Cashier} />
 				<Route path="/cashier/receipt" component={Receipt} />
 				<Route path="/cashier/transactions" component={Transactions} />
