@@ -1,4 +1,4 @@
-import {globalTablePageSize, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 
 export const moduleTitle = 'EXAM ITEMS';
@@ -7,7 +7,7 @@ export const drawerTitle = {
   update: "UPDATE EXAM"
 }
 
-export const tablePageSize = globalTablePageSize;
+export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;
 

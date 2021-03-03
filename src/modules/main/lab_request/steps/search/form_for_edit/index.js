@@ -26,7 +26,7 @@ class SearchPatientForm extends React.Component {
 	}
 
 	handleSubmit = async (formValue) => {  
-    const { populatePatients, updateSearchCount } = this.props;
+    const { populatePatients } = this.props;
     const { patientID, patientName, requestDate } = formValue;
     const requestDateString = requestDate.format('YYYYMMDD');
     const isByDate = !patientID && !patientName;
@@ -55,7 +55,7 @@ class SearchPatientForm extends React.Component {
 		}));
 
     populatePatients(patients);
-		updateSearchCount();
+		// updateSearchCount();
 
 		if(patients.length <= 0) 
 			Message.info('No results found');
@@ -178,7 +178,7 @@ class SearchPatientForm extends React.Component {
 
 SearchPatientForm.propTypes = {
 	populatePatients: PropTypes.func.isRequired,
-	updateSearchCount: PropTypes.func.isRequired,
+	// updateSearchCount: PropTypes.func.isRequired,
 };
 
 

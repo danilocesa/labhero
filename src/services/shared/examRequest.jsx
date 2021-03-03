@@ -1,5 +1,7 @@
 import Message from 'shared_components/message';
+import { API_GET_METHOD, API_PUT_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 import { axiosLabAPI } from '../axios';
+
 
 export async function fetchPerSpecimens(selectedSection) {
 	let specimens = [];
@@ -7,7 +9,7 @@ export async function fetchPerSpecimens(selectedSection) {
 	try {
 		const url = `lab/ExamRequest/ids/${selectedSection}`;
 
-		const response = await axiosLabAPI({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 
 		specimens = data[0].perSpecimen;
@@ -24,7 +26,7 @@ export async function fetchExamRequests(sectionId, specimenId) {
 	try {
 		const url = `lab/ExamRequest/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`;
 		
-		const response = await axiosLabAPI({ method: 'GET', url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 		
 		examRequests = data || [];
@@ -62,7 +64,7 @@ export async function fetchExamRequestList() {
 	
   try{
     const resp = await axiosLabAPI({
-      method: 'GET',
+      method: API_GET_METHOD,
       url: 'lab/ExamRequest/Settings/'
 		});
 		
@@ -79,7 +81,7 @@ export async function	updateExamRequest(examRequest) {
 
 	try{
 		const content = {
-			method: 'PUT',
+			method: API_PUT_METHOD,
 			url: 'lab/ExamRequest',
 			data: examRequest
 		}
@@ -101,7 +103,7 @@ export async function createExamRequest(examItem) {
 
 	try{
 		const content = {
-			method: 'POST',
+			method: API_POST_METHOD,
 			url: 'lab/ExamRequest',
 			data: { ...examItem }
 		}

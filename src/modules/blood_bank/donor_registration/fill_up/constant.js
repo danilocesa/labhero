@@ -8,7 +8,7 @@ export const FIELD_RULES = {
 		{ type: 'email', message: errorMessage.email },
 		{ max: 100, message: errorMessage.maxLength(100) }
 	],
-	givenName: [
+	firstName: [
 		{ required: true, message: errorMessage.required },
 		{ min: 2, message: errorMessage.minLength(2) },
 		{ max: 50, message: errorMessage.maxLength(50) }
@@ -36,25 +36,12 @@ export const FIELD_RULES = {
 	gender: [
 		{ required: true, message: 'Please select gender' }
 	],
-	location: [
+	province: [
 		{ required: true, message: errorMessage.required }
 	],
-	physicianId: [],
-	visit: [
-		{ max: 100, message: errorMessage.maxLength(100) }
-	],
-	chargeSlip: [
-		{ max: 100, message: errorMessage.maxLength(100) }
-	],
-	officialReceipt: [
-		{ max: 100, message: errorMessage.maxLength(100) }
-	],
-	bed: [
-		{ max: 100, message: errorMessage.maxLength(100) }
-	],
-	comment: [
-		{ max: 254, message: errorMessage.maxLength(254) }
-	],
+	addr_line_1: [
+		{ required: true, message: errorMessage.required }
+	]
 };
 
 export const messagePrompts = {
@@ -72,26 +59,10 @@ export const formLabels = {
 	suffix : "SUFFIX",
 	dateOfBirth : "DATE OF BIRTH",
 	age : "AGE",
-	unitNo : {
-		label:"HOUSE NO./UNIT/FLOOR NO. BLDG. NAME",
-		fieldName: 'address',
-	},
 	contactNumber : "CONTACT NUMBER",
-	patientGender : "PATIENT'S GENDER",
-	location : "LOCATION",
-	physicianID : "PHYSICIAN ID",
-	visit : "VISIT",
-	chargeSlip : "CHARGE SLIP",
-	officialReceipt : "OFFICIAL RECEIPT",
-	bed : "BED",
-	comment : "COMMENT", 
+	patientGender : "PATIENT'S GENDER"
 };
-
-export const formPlaceholders = {
-	phonePrefix : "+ 63",
-	physician : "Select a physician",
-}
 
 export const selectDefaultOptions = "PLEASE SELECT ONE";
 
-export default FIELD_RULES;
+

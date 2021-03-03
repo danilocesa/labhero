@@ -2,11 +2,13 @@
 /* eslint-disable func-names */
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod } from 'global_config/constant-global';
+import { API_GET_METHOD } from 'global_config/constant-global';
 
 export async function fetchDonors(donor_id, Blood_group,location) {
-  console.log(donor_id,Blood_group,location,'INPUT DATA IN JSX')
-  let bloodgroup = [], donors_id = [], city = [];
+  let bloodgroup = [], 
+  donors_id = [], 
+  city = [];
+  
   if(Blood_group){ // If blood group field has value
     bloodgroup = await fetchDonorByBloodType(Blood_group);
   }
@@ -27,7 +29,7 @@ export async function fetchDonorByBloodType(blood_group){
   let bloodGroup = null;
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `bloodbank/search_donor/by_bloodtype/${blood_group}` 
     });
     const { data } = await response;
@@ -43,7 +45,7 @@ export async function fetchDonorByDonorId(donor_id){
   let donorID = null;
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `bloodbank/search_donor/by_id/${donor_id}` 
     });
     const { data } = await response;
@@ -59,7 +61,7 @@ export async function fetchDonorByLocation(location){
   let locationVar = null;
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `bloodbank/search_donor/by_city/${location}` 
     });
     const { data } = await response;
@@ -76,7 +78,7 @@ export async function fetchCityList() {
   let townList = [];
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: `/general_settings/cities/city_name/list/`
     }).then(function(response){
       return response;

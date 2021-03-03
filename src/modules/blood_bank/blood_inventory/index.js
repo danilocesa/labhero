@@ -12,7 +12,7 @@ import TablePager from "shared_components/table_pager";
 import DropDown from './others/dropdown_bloodInventory';
 import DropDownStorage from './others/dropdown_storage';
 
-import BloodInventoryDetailsForm from "./blood_inventory_details";
+import BloodInventoryDetailsForm from "./item_detail/index_bak";
 
 import {getBloodType, getBloodInventory, getStorage} from "services/blood_bank/blood_inventory";
 

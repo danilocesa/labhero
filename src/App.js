@@ -9,7 +9,6 @@ import PrivateRoute from 'shared_components/private_route';
 // CUSTOM MODULES
 
 import MainLayout from './shared_components/layout';
-import Login from './modules/login';
 
 // CSS
 import './App.css';
@@ -23,7 +22,6 @@ class App extends Component {
 				<IdleTimerComponent />
 				<Router history={history}>
 					<Switch>
-						<Route exact path="/login" component={Login} />
 						<Route path="/installer" component={Installer} />
 						<PrivateRoute exact path="/lab/result/print/:sampleID" component={PrintPreview} />
 						<Route path="/" component={MainLayout} />

@@ -71,19 +71,21 @@ class BloodTypesForm extends React.Component {
 							}}
 							onFinish={this.onFinish}       
 						>
-							{this.props.drawerButton == "UPDATE"? (		
-								<Form.Item 
-									label="ACTIVE" 
-									{...layout} 
-									valuePropName='checked' 
-									name='is_active'
-									style={{marginBottom:'-40px'}}
-								>
-									<Switch />
-								</Form.Item>
-							)	
+							{
+								this.props.drawerButton == "UPDATE"? 
+								(		
+									<Form.Item 
+										label="ACTIVE" 
+										{...layout} 
+										valuePropName='checked' 
+										name='is_active'
+										style={{marginBottom:'-40px'}}
+									>
+										<Switch />
+									</Form.Item>
+								)	
 							:
-							null
+								null
 							}
 							<div className="form-section">
 							<Form.Item 

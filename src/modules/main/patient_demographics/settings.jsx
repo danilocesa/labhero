@@ -1,10 +1,10 @@
-import {globalTablePageSize} from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 // SearchPatient Variables
 export const moduleTitle = 'EDIT PATIENT DEMOGRAPHICS';
-export const tablePageSize = globalTablePageSize;
+export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 
 // SearchPatientForm variables
 export const drawerUpdateTitle = 'EDIT PATIENT DEMOGRAPHICS';

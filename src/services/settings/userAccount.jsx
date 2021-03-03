@@ -1,4 +1,4 @@
-import {apiUserAccount, apiPostMethod, apiPutMethod, apiGetMethod} from 'global_config/constant-global';
+import {apiUserAccount, API_POST_METHOD, API_PUT_METHOD, API_GET_METHOD} from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { axiosLabAPI } from 'services/axios';
 
@@ -7,7 +7,7 @@ export async function createUserAccountAPI(payload) {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiPostMethod,
+      method: API_POST_METHOD,
       url: apiUserAccount,
       data: payload
 		}).then(response => {
@@ -28,7 +28,7 @@ export async function updateUserAccountAPI(payload) {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiPutMethod,
+      method: API_PUT_METHOD,
       url: apiUserAccount,
       data: payload
 		}).then(response => {
@@ -49,7 +49,7 @@ export async function getUserAccountsAPI(){
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: apiUserAccount
 		}).then(response => {
       return response;
@@ -62,5 +62,25 @@ export async function getUserAccountsAPI(){
 	}
 	
   return getUserAccounts;
+
+}
+
+export async function getUserAccountById(id){
+  let userAccount = null;
+	
+  try{
+    const response = await axiosLabAPI({
+      method: API_GET_METHOD,
+		  url: `/lab/UserAccount/UserId/${id}`
+    });
+    
+    const { data } = response;
+    userAccount = data;
+  } 
+  catch(e) {
+    HttpCodeMessage({ status: 500, message: e });
+	}
+	
+  return userAccount;
 
 }

@@ -65,9 +65,9 @@ export class InventoryListTable extends Component {
               className="settings-panel-table"
               size={tableSize}
               scroll={{ y: tableYScroll }}
-               dataSource={this.state.data}
-               pagination={this.state.pagination}
-               loading={this.state.loading}
+              dataSource={this.state.data}
+              pagination={this.state.pagination}
+              loading={this.state.loading}
               columns={columns}
               style={{ textTransform: "uppercase" }}
             />

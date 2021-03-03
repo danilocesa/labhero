@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export default async function fetchExamList(sectionId, specimenId) {
 	let examList = null;
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`,
 		}
 
@@ -29,7 +29,7 @@ export async function fetchSections() {
 	try {
 		const url = `lab/Section`;
 
-		const response = await axiosLabAPI({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 
 		sections = data;
@@ -46,7 +46,7 @@ export async function fetchSpecimens() {
 	try {
 		const url = `lab/Specimen`;
 
-		const response = await axiosLabAPI({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 
 		specimens = data;
@@ -63,7 +63,7 @@ export async function fetchExamitems(sectionId, specimenId) {
 	try {
 		const url = `lab/ExamItem/Settings/SectionID/${sectionId}/SpecimenID/${specimenId}`; 
 
-		const response = await axiosLabAPI({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 	
 		examItems = data || [];
@@ -80,7 +80,7 @@ export async function fetchExamItem(scid, spid, emid) {
 	try {
 		const url = `/lab/ExamItem/Settings/SectionID/${scid}/SpecimenID/${spid}/ExamItemID/${emid}`; 
 
-		const response = await axiosLabAPI({ method: apiGetMethod, url });
+		const response = await axiosLabAPI({ method: API_GET_METHOD, url });
 		const { data } = await response;
 	
 		examItem = data || null;
@@ -96,7 +96,7 @@ export async function createExamItem(examItem) {
 
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: 'lab/ExamItem',
 			data: examItem
 		}
@@ -118,7 +118,7 @@ export async function updateExamItem(examItem) {
 
 	try{
 		const content = {
-			method: apiPutMethod,
+			method: API_PUT_METHOD,
 			url: 'lab/ExamItem',
 			data: examItem
 		}
