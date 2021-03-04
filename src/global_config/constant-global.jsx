@@ -45,6 +45,7 @@ export const CLR_SEARCHED_NAME = 'CLR_SEARCHED_NAME';
 export const CLR_SEARCHED_ID = 'CLR_SEARCHED_ID';
 export const SELECTED_SIDER_KEY = 'SELECTED_SIDER_KEY';
 export const LOGGEDIN_USER_DATA = 'LOGGEDIN_USER_DATA';
+export const ACCESS_MATRIX = 'ACCESS_MATRIX';
 
 // Exam Item Type Codes
 export const EITC_ALPHA_NUMERIC = 'an';
