@@ -48,6 +48,8 @@ class UserAccountForm extends React.Component {
 	}
 	
 	async componentDidMount(){
+		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+    console.log("file: index.js ~ line 52 ~ UserAccountForm ~ componentDidMount ~ userData", userData)
 		const response = await getAllUserTypesAPI();
 
 		this.setState({
@@ -58,6 +60,7 @@ class UserAccountForm extends React.Component {
 	}
 
 	componentWillUnmount(){
+		
 		this.formRef.current.resetFields();
 	}
 
@@ -80,6 +83,7 @@ class UserAccountForm extends React.Component {
 		if(drawerButton === drawerAdd){
 			const createdUserResponse = await createUserAccountAPI(vData);
 	
+			// @ts-ignore
 			if(createdUserResponse.status === 201){
 				const httpMessageConfig = {
 					message: messagePrompts.successCreateUser,
@@ -94,6 +98,7 @@ class UserAccountForm extends React.Component {
 			vData.userID = values.userID;
 			const updateUserResponse = await updateUserAccountAPI(vData).catch(() => { });
 			
+			// @ts-ignore
 			if(updateUserResponse.status === 200){
 
 				if(userData && userData.userID === vData.userID){
@@ -117,6 +122,7 @@ class UserAccountForm extends React.Component {
 		}
 	}
 
+	// @ts-ignore
 	compareToFirstPassword = (rule, value, callback) => {
 		const { getFieldValue } = this.formRef.current;
 

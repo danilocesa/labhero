@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 
+const { TextArea } = Input;
 
 export default class StorageForm extends Component {
   constructor(props) {
@@ -19,13 +20,12 @@ export default class StorageForm extends Component {
 
   render() {
     const { disabled } = this.state
-    const {buttonNames} = this.props
+    const {drawerButton} = this.props
     return (
       <div>
         <Form
           layout="vertical"
           name="basic"
-          initialValues={{ remember: true }}
         >
           <Form.Item
             label="Storage"
@@ -38,9 +38,8 @@ export default class StorageForm extends Component {
           <Form.Item
             label="Description"
             name="Description"
-            rules={[{ required: true, message: 'Please input your Description!' }]}
           >
-             <Input onChange={this.onDisable}/>
+            <TextArea rows={4} onChange={this.onDisable}/>
           </Form.Item>
 
           <section className="drawerFooter">
@@ -48,9 +47,9 @@ export default class StorageForm extends Component {
               CANCEL
             </Button>
             <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-              {buttonNames}
+              {drawerButton}
             </Button>
-				</section>
+				  </section>
         </Form>
       </div>
     )
@@ -58,5 +57,5 @@ export default class StorageForm extends Component {
 }
 
 StorageForm.propTypes = {
-	buttonNames: PropTypes.string.isRequired,
+	drawerButton: PropTypes.string.isRequired,
 }

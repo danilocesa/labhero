@@ -49,6 +49,8 @@ class ExamItems extends React.Component {
 	}
 	
 	async componentDidMount() {
+		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+    console.log("file: index.js ~ line 53 ~ ExamItems ~ componentDidMount ~ userData", userData.loginType)
 		const sections = await fetchSections();
 		const specimens = await fetchSpecimens();
 		const ddSections = sections.map(section => ({
