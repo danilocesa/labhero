@@ -180,7 +180,7 @@ class BaseForm extends React.Component {
 		const fields = getFieldsValue();
 		const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 		const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
-		
+
 		fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
 		fields.locationName = location.name;
 

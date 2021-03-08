@@ -11,7 +11,7 @@ class Metrics extends React.Component {
     const { image, label, data } = this.props;
 
     const ItemList = data.map(i => (
-      <Row style={{ marginTop: 5 }}>
+      <Row key={i.sectionCode} style={{ marginTop: 5 }}>
         <Col span={20}>
           <Text className="text">{i.sectionName}</Text> 
         </Col>

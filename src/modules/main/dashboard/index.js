@@ -76,7 +76,8 @@ class DashboardPage extends React.Component {
       image: <Icon component={CheckIcon} className="dashboard-metric-icon" />
     });
 
-
+      
+    
     const mappedSections = sections.map(section => {
       const pending = kpiPending ? kpiPending.data.find(i => i.sectionCode === section.sectionCode) : null; 
       const within = kpiWithin ? kpiWithin.data.find(i => i.sectionCode === section.sectionCode) : null; 
@@ -95,6 +96,8 @@ class DashboardPage extends React.Component {
   
   render() {
     const { user, kpis, sections } = this.state;
+    
+    console.log(kpis)
 
     const MetricList = kpis.map((item, index) => (
       // eslint-disable-next-line react/no-array-index-key
@@ -108,7 +111,7 @@ class DashboardPage extends React.Component {
     ));
 
 
-    const PieCharts = sections.map(item => {
+    const PieCharts = sections.map((item, index) => {
       const hasNoData = (
         Number(item.pending) === 0 &&
         Number(item.morethan) === 0 &&
@@ -126,8 +129,9 @@ class DashboardPage extends React.Component {
           <Empty 
             description={(
               <>
-                <div><Text strong>{item.sectionName}</Text></div>
-                <div><Text>No Data</Text></div>
+                <Text strong>{item.sectionName}</Text>
+                <br />
+                <Text>No Data</Text>
               </>
             )} 
           />
@@ -135,7 +139,7 @@ class DashboardPage extends React.Component {
       );
 
       return (
-        <div>
+        <div key={index}>
           { !hasNoData && <Text strong>{item.sectionName}</Text> }
           <PieChart data={data} placeHolder={<Placeholder />} />
         </div>

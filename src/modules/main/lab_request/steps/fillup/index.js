@@ -30,10 +30,10 @@ const personalInfoKeys = [
 	'nameSuffix',
 	'dateOfBirth',
 	'sex',
-	'city',
-	'town',
+	// 'city',
+	// 'town',
+	// 'provinces',
 	'address',
-	'provinces',
 	'addressCode',
 	'contactNumber'
 ];
@@ -70,6 +70,8 @@ class FillupStep extends React.Component {
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
+		console.log(personalInfo);
+
 		// Convert each field's value to uppercase
 		Object.keys(personalInfo).forEach(field => {
 			if(personalInfo[field] !== undefined && personalInfo[field] !== null )
@@ -83,7 +85,8 @@ class FillupStep extends React.Component {
 			if(!fields.patientID) {
 				const createdPatient = await createPatientInfo({
 					userID: sessUser.userID,
-					...personalInfo
+					...personalInfo,
+					addressCode: fields.town
 				});
 
 				// If createPatient has an error, stop the function
