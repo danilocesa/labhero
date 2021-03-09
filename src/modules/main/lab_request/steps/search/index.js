@@ -11,7 +11,7 @@ import {
 	LR_STEP_PROGRESS,
 	LR_SEL_CONTENTS, 
 	LR_SEL_PANEL_CONTENTS,
-	LR_IS_EXAM_UPDATED
+	LR_IS_EXAM_UPDATED,
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from 'modules/main/lab_request/tracker';
@@ -29,7 +29,7 @@ class SearchStep extends React.Component {
 		patients: [],
 		pageSize: tablePageSize,
 		loading: false,
-		actionType: null
+		actionType: null,
 	}
 	
 
@@ -39,6 +39,8 @@ class SearchStep extends React.Component {
 		sessionStorage.removeItem(LR_SEL_EXAMS);
 		sessionStorage.removeItem(LR_SEL_CONTENTS);
 		sessionStorage.removeItem(LR_SEL_PANEL_CONTENTS);
+
+		
 	}
 
 	setActionType = (patientId, patientName) => {

@@ -14,6 +14,7 @@ import { ReactComponent as SettingsIcon } from 'icons/settings.svg';
 // import { ReactComponent as PrintIcon } from 'icons/fax-machine.svg';
 import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
+import { ReactComponent as RequestIcon } from 'icons/request.svg';
 import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
 import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
 
@@ -78,6 +79,16 @@ class Sider extends React.Component {
 								<Link to={URI.editLabReq.link}>
 									<Icon component={EditIcon} />
 									<span>EDIT REQUEST</span>
+								</Link>
+							</Menu.Item>
+						)
+					}
+					{
+						process.env.REACT_APP_DISPLAY_VIEW_REQUEST === '1' && (
+							<Menu.Item key={URI.viewLabReq.key}>
+								<Link to={URI.viewLabReq.link}>
+									<Icon component={RequestIcon} />
+									<span>VIEW REQUEST</span>
 								</Link>
 							</Menu.Item>
 						)

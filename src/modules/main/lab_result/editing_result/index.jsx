@@ -9,7 +9,7 @@ import { fetchLabResultExamItems } from 'services/lab_result/result';
 // CUSTOM MODULES
 import PrintLabResult from 'modules/main/lab_result/print_result';
 import LabRequestDetails from 'shared_components/patient_info';
-import TableResults from "./result_table";
+import TableResults from './result_table';
 import PatientName from './patientname';
 import Actions from './actions';
 import PatientComment from './patientcomment';
@@ -37,6 +37,9 @@ class EditResult extends React.Component {
 
 	componentDidMount() {
 		const { examDetails } = this.props;
+
+		
+
 		this.setState({ isLoading: true }, async () => {
 			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
 			const formatedResults = this.recontructExamItems(results.resultValues);
@@ -47,6 +50,7 @@ class EditResult extends React.Component {
 				isLoading: false 
 			});
 		});
+		
 	}
 
 	async componentDidUpdate(prevProps) {
@@ -136,7 +140,7 @@ class EditResult extends React.Component {
 
 	render() {
 		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched } = this.state;
-		const { patientInfo, examDetails } = this.props;
+		const { patientInfo, examDetails, userAccess } = this.props;
 
     return (
 	    <Row>
@@ -166,13 +170,18 @@ class EditResult extends React.Component {
 						resultStatus={results.status || ''}
 						onChangeResult={this.onChangeResult}
 					/>
-					<Actions 
-						getLabResultFormValues={this.getFormValues} 
-						onSaveSuccess={this.onSaveSuccess}
-						onPrint={this.onPrint}
-						resultStatus={results.status || ''}
-						isResultsTouched={isResultsTouched}
-					/>
+					{
+						userAccess.update && 
+						(
+							<Actions 
+								getLabResultFormValues={this.getFormValues} 
+								onSaveSuccess={this.onSaveSuccess}
+								onPrint={this.onPrint}
+								resultStatus={results.status || ''}
+								isResultsTouched={isResultsTouched}
+							/>
+						)
+					}
 					<PrintLabResult 
 						sampleID={examDetails.sampleSpecimenID || null}
 						visible={isDisplayPrint}
@@ -192,7 +201,8 @@ EditResult.propTypes = {
 	examDetails: PropTypes.shape({
 		sampleSpecimenID: PropTypes.string,
 		specimenStatus: PropTypes.string
-	}).isRequired
+	}).isRequired,
+	userAccess: PropTypes.object.isRequired
 };
 
 export default EditResult;

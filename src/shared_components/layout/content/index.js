@@ -45,6 +45,7 @@ const Content = () => (
 				{/* Lab request route */}
 				<PrivateRoute path="/request/create" component={CreateRequestPage} />
 				<PrivateRoute path="/request/edit" component={EditRequestPage} />
+				<PrivateRoute path="/request/view" component={EditRequestPage} />
 				{/* Search lab result route */}
 				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
