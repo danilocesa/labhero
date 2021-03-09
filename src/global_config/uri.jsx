@@ -11,28 +11,32 @@ export const moduleURI = {
 		key: 3,
 		link: '/request/edit/step/1',
 	},
-	phlebo: {
+	viewLabReq: {
 		key: 4,
+		link: '/request/view',
+	},
+	phlebo: {
+		key: 5,
 		link: '/phlebo/result',
 	},
 	editLabResult: {
-		key: 5,
+		key: 6,
 		link: '/lab/result/edit',
 	},
 	printLabResult: {
-		key: 6,
+		key: 7,
 		link: '/lab/result/print',
 	},
 	searchPatient: {
-		key: 7,
+		key: 8,
 		link: '/patient/search',
 	},
 	settings: {
-		key: 8,
+		key: 9,
 		link: '/settings',
 	},
 	inventory: {
-		key: 9,
+		key: 10,
 		link: '/inventory',
 	},
 	

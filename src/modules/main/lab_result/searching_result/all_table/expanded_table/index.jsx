@@ -32,7 +32,7 @@ class ExpandedTable extends React.Component {
 
 	render() {
 		const { isPrintLoading } = this.state;
-		const { expandedData, onClickTableRow } = this.props;
+		const { expandedData, onClickTableRow, userAccess } = this.props;
 		const { contents, ...restProps } = expandedData;
 		const columns = [
 			{
@@ -64,6 +64,9 @@ class ExpandedTable extends React.Component {
 				title: '', 
 				width: 100,
 				render: (text, record, index) => {
+					if(!userAccess.print)
+						return null;
+						
 					return (
 						<Button 
 							loading={isPrintLoading[index]}
@@ -103,7 +106,8 @@ ExpandedTable.propTypes = {
 		contents: PropTypes.array
 	}).isRequired,
 	onClickTableRow: PropTypes.func.isRequired,
-	onClickPrint: PropTypes.func.isRequired
+	onClickPrint: PropTypes.func.isRequired,
+	userAccess: PropTypes.object.isRequired
 };
 
 export default ExpandedTable;
