@@ -181,6 +181,7 @@ class FillUpForm extends React.Component {
             ...state,
             age: state.birth_date ? this.computeAge(state.birth_date) : null,
             birth_date: state.birth_date ? moment(state.birth_date, 'YYYY-MM-DD') : null,
+            // last_extracted: state.last_extracted ? moment(state.last_extracted, 'YYYY-MM-DD') : null,
             provinces: state.province_id,
             city: state.city_id,
           }}
@@ -312,6 +313,18 @@ class FillUpForm extends React.Component {
                     <Radio.Button value="F" style={{ width: 100, textAlign: 'center' }}>FEMALE</Radio.Button>
                   </Radio.Group>
                 </Form.Item>
+                {/* <div style={{ marginTop: 15 }}>
+                  <Form.Item 
+                    label="LAST DONATION DATE"
+                    name="last_extracted"
+                  >
+                    <DatePicker 
+                      format="MM-DD-YYYY"
+                      disabled={state.last_extracted}
+                      style={{ width: '100%' }}
+                    />
+                  </Form.Item>
+                </div> */}
                 <div style={{ marginTop: 15 }}>
                   <ProvinceList 
                     form={this.formRef}
@@ -320,20 +333,19 @@ class FillUpForm extends React.Component {
                     rules={FIELD_RULES.province}
                   />
                 </div>
-                <Form.Item 
-                  style={{ marginTop: 15 }}
-                  shouldUpdate  
-                >
-                  {(form) => {
-                    return (
-                      <CityList 
-                        placeholder={selectDefaultOptions}
-                        provinceValue={form.getFieldValue('provinces')}
-                        onChange={this.onCityChange}
-                      />
-                    );
-                  }}
-                </Form.Item>
+                <div style={{ marginTop: 15 }}>
+                  <Form.Item shouldUpdate>
+                    {(form) => {
+                      return (
+                        <CityList 
+                          placeholder={selectDefaultOptions}
+                          provinceValue={form.getFieldValue('provinces')}
+                          onChange={this.onCityChange}
+                        />
+                      );
+                    }}
+                  </Form.Item>
+                </div>
               </div>
             </Col>
             <Col md={1} style={{ textAlign: 'center' }}>
@@ -360,6 +372,7 @@ class FillUpForm extends React.Component {
                 >
                   <Input  
                     placeholder="HOUSE NO./UNIT/FLOOR NO. BLDG. NAME"
+                    maxLength={100}
                   />
                 </Form.Item>
                 <Form.Item 
@@ -369,6 +382,7 @@ class FillUpForm extends React.Component {
                 >
                   <Input  
                     placeholder=" Appartment, Unit, Building Floor, etc"
+                    maxLength={100}
                   />
                 </Form.Item>
               </div>

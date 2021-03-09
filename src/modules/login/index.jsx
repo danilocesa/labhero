@@ -4,7 +4,7 @@ import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
 import { CompanyLogo } from 'images';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
-import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global';
 import URI from 'global_config/uri';
 import { AlphaNumInput } from 'shared_components/pattern_input';
 import Message from 'shared_components/message';
@@ -38,7 +38,30 @@ class Login extends React.Component {
 				password
 			};
 			
+			const matrix = {
+				request: {
+					view: [1, 2, 3, 4, 5],
+					create: [1, 2, 4],
+					update: [1, 2, 4],
+					print: [1, 2, 4],
+				},
+				result: {
+					view: [1, 2, 3, 4 ,5],
+					create: [1, 2, 3],
+					update: [1, 2, 3],
+					print: [1, 2, 3, 4],
+				},
+				settings: {
+					view: [1, 2, 3],
+					create: [1, 2],
+					update: [1, 2, 3],
+					print: [1, 2, 3],
+				},
+			};
+
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
+			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
+
 			Message.success({ message: 'You are now successfully logged in!' });
 
 			auth.authenticate();

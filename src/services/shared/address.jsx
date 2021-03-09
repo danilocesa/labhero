@@ -1,5 +1,5 @@
 /* eslint-disable func-names */
-import { API_GET_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD, ADDRESS_API_URL } from 'global_config/constant-global';
 import Message from 'shared_components/message';
 import { axiosLabAPI } from '../axios';
 
@@ -8,7 +8,7 @@ export async function cityListAPI(provinceCode) {
   try{
     const axiosResponse = await axiosLabAPI({
       method: API_GET_METHOD,
-      url: `/cities/by_prov/${provinceCode}`
+      url: `${ADDRESS_API_URL.getCity}${provinceCode}`
     }).then(function(response){
       return response;
 		});
@@ -28,7 +28,7 @@ export async function provinceListAPI() {
   try{
     const axiosResponse = await axiosLabAPI({
       method: API_GET_METHOD,
-      url: `/provinces/`
+      url: ADDRESS_API_URL.getProvince
     }).then(function(response){
       return response;
     });
@@ -47,7 +47,7 @@ export async function townListAPI(cityCode) {
   try{
     const axiosResponse = await axiosLabAPI({
       method: API_GET_METHOD,
-      url: `/barangays/by_city/${cityCode}`
+      url: `${ADDRESS_API_URL.getTown}${cityCode}`
     }).then(function(response){
       return response;
     });

@@ -82,10 +82,18 @@ class PatientInfo extends React.Component {
 				</Row>
 				<Row>
 					<Col span={10} className="info-title">
+						BODY TEMPERATURE
+					</Col>
+					<Col span={14} className="info-item-text">
+						{data.body_temp} C
+					</Col>
+				</Row>
+				<Row>
+					<Col span={10} className="info-title">
 						BLOOD PRESSURE
 					</Col>
 					<Col span={14} className="info-item-text">
-						{data.blood_pressure}
+						{data.blood_pressure} (mmHG)
 					</Col>
 				</Row>
 				<Row>
