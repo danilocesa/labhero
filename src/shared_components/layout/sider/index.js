@@ -25,19 +25,16 @@ const { Sider: AntSider } = Layout;
 
 
 class Sider extends React.Component {
-	handleMenuClick = ({ key }) => {
-		const selectedKey = key.includes('inventory') ? 9 : key;
-	
-		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
 
+	handleMenuClick = ({ key }) => {
+		const selectedKey = key.includes('inventory') ? 9 : key;	
+		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
 		// workaround to avoid delays in stepsPage
 		if(key === '2') 
 			sessionStorage.setItem(LR_REQUEST_TYPE, 'create');
-		
 		if(key === '3')
 			sessionStorage.setItem(LR_REQUEST_TYPE, 'edit');
 	}
-	
 
   render() {
 		const { collapsed } = this.props;
@@ -127,6 +124,7 @@ class Sider extends React.Component {
 					}
 					{
 						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
+
 							<Menu.Item key={URI.settings.key}>
 								<Link to={URI.settings.link}>
 									<Icon component={SettingsIcon} />

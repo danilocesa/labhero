@@ -25,55 +25,59 @@ class Login extends React.Component {
 		this.formRef = React.createRef();
 	}
 
+	
+
 	handleSubmit = async () => {
-		const { username, password } = this.formRef.current.getFieldsValue();
+	console.log("harry")
+		// const { username, password } = this.formRef.current.getFieldsValue();
 		
-		try {
-			this.setState({ loading: true });
-			const response = await login(username, password);
-			this.setState({ loading: false });
+		// try {
+		// 	this.setState({ loading: true });
+		// 	const response = await login(username, password);
+		// 	this.setState({ loading: false });
 		
-			const loggedinUserData = {
-				...response.data,
-				password
-			};
+		// 	const loggedinUserData = {
+		// 		...response.data,
+		// 		password
+		// 	};
 			
-			const matrix = {
-				request: {
-					view: [1, 2, 3, 4, 5],
-					create: [1, 2, 4],
-					update: [1, 2, 4],
-					print: [1, 2, 4],
-				},
-				result: {
-					view: [1, 2, 3, 4 ,5],
-					create: [1, 2, 3],
-					update: [1, 2, 3],
-					print: [1, 2, 3, 4],
-				},
-				settings: {
-					view: [1, 2, 3],
-					create: [1, 2],
-					update: [1, 2, 3],
-					print: [1, 2, 3],
-				},
-			};
+		// 	const matrix = {
+		// 		request: {
+		// 			view: [1, 2, 3, 4, 5],
+		// 			create: [1, 2, 4],
+		// 			update: [1, 2, 4],
+		// 			print: [1, 2, 4],
+		// 		},
+		// 		result: {
+		// 			view: [1, 2, 3, 4 ,5],
+		// 			create: [1, 2, 3],
+		// 			update: [1, 2, 3],
+		// 			print: [1, 2, 3, 4],
+		// 		},
+		// 		settings: {
+		// 			view: [1, 2, 3],
+		// 			create: [1, 2],
+		// 			update: [1, 2, 3],
+		// 			print: [1, 2, 3],
+		// 		},
+		// 	};
 
-			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
+		// 	sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
+		// 	sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
 
-			Message.success({ message: 'You are now successfully logged in!' });
+		// 	Message.success({ message: 'You are now successfully logged in!' });
 
-			auth.authenticate();
-			this.redirectPage();
-		}
-		catch(error) {
-				this.setState({ loading: false });
-				if(error.response && error.response.status === 401)
-					Message.error('Incorrect Username/Password');
-				else
-					Message.error();
-		}
+		// 	auth.authenticate();
+		// 	this.redirectPage();
+		// }
+		// catch(error) {
+		// 		this.setState({ loading: false });
+		// 		if(error.response && error.response.status === 401)
+		// 			Message.error('Incorrect Username/Password');
+		// 		else
+		// 			Message.error();
+		// }
+		
 	}
 	
 	redirectPage = () => {

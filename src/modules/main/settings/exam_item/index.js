@@ -49,8 +49,17 @@ class ExamItems extends React.Component {
 	}
 	
 	async componentDidMount() {
-		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
-    console.log("file: index.js ~ line 53 ~ ExamItems ~ componentDidMount ~ userData", userData.loginType)
+		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
+		const UserDatatype = userData.loginType //1
+		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
+		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
+		if (settingsCreateArray.some(data => data === UserDatatype))
+		{
+			this.setState({
+				buttonAddVisible:true
+			})
+		}
+
 		const sections = await fetchSections();
 		const specimens = await fetchSpecimens();
 		const ddSections = sections.map(section => ({
@@ -197,6 +206,7 @@ class ExamItems extends React.Component {
 			isInitializing,
 			isShowAddForm, 
 			isShowUpdateForm ,
+			buttonAddVisible,
 			isLoading,
 			selectedSpecimenId,
 			selectedSectionId,
@@ -204,7 +214,6 @@ class ExamItems extends React.Component {
 			selectedSectionName,
 			selectedSpecimenName
 		} = this.state;
-
 		const leftSection = (
 			<>
 				<DropDown 
@@ -229,15 +238,20 @@ class ExamItems extends React.Component {
 
 		const rightSection = (
 			<>
-				<Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionId === null}
-				>
-					<PlusOutlined /> {buttonNames.addExamItem}
-				</Button>
+			 { 
+			 	buttonAddVisible === true ? 
+					<Button 
+						shape="round"
+						type="primary" 
+						style={{ marginRight: 10 }}
+						onClick={this.onClickAdd}
+						disabled={selectedSectionId === null}
+					>
+						<PlusOutlined /> {buttonNames.addExamItem}
+					</Button> 
+				: 
+					null 
+				} 
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
