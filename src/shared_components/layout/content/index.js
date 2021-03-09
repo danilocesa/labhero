@@ -45,6 +45,7 @@ const Content = () => (
 				{/* Lab request route */}
 				<PrivateRoute path="/request/create" component={CreateRequestPage} />
 				<PrivateRoute path="/request/edit" component={EditRequestPage} />
+				<PrivateRoute path="/request/view" component={EditRequestPage} />
 				{/* Search lab result route */}
 				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
@@ -56,7 +57,7 @@ const Content = () => (
 				{/* Search patients route */}
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
 				{/* Settings route */}
-				<Route path="/settings" component={Settings} />
+				<PrivateRoute path="/settings" component={Settings} />
 				{/* Inventory route */}
 				<Route path="/inventory" component={Inventory} />
 				{/* 404 page route */}
