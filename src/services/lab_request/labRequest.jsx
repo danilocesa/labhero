@@ -1,12 +1,14 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from '../axios';
+import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
-export default async function saveLabRequest(payload) {
+
+export async function createLabRequest(payload) {
 	let isSuccess = false;
 	
 	try {
 		const response = await axiosLabAPI({ 
-			method: 'POST', 
+			method: API_POST_METHOD, 
 			url: 'lab/Request',
 			data: payload
 		});
@@ -23,12 +25,37 @@ export default async function saveLabRequest(payload) {
 	return isSuccess;
 }
 
+
+export async function updateLabRequest(payload) {
+	let isSuccess = false;
+	
+	try {
+		const response = await axiosLabAPI({ 
+			method: API_POST_METHOD, 
+			url: 'lab/Request/editrequest',
+			data: payload
+		});
+
+		// eslint-disable-next-line no-unused-vars
+		const { data } = await response;
+
+		isSuccess = true;
+	} catch (e) {
+		Message.error();
+		isSuccess = false;
+	}
+
+	return isSuccess;
+}
+
+
+
 export async function fetchPatientsByDate(date) {
 	let patients = [];
 	
   try{
     const response = await axiosLabAPI({
-      method: 'GET',
+      method: API_GET_METHOD,
       url: `lab/Request/editsearch/date/${date}`
 		});
 		
@@ -49,7 +76,7 @@ export async function fetchPatientsById({ id, date }) {
 	
   try{
     const response = await axiosLabAPI({
-      method: 'GET',
+      method: API_GET_METHOD,
       url: `lab/Request/editsearch/pid/${id}/${date}`
 		});
 		
@@ -71,7 +98,7 @@ export async function fetchPatientsByName({ name, date }) {
 	
   try{
     const response = await axiosLabAPI({
-      method: 'GET',
+      method: API_GET_METHOD,
       url: `lab/Request/editsearch/name/${name}/${date}`
 		});
 		
@@ -92,7 +119,7 @@ export async function fetchExamsByReqId(id) {
 	
   try{
     const response = await axiosLabAPI({
-      method: 'GET',
+      method: API_GET_METHOD,
       url: `lab/Request/editexams/requestid/${id}`
 		});
 		

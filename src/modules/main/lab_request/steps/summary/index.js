@@ -1,15 +1,22 @@
 import React from 'react';
-import saveLabRequest from 'services/lab_request/labRequest';
+import moment from 'moment';
+import { createLabRequest, updateLabRequest } from 'services/lab_request/labRequest';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import PageTitle from 'shared_components/page_title';
 import { moduleTitles, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
-import Restriction from 'modules/main/lab_request/steps/clr_restriction/restriction';
+import Restriction from 'modules/main/lab_request/steps/lr_restriction/restriction';
 import Tracker from 'modules/main/lab_request/tracker';
+import { 
+	LR_SEL_EXAMS, 
+	LR_OTHER_INFO, 
+	LR_REQUEST_TYPE,
+	LR_EDIT_SEL_EXAM_REF
+} from 'modules/main/lab_request/steps/constants';
 import SummarySection from './section';
 import SummaryTable from './table';
 import SummaryFooter from './footer';
 
-import { LR_SEL_EXAMS, LR_OTHER_INFO, LR_REQUEST_TYPE  } from 'modules/main/lab_request/steps/constants';
+
 
 class SummaryStep extends React.Component {
 	state = {
@@ -29,19 +36,18 @@ class SummaryStep extends React.Component {
 		const exams = JSON.parse(sessionStorage.getItem(LR_SEL_EXAMS));
 		const otherInfo = JSON.parse(sessionStorage.getItem(LR_OTHER_INFO));
 		const user = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+		const examRef = JSON.parse(sessionStorage.getItem(LR_EDIT_SEL_EXAM_REF));
 
-		this.setState({ exams, user, otherInfo });
+		this.setState({ exams, user, otherInfo, examRef });
 	}
 	
-	saveExams = async () => {
+	saveForCreate = async () => {
 		const { otherInfo, exams, user } = this.state;
 		const payloadExams = exams.map(exam => ({
 			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
 			examID: exam.examID,
 			priority: ''
 		}));
-
-		console.log(payloadExams);
 
 		const payload = {
 			...otherInfo,
@@ -50,7 +56,56 @@ class SummaryStep extends React.Component {
 			exams: payloadExams,
 		};
 		
-		return saveLabRequest(payload);
+		return createLabRequest(payload);
+	}
+
+	saveForEdit = async () => {
+		const { otherInfo, user, exams, examRef } = this.state;
+		const { hospitalID, ...restOtherInfo } = otherInfo;
+
+		const examRefIDs = examRef.map(item => item.examID);
+		const selectedExamIDs = exams.map(item => item.examID);
+		const newExams = [];
+		const removedExams = [];
+
+		exams.forEach(x => {
+			if(examRefIDs.includes(x.examID) === false) 
+				newExams.push({
+					sectionID: x.selectedSection.sectionID,
+					sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+					specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+					sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
+					panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
+					examID: x.examID,
+					priority: ''
+				});
+		});
+
+		examRef.forEach(x => {
+			if(selectedExamIDs.includes(x.examID) === false) 
+				removedExams.push({
+					sectionID: x.selectedSection.sectionID,
+					sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+					specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+					sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
+					panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
+					examID: x.examID,
+					priority: ''
+				});
+		});
+
+
+		const payload = {
+			...restOtherInfo,
+			requestDateTime: moment().format('yyyy-MM-DD hh:mm:ss'),
+			hospitalRequestID: hospitalID,
+			userID: user.userID,
+			exams: newExams,
+			remove: removedExams,
+			physicianID: otherInfo.physicianID ? otherInfo.physicianID : 0 
+		};
+
+		return updateLabRequest(payload);
 	}
 
 	render() {
@@ -66,7 +121,10 @@ class SummaryStep extends React.Component {
 					<SummarySection />
 					<SummaryTable exams={exams} />
 					<br />
-					<SummaryFooter saveExams={this.saveExams} />
+					<SummaryFooter 
+						saveForCreate={this.saveForCreate} 
+						saveForEdit={this.saveForEdit}
+					/>
 				</div>
 			);
 		}
@@ -74,6 +132,5 @@ class SummaryStep extends React.Component {
 		return restriction.redirect();
 	}
 }
-
 
 export default SummaryStep;

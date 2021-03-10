@@ -4,7 +4,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import TablePager from 'shared_components/table_pager';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import { Row, Col, Table, Button, Input, Icon, Drawer,Divider,Select 	 } from 'antd';
 import fetchItems from 'services/blood_bank/question_type';
 
 
@@ -19,6 +19,7 @@ import {
 import BloodTypeForm from '../form';
 
 const { Search } = Input;
+const { Option } = Select;
 const columns = [
 	{
 		title: 'QUESTION TYPE ID',
@@ -50,7 +51,8 @@ class BloodType extends React.Component {
 			loading:false,
 			pagination: {
 				pageSize: tablePageSize,
-			}
+			},
+			pagination1: 0
 		}
   }
   
@@ -119,10 +121,10 @@ class BloodType extends React.Component {
 
 	handleSelectChange = (value) => {
 		// eslint-disable-next-line react/no-access-state-in-setstate
-		const pagination = {...this.state.pagination};
+		const pagination1 = {...this.state.pagination};
 		// eslint-disable-next-line radix
-		pagination.pageSize = parseInt(value);
-		this.setState({ pagination });
+		pagination1.pageSize = parseInt(value);
+		this.setState({ pagination1 });
 	};
   
 	render() {
@@ -135,11 +137,19 @@ class BloodType extends React.Component {
 			selectedTypes, 
       actionType,
       Item,
-			loading 
+			loading ,
+			pagination1
 		} = this.state;
 		return(
 			<div>
 				<div className="settings-user-table-action">
+					<Divider plain>
+						<Select style={{ width: 200 }}>
+							<Option value="Categories">
+								Categories
+							</Option>
+						</Select>
+					</Divider>
           <Row>
 						<Col span={12}>
               <Search
@@ -167,22 +177,42 @@ class BloodType extends React.Component {
 				</div>
         <DndProvider backend={HTML5Backend}>
           <div className="settings-user-table">
-            <Table 
-              loading={loading}
-              dataSource={Item}
-              //size={tableSize}
-              scroll={{ y: tableYScroll }}
-              columns={columns} 
-              pagination={pagination}
-              rowKey={record => record.userID}
-              onRow={(record) => {
-                return {     
-                  onDoubleClick: () => {
-                    this.displayDrawerUpdate(record);
-                  }
-                }
-              }}
-            />
+					{
+					pagination1 == 0
+					? 
+						(		
+							<Table 
+								loading={loading}
+								dataSource={Item}
+								columns={columns} 
+								rowKey={record => record.userID}
+								onRow={(record) => {
+									return {     
+										onDoubleClick: () => {
+											this.displayDrawerUpdate(record);
+										}
+									}
+								}}
+							/>
+						)	
+					: 
+						(
+							<Table 
+								loading={loading}
+								dataSource={Item}
+								scroll={{ y: tableYScroll }}
+								columns={columns} 
+								rowKey={record => record.userID}
+								onRow={(record) => {
+									return {     
+										onDoubleClick: () => {
+											this.displayDrawerUpdate(record);
+										}
+									}
+								}}
+							/>
+						)
+					}	
           </div>    
           {/* DRAWER */}
             <Drawer

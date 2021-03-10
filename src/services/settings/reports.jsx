@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosReportAPI } from 'services/axios';
-import { apiGetMethod, apiPostMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
 export async function fetchXMLNames() {
 	let xmlNames = [];
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `lab_report/templatelist.php`,
 		}
 
@@ -28,7 +28,7 @@ export async function deleteXML(payload) {
 
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: `lab_report/delete.php`,
 			data: payload
 		}

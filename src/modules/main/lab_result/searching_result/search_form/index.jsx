@@ -172,7 +172,7 @@ class SearchForm extends React.Component {
 										<Option value="All">ALL</Option> 
 										<Option value="Checked In">CHECKED IN</Option> 
 										<Option value="Instrument Result">INSTRUMENT RESULT</Option>
-										<Option value="Preliminary">PRELIMNARY</Option>
+										<Option value="Preliminary">PRELIMINARY</Option>
 										<Option value="Released">RELEASED</Option>
 									</Select>
 									{/* {getFieldDecorator('status', { 

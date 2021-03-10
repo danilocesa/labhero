@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Row, Col, Spin } from 'antd';
 
 import PageTitle from 'shared_components/page_title';
-import Restriction from 'modules/main/lab_request/steps/clr_restriction/restriction';
+import Restriction from 'modules/main/lab_request/steps/lr_restriction/restriction';
 import Tracker from 'modules/main/lab_request/tracker';
 import { 
 	LR_SEL_EXAMS, 
@@ -11,7 +11,8 @@ import {
 	LR_SEL_PANEL_CONTENTS, 
 	LR_OTHER_INFO, 
 	LR_REQUEST_TYPE,
-	LR_IS_EXAM_UPDATED
+	LR_IS_EXAM_UPDATED,
+	LR_EDIT_SEL_EXAM_REF
 } from 'modules/main/lab_request/steps/constants';
 import { moduleTitles, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 import { fetchExamsByReqId } from 'services/lab_request/labRequest';
@@ -78,6 +79,7 @@ class SelectStep extends React.Component {
 	async componentDidUpdate(prevProps) {
 		const { componentDidMount, panelRef } = this.state;
 
+		console.log('component did update');
 		// Variables for Edit Module
 		const sessOtherInfo = sessionStorage.getItem(LR_OTHER_INFO);
 		const sessExamUpdated = sessionStorage.getItem(LR_IS_EXAM_UPDATED);
@@ -92,12 +94,13 @@ class SelectStep extends React.Component {
 		// -When session exams is not updated upon the process of editting
 		if(!componentDidMount && requestID && panelRef.length !== 0 && isFreshExams) {
 			this.setState({ componentDidMount: true });
-
+			
 			const qexams = await fetchExamsByReqId(requestID);
 			let zexams = [];
 			let zpanelContents = [];
 			let setPanelIDs = new Set();
 			let setContents = new Set();
+
 
 			qexams.forEach(tier1 => {
 				tier1.contents.forEach(tier2 => {
@@ -119,6 +122,7 @@ class SelectStep extends React.Component {
 					tmpRoot.examID = tier2.examID;
 					tmpRoot.examName = tier2.examRequestName;
 					tmpRoot.examCode = tier2.examRequestCode;
+					tmpRoot.sampleSpecimenID = tier2.sampleSpecimenID;
 					tmpRoot.selectedPanel = tier2.panelID ? tmpPanel : null;
 					tmpRoot.selectedSpecimen = tmpSpecimen;
 					tmpRoot.selectedSection = tmpSection;
@@ -132,27 +136,31 @@ class SelectStep extends React.Component {
 				});
 			});
 
-			// const selectedPanel = panelRef.filter(item => Array.from(zpanelIDs).includes(item.panelID));
+
+			const selectedPanel = panelRef.filter(item => Array.from(setPanelIDs).includes(item.panelID));
+
+			console.log('selectedPanel', selectedPanel);
+
+			selectedPanel.forEach(panelRef => {
+				panelRef.exams.forEach(exam => {
+					zpanelContents = zpanelContents.concat(exam.contents);
+				});
+			});
 
 
-			// selectedPanel.forEach(panelRef => {
-			// 	panelRef.exams.forEach(exam => {
-			// 		zpanelContents = zpanelContents.concat(exam.contents);
-			// 	});
-			// });
-
+			// Store raw exams from API to local storage
+			sessionStorage.setItem(LR_EDIT_SEL_EXAM_REF, JSON.stringify(zexams))
 
 			this.setState({ 
 				selectedExams: zexams,
 				// selectedContents: zpanelContents,
 				selectedContents: Array.from(setContents),
-				selectedContentsByPanel: zpanelContents,
+				selectedContentsByPanel: zpanelContents
 			});
 		}
 	}
 
 	populateExams = (exams) => {
-		console.log('populateExams has been triggered');
 		const { selectedExams, selectedContents } = this.state;
 
 		const processedExams = exams.map(exam => { 
@@ -161,20 +169,24 @@ class SelectStep extends React.Component {
 
 			const isDisabled = selectedExams.some(item => {
 				const isInContents = selectedContents.some(selContent => exam.contents.includes(selContent));
-
-				if(item.examID === exam.examID && item.selectedPanel !== null)
+				
+				if(item.examID === exam.examID && item.selectedPanel !== null) {
 					return true;
+				}
 
-				if(item.examID === exam.examID && item.isLocked)
+				if(item.examID === exam.examID && item.isLocked){
 					return true;
+				}
 
-				if(isInContents && !isSelected)
+				if(isInContents && !isSelected){
 					return true;
+				}
 
 				return false
 			});
 
 			const isLocked = selectedExams.some(item => item.examID === exam.examID && item.isLocked);
+
 
 			return { ...exam, isSelected, isDisabled, isLocked };
 		});
@@ -305,6 +317,7 @@ class SelectStep extends React.Component {
 	// the list of exams table (left) into selected exams table (right).
 	// Used when selecting panel
 	addSelectedExamByPanel = ({ panelID }) => {
+		console.log('addSelectedExamByPanel');
 		const { panelRef, selectedContents } = this.state;
 		const selectedPanel = panelRef.find(item => item.panelID === panelID);
 		let newSelectedContents = []; 
@@ -400,7 +413,8 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
-		console.log('removeSelectedExamByPanel has triggered');
+		console.log('removeSelectedExamByPanel');
+		
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
 		const filteredExams = selectedExams.filter(item => {
@@ -413,6 +427,7 @@ class SelectStep extends React.Component {
 			return !selectedContentsByPanel.some(b => a === b);
 		});
 
+
 		this.setState({ 
 			selectedExams: filteredExams, 
 			selectedContents: filteredContents,
@@ -424,7 +439,6 @@ class SelectStep extends React.Component {
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
-		console.log('removeSelectedExamByExam has triggered');
 
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
@@ -463,11 +477,9 @@ class SelectStep extends React.Component {
 	// when removing exam from selected exam table(right).
 	// Private function
 	unselectExams = (unselectedExams) => {
-		console.log('unselectExams has triggered');
 		const { exams, selectedContents, selectedExams } = this.state;
 
 		const processedExams = exams.map(exam => { 
-			console.log('exam', exam);
 			// Check if current exam is in the unselected exams
 			const isExistInUExam = unselectedExams.some(uexam => exam.examID === uexam.examID);
 			const isExistInContents = selectedContents.some(selContent => {
@@ -497,7 +509,7 @@ class SelectStep extends React.Component {
 			selectedExams, 
 			selectedContents, 
 			selectedContentsByPanel,
-			selectedSection, 
+			selectedSection,
 			exams, 
 			panels, 
 			isLoading 
@@ -505,6 +517,7 @@ class SelectStep extends React.Component {
 		const { restriction } = this;
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
+		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
 
 		if(restriction.hasAccess) {
 			return (
@@ -554,7 +567,7 @@ class SelectStep extends React.Component {
 						selectedExams={selectedExams}
 						selectedContents={selectedContents}
 						selectedPanelContents={selectedContentsByPanel}
-						disabled={selectedExams.length === 0}
+						disabled={disabled}
 					/>
 				</div>
 			);

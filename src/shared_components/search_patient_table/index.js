@@ -15,7 +15,7 @@ class SearchPatientTable extends React.Component {
 
 	
 	render() {
-		const { data, pageSize, loading, handleDoubleClick } = this.props;
+		const { data, pageSize, loading, handleDoubleClick, ...rest } = this.props;
 
 		const getSorter = (myDataSource, columnName) => {
 			if(myDataSource.length > 0) {
@@ -99,6 +99,7 @@ class SearchPatientTable extends React.Component {
 								onDoubleClick: () => { handleDoubleClick(record) }
 							};
 						}}
+						{...rest}
 					/>
 				</div>
 			</Spin>

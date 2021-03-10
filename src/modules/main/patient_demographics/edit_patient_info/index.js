@@ -6,14 +6,14 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Form, Input, DatePicker, Row, Col, Radio, Button, message } from 'antd';
+import { Form, Input, DatePicker, Row, Col, Radio, Button, Typography, message } from 'antd';
 
 // CUSTOM MODULES
 import HttpCodeMessage from 'shared_components/message_http_status';
-import ProvinceList from 'shared_components/province_list';
-import CityList from 'shared_components/city_list';
-import TownList from 'shared_components/town_list';
-import HouseAddress from 'shared_components/address';
+import ProvinceList from 'shared_components/lh_province';
+import CityList from 'shared_components/lh_city';
+import TownList from 'shared_components/lh_town';
+import HouseAddress from 'shared_components/lh_address';
 import { RegexInput, NumberInput } from 'shared_components/pattern_input';
 import updatePatientAPI from 'services/shared/patient';
 import {
@@ -27,11 +27,10 @@ import {
 	errorMessages
 } from '../settings';
 
-// CSS
+
 import './editprofile.css'; 
 
-// OTHER FILES
-// eslint-disable-next-line camelcase
+const { Text } = Typography;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const dateFormat = 'MM/DD/YYYY';
@@ -82,6 +81,7 @@ class EditProfile extends React.Component {
 	}
 
 	submitUpdatePatient = async (fields) => {
+		const { onSuccess } = this.props;
 		const loggedUserData = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
 		const payload = {
 			patientID: this.props.patientInfo.patientID,
@@ -89,6 +89,7 @@ class EditProfile extends React.Component {
 			lastName: fields.lastName.toString().toUpperCase(),
 			givenName: fields.givenName.toString().toUpperCase(),
 			middleName: fields.middleName.toString().toUpperCase(),
+			nameSuffix: fields.nameSuffix.toString().toUpperCase(),
 			sex: fields.sex.toString().toUpperCase(),
 			dateOfBirth: fields.dateOfBirth,
 			addressCode: fields.town,
@@ -102,10 +103,9 @@ class EditProfile extends React.Component {
 		this.setState({ isLoading: false });
 
 		if(response.status === 200){
-			message.success(successMessages.update);
-			window.location.reload();
+			message.success(successMessages.update, 3, () => onSuccess());
 		} else {
-			HttpCodeMessage({status:500});
+			HttpCodeMessage({ status: 500 });
 		}
 	}
 
@@ -212,7 +212,7 @@ class EditProfile extends React.Component {
 						{/** Suffix */}
 						<Col xs={24} sm={12} md={12} lg={12}>
 							<Form.Item 
-								name="suffix"
+								name="nameSuffix"
 								label={formLabels.suffix}
 								rules={fieldRules.suffix}
 							>
@@ -354,7 +354,7 @@ class EditProfile extends React.Component {
 										<HouseAddress 
 											form={form}
 											townValue={form.getFieldValue('town')}
-											fieldLabel={formLabels.unitNo.label}
+											fieldLabel={<Text ellipsis>{formLabels.unitNo.label}</Text>}
 											fieldName={formLabels.unitNo.fieldName}
 											selectedValue={houseAddress}
 										/>
@@ -435,7 +435,8 @@ class EditProfile extends React.Component {
 
 EditProfile.propTypes = {
 	patientInfo: PropTypes.object,
-	onCancel: PropTypes.func
+	onCancel: PropTypes.func,
+	onSuccess: PropTypes.func
 };
 
 EditProfile.defaultProps = {

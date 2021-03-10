@@ -7,16 +7,19 @@ import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
 import QuestionType from './question_types'
+import Storage from './storage'
+import Normal_Values from './normal_values'
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
 const pageTitleSettings = "BLOODBANK /";
 const pageTitle = [
-  `${pageTitleSettings } CATEGORIES`, 
+  `${pageTitleSettings } BLOOD GROUP`, 
+  `${pageTitleSettings } BLOOD GROUP`,
+  `${pageTitleSettings } BLOOD TYPES`,
   `${pageTitleSettings } CATEGORIES`,
   `${pageTitleSettings } QUESTIONNAIRE`,
-  `${pageTitleSettings } BLOOD GROUP`,
-  `${pageTitleSettings } QUESTION TYPES`,
+  `${pageTitleSettings } NORMAL VALUES`,
 ]
 
 class settings extends React.Component {
@@ -33,17 +36,23 @@ class settings extends React.Component {
 			<div>
         <InventoryPageCrumb pageTitle={this.state.pageTitle} />
         <AntTabs defaultActiveKey="1" onChange={this.handleTabChange}>
-          <TabPane tab="CATEGORIES" key="1">
-            <BloocBankCategories />
-          </TabPane>
-          <TabPane tab="QUESTIONNAIRE" key="2">
-            <Questionnaire />
-          </TabPane>
-          <TabPane tab="BLOOD GROUP" key="3">
+          <TabPane tab="BLOOD GROUP" key="1">
             <BloodGroup />
           </TabPane>
-          <TabPane tab="QUESTION TYPES" key="4">
+          <TabPane tab="BLOOD TYPES" key="2">
             <QuestionType />
+          </TabPane>
+          <TabPane tab="CATEGORIES" key="3">
+            <BloocBankCategories />
+          </TabPane>
+          <TabPane tab="QUESTIONNAIRE" key="4">
+            <Questionnaire />
+          </TabPane>
+          <TabPane tab="STORAGE" key="5">
+            <Storage />
+          </TabPane>
+          <TabPane tab="NORMAL VALUES" key="6">
+            <Normal_Values />
           </TabPane>
         </AntTabs>
 			</div>

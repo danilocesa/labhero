@@ -18,9 +18,9 @@ function ErrorPage(props) {
 
   return (
     // @ts-ignore
-    <div type="flex" justify="center" style={style}>
+    <div style={style}>
       <div>
-        <Row>
+        <Row justify="center" >
           <Col style={{ textAlign: 'center' }}> 
             <img 
               className="icon" 

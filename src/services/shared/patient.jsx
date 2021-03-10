@@ -1,6 +1,6 @@
 // @ts-nocheck
 /* eslint-disable func-names */
-import {apiPutMethod, apiPatient} from 'global_config/constant-global';
+import { API_PUT_METHOD } from 'global_config/constant-global';
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
 
@@ -12,8 +12,8 @@ async function updatePatientAPI(payload) {
   delete payload.patientID;
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiPutMethod,
-      url: `${apiPatient.url}${patientID}`,
+      method: API_PUT_METHOD,
+      url: `lab/Patient/${patientID}`,
       data: payload
 		}).then(function(response){
       return response;

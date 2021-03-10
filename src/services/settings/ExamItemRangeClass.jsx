@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
 import { axiosLabAPI } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export async function createRangeClass(payload) {
 	let createdRangeClass = null;
 
 	try{
 		const content = {
-			method: apiPostMethod,
+			method: API_POST_METHOD,
 			url: `/lab/ExamItemRangeClass`,
 			data: payload
 		}
@@ -34,7 +34,7 @@ export async function updateRangeClass(payload) {
 
 	try{
 		const content = {
-			method: apiPutMethod,
+			method: API_PUT_METHOD,
 			url: `/lab/ExamItemRangeClass`,
 			data: payload
 		}
@@ -61,7 +61,7 @@ export async function getAllRangeClass(payload) {
 
 	try{
 		const content = {
-			method: apiGetMethod,
+			method: API_GET_METHOD,
 			url: `/lab/ExamItemRangeClass`,
 			data: payload
 		}

@@ -4,7 +4,7 @@ import { Row } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
-import { BBdonorRegIcon, BBaddBloodReqIcon, BBrecipientIcon, BBsearchDonorIcon } from 'images';
+import { BBdonorRegIcon, BBaddBloodReqIcon } from 'images';
 import BloodBankCard from './bloodbank_card';
 
 
@@ -14,33 +14,33 @@ import './bloodbank-menu.css';
 const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/extraction/screening',
-		label: 'EXTRACTION/SCREENING',
-	},
-	{
-		image: BBdonorRegIcon,
-		link: '/bloodbank/donor_registration',
+		link: '/bloodbank/donor_registration/step/1',
 		label: 'DONOR REGISTRATION',
 	},
 	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/extraction/search',
+		label: 'EXTRACTION/SCREENING',
+	},
+	{
 		image: BBaddBloodReqIcon,
-		link: '/bloodbank/blood_request',
+		link: '/bloodbank/blood_request/search',
 		label: 'ADD BLOOD BANK REQUEST'
-	},
-	{
-		image: BBrecipientIcon,
-		link: '../bloodbank/blood_recipient',
-		label: 'BLOOD RECIPIENT'
-	},
-	{
-		image: BBsearchDonorIcon,
-		link: '/bloodbank/search_donor',
-		label: 'SEARCH DONOR'
 	},
 	{
 		image: BBdonorRegIcon,
 		link: '/bloodbank/settings',
 		label: 'SETTINGS',
+	},
+	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/blood_inventory/search',
+		label: 'BLOOD INVENTORY',
+	},
+	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/PRINTING',
+		label: 'PRINTING',
 	},
 ]
 

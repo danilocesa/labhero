@@ -43,7 +43,7 @@ class ExamTag extends React.Component {
 ExamTag.propTypes = {
 	examID: PropTypes.number.isRequired,
 	examName: PropTypes.string.isRequired,
-	examCode: PropTypes.string.isRequired,
+	examCode: PropTypes.string,
 	contents: PropTypes.arrayOf(PropTypes.string).isRequired,
 	isSelected: PropTypes.bool.isRequired,
 	isDisabled: PropTypes.bool.isRequired,

@@ -121,13 +121,18 @@ class CategoriesForm extends React.Component {
 CategoriesForm.propTypes = {
   drawerButton: PropTypes.string.isRequired,
   actionType: PropTypes.string,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
+  // eslint-disable-next-line react/no-unused-prop-types
+  onClose: PropTypes.func,
 };
 
 CategoriesForm.defaultProps = {
   onCancel() {
     return null;
-  }
+  },
+  onClose() {
+    return null;
+  },
 };
 
 export default withRouter(CategoriesForm);

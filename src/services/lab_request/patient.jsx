@@ -1,13 +1,13 @@
 import Message from 'shared_components/message';
-import { apiPostMethod, apiPatient } from 'global_config/constant-global';
+import { API_POST_METHOD } from 'global_config/constant-global';
 import { axiosLabAPI } from '../axios';
 
 export default async function createPatientInfo(personalInfo) {
 	let createdPatient;
 	try{
 		const content = {
-			method: apiPostMethod,
-			url: apiPatient.url,
+			method: API_POST_METHOD,
+			url: 'lab/Patient/',
 			data: personalInfo
 		}
 

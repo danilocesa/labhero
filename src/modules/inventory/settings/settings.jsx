@@ -1,9 +1,14 @@
-import { globalTablePageSize, globalTableSize,globalTableYScroll } from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize,globalTableYScroll } from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
 
 // UserMaintenance Variables
+
+export const drawerAdd = 'ADD';
+export const drawerUpdate = 'UPDATE';
+
+
 export const moduleTitle = 'PANEL EXAM';
 
 export const drawerAddTitle = 'ADD PANEL';
@@ -31,7 +36,9 @@ export const drawerLotInvTitleUpdate = 'UPDATE LOT PER INVENTORY';
 export const messagePrompts = {
   noExamFound: "No exam request found!",
   successCreatePanel: "Successfully created! Reloading page...",
-  successUpdatePanel: "Update successful! Reloading page..."
+  successUpdatePanel: "Update successful! Reloading page...",
+
+  successAddCategoryInv: " Successful!"
 }
 
 export const fieldRules = {
@@ -122,7 +129,7 @@ export const buttonLabels = {
 
 
 
-export const tablePageSize = globalTablePageSize;
+export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 export const tableSize = globalTableSize;
 
 export const addUserButton = 'ADD USER';

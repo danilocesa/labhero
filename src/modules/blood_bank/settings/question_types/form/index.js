@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react'
-import {  Switch, Form, Input, Button} from 'antd'
+import {  Switch, Form, Input, Button,InputNumber } from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'
@@ -71,19 +71,21 @@ class BloodTypesForm extends React.Component {
 							}}
 							onFinish={this.onFinish}       
 						>
-							{this.props.drawerButton == "UPDATE"? (		
-								<Form.Item 
-									label="ACTIVE" 
-									{...layout} 
-									valuePropName='checked' 
-									name='is_active'
-									style={{marginBottom:'-40px'}}
-								>
-									<Switch />
-								</Form.Item>
-							)	
+							{
+								this.props.drawerButton == "UPDATE"? 
+								(		
+									<Form.Item 
+										label="ACTIVE" 
+										{...layout} 
+										valuePropName='checked' 
+										name='is_active'
+										style={{marginBottom:'-40px'}}
+									>
+										<Switch />
+									</Form.Item>
+								)	
 							:
-							null
+								null
 							}
 							<div className="form-section">
 							<Form.Item 

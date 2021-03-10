@@ -4,10 +4,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
-
+import moment from 'moment';
 // CUSTOM MODULES
 import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
-import computeAge from 'shared_components/age_computation';
 // import { PatientImgPlaceholder } from 'images';
 
 import './patient_info.css';
@@ -66,6 +65,14 @@ class PatientInfo extends React.Component {
 		});
 	}
 
+
+	computeAge = (date) => {
+		const years = Math.floor(moment().diff(date, 'years', true));
+		const age = years > 0 ? years : '---';
+	
+		return age;
+  }
+
   render() {
     return (
 	    <div className="patient-info-shared">
@@ -90,7 +97,7 @@ class PatientInfo extends React.Component {
 						AGE
 					</Col>
 					<Col {...colLayout} className="info-item-text">
-						{computeAge(this.props.patientInfo.dateOfBirth)}
+						{this.computeAge(this.props.patientInfo.dateOfBirth)}
 					</Col>
 				</Row>
 				<Row>

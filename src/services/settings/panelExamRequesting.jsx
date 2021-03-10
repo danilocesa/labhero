@@ -1,9 +1,9 @@
 import {
 	apiUrlPanelExamRequestSettings, 
 	apiUrlGetPanelInfoByID, 
-	apiGetMethod, 
-	apiPostMethod, 
-	apiPutMethod
+	API_GET_METHOD, 
+	API_POST_METHOD, 
+	API_PUT_METHOD
 } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { axiosLabAPI } from 'services/axios';
@@ -13,7 +13,7 @@ export async function panelListAPI() {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: apiUrlPanelExamRequestSettings
 		}).then(response => {
       return response;
@@ -33,7 +33,7 @@ export async function getPanelInfoAPI(panelID) {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
       url: apiUrlGetPanelInfoByID + panelID,
 		}).then(response => {
       return response;
@@ -53,7 +53,7 @@ export async function createdPanelAPI(payload) {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiPostMethod,
+      method: API_POST_METHOD,
       url: apiUrlPanelExamRequestSettings,
       data: payload
 		// eslint-disable-next-line func-names
@@ -75,7 +75,7 @@ export async function updatePanelListAPI(payload) {
 	
   try{
     const axiosResponse = await axiosLabAPI({
-      method: apiPutMethod,
+      method: API_PUT_METHOD,
       url: apiUrlPanelExamRequestSettings,
       data: payload
 		}).then(response => {

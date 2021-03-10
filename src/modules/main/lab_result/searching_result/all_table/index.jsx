@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { Row, Col } from 'antd';
 
 import Pager from 'shared_components/search_pager';
-import { globalTablePageSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import MainTable from './main_table';
 
 import './searchresult.css';
 
 class AllTable extends React.Component {
   state = {
-		pageSize: globalTablePageSize,
+		pageSize: GLOBAL_TABLE_PAGE_SIZE,
 		isLoading: false
 	};
 
@@ -24,7 +24,7 @@ class AllTable extends React.Component {
 
   render() {  
 		const { isLoading, pageSize } = this.state;
-		const { labResults, onClickTableRow, onClickPrint } = this.props;
+		const { labResults, onClickTableRow, onClickPrint, userAccess } = this.props;
 	 
     return (
 	    <div>
@@ -45,6 +45,7 @@ class AllTable extends React.Component {
 							pageSize={pageSize}
 							onClickTableRow={onClickTableRow}
 							onClickPrint={onClickPrint}
+							userAccess={userAccess}
 						/>
 					</Col>
 		    </Row>
@@ -56,7 +57,8 @@ class AllTable extends React.Component {
 AllTable.propTypes = {
 	labResults: PropTypes.array.isRequired,
 	onClickTableRow: PropTypes.func.isRequired,
-	onClickPrint: PropTypes.func.isRequired
+	onClickPrint: PropTypes.func.isRequired,
+	userAccess: PropTypes.object.isRequired
 };
 
 export default AllTable;

@@ -9,10 +9,10 @@ import { Form, Input, Row, Col, Typography, DatePicker, Radio, Divider, Select }
 // CUSTOM MODULES
 import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
-import ProvinceList from 'shared_components/province_list';
-import CityList from 'shared_components/city_list';
-import TownList from 'shared_components/town_list';
-import HouseAddress from 'shared_components/address';
+import ProvinceList from 'shared_components/lh_province';
+import CityList from 'shared_components/lh_city';
+import TownList from 'shared_components/lh_town';
+import HouseAddress from 'shared_components/lh_address';
 import { AlphaNumInput, NumberInput, RegexInput } from 'shared_components/pattern_input';
 import { LR_PERSONAL_INFO, LR_OTHER_INFO } from 'modules/main/lab_request/steps/constants';
 import { FIELD_RULES, selectDefaultOptions, formLabels } from './constant';
@@ -180,7 +180,7 @@ class BaseForm extends React.Component {
 		const fields = getFieldsValue();
 		const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 		const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
-		
+
 		fields.dateOfBirth = moment(fields.dateOfBirth).format('MM-DD-YYYY');
 		fields.locationName = location.name;
 
@@ -393,7 +393,6 @@ class BaseForm extends React.Component {
 												return (
 													<CityList 
 														form={form}
-														// form={form}
 														placeholder={selectDefaultOptions}
 														provinceValue={form.getFieldValue('provinces')}
 														selectedCity={address.cityMunicipalityCode}
@@ -551,8 +550,5 @@ BaseForm.propTypes = {
 	isLoading: PropTypes.bool.isRequired
 };
 
-// const FillupForm = Form.create()(withRouter(BaseForm));
-
-// export default FillupForm;
 
 export default withRouter(BaseForm);

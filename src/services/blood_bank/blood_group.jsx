@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { apiGetMethod, apiPostMethod, apiPutMethod } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 
 export default async function fetchBloodGroupItems() {
@@ -8,7 +8,7 @@ export default async function fetchBloodGroupItems() {
 	
   try{
     const response = await axiosPhase2API({
-      method: apiGetMethod,
+      method: API_GET_METHOD,
 			url: `bloodbank/bloodgroup/search/`,
 		});
 		
@@ -26,14 +26,13 @@ export async function createBloodGroupAPI(payload) {
 	let createUserAccount = [];
   try{
     const axiosResponse = await axiosPhase2API({
-      method: apiPostMethod,
-      url: `bloodbank/donor/create/`,
+      method: API_POST_METHOD,
+      url: `bloodbank/bloodgroup/create/`,
       data: payload
 		}).then(response => {
       return response;
     });
 
-    console.log("API response",axiosResponse)
     // @ts-ignore
     createUserAccount = axiosResponse;
   } 
@@ -48,22 +47,21 @@ export async function updateBloodGroupAPI(payload) {
   let updateBloodGroup = [];
   const bloodGroupId = payload.blood_group_id;
 
-try{
-  const content = {
-          method: apiPutMethod,
-          url:`bloodbank/bloodgroup/update/${bloodGroupId}/`,
-    data: payload
+  try{
+    const content = {
+      method: API_PUT_METHOD,
+      url:`bloodbank/bloodgroup/update/${bloodGroupId}/`,
+      ata: payload
+    }
+
+    const response = await axiosPhase2API(content);
+    // @ts-ignore
+    updateBloodGroup = await response;
+  }
+  catch(error) {
+    Message.error();
   }
 
-  const response = await axiosPhase2API(content);
-  // @ts-ignore
-  updateBloodGroup = await response;
-
-}
-catch(error) {
-  Message.error();
-}
-
-return updateBloodGroup;
+  return updateBloodGroup;
 }
 

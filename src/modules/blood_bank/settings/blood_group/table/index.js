@@ -27,13 +27,6 @@ const columns = [
 		sorter: (a, b) => a.blood_group_id - b.blood_group_id,
 	},
 	{
-		title: 'BLOOD TYPE',
-		dataIndex: 'blood_type',
-		key: 2,	
-		width: 300,
-		sorter: (a, b) => a.blood_group.localeCompare(b.blood_group),
-	},
-	{
 		title: 'DESCRIPTION',
 		dataIndex: 'blood_desc',
 		key: 3,
@@ -51,8 +44,9 @@ class BloodGroupTable extends React.Component {
 			drawerButton: '',
 			selectedBloodGroup:{},
 			pagination: {
-				pageSize: tablePageSize,
-			}
+				pageSize: 0,
+			},
+			pagination1:0
 		}
 	}
 
@@ -122,10 +116,10 @@ class BloodGroupTable extends React.Component {
 	
 	handleSelectChange = (value) => {
 		// eslint-disable-next-line react/no-access-state-in-setstate
-		const pagination = {...this.state.pagination};
+		const pagination1 = {...this.state.pagination};
 		// eslint-disable-next-line radix
-		pagination.pageSize = parseInt(value);
-		this.setState({ pagination });
+		pagination1.pageSize = parseInt(value);
+		this.setState({ pagination1:pagination1 });
 	};
 
 	render() {
@@ -138,7 +132,8 @@ class BloodGroupTable extends React.Component {
 			selectedBloodGroup, 
 			actionType,
 			bloodgroupItem,
-			loading 
+			loading ,
+			pagination1
 		} = this.state;
 		return(
 			<div>
@@ -169,22 +164,43 @@ class BloodGroupTable extends React.Component {
 				</div>
 				<DndProvider backend={HTML5Backend}>
 				<div className="settings-user-table">
-					<Table 
-						loading={loading}
-						dataSource={bloodgroupItem}
-						size={tableSize}
-						scroll={{ y: tableYScroll }}
-						columns={columns} 
-						pagination={pagination}
-						rowKey={record => record.userID}
-						onRow={(record) => {
-							return {     
-								onDoubleClick: () => {
-									this.displayDrawerUpdate(record);
-								}
-							}
-						}}
-					/>
+				{
+					pagination1 == 0
+					? 
+						(		
+							<Table 
+								loading={loading}
+								dataSource={bloodgroupItem}
+								columns={columns} 
+								//pagination={pagination}
+								rowKey={record => record.userID}
+								onRow={(record) => {
+									return {     
+										onDoubleClick: () => {
+											this.displayDrawerUpdate(record);
+										}
+									}
+								}}
+							/>
+						)	
+					: 
+						(
+							<Table 
+								loading={loading}
+								dataSource={bloodgroupItem}
+								scroll={{ y: tableYScroll }}
+								columns={columns} 
+								rowKey={record => record.userID}
+								onRow={(record) => {
+									return {     
+										onDoubleClick: () => {
+											this.displayDrawerUpdate(record);
+										}
+									}
+								}}
+							/>
+						)
+				}	
 				</div>    
 				{/* DRAWER */}
 					<Drawer

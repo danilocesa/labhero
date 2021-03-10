@@ -11,7 +11,7 @@ import {
 	LR_STEP_PROGRESS,
 	LR_SEL_CONTENTS, 
 	LR_SEL_PANEL_CONTENTS,
-	LR_IS_EXAM_UPDATED
+	LR_IS_EXAM_UPDATED,
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from 'modules/main/lab_request/tracker';
@@ -26,10 +26,10 @@ import { tablePageSize } from '../settings';
 
 class SearchStep extends React.Component {
 	state = { 
-		searchCount: 0,
 		patients: [],
 		pageSize: tablePageSize,
 		loading: false,
+		actionType: null,
 	}
 	
 
@@ -39,12 +39,13 @@ class SearchStep extends React.Component {
 		sessionStorage.removeItem(LR_SEL_EXAMS);
 		sessionStorage.removeItem(LR_SEL_CONTENTS);
 		sessionStorage.removeItem(LR_SEL_PANEL_CONTENTS);
+
+		
 	}
 
-	updateSearchCount = (patientId, patientName) => {
-		const { searchCount } = this.state;
+	setActionType = (patientId, patientName) => {
 
-		this.setState({ searchCount: searchCount + 1 });
+		this.setState({ actionType: patientName ? 'byName' : 'byId' });
 	}
 
 	handleChangeSize = (pageSize) => {
@@ -92,8 +93,7 @@ class SearchStep extends React.Component {
 	}
 
 	render() {
-		const { patients, pageSize, loading, searchCount } = this.state;
-	
+		const { patients, pageSize, loading, actionType } = this.state;
 		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 
 		return (
@@ -109,7 +109,7 @@ class SearchStep extends React.Component {
 							<SearchFormCreate 
 								populatePatients={this.populatePatients}
 								displayLoading={this.displayLoading} 
-								updateSearchCount={this.updateSearchCount}
+								storeSearchedVal={this.setActionType}
 							/>
 						)
 					}
@@ -118,7 +118,6 @@ class SearchStep extends React.Component {
 							<SearchFormEdit
 								populatePatients={this.populatePatients}
 								displayLoading={this.displayLoading} 
-								updateSearchCount={this.updateSearchCount}
 							/>
 						)
 					}
@@ -132,13 +131,16 @@ class SearchStep extends React.Component {
 						pageSize={pageSize}
 						loading={loading} 
 						handleDoubleClick={this.handleTableDoubleClick}
+						{...((actionType === 'byName' && reqType === requestTypes.create) && {
+							footer: () => <ButtonLink />
+						})}
 					/>
 				</div>
-				{ 
+				{/* { 
 					(reqType === requestTypes.create && searchCount > 0) && (
 						<ButtonLink dataLength={patients.length} />
 					)
-				}
+				} */}
 			</div>
 		);
 	}

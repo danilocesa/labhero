@@ -45,6 +45,7 @@ const Content = () => (
 				{/* Lab request route */}
 				<PrivateRoute path="/request/create" component={CreateRequestPage} />
 				<PrivateRoute path="/request/edit" component={EditRequestPage} />
+				<PrivateRoute path="/request/view" component={EditRequestPage} />
 				{/* Search lab result route */}
 				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
@@ -56,16 +57,16 @@ const Content = () => (
 				{/* Search patients route */}
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
 				{/* Settings route */}
-				<Route path="/settings" component={Settings} />
+				<PrivateRoute path="/settings" component={Settings} />
 				{/* Inventory route */}
-				<PrivateRoute path="/inventory" component={Inventory} />
+				<Route path="/inventory" component={Inventory} />
 				{/* 404 page route */}
-				<Route path="/bloodbank" component={BloodBank} />
-				<PrivateRoute exact path="/cashier" component={Cashier} />
-				<PrivateRoute path="/cashier/receipt" component={Receipt} />
-				<PrivateRoute path="/cashier/transactions" component={Transactions} />
-				<PrivateRoute path="/cashier/categories" component={Categories} />
-				<PrivateRoute path="/cashier/summary" component={Summary} />
+				<PrivateRoute path="/bloodbank" component={BloodBank} />
+				<Route exact path="/cashier" component={Cashier} />
+				<Route path="/cashier/receipt" component={Receipt} />
+				<Route path="/cashier/transactions" component={Transactions} />
+				<Route path="/cashier/categories" component={Categories} />
+				<Route path="/cashier/summary" component={Summary} />
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>
