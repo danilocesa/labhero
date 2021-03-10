@@ -138,7 +138,7 @@ class Extraction extends React.Component {
 
     return (
       <div>
-        <PageTitle pageTitle="EXTRACTION/SCREENING"  />
+        <PageTitle pageTitle="EXTRACTION"  />
         <Form 
           onFinish={this.handleSubmit} 
           ref={this.formRef}

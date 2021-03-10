@@ -6,7 +6,7 @@ import InventoryPageCrumb from 'modules/inventory/settings/shared_components/pag
 import BloocBankCategories from './categories'
 import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
-import QuestionType from './question_types'
+import BloodTypes from './blood_types'
 import Storage from './storage'
 import Normal_Values from './normal_values'
 
@@ -17,9 +17,10 @@ const pageTitle = [
   `${pageTitleSettings } BLOOD GROUP`, 
   `${pageTitleSettings } BLOOD GROUP`,
   `${pageTitleSettings } BLOOD TYPES`,
-  `${pageTitleSettings } CATEGORIES`,
   `${pageTitleSettings } QUESTIONNAIRE`,
-  `${pageTitleSettings } NORMAL VALUES`,
+  `${pageTitleSettings } STORAGE`,
+  `${pageTitleSettings } BLOOD TYPES`,
+  `${pageTitleSettings } BLOOD TYPES`,
 ]
 
 class settings extends React.Component {
@@ -40,7 +41,7 @@ class settings extends React.Component {
             <BloodGroup />
           </TabPane>
           <TabPane tab="BLOOD TYPES" key="2">
-            <QuestionType />
+            <BloodTypes />
           </TabPane>
           <TabPane tab="CATEGORIES" key="3">
             <BloocBankCategories />
@@ -51,7 +52,10 @@ class settings extends React.Component {
           <TabPane tab="STORAGE" key="5">
             <Storage />
           </TabPane>
-          <TabPane tab="NORMAL VALUES" key="6">
+          <TabPane tab="BLOOD TYPE" key="6">
+            <Storage />
+          </TabPane>
+          <TabPane tab="NORMAL VALUES" key="7">
             <Normal_Values />
           </TabPane>
         </AntTabs>

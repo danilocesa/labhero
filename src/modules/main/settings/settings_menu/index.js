@@ -3,6 +3,7 @@ import { Row, Col } from 'antd';
 
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
+// @ts-ignore
 import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon } from 'images';
 import SettingsCard from './settings_card'
 
@@ -74,9 +75,9 @@ class SettingsMenu extends React.Component {
 		return(
 			<div>
 				<PageTitle pageTitle="SETTINGS" />
-				<Row gutter={16} style={{ marginTop: 30 }}>
+					<Row gutter={16} style={{ marginTop: 30 }}>
 					{rowItems}
-				</Row>
+					</Row>
 			</div>
 		);
 	}

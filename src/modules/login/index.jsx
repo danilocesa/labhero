@@ -25,6 +25,8 @@ class Login extends React.Component {
 		this.formRef = React.createRef();
 	}
 
+	
+
 	handleSubmit = async () => {
 		const { username, password } = this.formRef.current.getFieldsValue();
 		
@@ -74,6 +76,7 @@ class Login extends React.Component {
 				else
 					Message.error();
 		}
+		window.location.reload(false);
 	}
 	
 	redirectPage = () => {
