@@ -16,7 +16,7 @@ import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
 import { ReactComponent as RequestIcon } from 'icons/request.svg';
 import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
-import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
+import { SELECTED_SIDER_KEY, LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Icon from '@ant-design/icons';
@@ -29,26 +29,20 @@ class Sider extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			panelVisible:''
-		}
+		this.state = { isDisplaySettings: false }
 	}
 
 	componentDidMount(){
-		if (sessionStorage.LOGGEDIN_USER_DATA){
-			const accessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX)
-	  	const settingsView = accessMatrix.settings.view
-			const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA)
-			const UserDatatype = userData.loginType
-			if (settingsView.some(data => data === UserDatatype))
-				{
-					this.setState({
-						panelVisible:true
-					})
-					// window.location.reload(false);
-				}
+		if (sessionStorage.getItem(LOGGEDIN_USER_DATA)) {
+			const accessMatrix = JSON.parse(sessionStorage.getItem(ACCESS_MATRIX));
+			const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+	  	const { view } = accessMatrix.settings;
+
+			if (view.some(loginType => loginType === userData.loginType))
+				this.setState({ isDisplaySettings: true });
 		}
 	}
+
 	handleMenuClick = ({ key }) => {
 		const selectedKey = key.includes('inventory') ? 9 : key;	
 		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
@@ -60,7 +54,7 @@ class Sider extends React.Component {
 	}
 
   render() {
-		const { panelVisible } = this.state
+		const { isDisplaySettings } = this.state
 		const { collapsed } = this.props;
 
     return (
@@ -157,7 +151,7 @@ class Sider extends React.Component {
 						)
 					}
 					{
-						panelVisible === true ? 
+						isDisplaySettings ? 
 							process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
 								<Menu.Item key={URI.settings.key}>
 									<Link to={URI.settings.link}>
