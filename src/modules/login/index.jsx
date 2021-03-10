@@ -76,7 +76,7 @@ class Login extends React.Component {
 				else
 					Message.error();
 		}
-		
+		window.location.reload(false);
 	}
 	
 	redirectPage = () => {

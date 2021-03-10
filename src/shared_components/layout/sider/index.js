@@ -26,7 +26,29 @@ const { Sider: AntSider } = Layout;
 
 
 class Sider extends React.Component {
+	constructor(props) {
+		super(props);
 
+		this.state = {
+			panelVisible:''
+		}
+	}
+
+	componentDidMount(){
+		if (sessionStorage.LOGGEDIN_USER_DATA){
+			const accessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX)
+	  	const settingsView = accessMatrix.settings.view
+			const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA)
+			const UserDatatype = userData.loginType
+			if (settingsView.some(data => data === UserDatatype))
+				{
+					this.setState({
+						panelVisible:true
+					})
+					// window.location.reload(false);
+				}
+		}
+	}
 	handleMenuClick = ({ key }) => {
 		const selectedKey = key.includes('inventory') ? 9 : key;	
 		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
@@ -38,6 +60,7 @@ class Sider extends React.Component {
 	}
 
   render() {
+		const { panelVisible } = this.state
 		const { collapsed } = this.props;
 
     return (
@@ -134,16 +157,19 @@ class Sider extends React.Component {
 						)
 					}
 					{
-						process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-
-							<Menu.Item key={URI.settings.key}>
-								<Link to={URI.settings.link}>
-									<Icon component={SettingsIcon} />
-									<span>SETTINGS</span>
-								</Link>
-							</Menu.Item>
-						)
+						panelVisible === true ? 
+							process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
+								<Menu.Item key={URI.settings.key}>
+									<Link to={URI.settings.link}>
+										<Icon component={SettingsIcon} />
+										<span>SETTINGS</span>
+									</Link>
+								</Menu.Item>
+							)
+						:
+						null
 					}
+					
 					{ 
 						process.env.REACT_APP_DISPLAY_INVENTORY === '1' && (
 							<Menu.Item key={URI.inventory.key}>
