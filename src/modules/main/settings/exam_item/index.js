@@ -49,7 +49,6 @@ class ExamItems extends React.Component {
 	}
 	
 	async componentDidMount() {
-		console.log("harry")
 		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
 		const UserDatatype = userData.loginType //1
 		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
@@ -239,17 +238,17 @@ class ExamItems extends React.Component {
 
 		const rightSection = (
 			<>
-			 { 
-			 	buttonAddVisible === true ? 
-					<Button 
-						shape="round"
-						type="primary" 
-						style={{ marginRight: 10 }}
-						onClick={this.onClickAdd}
-						disabled={selectedSectionId === null}
-					>
-						<PlusOutlined /> {buttonNames.addExamItem}
-					</Button> 
+			 	{ 
+					buttonAddVisible === true ? 
+						<Button 
+							shape="round"
+							type="primary" 
+							style={{ marginRight: 10 }}
+							onClick={this.onClickAdd}
+							disabled={selectedSectionId === null}
+						>
+							<PlusOutlined /> {buttonNames.addExamItem}
+						</Button> 
 				: 
 					null 
 				} 

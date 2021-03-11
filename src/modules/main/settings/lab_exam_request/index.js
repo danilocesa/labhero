@@ -51,6 +51,17 @@ class LabExamRequest extends React.Component {
 	}
 
 	async componentDidMount() {
+		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
+		const UserDatatype = userData.loginType //1
+		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
+		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
+		if (settingsCreateArray.some(data => data === UserDatatype))
+		{
+			this.setState({
+				buttonAddVisible:true
+			})
+		}
+
 		const sections = await fetchSection();
 		const specimens = await fetchSpecimens();
 
@@ -194,6 +205,7 @@ class LabExamRequest extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm,
 			isLoading,
+			buttonAddVisible,
 			isInitializing,
 			selectedSectionId,
 			selectedSpecimenId,
@@ -230,6 +242,8 @@ class LabExamRequest extends React.Component {
 
 		const rightSection = (
 			<>
+			{ 
+			 	buttonAddVisible === true ? 
 				<Button 
 					shape="round"
 					type="primary" 
@@ -239,6 +253,9 @@ class LabExamRequest extends React.Component {
 				>
 					<PlusOutlined />{buttonNames.addExam}
 				</Button>
+				: 
+				null 
+			}
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
