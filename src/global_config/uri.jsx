@@ -13,7 +13,7 @@ export const moduleURI = {
 	},
 	viewLabReq: {
 		key: 4,
-		link: '/request/view',
+		link: '/request/view/search',
 	},
 	phlebo: {
 		key: 5,

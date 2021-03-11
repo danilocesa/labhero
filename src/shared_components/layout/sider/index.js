@@ -16,7 +16,7 @@ import { ReactComponent as EditIcon } from 'icons/edit_2.svg';
 import { ReactComponent as BloodBankIcon } from 'icons/blood-bank.svg';
 import { ReactComponent as RequestIcon } from 'icons/request.svg';
 import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
-import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
+import { SELECTED_SIDER_KEY, LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Icon from '@ant-design/icons';
@@ -29,26 +29,38 @@ class Sider extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			panelVisible:''
+		this.state = { 
+			isDisplay: {
+				settings: false,
+				createRequest: false,
+				editRequest: false,
+				viewRequest: false
+			} 
 		}
 	}
 
 	componentDidMount(){
-		if (sessionStorage.LOGGEDIN_USER_DATA){
-			const accessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX)
-	  	const settingsView = accessMatrix.settings.view
-			const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA)
-			const UserDatatype = userData.loginType
-			if (settingsView.some(data => data === UserDatatype))
-				{
-					this.setState({
-						panelVisible:true
-					})
-					// window.location.reload(false);
+		if (sessionStorage.getItem(LOGGEDIN_USER_DATA)) {
+			const accessMatrix = JSON.parse(sessionStorage.getItem(ACCESS_MATRIX));
+			const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+	  	const { settings, request } = accessMatrix;
+
+			const displaySettings = settings.view.some(id => id === userData.loginType);
+			const displayCreateRequest = request.create.some(id => id === userData.loginType)
+			const displayEditRequest = request.update.some(id => id === userData.loginType);
+			const displayViewRequest = request.view.some(id => id === userData.loginType);
+
+			this.setState({ 
+				isDisplay: { 
+					settings: displaySettings, 
+					createRequest: displayCreateRequest,
+					editRequest: displayEditRequest,
+					viewRequest: displayViewRequest
 				}
+			});
 		}
 	}
+
 	handleMenuClick = ({ key }) => {
 		const selectedKey = key.includes('inventory') ? 9 : key;	
 		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
@@ -60,7 +72,8 @@ class Sider extends React.Component {
 	}
 
   render() {
-		const { panelVisible } = this.state
+		console.log('sider rendered')
+		const { isDisplay } = this.state
 		const { collapsed } = this.props;
 
     return (
@@ -76,7 +89,7 @@ class Sider extends React.Component {
 					defaultSelectedKeys={[sessionStorage.getItem(SELECTED_SIDER_KEY) || '1']}
 					onClick={this.handleMenuClick}
         >
-					{
+					{ 
 						process.env.REACT_APP_DISPLAY_HOME === '1' && (
 							<Menu.Item key={URI.dashboard.key}>
 								<Link to={URI.dashboard.link}>
@@ -86,8 +99,8 @@ class Sider extends React.Component {
 							</Menu.Item>
 						)
 					}
-					{
-						process.env.REACT_APP_DISPLAY_LAB_REQUEST === '1' && (
+					{ (isDisplay.createRequest && process.env.REACT_APP_DISPLAY_LAB_REQUEST === '1')
+						&& (
 							<Menu.Item key={URI.createLabReq.key}>
 								<Link to={URI.createLabReq.link}>
 									<Icon component={AddIcon} />
@@ -96,8 +109,8 @@ class Sider extends React.Component {
 							</Menu.Item>
 						)
 					}
-					{
-						process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1' && (
+					{ (isDisplay.editRequest && process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1')
+						&& (
 							<Menu.Item key={URI.editLabReq.key}>
 								<Link to={URI.editLabReq.link}>
 									<Icon component={EditIcon} />
@@ -106,8 +119,8 @@ class Sider extends React.Component {
 							</Menu.Item>
 						)
 					}
-					{
-						process.env.REACT_APP_DISPLAY_VIEW_REQUEST === '1' && (
+					{ (isDisplay.viewRequest && process.env.REACT_APP_DISPLAY_VIEW_REQUEST === '1')
+						&& (
 							<Menu.Item key={URI.viewLabReq.key}>
 								<Link to={URI.viewLabReq.link}>
 									<Icon component={RequestIcon} />
@@ -156,18 +169,15 @@ class Sider extends React.Component {
 							</Menu.Item>
 						)
 					}
-					{
-						panelVisible === true ? 
-							process.env.REACT_APP_DISPLAY_SETTINGS === '1' && (
-								<Menu.Item key={URI.settings.key}>
-									<Link to={URI.settings.link}>
-										<Icon component={SettingsIcon} />
-										<span>SETTINGS</span>
-									</Link>
-								</Menu.Item>
-							)
-						:
-						null
+					{ (isDisplay.settings && process.env.REACT_APP_DISPLAY_SETTINGS === '1')
+						&& (
+							<Menu.Item key={URI.settings.key}>
+								<Link to={URI.settings.link}>
+									<Icon component={SettingsIcon} />
+									<span>SETTINGS</span>
+								</Link>
+							</Menu.Item>
+						)
 					}
 					
 					{ 

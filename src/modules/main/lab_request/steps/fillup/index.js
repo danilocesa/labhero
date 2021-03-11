@@ -70,7 +70,6 @@ class FillupStep extends React.Component {
 		const otherInfo = pick(fields, otherInfoKeys);
 		const personalInfo = pick(fields, personalInfoKeys);
 		
-		console.log(personalInfo);
 
 		// Convert each field's value to uppercase
 		Object.keys(personalInfo).forEach(field => {

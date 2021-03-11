@@ -91,7 +91,7 @@ class SummarySection extends React.Component {
 			<div className="request-summary">
 				<Row>
 					<Col sm={24} lg={{ span: 18, offset: 3 }}>
-						<Row style={{ textAlign: 'center' }}>
+						<Row justify="center">
 							<Text strong style={{ fontSize: 18 }}>
 								REQUEST SUMMARY
 							</Text>
