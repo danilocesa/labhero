@@ -9,6 +9,7 @@ import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
 import EditRequestPage from 'modules/main/lab_request/edit';
+import ViewRequestPage from 'modules/main/lab_request/view';
 import EditLabResult from 'modules/main/lab_result/searching_result/result_for_edit';
 import PrintLabResult from 'modules/main/lab_result/searching_result/result_for_print';
 import PatientInfo from 'modules/main/lab_result/editing_result';
@@ -45,7 +46,7 @@ const Content = () => (
 				{/* Lab request route */}
 				<PrivateRoute path="/request/create" component={CreateRequestPage} />
 				<PrivateRoute path="/request/edit" component={EditRequestPage} />
-				<PrivateRoute path="/request/view" component={EditRequestPage} />
+				<PrivateRoute path="/request/view" component={ViewRequestPage} />
 				{/* Search lab result route */}
 				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
@@ -59,7 +60,7 @@ const Content = () => (
 				{/* Settings route */}
 				<PrivateRoute path="/settings" component={Settings} />
 				{/* Inventory route */}
-				<Route path="/inventory" component={Inventory} />
+				<PrivateRoute path="/inventory" component={Inventory} />
 				{/* 404 page route */}
 				<Route path="/bloodbank" component={BloodBank} />
 				<Route exact path="/cashier" component={Cashier} />

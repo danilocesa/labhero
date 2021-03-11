@@ -15,7 +15,7 @@ import {
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from 'modules/main/lab_request/tracker';
-import { moduleTitles, requestTypes, requestLinks } from 'modules/main/settings/lab_exam_request/settings';
+import { requestTypes, requestLinks } from 'modules/main/settings/lab_exam_request/settings';
 import SearchFormCreate from './form_for_create';
 import SearchFormEdit from './form_for_edit';
 import TableHeader from './table_header';
@@ -39,8 +39,6 @@ class SearchStep extends React.Component {
 		sessionStorage.removeItem(LR_SEL_EXAMS);
 		sessionStorage.removeItem(LR_SEL_CONTENTS);
 		sessionStorage.removeItem(LR_SEL_PANEL_CONTENTS);
-
-		
 	}
 
 	setActionType = (patientId, patientName) => {
@@ -57,6 +55,9 @@ class SearchStep extends React.Component {
 		const redirectUrl = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create)
 			? requestLinks.create.step2 
 			: requestLinks.edit.step2;
+
+
+		console.log(redirectUrl);
 
 		delete record.dateCreated;
 		delete record.addressID;
@@ -87,7 +88,19 @@ class SearchStep extends React.Component {
 
 	dynamicModuleTitle = () =>{
 		// @ts-ignore
-		const pageTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create ? moduleTitles.create : moduleTitles.edit);
+		let pageTitle = ""; 
+		
+		switch(sessionStorage.getItem(LR_REQUEST_TYPE)) {
+			case requestTypes.create:
+				pageTitle = 'CREATE REQUEST';
+				break;
+			case requestTypes.edit:
+				pageTitle = 'EDIT REQUEST';
+				break;
+			default:
+				pageTitle = 'VIEW REQUEST';
+				break;
+		} 
 		
 		return pageTitle;
 	}

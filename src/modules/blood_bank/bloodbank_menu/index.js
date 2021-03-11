@@ -20,7 +20,12 @@ const settingsItemData = [
 	{
 		image: BBdonorRegIcon,
 		link: '/bloodbank/extraction/search',
-		label: 'EXTRACTION/SCREENING',
+		label: 'EXTRACTION',
+	},
+	{
+		image: BBdonorRegIcon,
+		link: '/bloodbank/screening/search',
+		label: 'SCREENING',
 	},
 	{
 		image: BBaddBloodReqIcon,

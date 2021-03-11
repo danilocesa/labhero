@@ -132,32 +132,30 @@ class SelectedTable extends React.Component {
 
 		return (
 			<div>
-				<div className="settings-user-table-action">
-					<Row>
-						<Col span={12}>
-							<Search
-								placeholder="Search By Category Name"
-								allowClear
-								onSearch={(value) => this.onSearch(value)}
-								onChange={this.onChangeSearch}
-								style={{ width: 300 }}
-								className="panel-table-search-input"
-							/>
-						</Col>
-						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
-								icon={<PlusOutlined />}
-							>
-							 	ADD CATEGORY
-							</Button>
-							<TablePager handleChange={this.handleSelectChange} />
-						</Col>
-					</Row>
-				</div>
+				<Row style={{ marginBottom: 10 }}>
+					<Col span={12}>
+						<Search
+							placeholder="Search By Category Name"
+							allowClear
+							onSearch={(value) => this.onSearch(value)}
+							onChange={this.onChangeSearch}
+							style={{ width: 300 }}
+							className="panel-table-search-input"
+						/>
+					</Col>
+					<Col span={12} style={{ textAlign: 'right' }}>
+						<Button 
+							type="primary" 
+							shape="round" 
+							style={{ marginRight: '15px' }} 
+							onClick={this.showDrawer}
+							icon={<PlusOutlined />}
+						>
+							ADD CATEGORY
+						</Button>
+						<TablePager handleChange={this.handleSelectChange} />
+					</Col>
+				</Row>
 				<DndProvider backend={HTML5Backend}>
 					<Table
 						style={{textTransform:'uppercase'}}
@@ -165,8 +163,7 @@ class SelectedTable extends React.Component {
 						columns={columns}
 						dataSource={this.state.categoriesItem}
 						pagination={pagination}
-						onRow={(record, index) => ({
-							index,
+						onRow={(record) => ({
 							onDoubleClick: () => { 
 								this.displayDrawerUpdate(record);
 							},
