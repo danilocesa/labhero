@@ -3,6 +3,7 @@
 import React from 'react';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
+import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
 
 // CUSTOM
 import { getUserAccountsAPI } from 'services/settings/userAccount';
@@ -79,6 +80,10 @@ class UserTable extends React.Component {
 			patientInfo: [], 
 			usersRef: [],
 			users: [],
+			userMatrix: [],
+			userId: [],
+			disableAdd: '',
+			disableEdit: '',
 			pagination: {
 				pageSize: tablePageSize,
 				showSizeChanger: false
@@ -87,10 +92,11 @@ class UserTable extends React.Component {
 		}
 	}
 	
+	
 	async componentDidMount(){
+
 		this.setState({loading:true});
 		const userAccounts = await getUserAccountsAPI();
-		// userData.push({})
 
 		this.setState({
 			pagination: userAccounts.data.length,
@@ -98,9 +104,22 @@ class UserTable extends React.Component {
 			usersRef: userAccounts.data,
 			loading:false
 		});
+
+		//USER MATRIX
+		const getmatrix = sessionStorage.ACCESS_MATRIX ? JSON.parse(sessionStorage.ACCESS_MATRIX) : null;
+		const getuserID = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+		const userMatrix = getmatrix.settings.create;
+		const userID = getuserID.userID;
+		const disableToCreate = !userMatrix.includes( userID )
+
+		this.setState({
+			disableAdd: disableToCreate,
+		});
+		
 	}
 
 	showDrawer = () => {
+
 		this.setState({
 			visible: true,
 			drawerTitle: drawerAddTitle,
@@ -141,8 +160,17 @@ class UserTable extends React.Component {
 	}
 
 	displayDrawerUpdate = (record) => {
+
+		//USER MATRIX
+		const getmatrix = sessionStorage.ACCESS_MATRIX ? JSON.parse(sessionStorage.ACCESS_MATRIX) : null;
+		const getuserID = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+		const userMatrix = getmatrix.settings.update;
+		const userID = getuserID.userID;
+		const disableToUpdate = userMatrix.includes( userID )
+
+		console.log(disableToUpdate)
 		this.setState({
-			visible: true,
+			visible: disableToUpdate,
 			drawerTitle: drawerUpdateTitle,
 			drawerButton: drawerUpdate,
 			patientInfo: record
@@ -166,8 +194,8 @@ class UserTable extends React.Component {
 	}
 
 	render() {
-		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading } = this.state;
-
+		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading, disableAdd } = this.state;
+	
 		return(
 			<div>
 				<div className="settings-user-table-action">
@@ -186,6 +214,7 @@ class UserTable extends React.Component {
 								shape="round" 
 								style={{ marginRight: '15px' }} 
 								onClick={this.showDrawer}
+								disabled= {disableAdd}
 							>
 								<Icon type="plus" />
 								{ addUserButton }

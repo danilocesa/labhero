@@ -8,7 +8,7 @@ import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/userAccount';
 import { getAllUserTypesAPI } from 'services/settings/userType';
-import { LOGGEDIN_USER_DATA } from 'global_config/constant-global'
+import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
 import { 
 	drawerAdd,  
 	labels as gLabels, 
@@ -41,7 +41,7 @@ class UserAccountForm extends React.Component {
 		super(props);
 
 		this.state = {
-			userTypeList: []
+			userTypeList: [],
 		};
 
 		this.formRef = React.createRef();
@@ -64,6 +64,7 @@ class UserAccountForm extends React.Component {
 	handleSubmit = async (values) => {
 		const { drawerButton } = this.props;
 		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+
 	
 		const vData = {
 			userName : values.userName.toUpperCase(),
@@ -126,8 +127,6 @@ class UserAccountForm extends React.Component {
 			callback();
 		}
 	};
-
-
 
 	render() {
 		const { patientInfo, drawerButton } = this.props;
