@@ -10,6 +10,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import Form from './form';
 import UserRightsTable from './table';
 import { moduleTitle, tablePageSize, buttonLabels } from './settings';
+import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
 
 const data = [
   { userTypeID: 1, userType: 'ROOT', dateCreated: '20-SEP-2019' },
@@ -34,6 +35,25 @@ class UserRights extends React.Component {
 		isDisplayUpdateForm: false,
 		pageSize: tablePageSize,
 		userRights: [],
+		createRequest: false,
+		editRequest: false,
+	}
+
+	async componentDidMount(){
+
+		//USER MATRIX
+			const accessMatrix = JSON.parse(sessionStorage.getItem(ACCESS_MATRIX));
+			const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+			const { settings, request } = accessMatrix;
+			
+			const displayAddRequest = settings.create.some(id => id === userData.loginType); 		
+			const displayUpdateRequest = settings.update.some(id => id === userData.loginType);
+
+		this.setState({
+			createRequest: displayAddRequest,
+			editRequest: displayUpdateRequest
+		});
+		
 	}
 
   onClickAdd = () => {
@@ -45,6 +65,9 @@ class UserRights extends React.Component {
   } 
 
   onDblClickTableRow = () => {
+		const { editRequest } = this.state;
+
+		if( editRequest === true )
 		this.setState({ isDisplayUpdateForm: true });
   }
 
@@ -62,19 +85,25 @@ class UserRights extends React.Component {
 			isDisplayAddForm,
 			isDisplayUpdateForm,
 			selectedSectionId,
+			createRequest,
+			editRequest,
 		} = this.state;
 
 		const rightSection = (
 			<>
-				<Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionId === null}
-				>
-					<PlusOutlined /> {buttonLabels.label4}
-				</Button>
+				{ ( createRequest === true )
+									&& (
+										<Button 
+											shape="round"
+											type="primary" 
+											style={{ marginRight: 10 }}
+											onClick={this.onClickAdd}
+											disabled={selectedSectionId === null}
+										>
+											<PlusOutlined /> {buttonLabels.label4}
+										</Button>
+										)
+				}
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
@@ -90,6 +119,7 @@ class UserRights extends React.Component {
 					pageSize={pageSize}
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
+					componentDidMount={this.componentDidMount}
 				/>
 				<Form 
 					type="add"

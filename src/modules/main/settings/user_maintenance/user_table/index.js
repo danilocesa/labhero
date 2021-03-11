@@ -82,8 +82,8 @@ class UserTable extends React.Component {
 			users: [],
 			userMatrix: [],
 			userId: [],
-			disableAdd: '',
-			disableEdit: '',
+			createRequest: false,
+			editRequest: false,
 			pagination: {
 				pageSize: tablePageSize,
 				showSizeChanger: false
@@ -106,14 +106,16 @@ class UserTable extends React.Component {
 		});
 
 		//USER MATRIX
-		const getmatrix = sessionStorage.ACCESS_MATRIX ? JSON.parse(sessionStorage.ACCESS_MATRIX) : null;
-		const getuserID = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
-		const userMatrix = getmatrix.settings.create;
-		const userID = getuserID.userID;
-		const disableToCreate = !userMatrix.includes( userID )
+			const accessMatrix = JSON.parse(sessionStorage.getItem(ACCESS_MATRIX));
+			const userData = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+			const { settings, request } = accessMatrix;
+			
+			const displayAddRequest = settings.create.some(id => id === userData.loginType); 		
+			const displayUpdateRequest = settings.update.some(id => id === userData.loginType);
 
 		this.setState({
-			disableAdd: disableToCreate,
+			createRequest: displayAddRequest,
+			editRequest: displayUpdateRequest
 		});
 		
 	}
@@ -160,21 +162,16 @@ class UserTable extends React.Component {
 	}
 
 	displayDrawerUpdate = (record) => {
+		const { editRequest } = this.state;
 
-		//USER MATRIX
-		const getmatrix = sessionStorage.ACCESS_MATRIX ? JSON.parse(sessionStorage.ACCESS_MATRIX) : null;
-		const getuserID = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
-		const userMatrix = getmatrix.settings.update;
-		const userID = getuserID.userID;
-		const disableToUpdate = userMatrix.includes( userID )
-
-		console.log(disableToUpdate)
-		this.setState({
-			visible: disableToUpdate,
-			drawerTitle: drawerUpdateTitle,
-			drawerButton: drawerUpdate,
-			patientInfo: record
-		});
+		if( editRequest === true )
+			this.setState({
+				visible: true,
+				drawerTitle: drawerUpdateTitle,
+				drawerButton: drawerUpdate,
+				patientInfo: record
+			});
+		
 	}
 
 	handleSelectChange = (value) => {
@@ -194,7 +191,7 @@ class UserTable extends React.Component {
 	}
 
 	render() {
-		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading, disableAdd } = this.state;
+		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading, createRequest } = this.state;
 	
 		return(
 			<div>
@@ -209,16 +206,19 @@ class UserTable extends React.Component {
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
-								disabled= {disableAdd}
-							>
-								<Icon type="plus" />
-								{ addUserButton }
-							</Button>
+							{ ( createRequest === true )
+									&& (
+											<Button 
+											type="primary" 
+											shape="round" 
+											style={{ marginRight: '15px' }} 
+											onClick={this.showDrawer}
+										>
+											<Icon type="plus" />
+											{ addUserButton }
+										</Button>
+										)
+							}
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
