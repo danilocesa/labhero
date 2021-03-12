@@ -1,5 +1,5 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { useRef, useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
 import { CompanyLogo } from 'images';
 import auth from 'services/login/auth';
@@ -8,32 +8,28 @@ import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global
 import URI from 'global_config/uri';
 import { AlphaNumInput } from 'shared_components/pattern_input';
 import Message from 'shared_components/message';
+import { UserAccessContext } from 'context/userAccess';
 import FIELD_RULES from './constants';
 
 import './login.css';
 
-
 const { Header, Content } = Layout;
 
-class Login extends React.Component {
-  constructor(props) {
-		super(props);
-		this.state = {
-			loading: false
-		}
+function Login() {
+	const formRef = useRef();
+	const history = useHistory();
+	const { defineUserAccess } = useContext(UserAccessContext);
+	const [loading, setLoading] = useState(false);
+ 
 
-		this.formRef = React.createRef();
-	}
-
-	
-
-	handleSubmit = async () => {
-		const { username, password } = this.formRef.current.getFieldsValue();
+	async function handleSubmit() {
+		const { getFieldsValue } = formRef.current;
+		const { username, password } = getFieldsValue();
 		
 		try {
-			this.setState({ loading: true });
+			setLoading(true);
 			const response = await login(username, password);
-			this.setState({ loading: false });
+			setLoading(false);
 		
 			const loggedinUserData = {
 				...response.data,
@@ -61,25 +57,26 @@ class Login extends React.Component {
 				},
 			};
 
+			defineUserAccess({ accessMatrix: matrix, userData: loggedinUserData });
+
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
 			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
 
 			Message.success({ message: 'You are now successfully logged in!' });
 
 			auth.authenticate();
-			this.redirectPage();
+			redirectPage();
 		}
 		catch(error) {
-				this.setState({ loading: false });
-				if(error.response && error.response.status === 401)
-					Message.error('Incorrect Username/Password');
-				else
-					Message.error();
+			setLoading(false);
+			if(error.response && error.response.status === 401)
+				Message.error('Incorrect Username/Password');
+			else
+				Message.error();
 		}
-		window.location.reload(false);
 	}
 	
-	redirectPage = () => {
+	function redirectPage() {
 		// Redirect to current session module or to dashboard module
 		let selectedLink = URI.dashboard.link;
 
@@ -89,59 +86,56 @@ class Login extends React.Component {
 				selectedLink = URI[k].link;
 		});
 
-		this.props.history.push(selectedLink); 
+		history.push(selectedLink); 
 	}
 	
 
-  render() {
-		return (
-			<Layout>
-				<Spin spinning={this.state.loading}>
-					<Header style={{ borderBottom: 'none' }}>
-						<Row>
-							<Col span={24} />
-						</Row>
-					</Header>
-					<Content>
-						<div className="login-form">
-							<div style={{ textAlign: 'center' }}>
-								<img src={CompanyLogo} alt="logo" className="login-logo-image" />
-							</div>
-							<Form 
-								onFinish={this.handleSubmit} 
-								ref={this.formRef} 
-								layout="vertical"
-							>
-								<Form.Item 
-									name="username" 
-									label="Username" 
-									className="login-input font12"
-									rules={FIELD_RULES.Username}
-								>
-									<AlphaNumInput maxLength={20} />
-								</Form.Item>
-								<Form.Item 
-									name="password" 
-									label="Password"
-									rules={FIELD_RULES.password}
-								>
-									<Input.Password type="password" maxLength={20} />
-								</Form.Item>
-								<Form.Item style={{ marginBottom: 0 }}>
-									<Button type="primary" htmlType="submit" className="login-form-button" block>
-										SIGN IN TO MY ACCOUNT
-									</Button>
-								</Form.Item>
-							</Form>
+  
+	return (
+		<Layout>
+			<Spin spinning={loading}>
+				<Header style={{ borderBottom: 'none' }}>
+					<Row>
+						<Col span={24} />
+					</Row>
+				</Header>
+				<Content>
+					<div className="login-form">
+						<div style={{ textAlign: 'center' }}>
+							<img src={CompanyLogo} alt="logo" className="login-logo-image" />
 						</div>
-					</Content>
-				</Spin>
-			</Layout>
-		);
-	}
+						<Form 
+							onFinish={handleSubmit} 
+							ref={formRef} 
+							layout="vertical"
+						>
+							<Form.Item 
+								name="username" 
+								label="Username" 
+								className="login-input font12"
+								rules={FIELD_RULES.Username}
+							>
+								<AlphaNumInput maxLength={20} />
+							</Form.Item>
+							<Form.Item 
+								name="password" 
+								label="Password"
+								rules={FIELD_RULES.password}
+							>
+								<Input.Password type="password" maxLength={20} />
+							</Form.Item>
+							<Form.Item style={{ marginBottom: 0 }}>
+								<Button type="primary" htmlType="submit" className="login-form-button" block>
+									SIGN IN TO MY ACCOUNT
+								</Button>
+							</Form.Item>
+						</Form>
+					</div>
+				</Content>
+			</Spin>
+		</Layout>
+	);
 }
 
 
-
-
-export default withRouter(Login);
+export default Login;
