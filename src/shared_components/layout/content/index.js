@@ -1,10 +1,8 @@
-// LIBRARY
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Layout } from 'antd';
 import { Route, Switch, withRouter } from 'react-router-dom';
 
-// CUSTOM MODULES
+import { UserAccessContext } from 'context/userAccess';
 import Login from 'modules/login';
 import DashboardPage from 'modules/main/dashboard';
 import CreateRequestPage from 'modules/main/lab_request/create';
@@ -36,32 +34,44 @@ const wrapperStyle = {
   padding: 24,
 };
 
-const Content = () => (
+function Content() {
+	const { userAccess } = useContext(UserAccessContext);
+
+	// const PrivilegeRoute = ({ hasAccess, path, component }) => {
+	// 	return (
+	// 		hasAccess 
+	// 		? <PrivateRoute path={path} component={component} />
+	// 		: <Route component={ErrorPage} />
+	// 	)
+	// }
+
+	return (
 		<Antcontent style={wrapperStyle}>
 			<Switch>
 				<Route exact path="/" component={DashboardPage} />
-				{/* Login */}
 				<Route path="/login" component={Login} />
 				<Route path="/dashboard" component={DashboardPage} />
-				{/* Lab request route */}
-				<PrivateRoute path="/request/create" component={CreateRequestPage} />
-				<PrivateRoute path="/request/edit" component={EditRequestPage} />
-				<PrivateRoute path="/request/view" component={ViewRequestPage} />
-				{/* Search lab result route */}
+				<PrivateRoute 
+					path="/request/create" 
+					component={userAccess.request.create ? CreateRequestPage : ErrorPage}
+				/>
+				<PrivateRoute 
+					path="/request/edit" 
+					component={userAccess.request.update ? EditRequestPage: ErrorPage} 
+				/>
+				<PrivateRoute 
+					path="/request/view" 
+					component={userAccess.request.view ? ViewRequestPage : ErrorPage} 
+				/> 
 				<PrivateRoute path="/lab/result/edit" component={EditLabResult} />
 				<PrivateRoute path="/lab/result/print" component={PrintLabResult} />
 				<PrivateRoute path="/patientinfo" component={PatientInfo} />
 				<PrivateRoute path="/iresults" component={Iresults} />
-				{/* Phlebo route */}
 				<PrivateRoute path="/phlebo/result" component={PhleboSearch} />
 				<PrivateRoute path="/phlebo/patient" component={PhleboPatientResult} />
-				{/* Search patients route */}
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
-				{/* Settings route */}
 				<PrivateRoute path="/settings" component={Settings} />
-				{/* Inventory route */}
 				<PrivateRoute path="/inventory" component={Inventory} />
-				{/* 404 page route */}
 				<PrivateRoute path="/bloodbank" component={BloodBank} />
 				<Route exact path="/cashier" component={Cashier} />
 				<Route path="/cashier/receipt" component={Receipt} />
@@ -71,9 +81,8 @@ const Content = () => (
 				<Route component={ErrorPage} />
 			</Switch>
 		</Antcontent>
-);
-
-
+	);
+}
 
 
 export default withRouter(Content);

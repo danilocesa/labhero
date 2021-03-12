@@ -97,8 +97,6 @@ class DashboardPage extends React.Component {
   render() {
     const { user, kpis, sections } = this.state;
     
-    console.log(kpis)
-
     const MetricList = kpis.map((item, index) => (
       // eslint-disable-next-line react/no-array-index-key
       <Metrics 
