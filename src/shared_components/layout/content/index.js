@@ -37,14 +37,6 @@ const wrapperStyle = {
 function Content() {
 	const { userAccess } = useContext(UserAccessContext);
 
-	// const PrivilegeRoute = ({ hasAccess, path, component }) => {
-	// 	return (
-	// 		hasAccess 
-	// 		? <PrivateRoute path={path} component={component} />
-	// 		: <Route component={ErrorPage} />
-	// 	)
-	// }
-
 	return (
 		<Antcontent style={wrapperStyle}>
 			<Switch>
