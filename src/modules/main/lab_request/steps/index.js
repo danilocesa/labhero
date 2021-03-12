@@ -33,7 +33,6 @@ class StepsPage extends React.Component {
 
 		this.setState({ userAccess });
 
-		console.log(userAccess);
 	}
 
 	render() {
