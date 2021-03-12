@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
+import { UserAccessContext } from 'context/userAccess';
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 import { getAllRangeClass, createRangeClass, updateRangeClass } from 'services/settings/ExamItemRangeClass';
@@ -191,15 +192,19 @@ class LabelRangeDrawer extends React.Component{
 					<Row style={{ marginTop: 50 }}>
 						<Col span={24} style={{ textAlign: 'right' }}>
 							<>
-								<Button 
-									shape="round"
-									type="primary" 
-									style={{ marginRight: 10 }}
-									onClick={this.onClickAdd}
-									disabled={selectedSectionId == null}
-								>
-									<Icon type="plus" /> {buttonNames.addRangeClass}
-								</Button>
+								<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+										<Button 
+											shape="round"
+											type="primary" 
+											style={{ marginRight: 10 }}
+											onClick={this.onClickAdd}
+											disabled={selectedSectionId == null}
+										>
+											<Icon type="plus" /> {buttonNames.addRangeClass}
+										</Button>
+									)}
+								</UserAccessContext.Consumer>
 								<TablePager handleChange={this.onChangePager} />
 							</>
 						</Col>

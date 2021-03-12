@@ -52,9 +52,9 @@ function MainLayout() {
       },
       settings: {
         view: settings.view.some(id => id === userData.loginType),
-        create: false,
-        update: false,
-        print: false,
+        create: settings.create.some(id => id === userData.loginType),
+        update: settings.update.some(id => id === userData.loginType),
+        print: settings.print.some(id => id === userData.loginType),
       }
     });
   }
@@ -70,7 +70,6 @@ function MainLayout() {
       defineUserAccess({ accessMatrix, userData });
     }
 
-    console.log('useEffect in layout used');
 	}, []);
  
   return (
