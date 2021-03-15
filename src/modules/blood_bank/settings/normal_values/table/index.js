@@ -4,7 +4,7 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
-import fetchbloodgroupitems from 'services/blood_bank/blood_group';
+// import fetchbloodTests from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
@@ -21,40 +21,43 @@ const { Search } = Input;
 const columns = [
 	{
 		title: 'ID',
+		dataIndex: 'id',
+		key: 'id',
 	},
 	{
-		title: 'NAME',
+		title: 'BLOOD TEST',
+		dataIndex: 'blood_test',
+		key: 'blood_test',
 	},
 	{
-		title: 'CONV LOW',
+		title: 'DESCRIPTION',
+		dataIndex: 'blood_desc',
+		key: 'blood_desc',
 	},
 	{
-		title: 'CONV HIGH',
-	},
-	{
-		title: 'CONV UNIT',
-	},
-	{
-		title: 'S1 LOW',
-	},
-	{
-		title: 'S1 LOW',
-	},
-	{
-		title: 'S1 LOW',
+		title: 'NORMAL VALUES',
+		dataIndex: 'normal_values',
+		key: 'normal_values',
 	},
 ];
 
-class BloodGroupTable extends React.Component {
+class BloodTestTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bloodgroupItem: [],
+			bloodTest: [
+				{
+					id: '001',
+					blood_test: 'HEPATITIS B',
+					blood_desc: 'SURFACE ANTIGEN (HBSAG)',
+					normal_values: 'LESS THAN 5 MIU',
+				},
+			],
 			actionType:'add',
 			drawerTitle: '',
 			loading:false,
 			drawerButton: '',
-			selectedBloodGroup:{},
+			selectedBloodTest:{},
 			pagination: {
 				pageSize: 0,
 			},
@@ -62,17 +65,17 @@ class BloodGroupTable extends React.Component {
 		}
 	}
 
-	async componentDidMount() {
-		this.setState({loading:true});
-		const response = await fetchbloodgroupitems();
-		console.log("Data:",response)
-		this.setState({ 
-			bloodgroupItem: response,
-			usersRef:response,
-			pagination: response.length,
-			loading:false
-		});
-	}
+	// async componentDidMount() {
+	// 	this.setState({loading:true});
+	// 	const response = await fetchbloodTests();
+	// 	console.log("Data:",response)
+	// 	this.setState({ 
+	// 		bloodTest: response,
+	// 		usersRef:response,
+	// 		pagination: response.length,
+	// 		loading:false
+	// 	});
+	// }
 
 	onClose = () => {
 		this.setState({
@@ -84,20 +87,20 @@ class BloodGroupTable extends React.Component {
 	showDrawer = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "ADD BLOOD GROUP",
+			drawerTitle: "ADD BLOOD TEST",
 			drawerButton: 'ADD',
 			actionType : 'add',
-			selectedBloodGroup: record,
+			selectedBloodTest: record,
 		});
 	};
 
 	displayDrawerUpdate = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "UPDATE BLOOD GROUP",
+			drawerTitle: "UPDATE BLOOD TEST",
 			drawerButton: 'UPDATE',
 			actionType:'update',
-			selectedBloodGroup:record
+			selectedBloodTest:record
 		});
 	}
 
@@ -112,12 +115,12 @@ class BloodGroupTable extends React.Component {
         this.containsString(blood_group, searchedVal)
       );
     });
-		this.setState({ bloodgroupItem: filtered });
+		this.setState({ bloodTest: filtered });
   };
 
   onChangeSearch = (event) => {
     const { usersRef } = this.state;
-    if (event.target.value === "") this.setState({ bloodgroupItem: usersRef });
+    if (event.target.value === "") this.setState({ bloodTest: usersRef });
   };
 
 	// Private Function
@@ -141,9 +144,9 @@ class BloodGroupTable extends React.Component {
 			patientInfo, 
 			visible,
 			drawerTitle,
-			selectedBloodGroup, 
+			selectedBloodTest, 
 			actionType,
-			bloodgroupItem,
+			bloodTest,
 			loading ,
 			pagination1
 		} = this.state;
@@ -169,7 +172,7 @@ class BloodGroupTable extends React.Component {
 								style={{ marginRight: '15px' }} 
 								onClick={this.showDrawer}
 							>
-								<Icon type="plus" /> ADD BLOOD GROUP
+								<Icon type="plus" /> ADD BLOOD TEST
 								
 							</Button>
 							<TablePager handleChange={this.handleSelectChange} />
@@ -184,8 +187,8 @@ class BloodGroupTable extends React.Component {
 					? 
 						(		
 							<Table 
-								loading={loading}
-								dataSource={bloodgroupItem}
+								// loading={loading}
+								dataSource={bloodTest}
 								//size={tableSize}
 								//scroll={{ y: tableYScroll }}
 								columns={columns} 
@@ -203,8 +206,8 @@ class BloodGroupTable extends React.Component {
 					: 
 						(
 							<Table 
-								loading={loading}
-								dataSource={bloodgroupItem}
+								// loading={loading}
+								dataSource={bloodTest}
 								//size={tableSize}
 								scroll={{ y: tableYScroll }}
 								columns={columns} 
@@ -230,7 +233,7 @@ class BloodGroupTable extends React.Component {
 						destroyOnClose
 					>
 						<UserAccountForm
-							selectedBloodGroup={selectedBloodGroup} 
+							selectedBloodTest={selectedBloodTest} 
 							actionType={actionType}
 							drawerButton={drawerButton} 
 							patientInfo={patientInfo}
@@ -244,4 +247,4 @@ class BloodGroupTable extends React.Component {
 }
 
 
-export default BloodGroupTable;	
+export default BloodTestTable;	

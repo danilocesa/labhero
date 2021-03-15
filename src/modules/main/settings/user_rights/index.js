@@ -36,6 +36,7 @@ class UserRights extends React.Component {
 		userRights: [],
 	}
 
+
   onClickAdd = () => {
     this.setState({ isDisplayAddForm: true });
   }
@@ -90,17 +91,13 @@ class UserRights extends React.Component {
 					pageSize={pageSize}
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
+					componentDidMount={this.componentDidMount}
 				/>
 				<Form 
 					type="add"
           visible={isDisplayAddForm}
           onClose={this.onCloseForm}
 				/>	
-				<Form 
-					type="update"
-					visible={isDisplayUpdateForm}
-          onClose={this.onCloseForm}
-				/>
 			</div>
 		);
 	}

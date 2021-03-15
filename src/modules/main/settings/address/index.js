@@ -7,6 +7,7 @@ import PageTitle from 'shared_components/page_title';
 import TablePager from 'shared_components/table_pager';
 import CityList from './city'
 import ProvinceList from './province'
+import { UserAccessContext } from 'context/userAccess';
 
 
 const { Option } = Select;
@@ -255,14 +256,18 @@ class Address extends React.Component {
 								/>
 							</Col>
 							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> {selectedtitle.title}
-								</Button>
+								<UserAccessContext.Consumer>
+										{value => value.userAccess.settings.create && (
+											<Button 
+											type="primary" 
+											shape="round" 
+											style={{ marginRight: '15px' }} 
+											onClick={this.showDrawer}
+										>
+											<Icon type="plus" /> {selectedtitle.title}
+										</Button>
+										)}
+									</UserAccessContext.Consumer>
 								<TablePager handleChange={this.handleSelectChange} />
 							</Col>
 						</Row>
@@ -284,13 +289,15 @@ class Address extends React.Component {
 							}
 						}}
 					/>	
-						<Drawer
-								title={drawerTitle}
-								width="30%"
-								visible={visible}
-								onClose={this.onClose}
-								destroyOnClose
-						> 
+						<UserAccessContext.Consumer>
+							{value => value.userAccess.settings.update && (
+								<Drawer
+									title={drawerTitle}
+									width="30%"
+									visible={visible}
+									onClose={this.onClose}
+									destroyOnClose
+								> 
 							<Form name="basic" initialValues={{ remember: true }}>
 									<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
 										<Input />
@@ -327,6 +334,8 @@ class Address extends React.Component {
 									</Button>
 							</section>
 						</Drawer>	
+							)}
+					</UserAccessContext.Consumer>
 			</div>
 		)
 	}

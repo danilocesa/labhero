@@ -1,25 +1,31 @@
 // LIBRARY
 import React from 'react'
-import {  Switch, Form, Input, Button,InputNumber } from 'antd'
+// @ts-ignore
+import {  Switch, Form, Input, Button,InputNumber  } from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
+// @ts-ignore
 import HttpCodeMessage from 'shared_components/message_http_status'
+// @ts-ignore
 import { createData, updateData } from 'services/blood_bank/question_type';
+// @ts-ignore
 import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
 
 // CSS
 import './form.css';
 
+// @ts-ignore
 const { TextArea } = Input;
 const layout = {
 	labelCol: { span: 8 },
 	wrapperCol: { span: 16 },
   };
 
-class BloodTypesForm extends React.Component {
+class BloodTestsForm extends React.Component {
 
     
 	render() {
+		// @ts-ignore
 		const { drawerButton,selectedTypes } = this.props;
 		console.log("selectedTypes",selectedTypes)
 			return(
@@ -46,21 +52,28 @@ class BloodTypesForm extends React.Component {
 							}
 							<div className="form-section">
 							<Form.Item 
-								name='ques_type_id'
+								name='id'
 							>
 									<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 							</Form.Item>
 							<Form.Item	 
-								label="QUESTION ORDER" 
-								name='ques_order'
-								style={{marginTop:-15}}
+								label="BLOOD TEST" 
+								name='blood_test'
+								style={{marginTop:10}}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />		
 							</Form.Item>
 							<Form.Item 
-								label="QUESTION TYPE NAME" 
-								name='ques_type_name' 
-								style={{marginTop:-25}}
+								label="DESCRIPTION" 
+								name='blood_desc' 
+								style={{marginTop: 10}}
+							>
+									<TextArea  style={{ textTransform: 'uppercase'}} />
+							</Form.Item>
+							<Form.Item 
+								label="NORMAL VALUE" 
+								name='normal_value' 
+								style={{marginTop: 10}}
 							>
 									<Input style={{ textTransform: 'uppercase'}} />
 							</Form.Item>
@@ -70,7 +83,7 @@ class BloodTypesForm extends React.Component {
 						CANCEL
 					</Button>
 					<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-						ADD
+							{drawerButton}
 					</Button>
 				</section>
 						</Form>
@@ -79,7 +92,7 @@ class BloodTypesForm extends React.Component {
 	}
 }
 
-BloodTypesForm.propTypes = {
+BloodTestsForm.propTypes = {
 	drawerButton: PropTypes.string.isRequired,
 	onClose: PropTypes.func,
 	actionType: PropTypes.string.isRequired,
@@ -88,4 +101,4 @@ BloodTypesForm.propTypes = {
 	form: PropTypes.object
 }
 
-export default withRouter(BloodTypesForm);
+export default withRouter(BloodTestsForm);

@@ -3,6 +3,8 @@
 import React from 'react';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
+import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
+import { UserAccessContext } from 'context/userAccess';
 
 // CUSTOM
 import { getUserAccountsAPI } from 'services/settings/userAccount';
@@ -79,6 +81,10 @@ class UserTable extends React.Component {
 			patientInfo: [], 
 			usersRef: [],
 			users: [],
+			userMatrix: [],
+			userId: [],
+			createRequest: false,
+			editRequest: false,
 			pagination: {
 				pageSize: tablePageSize,
 				showSizeChanger: false
@@ -87,10 +93,11 @@ class UserTable extends React.Component {
 		}
 	}
 	
+	
 	async componentDidMount(){
+
 		this.setState({loading:true});
 		const userAccounts = await getUserAccountsAPI();
-		// userData.push({})
 
 		this.setState({
 			pagination: userAccounts.data.length,
@@ -98,9 +105,11 @@ class UserTable extends React.Component {
 			usersRef: userAccounts.data,
 			loading:false
 		});
+		
 	}
 
 	showDrawer = () => {
+
 		this.setState({
 			visible: true,
 			drawerTitle: drawerAddTitle,
@@ -141,12 +150,14 @@ class UserTable extends React.Component {
 	}
 
 	displayDrawerUpdate = (record) => {
-		this.setState({
-			visible: true,
-			drawerTitle: drawerUpdateTitle,
-			drawerButton: drawerUpdate,
-			patientInfo: record
-		});
+
+			this.setState({
+				visible: true,
+				drawerTitle: drawerUpdateTitle,
+				drawerButton: drawerUpdate,
+				patientInfo: record
+			});
+		
 	}
 
 	handleSelectChange = (value) => {
@@ -167,7 +178,7 @@ class UserTable extends React.Component {
 
 	render() {
 		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading } = this.state;
-
+	
 		return(
 			<div>
 				<div className="settings-user-table-action">
@@ -181,15 +192,21 @@ class UserTable extends React.Component {
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
-							>
-								<Icon type="plus" />
-								{ addUserButton }
-							</Button>
+							{ 
+								<UserAccessContext.Consumer>
+								{value => value.userAccess.settings.create && (
+									<Button 
+									type="primary" 
+									shape="round" 
+									style={{ marginRight: '15px' }} 
+									onClick={this.showDrawer}
+								>
+									<Icon type="plus" />
+									{ addUserButton }
+								</Button>
+								)}
+							</UserAccessContext.Consumer>
+							}
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
@@ -219,19 +236,23 @@ class UserTable extends React.Component {
 				</div>    
 
 				{/* DRAWER */}
-				<Drawer
-					title={drawerTitle}
-					width="85%"
-					visible={visible}
-					onClose={this.onClose}
-					destroyOnClose
-				>
-					<UserAccountForm
-						drawerButton={drawerButton} 
-						patientInfo={patientInfo}
+				<UserAccessContext.Consumer>
+					{value => value.userAccess.settings.update && (
+						<Drawer
+						title={drawerTitle}
+						width="85%"
+						visible={visible}
 						onClose={this.onClose}
-					/>
-				</Drawer>
+						destroyOnClose
+					>
+						<UserAccountForm
+							drawerButton={drawerButton} 
+							patientInfo={patientInfo}
+							onClose={this.onClose}
+						/>
+					</Drawer>
+					)}
+				</UserAccessContext.Consumer>
 			</div>
 		)
 	}
