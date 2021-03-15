@@ -24,7 +24,7 @@ class AllTable extends React.Component {
 
   render() {  
 		const { isLoading, pageSize } = this.state;
-		const { labResults, onClickTableRow, onClickPrint, userAccess } = this.props;
+		const { labResults, onClickTableRow, onClickPrint} = this.props;
 	 
     return (
 	    <div>
@@ -45,7 +45,6 @@ class AllTable extends React.Component {
 							pageSize={pageSize}
 							onClickTableRow={onClickTableRow}
 							onClickPrint={onClickPrint}
-							userAccess={userAccess}
 						/>
 					</Col>
 		    </Row>
@@ -58,7 +57,6 @@ AllTable.propTypes = {
 	labResults: PropTypes.array.isRequired,
 	onClickTableRow: PropTypes.func.isRequired,
 	onClickPrint: PropTypes.func.isRequired,
-	userAccess: PropTypes.object.isRequired
 };
 
 export default AllTable;

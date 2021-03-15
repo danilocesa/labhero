@@ -50,14 +50,13 @@ const columns = [
 
 class MainTable extends React.Component {
 	expandedRowRender = (record) => {
-		const { onClickTableRow, onClickPrint, userAccess } = this.props;
+		const { onClickTableRow, onClickPrint } = this.props;
 		
 		return (
 			<ExpandedTable 
 				expandedData={record} 
 				onClickTableRow={onClickTableRow}
 				onClickPrint={onClickPrint}
-				userAccess={userAccess}
 			/>
 		);
 	};
@@ -88,7 +87,6 @@ MainTable.propTypes = {
 	pageSize: PropTypes.number.isRequired,
 	onClickTableRow: PropTypes.func.isRequired,
 	onClickPrint: PropTypes.func.isRequired,
-	userAccess: PropTypes.object.isRequired
 };
 
 export default MainTable;

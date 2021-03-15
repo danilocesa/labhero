@@ -62,7 +62,10 @@ function Content() {
 				<PrivateRoute path="/phlebo/result" component={PhleboSearch} />
 				<PrivateRoute path="/phlebo/patient" component={PhleboPatientResult} />
 				<PrivateRoute path="/patient/search" component={SearchPatient} />
-				<PrivateRoute path="/settings" component={Settings} />
+				<PrivateRoute 
+					path="/settings" 
+					component={userAccess.settings.view ? Settings : ErrorPage} 
+				/>
 				<PrivateRoute path="/inventory" component={Inventory} />
 				<PrivateRoute path="/bloodbank" component={BloodBank} />
 				<Route exact path="/cashier" component={Cashier} />

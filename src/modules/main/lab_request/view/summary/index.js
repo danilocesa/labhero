@@ -57,7 +57,6 @@ function SummaryPage() {
 		
     setInitialValues();
 
-    console.log('useEeffect has run')
   }, [location.state]);
 
 
@@ -78,15 +77,11 @@ function SummaryPage() {
         });
       })
 
-
-
       setExams(newExams);
     }
     
     if(otherInfo.requestID) {
       getExams();
-
-      console.log('getExams has run')
     }
   }, [otherInfo.requestID]);
 

@@ -5,6 +5,8 @@ import React from 'react';
 import { Row, Col, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchLabResultExamItems } from 'services/lab_result/result';
+import { fetchRequestSpecimenToProcess } from 'services/phlebo/specimenTracking';
+import { UserAccessContext } from 'context/userAccess';
 
 // CUSTOM MODULES
 import PrintLabResult from 'modules/main/lab_result/print_result';
@@ -27,6 +29,7 @@ class EditResult extends React.Component {
 			isLoading: false,
 			results: {},
 			formatedResults: [],
+			patientOtherInfo: {},
 			isDisplayPrint: false,
 			isResultsTouched: false,
 		};
@@ -36,17 +39,42 @@ class EditResult extends React.Component {
 	}
 
 	componentDidMount() {
-		const { examDetails } = this.props;
-
-		
+		const { examDetails, patientInfo } = this.props;
 
 		this.setState({ isLoading: true }, async () => {
 			const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
+			const patientSpecimens = await fetchRequestSpecimenToProcess(patientInfo.requestID);
 			const formatedResults = this.recontructExamItems(results.resultValues);
+
+			const { 
+				hospitalRequestID, 
+				physician, 
+				bed, 
+				visit, 
+				chargeSlip, 
+				officialReceipt, 
+				comment, 
+				location  
+			} = patientSpecimens;
+			
+			const patientOtherInfo = {
+				hospitalID: 	hospitalRequestID || '-',
+				physician: 		physician
+											? `${physician.namePrefix} ${physician.givenName} ${physician.lastName}`.toUpperCase() 
+											: '-',
+				bed: 					bed || '-',
+				visit: 				visit || '-',
+				chargeSlip: 	chargeSlip || '-',
+				receipt:      officialReceipt || '-',
+				comment:      comment || '-',
+				location: 		location !== undefined ? location.name.toString().toUpperCase() : '-'
+			};
+
 
 			this.setState({ 
 				results, 
 				formatedResults,
+				patientOtherInfo,
 				isLoading: false 
 			});
 		});
@@ -139,13 +167,16 @@ class EditResult extends React.Component {
 	}
 
 	render() {
-		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched } = this.state;
-		const { patientInfo, examDetails, userAccess } = this.props;
+		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched, patientOtherInfo } = this.state;
+		const { patientInfo, examDetails } = this.props;
 
     return (
 	    <Row>
 		    <Col xs={24} sm={7} md={7} lg={6} xl={6}>
-			    <LabRequestDetails patientInfo={patientInfo} />
+			    <LabRequestDetails 
+						patientInfo={patientInfo}
+						patientOtherInfo={patientOtherInfo} 
+					/>
 		    </Col>
 		    <Col xs={24} sm={17} md={17} lg={18} xl={18} className="patient-info-content">
 					<PatientName 
@@ -170,18 +201,19 @@ class EditResult extends React.Component {
 						resultStatus={results.status || ''}
 						onChangeResult={this.onChangeResult}
 					/>
-					{
-						userAccess.update && 
-						(
-							<Actions 
-								getLabResultFormValues={this.getFormValues} 
-								onSaveSuccess={this.onSaveSuccess}
-								onPrint={this.onPrint}
-								resultStatus={results.status || ''}
-								isResultsTouched={isResultsTouched}
-							/>
-						)
-					}
+					<UserAccessContext.Consumer>
+						{({ userAccess }) => userAccess.result.update && 
+							(
+								<Actions 
+									getLabResultFormValues={this.getFormValues} 
+									onSaveSuccess={this.onSaveSuccess}
+									onPrint={this.onPrint}
+									resultStatus={results.status || ''}
+									isResultsTouched={isResultsTouched}
+								/>
+							)
+						}
+					</UserAccessContext.Consumer>
 					<PrintLabResult 
 						sampleID={examDetails.sampleSpecimenID || null}
 						visible={isDisplayPrint}
@@ -202,7 +234,6 @@ EditResult.propTypes = {
 		sampleSpecimenID: PropTypes.string,
 		specimenStatus: PropTypes.string
 	}).isRequired,
-	userAccess: PropTypes.object.isRequired
 };
 
 export default EditResult;

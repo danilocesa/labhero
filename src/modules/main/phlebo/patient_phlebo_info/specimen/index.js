@@ -92,21 +92,31 @@ class SpecimenList extends React.Component {
 	}
 
 	componentDidMount(){
-		const { patientInfo } = this.props;
-		this.setState({ isFetchingData: true }, async () => {
-			const patientSpecimens = await fetchRequestSpecimenToProcess(patientInfo.requestID);
+		// const { patientInfo } = this.props;
+		// this.setState({ isFetchingData: true }, async () => {
+		// 	const patientSpecimens = await fetchRequestSpecimenToProcess(patientInfo.requestID);
 
-			this.setState({ 
-				requestID: patientSpecimens.requestID,
-				examRequests: patientSpecimens.examRequests,
-				isFetchingData: false
-			});
-		});
+		// 	this.setState({ 
+		// 		requestID: patientSpecimens.requestID,
+		// 		examRequests: patientSpecimens.examRequests,
+		// 		isFetchingData: false
+		// 	});
+		// });
+	}
+
+	componentDidUpdate(prevProps) {
+		const { patientSpecimens } = this.props;
+
+		if(patientSpecimens) {
+			if(prevProps.patientSpecimens.requestID !== patientSpecimens.requestID) {
+				this.setState({ examRequests: patientSpecimens.examRequests });
+			}
+		}
 	}
 
 	onClickExtract = (sectionID, specimenID, index) => {
-		const { requestID } = this.state;
-		const { patientInfo } = this.props;
+		const { patientInfo, patientSpecimens } = this.props;
+		const { requestID } = patientSpecimens;
 		const { userID } = JSON.parse(sessionStorage.getItem("LOGGEDIN_USER_DATA"));
 		
 		this.setState((state) => {
@@ -176,11 +186,13 @@ class SpecimenList extends React.Component {
 }
 
 SpecimenList.propTypes = {
-	patientInfo: PropTypes.object
+	patientInfo: PropTypes.object,
+	patientSpecimens: PropTypes.object
 };
 
 SpecimenList.defaultProps = {
-	patientInfo() { return null; }
+	patientInfo() { return null; },
+	patientSpecimens: { requestID: null }
 }
 
 export default SpecimenList;

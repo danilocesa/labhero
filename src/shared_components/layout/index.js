@@ -35,20 +35,20 @@ function MainLayout() {
 	});
 
   function defineUserAccess({ accessMatrix, userData }) {
-    const { settings, request } = accessMatrix;
+    const { settings, request, result } = accessMatrix;
 
     setUserAccess({ 
       request: {
         view: request.view.some(id => id === userData.loginType),
         create: request.create.some(id => id === userData.loginType),
         update: request.update.some(id => id === userData.loginType),
-        print: false,
+        print: request.print.some(id => id === userData.loginType),
       },
       result: {
-        view: false,
-        create: false,
-        update: false,
-        print: false,
+        view: result.view.some(id => id === userData.loginType),
+        create: result.create.some(id => id === userData.loginType),
+        update: result.update.some(id => id === userData.loginType),
+        print: result.print.some(id => id === userData.loginType),
       },
       settings: {
         view: settings.view.some(id => id === userData.loginType),

@@ -7,11 +7,9 @@ import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusOutlined } from '@ant-design/icons';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import Form from './form';
 import UserRightsTable from './table';
-import { moduleTitle, tablePageSize, buttonLabels } from './settings';
-import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
-import { UserAccessContext } from 'context/userAccess';
 
 const data = [
   { userTypeID: 1, userType: 'ROOT', dateCreated: '20-SEP-2019' },
@@ -34,7 +32,7 @@ class UserRights extends React.Component {
     isLoading: false,
 		isDisplayAddForm: false,
 		isDisplayUpdateForm: false,
-		pageSize: tablePageSize,
+		pageSize: GLOBAL_TABLE_PAGE_SIZE,
 		userRights: [],
 	}
 
@@ -69,21 +67,15 @@ class UserRights extends React.Component {
 
 		const rightSection = (
 			<>
-				{ 
-					<UserAccessContext.Consumer>
-						{value => value.userAccess.settings.create && (
-							<Button 
-							shape="round"
-							type="primary" 
-							style={{ marginRight: 10 }}
-							onClick={this.onClickAdd}
-							disabled={selectedSectionId === null}
-						>
-							<PlusOutlined /> {buttonLabels.label4}
-						</Button>
-						)}
-				</UserAccessContext.Consumer>
-				}
+				<Button 
+					shape="round"
+					type="primary" 
+					style={{ marginRight: 10 }}
+					onClick={this.onClickAdd}
+					disabled={selectedSectionId === null}
+				>
+					<PlusOutlined /> ADD USER TYPE
+				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
@@ -91,7 +83,7 @@ class UserRights extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle={moduleTitle} />
+					<PageTitle pageTitle="USER TYPES" />
 				</section>
 				<ActionSection rightContent={rightSection} />
 				<UserRightsTable 
@@ -106,15 +98,6 @@ class UserRights extends React.Component {
           visible={isDisplayAddForm}
           onClose={this.onCloseForm}
 				/>	
-				<UserAccessContext.Consumer>
-					{value => value.userAccess.settings.update && (
-						<Form 
-						type="update"
-						visible={isDisplayUpdateForm}
-						onClose={this.onCloseForm}
-					/>
-					)}
-				</UserAccessContext.Consumer>
 			</div>
 		);
 	}
