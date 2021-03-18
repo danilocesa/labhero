@@ -93,7 +93,7 @@ class SearchPatientTable extends React.Component {
 						columns={columns} 
 						dataSource={data} 
 						scroll={{ y: 260 }}
-						rowKey={record => record.patientID}
+						rowKey={record => record.key}
 						onRow={(record) => {
 							return { 
 								onDoubleClick: () => { handleDoubleClick(record) }
@@ -116,7 +116,7 @@ SearchPatientTable.propTypes = {
 		dateOfBirth: PropTypes.string.isRequired,
 		sex: PropTypes.string.isRequired,
 		contactNo: PropTypes.string,
-		emailAdd: PropTypes.string
+		emailAdd: PropTypes.string,
 	})).isRequired,
 	pageSize: PropTypes.number.isRequired,
 	loading: PropTypes.bool.isRequired,

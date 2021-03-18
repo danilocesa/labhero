@@ -2,9 +2,107 @@
 // LIBRARY
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, Form, Button } from 'antd';
+import { Row, Col, Drawer, Form, Button, Checkbox, Collapse } from 'antd';
 import { RegexInput } from 'shared_components/pattern_input';
+import { CaretRightOutlined } from '@ant-design/icons';
 import { FIELD_RULES } from './constants';
+
+import './index.css';
+
+const { Panel } = Collapse;
+
+const modules = [
+  {
+    label: 'DASHBOARD',
+    name: 'dashboard',
+    view: true,
+    create: false,
+    edit: false,
+    print: false,
+  },
+  {
+    label: 'REQUEST',
+    name: 'request',
+    view: true,
+    create: true,
+    edit: true,
+    print: true,
+  },
+  {
+    label: 'PLHEBO',
+    name: 'plhebo',
+    view: true,
+    create: false,
+    edit: false,
+    print: true,
+  },
+  {
+    label: 'RESULT',
+    name: 'result',
+    view: true,
+    create: true,
+    edit: true,
+    print: true,
+  },
+  {
+    label: 'PATIENT DEMOGRAPHICS',
+    name: 'demographics',
+    view: true,
+    create: false,
+    edit: true,
+    print: false,
+  },
+  {
+    label: 'SETTINGS',
+    name: 'settings',
+    view: true,
+    create: true,
+    edit: true,
+    print: true,
+  },
+];
+
+function ModuleForm () {
+  return (
+    <Collapse 
+      bordered={false}
+      expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
+      
+      className="site-collapse-custom-collapse"
+    >
+      {
+        modules.map((item, index) => (
+          <Panel header={item.label} showArrow={false} key={index}>
+            <div>
+              <Row gutter={12}>
+                <Col span={6}>
+                  <Form.Item className="module-action-cb">
+                    <Checkbox disabled={!item.view}>View</Checkbox>
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item className="module-action-cb">
+                    <Checkbox disabled={!item.create}>Create</Checkbox>
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item className="module-action-cb">
+                    <Checkbox disabled={!item.edit}>Edit</Checkbox>
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item className="module-action-cb">
+                    <Checkbox disabled={!item.print}>Print</Checkbox>
+                  </Form.Item>
+                </Col>
+              </Row>
+            </div>
+          </Panel>
+        ))
+      }
+    </Collapse>
+  );
+};
 
 
 function AddForm({ onClose, visible, type }) {
@@ -14,7 +112,6 @@ function AddForm({ onClose, visible, type }) {
 	function onSubmit() {
 	
 	}
-
 
   return (
     <Drawer
@@ -50,6 +147,7 @@ function AddForm({ onClose, visible, type }) {
               maxLength={200} 
             />
           </Form.Item>  
+          <ModuleForm />
         </section>
         <section className="drawerFooter">
           <div>
