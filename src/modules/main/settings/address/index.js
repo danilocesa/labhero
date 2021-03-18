@@ -1,18 +1,23 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Select, Table,Row, Drawer, Col,Icon, Button, Input,Form } from 'antd'; 
+import { Select, Table,Row, Drawer, Col,Icon, Button, Input,Form, Switch } from 'antd'; 
 import { withRouter } from 'react-router-dom';
 import PageTitle from 'shared_components/page_title';
 import TablePager from 'shared_components/table_pager';
 import CityList from './city'
 import ProvinceList from './province'
 import { UserAccessContext } from 'context/userAccess';
+import Title from 'antd/lib/skeleton/Title';
 
 
 const { Option } = Select;
 const { Search } = Input;
 
+const layout = {
+	labelCol: { span: 8 },
+	wrapperCol: { span: 16 },
+  };
 
 const provinceColumns = [
 	{
@@ -229,25 +234,30 @@ class Address extends React.Component {
 		// eslint-disable-next-line no-nested-ternary
 		const selectedtitle = title === "Province" 
 				? provincetitle : (addressType === "City" 
-				? citytitle : barangaytitle);
+				? citytitle : barangaytitle);	
 
 		return(
 			<div>
-				<section style={{ textAlign: 'center', marginTop: 5 }}>
-					<PageTitle pageTitle="ADDRESS" />
-						<Row style={{ marginTop: 30 }}>
-								<Select
-										style={{ width: 300 }}
-										onChange={this.onAddressChange}
-								>
-										<Option value="Barangay">Barangay</Option>
-										<Option value="Province">Province</Option>
-										<Option value="City">City</Option>
-								</Select>
-						</Row>
-				</section>	
-					<div className="settings-user-table-action">
-						<Row style={{ marginTop: 80 }}>
+				<PageTitle pageTitle="ADDRESS" />
+				{/* <section style={{ textAlign: 'center', marginTop: 5 }}>
+				</section>	 */}
+					<Row >
+						<Col span={12} style={{ textAlign: 'right', marginTop: 30, paddingRight: 10, marginBottom: 20 }}>
+							<label> ADDRESS </label>
+						</Col>
+						<Col span={12} style={{ textAlign: 'left' }}>
+							<Select
+								
+								style={{ width: 200, marginTop: 30 }}
+								onChange={this.onAddressChange}
+						>
+								<Option value="Barangay">Barangay</Option>
+								<Option value="Province">Province</Option>
+								<Option value="City">City</Option>
+							</Select>
+						</Col>
+					</Row>
+					<Row style={{marginBottom: 20}}>
 							<Col span={12}>
 								<Search
 									placeholder="input search text"
@@ -270,8 +280,7 @@ class Address extends React.Component {
 									</UserAccessContext.Consumer>
 								<TablePager handleChange={this.handleSelectChange} />
 							</Col>
-						</Row>
-					</div>	
+						</Row>	
 					<Table 
 						dataSource={selectedData}
 						columns={selectedColumns} 
@@ -298,8 +307,36 @@ class Address extends React.Component {
 									onClose={this.onClose}
 									destroyOnClose
 								> 
-							<Form name="basic" initialValues={{ remember: true }}>
+							{/* <Form name="basic" initialValues={{ remember: true }}>
 									<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
+										<Input />
+									</Form.Item>
+									<Form.Item label={selectedlabel.code} style={{marginTop:-20}}>
+										<Input />
+									</Form.Item>
+									<Form.Item label={selectedlabel.name} style={{marginTop:-20}}>
+										<Input />
+									</Form.Item>
+									<Form.Item style={{marginTop:-20}}>
+										
+								{title === "Province" 
+									? "": (title === "City" 
+									? <ProvinceList form={this.props.form} placeholder="Province" />  : <CityList form={this.props.form} placeholder="City" /> )
+								}
+									</Form.Item>
+							</Form> */}
+							<Form
+								layout="vertical"
+							>
+								<Form.Item 
+										label="ACTIVE" 
+										{...layout} 
+										valuePropName='checked' 
+										name='is_active'
+									>
+										<Switch />
+								</Form.Item>
+								<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
 										<Input />
 									</Form.Item>
 									<Form.Item label={selectedlabel.code} style={{marginTop:-20}}>
