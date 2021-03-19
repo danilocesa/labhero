@@ -19,22 +19,22 @@ function SearchForm({ onSearch }) {
   ));
 
   const BloodTypeOptions = bloodTypes.map(item => (
-    <Option key={item.blood_type_id} value={item.blood_type_id}>
+    <Option key={item.blood_type_id} value={item.blood_type}>
       {item.blood_type}
     </Option>
   ));
 
   function handleSubmit(formValues){
     let payload = {};
-
+    console.log(formValues.blood_type)
     if(formValues.blood_type)
-      payload.blood_type__blood_type = formValues.blood_type;
+      payload.blood_type_name = formValues.blood_type;
 
     if(formValues.storage)
-      payload.blood_storage__storage_name = formValues.storage;
+      payload.blood_storage_id = formValues.storage;
 
-    if(formValues.bag_id)
-      payload.blood_bag = formValues.bag_id;
+    // if(formValues.bag_id)
+    //   payload.blood_bag = formValues.bag_id;
 
     onSearch(payload);
   }
@@ -49,7 +49,7 @@ function SearchForm({ onSearch }) {
     async function fetchData() {
       const bloodStorage = await fetchBloodStorage();
       const bloodTypes = await fetchBloodTypes();
-
+      
       setBloodStorage(bloodStorage);
       setBloodTypes(bloodTypes);
     }

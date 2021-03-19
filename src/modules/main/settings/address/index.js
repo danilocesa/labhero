@@ -239,8 +239,6 @@ class Address extends React.Component {
 		return(
 			<div>
 				<PageTitle pageTitle="ADDRESS" />
-				{/* <section style={{ textAlign: 'center', marginTop: 5 }}>
-				</section>	 */}
 					<Row >
 						<Col span={12} style={{ textAlign: 'right', marginTop: 30, paddingRight: 10, marginBottom: 20 }}>
 							<label> ADDRESS </label>
@@ -307,24 +305,6 @@ class Address extends React.Component {
 									onClose={this.onClose}
 									destroyOnClose
 								> 
-							{/* <Form name="basic" initialValues={{ remember: true }}>
-									<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
-										<Input />
-									</Form.Item>
-									<Form.Item label={selectedlabel.code} style={{marginTop:-20}}>
-										<Input />
-									</Form.Item>
-									<Form.Item label={selectedlabel.name} style={{marginTop:-20}}>
-										<Input />
-									</Form.Item>
-									<Form.Item style={{marginTop:-20}}>
-										
-								{title === "Province" 
-									? "": (title === "City" 
-									? <ProvinceList form={this.props.form} placeholder="Province" />  : <CityList form={this.props.form} placeholder="City" /> )
-								}
-									</Form.Item>
-							</Form> */}
 							<Form
 								layout="vertical"
 							>
@@ -336,16 +316,16 @@ class Address extends React.Component {
 									>
 										<Switch />
 								</Form.Item>
-								<Form.Item label={selectedlabel.id} style={{marginTop:-10}}>
+								<Form.Item label={selectedlabel.id}>
 										<Input />
 									</Form.Item>
-									<Form.Item label={selectedlabel.code} style={{marginTop:-20}}>
+									<Form.Item label={selectedlabel.code}>
 										<Input />
 									</Form.Item>
-									<Form.Item label={selectedlabel.name} style={{marginTop:-20}}>
+									<Form.Item label={selectedlabel.name}>
 										<Input />
 									</Form.Item>
-									<Form.Item style={{marginTop:-20}}>
+									<Form.Item >
 										
 								{title === "Province" 
 									? "": (title === "City" 
