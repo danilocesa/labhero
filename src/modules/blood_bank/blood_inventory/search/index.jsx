@@ -33,6 +33,7 @@ function SearchBloodInventory() {
     const bloodInventory = await searchInventory(payload);
     
     setLoading(false);
+    setData([]);
 
     if(bloodInventory.length > 0)
       setData(bloodInventory);

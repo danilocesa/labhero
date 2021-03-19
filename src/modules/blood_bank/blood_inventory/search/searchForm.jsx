@@ -26,22 +26,22 @@ function SearchForm({ onSearch }) {
 
   function handleSubmit(formValues){
     let payload = {};
-    console.log(formValues.blood_type)
+    
     if(formValues.blood_type)
       payload.blood_type_name = formValues.blood_type;
 
     if(formValues.storage)
-      payload.blood_storage_id = formValues.storage;
+      payload.storage_id = formValues.storage;
 
-    // if(formValues.bag_id)
-    //   payload.blood_bag = formValues.bag_id;
+    if(formValues.bag_id)
+      payload.blood_bag = formValues.bag_id;
 
     onSearch(payload);
   }
 
   function clearSearch(){
     const { setFieldsValue } = formRef.current;
-
+    
     setFieldsValue({ bag_id: null, blood_type: null, storage: null });
   }
 

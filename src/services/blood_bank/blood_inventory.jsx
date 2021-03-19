@@ -18,7 +18,7 @@ export async function searchInventory(payload) {
   catch(e) {
     Message.error();
  	}
-  console.log(bloodinventory)
+  
   return bloodinventory;
 }
 
