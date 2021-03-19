@@ -12,7 +12,7 @@ function SearchBloodInventory() {
   const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(GLOBAL_TABLE_PAGE_SIZE);
   const [loading, setLoading] = useState(false);
-  const [visibleDrawer, setvisibleDrawer] = useState(false);
+  const [visibleDrawer, setvisibleDrawer] = useState(true);
   const [invDetail, setinvDetail] = useState({});
   
   function handleChangeSize(size) {
