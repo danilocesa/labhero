@@ -12,6 +12,7 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
+import { UserAccessContext } from 'context/userAccess';
 import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
 import { updateExamItem, fetchExamItem } from 'services/settings/examItem';
 import getUnitOfMeasures from 'services/settings/unitOfMeasure';
@@ -59,19 +60,7 @@ class UpdateForm extends React.Component {
 		this.dynamicForm = React.createRef();
 	}
 	
-	
 	async componentDidMount() {
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsUpdateArray =  jsonFormatAccessMatrix.settings.update
-		if (settingsUpdateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonUpdateVisible:true
-			})
-		}
-
 		const unitOfMeasures = await getUnitOfMeasures();
 		const inputTypeCodes = await getInputTypeCode();
 		
@@ -220,7 +209,6 @@ class UpdateForm extends React.Component {
 		const { 
 			isLoading, 
 			selectedItemTypeCode, 
-			buttonUpdateVisible,
 			unitOfMeasures, 
 			inputTypeCodes, 
 			isFetchingData,
@@ -362,8 +350,6 @@ class UpdateForm extends React.Component {
 						</section>
 					</Spin>
 
-				{ 
-					buttonUpdateVisible === true ? 
 					<section style={styles.footer}>
 						<div>
 							<Button 
@@ -373,20 +359,21 @@ class UpdateForm extends React.Component {
 							>
 								{buttonNames.cancel}
 							</Button>
-							<Button 
-								shape="round" 
-								type="primary" 
-								htmlType="submit"
-								loading={isLoading}
-								style={{ margin: 10, width: 120 }}
-							>
-								{buttonNames.update}
-							</Button>
+							<UserAccessContext.Consumer>
+								{value => value.userAccess.settings.create && (
+								<Button 
+									shape="round" 
+									type="primary" 
+									htmlType="submit"
+									loading={isLoading}
+									style={{ margin: 10, width: 120 }}
+								>
+									{buttonNames.update}
+								</Button>
+								)}
+							</UserAccessContext.Consumer>
 						</div>
 					</section>
-					: 
-						null 
-				} 
 				</Form>
 			</Drawer>
 		);

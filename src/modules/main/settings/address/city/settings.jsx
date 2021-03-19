@@ -22,6 +22,12 @@ export const tableHeaders = {
 	description: "DESCRIPTION",
 };
 
+
+export const messagePrompts = {
+  successCreateUser: "Successfully created! Reloading page...",
+  successUpdateUser: "Update successful! Reloading page..."
+}
+
 export const fieldLabels = {
 	ID: "ID",
 	bloodGroup: "BLOOD GROUP",

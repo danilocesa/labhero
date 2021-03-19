@@ -1,50 +1,35 @@
 // LIBRARY
 import React from 'react'
-import {  Switch, Form, Input, Button, Select } from 'antd'
+import {  Switch, Form, Input, Button} from 'antd'
 import PropTypes from 'prop-types'
-import { createBarangayItems,fetchProvincesItems,fetchCityItems,updateBarangayItems } from 'services/settings/Address';
+import { updateProvincesItems ,createProvincesItems } from 'services/settings/Address'
 import HttpCodeMessage from 'shared_components/message_http_status'
-import { buttonLabels,messagePrompts } from '../settings'
+import { buttonLabels, messagePrompts } from '../settings'
 
 const layout = {
 	labelCol: { span: 8 },
 	wrapperCol: { span: 16 },
-  };
+};
 
-const { Option } = Select;
-
-class BarangayForm extends React.Component {
+class ProvinceForm extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
 			disabled: true,
-			ProvincesItems:[],
-			CityItem:[]
     };
 	} 
-
-	async componentDidMount (){
-		const ProvincesResponse = await fetchProvincesItems();
-		const CityResponse = await fetchCityItems();
-		this.setState({
-			ProvincesItems:ProvincesResponse,
-			CityItem:CityResponse
-		})
-	}
 
 	onFinish = async values => {
 		const { drawerButton } = this.props;
     const payload = {
-			barangay_id :values.barangay_id,
-			barangay_code :values.barangay_code,
-			barangay_name :values.barangay_name,
-			province:values.province,
-			city:values.province,
+			province_id :values.province_id,
+			province_code :values.province_code,
+			province_name :values.province_name,
 			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
 		if(drawerButton === 'ADD'){
-			const createdUserResponse = await createBarangayItems(payload);
+			const createdUserResponse = await createProvincesItems(payload);
 			// @ts-ignore
 			if(createdUserResponse.status === 201){
 				const httpMessageConfig = {
@@ -58,8 +43,8 @@ class BarangayForm extends React.Component {
 			}	
 		}
 		else {
-			payload.barangay_id = values.barangay_id;
-			const updateUserResponse =  await updateBarangayItems(payload).catch(reason => console.log('TCL->', reason));
+			payload.province_id = values.province_id;
+			const updateUserResponse =  await updateProvincesItems(payload).catch(reason => console.log('TCL->', reason));
 			// @ts-ignore)
 			if(updateUserResponse.status === 200){
 				const httpMessageConfig = {
@@ -81,26 +66,17 @@ class BarangayForm extends React.Component {
   }
 
 	render() {
-		const { disabled,ProvincesItems,CityItem } = this.state
-		const { drawerButton,selectedBarangay } = this.props;
-
-		const provinceMappedData = ProvincesItems.map((item) => {
-      return (<option  value={item.province_id}>{item.province_name}</option>)
-    });
-		const CityMappedData = CityItem.map((item) => {
-      return (<option  value={item.city_id}>{item.city_name}</option>)
-    });
-
-
+		const { disabled } = this.state
+ 		const { drawerButton,selectedProvince } = this.props;
 		return(
 			<div>
 				<Form 
 					layout="vertical"
 					initialValues={{ 
-						is_active:selectedBarangay.is_active === true ,
-						barangay_id:selectedBarangay.barangay_id,
-						barangay_code:selectedBarangay.barangay_code,
-						barangay_name:selectedBarangay.barangay_name 
+						is_active:selectedProvince.is_active === true ,
+						province_id:selectedProvince.province_id,
+						province_code:selectedProvince.province_code,
+						province_name:selectedProvince.province_name 
 					}}
 					onFinish={this.onFinish}       
 				>
@@ -115,44 +91,26 @@ class BarangayForm extends React.Component {
 						</Form.Item>
 					)	
 					:
-					null
+						null
 					}
 					{/* Defualt Input */}
 					<div className="form-section">
-						<Form.Item name='barangay_id'>
+						<Form.Item name='province_id'>
 							<Input style={{ textTransform: 'uppercase', display:'none'}} />		
 						</Form.Item>
 						<Form.Item 
-							label="BARANGAY CODE"
-							name='barangay_code' 
+							label="PROVINCE CODE"
+							name='province_code' 
 							rules={[{required: true,message: 'Please input your username!',	},]}
 						>
 							<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
 						</Form.Item>
 						<Form.Item 
-							label="BARANGAY NAME" 
-							name='barangay_name' 
+							label="PROVINCE NAME" 
+							name='province_name' 
 							rules={[{required: true,message: 'Please input your username!',},]}
 						>
 							<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
-						</Form.Item>
-						<Form.Item 
-							label="PROVINCE" 
-							name='province' 
-							rules={[{required: true,message: 'Please input Province!',},]}
-						>
-							<Select placeholder="Province">
-								{provinceMappedData}
-							</Select>
-						</Form.Item>
-						<Form.Item 
-							label="CITY" 
-							name='city' 
-							rules={[{required: true,message: 'Please input Province!',},]}
-						>
-							<Select placeholder="Province">
-								{CityMappedData}
-							</Select>
 						</Form.Item>
 					</div>
 					{/* Footer */}
@@ -164,16 +122,20 @@ class BarangayForm extends React.Component {
 							{drawerButton}
 						</Button>
 					</section>
-			</Form>
-		</div>
+				</Form>
+			</div>
 		);
 	}
 }
-BarangayForm.propTypes = {
-	selectedBarangay:PropTypes.array.isRequired,
+ProvinceForm.propTypes = {
 	drawerButton: PropTypes.string.isRequired,
 	onClose: PropTypes.func,
-	actionType: PropTypes.string
+	actionType: PropTypes.string,
+	selectedProvince:PropTypes.array.isRequired
 }
+ProvinceForm.defaultProps = {
+	form(){ return null; },
+	onClose() { return null}
+};
 
-export default BarangayForm;
+export default ProvinceForm;

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 // CUSTOM
 import { fetchSelectedExamList, updateExamRequest } from 'services/shared/examRequest';
+import { UserAccessContext } from 'context/userAccess';
 import fetchExamList from 'services/settings/examItem';
 import InputForm from '../form/update_form';
 import SelectionTable from '../selection_table';
@@ -27,23 +28,8 @@ class UpdatePanel extends React.Component {
 		this.selectedTable = React.createRef();
 		this.formFields = React.createRef();
 	}
-
-	async componentDidMount() {
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsUpdateArray =  jsonFormatAccessMatrix.settings.update
-		if (settingsUpdateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonUpdateVisible:true
-			})
-		}
-	}
-
 	
 	async componentDidUpdate(prevProps) {
-	
 		const { 
 			sectionId: secId, 
 			specimenId: specId,
@@ -251,8 +237,6 @@ class UpdatePanel extends React.Component {
 							</Row>
 						</div>					
 					</section>
-					{ 
-						buttonUpdateVisible === true ?
 						<section className="drawerFooter">
 							<div>
 								<Button 
@@ -262,20 +246,21 @@ class UpdatePanel extends React.Component {
 								>
 									{buttonNames.cancel}
 								</Button>
-								<Button 
-									shape="round" 
-									type="primary" 
-									htmlType="submit"
-									loading={isLoading}
-									style={{ margin: 10, width: 120 }}
-								>
-									{buttonNames.update}
-								</Button>
+								<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+									<Button 
+										shape="round" 
+										type="primary" 
+										htmlType="submit"
+										loading={isLoading}
+										style={{ margin: 10, width: 120 }}
+									>
+										{buttonNames.update}
+									</Button>
+									)}
+								</UserAccessContext.Consumer>
 							</div>
 						</section>
-					: 
-						null 
-				} 
 				</Form>
 			</Drawer>
 		);

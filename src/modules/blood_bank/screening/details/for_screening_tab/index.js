@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from 'prop-types';
 import { Table, Input , Button, Tabs  } from 'antd'
 
 // CUSTOM MODULES
@@ -85,6 +86,8 @@ class ForScreening extends React.Component {
   }
 
   render() {
+    const { donorDetail } = this.props
+    console.log("file: index.js ~ line 90 ~ ForScreening ~ render ~ donorDetail", donorDetail)
     const { buttonstatus } = this.state
     return (
       <div> 
@@ -125,5 +128,14 @@ class ForScreening extends React.Component {
     )
   }
 }
+
+ForScreening.propTypes = {
+  donorDetail: PropTypes.shape({
+    donor_id: PropTypes.number,
+    health_info_id: PropTypes.number.isRequired,
+    extraction_id: PropTypes.any
+  }).isRequired
+}
+
 
 export default ForScreening;

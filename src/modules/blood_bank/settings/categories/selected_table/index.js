@@ -65,6 +65,7 @@ class SelectedTable extends React.Component {
 	};
 
 	showDrawer = (record) => {
+		console.log("HARRY TEsT console")
 		this.setState({
 			isDrawerVisible: true ,
 			drawerTitle: "ADD CATEGORY",

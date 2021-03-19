@@ -5,6 +5,7 @@ import { Row, Col, Button, Input } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM
+import { UserAccessContext } from 'context/userAccess';
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 import PageTitle from 'shared_components/page_title';
@@ -51,17 +52,6 @@ class LabExamRequest extends React.Component {
 	}
 
 	async componentDidMount() {
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType //1
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
-		if (settingsCreateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonAddVisible:true
-			})
-		}
-
 		const sections = await fetchSection();
 		const specimens = await fetchSpecimens();
 
@@ -242,25 +232,23 @@ class LabExamRequest extends React.Component {
 
 		const rightSection = (
 			<>
-			{ 
-			 	buttonAddVisible === true ? 
-				<Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionId == null}
-				>
-					<PlusOutlined />{buttonNames.addExam}
-				</Button>
-				: 
-				null 
-			}
+				<UserAccessContext.Consumer>
+					{value => value.userAccess.settings.create && (
+						<Button 
+						shape="round"
+						type="primary" 
+						style={{ marginRight: 10 }}
+						onClick={this.onClickAdd}
+						disabled={selectedSectionId == null}
+					>
+						<PlusOutlined />{buttonNames.addExam}
+					</Button>
+					)}
+				</UserAccessContext.Consumer>				
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
 		
-
 		return (
 			<div>
 				<Row justify="center" style={{ marginTop: 30 }}>

@@ -27,7 +27,7 @@ export default class ScreeningInformation extends Component {
   render() {
     const { isStatus } =this.state
     const { state: donorDetail } = this.props.location;
-    const { last_name, first_name, donor_id } = donorDetail;
+    const { last_name, first_name, donor_id, health_info_id } = donorDetail;
     return (
       <div>
         <Row>
@@ -60,6 +60,7 @@ export default class ScreeningInformation extends Component {
               <Text>
                 DONOR ID : 
                 {`${donor_id}`.toUpperCase()}
+                {`${health_info_id}`.toUpperCase()}
               </Text>
             </div>
             <div style={{marginTop:20}}>

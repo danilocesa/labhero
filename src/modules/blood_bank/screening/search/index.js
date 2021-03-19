@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
+import fetchDonors from 'services/blood_bank/screening';
+import Message from 'shared_components/message';
 import {
   Row ,
   Col ,
@@ -57,33 +60,53 @@ const columns = [
   }
 ];
 
-const data =[
-  {
-    donor_id:1,
-    last_name:'Santos',
-    first_name:'Harry',
-    middle_name:'C',
-    gender:'Male',
-    birth_date:'August',
-    blood_type:'AB+',
-    last_extracted:'09-09-2020',
-    status:'On Going'
-  }
-];
 
 export default class ForScreeningSearch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      loading: false,
+      pageSize: GLOBAL_TABLE_PAGE_SIZE
+    };
+    this.formRef = React.createRef();
+  }
 
   redirect = (record) => {
     this.props.history.push('/bloodbank/screening/details', record);
   }
 
+  handleSubmit = async () => {  
+		const { getFieldsValue } = this.formRef.current;
+    const { donorID, donorName } = getFieldsValue()
+
+    this.setState({ loading: true });
+    const donors = await fetchDonors(donorName, donorID);  
+    
+    this.setState({ 
+      loading: false,
+      data: donors 
+    });
+
+    if(donors.length <= 0) 
+      Message.info('No results found');
+  }
+
+  handleChangeTableSize = (pageSize) => {
+		this.setState({ pageSize });
+	}  
+
   render() {
+    const { data, loading, pageSize } = this.state;
+
     return (
       <div>
         <PageTitle pageTitle="SCREENING"  />
         <Form 
+          onFinish={this.handleSubmit} 
           className="blood-extract-search-form"
           layout="vertical"
+          ref={this.formRef}
           style={{ marginTop: 20 }}
         >
           <Row 
@@ -149,12 +172,15 @@ export default class ForScreeningSearch extends Component {
             </Col>
           </Row>
         </Form>
-        <SearchPager />
+        <SearchPager 
+          handleChangeSize={this.handleChangeTableSize}
+          pageTotal={data.length}
+          pageSize={pageSize}
+        />
         <Table 
            className="blood-extract-search-table"
            style={{ textTransform: 'uppercase', marginTop: 10 }}
            dataSource={data}
-           //loading={this.state.loading}
            columns={columns}
            rowKey={record => record.donor_id}
            rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
