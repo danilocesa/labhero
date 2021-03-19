@@ -16,6 +16,11 @@ export const buttonLabels = {
 	cancel: "CANCEL"
 }
 
+export const messagePrompts = {
+  successCreateUser: "Successfully created! Reloading page...",
+  successUpdateUser: "Update successful! Reloading page..."
+}
+
 
 export const tableSize = globalTableSize;
 export const tableYScroll = globalTableYScroll;

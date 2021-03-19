@@ -1,7 +1,15 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import { 
+	Row, 
+	Col, 
+	Table, 
+	Button, 
+	Input, 
+	Icon, 
+	Drawer 
+} from 'antd';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
@@ -13,60 +21,88 @@ import {
 } from '../settings';
 import BarangayForm from '../form';
 
+import fetchBarangayItems from 'services/settings/Address';
+
 const { Search } = Input;
-const columns = [
+const barangayColumns = [
 	{
 		title: 'BARANGAY ID',
 		dataIndex: 'barangay_id',
 		key: 1,
+		width:210
 	},
 	{
 		title: 'BARANGAY CODE',
 		dataIndex: 'barangay_code',
 		key: 2,	
+		width:250
 	},
 	{
 		title: 'BARANGAY NAME',
 		dataIndex: 'barangay_name',
 		key: 3,
-    }
-	
+		width:200
+	},
+	{
+		title: 'CITY',
+		dataIndex: 'city',
+		key: 3,
+  }	
 ];
+
 
 class BarangayTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [
-				{
-					barangay_id: '1' ,
-                    barangay_code: '0001' ,
-                    barangay_name: 'Taguig' 
-				},
-				{
-                    barangay_id: '2' ,
-                    barangay_code: '0002' ,
-                    barangay_name: 'Taguig' 
-				},
-				{
-					barangay_id: '2' ,
-                    barangay_code: '0002' ,
-                    barangay_name: 'Taguig' 
-				},
-				],
+			barangayItem:[],
 			actionType:'add',
 			drawerTitle: '',
 			drawerButton: '',
 		}
 	}
 	
-	showDrawer = () => {
+	async componentDidMount(){
+		const barangayResponse = await fetchBarangayItems();
+		this.setState({
+			barangayUserRef:barangayResponse,
+			barangayItem:barangayResponse
+		})
+	}
+
+	onSearch = (value) => { 
+    const searchedVal = value.toLowerCase();
+		const { barangayUserRef } = this.state;
+		// Search In Barangay
+		const Barangayfiltered = barangayUserRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { barangay_name } = item;
+			return (
+				this.containsString(barangay_name, searchedVal)
+			);
+		});
+		this.setState({ 
+			barangayItem: Barangayfiltered
+		});
+  };
+	
+	onChangeSearch = (event) => {
+    const { barangayUserRef } = this.state;
+    if (event.target.value === "") this.setState({ barangayItem: barangayUserRef });		
+  };
+
+	containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+    return searchFrom.toString().toLowerCase().includes(searchedVal);
+  };
+
+	showDrawer = (record) => {
 		this.setState({
 			visible: true,
 			drawerTitle: "ADD BARANGAY",
 			drawerButton: drawerAdd,
 			actionType : 'add',
-			patientInfo: [],
+			selectedBarangay: record
 		});
 	};
 
@@ -83,77 +119,83 @@ class BarangayTable extends React.Component {
 			drawerTitle: "UPDATE BARANGAY",
 			drawerButton: drawerUpdate,
 			actionType:'update',
-			patientInfo: record
+			selectedBarangay: record
 		});
 	}
 
 	render() {
-		const { pagination, drawerButton, patientInfo, visible, drawerTitle, loading,actionType } = this.state;
-			return(
-				<div>
-					<div className="settings-user-table-action">
-						<Row>
-							<Col span={12}>
+		const { 
+			barangayItem,
+			pagination, 
+			drawerButton, 
+			selectedBarangay, 
+			visible, 
+			drawerTitle, 
+			loading,
+			actionType 
+		} = this.state;
+
+		return(
+			<div>
+				<div className="settings-user-table-action">
+					<Row>
+						<Col span={12}>
 							<Search
-								placeholder="input search text"
-								onSearch={value => console.log(value)}
+								allowClear
+								onSearch={(value) => this.onSearch(value)}
+								onChange={this.onChangeSearch}
 								style={{ width: 200 }}
+								className="panel-table-search-input"
 							/>
-							</Col>
-							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD BARANGAY
-									
-								</Button>
-								<TablePager handleChange={this.handleSelectChange} />
-							</Col>
-						</Row>
-					</div>
-					<div className="settings-user-table">
-						<Table 
-							dataSource={this.state.data}
-							loading={loading}
-							size={tableSize}
-							scroll={{ y: tableYScroll }}
-							columns={columns} 
-							pagination={pagination}
-							rowKey={record => record.userID}
-							onRow={(record) => {
-								return {     
-									onDoubleClick: () => {
-										const rec = [];
-										// eslint-disable-next-line no-restricted-syntax
-										for(const [key, value] of Object.entries(record)){
-											rec[key] = value;
-										}
-										this.displayDrawerUpdate(rec);
-									}
-								}
-							}}
-						/>
-					</div>    
-					{/* DRAWER */}
-						<Drawer
-							title={drawerTitle}
-							width="30%"
-							visible={visible}
-							onClose={this.onClose}
-							destroyOnClose
-						>
-							<BarangayForm
-								actionType={actionType}
-								drawerButton={drawerButton} 
-								patientInfo={patientInfo}
-								onClose={this.onClose}
-							/>
-						</Drawer>
+						</Col>
+						<Col span={12} style={{ textAlign: 'right' }}>
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ marginRight: '15px' }} 
+								onClick={this.showDrawer}
+							>
+								<Icon type="plus" /> ADD BARANGAY
+							</Button>
+							<TablePager handleChange={this.handleSelectChange} />
+						</Col>
+					</Row>
 				</div>
-			)
+				<div className="settings-user-table">
+					<Table 
+						dataSource={barangayItem}
+						loading={loading}
+						size={tableSize}
+						scroll={{ y: tableYScroll }}
+						columns={barangayColumns} 
+						pagination={pagination}
+						rowKey={record => record.userID}
+						onRow={(record) => {
+							return {     
+								onDoubleClick: () => {
+									this.displayDrawerUpdate(record);
+								}
+							}
+						}}
+					/>
+				</div>    
+				{/* DRAWER */}
+					<Drawer
+						title={drawerTitle}
+						width="30%"
+						visible={visible}
+						onClose={this.onClose}
+						destroyOnClose
+					>
+						<BarangayForm
+							actionType={actionType}
+							drawerButton={drawerButton} 
+							selectedBarangay={selectedBarangay}
+							onClose={this.onClose}
+						/>
+					</Drawer>
+			</div>
+		)
 	}
 }
 

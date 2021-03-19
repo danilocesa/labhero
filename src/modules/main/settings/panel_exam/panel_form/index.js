@@ -45,6 +45,16 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	componentDidMount() {
+		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
+		const UserDatatype = userData.loginType
+		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
+		const settingsUpdateArray =  jsonFormatAccessMatrix.settings.update
+		if (settingsUpdateArray.some(data => data === UserDatatype))
+		{
+			this.setState({
+				buttonUpdateVisible:true
+			})
+		}
 		this.getExamRequest();
 		
 		if(this.props.drawerButton === buttonLabels.update){
@@ -199,7 +209,7 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	render() {
-		// const { getFieldDecorator } = this.props.form;
+		const { buttonUpdateVisible } = this.state;
 		const { panelInfo, drawerButton } = this.props;
 
 		return(
@@ -346,26 +356,31 @@ class PanelFormTemplate extends React.Component {
 							</div>
 						</AntForm.Item>
 					</section>	
-					<section className="drawerFooter">
-						<div>
-							<AntButton 
-								shape="round" 
-								style={{ marginRight: 10, width: 120 }} 
-								onClick={this.props.onCancel}
-							>
-								{buttonLabels.cancel}
-							</AntButton>
-							<AntButton 
-								type="primary" 
-								shape="round" 
-								htmlType="submit" 
-								loading={this.state.loading} 
-								style={{ margin: 10, width: 120 }}
-							>
-								{drawerButton}
-							</AntButton>
-						</div>
-					</section>
+					{ 
+						buttonUpdateVisible === true ? 
+							<section className="drawerFooter">
+								<div>
+									<AntButton 
+										shape="round" 
+										style={{ marginRight: 10, width: 120 }} 
+										onClick={this.props.onCancel}
+									>
+										{buttonLabels.cancel}
+									</AntButton>
+									<AntButton 
+										type="primary" 
+										shape="round" 
+										htmlType="submit" 
+										loading={this.state.loading} 
+										style={{ margin: 10, width: 120 }}
+									>
+										{drawerButton}
+									</AntButton>
+								</div>
+							</section>
+						: 
+							null 
+					} 
 				</AntForm>
 			</div>
 		);

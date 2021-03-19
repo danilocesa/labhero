@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, Row, Col, Input } from 'antd';
 
 // CUSTOM
+import { UserAccessContext } from 'context/userAccess';
 import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 import HttpCodeMessage from 'shared_components/message_http_status';
@@ -49,18 +50,6 @@ class ExamItems extends React.Component {
 	}
 	
 	async componentDidMount() {
-		console.log("harry")
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType //1
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
-		if (settingsCreateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonAddVisible:true
-			})
-		}
-
 		const sections = await fetchSections();
 		const specimens = await fetchSpecimens();
 		const ddSections = sections.map(section => ({
@@ -239,9 +228,9 @@ class ExamItems extends React.Component {
 
 		const rightSection = (
 			<>
-			 { 
-			 	buttonAddVisible === true ? 
-					<Button 
+				<UserAccessContext.Consumer>
+					{value => value.userAccess.settings.create && (
+						<Button 
 						shape="round"
 						type="primary" 
 						style={{ marginRight: 10 }}
@@ -250,9 +239,8 @@ class ExamItems extends React.Component {
 					>
 						<PlusOutlined /> {buttonNames.addExamItem}
 					</Button> 
-				: 
-					null 
-				} 
+					)}
+				</UserAccessContext.Consumer>
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);

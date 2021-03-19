@@ -60,6 +60,16 @@ class PanelTable extends React.Component {
 	}
 
 	componentDidMount = async () => {
+		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
+		const UserDatatype = userData.loginType //1
+		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
+		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
+		if (settingsCreateArray.some(data => data === UserDatatype))
+		{
+			this.setState({
+				buttonAddVisible:true
+			})
+		}
 		this.populatePanelList();
 	}
 
@@ -159,6 +169,7 @@ class PanelTable extends React.Component {
 	};
 
 	render() {
+		const { buttonAddVisible } = this.state
 		return(
 			<div>
 				<div className="panel-table-options">
@@ -173,15 +184,20 @@ class PanelTable extends React.Component {
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
-							>
-								<Icon type="plus" />
-								{drawerAddTitle}
-							</Button>
+							{ 
+								buttonAddVisible === true ? 
+									<Button 
+										type="primary" 
+										shape="round" 
+										style={{ marginRight: '15px' }} 
+										onClick={this.showDrawer}
+									>
+										<Icon type="plus" />
+										{drawerAddTitle}
+									</Button>
+								: 
+								null 
+							} 
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>

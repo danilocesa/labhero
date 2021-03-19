@@ -12,22 +12,30 @@ const layout = {
 class CityForm extends React.Component {
 	render() {
 		const { drawerButton } = this.props;
+		console.log(drawerButton)
 			return(
-				<div style={{marginTop: -20}}>
-					<Form>
-						{this.props.actionType === "update"? 
-							<Form.Item label="ACTIVE" {...layout} style={{marginLeft:'-95px'}}>
-									<Switch />
-							</Form.Item>	
+				<div>
+					<Form
+						layout="vertical"
+					>
+						{drawerButton === "UPDATE"? 
+							<Form.Item 
+								label="ACTIVE" 
+								{...layout} 
+								valuePropName='checked' 
+								name='is_active'
+							>
+								<Switch />
+							</Form.Item>
 						:
 						null
 						}
 						<div className="form-section">
-							<Form.Item label="HOSPITAL ID" style={{ marginTop:'-25px'}}>
-								<Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
+							<Form.Item label="HOSPITAL ID">
+								<Input style={{  textTransform: 'uppercase' }}  />
 							</Form.Item>
-							<Form.Item label="HOSPITAL NAME" style={{ marginTop:'-25px'}}>
-                                <Input style={{  textTransform: 'uppercase',marginTop:'-25px' }}  />
+							<Form.Item label="HOSPITAL NAME">
+                                <Input style={{  textTransform: 'uppercase' }}  />
 							</Form.Item>
 						</div>
 						<section className="drawerFooter">

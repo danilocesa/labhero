@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 // CUSTOM
 import { fetchSelectedExamList, updateExamRequest } from 'services/shared/examRequest';
+import { UserAccessContext } from 'context/userAccess';
 import fetchExamList from 'services/settings/examItem';
 import InputForm from '../form/update_form';
 import SelectionTable from '../selection_table';
@@ -152,7 +153,7 @@ class UpdatePanel extends React.Component {
 	}
 
 	render() {
-		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
+		const { isLoading, isFetchingData, examList, selectedExams,buttonUpdateVisible } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { 
 			visible, 
@@ -236,26 +237,30 @@ class UpdatePanel extends React.Component {
 							</Row>
 						</div>					
 					</section>
-					<section className="drawerFooter">
-						<div>
-							<Button 
-								shape="round" 
-								style={{ margin: 10, width: 120 }}
-								onClick={this.closeFormDrawer}
-							>
-								{buttonNames.cancel}
-							</Button>
-							<Button 
-								shape="round" 
-								type="primary" 
-								htmlType="submit"
-								loading={isLoading}
-								style={{ margin: 10, width: 120 }}
-							>
-								{buttonNames.update}
-							</Button>
-						</div>
-					</section>
+						<section className="drawerFooter">
+							<div>
+								<Button 
+									shape="round" 
+									style={{ margin: 10, width: 120 }}
+									onClick={this.closeFormDrawer}
+								>
+									{buttonNames.cancel}
+								</Button>
+								<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+									<Button 
+										shape="round" 
+										type="primary" 
+										htmlType="submit"
+										loading={isLoading}
+										style={{ margin: 10, width: 120 }}
+									>
+										{buttonNames.update}
+									</Button>
+									)}
+								</UserAccessContext.Consumer>
+							</div>
+						</section>
 				</Form>
 			</Drawer>
 		);

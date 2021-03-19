@@ -5,6 +5,7 @@ import { Row, Col, Button, Input } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusOutlined } from '@ant-design/icons';
 // CUSTOM
+import { UserAccessContext } from 'context/userAccess';
 import TablePager from 'shared_components/table_pager';
 import Message from 'shared_components/message';
 import PageTitle from 'shared_components/page_title';
@@ -194,6 +195,7 @@ class LabExamRequest extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm,
 			isLoading,
+			buttonAddVisible,
 			isInitializing,
 			selectedSectionId,
 			selectedSpecimenId,
@@ -230,20 +232,23 @@ class LabExamRequest extends React.Component {
 
 		const rightSection = (
 			<>
-				<Button 
-					shape="round"
-					type="primary" 
-					style={{ marginRight: 10 }}
-					onClick={this.onClickAdd}
-					disabled={selectedSectionId == null}
-				>
-					<PlusOutlined />{buttonNames.addExam}
-				</Button>
+				<UserAccessContext.Consumer>
+					{value => value.userAccess.settings.create && (
+						<Button 
+						shape="round"
+						type="primary" 
+						style={{ marginRight: 10 }}
+						onClick={this.onClickAdd}
+						disabled={selectedSectionId == null}
+					>
+						<PlusOutlined />{buttonNames.addExam}
+					</Button>
+					)}
+				</UserAccessContext.Consumer>				
 				<TablePager handleChange={this.onChangePager} />
 			</>
 		);
 		
-
 		return (
 			<div>
 				<Row justify="center" style={{ marginTop: 30 }}>
