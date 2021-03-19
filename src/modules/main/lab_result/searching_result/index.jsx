@@ -63,7 +63,7 @@ class SearchResult extends React.Component {
 
 	render() {
 		const { sections, labResults, searchResults, tabActiveKey } = this.state;
-		const { onClickTableRow, pageTitle, onClickPrint, userAccess } = this.props;
+		const { onClickTableRow, pageTitle, onClickPrint } = this.props;
 
 		const TabPanes = sections.map(section => (
 			<TabPane tab={<span>{section.sectionCode}</span>} key={section.sectionCode}>
@@ -76,7 +76,7 @@ class SearchResult extends React.Component {
 		));
 		
     return (
-	    <Row type="flex" align="middle" justify="center">
+	    <Row align="middle" justify="center">
 		    <Col xs={24}>
 					<SearchForm 
 						ref={this.searchFormRef}
@@ -93,7 +93,6 @@ class SearchResult extends React.Component {
 								labResults={labResults} 
 								onClickTableRow={onClickTableRow}
 								onClickPrint={onClickPrint}
-								userAccess={userAccess}
 							/>
 						</TabPane>
 						{ TabPanes }
@@ -108,7 +107,6 @@ SearchResult.propTypes = {
 	pageTitle: PropTypes.string.isRequired,
 	onClickTableRow: PropTypes.func.isRequired,
 	onClickPrint: PropTypes.func.isRequired,
-	userAccess: PropTypes.object.isRequired
 }
 
 export default SearchResult;

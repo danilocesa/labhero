@@ -63,16 +63,43 @@ class SummaryStep extends React.Component {
 		const { otherInfo, user, exams, examRef } = this.state;
 		const { hospitalID, ...restOtherInfo } = otherInfo;
 
-		const examRefIDs = examRef.map(item => item.examID);
-		const selectedExamIDs = exams.map(item => item.examID);
-		const newExams = [];
+		// const newExams = [];
+		// const examRefIDs = examRef.map(item => item.examID);
+
+		// exams.forEach(x => {
+		// 	if(examRefIDs.includes(x.examID) === false) 
+		// 		newExams.push({
+		// 			sectionID: x.selectedSection.sectionID,
+		// 			sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+		// 			specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+		// 			sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
+		// 			panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
+		// 			examID: x.examID,
+		// 			priority: ''
+		// 		});
+		// });
+
+		const newExams = exams.map(x => ({
+			sectionID: x.selectedSection.sectionID,
+			sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+			specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
+			sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
+			panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
+			examID: x.examID,
+			priority: ''
+		}));
+
 		const removedExams = [];
 
-		exams.forEach(x => {
-			if(examRefIDs.includes(x.examID) === false) 
-				newExams.push({
+		examRef.forEach(x => {
+			const condition = (i) => {
+				return i.selectedSection.sectionID === x.selectedSection.sectionID &&
+				       i.selectedSpecimen.specimenID === x.selectedSpecimen.specimenID
+			};
+
+			if(exams.findIndex(condition) === -1) 
+				removedExams.push({
 					sectionID: x.selectedSection.sectionID,
-					sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
 					specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
 					sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
 					panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
@@ -81,18 +108,6 @@ class SummaryStep extends React.Component {
 				});
 		});
 
-		examRef.forEach(x => {
-			if(selectedExamIDs.includes(x.examID) === false) 
-				removedExams.push({
-					sectionID: x.selectedSection.sectionID,
-					sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-					specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-					sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
-					panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
-					examID: x.examID,
-					priority: ''
-				});
-		});
 
 
 		const payload = {

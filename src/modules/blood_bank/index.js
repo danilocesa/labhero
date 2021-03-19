@@ -13,6 +13,7 @@ import ScreeningDetail from './screening/details'
 import ExtractionDetail from './extraction/details';
 import Settings from './settings';
 import BloodInventory from './blood_inventory/search';
+import BloodInvDashboard from './blood_inventory/dashboard';
 import BloodInventory1 from './blood_inventory';
 import Printing from './blood_request/printing';
 import SearchRequest from './blood_request/search';
@@ -42,6 +43,7 @@ class BloodBank extends React.Component {
 				<Route exact path="/bloodbank/screening/search" component={ScreeningSearch} />
 				<Route exact path="/bloodbank/screening/details" component={ScreeningDetail} />
 				{/* BLOOD INVENTORY */}
+				<Route exact path="/bloodbank/blood_inventory/dashboard" component={BloodInvDashboard} />
 				<Route exact path="/bloodbank/blood_inventory/search" component={BloodInventory} />
 				<Route exact path="/bloodbank/blood_inventory" component={BloodInventory1} />
 				{/* BLOOD PRODUCT */}

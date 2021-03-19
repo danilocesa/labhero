@@ -19,13 +19,13 @@ const columns = [
   },
   {
     title: "DATE EXTRACTED",
-    dataIndex: "date_extracted",
-    key: "date_extracted",
+    dataIndex: "created_date",
+    key: "created_date",
   },
   {
     title: "EXPIRATION DATE",
-    dataIndex: "expiry_date",
-    key: "expiry_date",
+    dataIndex: "expiration_date",
+    key: "expiration_date",
   },
 ];
 

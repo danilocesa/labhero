@@ -43,7 +43,6 @@ function Sider({ collapsed }) {
 			collapsible
 			collapsed={collapsed}
 		>
-			{console.log('sider', userAccess)}
 			<div className="logo" />
 			<Menu
 				className="side-menu" 

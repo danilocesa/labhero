@@ -1,12 +1,12 @@
 import React from 'react';
 import fetchInventoryItems from 'services/blood_bank/blood_group';
-import BloodGroupTable from './table';
+import BloodTestTable from './table';
 
 class BloodGroup extends React.Component {
 	render() {
 		return(
 			<div style={{marginTop: -50}}>
-				<BloodGroupTable />
+				<BloodTestTable />
 			</div>
 		);
 	} 

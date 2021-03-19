@@ -8,7 +8,7 @@ export async function fetchBloodTypes() {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `blood_inventory/bloodtype/for_lov`,
+			url: `blood_inventory/blood_type/for_lov`,
 		});
 		
 		const { data } = response;

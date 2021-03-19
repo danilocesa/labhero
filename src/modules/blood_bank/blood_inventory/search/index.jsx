@@ -31,13 +31,16 @@ function SearchBloodInventory() {
   async function search(payload) {
     setLoading(true);
     const bloodInventory = await searchInventory(payload);
+    
     setLoading(false);
+    setData([]);
 
     if(bloodInventory.length > 0)
       setData(bloodInventory);
     else
       message.info('No result found');
   }
+
 
   return (
     <div>

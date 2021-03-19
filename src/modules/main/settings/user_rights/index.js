@@ -7,9 +7,9 @@ import TablePager from 'shared_components/table_pager';
 import PageTitle from 'shared_components/page_title';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusOutlined } from '@ant-design/icons';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import Form from './form';
 import UserRightsTable from './table';
-import { moduleTitle, tablePageSize, buttonLabels } from './settings';
 
 const data = [
   { userTypeID: 1, userType: 'ROOT', dateCreated: '20-SEP-2019' },
@@ -32,9 +32,10 @@ class UserRights extends React.Component {
     isLoading: false,
 		isDisplayAddForm: false,
 		isDisplayUpdateForm: false,
-		pageSize: tablePageSize,
+		pageSize: GLOBAL_TABLE_PAGE_SIZE,
 		userRights: [],
 	}
+
 
   onClickAdd = () => {
     this.setState({ isDisplayAddForm: true });
@@ -73,7 +74,7 @@ class UserRights extends React.Component {
 					onClick={this.onClickAdd}
 					disabled={selectedSectionId === null}
 				>
-					<PlusOutlined /> {buttonLabels.label4}
+					<PlusOutlined /> ADD USER TYPE
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>
@@ -82,7 +83,7 @@ class UserRights extends React.Component {
 		return (
 			<div>
 				<section style={{ textAlign: 'center', marginTop: 30 }}>
-					<PageTitle pageTitle={moduleTitle} />
+					<PageTitle pageTitle="USER TYPES" />
 				</section>
 				<ActionSection rightContent={rightSection} />
 				<UserRightsTable 
@@ -90,17 +91,13 @@ class UserRights extends React.Component {
 					pageSize={pageSize}
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
+					componentDidMount={this.componentDidMount}
 				/>
 				<Form 
 					type="add"
           visible={isDisplayAddForm}
           onClose={this.onCloseForm}
 				/>	
-				<Form 
-					type="update"
-					visible={isDisplayUpdateForm}
-          onClose={this.onCloseForm}
-				/>
 			</div>
 		);
 	}

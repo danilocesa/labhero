@@ -3,6 +3,7 @@
 import React from 'react';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
+import { UserAccessContext } from 'context/userAccess';
 
 // CUSTOM
 import { 
@@ -93,15 +94,18 @@ class ProvinceTable extends React.Component {
 							/>
 							</Col>
 							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD HOSPITAL
-									
-								</Button>
+								<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+										<Button 
+											type="primary" 
+											shape="round" 
+											style={{ marginRight: '15px' }} 
+											onClick={this.showDrawer}
+										>
+											<Icon type="plus" /> ADD HOSPITAL
+										</Button>
+									)}
+									</UserAccessContext.Consumer>
 								<TablePager handleChange={this.handleSelectChange} />
 							</Col>
 						</Row>
@@ -130,20 +134,24 @@ class ProvinceTable extends React.Component {
 						/>
 					</div>    
 					{/* DRAWER */}
-						<Drawer
-							title={drawerTitle}
-							width="30%"
-							visible={visible}
-							onClose={this.onClose}
-							destroyOnClose
-						>
-							<HospitalForm
-								actionType={actionType}
-								drawerButton={drawerButton} 
-								patientInfo={patientInfo}
+					<UserAccessContext.Consumer>
+						{value => value.userAccess.settings.update && (
+							<Drawer
+								title={drawerTitle}
+								width="30%"
+								visible={visible}
 								onClose={this.onClose}
-							/>
-						</Drawer>
+								destroyOnClose
+							>
+								<HospitalForm
+									actionType={actionType}
+									drawerButton={drawerButton} 
+									patientInfo={patientInfo}
+									onClose={this.onClose}
+								/>
+							</Drawer>
+						)}
+						</UserAccessContext.Consumer>
 				</div>
 			)
 	}

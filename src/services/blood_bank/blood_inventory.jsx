@@ -8,7 +8,7 @@ export async function searchInventory(payload) {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `blood_inventory/bloodinventory/search`,
+			url: `blood_inventory/blood_inventory/search`,
       params: payload
 		});
 		
@@ -28,7 +28,7 @@ export async function getInventoryById(id) {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `blood_inventory/bloodinventory/${id}`,
+			url: `blood_inventory/blood_inventory/${id}`,
 		});
 		
 		const { data } = response;

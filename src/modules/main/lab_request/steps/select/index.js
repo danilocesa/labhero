@@ -79,7 +79,6 @@ class SelectStep extends React.Component {
 	async componentDidUpdate(prevProps) {
 		const { componentDidMount, panelRef } = this.state;
 
-		console.log('component did update');
 		// Variables for Edit Module
 		const sessOtherInfo = sessionStorage.getItem(LR_OTHER_INFO);
 		const sessExamUpdated = sessionStorage.getItem(LR_IS_EXAM_UPDATED);
@@ -138,8 +137,6 @@ class SelectStep extends React.Component {
 
 
 			const selectedPanel = panelRef.filter(item => Array.from(setPanelIDs).includes(item.panelID));
-
-			console.log('selectedPanel', selectedPanel);
 
 			selectedPanel.forEach(panelRef => {
 				panelRef.exams.forEach(exam => {
