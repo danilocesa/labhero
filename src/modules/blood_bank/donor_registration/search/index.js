@@ -6,7 +6,8 @@ import {
   Button,
   Steps,
   Typography,
-  Form
+  Form,
+  Modal
 } from "antd";
 
 // ICON
@@ -17,9 +18,10 @@ import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
-
+import scanImage from 'images/bloodbank/donor_reg/fingerprint.gif';
 
 import './index.css';
+import { Link } from "react-router-dom";
 
 const { Step } = Steps
 const { Text } = Typography
@@ -71,7 +73,8 @@ class DonorRegSearch extends React.Component {
       pageSize: GLOBAL_TABLE_PAGE_SIZE,
       loading: false,
       data: [],
-      actionType: null
+      actionType: null,
+      modalVisible: true
     };
     this.formRef = React.createRef();
   } 
@@ -127,8 +130,22 @@ class DonorRegSearch extends React.Component {
     this.setState({ actionType: '', data: [] })
   }
 
+  showModal = () => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  hideModal = () => {
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
+
   render() {
-    const { data, loading, pageSize, actionType } = this.state;
+    const { data, loading, pageSize, actionType, modalVisible } = this.state;
+
     const TableFooter = (
       <Row justify="center">
         <Button 
@@ -144,6 +161,17 @@ class DonorRegSearch extends React.Component {
 
     return (
       <div>
+        <Modal
+          title="Scan Finger"
+          visible={modalVisible}
+          onOk={this.hideModal}
+          onCancel={this.hideModal}
+          okText="Scan"
+          cancelText="Cancel"
+          className="modal"
+        >
+          <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
+        </Modal>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
         <Steps 
           size="small" 
