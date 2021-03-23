@@ -1,32 +1,54 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Form, Switch, Input, Button, Row, Col, Select } from 'antd';
-import { getInventoryById } from 'services/blood_bank/blood_inventory';
-import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
 import moment from 'moment';
+import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
+import { getInventoryById, updateInventory } from 'services/blood_bank/blood_inventory';
+import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { FIELD_RULES } from './constant';
+
 
 const { TextArea } = Input;
 
-function InventoryDetail({ inventoryId = 1 }) {
+function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
+  const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
-  function onSubmit() {}
+  async function onSubmit(values) {
+    setLoading(true);
+    const result = await updateInventory({
+      id: inventoryID,
+      blood_storage: values.storage_id,
+      remarks: values.remarks,
+      is_active: isActive,
+      last_updated_by: loggedinUser.userID
+    });
+    setLoading(false);
+
+    if(result) {
+      message.success('Inventory detail succesfully updated');
+      refreshTableData();
+      closeDrawer();
+    }
+  }
+
+  useEffect(() => {
+    async function getData() {
+      const bloogStorage = await fetchBloodStorage(); 
+
+      setStorage(bloogStorage);
+    }
+
+    getData();
+  }, []);
 
   useEffect(() => {
     async function getData() {
       const form = formRef.current;
 
-      setLoading(true);
-      const [bloogStorage, inventory] = await Promise.all([
-        fetchBloodStorage(), 
-        getInventoryById(inventoryId)
-      ]);
-      setLoading(false);
-
-      setStorage(bloogStorage);
+      const inventory = await getInventoryById(inventoryID);
 
       if(form)
         form.setFieldsValue({
@@ -35,12 +57,12 @@ function InventoryDetail({ inventoryId = 1 }) {
         });
     }
 
-    getData();
+    if(inventoryID)
+      getData();
 
     console.log('use effect has run');
-  }, [inventoryId]);
-
-
+  }, [inventoryID]);
+  
 
   return (
     <Row>
@@ -60,11 +82,12 @@ function InventoryDetail({ inventoryId = 1 }) {
               <Input disabled />
             </Form.Item>
             <Form.Item
-              name="bloog_product_name"
+              name="blood_product"
               label="BLOOD PRODUCT"
               className="no-padding"
+              rules={FIELD_RULES.bloodProduct}
             >
-              <Input disabled={!isActive} />
+              <Input disabled />
             </Form.Item>
             <Form.Item
               name="blood_bag"
@@ -89,23 +112,23 @@ function InventoryDetail({ inventoryId = 1 }) {
               label=" "
               className="no-padding"
               style={{ textAlign: 'center' }}
+              valuePropName="checked"
             >
               <Switch 
                 checkedChildren="ACTIVE" 
                 unCheckedChildren="INACTIVE"
-                checked={isActive}
                 onChange={checked => setIsActive(checked)}
               />
             </Form.Item>
             <Form.Item
-              name="status"
+              name="status_name"
               label="STATUS"
               className="no-padding"
             >
               <Input disabled />
             </Form.Item>
             <Form.Item
-              name="blood_storage_id"
+              name="storage_id"
               label="STORAGE"
               className="no-padding"
               rules={FIELD_RULES.storage}
@@ -148,7 +171,7 @@ function InventoryDetail({ inventoryId = 1 }) {
             <Button
               shape="round"
               style={{ marginRight: 10, width: 120 }}
-              onClick={() => {}}
+              onClick={closeDrawer}
             >
               CANCEL
             </Button>

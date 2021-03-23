@@ -1,6 +1,6 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { API_GET_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 
 export async function searchInventory(payload) {
 	let bloodinventory = [];
@@ -39,4 +39,23 @@ export async function getInventoryById(id) {
  	}
   
   return bloodinventory;
+}
+
+
+export async function updateInventory(payload) {
+  try{
+    const response = await axiosPhase2API({
+      method: API_PUT_METHOD,
+			url: `blood_inventory/blood_inventory/update/${payload.id}/`,
+      data: payload
+		});
+		
+		const { data } = response;
+
+    return data;
+  } 
+  catch(e) {
+    Message.error();
+    return false;
+ 	}
 }

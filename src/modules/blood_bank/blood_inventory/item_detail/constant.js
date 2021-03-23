@@ -4,6 +4,9 @@ export const FIELD_RULES = {
 	bloodType: [
 		{ required: true, message: errorMessage.required },
 	],
+  bloodProduct: [
+		{ required: true, message: errorMessage.required },
+	],
 	status: [
     { required: true, message: errorMessage.required },
   ],
