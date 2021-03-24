@@ -8,7 +8,8 @@ import {
 	Button, 
 	Input, 
 	Icon, 
-	Drawer 
+	Drawer,
+	Select 
 } from 'antd';
 import TablePager from 'shared_components/table_pager';
 
@@ -21,33 +22,22 @@ import {
 } from '../settings';
 import BarangayForm from '../form';
 
-import fetchBarangayItems from 'services/settings/Address';
+import  fetchBarangayItems,{ fetchCityItems, fetchProvincesItems } from 'services/settings/Address';
 
 const { Search } = Input;
 const barangayColumns = [
 	{
-		title: 'BARANGAY ID',
-		dataIndex: 'barangay_id',
-		key: 1,
-		width:210
-	},
-	{
 		title: 'BARANGAY CODE',
-		dataIndex: 'barangay_code',
+		dataIndex: 'townCode',
 		key: 2,	
 		width:250
 	},
 	{
 		title: 'BARANGAY NAME',
-		dataIndex: 'barangay_name',
+		dataIndex: 'townName',
 		key: 3,
 		width:200
 	},
-	{
-		title: 'CITY',
-		dataIndex: 'city',
-		key: 3,
-  }	
 ];
 
 
@@ -59,15 +49,33 @@ class BarangayTable extends React.Component {
 			actionType:'add',
 			drawerTitle: '',
 			drawerButton: '',
+			ProvincesItems:[],
+			CityItem:[],
+			BarangayItem:[]
 		}
 	}
 	
 	async componentDidMount(){
-		const barangayResponse = await fetchBarangayItems();
+		const ProvincesResponse = await fetchProvincesItems();
 		this.setState({
-			barangayUserRef:barangayResponse,
-			barangayItem:barangayResponse
+			ProvincesItems:ProvincesResponse
 		})
+	}
+
+	onChangeProvince = async (value) => { 
+		const CityResponse =  await fetchCityItems(value);
+    console.log("file: index.js ~ line 78 ~ BarangayTable ~ onChangeProvince= ~ CityResponse", CityResponse)
+		this.setState({ 
+			CityItem:CityResponse,
+		}) 
+	}
+
+	onChangeCity = async (value) => { 
+		const BarangayResponse =  await fetchBarangayItems(value);
+    console.log("file: index.js ~ line 86 ~ BarangayTable ~ onChangeCity= ~ BarangayResponse", BarangayResponse)
+		this.setState({ 
+			BarangayItem:BarangayResponse,
+		}) 
 	}
 
 	onSearch = (value) => { 
@@ -125,15 +133,25 @@ class BarangayTable extends React.Component {
 
 	render() {
 		const { 
-			barangayItem,
+			BarangayItem,
 			pagination, 
 			drawerButton, 
 			selectedBarangay, 
 			visible, 
 			drawerTitle, 
 			loading,
-			actionType 
+			actionType,
+			ProvincesItems,
+			CityItem 
 		} = this.state;
+		
+		const mappedDataProvince = ProvincesItems.map((item) => {
+      return (<option value={item.provinceCode}>{item.provinceName}</option>)
+    });
+
+		const mappedDataCity = CityItem.map((item) => {
+      return (<option value={item.cityMunicipalityCode}>{item.cityMunicipalityName}</option>)
+    });
 
 		return(
 			<div>
@@ -147,36 +165,33 @@ class BarangayTable extends React.Component {
 								style={{ width: 200 }}
 								className="panel-table-search-input"
 							/>
-						</Col>
-						<Col span={12} style={{ textAlign: 'right' }}>
-							<Button 
-								type="primary" 
-								shape="round" 
-								style={{ marginRight: '15px' }} 
-								onClick={this.showDrawer}
+							<Select 
+								defaultValue="PROVINCE" 
+								style={{ width: 200, marginLeft:20 }} 
+								onChange={this.onChangeProvince} 
 							>
-								<Icon type="plus" /> ADD BARANGAY
-							</Button>
-							<TablePager handleChange={this.handleSelectChange} />
+								{mappedDataProvince}
+							</Select>
+							<Select 
+								defaultValue="CITY" 
+								style={{ width: 200, marginLeft:20 }} 
+								onChange={this.onChangeCity} 
+							>
+								{mappedDataCity}
+							</Select>
 						</Col>
 					</Row>
 				</div>
 				<div className="settings-user-table">
 					<Table 
-						dataSource={barangayItem}
+						dataSource={BarangayItem}
 						loading={loading}
 						size={tableSize}
 						scroll={{ y: tableYScroll }}
 						columns={barangayColumns} 
 						pagination={pagination}
 						rowKey={record => record.userID}
-						onRow={(record) => {
-							return {     
-								onDoubleClick: () => {
-									this.displayDrawerUpdate(record);
-								}
-							}
-						}}
+						
 					/>
 				</div>    
 				{/* DRAWER */}

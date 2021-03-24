@@ -19,45 +19,45 @@ class ProvinceForm extends React.Component {
     };
 	} 
 
-	onFinish = async values => {
-		const { drawerButton } = this.props;
-    const payload = {
-			province_id :values.province_id,
-			province_code :values.province_code,
-			province_name :values.province_name,
-			created_by: 1,	
-			is_active: (values.is_active === true) ? 1 : 0,
-		};
-		if(drawerButton === 'ADD'){
-			const createdUserResponse = await createProvincesItems(payload);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
-		}
-		else {
-			payload.province_id = values.province_id;
-			const updateUserResponse =  await updateProvincesItems(payload).catch(reason => console.log('TCL->', reason));
-			// @ts-ignore)
-			if(updateUserResponse.status === 200){
-				const httpMessageConfig = {
-					message: messagePrompts.successUpdateUser,
-					// @ts-ignore
-					status: updateUserResponse.status,
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);
-			}
-		}
-	};
+	// onFinish = async values => {
+	// 	const { drawerButton } = this.props;
+  //   const payload = {
+	// 		province_id :values.province_id,
+	// 		province_code :values.province_code,
+	// 		province_name :values.province_name,
+	// 		created_by: 1,	
+	// 		is_active: (values.is_active === true) ? 1 : 0,
+	// 	};
+	// 	if(drawerButton === 'ADD'){
+	// 		const createdUserResponse = await createProvincesItems(payload);
+	// 		// @ts-ignore
+	// 		if(createdUserResponse.status === 201){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successCreateUser,
+	// 				// @ts-ignore
+	// 				status: createdUserResponse.status,	
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);	
+	// 		}	
+	// 	}
+	// 	else {
+	// 		payload.province_id = values.province_id;
+	// 		const updateUserResponse =  await updateProvincesItems(payload).catch(reason => console.log('TCL->', reason));
+	// 		// @ts-ignore)
+	// 		if(updateUserResponse.status === 200){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successUpdateUser,
+	// 				// @ts-ignore
+	// 				status: updateUserResponse.status,
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);
+	// 		}
+	// 	}
+	// };
 
 	onDisable = () => {
     this.setState({
@@ -78,7 +78,7 @@ class ProvinceForm extends React.Component {
 						province_code:selectedProvince.province_code,
 						province_name:selectedProvince.province_name 
 					}}
-					onFinish={this.onFinish}       
+					// onFinish={this.onFinish}       
 				>
 					{this.props.drawerButton == "UPDATE"? (		
 						<Form.Item 

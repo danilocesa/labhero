@@ -1,8 +1,8 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { fetchCityItems } from 'services/settings/Address';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import { fetchCityItems,fetchProvincesItems } from 'services/settings/Address';
+import { Row, Col, Table, Button, Input, Icon, Drawer,Select } from 'antd';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
@@ -17,28 +17,17 @@ import CityForm from '../form';
 const { Search } = Input;
 const cityColumns = [
 	{
-		title: 'CITY ID',
-		dataIndex: 'city_id',
-		key: 1,
-		width:210
-	},
-	{
 		title: 'CITY CODE',
-		dataIndex: 'city_code',
+		dataIndex: 'cityMunicipalityCode',
 		key: 2,	
 		width:250
 	},
 	{
 		title: 'CITY NAME',
-		dataIndex: 'city_name',
+		dataIndex: 'cityMunicipalityName',
 		key: 3,
 		width:200
 	},
-	{
-		title: 'PROVINCE',
-		dataIndex: 'province',
-		key: 3,
-	}
 ];
 
 class CityTable extends React.Component {
@@ -48,16 +37,24 @@ class CityTable extends React.Component {
 			actionType:'add',
 			drawerTitle: '',
 			drawerButton: '',
-			CityItem:[]
+			CityItem:[],
+			ProvincesItems:[],
 		}
 	}
 
 	async componentDidMount(){
-		const CityResponse = await fetchCityItems();
+		const ProvincesResponse = await fetchProvincesItems();
 		this.setState({
-			CityusersRef:CityResponse,
-			CityItem:CityResponse
+			ProvincesItems:ProvincesResponse
 		})
+	}
+
+	onChange = async (value) => { 
+		const CityResponse =  await fetchCityItems(value);
+		this.setState({ 
+			CityusersRef:CityResponse,
+			CityItem:CityResponse,
+		}) 
 	}
 	
 	showDrawer = () => {
@@ -92,16 +89,16 @@ class CityTable extends React.Component {
 		const { CityusersRef } = this.state;
 			const Cityfiltered = CityusersRef.filter((item) => {
 				// eslint-disable-next-line camelcase
-				const { city_name } = item;
+				const { cityMunicipalityName } = item;
 				return (
-					this.containsString(city_name, searchedVal)
+					this.containsString(cityMunicipalityName, searchedVal)
 				);
 			});
 				this.setState({ 
 					CityItem:Cityfiltered,
 				});
   };
-	
+
 	onChangeSearch = (event) => {
     const { CityusersRef } = this.state;
     if (event.target.value === "") this.setState({ CityItem: CityusersRef });
@@ -114,6 +111,7 @@ class CityTable extends React.Component {
 
 
 	render() {
+		
 		const { 
 			CityItem,
       pagination, 
@@ -122,8 +120,13 @@ class CityTable extends React.Component {
       visible, 
       drawerTitle, 
       loading,
-      actionType 
+      actionType,
+			ProvincesItems 
     } = this.state;
+		const mappedData = ProvincesItems.map((item) => {
+      return (<option value={item.provinceCode}>{item.provinceName}</option>)
+    });
+
 			return(
 				<div>
 					<div className="settings-user-table-action">
@@ -136,17 +139,9 @@ class CityTable extends React.Component {
 									style={{ width: 200 }}
 									className="panel-table-search-input"
                 />
-							</Col>
-							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD CITY
-								</Button>
-								<TablePager handleChange={this.handleSelectChange} />
+								<Select defaultValue="PROVINCE" style={{ width: 200, marginLeft:20 }} onChange={this.onChange} >
+									{mappedData}
+								</Select>
 							</Col>
 						</Row>
 					</div>

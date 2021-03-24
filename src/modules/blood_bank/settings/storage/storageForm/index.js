@@ -20,7 +20,7 @@ export default class StorageForm extends Component {
 
   render() {
     const { disabled } = this.state
-    const {drawerButton} = this.props
+    const { drawerButton } = this.props
     return (
       <div>
         <Form
@@ -34,19 +34,27 @@ export default class StorageForm extends Component {
           >
             <Input onChange={this.onDisable}/>
           </Form.Item>
-
           <Form.Item
             label="Description"
             name="Description"
           >
             <TextArea rows={4} onChange={this.onDisable}/>
           </Form.Item>
-
           <section className="drawerFooter">
-            <Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+            <Button 
+              shape="round" 
+              style={{ marginRight: 8, width: 120 }} 
+              onClick={this.props.onClose}
+            >
               CANCEL
             </Button>
-            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+            <Button
+              disabled={disabled} 
+              type="primary"
+               shape="round" 
+               style={{ margin: 10, width: 120 }} 
+               htmlType="submit"
+            >
               {drawerButton}
             </Button>
 				  </section>
