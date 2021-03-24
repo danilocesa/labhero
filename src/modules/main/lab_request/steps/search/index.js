@@ -22,7 +22,6 @@ import TableHeader from './table_header';
 import Table from 'shared_components/search_patient_table';
 import ButtonLink from './link';
 import { tablePageSize } from '../settings';
-import items_form from 'modules/inventory/settings/items/items_form/items_form';
 
 
 class SearchStep extends React.Component {
@@ -78,12 +77,12 @@ class SearchStep extends React.Component {
 	}
 
 	populatePatients = (patients) => {
-		const newPatients = patients.map(item => ({
+		const newPatients = patients.map((item, index) => ({
 			...item, 
-			key: item.requestHeader.requestID
+			key: index
 		}));
 
-		this.setState({ patients: newPatients });
+		this.setState({ patients: newPatients  });
 	}
 
 	displayLoading = (isLoading) => {

@@ -13,19 +13,16 @@ function SearchBloodInventory() {
   const [pageSize, setPageSize] = useState(GLOBAL_TABLE_PAGE_SIZE);
   const [loading, setLoading] = useState(false);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
-  const [invDetail, setinvDetail] = useState({});
-  
+  const [selectedID, setSelectedID] = useState(null);
+  const [cachedPayload, setCachedPayload] = useState(null);
+
   function handleChangeSize(size) {
     setPageSize(size);
   }
 
-  function displayDrawerUpdate(invDetail) {
-    setinvDetail(invDetail);
+  function displayDrawerUpdate(id) {
+    setSelectedID(id);
     setvisibleDrawer(true);
-  }
-
-  function onDrawerClose() {
-    setvisibleDrawer(false);
   }
 
   async function search(payload) {
@@ -33,14 +30,22 @@ function SearchBloodInventory() {
     const bloodInventory = await searchInventory(payload);
     
     setLoading(false);
-    setData([]);
+    
 
-    if(bloodInventory.length > 0)
+    if(bloodInventory.length > 0) {
       setData(bloodInventory);
-    else
+      setCachedPayload(payload);
+    }
+    else {
+      setData([]);
       message.info('No result found');
+    }
   }
 
+
+  async function refreshTableData() {
+    await search(cachedPayload);
+  }
 
   return (
     <div>
@@ -60,13 +65,14 @@ function SearchBloodInventory() {
       <Drawer
         title="BLOOD INVENTORY DETAILS"
         visible={visibleDrawer}
-        onClose={onDrawerClose}
+        onClose={() => setvisibleDrawer(false)}
         width="30%"
         destroyOnClose
       >
         <BloodInventoryDetailsForm
-          invDetail={invDetail}
-          // onCancel={onDrawerClose}
+          inventoryID={selectedID}
+          refreshTableData={refreshTableData}
+          closeDrawer={() => setvisibleDrawer(false)}
         />
       </Drawer>
     </div>

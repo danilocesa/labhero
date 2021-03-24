@@ -7,15 +7,11 @@ const { TextArea } = Input;
 export default class StorageForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-			disabled: true,
-    };
+    this.state = { disabled: true };
 	} 
 
   onDisable = () => {
-    this.setState({
-      disabled:false
-    })
+    this.setState({ disabled:false })
   }
 
   render() {
@@ -48,12 +44,12 @@ export default class StorageForm extends Component {
             >
               CANCEL
             </Button>
-            <Button
+            <Button 
               disabled={disabled} 
-              type="primary"
-               shape="round" 
-               style={{ margin: 10, width: 120 }} 
-               htmlType="submit"
+              type="primary" 
+              shape="round" 
+              style={{ margin: 10, width: 120 }} 
+              htmlType="submit"
             >
               {drawerButton}
             </Button>

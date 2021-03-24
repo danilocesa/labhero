@@ -43,7 +43,7 @@ function SearchTable(props){
       onRow={(record) => {
         return {
           onDoubleClick: () => {
-            displayDrawerUpdate(record);
+            displayDrawerUpdate(record.blood_inventory_id);
           },
         };
       }}

@@ -25,7 +25,7 @@ class BloodGroupForm extends React.Component {
     };
 	} 
 
-	onFinish = async values => {
+	onFinish = async (values) => {
 		const { drawerButton } = this.props;
     const payload = {
 			blood_type_id :values.blood_group_id,
@@ -101,10 +101,8 @@ class BloodGroupForm extends React.Component {
 						null
 						}
 						<div className="form-section">
-						<Form.Item 
-							name='blood_group_id'
-						>
-							<Input style={{ textTransform: 'uppercase', display:'none'}} />		
+						<Form.Item name='blood_group_id' style={{ display: 'none' }}>
+							<Input style={{ textTransform: 'uppercase', display: 'none' }} />		
 						</Form.Item>
 						<Form.Item 
 							label="BLOOD TYPE" 
