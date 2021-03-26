@@ -19,6 +19,8 @@ import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
 import scanImage from 'images/bloodbank/donor_reg/fingerprint.gif';
+import MatchFoundModal from '../modal/matchFound'
+import NoMatchFoundModal from '../modal/noMatchFound'
 
 import './index.css';
 import { Link } from "react-router-dom";
@@ -74,7 +76,10 @@ class DonorRegSearch extends React.Component {
       loading: false,
       data: [],
       actionType: null,
-      modalVisible: true
+      modalVisible: true,
+      showModalNoMatchFound: false,
+      isDisplayModal: false,
+      modalVisibleNoMatchFound: false,
     };
     this.formRef = React.createRef();
   } 
@@ -139,12 +144,29 @@ class DonorRegSearch extends React.Component {
   hideModal = () => {
     this.setState({
       modalVisible: false,
+      isDisplayModal: false,
+      modalVisibleNoMatchFound: false
     });
   };
 
+  showModalNoMatchFound = () => {
+    this.setState({
+      modalVisibleNoMatchFound: true,
+      modalVisible: false,
+    });
+  }
+
+  displayModalMatchfound = () => {
+    this.setState({
+      isDisplayModal: true,
+      modalVisible: false,
+    });
+    
+  }
+  
 
   render() {
-    const { data, loading, pageSize, actionType, modalVisible } = this.state;
+    const { data, loading, pageSize, actionType, modalVisible, showModalNoMatchFound, isDisplayModal, modalVisibleNoMatchFound } = this.state;
 
     const TableFooter = (
       <Row justify="center">
@@ -159,19 +181,9 @@ class DonorRegSearch extends React.Component {
       </Row>
     );
 
+
     return (
       <div>
-        <Modal
-          title="Scan Finger"
-          visible={modalVisible}
-          onOk={this.hideModal}
-          onCancel={this.hideModal}
-          okText="Scan"
-          cancelText="Cancel"
-          className="modal"
-        >
-          <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
-        </Modal>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
         <Steps 
           size="small" 
@@ -254,11 +266,26 @@ class DonorRegSearch extends React.Component {
           </Row>  
         </Form>
 
-        <SearchPager 
-          handleChangeSize={this.handleChangeSize}
-          pageTotal={data.length}
-          pageSize={pageSize}
-        />
+          <Col span={24}>
+            <Button
+              className="form-button"
+              shape="round" 
+              onClick={this.showModal}
+              style={{
+                marginLeft: "79%",
+                position: "absolute",
+                zIndex: 99,
+                marginTop: 15,
+              }}
+            >
+              SCAN FINGER
+            </Button>
+            <SearchPager 
+              handleChangeSize={this.handleChangeSize}
+              pageTotal={data.length}
+              pageSize={pageSize}
+            />
+          </Col>
 
         <Table 
           style={{textTransform: 'uppercase'}}
@@ -275,6 +302,22 @@ class DonorRegSearch extends React.Component {
           }}
           {...(actionType === 'byName' && {footer: () => TableFooter})}
         />
+
+        <Modal
+          title="Scan Finger"
+          visible={modalVisible}
+          onOk={this.displayModalMatchfound}
+          onCancel={this.showModalNoMatchFound}
+          okText="Scan"
+          cancelText="Cancel"
+          className="modal"
+        >
+          <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
+        </Modal>
+
+        <MatchFoundModal isDisplay={isDisplayModal} hideModal={this.hideModal} />
+        <NoMatchFoundModal isDisplay={modalVisibleNoMatchFound} hideModal={this.hideModal} />
+
       </div>
     );
   }

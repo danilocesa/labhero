@@ -42,7 +42,7 @@ class Actions extends React.Component {
 					action: 'Save'
 				});
 
-				console.log(savedResults)
+				// console.log(savedResults)
 
 				this.setState({ isSaving: false }, () => {
 					if(savedResults) {
@@ -70,7 +70,7 @@ class Actions extends React.Component {
 					action
 				});
 
-				console.log(savedResults)
+				// console.log(savedResults)
 
 				this.setState({ isApproving: false }, () => {
 					if(savedResults) {
