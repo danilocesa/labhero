@@ -13,7 +13,7 @@ import CityList from 'shared_components/phase2_city';
 import TownList from 'shared_components/phase2_town';
 import { User as UserImg } from 'images/bloodbank';
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
-import DonorRegSteps from '../steps';
+import DonorRegSteps from '../DonorRegSteps';
 
 const { Text } = Typography;
 

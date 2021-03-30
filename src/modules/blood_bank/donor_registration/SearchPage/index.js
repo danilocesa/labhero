@@ -15,9 +15,9 @@ import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
 import scanImage from 'images/bloodbank/donor_reg/fingerprint.gif';
-import MatchFoundModal from '../modal/matchFound'
-import NoMatchFoundModal from '../modal/noMatchFound'
-import DonorRegSteps from '../steps';
+import MatchFoundModal from '../Modal/matchFound'
+import NoMatchFoundModal from '../Modal/noMatchFound'
+import DonorRegSteps from '../DonorRegSteps';
 
 import './index.css';
 

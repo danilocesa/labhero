@@ -15,7 +15,7 @@ import { fetchAdditionalFields }  from 'services/blood_bank/donor_registration';
 import { fetchHealthInfoById, createHealthInformation, updateHealthInformation } from 'services/blood_bank/health_info';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import DynamicFields from './dynamic_fields';
-import DonorRegSteps from '../steps';
+import DonorRegSteps from '../DonorRegSteps';
 
 const { Title  } = Typography;
 

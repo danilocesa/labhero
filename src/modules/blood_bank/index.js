@@ -2,11 +2,11 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import BloodBankMenu from './bloodbank_menu';
-import DonorRegSearch from './donor_registration/search';
-import DonorRegFingerPrint from './donor_registration/fingerprint_reg';
-import DonorRegHeathInfo from './donor_registration/health_info';
+import DonorRegSearch from './donor_registration/SearchPage';
+import DonorRegFingerPrint from './donor_registration/FingerPrintRegPage';
+import DonorRegHeathInfo from './donor_registration/HealthInfoPage';
 // import SearchDonor from './search_donor';
-import DonorRegFillUp from './donor_registration/fill_up';
+import DonorRegFillUp from './donor_registration/FillupPage';
 import ExtractionSearch from './extraction/search';
 
 import ScreeningSearch from './screening/search';

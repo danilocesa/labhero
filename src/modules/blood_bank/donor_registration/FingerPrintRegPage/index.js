@@ -3,7 +3,7 @@ import { Row, Col, Button, Image } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Lefthand, Righthand, FingerPrint } from 'images';
-import DonorRegSteps from '../steps';
+import DonorRegSteps from '../DonorRegSteps';
 
 import './style.css';
 
