@@ -1,7 +1,7 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Select, Row,  Col,Icon, Button, Input,Form } from 'antd'; 
+import { Select, Row } from 'antd'; 
 import { withRouter } from 'react-router-dom';
 import PageTitle from 'shared_components/page_title';
 import Barangay from './barangay'
@@ -33,27 +33,27 @@ class Address extends React.Component {
 				<section style={{ textAlign: 'center', marginTop: 5 }}>
 					<PageTitle pageTitle="ADDRESS" />
 						<Row style={{ marginTop: 30 }}>
-								<Select
-									style={{ width: 300 }}
-									onChange={this.onAddressChange}
-								>
-									<Option value="Barangay">Barangay</Option>
-									<Option value="Province">Province</Option>
-									<Option value="City">City</Option>
-								</Select>
+							<Select
+								style={{ width: 300 }}
+								onChange={this.onAddressChange}
+							>
+								<Option value="Barangay">Barangay</Option>
+								<Option value="Province">Province</Option>
+								<Option value="City">City</Option>
+							</Select>
 						</Row>
 				</section>
-					<div>
-						{
-							addressType === "Province" 
-								? <Province/> : 
-							(
-								addressType === "City" 
-									? <City/> : 
-								<Barangay/>
-							)
-						}
-					</div>
+				<div>
+					{
+						addressType === "Province" 
+							? <Province/> : 
+						(
+							addressType === "City" 
+								? <City/> : 
+							<Barangay/>
+						)
+					}
+				</div>
 			</div>
 		)
 	}

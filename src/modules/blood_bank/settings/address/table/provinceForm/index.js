@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { Form, Input, Button } from 'antd';
 
 const { TextArea } = Input;
-
-export default class StorageForm extends Component {
+export default class ProvinceForm extends Component {
   constructor(props) {
     super(props);
     this.state = { disabled: true };
@@ -16,25 +15,17 @@ export default class StorageForm extends Component {
 
   render() {
     const { disabled } = this.state
-    const { drawerButton } = this.props
+    const { buttonNames } = this.props
+
     return (
       <div>
-        <Form
-          layout="vertical"
-          name="basic"
-        >
+        <Form layout="vertical">
           <Form.Item
-            label="Storage"
-            name="Storage"
-            rules={[{ required: true, message: 'Please input your Storage!' }]}
+            label="Province"
+            name="Province"
+            rules={[{ required: true, message: 'Please input your Province!' }]}
           >
             <Input onChange={this.onDisable}/>
-          </Form.Item>
-          <Form.Item
-            label="Description"
-            name="Description"
-          >
-            <TextArea rows={4} onChange={this.onDisable}/>
           </Form.Item>
           <section className="drawerFooter">
             <Button 
@@ -44,14 +35,8 @@ export default class StorageForm extends Component {
             >
               CANCEL
             </Button>
-            <Button 
-              disabled={disabled} 
-              type="primary" 
-              shape="round" 
-              style={{ margin: 10, width: 120 }} 
-              htmlType="submit"
-            >
-              {drawerButton}
+            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+              {buttonNames}
             </Button>
 				  </section>
         </Form>
@@ -60,6 +45,8 @@ export default class StorageForm extends Component {
   }
 }
 
-StorageForm.propTypes = {
-	drawerButton: PropTypes.string.isRequired,
+ProvinceForm.propTypes = {
+	buttonNames: PropTypes.string.isRequired,
 }
+
+

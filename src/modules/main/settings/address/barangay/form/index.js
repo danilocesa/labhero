@@ -32,47 +32,47 @@ class BarangayForm extends React.Component {
 		})
 	}
 
-	onFinish = async values => {
-		const { drawerButton } = this.props;
-    const payload = {
-			barangay_id :values.barangay_id,
-			barangay_code :values.barangay_code,
-			barangay_name :values.barangay_name,
-			province:values.province,
-			city:values.province,
-			created_by: 1,	
-			is_active: (values.is_active === true) ? 1 : 0,
-		};
-		if(drawerButton === 'ADD'){
-			const createdUserResponse = await createBarangayItems(payload);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
-		}
-		else {
-			payload.barangay_id = values.barangay_id;
-			const updateUserResponse =  await updateBarangayItems(payload).catch(reason => console.log('TCL->', reason));
-			// @ts-ignore)
-			if(updateUserResponse.status === 200){
-				const httpMessageConfig = {
-					message: messagePrompts.successUpdateUser,
-					// @ts-ignore
-					status: updateUserResponse.status,
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);
-			}
-		}
-	};
+	// onFinish = async values => {
+	// 	const { drawerButton } = this.props;
+  //   const payload = {
+	// 		barangay_id :values.barangay_id,
+	// 		barangay_code :values.barangay_code,
+	// 		barangay_name :values.barangay_name,
+	// 		province:values.province,
+	// 		city:values.province,
+	// 		created_by: 1,	
+	// 		is_active: (values.is_active === true) ? 1 : 0,
+	// 	};
+	// 	if(drawerButton === 'ADD'){
+	// 		const createdUserResponse = await createBarangayItems(payload);
+	// 		// @ts-ignore
+	// 		if(createdUserResponse.status === 201){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successCreateUser,
+	// 				// @ts-ignore
+	// 				status: createdUserResponse.status,	
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);	
+	// 		}	
+	// 	}
+	// 	else {
+	// 		payload.barangay_id = values.barangay_id;
+	// 		const updateUserResponse =  await updateBarangayItems(payload).catch(reason => console.log('TCL->', reason));
+	// 		// @ts-ignore)
+	// 		if(updateUserResponse.status === 200){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successUpdateUser,
+	// 				// @ts-ignore
+	// 				status: updateUserResponse.status,
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);
+	// 		}
+	// 	}
+	// };
 
 	onDisable = () => {
     this.setState({
@@ -102,7 +102,7 @@ class BarangayForm extends React.Component {
 						barangay_code:selectedBarangay.barangay_code,
 						barangay_name:selectedBarangay.barangay_name 
 					}}
-					onFinish={this.onFinish}       
+					// onFinish={this.onFinish}       
 				>
 					{this.props.drawerButton == "UPDATE"? (		
 						<Form.Item 

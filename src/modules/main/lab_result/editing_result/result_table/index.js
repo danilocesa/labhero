@@ -146,6 +146,8 @@ class EditableTable extends React.Component {
   render() {
 		const { formatedResults } = this.props;
 
+		// console.log(formatedResults)
+
     return (
 			<div className="labresult-exam-item-table">
 				<Form ref={this.formRef}>

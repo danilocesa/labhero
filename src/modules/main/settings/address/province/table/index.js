@@ -17,20 +17,14 @@ import CityForm from '../form';
 const { Search } = Input;
 const provinceColumns = [
 	{
-		title: 'PROVINCE ID',
-		dataIndex: 'province_id',
-		key: 1,
-		width:210
-	},
-	{
 		title: 'PROVINCE CODE',
-		dataIndex: 'province_code',
+		dataIndex: 'provinceCode',
 		key: 2,	
 		width:250
 	},
 	{
 		title: 'PROVINCE NAME',
-		dataIndex: 'province_name',
+		dataIndex: 'provinceName',
 		key: 3,
   },
 ];
@@ -134,17 +128,6 @@ class ProvinceTable extends React.Component {
 									className="panel-table-search-input"
                 />
 							</Col>
-							<Col span={12} style={{ textAlign: 'right' }}>
-								<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" /> ADD CITY
-								</Button>
-								<TablePager handleChange={this.handleSelectChange} />
-							</Col>
 						</Row>
 					</div>
 					<div className="settings-user-table">
@@ -156,13 +139,7 @@ class ProvinceTable extends React.Component {
 							columns={provinceColumns} 
 							pagination={pagination}
 							rowKey={record => record.userID}
-							onRow={(record) => {
-								return {     
-									onDoubleClick: () => {
-										this.displayDrawerUpdate(record);
-									}
-								}
-							}}
+			
 						/>
 					</div>    
 					{/* DRAWER */}

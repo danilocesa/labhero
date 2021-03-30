@@ -29,46 +29,46 @@ class CityForm extends React.Component {
 		})
 	}
 
-	onFinish = async values => {
-		const { drawerButton } = this.props;
-    const payload = {
-			city_id :values.city_id,
-			city_code :values.city_code,
-			city_name :values.city_name,
-			created_by: 1,
-			province_id:	values.province,
-			is_active: (values.is_active === true) ? 1 : 0,
-		};
-		if(drawerButton === 'ADD'){
-			const createdUserResponse = await createCityItems(payload);
-			// @ts-ignore
-			if(createdUserResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdUserResponse.status,	
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
-		}
-		else {
-			payload.city_id = values.city_id;
-			const updateUserResponse =  await updateCityItems(payload).catch(reason => console.log('TCL->', reason));
-			// @ts-ignore)
-			if(updateUserResponse.status === 200){
-				const httpMessageConfig = {
-					message: messagePrompts.successUpdateUser,
-					// @ts-ignore
-					status: updateUserResponse.status,
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);
-			}
-		}
-	};
+	// onFinish = async values => {
+	// 	const { drawerButton } = this.props;
+  //   const payload = {
+	// 		city_id :values.city_id,
+	// 		city_code :values.city_code,
+	// 		city_name :values.city_name,
+	// 		created_by: 1,
+	// 		province_id:	values.province,
+	// 		is_active: (values.is_active === true) ? 1 : 0,
+	// 	};
+	// 	if(drawerButton === 'ADD'){
+	// 		const createdUserResponse = await createCityItems(payload);
+	// 		// @ts-ignore
+	// 		if(createdUserResponse.status === 201){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successCreateUser,
+	// 				// @ts-ignore
+	// 				status: createdUserResponse.status,	
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);	
+	// 		}	
+	// 	}
+	// 	else {
+	// 		payload.city_id = values.city_id;
+	// 		const updateUserResponse =  await updateCityItems(payload).catch(reason => console.log('TCL->', reason));
+	// 		// @ts-ignore)
+	// 		if(updateUserResponse.status === 200){
+	// 			const httpMessageConfig = {
+	// 				message: messagePrompts.successUpdateUser,
+	// 				// @ts-ignore
+	// 				status: updateUserResponse.status,
+	// 				duration: 3, 
+	// 				onClose: () => window.location.reload() 
+	// 			}
+	// 			HttpCodeMessage(httpMessageConfig);
+	// 		}
+	// 	}
+	// };
 
 	onDisable = () => {
     this.setState({
@@ -94,7 +94,7 @@ class CityForm extends React.Component {
 						city_name:selectedCity.city_name,
 						province:selectedCity.selectedCity
 					}}
-					onFinish={this.onFinish}       
+					// onFinish={this.onFinish}       
 				>
 					{this.props.drawerButton == "UPDATE"? (		
 						<Form.Item 

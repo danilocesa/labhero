@@ -1,68 +1,61 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import StorageForm from '../storageForm'
+import HopitalForm from '../hospitalForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer } from 'antd';
 
 const { Search } = Input;
-export default class StorageTable extends Component {
+const dataSource = [
+  {
+    Hospital: 'Mike',
+    Location: '10 Downing Street',
+  },
+  {
+    Hospital: 'John',
+    Location: '10 Downing Street',
+  },
+];
+
+const columns = [
+  {
+    title: 'HOSPITAL',
+    dataIndex: 'Hospital',
+  },
+  {
+    title: 'LOCATION',
+    dataIndex: 'Location',
+  },
+];
+export default class HopitalTable extends Component {
   constructor(props) {
 		super(props);
-		this.state = {
-			visible: false,
-		}
+		this.state = { visible: false }
 	}
 
   displayDrawer = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "UPDATE STORAGE",
+			drawerTitle: "UPDATE HOPITAL",
 			selecetedData:record,
       buttonNames:"UPDATE"
 		});
 	}
 
   onDrawerClose = () => {
-		this.setState({
-			visible: false,
-		});
+		this.setState({ visible: false });
 	};
   
   showDrawer = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "ADD STORAGE",
+			drawerTitle: "ADD HOPITAL",
 			selecetedData: record,
       buttonNames:"ADD"
 		});
 	}
 
   render() {
-    const { visible , drawerTitle,buttonNames } = this.state
-    const dataSource = [
-      {
-        Storage: 'Mike',
-        Description: '10 Downing Street',
-      },
-      {
-        Storage: 'John',
-        Description: '10 Downing Street',
-      },
-    ];
-    
-    const columns = [
-      {
-        title: 'Storage',
-        dataIndex: 'Storage',
-        key: 'Storage',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'Description',
-        key: 'Description',
-      },
-    ];
-
+    const { visible , drawerTitle, buttonNames } = this.state
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
@@ -77,7 +70,7 @@ export default class StorageTable extends Component {
               style={{ marginRight: '15px' }} 
               icon={<PlusOutlined />}
             >
-              ADD STORAGE
+              ADD HOSPITAL
             </Button >
             <TablePager/>
           </Col>
@@ -99,7 +92,7 @@ export default class StorageTable extends Component {
           onClose={this.onDrawerClose}
           destroyOnClose
         >
-          <StorageForm buttonNames={buttonNames}/>
+          <HopitalForm  buttonNames={buttonNames} />
         </Drawer>
       </div>
     )

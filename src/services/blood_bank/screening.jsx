@@ -9,7 +9,7 @@ export default async function fetchPatients(patientName, patientID) {
   try {
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-      url: (patientID ? `/bloodbank/screening/data/by_id/${patientID}` : `bloodbank/screening/search/?search=${patientName}`) 
+      url: (patientID ? `/bloodbank/screening/manual_search/by_donor/${patientID}` : `/bloodbank/screening/manual_search/by_name?search=${patientName}`) 
     });
 
     const { data } = await response;

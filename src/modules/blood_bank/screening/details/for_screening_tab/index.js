@@ -8,11 +8,11 @@ const { TextArea } = Input;
 const coltableheader = [
   {
     title: 'DATE CREATED',
-    dataIndex: 'DC',
+    dataIndex: 'date_created',
   },
   {
     title: 'SCREENING STATUS',
-    dataIndex: 'SS',
+    dataIndex: 'status',
   }
 ];
 
@@ -87,12 +87,12 @@ class ForScreening extends React.Component {
 
   render() {
     const { donorDetail } = this.props
-    console.log("file: index.js ~ line 90 ~ ForScreening ~ render ~ donorDetail", donorDetail)
+    const Data = [donorDetail]
     const { buttonstatus } = this.state
     return (
       <div> 
         <Table 
-          dataSource={coltableheaderdata} 
+          dataSource={Data} 
           columns={coltableheader} 
           style={{height:80}} 
           pagination={false}

@@ -41,6 +41,9 @@ export async function fetchLabResultExamItems(specimenId) {
 }
 
 export async function saveLabResult(payload) {
+
+	console.log(payload)
+
 	try{
 		const content = {
 			method: API_POST_METHOD,

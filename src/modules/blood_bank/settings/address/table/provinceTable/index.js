@@ -1,68 +1,55 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import StorageForm from '../storageForm'
+import ProvinceForm from '../provinceForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer } from 'antd';
 
 const { Search } = Input;
-export default class StorageTable extends Component {
+const dataSource = [
+  {
+    province: 'Mike',
+  },
+  {
+    province: 'John',
+  },
+];
+
+const columns = [
+  {
+    title: 'PROVINCE',
+    dataIndex: 'province',
+  }
+];
+export default class ProvinceTable extends Component {
   constructor(props) {
 		super(props);
-		this.state = {
-			visible: false,
-		}
+		this.state = { visible: false }
 	}
 
   displayDrawer = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "UPDATE STORAGE",
+			drawerTitle: "UPDATE PROVINCE",
 			selecetedData:record,
       buttonNames:"UPDATE"
 		});
 	}
 
   onDrawerClose = () => {
-		this.setState({
-			visible: false,
-		});
+		this.setState({ visible: false });
 	};
   
   showDrawer = (record) => {
 		this.setState({
 			visible: true,
-			drawerTitle: "ADD STORAGE",
+			drawerTitle: "ADD PROVINCE",
 			selecetedData: record,
       buttonNames:"ADD"
 		});
 	}
 
   render() {
-    const { visible , drawerTitle,buttonNames } = this.state
-    const dataSource = [
-      {
-        Storage: 'Mike',
-        Description: '10 Downing Street',
-      },
-      {
-        Storage: 'John',
-        Description: '10 Downing Street',
-      },
-    ];
-    
-    const columns = [
-      {
-        title: 'Storage',
-        dataIndex: 'Storage',
-        key: 'Storage',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'Description',
-        key: 'Description',
-      },
-    ];
-
+    const { visible , drawerTitle, buttonNames } = this.state
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
@@ -77,7 +64,7 @@ export default class StorageTable extends Component {
               style={{ marginRight: '15px' }} 
               icon={<PlusOutlined />}
             >
-              ADD STORAGE
+              ADD PROVINCE
             </Button >
             <TablePager/>
           </Col>
@@ -99,7 +86,7 @@ export default class StorageTable extends Component {
           onClose={this.onDrawerClose}
           destroyOnClose
         >
-          <StorageForm buttonNames={buttonNames}/>
+          <ProvinceForm  buttonNames={buttonNames} />
         </Drawer>
       </div>
     )

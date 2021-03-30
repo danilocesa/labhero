@@ -183,11 +183,11 @@ export default class ForScreeningSearch extends Component {
            dataSource={data}
            columns={columns}
            rowKey={record => record.donor_id}
-           rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
+          //  rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
            onRow={(record) => {
              return {     
                onDoubleClick: () => {
-                 if(record.status.toUpperCase()  !== 'EXPIRED')
+                //  if(record.status.toUpperCase()  !== 'EXPIRED')
                    this.redirect(record)
                }
              }
