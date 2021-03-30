@@ -8,7 +8,7 @@ import Questionnaire from './questionnaire'
 import BloodGroup from './blood_group'
 import BloodTypes from './blood_types'
 import Storage from './storage'
-import Normal_Values from './normal_values'
+import NormalValues from './normal_values'
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -41,7 +41,7 @@ class settings extends React.Component {
             <BloodGroup />
           </TabPane>
           <TabPane tab="BLOOD TYPES" key="2">
-            <BloodTypes />
+            {/* <BloodTypes /> */}
           </TabPane>
           <TabPane tab="CATEGORIES" key="3">
             <BloocBankCategories />
@@ -56,7 +56,7 @@ class settings extends React.Component {
             <Storage />
           </TabPane>
           <TabPane tab="NORMAL VALUES" key="7">
-            <Normal_Values />
+            <NormalValues />
           </TabPane>
         </AntTabs>
 			</div>

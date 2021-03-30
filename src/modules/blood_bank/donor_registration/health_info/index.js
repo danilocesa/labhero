@@ -2,7 +2,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { 
-  Steps, 
   Typography,
   Col,
   Row,
@@ -10,15 +9,14 @@ import {
   Button,
   Divider,
 } from 'antd';
-import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
 import { fetchAdditionalFields }  from 'services/blood_bank/donor_registration';
 import { fetchHealthInfoById, createHealthInformation, updateHealthInformation } from 'services/blood_bank/health_info';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import DynamicFields from './dynamic_fields';
+import DonorRegSteps from '../steps';
 
-const { Step } = Steps;
 const { Title  } = Typography;
 
 
@@ -124,16 +122,7 @@ class HealthInformation extends React.Component {
 		return(
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-        <Steps 
-          size="small" 
-          current={2} 
-          labelPlacement="vertical"
-          style={{ marginTop:20, paddingRight:200, paddingLeft:200}}
-        >
-          <Step title="Search Donor" icon={<SearchOutlined />}  />
-          <Step title="Fill Up" icon={<ContainerOutlined />} />
-          <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-        </Steps>
+        <DonorRegSteps activeIndex={4} />
         <Row justify="center">
           <Col span={20}>
             <Title level={4} style={{ marginTop:40 }}>HEALTH INFORMATION</Title>

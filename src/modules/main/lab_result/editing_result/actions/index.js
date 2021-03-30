@@ -42,8 +42,6 @@ class Actions extends React.Component {
 					action: 'Save'
 				});
 
-				console.log(savedResults)
-
 				this.setState({ isSaving: false }, () => {
 					if(savedResults) {
 						onSaveSuccess();
@@ -69,8 +67,6 @@ class Actions extends React.Component {
 					userID: userSession.userID,
 					action
 				});
-
-				console.log(savedResults)
 
 				this.setState({ isApproving: false }, () => {
 					if(savedResults) {

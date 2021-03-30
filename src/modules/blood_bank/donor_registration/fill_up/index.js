@@ -1,8 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Steps,Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from 'antd';
-import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
+import { Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from 'antd';
 import moment from 'moment';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createDonor, updateDonor } from 'services/blood_bank/donor_registration';
@@ -14,8 +13,8 @@ import CityList from 'shared_components/phase2_city';
 import TownList from 'shared_components/phase2_town';
 import { User as UserImg } from 'images/bloodbank';
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
+import DonorRegSteps from '../steps';
 
-const { Step } = Steps
 const { Text } = Typography;
 
 
@@ -167,15 +166,7 @@ class FillUpForm extends React.Component {
     return (
       <div>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-        <Row justify="center" style={{ marginTop: 10 }}>
-          <Col span={14}>
-            <Steps size="small" current={1} labelPlacement="vertical">
-              <Step title="Search Donor" icon={<SearchOutlined />}  />
-              <Step title="Fill Up" icon={<ContainerOutlined />} />
-              <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-            </Steps>
-          </Col>
-        </Row>
+        <DonorRegSteps activeIndex={2} />
         <Form 
           initialValues={{ 
             ...state,

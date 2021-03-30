@@ -11,7 +11,7 @@ const tmpDropdownOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
 const generateDynamicField = (paramObject, props) => {
     if(paramObject.field_type === 'nu') {
-      return <NumberInput stringMode style={{ width: 150 }} {...props} />
+      return <NumberInput style={{ width: 150 }} {...props} />
     }
       
     if(paramObject.field_type === 'dc') {

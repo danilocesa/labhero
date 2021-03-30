@@ -9,7 +9,7 @@ import './patientcomment.css';
 const { TextArea } = Input;
 
 export const fieldRules = {
-	remarks: [{ required: true, message: errorMessage.required }],
+	remarks: [{ required: false, message: errorMessage.required }],
 };
 
 class PatientComment extends React.Component {

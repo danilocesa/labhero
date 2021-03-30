@@ -4,14 +4,10 @@ import {
   Col,
   Table,
   Button,
-  Steps,
   Typography,
   Form,
   Modal
-} from "antd";
-
-// ICON
-import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
+} from 'antd';
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
 import PageTitle from 'shared_components/page_title';
@@ -19,11 +15,10 @@ import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
 import scanImage from 'images/bloodbank/donor_reg/fingerprint.gif';
+import DonorRegSteps from '../steps';
 
 import './index.css';
-import { Link } from "react-router-dom";
 
-const { Step } = Steps
 const { Text } = Typography
 const columns = [
   {
@@ -173,16 +168,7 @@ class DonorRegSearch extends React.Component {
           <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
         </Modal>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-        <Steps 
-          size="small" 
-          current={0} 
-          labelPlacement="vertical"
-          style={{ marginTop: 20, paddingRight: 200, paddingLeft: 200 }} 
-        >
-          <Step title="Search Donor" icon={<SearchOutlined />}  />
-          <Step title="Fill Up" icon={<ContainerOutlined />} />
-          <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-        </Steps>
+        <DonorRegSteps activeIndex={1} />
         <Form 
           className="blood-donor-reg-search-form" 
           onFinish={this.handleSubmit} 

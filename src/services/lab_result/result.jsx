@@ -1,5 +1,5 @@
 import Message from 'shared_components/message';
-import { axiosLabAPI } from 'services/axios';
+import { axiosLabAPI, axiosResultReportAPI } from 'services/axios';
 import { API_POST_METHOD, API_GET_METHOD } from 'global_config/constant-global';
 
 export async function fetchLabResult(payload) {
@@ -73,6 +73,24 @@ export async function getPrintPreview(spcmid) {
 		}
 
 		const response = await axiosLabAPI(content);
+		const { data } = await response;
+
+		return data || [];
+	}
+	catch(error) {
+		Message.error();
+		return false;
+	}
+}
+
+export async function getPrintPreviewV2(reqid, ssid) {
+	try{
+		const content = {
+			method: API_GET_METHOD,
+			url: `/labreport/DefaultResultReport/${reqid}?ssid=${ssid}`,
+		}
+
+		const response = await axiosResultReportAPI(content);
 		const { data } = await response;
 
 		return data || [];

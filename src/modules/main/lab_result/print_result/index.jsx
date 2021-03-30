@@ -31,8 +31,10 @@ class PrintResult extends React.Component {
 
   async componentDidUpdate(prevProps) {
     // const { sampleID, resultStatus } = this.props;
-    const { sampleID } = this.props;
+    const { sampleID, requestID } = this.props;
     
+    console.log(requestID, sampleID);
+
     if(prevProps.sampleID !== sampleID) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ isReadyToPrint: false });
@@ -133,6 +135,7 @@ class PrintResult extends React.Component {
 }
 
 PrintResult.propTypes = {
+  requestID: PropTypes.string,
   sampleID: PropTypes.string,
   onClose: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
@@ -140,6 +143,7 @@ PrintResult.propTypes = {
 };
 
 PrintResult.defaultProps = {
+  requestID: null,
   sampleID: null,
   resultStatus: null,
 };
