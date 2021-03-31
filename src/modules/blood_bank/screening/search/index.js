@@ -5,6 +5,8 @@ import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
 import fetchDonors from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
+import NotifModal from '../modal/NotifModal';
+
 import {
   Row ,
   Col ,
@@ -67,7 +69,8 @@ export default class ForScreeningSearch extends Component {
     this.state = {
       data: [],
       loading: false,
-      pageSize: GLOBAL_TABLE_PAGE_SIZE
+      pageSize: GLOBAL_TABLE_PAGE_SIZE,
+      isDisplayModal: false
     };
     this.formRef = React.createRef();
   }
@@ -96,8 +99,21 @@ export default class ForScreeningSearch extends Component {
 		this.setState({ pageSize });
 	}  
 
+  hideModal = () => {
+    this.setState({
+      isDisplayModal: false,
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      isDisplayModal: true,
+    });
+  };
+
+
   render() {
-    const { data, loading, pageSize } = this.state;
+    const { data, loading, pageSize, isDisplayModal } = this.state;
 
     return (
       <div>
@@ -193,6 +209,7 @@ export default class ForScreeningSearch extends Component {
              }
            }}
         />;
+        <NotifModal isDisplay={isDisplayModal} hideModal={this.hideModal} />
       </div>
     )
   }

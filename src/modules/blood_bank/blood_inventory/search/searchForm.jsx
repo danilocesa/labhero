@@ -49,9 +49,11 @@ function SearchForm({ onSearch }) {
     async function fetchData() {
       const bloodStorage = await fetchBloodStorage();
       const bloodTypes = await fetchBloodTypes();
-
+      let payload = {};
+      
       setBloodStorage(bloodStorage);
       setBloodTypes(bloodTypes);
+      onSearch(payload);
     }
 
     setLoading(true);
