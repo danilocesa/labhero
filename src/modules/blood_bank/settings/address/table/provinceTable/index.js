@@ -2,28 +2,40 @@ import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import ProvinceForm from '../provinceForm'
 import TablePager from 'shared_components/table_pager';
-import { Row, Col, Table, Button, Input, Drawer } from 'antd';
+import fetchProvinceItems from 'services/blood_bank/address'
+import { 
+  Row, 
+  Col, 
+  Table, 
+  Button, 
+  Input, 
+  Drawer 
+} from 'antd';
 
 const { Search } = Input;
-const dataSource = [
-  {
-    province: 'Mike',
-  },
-  {
-    province: 'John',
-  },
-];
 
 const columns = [
   {
     title: 'PROVINCE',
-    dataIndex: 'province',
+    dataIndex: 'province_name',
   }
 ];
+
 export default class ProvinceTable extends Component {
   constructor(props) {
 		super(props);
-		this.state = { visible: false }
+		this.state = { 
+      visible: false,
+      ProvinceItems:[]
+    }
+	}
+
+  async componentDidMount() {
+		this.setState({loading:true});
+		const response = await fetchProvinceItems();
+    this.setState({ 
+      ProvinceItems:response
+		});
 	}
 
   displayDrawer = (record) => {
@@ -49,7 +61,14 @@ export default class ProvinceTable extends Component {
 	}
 
   render() {
-    const { visible , drawerTitle, buttonNames } = this.state
+    const { 
+      visible,
+      drawerTitle, 
+      buttonNames,
+      ProvinceItems,
+      selecetedData,
+    } = this.state
+
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
@@ -70,7 +89,7 @@ export default class ProvinceTable extends Component {
           </Col>
 				</Row>
         <Table  
-          dataSource={dataSource} 
+          dataSource={ProvinceItems} 
           columns={columns} 
           onRow={(record) => {
             return {     
@@ -86,7 +105,10 @@ export default class ProvinceTable extends Component {
           onClose={this.onDrawerClose}
           destroyOnClose
         >
-          <ProvinceForm  buttonNames={buttonNames} />
+          <ProvinceForm 
+            buttonNames={buttonNames} 
+            selecetedData={selecetedData}
+          />
         </Drawer>
       </div>
     )

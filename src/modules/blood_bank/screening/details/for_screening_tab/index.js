@@ -1,6 +1,8 @@
 import React from "react"
 import PropTypes from 'prop-types';
-import { Table, Input , Button, Tabs  } from 'antd'
+import { Redirect } from 'react-router-dom';
+import { MoreOutlined } from '@ant-design/icons';
+import { Table, Input , Button, Tabs, Popover  } from 'antd'
 
 // CUSTOM MODULES
 const { TabPane } = Tabs;
@@ -48,7 +50,16 @@ class ForScreening extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      buttonstatus:true
+      visible: false,
+      buttonstatus:true,
+      redirect: false,
+      buttonData:
+      [
+        {
+          Title:'Extraction',
+          onclick:'/bloodbank/extraction/details',
+        }
+      ]
     };
 	} 
 
@@ -79,18 +90,43 @@ class ForScreening extends React.Component {
     }
   ];
 
+  handleVisibleChange = visible => {
+    this.setState({ visible });
+  };
+
   setDisable = () =>{
     this.setState({
       buttonstatus:false
     })
   }
 
+  redirect = () => {this.setState({ redirect: true })}
+
   render() {
     const { donorDetail } = this.props
     const Data = [donorDetail]
-    const { buttonstatus } = this.state
+    const { buttonstatus, buttonData, redirect, visible } = this.state
+    const render = buttonData.map(data => {
+      return (
+        <>
+          <a onClick={() => this.redirect()}>{data.Title}</a>
+          { redirect ? (<Redirect push to={{pathname:data.onclick,
+            state: { donorDetail: donorDetail }}}/>) : null }
+        </>
+      );
+    })
+
     return (
       <div> 
+        <Popover
+          content={render}
+          trigger="click"
+          visible={visible}
+          onVisibleChange={this.handleVisibleChange}
+          placement="bottomRight"
+        >
+          <Button icon={<MoreOutlined />}/>
+        </Popover>
         <Table 
           dataSource={Data} 
           columns={coltableheader} 

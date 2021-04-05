@@ -7,8 +7,13 @@ const { Text } = Typography;
 const { Option } = Select;
 
 class TablePager extends React.Component {
-	render() {
+
+	onChange = async (value) => {
 		const { handleChange } = this.props;
+		handleChange(value)	 
+	}
+
+	render() {
 
 		return (
 			<>
@@ -17,7 +22,7 @@ class TablePager extends React.Component {
 					size="small" 
 					defaultValue={GLOBAL_TABLE_PAGE_SIZE}
 					style={{ marginLeft: 10 }}
-					onChange={handleChange}
+					onChange={this.onChange}
 				>
 					<Option value={5}>5</Option>
 					<Option value={10}>10</Option>
@@ -30,7 +35,8 @@ class TablePager extends React.Component {
 }
 
 TablePager.propTypes = {
-	handleChange: PropTypes.func.isRequired
+	handleChange: PropTypes.func.isRequired,
+	response:PropTypes.object.isRequired
 };
 
 export default TablePager;

@@ -9,7 +9,7 @@ export default async function fetchBloodGroupItems() {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `bloodbank/bloodgroup/search/`,
+			url: `bloodbank/bloodgroup/`,
 		});
 		
 		const { data } = response;
@@ -45,13 +45,13 @@ export async function createBloodGroupAPI(payload) {
 
 export async function updateBloodGroupAPI(payload) {
   let updateBloodGroup = [];
-  const bloodGroupId = payload.blood_group_id;
+  const bloodGroupId = payload.blood_type_id;
 
   try{
     const content = {
       method: API_PUT_METHOD,
       url:`bloodbank/bloodgroup/update/${bloodGroupId}/`,
-      ata: payload
+      data: payload
     }
 
     const response = await axiosPhase2API(content);

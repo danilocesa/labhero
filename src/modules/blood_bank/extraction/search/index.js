@@ -13,9 +13,10 @@ import {
 
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchDonors  from 'services/blood_bank/extraction';
+import fetchDonors,{ fetchPatientsNext}  from 'services/blood_bank/extraction';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
+import Pagination from 'shared_components/table_pagination'
 import SearchPager from 'shared_components/search_pager';
 
 import './index.css';
@@ -74,21 +75,28 @@ class Extraction extends React.Component {
     this.state = {
       data: [],
       loading: false,
-      pageSize: GLOBAL_TABLE_PAGE_SIZE
+      pageSize: GLOBAL_TABLE_PAGE_SIZE,
+      count:0 ,
+      response:{}
     };
     this.formRef = React.createRef();
   }
   
   handleSubmit = async () => {  
+    const { pageSize } = this.state
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
 
     this.setState({ loading: true });
-    const donors = await fetchDonors(donorName, donorID);  
+    const donors = await fetchDonors(donorName, donorID, pageSize);  
     
     this.setState({ 
+      donorName,
+      donorID,
       loading: false,
-      data: donors 
+      response: donors,
+      count:donors.count,
+      data: donors.results 
     });
 
     if(donors.length <= 0) 
@@ -113,28 +121,58 @@ class Extraction extends React.Component {
     setFieldsValue({ donorID: '' });
   }
 
-  handleChangeTableSize = (pageSize) => {
-		this.setState({ pageSize });
+  handleChangeTableSize = async (pageSize) => {
+    const { donorName, page } = this.state
+    const donors = await fetchDonors(donorName,page,pageSize); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
 	}  
 
   clearInputs = () => {
     const { setFieldsValue } = this.formRef.current;
-
-    this.setState({ data: [] });
-    
-    setFieldsValue({ 
-      donorID: '',
-      donorName: ''
-    });
+    this.setState({ data: [] }); 
+    setFieldsValue({ donorID: '',donorName: '' });
   }
 
-
-  redirect = (record) => {
-    this.props.history.push('/bloodbank/extraction/details', record);
+  callbackFunction = async (page) => { 
+    const { response } =this.state
+    if (response.next === null) {
+      const url = response.previous
+      this.setState({ loading: true });
+      const donors = await fetchPatientsNext(url);
+      this.setState({ 
+        loading: false,
+        response: donors,
+        count:donors.count,
+        data: donors.results 
+      });
+    } else if(response.previous === null) {
+      const url = response.next
+      this.setState({ loading: true });
+      const donors = await fetchPatientsNext(url);
+      this.setState({ 
+        loading: false,
+        response: donors,
+        count:donors.count,
+        data: donors.results 
+      });
+    } 
   }
+
+  redirect = (donorDetail) => {this.props.history.push('/bloodbank/extraction/details',  {donorDetail:donorDetail})}
 
   render() {
-    const { data, loading, pageSize } = this.state;
+    const { 
+      data, 
+      loading, 
+      pageSize, 
+      count,
+      response 
+    } = this.state;
 
     return (
       <div>
@@ -152,7 +190,7 @@ class Extraction extends React.Component {
             gutter={12}
           >
             <Col>
-              <Form.Item label="DONOR'S ID" name="donorID" style={{marginLeft:30}}>
+              <Form.Item label="DONOR'S ID" name="donorID" >
                 <RegexInput 
                   style={{width:200}}
                   regex={/[0-9]/} 
@@ -164,7 +202,7 @@ class Extraction extends React.Component {
             </Col>
             <Col>
               <div style={{ marginTop: 5 }}>
-                <Text strong>OR</Text>
+                <Text strong> OR </Text>
               </div>
             </Col>
             <Col>
@@ -215,14 +253,15 @@ class Extraction extends React.Component {
         </Form>
         <SearchPager 
           handleChangeSize={this.handleChangeTableSize}
-          pageTotal={data.length}
+          pageTotal={count}
           pageSize={pageSize}
+          response={response}
         />
         <Table
           className="blood-extract-search-table"
           style={{ textTransform: 'uppercase', marginTop: 10 }}
           dataSource={data}
-          pagination={{ pageSize }}
+          pagination={false}
           loading={this.state.loading}
           columns={columns}
           rowKey={record => record.donor_id}
@@ -235,6 +274,11 @@ class Extraction extends React.Component {
               }
             }
           }}
+        />
+        <Pagination 
+          pageSize={pageSize} 
+          count={count}
+          parentCallback={this.callbackFunction}
         />
       </div>
     );

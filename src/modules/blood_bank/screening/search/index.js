@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
+import Pagination from 'shared_components/table_pagination'
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchDonors from 'services/blood_bank/screening';
+import fetchDonors, { fetchPatientsNext } from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
+import NotifModal from '../modal/NotifModal';
+
 import {
   Row ,
   Col ,
@@ -60,44 +63,93 @@ const columns = [
   }
 ];
 
-
 export default class ForScreeningSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
       loading: false,
-      pageSize: GLOBAL_TABLE_PAGE_SIZE
+      pageSize: GLOBAL_TABLE_PAGE_SIZE,
+      count:0 ,
+      response:{}
     };
     this.formRef = React.createRef();
   }
 
-  redirect = (record) => {
-    this.props.history.push('/bloodbank/screening/details', record);
+  redirect = (donorDetail) => {
+    this.props.history.push('/bloodbank/screening/details', {donorDetail:donorDetail});
   }
 
   handleSubmit = async () => {  
+    const { pageSize } = this.state
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
 
     this.setState({ loading: true });
-    const donors = await fetchDonors(donorName, donorID);  
+    const donors = await fetchDonors(donorName, donorID, pageSize);  
     
     this.setState({ 
       loading: false,
-      data: donors 
+      response: donors,
+      data: donors.results, 
+      count: donors.count,
     });
 
     if(donors.length <= 0) 
       Message.info('No results found');
+  } 
+
+  handleChangeTableSize = async (pageSize) => {
+    const { donorName, page } = this.state
+    const donors = await fetchDonors(donorName,page,pageSize); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
+	}
+
+  callbackFunction = async (page) => { 
+    const { response } =this.state
+    if (response.next === null) {
+      const url = response.previous
+      this.setState({ loading: true });
+      const donors = await fetchPatientsNext(url);
+      this.setState({ 
+        loading: false,
+        response: donors,
+        count:donors.count,
+        data: donors.results 
+      });
+    } else if(response.previous === null) {
+      const url = response.next
+      this.setState({ loading: true });
+      const donors = await fetchPatientsNext(url);
+      this.setState({ 
+        loading: false,
+        response: donors,
+        count:donors.count,
+        data: donors.results 
+      });
+    } 
   }
 
-  handleChangeTableSize = (pageSize) => {
-		this.setState({ pageSize });
-	}  
+  hideModal = () => {
+    this.setState({
+      isDisplayModal: false,
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      isDisplayModal: true,
+    });
+  };
+
 
   render() {
-    const { data, loading, pageSize } = this.state;
+    const { data, pageSize, count, response  } = this.state;
 
     return (
       <div>
@@ -115,7 +167,7 @@ export default class ForScreeningSearch extends Component {
             gutter={12}
           >
             <Col>
-              <Form.Item label="DONOR'S ID" name="donorID" style={{marginLeft:30}}>
+              <Form.Item label="DONOR'S ID" name="donorID" >
                 <RegexInput 
                   style={{width:200}}
                   regex={/[0-9]/} 
@@ -174,25 +226,32 @@ export default class ForScreeningSearch extends Component {
         </Form>
         <SearchPager 
           handleChangeSize={this.handleChangeTableSize}
-          pageTotal={data.length}
+          pageTotal={count}
           pageSize={pageSize}
+          response={response}
         />
-        <Table 
-           className="blood-extract-search-table"
-           style={{ textTransform: 'uppercase', marginTop: 10 }}
-           dataSource={data}
-           columns={columns}
-           rowKey={record => record.donor_id}
-          //  rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
-           onRow={(record) => {
-             return {     
-               onDoubleClick: () => {
-                //  if(record.status.toUpperCase()  !== 'EXPIRED')
-                   this.redirect(record)
-               }
-             }
-           }}
-        />;
+        <Table
+          className="blood-extract-search-table"
+          style={{ textTransform: 'uppercase', marginTop: 10 }}
+          dataSource={data}
+          pagination={false}
+          loading={this.state.loading}
+          columns={columns}
+          rowKey={record => record.donor_id}
+          onRow={(record) => {
+            return {     
+              onDoubleClick: () => {
+                if(record.status.toUpperCase()  !== 'EXPIRED')
+                  this.redirect(record)
+              }
+            }
+          }}
+        />
+        <Pagination 
+          pageSize={pageSize} 
+          count={count}
+          parentCallback={this.callbackFunction}
+        />
       </div>
     )
   }
