@@ -170,8 +170,6 @@ class EditResult extends React.Component {
 		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched, patientOtherInfo } = this.state;
 		const { patientInfo, examDetails } = this.props;
 
-		console.log(examDetails)
-
     return (
 	    <Row>
 		    <Col xs={24} sm={7} md={7} lg={6} xl={6}>
@@ -218,7 +216,7 @@ class EditResult extends React.Component {
 					</UserAccessContext.Consumer>
 					<PrintLabResult 
 						sampleID={examDetails.sampleSpecimenID || null}
-						requestID={examDetails.requestID || null}
+						requestID={patientInfo.requestID || null}
 						visible={isDisplayPrint}
 						onClose={() => this.setState({ isDisplayPrint: false })}
 						resultStatus={results.status || ''}

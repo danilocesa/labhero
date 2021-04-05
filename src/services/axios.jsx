@@ -17,7 +17,7 @@ export function setupAxiosInterceptors() {
 	axiosLabInstance.defaults.baseURL = process.env.REACT_APP_LAB_API; 
 	axiosPhase2Instance.defaults.baseURL = process.env.REACT_APP_PHASE2_API; 
 	axiosReportInstance.defaults.baseURL = process.env.REACT_APP_REPORT_API; 
-	axiosResultReportInstance.defaults.baseURL = process.env.REACT_RESULT_REPORT_API;
+	axiosResultReportInstance.defaults.baseURL = process.env.REACT_APP_RESULT_REPORT_API;
 
 	/** REQUEST INTERCEPTOR */
 	axiosLabInstance.interceptors.request.use(config => {
@@ -43,6 +43,11 @@ export function setupAxiosInterceptors() {
 		}};
 	});
 
+	axiosResultReportInstance.interceptors.request.use(config => {
+    return { ...config, headers: { 
+			'content-type': 'application/json',	
+		}};
+	});
 
 	/** RESPONSE INTERCEPTOR */
 	axiosLabInstance.interceptors.response.use(undefined, async(err) => {

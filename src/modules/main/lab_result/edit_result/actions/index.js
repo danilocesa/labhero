@@ -37,12 +37,11 @@ class Actions extends React.Component {
 			this.setState({ isSaving: true }, async () => {
 				const savedResults = await saveLabResult({
 					results: labResultFormValues.form.results,
-					remarks: labResultFormValues.remarks.value,
+					remarks: labResultFormValues.remarks.value ? labResultFormValues.remarks.value : '',
 					userID: userSession.userID,
 					action: 'Save'
 				});
 
-				// console.log(savedResults)
 
 				this.setState({ isSaving: false }, () => {
 					if(savedResults) {
@@ -65,7 +64,7 @@ class Actions extends React.Component {
 			this.setState({ isApproving: true }, async () => {
 				const savedResults = await saveLabResult({
 					results: labResultFormValues.form.results,
-					remarks: labResultFormValues.remarks.value,
+					remarks: labResultFormValues.remarks.value ? labResultFormValues.remarks.value : '',
 					userID: userSession.userID,
 					action
 				});

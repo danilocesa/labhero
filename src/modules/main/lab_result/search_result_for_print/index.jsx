@@ -1,5 +1,5 @@
 import React from 'react';
-import LabResult from '../index';
+import LabResult from '../search_result';
 
 class PrintLabResult extends React.Component {
 	onClickTableRow = () => {

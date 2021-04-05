@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Spin } from 'antd';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { getPrintPreview } from 'services/lab_result/result';
+import { getPrintPreview, getPrintPreviewV2 } from 'services/lab_result/result';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -30,25 +30,23 @@ class PrintResult extends React.Component {
   }
 
   async componentDidUpdate(prevProps) {
-    // const { sampleID, resultStatus } = this.props;
-    const { sampleID, requestID } = this.props;
-    
-    console.log(requestID, sampleID);
+    const { requestID, sampleID } = this.props;
 
-    if(prevProps.sampleID !== sampleID) {
+    if(prevProps.sampleID !== sampleID && prevProps.requestID !== requestID) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ isReadyToPrint: false });
     }
 
     if(prevProps.visible === false && this.props.visible && sampleID !== null) {
-      const printPreview = await getPrintPreview(sampleID);
+      // const printPreview = await getPrintPreview(sampleID);
+      const printPreview = await getPrintPreviewV2(requestID, sampleID);
+
 
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ imageSrc: printPreview.data }, () => {
+      this.setState({ imageSrc: printPreview.pdf }, () => {
         this.timer = setInterval(() => {
           const { isReadyToPrint } = this.state;
           
-          // if(isReadyToPrint && (resultStatus === 'Save' || resultStatus === 'Approve')) {  
           if(isReadyToPrint) {  
             this.printResult();
 
@@ -60,17 +58,6 @@ class PrintResult extends React.Component {
       });
     }
   }
-
-  // printResult = () => {
-  //   const content = document.getElementById("printableContent");
-  //   const pri = document.getElementById("ifmcontentstoprint").contentWindow;
-  //   pri.document.open();
-  //   pri.document.write(content.innerHTML);
-  //   pri.document.close();
-  //   pri.focus();
-  //   pri.print();
-  //   clearTimeout(this.timer);
-  // }
 
   printResult = () => {
     const id = 'result';
@@ -96,8 +83,9 @@ class PrintResult extends React.Component {
 
 	render() {
     const { pageNumber, imageSrc, isReadyToPrint } = this.state;
-    const { visible, sampleID } = this.props;
+    const { visible, sampleID, requestID } = this.props;
 
+    
     return (
       <Drawer 
         title="LABORATORY RESULT PRINT PREVIEW"
@@ -114,7 +102,7 @@ class PrintResult extends React.Component {
               <Spin spinning={!isReadyToPrint && visible}>
                 <iframe
                   id="result"
-                  src={`${process.env.PUBLIC_URL}/lab/result/print/${sampleID}`}
+                  src={`${process.env.PUBLIC_URL}/lab/result/print/${requestID}/${sampleID}`}
                   style={{ height: 0, width: 0, position: 'absolute' }}
                   title="result"
                 />

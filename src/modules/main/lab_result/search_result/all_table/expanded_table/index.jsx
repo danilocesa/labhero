@@ -7,16 +7,15 @@ import { globalTableSize } from 'global_config/constant-global';
 import './index.css';
 
 function ExpandedTable(props) {
-	const { expandedData, onClickTableRow } = props;
+	const { expandedData, onClickTableRow, onClickPrint } = props;
 	const { contents, ...restProps } = expandedData;
 	const { userAccess } = useContext(UserAccessContext);
 	const [isPrintLoading, setIsPrintLoading] = useState([]);
-	
-	async function onClickPrint(record, index) {
-		const { onClickPrint: print } = props;
 
+	async function onPrint(record, index) {
 		await setIsPrintLoading(prevState => getPrintLoadingState(prevState, index, true));
-		await print(record.sampleSpecimenID);
+
+		await onClickPrint(record.sampleSpecimenID, expandedData.requestID);
 
 		setIsPrintLoading((prevState) => getPrintLoadingState(prevState, index, false));
 	}
@@ -64,7 +63,7 @@ function ExpandedTable(props) {
 				return (
 					<Button 
 						loading={isPrintLoading[index]}
-						onClick={() => onClickPrint(record, index)}
+						onClick={() => onPrint(record, index)}
 						disabled={record.specimenStatus !== 'Approve' && record.specimenStatus !== 'Save'}
 					>
 						Print

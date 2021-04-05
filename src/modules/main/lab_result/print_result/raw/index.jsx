@@ -2,7 +2,7 @@
 // LIBRARY
 import React from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { getPrintPreview } from 'services/lab_result/result';
+import { getPrintPreviewV2 } from 'services/lab_result/result';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -18,12 +18,12 @@ class PrintResult extends React.Component {
 
   async componentDidMount() {
     // eslint-disable-next-line react/prop-types
-    const { sampleID } = this.props.match.params
+    const { requestID, sampleID } = this.props.match.params
 
-    const printPreview = await getPrintPreview(sampleID);
+    const printPreview = await getPrintPreviewV2(requestID, sampleID);
     
     // eslint-disable-next-line react/no-did-update-set-state
-    this.setState({ imageSrc: printPreview.data });
+    this.setState({ imageSrc: printPreview.pdf });
   }
 
   onDocumentLoadSuccess = () => {
