@@ -1,0 +1,172 @@
+.bb-inv-fp-reg-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: space-around;
+}
+
+.bb-inv-lefthand-container, .bb-inv-righthand-container {
+  position: relative;
+  padding: 40px 0px;
+  display: inline-block;
+  margin: 0px 70px;
+}
+
+
+.bb-inv-lefthand-container .button1 {
+  position: absolute;
+  top: 150px;
+  right: -10px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .button2 {
+  position: absolute;
+  top: 30px;
+  right: 90px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .button3 {
+  position: absolute;
+  top: 15px;
+  right: 155px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .button4 {
+  position: absolute;
+  top: 35px;
+  right: 210px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .button5 {
+  position: absolute;
+  top: 85px;
+  left: 0px;
+  z-index: 1;
+}
+
+
+.bb-inv-lefthand-container .fingerprint1 {
+  position: absolute;
+  top: 190px;
+  right: 25px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .fingerprint2 {
+  position: absolute;
+  top: 80px;
+  right: 97px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .fingerprint3 {
+  position: absolute;
+  top: 65px;
+  right: 145px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .fingerprint4 {
+  position: absolute;
+  top: 82px;
+  right: 198px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .fingerprint4 {
+  position: absolute;
+  top: 82px;
+  right: 198px;
+  z-index: 1;
+}
+
+.bb-inv-lefthand-container .fingerprint5 {
+  position: absolute;
+  top: 122px;
+  right: 242px;
+  z-index: 1;
+}
+
+
+.bb-inv-righthand-container .button1 {
+  position: absolute;
+  top: 150px;
+  left: -5px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .button2 {
+  position: absolute;
+  top: 30px;
+  left: 90px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .button3 {
+  position: absolute;
+  top: 15px;
+  left: 150px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .button4 {
+  position: absolute;
+  top: 35px;
+  left: 210px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .button5 {
+  position: absolute;
+  top: 85px;
+  right: 0px;
+  z-index: 1;
+}
+
+
+.bb-inv-righthand-container .fingerprint1 {
+  position: absolute;
+  top: 190px;
+  left: 25px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .fingerprint2 {
+  position: absolute;
+  top: 80px;
+  left: 97px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .fingerprint3 {
+  position: absolute;
+  top: 65px;
+  left: 145px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .fingerprint4 {
+  position: absolute;
+  top: 82px;
+  left: 198px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .fingerprint4 {
+  position: absolute;
+  top: 82px;
+  left: 198px;
+  z-index: 1;
+}
+
+.bb-inv-righthand-container .fingerprint5 {
+  position: absolute;
+  top: 122px;
+  left: 242px;
+  z-index: 1;
+}

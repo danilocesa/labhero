@@ -9,6 +9,7 @@ import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 const axiosLabInstance = axios.create();
 const axiosPhase2Instance = axios.create();
 const axiosReportInstance = axios.create();
+const axiosResultReportInstance = axios.create();
 
 export function setupAxiosInterceptors() {
 	/** BASE URL */
@@ -16,6 +17,7 @@ export function setupAxiosInterceptors() {
 	axiosLabInstance.defaults.baseURL = process.env.REACT_APP_LAB_API; 
 	axiosPhase2Instance.defaults.baseURL = process.env.REACT_APP_PHASE2_API; 
 	axiosReportInstance.defaults.baseURL = process.env.REACT_APP_REPORT_API; 
+	axiosResultReportInstance.defaults.baseURL = process.env.REACT_RESULT_REPORT_API;
 
 	/** REQUEST INTERCEPTOR */
 	axiosLabInstance.interceptors.request.use(config => {
@@ -96,6 +98,16 @@ export function axiosPhase2API(axiosConfig) {
 
 export function axiosReportAPI(axiosConfig) {
 	return axiosReportInstance({
+		method: axiosConfig.method,
+		url: axiosConfig.url,
+		data: axiosConfig.data,
+		params: axiosConfig.params,
+		headers: axiosConfig.headers,
+	});
+}
+
+export function axiosResultReportAPI(axiosConfig) {
+	return axiosResultReportInstance({
 		method: axiosConfig.method,
 		url: axiosConfig.url,
 		data: axiosConfig.data,

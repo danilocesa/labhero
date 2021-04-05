@@ -4,14 +4,10 @@ import {
   Col,
   Table,
   Button,
-  Steps,
   Typography,
   Form,
   Modal
-} from "antd";
-
-// ICON
-import { SearchOutlined, ContainerOutlined, MedicineBoxOutlined } from '@ant-design/icons';
+} from 'antd';
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
 import PageTitle from 'shared_components/page_title';
@@ -19,11 +15,12 @@ import SearchPager from 'shared_components/search_pager';
 import Message from 'shared_components/message';
 import { searchDonors } from 'services/blood_bank/donor_registration';
 import scanImage from 'images/bloodbank/donor_reg/fingerprint.gif';
+import MatchFoundModal from './modal/matchFound'
+import NoMatchFoundModal from './modal/noMatchFound'
+import DonorRegSteps from '../DonorRegSteps';
 
 import './index.css';
-import { Link } from "react-router-dom";
 
-const { Step } = Steps
 const { Text } = Typography
 const columns = [
   {
@@ -74,7 +71,10 @@ class DonorRegSearch extends React.Component {
       loading: false,
       data: [],
       actionType: null,
-      modalVisible: true
+      modalVisible: true,
+      showModalNoMatchFound: false,
+      isDisplayModal: false,
+      modalVisibleNoMatchFound: false,
     };
     this.formRef = React.createRef();
   } 
@@ -139,12 +139,29 @@ class DonorRegSearch extends React.Component {
   hideModal = () => {
     this.setState({
       modalVisible: false,
+      isDisplayModal: false,
+      modalVisibleNoMatchFound: false
     });
   };
 
+  showModalNoMatchFound = () => {
+    this.setState({
+      modalVisibleNoMatchFound: true,
+      modalVisible: false,
+    });
+  }
+
+  displayModalMatchfound = () => {
+    this.setState({
+      isDisplayModal: true,
+      modalVisible: false,
+    });
+    
+  }
+  
 
   render() {
-    const { data, loading, pageSize, actionType, modalVisible } = this.state;
+    const { data, loading, pageSize, actionType, modalVisible, showModalNoMatchFound, isDisplayModal, modalVisibleNoMatchFound } = this.state;
 
     const TableFooter = (
       <Row justify="center">
@@ -159,30 +176,11 @@ class DonorRegSearch extends React.Component {
       </Row>
     );
 
+
     return (
       <div>
-        <Modal
-          title="Scan Finger"
-          visible={modalVisible}
-          onOk={this.hideModal}
-          onCancel={this.hideModal}
-          okText="Scan"
-          cancelText="Cancel"
-          className="modal"
-        >
-          <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
-        </Modal>
         <PageTitle pageTitle="DONOR REGISTRATION"  />
-        <Steps 
-          size="small" 
-          current={0} 
-          labelPlacement="vertical"
-          style={{ marginTop: 20, paddingRight: 200, paddingLeft: 200 }} 
-        >
-          <Step title="Search Donor" icon={<SearchOutlined />}  />
-          <Step title="Fill Up" icon={<ContainerOutlined />} />
-          <Step title="Health Information" icon={<MedicineBoxOutlined />} />
-        </Steps>
+        <DonorRegSteps activeIndex={1} />
         <Form 
           className="blood-donor-reg-search-form" 
           onFinish={this.handleSubmit} 
@@ -254,11 +252,26 @@ class DonorRegSearch extends React.Component {
           </Row>  
         </Form>
 
-        <SearchPager 
-          handleChangeSize={this.handleChangeSize}
-          pageTotal={data.length}
-          pageSize={pageSize}
-        />
+          <Col span={24}>
+            <Button
+              className="form-button"
+              shape="round" 
+              onClick={this.showModal}
+              style={{
+                marginLeft: "79%",
+                position: "absolute",
+                zIndex: 99,
+                marginTop: 15,
+              }}
+            >
+              SCAN FINGER
+            </Button>
+            <SearchPager 
+              handleChangeSize={this.handleChangeSize}
+              pageTotal={data.length}
+              pageSize={pageSize}
+            />
+          </Col>
 
         <Table 
           style={{textTransform: 'uppercase'}}
@@ -275,6 +288,22 @@ class DonorRegSearch extends React.Component {
           }}
           {...(actionType === 'byName' && {footer: () => TableFooter})}
         />
+
+        <Modal
+          title="Scan Finger"
+          visible={modalVisible}
+          onOk={this.displayModalMatchfound}
+          onCancel={this.showModalNoMatchFound}
+          okText="Scan"
+          cancelText="Cancel"
+          className="modal"
+        >
+          <img style={{height: 300, filter: 'invert'}} src={scanImage} alt="Logo" />
+        </Modal>
+
+        <MatchFoundModal isDisplay={isDisplayModal} hideModal={this.hideModal} />
+        <NoMatchFoundModal isDisplay={modalVisibleNoMatchFound} hideModal={this.hideModal} />
+
       </div>
     );
   }

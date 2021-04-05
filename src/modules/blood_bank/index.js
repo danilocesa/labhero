@@ -2,10 +2,11 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import BloodBankMenu from './bloodbank_menu';
-import DonorRegSearch from './donor_registration/search';
-import DonorRegHeathInfo from './donor_registration/health_info';
+import DonorRegSearch from './donor_registration/SearchPage';
+import DonorRegFingerPrint from './donor_registration/FingerPrintRegPage';
+import DonorRegHeathInfo from './donor_registration/HealthInfoPage';
 // import SearchDonor from './search_donor';
-import DonorRegFillUp from './donor_registration/fill_up';
+import DonorRegFillUp from './donor_registration/FillupPage';
 import ExtractionSearch from './extraction/search';
 
 import ScreeningSearch from './screening/search';
@@ -32,7 +33,8 @@ class BloodBank extends React.Component {
 				{/* DONOR REGISTRATION */}
 				<Route exact path="/bloodbank/donor_registration/step/1" component={DonorRegSearch} />
 				<Route exact path="/bloodbank/donor_registration/step/2" component={DonorRegFillUp} />
-				<Route exact path="/bloodbank/donor_registration/step/3" component={DonorRegHeathInfo} />
+				<Route exact path="/bloodbank/donor_registration/step/3" component={DonorRegFingerPrint} />
+				<Route exact path="/bloodbank/donor_registration/step/4" component={DonorRegHeathInfo} />
 				{/* BLOOD REQUEST */}
 				<Route exact path="/bloodbank/blood_request/search" component={SearchRequest} />
 				<Route exact path="/bloodbank/blood_request/create" component={CreateRequest} />

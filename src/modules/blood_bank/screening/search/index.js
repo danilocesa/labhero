@@ -6,6 +6,8 @@ import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
 import fetchDonors, { fetchPatientsNext } from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
+import NotifModal from '../modal/NotifModal';
+
 import {
   Row ,
   Col ,
@@ -132,6 +134,19 @@ export default class ForScreeningSearch extends Component {
       });
     } 
   }
+
+  hideModal = () => {
+    this.setState({
+      isDisplayModal: false,
+    });
+  };
+
+  showModal = () => {
+    this.setState({
+      isDisplayModal: true,
+    });
+  };
+
 
   render() {
     const { data, pageSize, count, response  } = this.state;
