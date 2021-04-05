@@ -3,6 +3,7 @@ import React from 'react'
 import {  Switch, Form, Input, Button} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { createBloodGroupAPI, updateBloodGroupAPI } from 'services/blood_bank/blood_group';
 import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
@@ -26,23 +27,25 @@ class BloodGroupForm extends React.Component {
 	} 
 
 	onFinish = async (values) => {
-		const { drawerButton } = this.props;
+		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+    console.log("file: index.js ~ line 31 ~ BloodGroupForm ~ onFinish= ~ loggedinUser", loggedinUser)
+		const { drawerButton, selectedBloodGroup } = this.props;
     const payload = {
-			blood_type_id :values.blood_group_id,
-			blood_group :values.blood_group_code,
-			blood_type :values.blood_group,
+			blood_type_id :selectedBloodGroup.blood_type_id,
+			blood_group :values.blood_group,
+			blood_type: values.blood_type,
 			blood_desc : values.blood_description,
-			created_by: 1,	
+			created_by: loggedinUser.userID,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
 		if(drawerButton === drawerAdd){
-			const createdUserResponse = await createBloodGroupAPI(payload);
+			const createdBloodGroupResponse = await createBloodGroupAPI(payload);
 			// @ts-ignore
-			if(createdUserResponse.status === 201){
+			if(createdBloodGroupResponse.status === 201){
 				const httpMessageConfig = {
 					message: messagePrompts.successCreateUser,
 					// @ts-ignore
-					status: createdUserResponse.status,	
+					status: createdBloodGroupResponse.status,	
 					duration: 3, 
 					onClose: () => window.location.reload() 
 				}
@@ -50,14 +53,14 @@ class BloodGroupForm extends React.Component {
 			}	
 		}
 		else {
-			payload.blood_group_id = values.blood_group_id;
-			const updateUserResponse =  await updateBloodGroupAPI(payload).catch(reason => console.log('TCL->', reason));
+			payload.blood_group_id = selectedBloodGroup.blood_group_id;
+			const updateBloodGroupResponse =  await updateBloodGroupAPI(payload)
 			// @ts-ignore)
-			if(updateUserResponse.status === 200){
+			if(updateBloodGroupResponse.status === 200){
 				const httpMessageConfig = {
 					message: messagePrompts.successUpdateUser,
 					// @ts-ignore
-					status: updateUserResponse.status,
+					status: updateBloodGroupResponse.status,
 					duration: 3, 
 					onClose: () => window.location.reload() 
 				}
@@ -74,63 +77,73 @@ class BloodGroupForm extends React.Component {
 
 	render() {
 		const { disabled } = this.state
-		const { drawerButton,selectedBloodGroup } = this.props;
+		const { drawerButton, selectedBloodGroup } = this.props;
 		return(
 			<div>
 				<Form 
+					onFinish={this.onFinish} 
 					layout="vertical"
 					initialValues={{ 
 						is_active:selectedBloodGroup.is_active === true ,
 						blood_group_id:selectedBloodGroup.blood_type_id,
 						blood_group:selectedBloodGroup.blood_type,
+						blood_type:selectedBloodGroup.blood_type,
 						blood_description:selectedBloodGroup.blood_desc 
-					}}
-					onFinish={this.onFinish}       
+					}}   
 				>
-						{this.props.drawerButton == "UPDATE"? (		
-							<Form.Item 
-								label="ACTIVE" 
-								{...layout} 
-								name='is_active'
-								style={{marginBottom:'-40px'}}
-							>
-								<Switch onChange={this.onDisable}/>
-							</Form.Item>
-						)	
+					{
+						drawerButton == "UPDATE" 
+						? 
+							(		
+								<Form.Item 
+									label="ACTIVE" 
+									name='is_active'
+									valuePropName='checked'
+								>
+									<Switch onChange={this.onDisable}/>
+								</Form.Item>
+							)	
 						:
-						null
-						}
-						<div className="form-section">
-						<Form.Item name='blood_group_id' style={{ display: 'none' }}>
-							<Input style={{ textTransform: 'uppercase', display: 'none' }} />		
-						</Form.Item>
-						<Form.Item 
-							label="BLOOD TYPE" 
-							name='blood_group' 
-							rules={[
-								{
-									required: true,
-									message: 'Please input your username!',
-								},
-							]}
+							null
+					}
+					<Form.Item 
+						label="BLOOD GROUP" 
+						name='blood_group' 
+						rules={[{ required: true, message: 'Please input your BLOOD GROUP!'}]}
+					>
+						<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+					</Form.Item>
+					<Form.Item 
+						label="BLOOD TYPE" 
+						name='blood_type' 
+						rules={[{ required: true, message: 'Please input your BLOOD TYPE!'}]}
+					>
+						<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+					</Form.Item>
+					<Form.Item 
+						label="DESCRIPTION" 
+						name='blood_description'
+					>
+						<TextArea rows={5} onChange={this.onDisable}/>
+					</Form.Item>
+					<section className="drawerFooter">
+						<Button 
+							shape="round" 
+							style={{ marginRight: 8, width: 120 }} 
+							onClick={this.props.onClose}
 						>
-								<Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
-						</Form.Item>
-						<Form.Item 
-							label="DESCRIPTION" 
-							name='blood_description'
+							{buttonLabels.cancel}
+						</Button>
+						<Button 
+							disabled={disabled} 
+							type="primary" 
+							shape="round" 
+							style={{ margin: 10, width: 120 }} 
+							htmlType="submit"
 						>
-								<TextArea rows={5} onChange={this.onDisable}/>
-						</Form.Item>
-					</div>
-						<section className="drawerFooter">
-							<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-								{buttonLabels.cancel}
-							</Button>
-							<Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-								{drawerButton}
-							</Button>
-						</section>
+							{drawerButton}
+						</Button>
+					</section>
 				</Form>
 			</div>
 		);

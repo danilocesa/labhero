@@ -1,24 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Input, Row, Col,Form , InputNumber, Button,DatePicker,Tabs  } from 'antd';
-
+import { 
+  Input, 
+  Row,
+  Col,
+  Form, 
+  InputNumber, 
+  Button,
+  DatePicker,
+  Tabs,
+  Popover  
+} from 'antd';
+import { Redirect } from 'react-router-dom';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createExtraction, fetchExtractionById } from 'services/blood_bank/extraction';
 import { getUserAccountById } from 'services/settings/userAccount';
+import { MoreOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
 
+
 class ForExtractionTab extends React.Component {
   constructor(props){
     super(props);
-
     this.formRef = React.createRef();
     this.state = { 
+      visible: false,
       isAlreadyExtracted: false,
-      isLoading: false
+      isLoading: false,
+      redirect: false,
+      buttonData:
+      [
+        {
+          Title:'Screening',
+          onclick:'/bloodbank/screening/details',
+        }
+      ]
     };
   }
 
@@ -30,7 +50,7 @@ class ForExtractionTab extends React.Component {
     }
   }
 
-   fetchExtractionDetail = async (extractionID) => {
+  fetchExtractionDetail = async (extractionID) => {
     const extractionDetail = await fetchExtractionById(extractionID);
 
    if(extractionDetail !== null) {
@@ -54,10 +74,10 @@ class ForExtractionTab extends React.Component {
    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
-    donor: donorDetail.donor_id,
-    health_info: donorDetail.health_info_id,
-       remarks: formValues.remarks || null,
-     created_by: loggedinUser.userID,
+      donor: donorDetail.donor_id,
+      health_info: donorDetail.health_info_id,
+      remarks: formValues.remarks || null,
+      created_by: loggedinUser.userID,
       extracted_by: loggedinUser.userID
     };
 
@@ -79,18 +99,51 @@ class ForExtractionTab extends React.Component {
       this.fetchExtractionDetail(data.extraction_id);
    }	
   }
+  
+  handleVisibleChange = visible => {
+    this.setState({ visible });
+  };
+
+  redirect = () => { this.setState({ redirect: true })}
 
   render() {
-    const { isAlreadyExtracted, isLoading } = this.state;
+    const { donorDetail } = this.props.donorDetail
+    const { 
+      isAlreadyExtracted, 
+      isLoading, 
+      visible,
+      buttonData,
+      redirect
+    } = this.state;
+
+    const render = buttonData.map(data => {
+      return (
+        <>
+          <a onClick={() => this.redirect()}>{data.Title}</a>
+          { redirect ? (<Redirect push to={{ pathname:data.onclick, state: { donorDetail }}}/>) : null }
+        </>
+      );
+    })
 
     return (
       <div>
-        <Tabs defaultActiveKey="1">
+        <Row justify="end" style={{marginTop:-50}}> 
+          <Popover
+            content={render}
+            trigger="click"
+            visible={visible}
+            onVisibleChange={this.handleVisibleChange}
+            placement="bottomRight"
+          >
+            <Button icon={<MoreOutlined />}/>
+          </Popover>
+        </Row>
+        <Tabs defaultActiveKey="1" >
           <TabPane tab="FOR EXTRACTION" key="2">
             <Form
               ref={this.formRef}
               layout="vertical"
-              //onFinish={this.onSubmitForm} 
+              onFinish={this.onSubmitForm} 
             > 
               <Form.Item 
                 name="bag_count"
@@ -167,7 +220,7 @@ class ForExtractionTab extends React.Component {
           </Form> 
           </TabPane>
         </Tabs>
-           
+        
       </div>
     )
   }
@@ -179,7 +232,10 @@ ForExtractionTab.propTypes = {
     donor_id: PropTypes.number,
     health_info_id: PropTypes.number.isRequired,
     extraction_id: PropTypes.any
-  }).isRequired
+  }).isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 }
 
 export default ForExtractionTab;

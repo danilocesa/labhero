@@ -4,12 +4,13 @@ import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
 
-export default async function fetchPatients(patientName, patientID) {
+export default async function fetchPatients(patientName, patientID, pageSize) {
+  const page = 1
   let patients = [];
   try {
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-      url: (patientID ? `bloodbank/extraction/search/by_id/${patientID}` : `bloodbank/extraction/search/?search=${patientName}`) 
+      url: (patientID ? `bloodbank/extraction/search/by_id/${patientID}` : `bloodbank/extraction/search/?search=${patientName}&page=${page}&page_size=${pageSize}`) 
     });
 
     const { data } = await response;
@@ -79,4 +80,23 @@ export async function fetchExtractionById(extractionId) {
   }
 
   return extractionDetail;
+} 
+
+export async function fetchPatientsNext(url) {
+  let patients = [];
+  try {
+    const response = await axiosPhase2API({
+      method: API_GET_METHOD,
+      url: url 
+    });
+
+    const { data } = await response;
+
+    patients = data;
+  }
+  catch(error) {
+    Message.error();
+  }
+
+  return patients;
 } 
