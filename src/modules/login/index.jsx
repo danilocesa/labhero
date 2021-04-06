@@ -10,6 +10,7 @@ import { AlphaNumInput } from 'shared_components/pattern_input';
 import Message from 'shared_components/message';
 import { UserAccessContext } from 'context/userAccess';
 import FIELD_RULES from './constants';
+import cryptr from 'cryptr';
 
 import './login.css';
 
@@ -18,6 +19,7 @@ const { Header, Content } = Layout;
 function Login() {
 	const formRef = useRef();
 	const history = useHistory();
+	const crypt = new cryptr(process.env.REACT_APP_CRYPTR_KEY);
 	const { defineUserAccess } = useContext(UserAccessContext);
 	const [loading, setLoading] = useState(false);
  
@@ -29,38 +31,22 @@ function Login() {
 		try {
 			setLoading(true);
 			const response = await login(username, password);
-			setLoading(false);
 		
 			const loggedinUserData = {
 				...response.data,
-				password
+				secret: crypt.encrypt(password)
 			};
 			
-			const matrix = {
-				request: {
-					view: [1, 2, 3, 4, 5],
-					create: [1, 2, 4],
-					update: [1, 2, 4],
-					print: [1, 2, 4],
-				},
-				result: {
-					view: [1, 2, 3, 4 ,5],
-					create: [1, 2, 3],
-					update: [1, 2, 3],
-					print: [1, 2, 3, 4],
-				},
-				settings: {
-					view: [1, 2, 3],
-					create: [1, 2],
-					update: [1, 2, 3],
-					print: [1, 2, 3],
-				},
-			};
-
-			defineUserAccess({ accessMatrix: matrix, userData: loggedinUserData });
+			// @ts-ignore
+			const { accessRights } = response.data;
+			
+			defineUserAccess({ 
+				accessMatrix: accessRights, 
+				userData: loggedinUserData 
+			});
 
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
+			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(accessRights));
 
 			Message.success({ message: 'You are now successfully logged in!' });
 
@@ -68,11 +54,13 @@ function Login() {
 			redirectPage();
 		}
 		catch(error) {
-			setLoading(false);
 			if(error.response && error.response.status === 401)
 				Message.error('Incorrect Username/Password');
 			else
 				Message.error();
+		}
+		finally {
+			setLoading(false);
 		}
 	}
 	

@@ -3,6 +3,7 @@
 // LIBRARY
 import axios from 'axios';
 import login from 'services/login/login';
+import cryptr from 'cryptr';
 // import jwtDecode from 'jwt-decode';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 
@@ -53,6 +54,7 @@ export function setupAxiosInterceptors() {
 	axiosLabInstance.interceptors.response.use(undefined, async(err) => {
 		const sessionData = sessionStorage.getItem(LOGGEDIN_USER_DATA);
 		const LoggedinUserData = sessionData ? JSON.parse(sessionData) : null;
+		const crypt = new cryptr(process.env.REACT_APP_CRYPTR_KEY);
 
 		if((err.response.status === 403 || err.response.status === 401) &&
 			 err.response.config && 
@@ -60,7 +62,7 @@ export function setupAxiosInterceptors() {
 			 LoggedinUserData
 			) {
 
-			const loginResponse = await login(LoggedinUserData.userName, LoggedinUserData.password);
+			const loginResponse = await login(LoggedinUserData.userName, crypt.decrypt(LoggedinUserData.secret));
 			
 			// Login success
 			if(loginResponse.status === 200) {

@@ -35,33 +35,26 @@ function MainLayout() {
 	});
 
   function defineUserAccess({ accessMatrix, userData }) {
-    const dashbord = accessMatrix.find(item => item.moduleID === 1);
-    const request = accessMatrix.find(item => item.moduleID === 2);
-    const plhebo = accessMatrix.find(item => item.moduleID === 3);
-    const result = accessMatrix.find(item => item.moduleID === 4);
-    const patientDemographics = accessMatrix.find(item => item.moduleID === 5);
-    const settings = accessMatrix.find(item => item.moduleID === 6);
-
-    console.log('request', request);
+    const { settings, request, result } = accessMatrix;
 
     setUserAccess({ 
       request: {
-        view: request.view === 'TRUE',
-        create: request.create === 'TRUE',
-        update: request.update === 'TRUE',
-        print: request.print === 'TRUE',
+        view: request.view.some(id => id === userData.loginType),
+        create: request.create.some(id => id === userData.loginType),
+        update: request.update.some(id => id === userData.loginType),
+        print: request.print.some(id => id === userData.loginType),
       },
       result: {
-        view: result.view === 'TRUE',
-        create: result.create === 'TRUE',
-        update: result.update === 'TRUE',
-        print: result.print === 'TRUE',
+        view: result.view.some(id => id === userData.loginType),
+        create: result.create.some(id => id === userData.loginType),
+        update: result.update.some(id => id === userData.loginType),
+        print: result.print.some(id => id === userData.loginType),
       },
       settings: {
-        view: settings.view === 'TRUE',
-        create: settings.create === 'TRUE',
-        update: settings.update === 'TRUE',
-        print: settings.print === 'TRUE',
+        view: settings.view.some(id => id === userData.loginType),
+        create: settings.create.some(id => id === userData.loginType),
+        update: settings.update.some(id => id === userData.loginType),
+        print: settings.print.some(id => id === userData.loginType),
       }
     });
   }
