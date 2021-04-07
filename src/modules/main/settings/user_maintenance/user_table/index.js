@@ -1,10 +1,11 @@
 // @ts-nocheck
 // LIBRARY
 import React from 'react';
-import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
+import { Row, Col, Table, Button, Input, Drawer } from 'antd';
 import TablePager from 'shared_components/table_pager';
-import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
 import { UserAccessContext } from 'context/userAccess';
+import { PlusOutlined } from '@ant-design/icons';
+
 
 // CUSTOM
 import { getUserAccountsAPI } from 'services/settings/userAccount';
@@ -192,21 +193,19 @@ class UserTable extends React.Component {
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
-							{ 
 								<UserAccessContext.Consumer>
-								{value => value.userAccess.settings.create && (
-									<Button 
-									type="primary" 
-									shape="round" 
-									style={{ marginRight: '15px' }} 
-									onClick={this.showDrawer}
-								>
-									<Icon type="plus" />
-									{ addUserButton }
-								</Button>
-								)}
+									{value => value.userAccess.settings.create && (
+										<Button 
+											type="primary" 
+											shape="round" 
+											style={{ marginRight: '15px' }} 
+											onClick={this.showDrawer}
+										>
+											<PlusOutlined />
+											{addUserButton}
+										</Button>
+									)}
 							</UserAccessContext.Consumer>
-							}
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
@@ -235,24 +234,19 @@ class UserTable extends React.Component {
 					/>
 				</div>    
 
-				{/* DRAWER */}
-				<UserAccessContext.Consumer>
-					{value => value.userAccess.settings.update && (
-						<Drawer
-						title={drawerTitle}
-						width="85%"
-						visible={visible}
+				<Drawer
+					title={drawerTitle}
+					width="85%"
+					visible={visible}
+					onClose={this.onClose}
+					destroyOnClose
+				>
+					<UserAccountForm
+						drawerButton={drawerButton} 
+						patientInfo={patientInfo}
 						onClose={this.onClose}
-						destroyOnClose
-					>
-						<UserAccountForm
-							drawerButton={drawerButton} 
-							patientInfo={patientInfo}
-							onClose={this.onClose}
-						/>
-					</Drawer>
-					)}
-				</UserAccessContext.Consumer>
+					/>
+				</Drawer>
 			</div>
 		)
 	}

@@ -1,7 +1,9 @@
 import React, { useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
+import cryptr from 'cryptr';
 import { CompanyLogo } from 'images';
+import { omit } from 'utils/user';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global';
@@ -10,7 +12,6 @@ import { AlphaNumInput } from 'shared_components/pattern_input';
 import Message from 'shared_components/message';
 import { UserAccessContext } from 'context/userAccess';
 import FIELD_RULES from './constants';
-import cryptr from 'cryptr';
 
 import './login.css';
 
@@ -31,22 +32,19 @@ function Login() {
 		try {
 			setLoading(true);
 			const response = await login(username, password);
-		
+			
 			const loggedinUserData = {
-				...response.data,
+				...omit(response.data, ['accessRights']),
 				secret: crypt.encrypt(password)
 			};
 			
 			// @ts-ignore
 			const { accessRights } = response.data;
 			
-			defineUserAccess({ 
-				accessMatrix: accessRights, 
-				userData: loggedinUserData 
-			});
+			defineUserAccess({ accessMatrix: accessRights });
 
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(accessRights));
+			sessionStorage.setItem(ACCESS_MATRIX, crypt.encrypt(JSON.stringify(accessRights)));
 
 			Message.success({ message: 'You are now successfully logged in!' });
 
