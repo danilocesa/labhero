@@ -24,7 +24,6 @@ export const apiUrlPanelExamRequestSettings = `${apiUrlPanelExamRequest}Settings
 export const apiUrlGetPanelInfoByID = `${apiUrlPanelExamRequest}Settings/PanelID/`;
 // User Maintenance settings
 export const apiUserAccount = 'lab/UserAccount';
-export const apiUserType = 'lab/UserType';
 // Exam request settings
 export const apiExamRequest = {
     getExamRequest : 'lab/ExamRequest/Settings',
@@ -56,6 +55,6 @@ export const EITC_TEXT_AREA = 'ta';
 
 // Table settings
 export const GLOBAL_TABLE_PAGE_SIZE = 10;
-export const globalTableSize = 'default';
-export const globalTableYScroll = 260;
+export const GLOBAL_TABLE_SIZE = 'middle';
+export const GLOBAL_TABLE_YSCROLL = 260;
 

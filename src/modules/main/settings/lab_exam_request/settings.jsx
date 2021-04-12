@@ -1,4 +1,4 @@
-import { globalTableYScroll, globalTableSize, GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
+import { GLOBAL_TABLE_YSCROLL, GLOBAL_TABLE_SIZE, GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
@@ -32,8 +32,8 @@ export const selectedTableConst = {
 	}
 };
 
-export const tableYScroll = globalTableYScroll;
-export const tableSize = globalTableSize;
+export const tableYScroll = GLOBAL_TABLE_YSCROLL;
+export const tableSize = GLOBAL_TABLE_SIZE;
 export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
 
 export const drawerTitle = {

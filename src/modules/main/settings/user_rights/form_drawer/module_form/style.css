@@ -1,0 +1,15 @@
+.user-type-module-form-container .module-item {
+  padding-top: 10px;
+}
+
+.user-type-module-form-container .module-item:not(:first-child) {
+  border-top: 1px solid rgb(240, 240, 240);
+}
+
+.user-type-module-form-container .module-item .module-title {
+  padding-bottom: 10px;
+}
+
+.user-type-module-form-container .module-item .ant-form-item {
+  margin-bottom: 10px;
+}

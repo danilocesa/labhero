@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button } from 'antd';
 import { UserAccessContext } from 'context/userAccess';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 import './index.css';
 
@@ -79,7 +79,7 @@ function ExpandedTable(props) {
 			columns={columns}
 			dataSource={contents}
 			pagination={false}
-			size={globalTableSize}
+			size={GLOBAL_TABLE_SIZE}
 			rowKey={record => `${record.sampleSpecimenID}-${record.specimenID}`}
 			onRow={record => {
 				return { onDoubleClick: () => { 

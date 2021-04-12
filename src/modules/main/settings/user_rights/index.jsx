@@ -8,16 +8,11 @@ import PageTitle from 'shared_components/page_title';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PlusOutlined } from '@ant-design/icons';
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
-import Form from './form';
+import FormDrawerAdd from './form_drawer/index.jsx';
+import FormDrawerUpdate from './form_drawer/index.jsx';
 import UserRightsTable from './table';
+import { getUserTypes } from 'services/settings/userType';
 
-const data = [
-  { userTypeID: 1, userType: 'ROOT', dateCreated: '20-SEP-2019' },
-  { userTypeID: 2, userType: 'ADMIN', dateCreated: '20-SEP-2019' },
-  { userTypeID: 3, userType: 'RECEPTIONIST', dateCreated: '20-SEP-2019' },
-  { userTypeID: 4, userType: 'PHLEBOMIST', dateCreated: '20-SEP-2019' },
-  { userTypeID: 5, userType: 'MED TECH 1', dateCreated: '20-SEP-2019' },
-];
 
 const ActionSection = (props) => (
 	<Row style={{ marginTop: 50 }}>
@@ -33,20 +28,36 @@ class UserRights extends React.Component {
 		isDisplayAddForm: false,
 		isDisplayUpdateForm: false,
 		pageSize: GLOBAL_TABLE_PAGE_SIZE,
+		selectedId: null,
 		userRights: [],
 	}
 
+	async componentDidMount() {
+		await this.fetchUserTypes();
+	}
+
+	fetchUserTypes = async () => {
+		this.setState({ isLoading: true });
+
+		const response = await getUserTypes();
+		
+		// @ts-ignore
+		response.status === 200 && this.setState({ userRights: response.data });
+
+		this.setState({ isLoading: false });
+	}
 
   onClickAdd = () => {
     this.setState({ isDisplayAddForm: true });
   }
 
+	
   onChangePager = () => {
 
   } 
 
-  onDblClickTableRow = () => {
-		this.setState({ isDisplayUpdateForm: true });
+  onDblClickTableRow = (record) => {
+		this.setState({ isDisplayUpdateForm: true, selectedId: record.userTypeID });
   }
 
   onCloseForm = () => {
@@ -56,13 +67,15 @@ class UserRights extends React.Component {
 		});
   }
 
+
 	render() {
 		const { 
 			pageSize, 
       isLoading,
 			isDisplayAddForm,
 			isDisplayUpdateForm,
-			selectedSectionId,
+			selectedId,
+			userRights
 		} = this.state;
 
 		const rightSection = (
@@ -72,7 +85,6 @@ class UserRights extends React.Component {
 					type="primary" 
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
-					disabled={selectedSectionId === null}
 				>
 					<PlusOutlined /> ADD USER TYPE
 				</Button>
@@ -87,15 +99,21 @@ class UserRights extends React.Component {
 				</section>
 				<ActionSection rightContent={rightSection} />
 				<UserRightsTable 
-					data={data}
+					data={userRights}
 					pageSize={pageSize}
 					loading={isLoading}
 					onRowDblClick={this.onDblClickTableRow}
 					componentDidMount={this.componentDidMount}
 				/>
-				<Form 
-					type="add"
+				<FormDrawerAdd 
           visible={isDisplayAddForm}
+					refreshTableData={this.fetchUserTypes}
+          onClose={this.onCloseForm}
+				/>	
+				<FormDrawerUpdate 
+					id={selectedId}
+          visible={isDisplayUpdateForm}
+					refreshTableData={this.fetchUserTypes}
           onClose={this.onCloseForm}
 				/>	
 			</div>

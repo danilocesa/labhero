@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table as AntTable, Spin as AntSpin } from 'antd';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 // CSS
 import './phlebo_result_table.css';
@@ -111,7 +111,7 @@ class SearchPatientTable extends React.Component {
 					<AntTable 
 						className="phlebo-result-table"
 						pagination={{ pageSize, showSizeChanger: false }} 
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						// @ts-ignore
 						columns={columns} 
 						dataSource={data} 

@@ -2,8 +2,8 @@
 import React from 'react';
 import { Spin, Table } from 'antd';
 import {
-	globalTableSize, 
-	globalTableYScroll
+	GLOBAL_TABLE_SIZE, 
+	GLOBAL_TABLE_YSCROLL
 } from 'global_config/constant-global';
 
 const columns = [
@@ -56,10 +56,10 @@ class SearchResultTable extends React.Component {
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
 				<Spin spinning={false} tip="Loading...">
 					<Table 
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						columns={columns} 
 						dataSource={[]} 
-						scroll={{ y: globalTableYScroll }}
+						scroll={{ y: GLOBAL_TABLE_YSCROLL }}
 						rowKey={record => record.examItemID}
 					/>
 				</Spin>

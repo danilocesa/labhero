@@ -1,5 +1,5 @@
 import errorMessage from 'global_config/error_messages';
-import { globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL} from 'global_config/constant-global';
 
 export const REQUIRED_MESSAGE = errorMessage.required;
 export const FIELD_RULES = [{ 
@@ -21,8 +21,8 @@ export const messagePrompts = {
 }
 
 
-export const tableSize = globalTableSize;
-export const tableYScroll = globalTableYScroll;
+export const tableSize = GLOBAL_TABLE_SIZE;
+export const tableYScroll = GLOBAL_TABLE_YSCROLL;
 
 export const drawerAdd = 'ADD';
 export const drawerUpdate = 'UPDATE';

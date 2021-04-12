@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Form } from 'antd';
-import { globalTableSize, globalTableYScroll } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL } from 'global_config/constant-global';
 import DynamicInput from './dynamic_input';
 
 import './result_table.css';
@@ -155,8 +155,8 @@ class EditableTable extends React.Component {
 						dataSource={formatedResults}
 						columns={this.columns}
 						rowKey={item => item.examItemID}
-						scroll={{ x: 800, y: globalTableYScroll }}
-						size={globalTableSize}
+						scroll={{ x: 800, y: GLOBAL_TABLE_YSCROLL }}
+						size={GLOBAL_TABLE_SIZE}
 						pagination={false}
 					/>
 				</Form>

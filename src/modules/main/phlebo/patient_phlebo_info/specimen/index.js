@@ -7,7 +7,7 @@ import { Table, Button, Spin } from 'antd';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PrinterOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 import { fetchRequestSpecimenToProcess, checkinSpecimen } from 'services/phlebo/specimenTracking';
 import printBarcodeLabel from 'services/phlebo/barcodeLabel';
@@ -175,7 +175,7 @@ class SpecimenList extends React.Component {
 						expandedRowRender={(record) => record.exams.map((i, index) => <div key={index}>{i}</div>)}
 						dataSource={examRequests}
 						rowKey={record => `${record.sectionCode}-${record.specimenID}`}
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						pagination={false}
 						scroll={{ y: 300 }}
 					/>

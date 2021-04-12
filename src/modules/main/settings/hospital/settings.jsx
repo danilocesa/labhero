@@ -1,4 +1,4 @@
-import { globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL} from 'global_config/constant-global';
 import vdltnMessage from 'global_config/error_messages';
 
 
@@ -27,8 +27,8 @@ export const fieldLabels = {
 	bloodGroup: "BLOOD GROUP",
 	description: "DESCRIPTION",
 }
-export const tableSize = globalTableSize;
-export const tableYScroll = globalTableYScroll;
+export const tableSize = GLOBAL_TABLE_SIZE;
+export const tableYScroll = GLOBAL_TABLE_YSCROLL;
 
 export const fieldRules = {
 	id: [
