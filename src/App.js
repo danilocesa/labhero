@@ -21,7 +21,7 @@ class App extends Component {
 				<Router history={history}>
 					<Switch>
 						<Route path="/installer" component={Installer} />
-						<PrivateRoute exact path="/lab/result/print/:sampleID" component={PrintPreview} />
+						<PrivateRoute exact path="/lab/result/print/:requestID/:sampleID" component={PrintPreview} />
 						<Route path="/" component={MainLayout} />
 					</Switch>
 				</Router>

@@ -3,12 +3,11 @@ import React from 'react';
 import { Col, Switch, Typography, Form, Input, Select, Button, Row as AntRow } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/userAccount';
 import { getAllUserTypesAPI } from 'services/settings/userType';
-import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global'
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global'
 import { 
 	drawerAdd,  
 	labels as gLabels, 
@@ -48,8 +47,6 @@ class UserAccountForm extends React.Component {
 	}
 	
 	async componentDidMount(){
-		const userData = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
-    console.log("file: index.js ~ line 52 ~ UserAccountForm ~ componentDidMount ~ userData", userData)
 		const response = await getAllUserTypesAPI();
 
 		this.setState({
@@ -141,7 +138,7 @@ class UserAccountForm extends React.Component {
 
 		const UserTypeOptions = userTypeList.map(userType => (
 			<Option value={userType.userTypeID} key={userType.userTypeID}>
-				{userType.userTypeName.toUpperCase()}
+				{userType.userType.toUpperCase()}
 			</Option>
 		));
 
@@ -266,7 +263,7 @@ class UserAccountForm extends React.Component {
 															required: drawerAdd === drawerButton || getFieldsValue().password, 
 															message: errorMessage.requiredField 
 														},
-														{ validator: this.compareToFirstPassword }
+														{validator: this.compareToFirstPassword}
 													]}
 													dependencies={['password']}
 													hasFeedback
@@ -315,12 +312,14 @@ class UserAccountForm extends React.Component {
 						</AntRow>
 					</section>
 					<section className="drawerFooter">
-						<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-							{buttonLabels.cancel}
-						</Button>
-						<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-							{drawerButton}
-						</Button>
+						<React.Fragment>
+							<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+								{buttonLabels.cancel}
+							</Button>
+							<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+								{drawerButton}
+							</Button>
+						</React.Fragment>
 					</section>
 				</Form>
 			</div>

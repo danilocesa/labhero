@@ -42,8 +42,6 @@ export async function fetchLabResultExamItems(specimenId) {
 
 export async function saveLabResult(payload) {
 
-	console.log(payload)
-
 	try{
 		const content = {
 			method: API_POST_METHOD,
@@ -89,7 +87,7 @@ export async function getPrintPreview(spcmid) {
 export async function getPrintPreviewV2(reqid, ssid) {
 	try{
 		const content = {
-			method: API_GET_METHOD,
+			method: 'GET',
 			url: `/labreport/DefaultResultReport/${reqid}?ssid=${ssid}`,
 		}
 

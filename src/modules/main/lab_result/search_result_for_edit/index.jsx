@@ -1,11 +1,9 @@
 import React from 'react';
 import { Drawer } from 'antd';
 
-import EditResult from 'modules/main/lab_result/editing_result';
-import LabResult from 'modules/main/lab_result/searching_result';
+import EditResult from 'modules/main/lab_result/edit_result';
+import LabResult from 'modules/main/lab_result/search_result';
 import PrintResult from 'modules/main/lab_result/print_result';
-
-// import { fetchLabResultExamItems } from 'services/lab_result/result';
 
 class EditLabResult extends React.Component {
 	constructor(props) {
@@ -17,15 +15,18 @@ class EditLabResult extends React.Component {
 			patientInfo: {},
 			examDetails: {},
 			selectedSampleID: null,
+			selectedRequestID: null,
 			selectedResultStatus: null,
 		};
 
 		this.labResultRef = React.createRef();
 	}
 
+
 	onClosePrintPreview = () => {
 		this.setState({
 			selectedSampleID: null,
+			selectedRequestID: null,
 			isDisplayPrintPreview: false
 		});
 	}
@@ -44,13 +45,12 @@ class EditLabResult extends React.Component {
 		});
 	}
 
-	onClickPrint = async (sampleID) => {
-		// const results = await fetchLabResultExamItems(sampleID);
+	onClickPrint = async (sampleID, requestID) => {
 
 		this.setState({
 			isDisplayPrintPreview: true,
 			selectedSampleID: sampleID,
-			// selectedResultStatus: results.status || null
+			selectedRequestID: requestID
 		});
 	}
 
@@ -61,6 +61,7 @@ class EditLabResult extends React.Component {
 			examDetails, 
 			isDisplayPrintPreview,
 			selectedSampleID,
+			selectedRequestID,
 			selectedResultStatus,
 		} = this.state;
 
@@ -90,6 +91,7 @@ class EditLabResult extends React.Component {
 				</Drawer>
 				<PrintResult 
 					sampleID={selectedSampleID}
+					requestID={selectedRequestID}
 					onClose={this.onClosePrintPreview}
 					visible={isDisplayPrintPreview}
 					resultStatus={selectedResultStatus}

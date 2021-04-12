@@ -1,7 +1,9 @@
 import React, { useRef, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Row, Form, Input, Button, Layout, Col, Spin } from 'antd';
+import cryptr from 'cryptr';
 import { CompanyLogo } from 'images';
+import { omit } from 'utils/user';
 import auth from 'services/login/auth';
 import login from 'services/login/login';
 import { LOGGEDIN_USER_DATA, ACCESS_MATRIX } from 'global_config/constant-global';
@@ -18,6 +20,7 @@ const { Header, Content } = Layout;
 function Login() {
 	const formRef = useRef();
 	const history = useHistory();
+	const crypt = new cryptr(process.env.REACT_APP_CRYPTR_KEY);
 	const { defineUserAccess } = useContext(UserAccessContext);
 	const [loading, setLoading] = useState(false);
  
@@ -29,38 +32,19 @@ function Login() {
 		try {
 			setLoading(true);
 			const response = await login(username, password);
-			setLoading(false);
-		
+			
 			const loggedinUserData = {
-				...response.data,
-				password
+				...omit(response.data, ['accessRights']),
+				secret: crypt.encrypt(password)
 			};
 			
-			const matrix = {
-				request: {
-					view: [1, 2, 3, 4, 5],
-					create: [1, 2, 4],
-					update: [1, 2, 4],
-					print: [1, 2, 4],
-				},
-				result: {
-					view: [1, 2, 3, 4 ,5],
-					create: [1, 2, 3],
-					update: [1, 2, 3],
-					print: [1, 2, 3, 4],
-				},
-				settings: {
-					view: [1, 2, 3],
-					create: [1, 2],
-					update: [1, 2, 3],
-					print: [1, 2, 3],
-				},
-			};
-
-			defineUserAccess({ accessMatrix: matrix, userData: loggedinUserData });
+			// @ts-ignore
+			const { accessRights } = response.data;
+			
+			defineUserAccess({ accessMatrix: accessRights });
 
 			sessionStorage.setItem(LOGGEDIN_USER_DATA, JSON.stringify(loggedinUserData));
-			sessionStorage.setItem(ACCESS_MATRIX, JSON.stringify(matrix));
+			sessionStorage.setItem(ACCESS_MATRIX, crypt.encrypt(JSON.stringify(accessRights)));
 
 			Message.success({ message: 'You are now successfully logged in!' });
 
@@ -68,11 +52,13 @@ function Login() {
 			redirectPage();
 		}
 		catch(error) {
-			setLoading(false);
 			if(error.response && error.response.status === 401)
 				Message.error('Incorrect Username/Password');
 			else
 				Message.error();
+		}
+		finally {
+			setLoading(false);
 		}
 	}
 	

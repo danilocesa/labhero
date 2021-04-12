@@ -1,6 +1,6 @@
 import React from 'react';
 import { Row, Typography, Empty, Badge } from 'antd';
-// import Moment from 'moment';
+import Moment from 'moment';
 import Icon from '@ant-design/icons';
 import { ClockCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactComponent as CheckIcon } from 'icons/check-icon.svg';
@@ -46,14 +46,14 @@ class DashboardPage extends React.Component {
 
   async componentDidMount() {
     const user = JSON.parse(sessionStorage.getItem('LOGGEDIN_USER_DATA'));
-    // const today = Moment(new Date()).format("YYYYMMDD");
-    const today = "20200703";
+    const today = Moment(new Date()).format("YYYYMMDD");
+    // const today = "20200703";
     const responseKPIs = await fetchKPIs(today);
     const sections = await fetchSections();
 
     const kpiPending = responseKPIs.find(item => item.category === 'PendingRequest');
     const kpiWithin = responseKPIs.find(item => item.category === 'WithinTwoHours');
-    const kpiMorethan = responseKPIs.find(item => item.category === 'MorethanTwoHours');
+    const kpiMorethan = responseKPIs.find(item => item.category === 'MoreThanTwoHours');
     let kpis = [];
 
     kpis.push({ 
