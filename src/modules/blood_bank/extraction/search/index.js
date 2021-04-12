@@ -77,7 +77,7 @@ class Extraction extends React.Component {
       donorName:null,
       data: [],
       loading: false,
-      pageSize: GLOBAL_TABLE_PAGE_SIZE,
+      pageSize: 1,
       count:0 ,
       page:1,
       response:{},
@@ -93,7 +93,7 @@ class Extraction extends React.Component {
     this.setState({ loading: true });
     const donors = await fetchDonors(donorName, donorID, pageSize, page);  
       this.setState({ 
-        showPagination : true,
+        showPagination:true, 
         donorName,
         donorID,
         loading: false,
