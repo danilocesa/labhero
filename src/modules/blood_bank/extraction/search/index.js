@@ -8,7 +8,8 @@ import {
   Table,
   Button,
   Typography,
-  Form
+  Form,
+  Pagination
 } from "antd";
 
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
@@ -16,7 +17,7 @@ import { RegexInput } from 'shared_components/pattern_input';
 import fetchDonors,{ fetchPatientsNext}  from 'services/blood_bank/extraction';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
-import Pagination from 'shared_components/table_pagination'
+// import Pagination from 'shared_components/table_pagination'
 import SearchPager from 'shared_components/search_pager';
 
 import './index.css';
@@ -73,57 +74,59 @@ class Extraction extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      donorName:null,
       data: [],
       loading: false,
       pageSize: GLOBAL_TABLE_PAGE_SIZE,
       count:0 ,
-      response:{}
+      page:1,
+      response:{},
+      showPagination:false
     };
     this.formRef = React.createRef();
   }
   
   handleSubmit = async () => {  
-    const { pageSize } = this.state
+    const { pageSize, page } = this.state
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
-
     this.setState({ loading: true });
-    const donors = await fetchDonors(donorName, donorID, pageSize);  
-    
-    this.setState({ 
-      donorName,
-      donorID,
-      loading: false,
-      response: donors,
-      count:donors.count,
-      data: donors.results 
-    });
-
-    if(donors.length <= 0) 
+    const donors = await fetchDonors(donorName, donorID, pageSize, page);  
+      this.setState({ 
+        showPagination : true,
+        donorName,
+        donorID,
+        loading: false,
+        response: donors,
+        count:donors.count,
+        data: donors.results 
+      })   
+    if(donors.results.length <= 0) {
       Message.info('No results found');
+      this.setState({ 
+        showPagination : false
+      });
+    }
   }
 
   onChangeDonorId = () => {
     const { setFieldsValue } = this.formRef.current;
-
     setFieldsValue({ donorName: '' });
   }
 
   onFocusDonorId = () => {
     const { setFieldsValue } = this.formRef.current;
-
     setFieldsValue({ donorName: '' });
   }
 
   onFocusDonorName = () => {
     const { setFieldsValue } = this.formRef.current;
-
     setFieldsValue({ donorID: '' });
   }
 
   handleChangeTableSize = async (pageSize) => {
-    const { donorName, page } = this.state
-    const donors = await fetchDonors(donorName,page,pageSize); 
+    const { donorName, page, donorID } = this.state
+    const donors = await fetchDonors(donorName, donorID, pageSize, page); 
 		this.setState({ 
       pageSize,
       response: donors,
@@ -134,36 +137,30 @@ class Extraction extends React.Component {
 
   clearInputs = () => {
     const { setFieldsValue } = this.formRef.current;
-    this.setState({ data: [] }); 
+    this.setState({ 
+      data: [], 
+      donorID: null, 
+      donorName: null,
+      count:0,
+      showPagination:false 
+    }); 
     setFieldsValue({ donorID: '',donorName: '' });
   }
 
-  callbackFunction = async (page) => { 
-    const { response } =this.state
-    if (response.next === null) {
-      const url = response.previous
-      this.setState({ loading: true });
-      const donors = await fetchPatientsNext(url);
-      this.setState({ 
-        loading: false,
-        response: donors,
-        count:donors.count,
-        data: donors.results 
-      });
-    } else if(response.previous === null) {
-      const url = response.next
-      this.setState({ loading: true });
-      const donors = await fetchPatientsNext(url);
-      this.setState({ 
-        loading: false,
-        response: donors,
-        count:donors.count,
-        data: donors.results 
-      });
-    } 
+  onPagination = async (page  ) => { 
+    const { donorName, pageSize, donorID } = this.state
+    const donors = await fetchDonors(donorName, donorID, pageSize, page); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
   }
 
-  redirect = (donorDetail) => {this.props.history.push('/bloodbank/extraction/details',  {donorDetail:donorDetail})}
+  redirect = (donorDetail) => {
+    this.props.history.push('/bloodbank/extraction/details',  {donorDetail:donorDetail})
+  }
 
   render() {
     const { 
@@ -171,7 +168,7 @@ class Extraction extends React.Component {
       loading, 
       pageSize, 
       count,
-      response 
+      showPagination
     } = this.state;
 
     return (
@@ -255,7 +252,6 @@ class Extraction extends React.Component {
           handleChangeSize={this.handleChangeTableSize}
           pageTotal={count}
           pageSize={pageSize}
-          response={response}
         />
         <Table
           className="blood-extract-search-table"
@@ -265,7 +261,7 @@ class Extraction extends React.Component {
           loading={this.state.loading}
           columns={columns}
           rowKey={record => record.donor_id}
-          rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
+          // rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
@@ -275,11 +271,22 @@ class Extraction extends React.Component {
             }
           }}
         />
-        <Pagination 
-          pageSize={pageSize} 
-          count={count}
-          parentCallback={this.callbackFunction}
-        />
+        {
+          showPagination == true
+          ? 
+            (		
+              <div style={{ display: "flex" }}>
+                <Pagination
+                  style={{ marginLeft: "auto" }}
+                  pageSize={pageSize}
+                  total={count}
+                  onChange={this.onPagination}
+                />
+              </div>
+            )	
+          :
+            null
+        }
       </div>
     );
   }

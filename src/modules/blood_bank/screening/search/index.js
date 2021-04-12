@@ -69,7 +69,7 @@ export default class ForScreeningSearch extends Component {
     this.state = {
       data: [],
       loading: false,
-      pageSize: GLOBAL_TABLE_PAGE_SIZE,
+      pageSize: 1,
       count:0 ,
       response:{}
     };
@@ -87,6 +87,7 @@ export default class ForScreeningSearch extends Component {
 
     this.setState({ loading: true });
     const donors = await fetchDonors(donorName, donorID, pageSize);  
+    console.log("file: index.js ~ line 90 ~ ForScreeningSearch ~ handleSubmit= ~ donors", donors)
     
     this.setState({ 
       loading: false,
