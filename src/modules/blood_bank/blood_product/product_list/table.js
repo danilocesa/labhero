@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { Table as AntTable, Spin } from 'antd';
 
 
@@ -63,7 +63,7 @@ class ProductListTable extends React.Component {
 			<Spin spinning={loading} tip="Loading...">
 				<div>
 					<AntTable 
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						pagination={{ pageSize, showSizeChanger: false }} 
 						columns={columns} 
 						dataSource={sampleData} 

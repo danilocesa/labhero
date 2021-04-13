@@ -31,7 +31,6 @@ const columns = [
         dataIndex: 'panel_name',
 				key: 'panel_name',
 				sorter: (a, b) => { return a.panel_name.localeCompare(b.panel_name)}
-        // render: (text, record) => popover(record),
     },
     {   
         title: 'INTEGRATION CODE',

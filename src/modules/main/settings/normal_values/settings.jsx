@@ -1,10 +1,10 @@
-import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize, globalTableYScroll} from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL} from 'global_config/constant-global';
 import errorMessage from 'global_config/error_messages';
 
 export const moduleTitle = 'NORMAL VALUES'; 
 export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
-export const tableSize = globalTableSize;
-export const tableYScroll = globalTableYScroll;
+export const tableSize = GLOBAL_TABLE_SIZE;
+export const tableYScroll = GLOBAL_TABLE_YSCROLL;
 
 export const drawerTitle = {
   normalValue: {

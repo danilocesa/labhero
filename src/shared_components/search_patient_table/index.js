@@ -5,7 +5,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { Table as AntTable, Spin } from 'antd';
 
 // CSS
@@ -88,7 +88,7 @@ class SearchPatientTable extends React.Component {
 			<Spin spinning={loading} tip="Loading...">
 				<div className="search-patient-table">
 					<AntTable 
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						pagination={{ pageSize, showSizeChanger: false }} 
 						columns={columns} 
 						dataSource={data} 

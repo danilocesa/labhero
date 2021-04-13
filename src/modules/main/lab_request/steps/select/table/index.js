@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as AntTable, Button, Tooltip, Typography } from 'antd';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { CloseOutlined } from '@ant-design/icons';
 import { requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
@@ -102,7 +102,7 @@ class SelectTable extends React.Component {
 		return (
 			<div className="select-step-table">
 				<AntTable
-					size={globalTableSize}
+					size={GLOBAL_TABLE_SIZE}
 					columns={TableCols}
 					pagination={false}
 					dataSource={TableData}

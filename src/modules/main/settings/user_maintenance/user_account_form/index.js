@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/userAccount';
-import { getAllUserTypesAPI } from 'services/settings/userType';
+import { getUserTypes } from 'services/settings/userType';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global'
 import { 
 	drawerAdd,  
@@ -47,7 +47,7 @@ class UserAccountForm extends React.Component {
 	}
 	
 	async componentDidMount(){
-		const response = await getAllUserTypesAPI();
+		const response = await getUserTypes();
 
 		this.setState({
 			// @ts-ignore

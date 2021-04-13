@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table } from 'antd';
-import { globalTableSize } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 import ExpandedTable from '../expanded_table';
 
@@ -73,7 +73,7 @@ class MainTable extends React.Component {
 				defaultExpandAllRows
 				dataSource={labResults}
 				rowKey={record => record.requestID}
-				size={globalTableSize}
+				size={GLOBAL_TABLE_SIZE}
 				scroll={{ y: 300 }}
 				loading={isLoading}
 			/>

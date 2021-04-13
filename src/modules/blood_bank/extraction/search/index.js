@@ -74,14 +74,14 @@ class Extraction extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      donorName:null,
+      donorName: null,
       data: [],
       loading: false,
       pageSize: 1,
-      count:0 ,
-      page:1,
-      response:{},
-      showPagination:false
+      count: 0 ,
+      page: 1,
+      response: {},
+      showPagination: false
     };
     this.formRef = React.createRef();
   }
@@ -90,22 +90,23 @@ class Extraction extends React.Component {
     const { pageSize, page } = this.state
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
+
     this.setState({ loading: true });
+
     const donors = await fetchDonors(donorName, donorID, pageSize, page);  
-      this.setState({ 
-        showPagination:true, 
-        donorName,
-        donorID,
-        loading: false,
-        response: donors,
-        count:donors.count,
-        data: donors.results 
-      })   
+
+    this.setState({ 
+      showPagination : donors.results.length > 0,
+      donorName,
+      donorID,
+      loading: false,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    })   
+
     if(donors.results.length <= 0) {
       Message.info('No results found');
-      this.setState({ 
-        showPagination : false
-      });
     }
   }
 
@@ -271,22 +272,16 @@ class Extraction extends React.Component {
             }
           }}
         />
-        {
-          showPagination == true
-          ? 
-            (		
-              <div style={{ display: "flex" }}>
-                <Pagination
-                  style={{ marginLeft: "auto" }}
-                  pageSize={pageSize}
-                  total={count}
-                  onChange={this.onPagination}
-                />
-              </div>
-            )	
-          :
-            null
-        }
+        { showPagination === true && (		
+          <div style={{ display: "flex", marginTop: 25 }}>
+            <Pagination
+              style={{ marginLeft: "auto" }}
+              pageSize={pageSize}
+              total={count}
+              onChange={this.onPagination}
+            />
+          </div>
+        )}
       </div>
     );
   }

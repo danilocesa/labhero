@@ -2,8 +2,8 @@
 import React from 'react';
 import { Spin, Table } from 'antd';
 import {
-	globalTableSize, 
-	// globalTableYScroll
+	GLOBAL_TABLE_SIZE, 
+	// GLOBAL_TABLE_YSCROLL
 } from 'global_config/constant-global';
 
 import './table.css';
@@ -66,10 +66,10 @@ class ItemTable extends React.Component {
 				<Spin spinning={false} tip="Loading...">
 					<Table 
 						className="inv-item-setup-tbl"
-						size={globalTableSize}
+						size={GLOBAL_TABLE_SIZE}
 						columns={columns} 
 						dataSource={data} 
-						// scroll={{ y: globalTableYScroll }}
+						// scroll={{ y: GLOBAL_TABLE_YSCROLL }}
 						rowKey={record => record.examItemID}
 					/>
 				</Spin>

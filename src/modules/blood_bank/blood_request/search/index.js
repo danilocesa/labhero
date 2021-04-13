@@ -26,7 +26,7 @@ import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 
 import moment from 'moment';
 
-const { Text, Link } = Typography
+const { Text  } = Typography
 const { Option } = Select;
 
 const columns = [
@@ -132,14 +132,10 @@ class BloodRequestSearch extends React.Component {
   }
 
   displayDrawerAdd = () => {
-    
-    const title = 'ADD REQUEST';
-    const button = 'ADD';
-
     this.setState({ 
       displayDrawer: true, 
-      drawerTitle: title,
-      drawerButton: button,
+      drawerTitle: 'ADD REQUEST',
+      drawerButton: 'ADD',
       disableButton: false,
       selectedRequest: []
     });

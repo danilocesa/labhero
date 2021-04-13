@@ -1,4 +1,4 @@
-import { GLOBAL_TABLE_PAGE_SIZE, globalTableSize, globalTableYScroll } from 'global_config/constant-global';
+import { GLOBAL_TABLE_PAGE_SIZE, GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL } from 'global_config/constant-global';
 import vdltnMessage from 'global_config/error_messages';
 // constant variables, titles strictly implemented and shared within the module.
 
@@ -55,8 +55,8 @@ export const fieldLabels = {
 }
 
 export const tablePageSize = GLOBAL_TABLE_PAGE_SIZE;
-export const tableSize = globalTableSize;
-export const tableYScroll = globalTableYScroll;
+export const tableSize = GLOBAL_TABLE_SIZE;
+export const tableYScroll = GLOBAL_TABLE_YSCROLL;
 
 
 export const fieldRules = {
@@ -95,12 +95,10 @@ export const fieldRules = {
 		{ min: 2, message: vdltnMessage.minLength(2) }
 	],
 	password: [
-		// { required: true, message: vdltnMessage.required },
 		{ max: 12, message: vdltnMessage.maxLength(12) },
 		{ min: 3, message: vdltnMessage.minLength(2) }
 	],
 	repeat_password: [
-		{ required: true, message: vdltnMessage.required },
 		{ max: 12, message: vdltnMessage.maxLength(12) },
 		{ min: 3, message: vdltnMessage.minLength(2) }
 	],

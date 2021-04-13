@@ -2,39 +2,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
-
-// CUSTOM
-import {tableSize, tableYScroll} from './settings';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 
 class UserRightsTable extends React.Component {
 
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
-		
-		const getSorter = (myDataSource, columnName) => {
-			if(myDataSource.length > 0) {
-				const columnSorter = (a, b) => {
-					if(a[columnName] !== null) {
-						return a[columnName].localeCompare(b[columnName])
-					}
-					return 1;
-				};
-				
-				return columnSorter;
-			} 
-			return false;
-		};
 
 		const columns = [
 			{ 
 				title: 'USER TYPE',
 				dataIndex: 'userType',
-				sorter: getSorter(data, 'userType'),
+				sorter: (a, b) => { return a.userType.localeCompare(b.userType) }
 			},
 			{ 
-				title: 'DATE CREATED',
-				dataIndex: 'dateCreated',
+				title: 'DESCRIPTION',
+				dataIndex: 'typeDescription',
 			},
 		];
 
@@ -42,11 +26,10 @@ class UserRightsTable extends React.Component {
 			<div style={{ marginTop: 20 }} className="settings-exam-item-table">
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
-						size={tableSize}
-						pagination={{pageSize}} 
+						size={GLOBAL_TABLE_SIZE}
+						pagination={{ pageSize }} 
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: tableYScroll }}
 						rowKey={record => record.userTypeID}
 						onRow={(record) => {
 							return {

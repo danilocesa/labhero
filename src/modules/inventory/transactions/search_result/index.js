@@ -2,7 +2,7 @@
 import React from "react";
 import { Spin, Table } from "antd";
 import {
-  globalTableYScroll,
+  GLOBAL_TABLE_YSCROLL,
 } from "global_config/constant-global";
 import SearchPager from "shared_components/search_pager";
 import {
@@ -184,7 +184,7 @@ class SearchResultTable extends React.Component {
             size="medium"
             columns={columns}
             dataSource={data}
-            scroll={{ x: 1500, y: globalTableYScroll }}
+            scroll={{ x: 1500, y: GLOBAL_TABLE_YSCROLL }}
             rowKey={(record) => record.examItemID}
           />
         </Spin>
