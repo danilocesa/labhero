@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
-import Pagination from 'shared_components/table_pagination'
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
 import fetchDonors, { fetchPatientsNext } from 'services/blood_bank/screening';
@@ -14,7 +13,8 @@ import {
   Table,
   Button,
   Typography,
-  Form
+  Form,
+  Pagination
 } from "antd";
 
 const { Text } = Typography;
@@ -71,7 +71,8 @@ export default class ForScreeningSearch extends Component {
       loading: false,
       pageSize: 1,
       count:0 ,
-      response:{}
+      response:{},
+      page:1,
     };
     this.formRef = React.createRef();
   }
@@ -81,16 +82,18 @@ export default class ForScreeningSearch extends Component {
   }
 
   handleSubmit = async () => {  
-    const { pageSize } = this.state
+    const { pageSize, page } = this.state
 		const { getFieldsValue } = this.formRef.current;
     const { donorID, donorName } = getFieldsValue()
 
     this.setState({ loading: true });
-    const donors = await fetchDonors(donorName, donorID, pageSize);  
-    console.log("file: index.js ~ line 90 ~ ForScreeningSearch ~ handleSubmit= ~ donors", donors)
+    const donors = await fetchDonors(donorName, donorID, pageSize, page);  
     
     this.setState({ 
+      showPagination:true, 
       loading: false,
+      donorName,
+      donorID,
       response: donors,
       data: donors.results, 
       count: donors.count,
@@ -101,39 +104,25 @@ export default class ForScreeningSearch extends Component {
   } 
 
   handleChangeTableSize = async (pageSize) => {
-    const { donorName, page } = this.state
-    const donors = await fetchDonors(donorName,page,pageSize); 
+    const { donorName, page, donorID } = this.state
+    const donors = await fetchDonors(donorName, donorID, pageSize, page); 
 		this.setState({ 
       pageSize,
       response: donors,
       count:donors.count,
       data: donors.results 
     });
-	}
+	} 
 
-  callbackFunction = async (page) => { 
-    const { response } =this.state
-    if (response.next === null) {
-      const url = response.previous
-      this.setState({ loading: true });
-      const donors = await fetchPatientsNext(url);
-      this.setState({ 
-        loading: false,
-        response: donors,
-        count:donors.count,
-        data: donors.results 
-      });
-    } else if(response.previous === null) {
-      const url = response.next
-      this.setState({ loading: true });
-      const donors = await fetchPatientsNext(url);
-      this.setState({ 
-        loading: false,
-        response: donors,
-        count:donors.count,
-        data: donors.results 
-      });
-    } 
+  onPagination = async (page  ) => { 
+    const { donorName, pageSize, donorID } = this.state
+    const donors = await fetchDonors(donorName, donorID, pageSize, page); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
   }
 
   hideModal = () => {
@@ -148,9 +137,21 @@ export default class ForScreeningSearch extends Component {
     });
   };
 
+  clearInputs = () => {
+    const { setFieldsValue } = this.formRef.current;
+    this.setState({ 
+      data: [], 
+      donorID: null, 
+      donorName: null,
+      count:0,
+      showPagination:false 
+    }); 
+    setFieldsValue({ donorID: '',donorName: '' });
+  }
+
 
   render() {
-    const { data, pageSize, count, response  } = this.state;
+    const { data, pageSize, count, response, showPagination  } = this.state;
 
     return (
       <div>
@@ -204,6 +205,7 @@ export default class ForScreeningSearch extends Component {
                           className="form-button"
                           shape="round" 
                           style={{ width: 120, marginLeft: 10 }}
+                          onClick={this.clearInputs} 
                         >
                           CLEAR
                         </Button>
@@ -248,11 +250,22 @@ export default class ForScreeningSearch extends Component {
             }
           }}
         />
-        <Pagination 
-          pageSize={pageSize} 
-          count={count}
-          parentCallback={this.callbackFunction}
-        />
+        {
+          showPagination == true
+          ? 
+            (		
+              <div style={{ display: "flex" }}>
+                <Pagination
+                  style={{ marginLeft: "auto" }}
+                  pageSize={pageSize}
+                  total={count}
+                  onChange={this.onPagination}
+                />
+              </div>
+            )	
+          :
+            null
+        }
       </div>
     )
   }
