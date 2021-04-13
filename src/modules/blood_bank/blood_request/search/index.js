@@ -96,7 +96,7 @@ class BloodRequestSearch extends React.Component {
 
     console.log(bloodTypeList)
     this.setState({ 
-      loading: true, 
+      // loading: true, 
       bloodType: bloodTypeList 
     });
 
