@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Table } from 'antd';
-import { GLOBAL_TABLE_SIZE, GLOBAL_TABLE_YSCROLL } from 'global_config/constant-global';
+import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 
 
 class UserRightsTable extends React.Component {
@@ -27,10 +27,9 @@ class UserRightsTable extends React.Component {
 				<Spin spinning={loading} tip="Loading...">
 					<Table 
 						size={GLOBAL_TABLE_SIZE}
-						pagination={{pageSize}} 
+						pagination={{ pageSize }} 
 						columns={columns} 
 						dataSource={data} 
-						scroll={{ y: GLOBAL_TABLE_YSCROLL }}
 						rowKey={record => record.userTypeID}
 						onRow={(record) => {
 							return {

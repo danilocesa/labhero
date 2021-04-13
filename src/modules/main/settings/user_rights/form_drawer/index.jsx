@@ -11,10 +11,11 @@ import './style.css';
 
 function FormDrawer({ onClose, visible, id = null, refreshTableData }) {
   const { onSubmit, formRef } = useFormDrawerHook(id, refreshTableData, onClose);
+  const actionType = id ? 'UPDATE' : 'ADD';
 
   return (
     <Drawer
-      title="ADD USER TYPE"
+      title={`${actionType} USER TYPE`}
       width="30%"
       placement="right"
       closable
@@ -66,7 +67,7 @@ function FormDrawer({ onClose, visible, id = null, refreshTableData }) {
               loading={false}
               style={{ margin: 10, width: 120 }}
             >
-              {id ? 'UPDATE' : 'ADD'}
+              {actionType}
             </Button>
           </div>
         </section>

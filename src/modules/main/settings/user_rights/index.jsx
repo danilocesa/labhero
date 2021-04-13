@@ -52,8 +52,10 @@ class UserRights extends React.Component {
   }
 
 	
-  onChangePager = () => {
+  onChangePager = (size) => {
+		console.log('awit', size)
 
+		this.setState({ pageSize: size })
   } 
 
   onDblClickTableRow = (record) => {
