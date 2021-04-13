@@ -8,7 +8,7 @@ export async function fetchXMLNames() {
 	try{
 		const content = {
 			method: API_GET_METHOD,
-			url: `lab_report/templatelist.php`,
+			url: `labreport_api/templatelist.php`,
 		}
 
 		const response = await axiosReportAPI(content);
@@ -29,7 +29,7 @@ export async function deleteXML(payload) {
 	try{
 		const content = {
 			method: API_POST_METHOD,
-			url: `lab_report/delete.php`,
+			url: `labreport_api/delete.php`,
 			data: payload
 		}
 

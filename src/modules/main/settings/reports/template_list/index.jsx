@@ -36,7 +36,7 @@ class TemplateList extends React.Component {
 
 	render() {
     const { xmlTemplates } = this.state;
-    const url = `${process.env.REACT_APP_REPORT_API}/lab_report/download.php?file=`;
+    const url = `${process.env.REACT_APP_REPORT_API}/labreport_api/download.php?file=`;
     
 		return(
       <Card title="XML Templates" style={{ marginTop: 10 }}>
