@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable react/prop-types */
 import React from "react";
 import {
   Row,
@@ -6,7 +8,8 @@ import {
   Button,
   Typography,
   Form,
-  Modal
+  Modal,
+  Pagination
 } from 'antd';
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
@@ -70,6 +73,9 @@ class DonorRegSearch extends React.Component {
       pageSize: GLOBAL_TABLE_PAGE_SIZE,
       loading: false,
       data: [],
+      donorID: 0,
+      count: 0 ,
+      page: 1,
       actionType: null,
       modalVisible: true,
       showModalNoMatchFound: false,
@@ -80,23 +86,34 @@ class DonorRegSearch extends React.Component {
   } 
 
 
-  handleChangeSize = (pageSize) => {
-		this.setState({ pageSize });
+  handleChangeSize = async (pageSize) => {
+		const { donorName, page, donorID } = this.state
+    const donors = await searchDonors(donorName, donorID, pageSize, page); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
 	}   
 
   handleSubmit = async (data) => {
+    const { pageSize, page } = this.state
     const { donorName, donorId } = data;
     
     this.setState({ loading: true });
     
-    const donors = await searchDonors(donorName, donorId); 
+    const donors = await searchDonors(donorName, donorId, pageSize, page); 
 
     this.setState({ 
       loading: false,
-      data: donors,
+      data: donors.results,
+      count:donors.count,
+      donorName,
+      donorId,
+      showPagination : donors.results.length > 0,
       actionType: (donorName === '') ? 'byID' : 'byName'
     });
-
 
 		if(donors.length <= 0) 
       Message.info('No results found');
@@ -127,7 +144,18 @@ class DonorRegSearch extends React.Component {
 
     setFieldsValue({ donorId: '', donorName: '' });
 
-    this.setState({ actionType: '', data: [] })
+    this.setState({ actionType: '', data: [],  showPagination:false  })
+  }
+
+  onPagination = async (page  ) => { 
+    const { donorName, pageSize, donorID } = this.state
+    const donors = await searchDonors(donorName, donorID, pageSize, page); 
+		this.setState({ 
+      pageSize,
+      response: donors,
+      count:donors.count,
+      data: donors.results 
+    });
   }
 
   showModal = () => {
@@ -161,7 +189,18 @@ class DonorRegSearch extends React.Component {
   
 
   render() {
-    const { data, loading, pageSize, actionType, modalVisible, showModalNoMatchFound, isDisplayModal, modalVisibleNoMatchFound } = this.state;
+    const { 
+      data, 
+      loading, 
+      count,
+      pageSize, 
+      actionType, 
+      modalVisible, 
+      showPagination,
+      showModalNoMatchFound, 
+      isDisplayModal, 
+      modalVisibleNoMatchFound 
+    } = this.state;
 
     const TableFooter = (
       <Row justify="center">
@@ -268,7 +307,7 @@ class DonorRegSearch extends React.Component {
             </Button>
             <SearchPager 
               handleChangeSize={this.handleChangeSize}
-              pageTotal={data.length}
+              pageTotal={count}
               pageSize={pageSize}
             />
           </Col>
@@ -277,7 +316,7 @@ class DonorRegSearch extends React.Component {
           style={{textTransform: 'uppercase'}}
           dataSource={data}
           columns={columns} 
-          pagination={{pageSize}}
+          pagination={false}
           rowKey={record => record.donor_id}
           onRow={(record) => {
             return {     
@@ -288,6 +327,16 @@ class DonorRegSearch extends React.Component {
           }}
           {...(actionType === 'byName' && {footer: () => TableFooter})}
         />
+        { showPagination === true && (		
+          <div style={{ display: "flex", marginTop: 25 }}>
+            <Pagination
+              style={{ marginLeft: "auto" }}
+              pageSize={pageSize}
+              total={count}
+              onChange={this.onPagination}
+            />
+          </div>
+        )}
 
         <Modal
           title="Scan Finger"

@@ -1,10 +1,11 @@
 import React from 'react';
 import PageTitle from 'shared_components/page_title';
-import { Input, Button, Row, Col, Tabs } from 'antd';
+import { Input, Button, Row, Col, Tabs, Select  } from 'antd';
 import TablePager from 'shared_components/search_pager';
 import ProductListTable from './table';
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 
 const tabs = [
   'WHOLE BLOOD',
@@ -42,9 +43,31 @@ class ProductList extends React.Component {
           gutter={16}
           style={{ marginTop: 20 }}
         >
-          <Col span={6}>
+          <Col span={2}>
             <Input placeholder="STATUS" />
           </Col>
+          <Col span={2}>
+            <Select defaultValue="Blood Types" style={{ width: '100%' }}>
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </Select>
+          </Col>
+          <Col span={2}>
+            <Select defaultValue="Storage" style={{ width: '100%' }}>
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </Select>
+          </Col>
+          <Col span={2}>
+            <Select defaultValue="Status" style={{ width: '100%' }}>
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="Yiminghe">yiminghe</Option>
+            </Select>
+          </Col>
+
           <Col>
             <Button
               shape="round"
