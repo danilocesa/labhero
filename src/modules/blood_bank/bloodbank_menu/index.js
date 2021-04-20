@@ -44,6 +44,11 @@ const settingsItemData = [
 	},
 	{
 		image: BBdonorRegIcon,
+		link: '/bloodbank/blood_product',
+		label: 'BLOOD PRODUCT',
+	},
+	{
+		image: BBdonorRegIcon,
 		link: '/bloodbank/PRINTING',
 		label: 'PRINTING',
 	},

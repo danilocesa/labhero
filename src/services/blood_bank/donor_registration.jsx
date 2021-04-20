@@ -68,12 +68,12 @@ export async function updateDonor(Data) {
   return updateBloodGroup;
 }
 
-export async function searchDonors(patientName ,donor_id) {
+export async function searchDonors(donorName, donorId, pageSize, page) {
   let Patient = '';
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-      url: (patientName ? `bloodbank/donor/search/?search=${patientName}` : `bloodbank/donor/search/by_id/${donor_id}`) 
+      url: (donorName ? `/bloodbank/donor/manual_search/list/?search=${donorName}&page=${page}&page_size=${pageSize}` : `/bloodbank/donor/manual_search/list/?donor_id=${donorId}`) 
     });
     const { data } = await response;
     Patient = data

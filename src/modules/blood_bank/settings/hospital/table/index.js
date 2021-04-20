@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
 import HopitalForm from '../hospitalForm'
+import { getHospitalList } from 'services/blood_bank/hospital';
+// import getHospitalList from 'services/blood_bank/hospital';
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer } from 'antd';
 
 const { Search } = Input;
-const dataSource = [
-  {
-    Hospital: 'Mike',
-    Location: '10 Downing Street',
-  },
-  {
-    Hospital: 'John',
-    Location: '10 Downing Street',
-  },
-];
 
 const columns = [
   {
@@ -26,10 +18,26 @@ const columns = [
     dataIndex: 'Location',
   },
 ];
+
 export default class HopitalTable extends Component {
   constructor(props) {
 		super(props);
-		this.state = { visible: false }
+		this.state = { 
+      visible: false ,
+      HospitalList:[]
+    }
+	}
+
+  async componentDidMount() {
+		this.setState({loading:true});
+		const response = await getHospitalList();
+		console.log("Data:",response)
+		this.setState({ 
+			HospitalList: response,
+			usersRef:response,
+			pagination: response.length,
+			loading:false
+		});
 	}
 
   displayDrawer = (record) => {
@@ -55,7 +63,13 @@ export default class HopitalTable extends Component {
 	}
 
   render() {
-    const { visible , drawerTitle, buttonNames } = this.state
+    const { 
+      visible, 
+      drawerTitle, 
+      buttonNames, 
+      HospitalList,
+      loading   
+    } = this.state
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
@@ -76,7 +90,8 @@ export default class HopitalTable extends Component {
           </Col>
 				</Row>
         <Table  
-          dataSource={dataSource} 
+          loading={loading}
+          dataSource={HospitalList} 
           columns={columns} 
           onRow={(record) => {
             return {     
