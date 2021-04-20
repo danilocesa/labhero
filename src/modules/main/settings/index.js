@@ -12,7 +12,7 @@ import UserRights from './user_rights';
 import Address from './address';
 import Hospital from './hospital';
 import Report from './reports';
-
+ 
 class Settings extends React.Component {
 	render() {
 		return(
