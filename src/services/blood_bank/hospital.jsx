@@ -2,7 +2,7 @@ import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { API_GET_METHOD } from 'global_config/constant-global';
 
-export async function getHospitalList() {
+export  async function getHospitalList() {
 	let hospitals = [];
 	
   try{
@@ -20,3 +20,7 @@ export async function getHospitalList() {
   
   return hospitals;
 }
+
+
+
+

@@ -1,9 +1,11 @@
 import React from 'react';
-import { Row, Col, Spin, Card, Typography, Divider, Form, DatePicker as AntDatePicker, Button, Select, Input } from 'antd';
+import { Row, Col, Spin, Card, Typography, Divider, Form, DatePicker as AntDatePicker, Button, Select, Input, Drawer, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
 import { fetchBloodRecipientById } from 'services/blood_bank/blood_recipient';
+import BloodRequestDetailsForm from '../detail';
 import { fetchBloodRequestById } from 'services/blood_bank/blood_request';
 import { fetchBloodTypes } from 'services/blood_bank/blood_types';
+import { getHospitalList } from 'services/blood_bank/hospital'
 // import { fetchBloodProducts } from 'services/blood_bank/blood_types';
 import { AlphaInput, NumberInput } from 'shared_components/pattern_input';
 import moment from 'moment';
@@ -15,40 +17,50 @@ const { Option } = Select;
 class BloodRequestDetails extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = { 
       loading: false,
       recipientDetail: {},
       requestDetails: [],
       enableButton: true,
-      bloodType: []
-    };
-
+      bloodType: [],
+      getHospitallist:[]
+    }; 
     this.formRef = React.createRef();
-
   }
 
   async componentDidMount() {
     await this.fetchData();
+    const response =  await getHospitalList();
+    this.setState({
+      getHospitallist:response
+    })
+  }
+
+  onCloseDrawer = () => {
+    this.setState({ displayDrawer: false });
   }
 
   fetchData = async () => {
-
     const bloodTypeList = await fetchBloodTypes();
-
     this.setState({ 
       loading: true, 
       bloodType: bloodTypeList 
     });
-
   }
 
-   closeDrawer = this.props;
-
-
+  closeDrawer = this.props;
 
   render(){
-    const { recipientDetail, requestDetails, loading, closeDrawer, bloodType } = this.state;
+    const { 
+      recipientDetail, 
+      requestDetails, 
+      loading, 
+      closeDrawer, 
+      bloodType, 
+      drawerTitle, 
+      displayDrawer, 
+      getHospitallist,
+     } = this.state;
 
     const { selectedRequest, drawerButton, disableButton } = this.props;
 
@@ -68,6 +80,12 @@ class BloodRequestDetails extends React.Component {
     const BloodTypeOptions = bloodType.map(item => (
       <Option key={item.blood_type_id} value={item.blood_type}>
         {item.blood_type}
+      </Option>
+    ));
+
+    const HospitalOptions = getHospitallist.map(item => (
+      <Option key={item.hospital_id} value={item.hospital_name}>
+        {item.hospital_name}
       </Option>
     ));
 
@@ -191,11 +209,16 @@ class BloodRequestDetails extends React.Component {
             </Col>
             <Col span={6}> 
               <Form.Item label="REQUESTING HOSPITAL" name="requestingHospital">
-                <Input 
-                    style={{width:200}}
-                    disabled = {disableButton}
-                    value={recipientDetail.hospital_name}
-                 />
+                <Select
+                  showSearch
+                  style={{ width: 200 }}
+                  placeholder="Hospital"
+                  filterOption={(input, option) =>
+                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {HospitalOptions}
+                </Select>
               </Form.Item>
             </Col>
           </Row>
@@ -255,22 +278,13 @@ class BloodRequestDetails extends React.Component {
             </Col>
             <Col span={6}> 
               <Form.Item label="QUANTITY" name="quantity">
-                <Select
-                  style={{width:200}}
-                  disabled = {disableButton}
-                >
-                  <Option value='1'>1</Option>
-                  <Option value='2'>2</Option>
-                  <Option value='3'>3</Option>
-                  <Option value='4'>4</Option>
-                  <Option value='5'>5</Option>
-                </Select>
+                <InputNumber min={0} max={10} defaultValue={0} style={{width:200}}/>
               </Form.Item>
             </Col>
           </Row>
           <section className="drawerFooter">
             {
-               drawerButton === 'ADD' && (
+              drawerButton === 'ADD' && (
                 <div>
                   <Button
                     shape="round"
@@ -289,11 +303,10 @@ class BloodRequestDetails extends React.Component {
                     {drawerButton}
                   </Button>
                 </div>
-               )
+              )
             }
-
             {
-               drawerButton === 'UPDATE REQUEST' && (
+              drawerButton === 'UPDATE REQUEST' && (
                 <div>
                   <Button
                     shape="round"
@@ -325,11 +338,24 @@ class BloodRequestDetails extends React.Component {
                   >
                     PRINT
                   </Button>
+                  <Drawer
+                    title={drawerTitle}
+                    width="60%"
+                    visible={displayDrawer}
+                    onClose={this.onCloseDrawer}
+                    destroyOnClose
+                  >
+                    <BloodRequestDetailsForm 
+                      selectedRequest={selectedRequest}
+                      onClose={this.onCloseDrawer} 
+                      drawerButton='ADD'
+                      disableButton={disableButton}
+                    />
+                  </Drawer>
                 </div>
-               )
+              )
             }
-            
-        </section>
+          </section>
         </Form>
       </Row>
     );

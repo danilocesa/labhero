@@ -20,7 +20,7 @@ import UserAccountForm from '../form';
 const { Search } = Input;
 const columns = [
 	{
-		title: 'ID',
+		title: 'BLOOD ID',
 		dataIndex: 'id',
 		key: 'id',
 	},
@@ -40,6 +40,10 @@ const columns = [
 		key: 'normal_values',
 	},
 ];
+
+
+
+
 
 class BloodTestTable extends React.Component {
 	constructor(props) {

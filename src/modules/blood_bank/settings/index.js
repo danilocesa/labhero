@@ -9,7 +9,7 @@ import BloodTypes from './blood_types'
 import Storage from './storage'
 import Hospital from './hospital'
 import Address from './address'
-// import Normal_Values from './normal_values'
+import Normal_Values from './normal_values'
 
 //  CONSTANTS
 const { TabPane } = AntTabs;
@@ -23,6 +23,7 @@ const pageTitle = [
   `${pageTitleSettings } STORAGE`,
   `${pageTitleSettings } HOSPITAL`,
   `${pageTitleSettings } ADDRESS`,
+  `${pageTitleSettings } NORMAL VALUES`,
 ]
 
 class settings extends React.Component {
@@ -62,10 +63,10 @@ class settings extends React.Component {
           </TabPane>
           {/* <TabPane tab="BLOOD TYPE" key="6">
             <Storage />
-          </TabPane>
-          <TabPane tab="NORMAL VALUES" key="7">
-            <Normal_Values />
           </TabPane> */}
+          <TabPane tab="NORMAL VALUES" key="8">
+            <Normal_Values />
+          </TabPane>
         </AntTabs>
 			</div>
     );
