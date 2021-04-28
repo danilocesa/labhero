@@ -31,7 +31,7 @@ function Sider({ collapsed }) {
 		const selectedKey = key.includes('inventory') ? 9 : key;	
 		sessionStorage.setItem(SELECTED_SIDER_KEY, selectedKey);
 		// workaround to avoid delays in stepsPage
-		if(key === '2') 
+		if(key === '2')
 			sessionStorage.setItem(LR_REQUEST_TYPE, 'create');
 		if(key === '3')
 			sessionStorage.setItem(LR_REQUEST_TYPE, 'edit');

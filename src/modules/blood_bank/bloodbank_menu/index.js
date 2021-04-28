@@ -39,7 +39,7 @@ const settingsItemData = [
 	},
 	{
 		image: BBdonorRegIcon,
-		link: '/bloodbank/blood_inventory/search',
+		link: '/bloodbank/blood_inventory/dashboard',
 		label: 'BLOOD INVENTORY',
 	},
 	{

@@ -1,197 +1,120 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Descriptions, Badge, Statistic, Row, Col, Card, Tabs  } from 'antd';
+import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
+import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 
 const { TabPane } = Tabs;
 
 function InventoryDashboard() {
+
+  const formRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [bloodStorage, setBloodStorage] = useState([]);
+  const [bloodTypes, setBloodTypes] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const bloodStorage = await fetchBloodStorage();
+      const bloodTypes = await fetchBloodTypes();
+      let payload = {};
+      // setBloodStorage(bloodStorage);
+      setBloodTypes(bloodTypes);
+      console.log(bloodTypes)
+
+    }
+
+    setLoading(true);
+    fetchData();
+    setLoading(false);
+  }, []) 
+
+  const BloodType = bloodTypes.map(item => {
+    return (
+      <Descriptions.Item span={2} key={item.blood_type_id} label={item.blood_type}>
+        <Row gutter={12}>
+          <Col span={12}>
+            <Card size="small">
+              <Statistic
+                title="Available"
+                value={9}
+                precision={0}
+                prefix={<Badge status="processing" />}
+              />
+            </Card>
+          </Col>
+          <Col span={12}>
+            <Card size="small">
+              <Statistic
+                title="Near Expiry"
+                value={15}
+                precision={0}
+                prefix={<Badge status="warning"  />}
+              />
+            </Card>
+          </Col>
+        </Row>
+    </Descriptions.Item>
+    )
+  }  
+  );
+
   return (
       <Tabs defaultActiveKey="1">
         <TabPane 
-          tab={<div style={{ width: 50, textAlign: 'center' }}> A+</div>} 
+          tab={<div style={{ width: 50, textAlign: 'center' }}> All</div>} 
           key="1"
         >
           <Descriptions size="small" bordered>
-            <Descriptions.Item span={2} label="WB">
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Available"
-                      value={9}
-                      precision={0}
-                      prefix={<Badge status="processing" />}
-                    />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Near Expiry"
-                      value={15}
-                      precision={0}
-                      prefix={<Badge status="warning"  />}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Descriptions.Item>
-            <Descriptions.Item span={2} label="WBC">
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Available"
-                      value={20}
-                      precision={0}
-                      prefix={<Badge status="processing" />}
-                    />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Near Expiry"
-                      value={3}
-                      precision={0}
-                      prefix={<Badge status="warning"  />}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Descriptions.Item>
-            <Descriptions.Item span={2} label="RBC">
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Available"
-                      value={4}
-                      precision={0}
-                      prefix={<Badge status="processing" />}
-                    />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Near Expiry"
-                      value={15}
-                      precision={0}
-                      prefix={<Badge status="warning"  />}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Descriptions.Item>
-            <Descriptions.Item span={2} label="PLASMA">
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Available"
-                      value={55}
-                      precision={0}
-                      prefix={<Badge status="processing" />}
-                    />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Near Expiry"
-                      value={105}
-                      precision={0}
-                      prefix={<Badge status="warning"  />}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Descriptions.Item>
-            <Descriptions.Item span={2} label="PLATELET">
-              <Row gutter={12}>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Available"
-                      value={5}
-                      precision={0}
-                      prefix={<Badge status="processing" />}
-                    />
-                  </Card>
-                </Col>
-                <Col span={12}>
-                  <Card size="small">
-                    <Statistic
-                      title="Near Expiry"
-                      value={4}
-                      precision={0}
-                      prefix={<Badge status="warning"  />}
-                    />
-                  </Card>
-                </Col>
-              </Row>
-            </Descriptions.Item>
-            <Descriptions.Item span={2} label="TOTAL">
-              <Row gutter={12}>
-                <Col offset={1} span={10}>
-                  <Statistic
-                    title="Available"
-                    value={149}
-                    precision={0}
-                  />
-                </Col>
-                <Col offset={1} span={10}>
-                  <Statistic
-                    title="Near Expiry"
-                    value={75}
-                    precision={0}
-                  />
-                </Col>
-              </Row>
-            </Descriptions.Item>
+             {BloodType}
           </Descriptions>
         </TabPane>
         <TabPane 
-          tab={<div style={{ width: 50, textAlign: 'center' }}> A-</div>} 
+          tab={<div style={{ width: 50, textAlign: 'center' }}> A+</div>} 
           key="2"
         >
-          Content of Tab Pane 2
+          Content of A+
+        </TabPane>
+        <TabPane 
+          tab={<div style={{ width: 50, textAlign: 'center' }}> A-</div>} 
+          key="3"
+        >
+          Content of A-
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> B+</div>} 
-          key="3"
+          key="4"
         >
-          Content of Tab Pane 3
+          Content of B+
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> B-</div>} 
-          key="3"
+          key="5"
         >
-          Content of Tab Pane 3
+          Content of B-
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> AB+</div>} 
-          key="3"
+          key="6"
         >
-          Content of Tab Pane 3
+          Content of AB+
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> AB-</div>} 
-          key="3"
+          key="7"
         >
-          Content of Tab Pane 3
+          Content of AB-
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> O+</div>} 
-          key="3"
+          key="8"
         >
-          Content of Tab Pane 3
+          Content of O+
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> O-</div>} 
-          key="3"
+          key="9"
         >
-          Content of Tab Pane 3
+          Content of O-
         </TabPane>
       </Tabs>
   );
