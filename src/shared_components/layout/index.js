@@ -30,6 +30,7 @@ function MainLayout() {
     patientDemographics: initialAccessState,
 		settings: initialAccessState,
 	});
+  
 
   function defineUserAccess({ accessMatrix }) {
     const dashboard = accessMatrix.find(item => item.moduleID === 1);

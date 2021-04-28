@@ -25,7 +25,7 @@ const { Sider: AntSider } = Layout;
 
 
 function Sider({ collapsed }) {
-	const { userAccess } = useContext(UserAccessContext);
+	const { userAccess } = useContext(UserAccessContext); 
 
 	function handleMenuClick({ key })  {
 		const selectedKey = key.includes('inventory') ? 9 : key;	
@@ -50,8 +50,7 @@ function Sider({ collapsed }) {
 				defaultSelectedKeys={[sessionStorage.getItem(SELECTED_SIDER_KEY) || '1']}
 				onClick={handleMenuClick}
 			>
-				{ 
-					process.env.REACT_APP_DISPLAY_HOME === '1' && (
+				{ userAccess.dashboard.view && process.env.REACT_APP_DISPLAY_HOME === '1' && (
 						<Menu.Item key={URI.dashboard.key}>
 							<Link to={URI.dashboard.link}>
 								<Icon component={HomeIcon} />
@@ -70,7 +69,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				}
-				{ (userAccess.request.update && process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1')
+				{ (userAccess.request.view && process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1')
 					&& (
 						<Menu.Item key={URI.editLabReq.key}>
 							<Link to={URI.editLabReq.link}>
@@ -90,8 +89,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				}
-				{
-					process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
+				{ userAccess.plhebo.view && process.env.REACT_APP_DISPLAY_PHLEBO === '1' && (
 						<Menu.Item key={URI.phlebo.key}>
 							<Link to={URI.phlebo.link}>
 								<Icon component={PleboIcon} />
@@ -100,8 +98,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				}
-				{
-					process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
+				{userAccess.result.view && process.env.REACT_APP_DISPLAY_LAB_RESULT === '1' && (
 						<Menu.Item key={URI.editLabResult.key}>
 							<Link to={URI.editLabResult.link}>
 								<Icon component={SearchIcon} />
@@ -120,8 +117,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				} */}
-				{
-					process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
+				{userAccess.patientDemographics.update && process.env.REACT_APP_DISPLAY_SEARCH_PATIENT === '1' && (
 						<Menu.Item key={URI.searchPatient.key}>
 							<Link to={URI.searchPatient.link}>
 								<Icon component={SearchPatientIcon} />
@@ -161,7 +157,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				}
-					{
+				{
 					process.env.REACT_APP_DISPLAY_CASHIER === '1' && (
 						<Menu.Item key={URI.cashier.key}>
 							<Link to={URI.cashier.link}>

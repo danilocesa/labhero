@@ -1,18 +1,14 @@
-import React, { Component } from 'react'
-import { Table, Drawer } from 'antd';
+import React, { Component,  } from 'react'
+import PropTypes from 'prop-types';
+import { Table, Drawer, Button } from 'antd';
 import BloodRequestDetails from 'modules/blood_bank/blood_request/detail';
 
-const dataSource = [
-  {
-    priority: 32,
-    status: '10 Downing Street',
-  },
-];
+
 
 const columns = [
   {
     title: "REQUEST'S ID",
-    dataIndex: "donor_id",
+    dataIndex: "recipient_id",
   },
   {
     title: 'PRIORITY ',
@@ -28,7 +24,13 @@ const columns = [
     title: 'REQUESTED DATE ',
     dataIndex: 'requested_date',
     key:'requested_date'
-  }
+  },
+  {
+    // title: 'Action',
+    dataIndex: '',
+    key: 'x',
+    render: () => <Button>Print</Button>,
+  },
 ];
 
 export class Extendtable extends Component {
@@ -53,12 +55,14 @@ export class Extendtable extends Component {
   }
 
   render() {
+    const {record} = this.props
+    const data = [record]
     const {displayDrawer ,drawerTitle, drawerButton, selectedRequest, disableButton} = this.state
 
     return (
       <div>
         <Table 
-          dataSource={dataSource} 
+          dataSource={data} 
           columns={columns} 
           pagination={false}
           onRow={(record) => {
@@ -86,6 +90,11 @@ export class Extendtable extends Component {
       </div>
     )
   }
+}
+
+
+Extendtable.propTypes = {
+	record: PropTypes.object.isRequired
 }
 
 export default Extendtable

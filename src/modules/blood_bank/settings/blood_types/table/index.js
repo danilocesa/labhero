@@ -1,33 +1,23 @@
 import React, { Component } from 'react'
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
+import {fetchBloodTypes} from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
 import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import BloodtypesForm from '../form'
 
 const { Search } = Input;
-const { Option } = Select;
 const { Title } = Typography;
 
-const dataSource = [
-  {
-    BT: '1',
-    DES: 'Mike'
-  },
-  {
-    BT: '2',
-    DES: 'John'
-  },
-];
 
 const columns = [
   {
     title: 'BLOOD TYPE',
-    dataIndex: 'BT',
+    dataIndex: 'blood_type',
   },
   {
     title: 'DESCRIPTION',
-    dataIndex: 'DES',
+    dataIndex: 'blood_desc',
   },
   
 ];
@@ -40,14 +30,22 @@ export default class BloodTypesTable extends Component {
 				isDrawerVisible	: false,
         Data: [],
         dropdownvalues:'',
-        drawerButton:''
+        drawerButton:'',
+        loading:false,
+        tableData:[],
+        AddButton:true,
+        selectedBloodGroup:{},
 			}
 	}
 
   async componentDidMount(){
     const apiResponse = await fetchBloodGroupItems();
+    this.setState({loading:true});
+    const apiResponseBloodType = await fetchBloodTypes();
     this.setState({
-      Data:apiResponse
+      loading:false,
+      Data:apiResponse,
+      tableData:apiResponseBloodType
     })
   }
 
@@ -57,12 +55,14 @@ export default class BloodTypesTable extends Component {
 			isDrawerVisible: true ,
 			drawerTitle: `ADD BLOOD TYPES - ${dropdownvalues}`,
 			buttonNames: "ADD",
+      selectedBloodTypes: record,
 		});
 	};
 
   handleChange = (value) =>{
     this.setState({
-      dropdownvalues:value
+      dropdownvalues:value,
+      AddButton:false
     })
   }
 
@@ -72,6 +72,7 @@ export default class BloodTypesTable extends Component {
 			isDrawerVisible: true,
 			drawerTitle:`UPDATE BLOOD TYPES - ${dropdownvalues}`,
 			buttonNames: "UPDATE",
+      selectedBloodTypes:record
 		});
 	}
 
@@ -82,7 +83,17 @@ export default class BloodTypesTable extends Component {
 	};
 
   render() {
-    const {drawerTitle,isDrawerVisible,Data,buttonNames} = this.state
+    const {
+      drawerTitle,
+      isDrawerVisible,
+      Data,
+      buttonNames, 
+      tableData,
+      loading, 
+      AddButton,
+      dropdownvalues, 
+      selectedBloodTypes,
+    } = this.state
     const BloodGroupOption = Data.map((item,i) => {
       return (<option key={i} value={item.blood_group}>{item.blood_group}</option>)
     });
@@ -96,7 +107,7 @@ export default class BloodTypesTable extends Component {
               <Title level={5}>BLOOD GROUP</Title>
             </Col>
             <Col span={12}>
-              <Select style={{ width: 200 }} onChange={this.handleChange}>
+              <Select style={{ width: 200 }} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
             </Col>
@@ -117,6 +128,7 @@ export default class BloodTypesTable extends Component {
               onClick={this.showDrawer}
               style={{ marginRight: '15px' }} 
               icon={<PlusOutlined />}
+              disabled={AddButton }
             >
               ADD BLOOD TYPE
             </Button>
@@ -124,8 +136,9 @@ export default class BloodTypesTable extends Component {
           </Col>
         </Row>
         <Table 
+          loading={loading}
           style={{marginTop:10}}
-          dataSource={dataSource} 
+          dataSource={tableData} 
           columns={columns} 
           onRow={(record) => ({
             onDoubleClick: () => { 
@@ -140,7 +153,11 @@ export default class BloodTypesTable extends Component {
           width="30%"
           destroyOnClose
 				>
-          <BloodtypesForm buttonNames={buttonNames}/>
+          <BloodtypesForm 
+            buttonNames={buttonNames} 
+            dropdownvalues={dropdownvalues}
+            selectedBloodTypes={selectedBloodTypes}
+          />
 				</Drawer>
       </div>
     )

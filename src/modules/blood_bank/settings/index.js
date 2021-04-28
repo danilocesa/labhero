@@ -44,7 +44,7 @@ class settings extends React.Component {
             <BloodGroup />
           </TabPane>
           <TabPane tab="BLOOD TYPES" key="2">
-            {/* <BloodTypes /> */}
+            <BloodTypes />
           </TabPane>
           <TabPane tab="CATEGORY" key="3">
             <BloocBankCategories />

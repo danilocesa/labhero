@@ -23,7 +23,8 @@ class BloodRequestDetails extends React.Component {
       requestDetails: [],
       enableButton: true,
       bloodType: [],
-      getHospitallist:[]
+      getHospitallist:[],
+      showUpdateButton:false
     }; 
     this.formRef = React.createRef();
   }
@@ -48,6 +49,25 @@ class BloodRequestDetails extends React.Component {
     });
   }
 
+  computeAge = (date) => {
+  console.log("file: index.js ~ line 52 ~ BloodRequestDetails ~ date", date)
+		const years = Math.floor(moment().diff(date, 'years', true));
+		const age = years > 0 ? years : '---';
+	
+		return age;
+  }
+
+  onUpdate= ()=>{
+    this.setState({
+      showUpdateButton:true
+    })
+  }
+  onCancel = () => {
+    this.setState({
+      showUpdateButton:false
+    })
+  } 
+
   closeDrawer = this.props;
 
   render(){
@@ -60,6 +80,7 @@ class BloodRequestDetails extends React.Component {
       drawerTitle, 
       displayDrawer, 
       getHospitallist,
+      showUpdateButton
      } = this.state;
 
     const { selectedRequest, drawerButton, disableButton } = this.props;
@@ -152,21 +173,18 @@ class BloodRequestDetails extends React.Component {
             <Col span={6}>
               <Form.Item 
                 label="DATE OF BIRTH"
-                
+                name="birth_date"
+                initialValue={selectedRequest.birth_date}
                 >
-                <AntDatePicker 
-                  allowClear={true}
-                  // value={moment(recipientDetail.birth_date).format('MM/DD/YYYY')}
-                  // @ts-ignore
-                  // defaultValue={moment(recipientDetail.birth_date).format('MM/DD/YYYY')} 
-                  onChange={this.handleChangeDate} 
-                  disabled = {disableButton}  
-                  style={{ width: 200 }}
+                <Input 
+                  style={{width:200}}
+                  maxLength={5}
+                  disabled = {disableButton}
                 />
               </Form.Item>
             </Col>
             <Col span={6}>  
-              <Form.Item label="AGE" name="age">
+              <Form.Item label="AGE" name="age" initialValue={this.computeAge(selectedRequest.birth_date)}>
                   <Input 
                     disabled = {disableButton}
                     style={{width:200}}
@@ -175,21 +193,17 @@ class BloodRequestDetails extends React.Component {
                 </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="GENDER" name="genders">
-                <Select
-                  style={{width:200}}
+              <Form.Item label="GENDER" name="genders" initialValue={selectedRequest.gender}>
+                <Input 
                   disabled = {disableButton}
-                  value={recipientDetail.gender}
-                >
-                  <Option value='MALE'>MALE</Option>
-                  <Option value='FEMALE'>FEMALE</Option>
-                </Select>
-                  
-                </Form.Item>
+                  style={{width:200}}
+                  maxLength={5}
+                />
+              </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="ADDRESS" name="address">
-              < Select 
+              <Form.Item label="ADDRESS" name="address" initialValue={selectedRequest.city_name}>
+                <Select 
                   style={{width:200}}
                   disabled = {disableButton}
                   value={recipientDetail.address_line_1}
@@ -245,7 +259,7 @@ class BloodRequestDetails extends React.Component {
           </Row>
           <Row gutter={24}>
             <Col span={6}> 
-              <Form.Item label="BLOOD TYPE" name="bloodType">
+              <Form.Item label="BLOOD TYPE" name="bloodType" initialValue={selectedRequest.blood_type_name}>
                 <Select
                   style={{width:200}}
                   value={recipientDetail.blood_type_name}
@@ -297,7 +311,6 @@ class BloodRequestDetails extends React.Component {
                     type="primary"
                     shape="round"
                     htmlType="submit"
-                    loading={loading}
                     style={{ margin: 10, width: 120 }}
                   >
                     {drawerButton}
@@ -306,69 +319,86 @@ class BloodRequestDetails extends React.Component {
               )
             }
             {
-              drawerButton === 'UPDATE REQUEST' && (
-                <div>
-                  <Button
-                    shape="round"
-                    style={{ marginRight: 10, width: 150 }}
-                    onClick={closeDrawer}
-                  >
-                    CANCEL REQUEST
-                  </Button>
-                  <Button
-                    // type="primary"
-                    shape="round"
-                    htmlType="submit"
-                    loading={loading}
-                    style={{ margin: 10, width: 150 }}
-                  >
-                    {drawerButton}
-                  </Button>
-                  <Button
-                    shape="round"
-                    style={{ marginRight: 10, width: 150 }}
-                    onClick={closeDrawer}
-                  >
-                    PROCESS REQUEST
-                  </Button>
-                  <Button
-                    shape="round"
-                    style={{ marginRight: 10, width: 150 }}
-                    onClick={closeDrawer}
-                  >
-                    PRINT
-                  </Button>
-                  <Drawer
-                    title={drawerTitle}
-                    width="60%"
-                    visible={displayDrawer}
-                    onClose={this.onCloseDrawer}
-                    destroyOnClose
-                  >
-                    <BloodRequestDetailsForm 
-                      selectedRequest={selectedRequest}
-                      onClose={this.onCloseDrawer} 
-                      drawerButton='ADD'
-                      disableButton={disableButton}
-                    />
-                  </Drawer>
-                </div>
+              drawerButton === 'UPDATE REQUEST' && ( 
+                  showUpdateButton == true ?
+                  (		
+                    <>
+                      <Button
+                        shape="round"
+                        style={{ marginRight: 10, width: 150 }}
+                        onClick={this.onCancel}
+                      >
+                        CANCEL
+                      </Button>
+                      <Button
+                        shape="round"
+                        style={{ margin: 10, width: 150 }}
+                      >
+                        UPDATE
+                      </Button>
+                      </>
+                  )	
+                  :
+                    <div>
+                      <Button
+                        shape="round"
+                        style={{ marginRight: 10, width: 150 }}
+                        onClick={closeDrawer}
+                      >
+                        CANCEL REQUEST
+                      </Button>
+                      <Button
+                        // type="primary"
+                        shape="round"
+                        onClick={this.onUpdate}
+                        // htmlType="submit"
+                        // loading={loading}
+                        style={{ margin: 10, width: 150 }}
+                      >
+                        {drawerButton}
+                      </Button>
+                      <Button
+                        shape="round"
+                        style={{ marginRight: 10, width: 150 }}
+                        onClick={closeDrawer}
+                      >
+                        PROCESS REQUEST
+                      </Button>
+                      <Button
+                        shape="round"
+                        style={{ marginRight: 10, width: 150 }}
+                        onClick={closeDrawer}
+                      >
+                        PRINT
+                      </Button>
+                  </div>
+                
               )
             }
           </section>
         </Form>
+        <Drawer
+          title={drawerTitle}
+          width="60%"
+          visible={displayDrawer}
+          onClose={this.onCloseDrawer}
+          destroyOnClose
+        >
+          <BloodRequestDetailsForm 
+            selectedRequest={selectedRequest}
+            onClose={this.onCloseDrawer} 
+            drawerButton='ADD'
+            disableButton={disableButton}
+          />
+        </Drawer>
       </Row>
     );
   }
 }
 
-// BloodRequestDetails.propTypes = {
-//   recipientID: PropTypes.number.isRequired
-// };
+BloodRequestDetails.propTypes = {
+  selectedRequest: PropTypes.object
+};
 
-// BloodRequestDetails.defaultProps = {
-//   recipientID: 2,
-
-// };
 
 export default BloodRequestDetails;

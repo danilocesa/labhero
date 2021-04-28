@@ -109,7 +109,7 @@ class HealthInfoDynamicFields extends React.Component {
               <Form.Item
                 label={item.field_label}
                 name={item.field_name}
-                rules={[{ required: item.field_is_required, message: errorMessage.required }]}
+                // rules={[{ required: item.field_is_required, message: errorMessage.required }]}
               >
                 {generateDynamicField(item, props)}
               </Form.Item>

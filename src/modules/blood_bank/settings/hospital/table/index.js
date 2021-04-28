@@ -10,8 +10,12 @@ const { Search } = Input;
 
 const columns = [
   {
+    title: 'HOSPITAL ID',
+    dataIndex: 'hospital_id',
+  },
+  {
     title: 'HOSPITAL',
-    dataIndex: 'Hospital',
+    dataIndex: 'hospital_name',
   },
   {
     title: 'LOCATION',
@@ -24,7 +28,8 @@ export default class HopitalTable extends Component {
 		super(props);
 		this.state = { 
       visible: false ,
-      HospitalList:[]
+      HospitalList: [],
+      selecetedData:{},
     }
 	}
 
@@ -68,7 +73,9 @@ export default class HopitalTable extends Component {
       drawerTitle, 
       buttonNames, 
       HospitalList,
-      loading   
+      loading   ,
+			selecetedData,
+
     } = this.state
     return (
       <div>
@@ -92,6 +99,7 @@ export default class HopitalTable extends Component {
         <Table  
           loading={loading}
           dataSource={HospitalList} 
+          pagination={false}
           columns={columns} 
           onRow={(record) => {
             return {     
@@ -107,7 +115,7 @@ export default class HopitalTable extends Component {
           onClose={this.onDrawerClose}
           destroyOnClose
         >
-          <HopitalForm  buttonNames={buttonNames} />
+          <HopitalForm  buttonNames={buttonNames} selecetedData={selecetedData}/>
         </Drawer>
       </div>
     )

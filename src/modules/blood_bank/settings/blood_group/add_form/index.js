@@ -13,10 +13,6 @@ import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
 import './form.css';
 
 const { TextArea } = Input;
-const layout = {
-	labelCol: { span: 8 },
-	wrapperCol: { span: 16 },
-  };
 
 class BloodGroupForm extends React.Component {
 	constructor(props) {
@@ -28,7 +24,6 @@ class BloodGroupForm extends React.Component {
 
 	onFinish = async (values) => {
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-    console.log("file: index.js ~ line 31 ~ BloodGroupForm ~ onFinish= ~ loggedinUser", loggedinUser)
 		const { drawerButton, selectedBloodGroup } = this.props;
     const payload = {
 			blood_type_id :selectedBloodGroup.blood_type_id,
@@ -152,11 +147,7 @@ class BloodGroupForm extends React.Component {
 
 BloodGroupForm.propTypes = {
 	drawerButton: PropTypes.string.isRequired,
-	onClose: PropTypes.func,
-	actionType: PropTypes.string.isRequired,
-	patientInfo: PropTypes.array.isRequired,
 	selectedBloodGroup:PropTypes.object.isRequired,
-	form: PropTypes.object
 }
 
 export default withRouter(BloodGroupForm);

@@ -65,7 +65,6 @@ class DashboardPage extends React.Component {
     kpis.push({ 
       ...kpiMorethan, 
       label: 'MORE THAN 2 HOURS',
-      // #FFBC00 - Yellow | #ff7979 - Red
       image: <ExclamationCircleOutlined className="dashboard-metric-icon" style={{ color: '#ff7979' }} /> 
     });
 
@@ -118,7 +117,7 @@ class DashboardPage extends React.Component {
       
       const data = hasNoData ? [] : [
         { item: 'Pending', count: Number(item.pending) },
-        { item: 'Morethan 2 Hours', count: 1 },
+        { item: 'Morethan 2 Hours', count: Number(item.morethan)  },
         { item: 'Within 2 Hours', count: Number(item.within) }
       ];
 

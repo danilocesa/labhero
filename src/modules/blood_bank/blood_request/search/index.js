@@ -113,7 +113,8 @@ class BloodRequestSearch extends React.Component {
       drawerTitle: '',
       drawerButton: '',
       disableButton: false,
-      bloodType: []
+      bloodType: [],
+      actionType: null,
     };
     this.formRef = React.createRef();
   }
@@ -140,7 +141,8 @@ class BloodRequestSearch extends React.Component {
     
     this.setState({ 
       loading: false,
-      data: patients
+      data: patients,
+      actionType: (patientName === '') ? 'byID' : 'byName'
     });
 
     if(patients.length <= 0) 
@@ -159,13 +161,13 @@ class BloodRequestSearch extends React.Component {
     this.props.history.push('/bloodbank/blood_request/create');
   }
 
-  displayDrawerAdd = () => {
+  displayDrawerAdd = (record) => {
     this.setState({ 
       displayDrawer: true, 
       drawerTitle: 'ADD REQUEST',
       drawerButton: 'ADD',
       disableButton: false,
-      selectedRequest: []
+      selectedRequest: record
     });
   };
 
@@ -179,6 +181,8 @@ class BloodRequestSearch extends React.Component {
     });
   };
 
+  
+
   render() {
     const { 
       data, 
@@ -189,8 +193,10 @@ class BloodRequestSearch extends React.Component {
       drawerTitle, 
       drawerButton, 
       disableButton, 
-      bloodType 
+      bloodType ,
+      actionType
     } = this.state
+      console.log("file: index.js ~ line 194 ~ BloodRequestSearch ~ render ~ data", data)
 
     const BloodTypeOptions = bloodType.map(item => (
       <Option key={item.blood_type_id} value={item.blood_type}>
@@ -198,8 +204,47 @@ class BloodRequestSearch extends React.Component {
       </Option>
     ));
 
+    const TableFooter = (
+      <Row justify="center">
+        <Button 
+          onClick={this.onClickRegister}
+          type="link"
+          htmlType="submit" 
+          style={{ width: 120 }}
+        >
+          REGISTER
+        </Button>
+      </Row>
+    );
+
+    
+    const TableData = data.map((currElement, index,array ) => (
+      {
+        address_line_1: currElement.address_line_1,
+        address_line_2:currElement.address_line_2,
+        barangay:currElement.barangay,
+        barangay_name:currElement.barangay_name,
+        birth_date:currElement.birth_date,
+        blood_type:currElement.blood_type,
+        blood_type_name:currElement.blood_type_name,
+        city_name:currElement.city_name,
+        contact_details:currElement.contact_details,
+        email_address:currElement.email_address,
+        first_name:currElement.first_name,
+        gender:currElement.gender,
+        is_active:currElement.is_active,
+        last_name:currElement.last_name,
+        middle_name:currElement.middle_name,
+        mobile_no:currElement.mobile_no,
+        province_name:currElement.province_name,
+        recipient_id:currElement.recipient_id,
+        requested_date:currElement.requested_date,
+        key:index
+      } 
+    ));
+
     return (
-      <div>
+      <div> 
         <PageTitle pageTitle="BLOOD REQUEST"/>
         <Form 
           className="search-patient-form" 
@@ -249,7 +294,7 @@ class BloodRequestSearch extends React.Component {
 					</Col>
           </Row>  
           <Row gutter={12} align="middle" justify="center">
-              <Col>
+            <Col>
                 <div style={{ marginTop: 20 }}>
                   <Form.Item shouldUpdate> 
                     {({ getFieldsValue }) => {
@@ -321,12 +366,11 @@ class BloodRequestSearch extends React.Component {
             pageSize={pageSize}
           />
         </Col>
-        
         <Table
           style={{ textTransform: "uppercase" }}
-          dataSource={Data}
+          dataSource={TableData}
           pagination={{ pageSize }}
-          loading={this.state.loading}
+          loading={loading}
           columns={columns}
           expandable={{
             expandedRowRender: record => <Expandtable record={record}/>
@@ -338,6 +382,7 @@ class BloodRequestSearch extends React.Component {
               }
             }
           }}
+          {...(actionType === 'byName' && {footer: () => TableFooter})}
         />  
         <Drawer
           title={drawerTitle}

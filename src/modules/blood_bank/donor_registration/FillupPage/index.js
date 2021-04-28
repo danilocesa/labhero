@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button} from 'antd';
+import { Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button , Upload, message} from 'antd';
 import moment from 'moment';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createDonor, updateDonor } from 'services/blood_bank/donor_registration';
@@ -11,11 +11,13 @@ import PageTitle from 'shared_components/page_title';
 import ProvinceList from 'shared_components/phase2_province';
 import CityList from 'shared_components/phase2_city';
 import TownList from 'shared_components/phase2_town';
-import { User as UserImg } from 'images/bloodbank';
+// import { User as UserImg } from 'images/bloodbank';
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
 import DonorRegSteps from '../DonorRegSteps';
+import { UploadOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
+
 
 
 class FillUpForm extends React.Component {
@@ -24,7 +26,8 @@ class FillUpForm extends React.Component {
 
     this.state = {
       disabled: true,
-      updateInitialValues: {}
+      updateInitialValues: {},
+      selectedFile:{},
     };
 
     this.formRef = React.createRef();
@@ -32,8 +35,10 @@ class FillUpForm extends React.Component {
   
   componentDidMount() {
     const { state } = this.props.location;
-
-    this.setState({ updateInitialValues: state });
+    
+    this.setState({ 
+      updateInitialValues: state
+    });
 	}
   
   computeAge = (date) => {
@@ -84,11 +89,11 @@ class FillUpForm extends React.Component {
       HttpCodeMessage(httpMessageConfig);
     }
   }
-
-
+  
   onFinish = async (formData) => {
     const { history } = this.props;
-    const { updateInitialValues } = this.state;
+    const { updateInitialValues, imageName } = this.state;
+    console.log("file: index.js ~ line 96 ~ FillUpForm ~ onFinish= ~ imageName", `images/donor/${imageName}`)
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const isUnchanged = (
@@ -109,8 +114,8 @@ class FillUpForm extends React.Component {
 
     const payload = {
       ...formData,
-      birth_date: formData.birth_date.format('YYYY-MM-DD'),
-      
+      image_location:`images/donor/${imageName}`,
+      birth_date: formData.birth_date.format('YYYY-MM-DD')
     };
 
     if(formData.donor_id) {
@@ -159,8 +164,15 @@ class FillUpForm extends React.Component {
 
     setFieldsValue({ age });
   }
+
+  handleChange = (event) => {
+    this.setState({
+      imageName:event.target.files[0].name
+    })
+  }
  
   render() {
+    const {imageloc} =this.state
     const { state } = this.props.location;
 
     return (
@@ -175,6 +187,7 @@ class FillUpForm extends React.Component {
             // last_extracted: state.last_extracted ? moment(state.last_extracted, 'YYYY-MM-DD') : null,
             provinces: state.province_id,
             city: state.city_id,
+            
           }}
           ref={this.formRef}
           onFinish={this.onFinish}
@@ -187,7 +200,12 @@ class FillUpForm extends React.Component {
               <div className="left-form">
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
-                  <img src={UserImg} alt="logo" style={{ height: 140, width: 140 }} />
+                  <img src={require(`images/donor/donor_registration.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
+                  <Form.Item 
+                    name="img"
+                  >
+                    <input type="file" onChange={this.handleChange} />
+                  </Form.Item>
                 </Row>
                 <Form.Item 
                   name="donor_id"

@@ -99,6 +99,7 @@ class UserTable extends React.Component {
 
 		this.setState({loading:true});
 		const userAccounts = await getUserAccountsAPI();
+    console.log("file: index.js ~ line 102 ~ UserTable ~ componentDidMount ~ userAccounts", userAccounts)
 
 		this.setState({
 			pagination: userAccounts.data.length,

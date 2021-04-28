@@ -69,7 +69,7 @@ export default class ForScreeningSearch extends Component {
     this.state = {
       data: [],
       loading: false,
-      pageSize: 1,
+      pageSize: GLOBAL_TABLE_PAGE_SIZE,
       count:0 ,
       response:{},
       page:1,

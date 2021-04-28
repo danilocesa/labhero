@@ -27,6 +27,7 @@ function FormDrawer({ onClose, visible, id = null, refreshTableData }) {
         onFinish={onSubmit}
         layout="vertical"
         ref={formRef}
+        style={{paddingBottom:40}}
       >
         <section>
           <Form.Item 
@@ -42,7 +43,7 @@ function FormDrawer({ onClose, visible, id = null, refreshTableData }) {
           <Form.Item 
             name="typeDescription"
             label="DESCRIPTION"
-            rules={FIELD_RULES.description}
+            // rules={FIELD_RULES.description}
           >
             <RegexInput 
               regex={/[A-Za-z0-9 -]/} 

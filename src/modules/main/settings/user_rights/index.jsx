@@ -40,6 +40,7 @@ class UserRights extends React.Component {
 		this.setState({ isLoading: true });
 
 		const response = await getUserTypes();
+    console.log("file: index.jsx ~ line 43 ~ UserRights ~ fetchUserTypes= ~ response", response)
 		
 		// @ts-ignore
 		response.status === 200 && this.setState({ userRights: response.data });
@@ -53,7 +54,6 @@ class UserRights extends React.Component {
 
 	
   onChangePager = (size) => {
-		console.log('awit', size)
 
 		this.setState({ pageSize: size })
   } 
@@ -88,7 +88,8 @@ class UserRights extends React.Component {
 					style={{ marginRight: 10 }}
 					onClick={this.onClickAdd}
 				>
-					<PlusOutlined /> ADD USER TYPE
+					<PlusOutlined /> 
+					ADD USER TYPE
 				</Button>
 				<TablePager handleChange={this.onChangePager} />
 			</>

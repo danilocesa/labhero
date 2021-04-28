@@ -61,13 +61,17 @@ function ExpandedTable(props) {
 					return null;
 					
 				return (
-					<Button 
-						loading={isPrintLoading[index]}
-						onClick={() => onPrint(record, index)}
-						disabled={record.specimenStatus !== 'Approve' && record.specimenStatus !== 'Save'}
-					>
-						Print
-					</Button>
+					<UserAccessContext.Consumer>
+						{value => value.userAccess.result.print && (
+							<Button 
+								loading={isPrintLoading[index]}
+								onClick={() => onPrint(record, index)}
+								disabled={record.specimenStatus !== 'Approve' && record.specimenStatus !== 'Save'}
+							>
+								Print
+							</Button>
+						)}
+					</UserAccessContext.Consumer>
 				);
 			}
 		}

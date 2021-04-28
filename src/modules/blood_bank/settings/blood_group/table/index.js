@@ -15,7 +15,7 @@ import {
 	tableYScroll,
 	tablePageSize
 } from '../settings';
-import UserAccountForm from '../add_form';
+import Form from '../add_form';
 
 const { Search } = Input;
 const columns = [
@@ -210,7 +210,7 @@ class BloodGroupTable extends React.Component {
 						onClose={this.onClose}
 						destroyOnClose
 					>
-						<UserAccountForm
+						<Form
 							selectedBloodGroup={selectedBloodGroup} 
 							actionType={actionType}
 							drawerButton={drawerButton} 
