@@ -69,7 +69,7 @@ function Sider({ collapsed }) {
 						</Menu.Item>
 					)
 				}
-				{ (userAccess.request.view && process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1')
+				{ (userAccess.request.update && process.env.REACT_APP_DISPLAY_EDIT_REQUEST === '1')
 					&& (
 						<Menu.Item key={URI.editLabReq.key}>
 							<Link to={URI.editLabReq.link}>

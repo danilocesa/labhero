@@ -87,16 +87,16 @@ class SelectTable extends React.Component {
 		const TableData = selectedExams.map(selectedExam => ({ 
 			key: selectedExam.examID,
 			...selectedExam,
-			action: (selectedExam.selectedPanel === null && !selectedExam.isLocked)
-				?  (
-						<Button 
-							type="dashed" 
-							icon={<CloseOutlined />}
-							size="small" 
-							onClick={() => removeSelectedExamByExam(selectedExam)}
-						/> 
-					)
-				:	null
+			action: (selectedExam.sampleSpecimenID === null && selectedExam.sampleSpecimenID === null)
+			 ?  
+					<Button 
+						type="dashed" 
+						icon={<CloseOutlined />}
+						size="small" 
+						onClick={() => removeSelectedExamByExam(selectedExam)}
+					/> 
+				:	
+					null
 		}));
 
 		return (

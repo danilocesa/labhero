@@ -11,6 +11,7 @@ function ExpandedTable(props) {
 	const { contents, ...restProps } = expandedData;
 	const { userAccess } = useContext(UserAccessContext);
 	const [isPrintLoading, setIsPrintLoading] = useState([]);
+	console.log(contents)
 
 	async function onPrint(record, index) {
 		await setIsPrintLoading(prevState => getPrintLoadingState(prevState, index, true));

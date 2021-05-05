@@ -61,7 +61,7 @@ class HealthInformation extends React.Component {
 
     this.setState({ loading: true });
  
-    await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID });
+    await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID , donor:87 });
     
     this.setState({ loading: false });
   }

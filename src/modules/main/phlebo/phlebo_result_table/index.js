@@ -32,7 +32,7 @@ class SearchPatientTable extends React.Component {
 					if(a[columnName] !== null) {
 						return a[columnName].localeCompare(b[columnName])
 					}
-					return 1;
+					return 0;
 				};
 				
 				return columnSorter;

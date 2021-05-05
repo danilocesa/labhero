@@ -134,7 +134,6 @@ class SectionHeader extends React.Component {
 					{item.specimen.specimenName} 
 				</Radio.Button>
 			));
-
 			// Adds at the beginning of an array
 			SectionList.unshift(( 
 				<Radio.Button value="panel" key="panel" style={{ width: `calc(100%/${SectionList.length + 1})` }}>

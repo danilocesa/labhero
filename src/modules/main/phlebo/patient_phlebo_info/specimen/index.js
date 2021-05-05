@@ -60,6 +60,7 @@ class SpecimenList extends React.Component {
 				width: 120,
 				render: (value, row, index) => {
 					const { loadingIndex } = this.state;
+          console.log("file: index.js ~ line 63 ~ SpecimenList ~ constructor ~ loadingIndex", loadingIndex)
 					const isLoading = loadingIndex.findIndex(i => i === index) !== -1;
 
 					return(
@@ -165,6 +166,7 @@ class SpecimenList extends React.Component {
 
 	render() {  
 		const { examRequests, isFetchingData } = this.state;
+    console.log("file: index.js ~ line 169 ~ SpecimenList ~ render ~ examRequests", examRequests)
 
 		return (
 			<div className="phlebotable-container">

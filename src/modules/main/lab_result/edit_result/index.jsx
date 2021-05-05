@@ -92,6 +92,7 @@ class EditResult extends React.Component {
 			}, async () => {
 				const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
 				const formatedResults = this.recontructExamItems(results.resultValues);
+        console.log("file: index.jsx ~ line 95 ~ EditResult ~ componentDidUpdate ~ formatedResults", formatedResults)
 
 				// eslint-disable-next-line react/no-did-update-set-state
 				this.setState({ 
@@ -152,8 +153,7 @@ class EditResult extends React.Component {
 					
 				if(currentHeader !== results[i].examRequestItemGroup) {
 					currentHeader = results[i].examRequestItemGroup;
-
-					newExamItems.push({ examItemName: currentHeader, examItemID: `header-${currentHeader}` });
+					currentHeader === '1'? console.log('1') : newExamItems.push({ examItemName: currentHeader, examItemID: `header-${currentHeader}` })
 					newExamItems.push({ ...results[i], isChild: true });
 
 					continue;
@@ -162,7 +162,7 @@ class EditResult extends React.Component {
 				newExamItems.push({ ...results[i], isChild: true });
 			};
 		}
-
+		console.log(newExamItems,"newExamItems")
 		return newExamItems;
 	}
 

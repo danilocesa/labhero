@@ -49,6 +49,7 @@ class Phlebo extends React.Component {
 	}
 
 	displayDrawer = (patientRecord) => {
+  console.log("file: index.jsx ~ line 52 ~ Phlebo ~ patientRecord", patientRecord)
 		this.setState({ 
 			showDrawer: true,
 			patientInfo: patientRecord

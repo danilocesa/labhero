@@ -32,7 +32,6 @@ class SearchStep extends React.Component {
 		actionType: null,
 	}
 	
-
 	componentDidMount() {
 		sessionStorage.removeItem(LR_PERSONAL_INFO);
 		sessionStorage.removeItem(LR_OTHER_INFO);
@@ -42,7 +41,6 @@ class SearchStep extends React.Component {
 	}
 
 	setActionType = (patientId, patientName) => {
-
 		this.setState({ actionType: patientName ? 'byName' : 'byId' });
 	}
 

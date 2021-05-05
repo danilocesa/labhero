@@ -314,7 +314,6 @@ class SelectStep extends React.Component {
 	// the list of exams table (left) into selected exams table (right).
 	// Used when selecting panel
 	addSelectedExamByPanel = ({ panelID }) => {
-		console.log('addSelectedExamByPanel');
 		const { panelRef, selectedContents } = this.state;
 		const selectedPanel = panelRef.find(item => item.panelID === panelID);
 		let newSelectedContents = []; 
@@ -390,6 +389,7 @@ class SelectStep extends React.Component {
 			const { selectedExams } = state;
 			const isExistingExam = selectedExams.some(iExam => iExam.examID === examID);
 			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
+      console.log("file: index.js ~ line 392 ~ SelectStep ~ newSelectedExams", newSelectedExams)
 			
 			if(!isExistingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });
@@ -487,6 +487,7 @@ class SelectStep extends React.Component {
 			});
 			const isSelectedExam = selectedExams.some(selExam => exam.examID === selExam.examID);
 			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel || exam.isLocked; 
+      console.log("file: index.js ~ line 490 ~ SelectStep ~ isDisabled", isDisabled)
 
 			if(isExistInUExam) 
 				return { ...exam, isSelected: false, isDisabled };

@@ -92,8 +92,7 @@ class FillUpForm extends React.Component {
   
   onFinish = async (formData) => {
     const { history } = this.props;
-    const { updateInitialValues, imageName } = this.state;
-    console.log("file: index.js ~ line 96 ~ FillUpForm ~ onFinish= ~ imageName", `images/donor/${imageName}`)
+    const { updateInitialValues, imgprop } = this.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const isUnchanged = (
@@ -114,7 +113,7 @@ class FillUpForm extends React.Component {
 
     const payload = {
       ...formData,
-      image_location:`images/donor/${imageName}`,
+      image_location:`images/donor/${imgprop.imageName}`,
       birth_date: formData.birth_date.format('YYYY-MM-DD')
     };
 
@@ -166,14 +165,19 @@ class FillUpForm extends React.Component {
   }
 
   handleChange = (event) => {
+    const time = new Date().getTime()
+    const imgprop = {id:time,imageName:event.target.files[0].name}
+     
+
     this.setState({
-      imageName:event.target.files[0].name
+      imgprop
     })
   }
  
   render() {
-    const {imageloc} =this.state
+    const {imageloc ,imgprop} =this.state
     const { state } = this.props.location;
+    console.log("file: index.js ~ line 180 ~ FillUpForm ~ render ~ state", state.image_location)
 
     return (
       <div>
@@ -200,7 +204,7 @@ class FillUpForm extends React.Component {
               <div className="left-form">
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
-                  <img src={require(`images/donor/donor_registration.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
+                  <img src={imgprop ? require(`images/donor/${imgprop.imageName}`) : require(`images/donor/defaulticon.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
                   <Form.Item 
                     name="img"
                   >
