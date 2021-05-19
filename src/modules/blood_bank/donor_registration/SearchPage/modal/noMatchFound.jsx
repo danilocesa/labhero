@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Row, Col, Modal, Button } from 'antd';
 
 // @ts-ignore
-import { CheckIcon } from 'images';
 
 
 class NotifModal extends React.Component {

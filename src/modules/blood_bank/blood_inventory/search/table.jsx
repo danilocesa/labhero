@@ -29,8 +29,12 @@ const columns = [
   },
 ];
 
+ function displayDrawerUpdate(record) {
+   
+}
+
 function SearchTable(props){
-  const { data, pageSize, loading, displayDrawerUpdate } = props;
+  const { data, pageSize, loading } = props;
 
   return (
     <Table
@@ -43,7 +47,7 @@ function SearchTable(props){
       onRow={(record) => {
         return {
           onDoubleClick: () => {
-            displayDrawerUpdate(record.blood_inventory_id);
+            displayDrawerUpdate(record);
           },
         };
       }}

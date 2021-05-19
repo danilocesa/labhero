@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import cryptr from 'cryptr';
 import { createBrowserHistory } from 'history'; 
 import { UserAccessContext } from 'context/userAccess';
-import { ACCESS_MATRIX, LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { ACCESS_MATRIX } from 'global_config/constant-global';
 import { getUserAccess } from 'utils/user';
 import Header from './header';
 import Content from './content';

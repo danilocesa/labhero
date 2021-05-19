@@ -2,8 +2,7 @@ import React from 'react';
 import { 
   Row, 
   Col, 
-  Typography, 
-  Menu 
+  Typography
 } from 'antd'
 
 import ForExtraction from './for_extraction_tab';

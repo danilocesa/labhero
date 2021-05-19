@@ -2,25 +2,17 @@
 /* eslint-disable react/prop-types */
 // LiBRARY
 import React from "react";
-import { Row, Col, Table, Input, Button, Typography, Form, Select, Drawer } from "antd";
+import { Row, Col, Table, Button, Typography, Form, Select, Drawer } from "antd";
 
 // CUSTOM MODULES
 import { NumberInput } from "shared_components/pattern_input";
-import { fetchPatients } from "services/blood_bank/extraction";
 import PageTitle from "shared_components/page_title";
 import Message from "shared_components/message";
 import TablePager from "shared_components/table_pager";
 
 import BloodInventoryDetailsForm from "./item_detail";
 
-import {
-  tableSize,
-  buttonLabels,
-  drawerBloodInventoryDetails,
-  drawerbloodUpdate,
-  tableYScroll,
-  tablePageSize,
-} from "modules/blood_bank/blood_inventory/settings";
+import { buttonLabels, drawerBloodInventoryDetails} from "modules/blood_bank/blood_inventory/settings";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -67,11 +59,6 @@ const details = [
   },
 ];
 
-const expandedRow = (row) => {
-  console.log(row);
-  return <Table columns={details} pagination={false} />;
-};
-
 class Extraction extends React.Component {
   constructor(props) {
     super(props);
@@ -93,7 +80,6 @@ class Extraction extends React.Component {
 
   handleSubmit = async () => {
     const { getFieldsValue } = this.formRef.current;
-    const { bagID, patientName } = getFieldsValue();
     let patients = [];
     this.setState({ loading: true });
     // patients = await fetchPatients(patientName, bagID);
@@ -132,7 +118,6 @@ class Extraction extends React.Component {
 
   render() {
     const { Item, loading, pageSize } = this.state;
-    const items = Item.length > pageSize ? pageSize : Item.length;
     return (
       <div>
         <PageTitle pageTitle="BLOOD INVENTORY" />
@@ -250,7 +235,6 @@ class Extraction extends React.Component {
             </Row>
             {/* Table */}
             <Table
-              // expandedRowRender={expandedRow}
               style={{ textTransform: "uppercase" }}
               dataSource={Item}
               pagination={{ pageSize }}
@@ -275,7 +259,6 @@ class Extraction extends React.Component {
           destroyOnClose
         >
           <BloodInventoryDetailsForm
-            // actionType={actionType}
             drawerButton={this.state.drawerButton}
             panelInfo={this.state.panelInfo}
             onCancel={this.onClose}

@@ -73,7 +73,7 @@ export default class HospitalForm extends Component {
 					}}   
         >
           {
-						buttonNames == "UPDATE" 
+						buttonNames === "UPDATE" 
 						? 
 							(		
 								<Form.Item 

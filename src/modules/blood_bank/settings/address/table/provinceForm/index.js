@@ -6,7 +6,6 @@ import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
 import { messagePrompts } from '../settings'
 
-const { TextArea } = Input;
 export default class ProvinceForm extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +74,7 @@ export default class ProvinceForm extends Component {
 					}}
         >
           {
-            buttonNames == "UPDATE"? (		
+            buttonNames === "UPDATE"? (		
 							<Form.Item 
 								label="ACTIVE" 
 								name='is_active'

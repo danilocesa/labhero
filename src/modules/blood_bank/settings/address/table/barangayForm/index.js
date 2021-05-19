@@ -80,7 +80,7 @@ export default class BarangayForm extends Component {
           }}
         >
           { 
-            buttonNames == "UPDATE"? (		
+            buttonNames === "UPDATE"? (		
             <Form.Item 
               label="ACTIVE" 
               name='is_active'

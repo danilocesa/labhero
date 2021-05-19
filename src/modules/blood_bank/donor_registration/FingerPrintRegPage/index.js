@@ -7,7 +7,9 @@ import DonorRegSteps from '../DonorRegSteps';
 
 import './style.css';
 
-function FingerprintReg() {
+function FingerprintReg(props) {
+  const { health_info_id , donor_id } = props.history.location.state
+
   const history = useHistory();
   const [leftHand, setLefthand] = useState([]);
   const [rightHand, setRighthand] = useState([]);
@@ -81,7 +83,7 @@ function FingerprintReg() {
         <Col span={20}>
           <div style={{ textAlign: 'right' }}>
             <Button 
-              onClick={() => history.push('/bloodbank/donor_registration/step/4', { health_info_id: 1 })}
+              onClick={() => history.push('/bloodbank/donor_registration/step/4', { health_info_id: health_info_id,donor_id: donor_id })}
               type="primary" 
               htmlType="submit" 
               shape="round"

@@ -1,122 +1,204 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Descriptions, Badge, Statistic, Row, Col, Card, Tabs  } from 'antd';
-import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
-import { fetchBloodTypes } from 'services/blood_bank/blood_types';
+import React, { useState , useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { Descriptions, Badge, Statistic, Row, Col, Card, Tabs, Button  } from 'antd';
+import  { fetchDashboardItem , fetchPerTabsItem }  from 'services/blood_inventory/blood_inventory';
+import { SELECTED_SIDER_KEY } from 'global_config/constant-global';
 
 const { TabPane } = Tabs;
 
 function InventoryDashboard() {
-
-  const formRef = useRef();
-  const [loading, setLoading] = useState(false);
-  const [bloodStorage, setBloodStorage] = useState([]);
-  const [bloodTypes, setBloodTypes] = useState([]);
+  const history = useHistory();
+  const [Pertabs , setPertabs ] = useState([])
+  const [key , setKey ] = useState([])
+  const [DashboardItem, setDashboardItem] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const bloodStorage = await fetchBloodStorage();
-      const bloodTypes = await fetchBloodTypes();
-      let payload = {};
-      // setBloodStorage(bloodStorage);
-      setBloodTypes(bloodTypes);
-      console.log(bloodTypes)
-
+      const DashboardItemresponse = await fetchDashboardItem();
+      setDashboardItem(DashboardItemresponse);
     }
-
-    setLoading(true);
     fetchData();
-    setLoading(false);
-  }, []) 
+  },[]) 
 
-  const BloodType = bloodTypes.map(item => {
+  const callback = async (payload) => {
+    setKey(payload)
+    const PertabsItemresponse = await fetchPerTabsItem(payload);
+    const perTabsItem = PertabsItemresponse.map(item => {
+      return (item.blood_composition)
+    })
+    setPertabs(perTabsItem)
+  }
+
+  const StatusValue = Pertabs.map(item => {
+    const mappedarray = item.map((value ,index ) => {      
+      const label = Object.getOwnPropertyNames(value)[0].replace('_',' ').toUpperCase()
+      return(
+        <Descriptions.Item key={index} label={label}>
+          <Row gutter={12}>
+            <Col span={12}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', blood_type:key} )}>
+                <Statistic
+                  title="Available"
+                  value={Object.values(value)[0].available === undefined ? 0 : Object.values(value)[0].available}
+                  precision={0}
+                  prefix={<Badge status="processing" />}
+                  />
+                </Card>
+            </Col>
+            <Col span={12}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'EXPIRED', blood_type:key })}>
+                <Statistic
+                  title="Expired"
+                  value={Object.values(value)[0].expired === undefined ? 0 : Object.values(value)[0].expired}
+                  precision={0}
+                  prefix={<Badge status="warning"  />}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key})}>
+                <Statistic
+                  title="Delivered"
+                  value={Object.values(value)[0].delivered === undefined ? 0 : Object.values(value)[0].delivered}
+                  precision={0}
+                  prefix={<Badge status="warning"  />}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'INVALID', blood_type:key })}>
+                <Statistic
+                  title="Invalid"
+                  value={Object.values(value)[0].invalid === undefined ? 0 : Object.values(value)[0].invalid}
+                  precision={0}
+                  prefix={<Badge status="warning"  />}
+                />
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key})}>
+                <Statistic
+                  title="Procesed"
+                  value={Object.values(value)[0].procesed === undefined ? 0 : Object.values(value)[0].procesed}
+                  precision={0}
+                  prefix={<Badge status="warning"  />}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Descriptions.Item>
+      )
+    })
+    return(mappedarray)
+  })
+
+  const AllBloodTypes = DashboardItem.map(item => {
     return (
       <Descriptions.Item span={2} key={item.blood_type_id} label={item.blood_type}>
         <Row gutter={12}>
           <Col span={12}>
-            <Card size="small">
+            <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', is_nearExpiry:false })}>
               <Statistic
                 title="Available"
-                value={9}
+                value={item.available}
                 precision={0}
                 prefix={<Badge status="processing" />}
               />
             </Card>
           </Col>
           <Col span={12}>
-            <Card size="small">
+            <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', is_nearExpiry:true})} >
               <Statistic
                 title="Near Expiry"
-                value={15}
+                value={item.near_expiry	}
                 precision={0}
                 prefix={<Badge status="warning"  />}
               />
             </Card>
           </Col>
         </Row>
-    </Descriptions.Item>
+      </Descriptions.Item>
     )
-  }  
-  );
+  });
 
   return (
-      <Tabs defaultActiveKey="1">
+    <>
+      <Tabs defaultActiveKey="1" onChange={callback}>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> All</div>} 
           key="1"
         >
           <Descriptions size="small" bordered>
-             {BloodType}
+              {AllBloodTypes}
           </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> A+</div>} 
-          key="2"
+          key="A+"
         >
-          Content of A+
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> A-</div>} 
-          key="3"
+          key="A-"
         >
-          Content of A-
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> B+</div>} 
-          key="4"
+          key="B+"
         >
-          Content of B+
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> B-</div>} 
-          key="5"
+          key="B-"
         >
-          Content of B-
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> AB+</div>} 
-          key="6"
+          key="AB+"
         >
-          Content of AB+
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> AB-</div>} 
-          key="7"
+          key="AB-"
         >
-          Content of AB-
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> O+</div>} 
-          key="8"
+          key="O+"
         >
-          Content of O+
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
         <TabPane 
           tab={<div style={{ width: 50, textAlign: 'center' }}> O-</div>} 
-          key="9"
+          key="O-"
         >
-          Content of O-
+          <Descriptions size="small" bordered>
+            {StatusValue}
+          </Descriptions>
         </TabPane>
       </Tabs>
+      <Button type="link" onClick={() => history.push('/bloodbank/blood_inventory/search', { actionType:'ManualSearch' , blood_product_code:'all'})} >Search </Button>
+    </>
   );
 }
 

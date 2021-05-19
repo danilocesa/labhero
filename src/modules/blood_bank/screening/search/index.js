@@ -3,9 +3,8 @@ import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
 import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchDonors, { fetchPatientsNext } from 'services/blood_bank/screening';
+import fetchDonors from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
-import NotifModal from '../modal/NotifModal';
 
 import {
   Row ,
@@ -251,7 +250,7 @@ export default class ForScreeningSearch extends Component {
           }}
         />
         {
-          showPagination == true
+          showPagination === true
           ? 
             (		
               <div style={{ display: "flex" }}>

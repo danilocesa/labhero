@@ -25,12 +25,12 @@ class BloodGroupForm extends React.Component {
 	onFinish = async (values) => {
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const { drawerButton, selectedBloodGroup } = this.props;
-    const payload = {
+    	const payload = {
 			blood_type_id :selectedBloodGroup.blood_type_id,
 			blood_group :values.blood_group,
 			blood_type: values.blood_type,
 			blood_desc : values.blood_description,
-			created_by: loggedinUser.userID,	
+			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
 		if(drawerButton === drawerAdd){
@@ -68,7 +68,7 @@ class BloodGroupForm extends React.Component {
     this.setState({
       disabled:false
     })
-  }
+  	}
 
 	render() {
 		const { disabled } = this.state

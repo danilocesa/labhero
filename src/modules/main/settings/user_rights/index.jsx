@@ -40,7 +40,6 @@ class UserRights extends React.Component {
 		this.setState({ isLoading: true });
 
 		const response = await getUserTypes();
-    console.log("file: index.jsx ~ line 43 ~ UserRights ~ fetchUserTypes= ~ response", response)
 		
 		// @ts-ignore
 		response.status === 200 && this.setState({ userRights: response.data });

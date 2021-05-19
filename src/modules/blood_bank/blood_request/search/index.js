@@ -68,38 +68,6 @@ const columns = [
   },
 ];
 
-const Data = [
-  {
-    key:1, 
-    last_name: 'John Brown',
-    first_name: 32,
-    middle_name: 'New York No. 1 Lake Park',
-    blood_type_name: 'My name is John Brown',
-  },
-  {
-    key:2,
-    last_name: 'Jim Green',
-    first_name: 42,
-    middle_name: 'London No. 1 Lake Park',
-    blood_type_name: 'My name is Jim Green',
-  },
-  { 
-    key:3,
-    last_name: 'Not Expandable',
-    first_name: 29,
-    middle_name: 'Jiangsu No. 1 Lake Park',
-    blood_type_name: 'This not expandable',
-  },
-  {
-    key:4,
-    last_name: 'Joe Black',
-    first_name: 32,
-    middle_name: 'Sidney No. 1 Lake Park',
-    blood_type_name: 'My name is Joe Black',
-  },
-];
-
-
 class BloodRequestSearch extends React.Component {
   constructor(props) {
     super(props);

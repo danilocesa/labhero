@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Form, Checkbox, Select, Input, Switch, InputNumber  } from 'antd';
 import { NumberInput } from 'shared_components/pattern_input';
-import errorMessage from 'global_config/error_messages';
 
 const { TextArea } = Input;
 const { Option } = Select;

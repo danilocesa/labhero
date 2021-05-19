@@ -10,7 +10,7 @@ export default async function fetchQuestionnareList() {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/bloodbank/questionnare/`,
+			url: `/general_settings/questionnare/`,
 		});
 		
 		const { data } = response;
@@ -27,7 +27,7 @@ export async function createQuestionnareAPI(payload) {
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
-      url: `/bloodbank/questionnare/create/`,
+      url: `/general_settings/questionnare/create/`,
       data: payload
 		}).then(response => {
       return response;
@@ -47,8 +47,8 @@ export async function updateQuestionnareAPI(payload) {
 
   try{
     const content = {
-            method: API_PUT_METHOD,
-            url:`/bloodbank/questionnare/update/${QuestionnareId}/`,
+      method: API_PUT_METHOD,
+      url:`/general_settings/questionnare/update/${QuestionnareId}/`,
       data: payload
     }
     const response = await axiosPhase2API(content);

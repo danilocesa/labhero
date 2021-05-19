@@ -36,6 +36,7 @@ class HealthInformation extends React.Component {
   
   async componentDidMount() {
     const { health_info_id } = this.props.location.state;
+    console.log("🚀 ~ file: index.js ~ line 39 ~ HealthInformation ~ componentDidMount ~ health_info_id", health_info_id)
     await this.getCategoryData();
 
     if(health_info_id)
@@ -45,8 +46,7 @@ class HealthInformation extends React.Component {
   onFinish = async (formFields) => {
     const { donor_id } = this.props.location.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-
-
+    
     const custom_fields = Object.keys(formFields).map(key => ({
       field_name: key,
       field_value: formFields[key]
@@ -61,7 +61,7 @@ class HealthInformation extends React.Component {
 
     this.setState({ loading: true });
  
-    await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID , donor:87 });
+    await this.createHealthInfo({ ...payload, created_by: loggedinUser.userID  });
     
     this.setState({ loading: false });
   }

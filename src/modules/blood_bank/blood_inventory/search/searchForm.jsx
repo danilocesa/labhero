@@ -1,19 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Form, Select, Button } from 'antd';
 import { NumberInput } from 'shared_components/pattern_input';
+import { searchInventoryAPI } from 'services/blood_inventory/blood_inventory'
 import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
 import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 
 const { Option } = Select;
 
-function SearchForm({ onSearch }) {
+function SearchForm({ onFinish }) {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
   const [bloodStorage, setBloodStorage] = useState([]);
   const [bloodTypes, setBloodTypes] = useState([]);
 
+  useEffect(() => {
+    async function fetchData() {
+      const bloodStorage = await fetchBloodStorage();
+      const bloodTypes = await fetchBloodTypes();
+      
+      setBloodStorage(bloodStorage);
+      setBloodTypes(bloodTypes);
+    }
+
+    setLoading(true);
+    fetchData();
+    setLoading(false);
+  }, []) 
+
   const StorageOptions = bloodStorage.map(item => (
-    <Option key={item.blood_storage_id} value={item.blood_storage_id}>
+    <Option key={item.blood_storage_id} value={item.storage_name}>
       {item.storage_name}
     </Option>
   ));
@@ -24,19 +39,9 @@ function SearchForm({ onSearch }) {
     </Option>
   ));
 
-  function handleSubmit(formValues){
-    let payload = {};
-    
-    if(formValues.blood_type)
-      payload.blood_type_name = formValues.blood_type;
-
-    if(formValues.storage)
-      payload.storage_id = formValues.storage;
-
-    if(formValues.bag_id)
-      payload.blood_bag = formValues.bag_id;
-
-    onSearch(payload);
+  async function handleSubmit(formValues){
+    const searchInventoryManual = await searchInventoryAPI(formValues);
+    onFinish(searchInventoryManual);
   }
 
   function clearSearch(){
@@ -44,24 +49,6 @@ function SearchForm({ onSearch }) {
     
     setFieldsValue({ bag_id: null, blood_type: null, storage: null });
   }
-
-  useEffect(() => {
-    async function fetchData() {
-      const bloodStorage = await fetchBloodStorage();
-      const bloodTypes = await fetchBloodTypes();
-      let payload = {};
-      
-      setBloodStorage(bloodStorage);
-      setBloodTypes(bloodTypes);
-      onSearch(payload);
-    }
-
-    setLoading(true);
-    fetchData();
-    setLoading(false);
-  }, []) 
-
-
 
   return (
     <Form

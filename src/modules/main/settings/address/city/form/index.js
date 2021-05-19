@@ -2,16 +2,14 @@
 import React from 'react'
 import {  Switch, Form, Input, Button, Select} from 'antd'
 import PropTypes from 'prop-types'
-import { fetchProvincesItems, createCityItems, updateCityItems } from 'services/settings/Address';
-import HttpCodeMessage from 'shared_components/message_http_status'
-import { buttonLabels, messagePrompts } from '../settings'
+import { fetchProvincesItems } from 'services/settings/Address';
+import { buttonLabels } from '../settings'
 
 const layout = {
 	labelCol: { span: 8 },
 	wrapperCol: { span: 16 },
 };
 
-const { Option } = Select;
 
 class CityForm extends React.Component {
 	constructor(props) {
@@ -96,7 +94,7 @@ class CityForm extends React.Component {
 					}}
 					// onFinish={this.onFinish}       
 				>
-					{this.props.drawerButton == "UPDATE"? (		
+					{this.props.drawerButton === "UPDATE"? (		
 						<Form.Item 
 							label="ACTIVE" 
 							{...layout} 

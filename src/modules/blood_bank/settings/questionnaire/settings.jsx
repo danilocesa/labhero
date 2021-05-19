@@ -36,6 +36,15 @@ export const fieldRules = {
 	]
 };
 
+export const buttonNames = {
+  addExamItem : 'ADD EXAM ITEM',
+  cancel: 'CANCEL',
+  create: 'ADD',
+  addField: 'ADD FIELD',
+  update: 'UPDATE'
+}
+
+
 
 export const fieldLabels = {
   id:"ID",

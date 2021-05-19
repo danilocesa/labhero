@@ -5,13 +5,10 @@ import {
 	Row, 
 	Col, 
 	Table, 
-	Button, 
 	Input, 
-	Icon, 
 	Drawer,
 	Select 
 } from 'antd';
-import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
 import { 

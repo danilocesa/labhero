@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { createCategoriesAPI , updateCategoriesAPI} from 'services/blood_bank/categories';
-import { Switch, Form, Input, Select, Button } from 'antd';
+import { Switch, Form, Input, Button } from 'antd';
 
 import { buttonLabels,messagePrompts } from '../settings';
 // CSS
@@ -84,7 +84,7 @@ class UserAccountForm extends React.Component {
 					}}
 				>
 					{
-						drawerButton == "UPDATE"? (
+						drawerButton === "UPDATE"? (
 							<Form.Item 
 								label="ACTIVE" 
 								name='is_active'

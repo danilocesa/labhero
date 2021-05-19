@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Spin } from 'antd';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { getPrintPreview, getPrintPreviewV2 } from 'services/lab_result/result';
+import { getPrintPreviewV2 } from 'services/lab_result/result';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 

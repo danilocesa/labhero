@@ -118,8 +118,11 @@ class BloodBank extends React.Component {
 					<div className="settings-user-table-action">
 					<Divider plain>
 						<Select style={{ width: 200 }}>
+							<Option value="health">
+								HEALTH
+							</Option>
 							<Option value="Categories">
-								Categories
+								INNER
 							</Option>
 						</Select>
 					</Divider>

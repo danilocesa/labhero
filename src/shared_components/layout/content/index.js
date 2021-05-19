@@ -67,7 +67,7 @@ function Content() {
 					component={userAccess.settings.view ? Settings : ErrorPage} 
 				/>
 				<PrivateRoute path="/inventory" component={Inventory} />
-				<PrivateRoute path="/bloodbank" component={BloodBank} />
+				<Route path="/bloodbank" component={BloodBank} />
 				<Route exact path="/cashier" component={Cashier} />
 				<Route path="/cashier/receipt" component={Receipt} />
 				<Route path="/cashier/transactions" component={Transactions} />

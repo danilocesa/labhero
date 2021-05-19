@@ -74,7 +74,7 @@ export default class CityForm extends Component {
         }}
       >
         { 
-          buttonNames == "UPDATE"? (		
+          buttonNames === "UPDATE"? (		
             <Form.Item 
               label="ACTIVE" 
               name='is_active'

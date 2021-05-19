@@ -37,7 +37,7 @@ class FillUpForm extends React.Component {
     const { state } = this.props.location;
     
     this.setState({ 
-      updateInitialValues: state
+      updateInitialValues: state,
     });
 	}
   
@@ -56,7 +56,6 @@ class FillUpForm extends React.Component {
     if(createdUserResponse.status === 201){
       const httpMessageConfig = {
         message: messagePrompts.successCreateUser,
-       
         status: createdUserResponse.status,	
         duration: 1, 
         onClose: () => history.push('/bloodbank/donor_registration/step/3', { 
@@ -117,6 +116,7 @@ class FillUpForm extends React.Component {
       birth_date: formData.birth_date.format('YYYY-MM-DD')
     };
 
+
     if(formData.donor_id) {
       if(isUnchanged) 
         history.push('/bloodbank/donor_registration/step/3', { 
@@ -130,10 +130,8 @@ class FillUpForm extends React.Component {
           last_updated_by: loggedinUser.userID
         });
       }
-
       return;
     }
-
     await this.initCreateDonor({ 
       ...payload,
       created_by: loggedinUser.userID
@@ -167,7 +165,6 @@ class FillUpForm extends React.Component {
   handleChange = (event) => {
     const time = new Date().getTime()
     const imgprop = {id:time,imageName:event.target.files[0].name}
-     
 
     this.setState({
       imgprop
@@ -177,7 +174,6 @@ class FillUpForm extends React.Component {
   render() {
     const {imageloc ,imgprop} =this.state
     const { state } = this.props.location;
-    console.log("file: index.js ~ line 180 ~ FillUpForm ~ render ~ state", state.image_location)
 
     return (
       <div>
@@ -191,7 +187,6 @@ class FillUpForm extends React.Component {
             // last_extracted: state.last_extracted ? moment(state.last_extracted, 'YYYY-MM-DD') : null,
             provinces: state.province_id,
             city: state.city_id,
-            
           }}
           ref={this.formRef}
           onFinish={this.onFinish}
@@ -207,6 +202,7 @@ class FillUpForm extends React.Component {
                   <img src={imgprop ? require(`images/donor/${imgprop.imageName}`) : require(`images/donor/defaulticon.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
                   <Form.Item 
                     name="img"
+                    rules={FIELD_RULES.firstName}
                   >
                     <input type="file" onChange={this.handleChange} />
                   </Form.Item>

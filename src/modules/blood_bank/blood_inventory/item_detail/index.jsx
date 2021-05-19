@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
-import { getInventoryById, updateInventory } from 'services/blood_bank/blood_inventory';
+import { getInventoryById, updateInventory } from 'services/blood_inventory/blood_inventory';
 import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { FIELD_RULES } from './constant';
@@ -9,7 +9,7 @@ import { FIELD_RULES } from './constant';
 
 const { TextArea } = Input;
 
-function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
+function InventoryDetail( {closeDrawer }) {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
@@ -17,21 +17,20 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
   async function onSubmit(values) {
-    setLoading(true);
-    const result = await updateInventory({
-      id: inventoryID,
-      blood_storage: values.storage_id,
-      remarks: values.remarks,
-      is_active: isActive,
-      last_updated_by: loggedinUser.userID
-    });
-    setLoading(false);
+    // setLoading(true);
+    // const result = await updateInventory({
+    //   id: inventoryID,
+    //   blood_storage: values.storage_id,
+    //   remarks: values.remarks,
+    //   is_active: isActive,
+    //   last_updated_by: loggedinUser.userID
+    // });
+    // setLoading(false);
 
-    if(result) {
-      message.success('Inventory detail succesfully updated');
-      refreshTableData();
-      closeDrawer();
-    }
+    // if(result) {
+    //   message.success('Inventory detail succesfully updated');
+    //   closeDrawer();
+    // }
   }
 
   useEffect(() => {
@@ -48,7 +47,7 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
     async function getData() {
       const form = formRef.current;
 
-      const inventory = await getInventoryById(inventoryID);
+      const inventory = await getInventoryById();
 
       if(form)
         form.setFieldsValue({
@@ -57,11 +56,8 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
         });
     }
 
-    if(inventoryID)
-      getData();
-
     console.log('use effect has run');
-  }, [inventoryID]);
+  }, []);
   
 
   return (
