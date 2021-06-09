@@ -9,28 +9,32 @@ import { FIELD_RULES } from './constant';
 
 const { TextArea } = Input;
 
-function InventoryDetail( {closeDrawer }) {
+function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const formRef = useRef();
   // const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
-  async function onSubmit(values) {
-    // setLoading(true);
-    // const result = await updateInventory({
-    //   id: inventoryID,
-    //   blood_storage: values.storage_id,
-    //   remarks: values.remarks,
-    //   is_active: isActive,
-    //   last_updated_by: loggedinUser.userID
-    // });
-    // setLoading(false);
 
-    // if(result) {
-    //   message.success('Inventory detail succesfully updated');
-    //   closeDrawer();
-    // }
+  async function onSubmit(values) {
+    setLoading(true);
+    // console.log(values)
+    const result = await updateInventory({
+      id: 16,//inventoryID.blood_inventory_id,
+      blood_storage: values.storage_id,
+      remarks: values.remarks,
+      is_active: isActive,
+      last_updated_by: loggedinUser.userID
+    });
+    setLoading(false);
+    
+
+    if(result) {
+      message.success('Inventory detail succesfully updated');
+      refreshTableData();
+      closeDrawer();
+    }
   }
 
   useEffect(() => {
@@ -46,8 +50,8 @@ function InventoryDetail( {closeDrawer }) {
   useEffect(() => {
     async function getData() {
       const form = formRef.current;
-
-      const inventory = await getInventoryById();
+      
+      const inventory = await getInventoryById(inventoryID.blood_inventory_id);
 
       if(form)
         form.setFieldsValue({
@@ -56,8 +60,11 @@ function InventoryDetail( {closeDrawer }) {
         });
     }
 
+    if(inventoryID)
+      getData();
+
     console.log('use effect has run');
-  }, []);
+  }, [inventoryID]);
   
 
   return (

@@ -78,7 +78,7 @@ function InventoryDashboard() {
             <Col span={12}>
               <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key})}>
                 <Statistic
-                  title="Procesed"
+                  title="Processed"
                   value={Object.values(value)[0].procesed === undefined ? 0 : Object.values(value)[0].procesed}
                   precision={0}
                   prefix={<Badge status="warning"  />}
@@ -197,7 +197,18 @@ function InventoryDashboard() {
           </Descriptions>
         </TabPane>
       </Tabs>
-      <Button type="link" onClick={() => history.push('/bloodbank/blood_inventory/search', { actionType:'ManualSearch' , blood_product_code:'all'})} >Search </Button>
+      <div style={{float: 'right'}}>
+        <Button 
+            className="form-button"
+            block
+            shape="round"
+            type="primary"
+            style={{ marginRight: 10, marginTop: 10, width: 100}}
+            onClick={() => history.push('/bloodbank/blood_inventory/search', { actionType:'ManualSearch' , blood_product_code:'all'})} 
+        >
+            Search 
+        </Button>
+      </div>
     </>
   );
 }

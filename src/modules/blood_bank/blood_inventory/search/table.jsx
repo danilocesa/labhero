@@ -34,7 +34,7 @@ const columns = [
 }
 
 function SearchTable(props){
-  const { data, pageSize, loading } = props;
+  const { data, pageSize, loading, displayDrawerUpdate } = props;
 
   return (
     <Table
@@ -43,7 +43,7 @@ function SearchTable(props){
       pagination={{ pageSize }}
       loading={loading}
       columns={columns}
-      rowKey={(record) => record.blood_bag}
+      rowKey={(record) => record.blood_inventory_id}
       onRow={(record) => {
         return {
           onDoubleClick: () => {
