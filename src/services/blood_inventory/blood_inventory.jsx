@@ -115,6 +115,8 @@ export async function getInventoryById(id) {
 		
 		const { data } = response;
     bloodinventory = data;
+
+    console.log(bloodinventory)
   } 
   catch(e) {
     Message.error();
@@ -124,6 +126,7 @@ export async function getInventoryById(id) {
 }
 
 export async function updateInventory(payload) {
+  // console.log(payload)
   try{
     const response = await axiosPhase2API({
       method: API_PUT_METHOD,
@@ -132,7 +135,7 @@ export async function updateInventory(payload) {
 		});
 		
 		const { data } = response;
-
+    console.log(data)
     return data;
   } 
   catch(e) {

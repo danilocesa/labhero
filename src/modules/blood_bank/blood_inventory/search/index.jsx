@@ -7,16 +7,27 @@ import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI } from 'ser
 import {fetchBloodComponents} from 'services/blood_inventory/blood_components'
 import SearchForm from './searchForm';
 import BloodInventoryDetailsForm from "../item_detail";
-import Table from './table'
+import SearchTable from './table'
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
+  const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
+  const [cachedPayload, setCachedPayload] = useState(null);
   
   const { TabPane } = Tabs;
+
+  function displayDrawerUpdate(id) {
+    setSelectedID(id);
+    setvisibleDrawer(true);
+  }
+
+  async function refreshTableData() {
+    await search(cachedPayload);
+  }
 
   useEffect(() => {
     async function fetchData() {
@@ -81,7 +92,10 @@ function SearchBloodInventory(props) {
   }
 
   const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item) => (
-    <TabPane tab={item.blood_comp_name} key={item.blood_comp_code} />
+    <TabPane 
+      tab={item.blood_comp_name} 
+      key={item.blood_comp_code} 
+    />
   ));
 
   return (
@@ -97,8 +111,9 @@ function SearchBloodInventory(props) {
       >
         {TabPanes}
       </Tabs>
-      <Table
+      <SearchTable
         data={data}
+        displayDrawerUpdate={displayDrawerUpdate}
       />
       <Drawer
         title="BLOOD INVENTORY DETAILS"
@@ -108,6 +123,8 @@ function SearchBloodInventory(props) {
         destroyOnClose
       >
         <BloodInventoryDetailsForm
+          inventoryID={selectedID}
+          refreshTableData={refreshTableData}
           closeDrawer={() => setvisibleDrawer(false)}
         />
       </Drawer>
