@@ -1,10 +1,9 @@
 import React from 'react';
 import { DndProvider } from 'react-dnd';
-import update from 'immutability-helper';
 import HTML5Backend from 'react-dnd-html5-backend';
 import TablePager from 'shared_components/table_pager';
 import { PlusOutlined } from '@ant-design/icons';
-import fetchCategoriesList from 'services/blood_bank/categories';
+import fetchCategoriesList from 'services/general_settings/categories';
 import {  Table, Input, Button,  Row, Col,  Drawer } from 'antd';
 
 // CUSTOM

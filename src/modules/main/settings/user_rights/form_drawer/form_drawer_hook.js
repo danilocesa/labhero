@@ -57,10 +57,7 @@ function useFormDrawerHook(id, refreshTableData, onClose) {
         status: response.status, 
         message: 'User type successfully created',
         duration: 3,
-        onClose: () => { 
-          onClose();
-          refreshTableData();
-        }
+        onClose: () => window.location.reload()
       });
     }
   }
@@ -73,10 +70,7 @@ function useFormDrawerHook(id, refreshTableData, onClose) {
         status: response.status, 
         message: 'User type successfully created',
         duration: 3,
-        onClose: () => { 
-          onClose();
-          refreshTableData();
-        }
+        onClose: () => window.location.reload()
       });
     }
   }

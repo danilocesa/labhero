@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button , Upload, message} from 'antd';
+import { Form ,Input, Row , Col,Typography ,DatePicker ,Radio, Divider , Button } from 'antd';
 import moment from 'moment';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createDonor, updateDonor } from 'services/blood_bank/donor_registration';
@@ -14,7 +14,6 @@ import TownList from 'shared_components/phase2_town';
 // import { User as UserImg } from 'images/bloodbank';
 import { FIELD_RULES, selectDefaultOptions, formLabels,messagePrompts } from './constant';
 import DonorRegSteps from '../DonorRegSteps';
-import { UploadOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -172,7 +171,7 @@ class FillUpForm extends React.Component {
   }
  
   render() {
-    const {imageloc ,imgprop} =this.state
+    const { imgprop } =this.state
     const { state } = this.props.location;
 
     return (

@@ -2,11 +2,13 @@ import React from "react"
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { MoreOutlined } from '@ant-design/icons';
-import { Table, Input , Button, Tabs, Popover  } from 'antd'
+import { Table, Input , Button, Tabs, Popover, Select, Checkbox } from 'antd'
 
 // CUSTOM MODULES
+const { Option } = Select;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
+
 const coltableheader = [
   {
     title: 'DATE CREATED',
@@ -16,14 +18,6 @@ const coltableheader = [
     title: 'SCREENING STATUS',
     dataIndex: 'status',
   }
-];
-
-
-const coltableheaderdata = [
-  {
-    DC: '03/03/2021',
-    SS: 'ON GOING',
-  },
 ];
 
 const data = [
@@ -72,7 +66,10 @@ class ForScreening extends React.Component {
       title: 'RESULT',
       render: () => (
         <div>
-          <Input onChange={this.setDisable}/>
+          <Select defaultValue="" style={{ width: 120 }}>
+            <Option value="Positive">Positive</Option>
+            <Option value="Negative">Negative</Option>
+          </Select>
         </div>
       ),
     },
@@ -87,8 +84,15 @@ class ForScreening extends React.Component {
           <Input onChange={this.setDisable}/>
         </div>
       ),
-    }
+    },
   ];
+
+  rowSelection  = (selectedRowKeys, selectedRows) => {
+		const blood_product = selectedRows.map(value =>{
+			return(value.blood_product)
+		})
+		this.setState({blood_product, disabled:false})
+	}
 
   handleVisibleChange = visible => {
     this.setState({ visible });
@@ -103,6 +107,9 @@ class ForScreening extends React.Component {
   redirect = () => {this.setState({ redirect: true })}
 
   render() {
+    const rowSelection = {
+			onChange: this.rowSelection
+		};
     const { donorDetail } = this.props
     const Data = [donorDetail]
     const { buttonstatus, buttonData, redirect, visible } = this.state
@@ -118,7 +125,7 @@ class ForScreening extends React.Component {
 
     return (
       <div> 
-        <Popover
+        {/* <Popover
           content={render}
           trigger="click"
           visible={visible}
@@ -126,8 +133,8 @@ class ForScreening extends React.Component {
           placement="bottomRight"
         >
           <Button icon={<MoreOutlined />}/>
-        </Popover>
-        <Table 
+        </Popover> */}
+        <Table
           dataSource={Data} 
           columns={coltableheader} 
           style={{height:80}} 
@@ -136,19 +143,21 @@ class ForScreening extends React.Component {
         <Tabs defaultActiveKey="1" >
           <TabPane tab="FOR SCREENING">
             <Table 
+              rowSelection={rowSelection}
               dataSource={data}
               columns={this.coltable} 
               pagination={false}
             />
-            REMARKS <TextArea rows={3} onChange={this.setDisable}/>
+              REMARKS 
+            <TextArea rows={3} onChange={this.setDisable}/>
           </TabPane>
         </Tabs> 
         <div style={{ marginTop: 20, textAlign: 'right' }}>
           <Button  shape="round" style={{ width: 120, marginRight:20 }} >
-            SCREENED
+            SAVE
           </Button>
           <Button  shape="round" style={{ width: 120, marginRight:20 }} >
-            REJECT
+            PRINT
           </Button>
           <Button 
             disabled={buttonstatus}
@@ -157,7 +166,7 @@ class ForScreening extends React.Component {
             htmlType="submit"
             style={{ width: 120 }}
           >
-            APPROVE
+            SUBMIT
           </Button>
         </div>
       </div>

@@ -38,27 +38,25 @@ class UserRights extends React.Component {
 
 	fetchUserTypes = async () => {
 		this.setState({ isLoading: true });
-
 		const response = await getUserTypes();
-		
 		// @ts-ignore
 		response.status === 200 && this.setState({ userRights: response.data });
-
 		this.setState({ isLoading: false });
 	}
 
   onClickAdd = () => {
     this.setState({ isDisplayAddForm: true });
   }
-
 	
   onChangePager = (size) => {
-
 		this.setState({ pageSize: size })
   } 
 
   onDblClickTableRow = (record) => {
-		this.setState({ isDisplayUpdateForm: true, selectedId: record.userTypeID });
+		this.setState({ 
+			isDisplayUpdateForm: true, 
+			selectedId: record.userTypeID 
+		});
   }
 
   onCloseForm = () => {
@@ -67,7 +65,6 @@ class UserRights extends React.Component {
 			isDisplayUpdateForm: false, 
 		});
   }
-
 
 	render() {
 		const { 

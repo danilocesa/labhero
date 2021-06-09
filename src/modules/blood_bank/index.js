@@ -1,14 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-
 import BloodBankMenu from './bloodbank_menu';
 import DonorRegSearch from './donor_registration/SearchPage';
 import DonorRegFingerPrint from './donor_registration/FingerPrintRegPage';
 import DonorRegHeathInfo from './donor_registration/HealthInfoPage';
-// import SearchDonor from './search_donor';
 import DonorRegFillUp from './donor_registration/FillupPage';
 import ExtractionSearch from './extraction/search';
-
 import ScreeningSearch from './screening/search';
 import ScreeningDetail from './screening/details'
 import ExtractionDetail from './extraction/details';

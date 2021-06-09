@@ -6,7 +6,7 @@ import {
 } from 'antd'
 
 import ForExtraction from './for_extraction_tab';
-import PatientInfo from 'shared_components/patient_info_panel'
+import PatientInfo from './extraction_panel'
 
 const { Title,Text } = Typography;
 

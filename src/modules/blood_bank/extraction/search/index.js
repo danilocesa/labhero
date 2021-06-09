@@ -12,13 +12,12 @@ import {
   Pagination
 } from "antd";
 
-import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
-import { RegexInput } from 'shared_components/pattern_input';
-import fetchDonors,{ fetchPatientsNext}  from 'services/blood_bank/extraction';
+import Message from 'shared_components/message'; 
 import PageTitle from 'shared_components/page_title';
-import Message from 'shared_components/message';
-// import Pagination from 'shared_components/table_pagination'
 import SearchPager from 'shared_components/search_pager';
+import { RegexInput } from 'shared_components/pattern_input';
+import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
+import fetchDonors,{ fetchPatientsNext}  from 'services/blood_bank/extraction';
 
 import './index.css';
 
@@ -77,7 +76,7 @@ class Extraction extends React.Component {
       donorName: null,
       data: [],
       loading: false,
-      pageSize: 1,
+      pageSize: GLOBAL_TABLE_PAGE_SIZE,
       count: 0 ,
       page: 1,
       response: {},
@@ -94,6 +93,7 @@ class Extraction extends React.Component {
     this.setState({ loading: true });
 
     const donors = await fetchDonors(donorName, donorID, pageSize, page);  
+    console.log("🚀 ~ file: index.js ~ line 96 ~ Extraction ~ handleSubmit= ~ donors", donors)
 
     this.setState({ 
       showPagination : donors.results.length > 0,
@@ -262,7 +262,7 @@ class Extraction extends React.Component {
           loading={this.state.loading}
           columns={columns}
           rowKey={record => record.donor_id}
-          // rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED' ? 'disabled-row' : ''}
+          rowClassName={(record) => record.status.toUpperCase() === 'EXPIRED','INVALID' ? 'disabled-row' : ''}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {

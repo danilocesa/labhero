@@ -2,7 +2,7 @@
 /* eslint-disable func-names */
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD } from 'global_config/constant-global';
 
 export default async function fetchPatients(patientName, patientID, pageSize, page) {
   let patients = [];

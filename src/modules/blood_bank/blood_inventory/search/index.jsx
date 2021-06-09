@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Drawer, message, Tabs } from 'antd';
 import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
-import { GLOBAL_TABLE_PAGE_SIZE } from 'global_config/constant-global';
 import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI } from 'services/blood_inventory/blood_inventory';
 import {fetchBloodComponents} from 'services/blood_inventory/blood_components'
 import SearchForm from './searchForm';
@@ -11,6 +10,7 @@ import Table from './table'
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
+  console.log("🚀 ~ file: index.jsx ~ line 13 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
@@ -93,7 +93,7 @@ function SearchBloodInventory(props) {
       />
       <Tabs 
         onChange={tabOnChange}
-        defaultActiveKey="1"
+        defaultActiveKey = {state.actionType === "ManualSearch" ? 0 : state.TabKey }
       >
         {TabPanes}
       </Tabs>

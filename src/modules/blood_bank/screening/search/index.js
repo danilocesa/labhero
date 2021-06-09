@@ -243,7 +243,7 @@ export default class ForScreeningSearch extends Component {
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
-                if(record.status.toUpperCase()  !== 'EXPIRED')
+               
                   this.redirect(record)
               }
             }

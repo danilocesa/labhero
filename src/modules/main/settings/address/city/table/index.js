@@ -2,8 +2,7 @@
 // LIBRARY
 import React from 'react';
 import { fetchCityItems,fetchProvincesItems } from 'services/settings/Address';
-import { Row, Col, Table, Button, Input, Icon, Drawer,Select } from 'antd';
-import TablePager from 'shared_components/table_pager';
+import { Row, Col, Table, Input, Drawer,Select } from 'antd';
 
 // CUSTOM
 import { 

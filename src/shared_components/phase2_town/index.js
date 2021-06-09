@@ -45,7 +45,7 @@ class TownList extends React.Component {
 	}
 
 	render(){
-		const { placeholder, disabled, initialValue } = this.props;
+		const { placeholder, disabled } = this.props;
 		const { townList, loading } = this.state;
 		const isDisabled = disabled || townList.length < 1;
 

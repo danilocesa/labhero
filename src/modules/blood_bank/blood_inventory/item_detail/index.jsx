@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
-import { getInventoryById, updateInventory } from 'services/blood_inventory/blood_inventory';
+import { getInventoryById } from 'services/blood_inventory/blood_inventory';
 import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { FIELD_RULES } from './constant';
@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 function InventoryDetail( {closeDrawer }) {
   const formRef = useRef();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
@@ -175,7 +175,7 @@ function InventoryDetail( {closeDrawer }) {
               type="primary"
               shape="round"
               htmlType="submit"
-              loading={loading}
+              // loading={loading} 
               style={{ margin: 10, width: 120 }}
             >
               UPDATE

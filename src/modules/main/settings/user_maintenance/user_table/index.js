@@ -180,7 +180,6 @@ class UserTable extends React.Component {
 
 	render() {
 		const { users, pagination, drawerButton, patientInfo, visible, drawerTitle, loading } = this.state;
-    console.log("🚀 ~ file: index.js ~ line 183 ~ UserTable ~ render ~ users", users)
 	
 		return(
 			<div>

@@ -44,20 +44,6 @@ const columns = [
   },
 ];
 
-const details = [
-  {
-    title: "BAG ID",
-    dataIndex: "bag_id",
-    key: "bag_id",
-    width: 150,
-  },
-  {
-    title: "ADDRESS",
-    dataIndex: "address",
-    key: "address",
-    width: 250,
-  },
-];
 
 class Extraction extends React.Component {
   constructor(props) {
@@ -79,7 +65,6 @@ class Extraction extends React.Component {
   }
 
   handleSubmit = async () => {
-    const { getFieldsValue } = this.formRef.current;
     let patients = [];
     this.setState({ loading: true });
     // patients = await fetchPatients(patientName, bagID);

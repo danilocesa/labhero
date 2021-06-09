@@ -2,9 +2,7 @@
 import React from 'react'
 import {  Switch, Form, Input, Button} from 'antd'
 import PropTypes from 'prop-types'
-import { updateProvincesItems ,createProvincesItems } from 'services/settings/Address'
-import HttpCodeMessage from 'shared_components/message_http_status'
-import { buttonLabels, messagePrompts } from '../settings'
+import { buttonLabels } from '../settings'
 
 const layout = {
 	labelCol: { span: 8 },
@@ -80,7 +78,7 @@ class ProvinceForm extends React.Component {
 					}}
 					// onFinish={this.onFinish}       
 				>
-					{this.props.drawerButton == "UPDATE"? (		
+					{this.props.drawerButton === "UPDATE"? (		
 						<Form.Item 
 							label="ACTIVE" 
 							{...layout} 

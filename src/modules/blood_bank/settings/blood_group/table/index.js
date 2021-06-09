@@ -8,13 +8,7 @@ import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
-import { 
-	drawerAdd, 
-	drawerUpdate, 
-	tableSize ,
-	tableYScroll,
-	tablePageSize
-} from '../settings';
+import { tableYScroll } from '../settings';
 import Form from '../add_form';
 
 const { Search } = Input;
@@ -165,7 +159,7 @@ class BloodGroupTable extends React.Component {
 				<DndProvider backend={HTML5Backend}>
 				<div className="settings-user-table">
 				{
-					pagination1 == 0
+					pagination1 === 0
 					? 
 						(		
 							<Table 

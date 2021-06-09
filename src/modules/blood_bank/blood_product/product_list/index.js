@@ -36,7 +36,7 @@ class ProductList extends React.Component {
   tabOnChange = async (key) => {
     const { PayloadFromForm } = this.state
     if (PayloadFromForm === undefined){
-console.log(":P")
+      
     }
     else {
       PayloadFromForm.Blood_Components_Code = key
@@ -52,6 +52,11 @@ console.log(":P")
       Data: DataFromForm.results, 
       PayloadFromForm: payload
     });
+  }
+
+  onSumbit = (record) => {
+    const { history } = this.props
+    history.push('/bloodbank/blood_product/detail', record)
   }
 
   render() {
@@ -86,9 +91,9 @@ console.log(":P")
           {TabPanes}
         </Tabs>
         <ProductListTable 
+          onSubmit = {this.onSumbit}
           Data={Data}
           pageSize={5}
-          loading={false}
         />
       </div>
     );

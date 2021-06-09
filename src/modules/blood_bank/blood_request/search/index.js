@@ -16,7 +16,7 @@ import {
 // CUSTOM MODULES
 import Expandtable from './expandtable'
 import { RegexInput } from 'shared_components/pattern_input';
-import fetchRequest from 'services/blood_bank/blood_recipient';
+import fetchRequest from 'services/blood_recipient/blood_recipient';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
 import SearchPager from 'shared_components/search_pager';
@@ -34,7 +34,7 @@ const { Option } = Select;
 const columns = [
   {
     title: "PATIENT'S ID",
-    dataIndex: "donor_id",
+    dataIndex: "recipient_id",
   },
   {
     title: "LAST NAME",
@@ -83,10 +83,13 @@ class BloodRequestSearch extends React.Component {
       disableButton: false,
       bloodType: [],
       actionType: null,
+      buttons:true
     };
     this.formRef = React.createRef();
   }
 
+
+  //Para sa Dropdown ng BloodType
   async componentDidMount() {
 
     const bloodTypeList = await fetchBloodTypes();
@@ -99,18 +102,19 @@ class BloodRequestSearch extends React.Component {
 
   }
   
-  handleSubmit = async () => {  
-		const { getFieldsValue } = this.formRef.current;
-    const { patientID, patientName } = getFieldsValue();
+  // Fetch All Data in Form And Pass in API to Search must be accept undefined
+  handleSubmit = async (value) => {  
+    const { dateString } = this.state
+    const payload = {...value ,requested_date :dateString}
 
     this.setState({ loading: true });
 
-    const patients = await fetchRequest(patientName, patientID);
+    const patients = await fetchRequest(payload);
     
     this.setState({ 
       loading: false,
-      data: patients,
-      actionType: (patientName === '') ? 'byID' : 'byName'
+      data: patients.results,
+      // actionType: (patientName === '') ? 'byID' : 'byName'
     });
 
     if(patients.length <= 0) 
@@ -121,7 +125,20 @@ class BloodRequestSearch extends React.Component {
 		this.setState({pageSize});
 	}  
 
+  onChange = (date, dateString) => {
+		this.setState({dateString});
+	} 
+
+  
+  onDisable = () =>{
+    this.setState({
+      buttons:false
+    })
+  }
+
+
   onCloseDrawer = () => {
+
     this.setState({ displayDrawer: false });
   }
 
@@ -147,7 +164,7 @@ class BloodRequestSearch extends React.Component {
       disableButton: true,
       selectedRequest: record 
     });
-  };
+  }; 
 
   
 
@@ -162,9 +179,9 @@ class BloodRequestSearch extends React.Component {
       drawerButton, 
       disableButton, 
       bloodType ,
-      actionType
+      buttons
+      // actionType
     } = this.state
-      console.log("file: index.js ~ line 194 ~ BloodRequestSearch ~ render ~ data", data)
 
     const BloodTypeOptions = bloodType.map(item => (
       <Option key={item.blood_type_id} value={item.blood_type}>
@@ -184,35 +201,11 @@ class BloodRequestSearch extends React.Component {
         </Button>
       </Row>
     );
-
     
-    const TableData = data.map((currElement, index,array ) => (
-      {
-        address_line_1: currElement.address_line_1,
-        address_line_2:currElement.address_line_2,
-        barangay:currElement.barangay,
-        barangay_name:currElement.barangay_name,
-        birth_date:currElement.birth_date,
-        blood_type:currElement.blood_type,
-        blood_type_name:currElement.blood_type_name,
-        city_name:currElement.city_name,
-        contact_details:currElement.contact_details,
-        email_address:currElement.email_address,
-        first_name:currElement.first_name,
-        gender:currElement.gender,
-        is_active:currElement.is_active,
-        last_name:currElement.last_name,
-        middle_name:currElement.middle_name,
-        mobile_no:currElement.mobile_no,
-        province_name:currElement.province_name,
-        recipient_id:currElement.recipient_id,
-        requested_date:currElement.requested_date,
-        key:index
-      } 
-    ));
+    const TableData = data.map((currElement, index,array ) => ({...currElement,key:index}));
 
     return (
-      <div> 
+      <div>   
         <PageTitle pageTitle="BLOOD REQUEST"/>
         <Form 
           className="search-patient-form" 
@@ -228,7 +221,7 @@ class BloodRequestSearch extends React.Component {
                   style={{width:200}}
                   regex={/[A-Za-z0-9, -]/} 
                   maxLength={100}
-                  onFocus={this.handleFocus}
+                  onChange={this.onDisable}
                   placeholder="Patient's ID"
                 />
               </Form.Item>
@@ -244,18 +237,16 @@ class BloodRequestSearch extends React.Component {
                   style={{ width: 300 }}
                   regex={/[A-Za-z0-9, -]/} 
                   maxLength={100}
-                  onFocus={this.handleFocus}
+                  onChange={this.onDisable}
                   placeholder="Patient's Name"
                 />
               </Form.Item>
+              
             </Col>
             <Col>
-						<Form.Item label="SELECT DATE">
+						<Form.Item label="SELECT DATE" name="Date" >
 							<AntDatePicker 
-								allowClear={false}
-								// @ts-ignore
-								defaultValue={moment()} 
-								onChange={this.handleChangeDate} 
+								onChange={this.onChange} 
 								style={{ width: 300 }}
 							/>
 						</Form.Item>
@@ -264,64 +255,58 @@ class BloodRequestSearch extends React.Component {
           <Row gutter={12} align="middle" justify="center">
             <Col>
                 <div style={{ marginTop: 20 }}>
-                  <Form.Item shouldUpdate> 
-                    {({ getFieldsValue }) => {
-                      const { patientID, patientName } = getFieldsValue();
-                      const disabled = !(patientID || (patientName && patientName.length > 0));
-                      return (
-                        <Row>
-                          <Col>
-                            <Form.Item
-                              name="blood_type"
-                              label="BLOOD TYPE"
-                            >
-                              <Select style={{ width: 190, marginRight: 10 }} onChange={this.fetchData}>
-                                {BloodTypeOptions}
-                              </Select>
-                            </Form.Item>
-                          </Col>
-                          <Col>
-                            <Form.Item
-                              name="status"
-                              label="STATUS"
-                            >
-                              <Select style={{ width: 180, marginRight: 10 }}>
-                                {}
-                              </Select>
-                            </Form.Item>
-                          </Col>
-                          <Col>
-                            <Form.Item
-                              name="priority"
-                              label="PRIORITY"
-                            >
-                              <Select style={{ width: 190, marginRight: 10 }}>
-                                {}
-                              </Select>
-                            </Form.Item>
-                          </Col>
-                          <Button 
-                            className="form-button"
-                            shape="round" 
-                            style={{ width: 120, marginLeft: 10, marginTop: 15 }}
-                            onClick={this.clearInputs} 
-                          >
-                            CLEAR
-                          </Button>
-                          <Button 
-                            loading={loading}
-                            className="form-button"
-                            shape="round" 
-                            type="primary" 
-                            htmlType="submit" 
-                            style={{ width: 120, marginTop: 15 }}
-                            disabled={disabled}
-                          >
-                            SEARCH
-                          </Button>
-                        </Row>
-                      )
-                    }}
+                  <Form.Item> 
+                    <Row>
+                      <Col>
+                        <Form.Item
+                          name="blood_type"
+                          label="BLOOD TYPE"
+                        >
+                          <Select style={{ width: 190, marginRight: 10 }}  onChange={this.onDisable} allowClear> 
+                            {BloodTypeOptions}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col>
+                        <Form.Item
+                          name="status"
+                          label="STATUS"
+                        >
+                          <Select style={{ width: 180, marginRight: 10 }} onChange={this.onDisable} allowClear>
+                            {BloodTypeOptions}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col>
+                        <Form.Item
+                          name="priority"
+                          label="PRIORITY"
+                        >
+                          <Select style={{ width: 190, marginRight: 10 }} onChange={this.onDisable} allowClear>
+                          {BloodTypeOptions}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Button 
+                        className="form-button"
+                        shape="round" 
+                        style={{ width: 120, marginLeft: 10, marginTop: 15 }}
+                        onClick={this.clearInputs} 
+                      >
+                        CLEAR
+                      </Button>
+                      <Button 
+                        loading={loading}
+                        className="form-button"
+                        shape="round" 
+                        type="primary" 
+                        htmlType="submit" 
+                        style={{ width: 120, marginTop: 15 }}
+                        disabled={buttons}
+                      >
+                        SEARCH
+                      </Button>
+                    </Row>
                   </Form.Item>
                 </div>
             </Col>
@@ -350,7 +335,7 @@ class BloodRequestSearch extends React.Component {
               }
             }
           }}
-          {...(actionType === 'byName' && {footer: () => TableFooter})}
+          // {...(actionType === 'byName' && {footer: () => TableFooter})}
         />  
         <Drawer
           title={drawerTitle}

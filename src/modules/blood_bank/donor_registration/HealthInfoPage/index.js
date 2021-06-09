@@ -8,6 +8,7 @@ import {
   Form,
   Button,
   Divider,
+  message
 } from 'antd';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
@@ -36,7 +37,6 @@ class HealthInformation extends React.Component {
   
   async componentDidMount() {
     const { health_info_id } = this.props.location.state;
-    console.log("🚀 ~ file: index.js ~ line 39 ~ HealthInformation ~ componentDidMount ~ health_info_id", health_info_id)
     await this.getCategoryData();
 
     if(health_info_id)
@@ -44,13 +44,27 @@ class HealthInformation extends React.Component {
   }
 
   onFinish = async (formFields) => {
+    console.log("🚀 ~ file: index.js ~ line 46 ~ HealthInformation ~ onFinish= ~ formFields", formFields)
     const { donor_id } = this.props.location.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
+    const custom_fields = Object.keys(formFields).map((val, index) => {
+      console.log(formFields[val],"val")
+      const id = index+1
+      return {
+        field_id:id,
+        field_name: val,
+        field_value: formFields[val]
+      };
+    })
+
+    console.log(custom_fields)
     
-    const custom_fields = Object.keys(formFields).map(key => ({
-      field_name: key,
-      field_value: formFields[key]
-    }));  
+    // const custom_fields = Object.keys(formFields).map(key => ({
+    //   // field_id:,
+    //   field_name: key,
+    //   field_value: formFields[key]
+    // }));  
 
     const payload = {
       donor: donor_id,
@@ -58,6 +72,8 @@ class HealthInformation extends React.Component {
       is_screened: false,
       custom_fields: custom_fields
     };
+
+    console.log(payload,"payload")
 
     this.setState({ loading: true });
  
@@ -79,12 +95,19 @@ class HealthInformation extends React.Component {
   createHealthInfo = async (payload) => {
     const { history } = this.props;
     const result = await createHealthInformation(payload);
+    console.log(result.data.messages)
+    const Messages = Object.values(result.data.messages).map(value =>{
+    console.log("🚀 ~ file: index.js ~ line 100 ~ HealthInformation ~ Messages ~ value", value)
+      return message.error(value === Array(0) ? null : value)
+    })
     
-    if(result.status === 201)
+    if(result.status === 201){
+
       Message.success({ 
         message: 'Health information succesfully submitted!',
-        onClose: () => history.push('/bloodbank/donor_registration/step/1')
+        // onClose: () => history.push('/bloodbank/donor_registration/step/1')
       });
+    }
     else
       Message.error();
   }

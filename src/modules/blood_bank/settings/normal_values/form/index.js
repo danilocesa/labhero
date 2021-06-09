@@ -1,15 +1,9 @@
 // LIBRARY
 import React from 'react'
 // @ts-ignore
-import {  Switch, Form, Input, Button,InputNumber  } from 'antd'
+import {  Switch, Form, Input, Button } from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
-// @ts-ignore
-import HttpCodeMessage from 'shared_components/message_http_status'
-// @ts-ignore
-import { createData, updateData } from 'services/blood_bank/question_type';
-// @ts-ignore
-import { buttonLabels,drawerAdd,messagePrompts } from '../settings'
 
 // CSS
 import './form.css';
@@ -35,7 +29,7 @@ class BloodTestsForm extends React.Component {
 							className="exam-item-add-form"   
 						>
 							{
-								this.props.drawerButton == "UPDATE"? 
+								this.props.drawerButton === "UPDATE"? 
 								(		
 									<Form.Item 
 										label="ACTIVE" 

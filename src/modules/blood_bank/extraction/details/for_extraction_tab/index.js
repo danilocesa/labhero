@@ -43,8 +43,12 @@ class ForExtractionTab extends React.Component {
   }
 
   async componentDidMount() {
-     const { donorDetail } = this.props;
-
+    const { donorDetail } = this.props;
+    this.setState({
+      isAlreadyExtracted:donorDetail.donorDetail.status === 'Invalid' ? true : false
+    })
+    console.log("🚀 ~ file: index.js ~ line 47 ~ ForExtractionTab ~ componentDidMount ~ donorDetail", donorDetail.donorDetail.status)
+ 
     if(donorDetail.extraction_id !== null) {
       this.fetchExtractionDetail(donorDetail.extraction_id);
     }
@@ -57,10 +61,10 @@ class ForExtractionTab extends React.Component {
      const userAccount = await getUserAccountById(extractionDetail.extracted_by);
 
     const formFields = {
-      ...extractionDetail,
+        ...extractionDetail,
         extracted_date: moment(extractionDetail.extracted_date),
         expiration_date: moment(extractionDetail.expiration_date),
-       extracted_by:`${userAccount.lastName} ${userAccount.givenName}`
+        extracted_by:`${userAccount.lastName} ${userAccount.givenName}`
      };
 
      this.formRef.current.setFieldsValue(formFields);
@@ -70,8 +74,8 @@ class ForExtractionTab extends React.Component {
   }
 
   onSubmitForm = async (formValues) => {
-   const { donorDetail } = this.props;
-   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+    const { donorDetail } = this.props.donorDetail;
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
       donor: donorDetail.donor_id,
@@ -80,23 +84,22 @@ class ForExtractionTab extends React.Component {
       created_by: loggedinUser.userID,
       extracted_by: loggedinUser.userID
     };
-
     this.setState({ isLoading: true });
 
-   const APIresponse = await createExtraction(payload);
-   // @ts-ignore
-     const { status, data } = APIresponse;
+    const APIresponse = await createExtraction(payload);
+    
+    // @ts-ignore
+    const { status, data } = APIresponse;
     this.setState({ isLoading: false });
 
 
   if(status === 201){
     HttpCodeMessage({
-        message: 'Succesfully Extracted!',
-         status: status,
-         duration: 3,
-      });
-      
-      this.fetchExtractionDetail(data.extraction_id);
+      message: 'Succesfully Extracted!',
+      status: status,
+      duration: 3,
+    });
+    this.fetchExtractionDetail(data.extraction_id);
    }	
   }
   

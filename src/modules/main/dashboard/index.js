@@ -89,6 +89,7 @@ class DashboardPage extends React.Component {
         within: within ? within.records : 0
       };
     });
+    console.log("🚀 ~ file: index.js ~ line 92 ~ DashboardPage ~ componentDidMount ~ mappedSections", mappedSections)
 
     this.setState({ user, kpis, sections: mappedSections });
   }

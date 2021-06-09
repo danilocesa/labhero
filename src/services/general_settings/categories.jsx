@@ -9,7 +9,7 @@ export default async function fetchCategoriesList() {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/bloodbank/Categories/`,
+			url: `/general_settings/categories/`,
 		});
 		
 		const { data } = response;
@@ -26,7 +26,7 @@ export async function createCategoriesAPI(payload) {
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
-      url: `/bloodbank/Categories/create/`,
+      url: `/general_settings/categories/create/`,
       data: payload
 		}).then(response => {
       return response;
@@ -48,8 +48,8 @@ export async function updateCategoriesAPI(payload) {
 
   try{
     const content = {
-            method: API_PUT_METHOD,
-            url:`/bloodbank/Categories/update/${CategoryId}/`,
+      method: API_PUT_METHOD,
+      url:`/general_settings/categories/update/${CategoryId}/`,
       data: payload
     }
     const response = await axiosPhase2API(content);

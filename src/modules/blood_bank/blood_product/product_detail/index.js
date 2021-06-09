@@ -6,27 +6,23 @@ import ProductDetailTable from './table';
 
 class ProductDetail extends React.Component {
   render() {
+    
+  const { state } = this.props.history.location
     return (
       <div>
         <Row gutter={12}>
           <Col span={6}>
-            <SourcePane />
+            <SourcePane Data={state}/>
           </Col>
           <Col span={18}>
-            <ProductDetailHeader />
+            <ProductDetailHeader Data={state}/>
             <div style={{ marginTop: 20 }}>
               <ProductDetailTable 
                 loading={false} 
+                Data={state}
               />
             </div>
-            <div style={{ textAlign: 'right', marginTop: 30 }}>
-              <Button 
-                type="ghost"
-                style={{ width: 120 }}
-              >
-                CANCEL
-              </Button>
-            </div>
+            
           </Col>
         </Row>
       </div>

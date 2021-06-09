@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { Table } from 'antd';
 
-// CONSTANTS
 const columns = [
 	{
 		title: 'BLOOD TYPE',
@@ -36,17 +34,30 @@ const columns = [
 		width: 140
 	}, 
 ];
+
 class ProductListTable extends React.Component {
 
+	BloodProductDetails = (record) => {
+		const { onSubmit } = this.props;
+		onSubmit(record);   
+	}
+
 	render() {
-    
-	const {Data } =  this.props
+		const { Data } =  this.props
+
 		return (
-			<Table columns={columns} dataSource={Data}/>
+			<Table 
+				columns={columns} 
+				dataSource={Data}
+				onRow={(record) => ({
+					onDoubleClick: () => { 
+						this.BloodProductDetails(record);
+					},
+				})}
+			/>
 		);
 	}
 }
-
 
 ProductListTable.propTypes = {
   Data:PropTypes.array.isRequired,

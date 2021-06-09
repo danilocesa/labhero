@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'
-import { createCategoriesAPI , updateCategoriesAPI} from 'services/blood_bank/categories';
+import { createCategoriesAPI , updateCategoriesAPI} from 'services/general_settings/categories';
 import { Switch, Form, Input, Button } from 'antd';
 
 import { buttonLabels,messagePrompts } from '../settings';
@@ -123,7 +123,10 @@ class UserAccountForm extends React.Component {
 							/>
 						</Form.Item>
 						<Form.Item label="DESCRIPTION" name='desc'>
-							<TextArea rows={5} />
+							<TextArea 
+								rows={5} 
+								onChange={this.onDisable}
+							/>
 						</Form.Item>
 					</div>
 					<section className="drawerFooter">

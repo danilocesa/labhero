@@ -22,14 +22,8 @@ export default class ScreeningInformation extends Component {
           </Col>
           <Col md={16} xxl={10} style={{marginLeft:20}}>
             <div>
-              <Title level={4}>
-                {`${last_name}, ${first_name}`.toUpperCase()}
-              </Title>
-              <Text>
-                DONOR ID : 
-                {`${donor_id}`.toUpperCase()}
-                {`${health_info_id}`.toUpperCase()}
-              </Text>
+              <Title level={4}> {`${last_name}, ${first_name}`.toUpperCase()} </Title>
+              <Text> DONOR ID : {`${donor_id}`.toUpperCase()} </Text>
             </div>
             <div style={{marginTop:20}}>
               <ForScreening donorDetail={donorDetail}/> 

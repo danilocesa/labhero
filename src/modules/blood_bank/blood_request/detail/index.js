@@ -1,13 +1,15 @@
 import React from 'react';
-import { Row, Col, Spin, Card, Typography, Divider, Form, DatePicker as AntDatePicker, Button, Select, Input, Drawer, InputNumber } from 'antd';
+import { Row, Col, Typography, Form, Button, Select, Input, Drawer, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
-import { fetchBloodRecipientById } from 'services/blood_bank/blood_recipient';
 import BloodRequestDetailsForm from '../detail';
-import { fetchBloodRequestById } from 'services/blood_bank/blood_request';
 import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 import { getHospitalList } from 'services/blood_bank/hospital'
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { createBloodRecipient } from 'services/blood_recipient/blood_recipient'
 // import { fetchBloodProducts } from 'services/blood_bank/blood_types';
 import { AlphaInput, NumberInput } from 'shared_components/pattern_input';
+import HttpCodeMessage from 'shared_components/message_http_status'
+import { messagePrompts } from './settings'
 import moment from 'moment';
 const { Text } = Typography;
 
@@ -50,7 +52,6 @@ class BloodRequestDetails extends React.Component {
   }
 
   computeAge = (date) => {
-  console.log("file: index.js ~ line 52 ~ BloodRequestDetails ~ date", date)
 		const years = Math.floor(moment().diff(date, 'years', true));
 		const age = years > 0 ? years : '---';
 	
@@ -62,11 +63,43 @@ class BloodRequestDetails extends React.Component {
       showUpdateButton:true
     })
   }
+  
   onCancel = () => {
     this.setState({
       showUpdateButton:false
     })
   } 
+
+  onSubmit = async(value) => {
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+    const { selectedRequest } = this.props;
+    const payload = {
+      blood_product:selectedRequest.blood_product_id,
+      recipient:selectedRequest.recipient_id,
+      quantity:value.quantity,
+      priority:value.priority_id,
+      status:selectedRequest.status_id,
+      diagnosis:value.diagnosis,
+      physician:selectedRequest.license_no,
+      hospital:selectedRequest.hospital_id,
+      blood_unit: 0,
+      purpose: "string",
+      created_by: loggedinUser.userID,
+    }
+    const createAPIresponse = await createBloodRecipient(payload);
+     // @ts-ignore
+    if(createAPIresponse.status === 201){
+      const httpMessageConfig = {
+        message: messagePrompts.successCreateUser,
+        // @ts-ignore
+        status: createAPIresponse.status,	
+        duration: 3, 
+        onClose: () => window.location.reload() 
+      }
+      HttpCodeMessage(httpMessageConfig);	
+    }	
+  } 
+
 
   closeDrawer = this.props;
 
@@ -74,7 +107,6 @@ class BloodRequestDetails extends React.Component {
     const { 
       recipientDetail, 
       requestDetails, 
-      loading, 
       closeDrawer, 
       bloodType, 
       drawerTitle, 
@@ -84,7 +116,7 @@ class BloodRequestDetails extends React.Component {
      } = this.state;
 
     const { selectedRequest, drawerButton, disableButton } = this.props;
-
+  
     const ProductList = requestDetails.map(item => (
       <Row key={item.blood_product_id}>
         <Col span={10}>
@@ -115,6 +147,7 @@ class BloodRequestDetails extends React.Component {
         <Form 
           layout="vertical"
           ref={this.formRef}
+          onFinish={this.onSubmit}
           >
           <Row gutter={24}>
             <Col span={6}>
@@ -159,7 +192,11 @@ class BloodRequestDetails extends React.Component {
                 </Form.Item>
             </Col>
             <Col span={6}>  
-              <Form.Item label="SUFFIX" name="suffix">
+              <Form.Item 
+                label="SUFFIX" 
+                name="suffix"
+                initialValue={selectedRequest.suffix}
+              >
                   <Input 
                     style={{width:100}}
                     maxLength={5}
@@ -184,7 +221,11 @@ class BloodRequestDetails extends React.Component {
               </Form.Item>
             </Col>
             <Col span={6}>  
-              <Form.Item label="AGE" name="age" initialValue={this.computeAge(selectedRequest.birth_date)}>
+              <Form.Item 
+                label="AGE" 
+                name="age" 
+                initialValue={this.computeAge(selectedRequest.birth_date)}
+              >
                   <Input 
                     disabled = {disableButton}
                     style={{width:200}}
@@ -193,7 +234,11 @@ class BloodRequestDetails extends React.Component {
                 </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="GENDER" name="genders" initialValue={selectedRequest.gender}>
+              <Form.Item 
+                label="GENDER" 
+                name="genders" 
+                initialValue={selectedRequest.gender}
+              >
                 <Input 
                   disabled = {disableButton}
                   style={{width:200}}
@@ -202,7 +247,11 @@ class BloodRequestDetails extends React.Component {
               </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="ADDRESS" name="address" initialValue={selectedRequest.city_name}>
+              <Form.Item 
+                label="ADDRESS" 
+                name="address" 
+                initialValue={selectedRequest.city_name}
+              >
                 <Select 
                   style={{width:200}}
                   disabled = {disableButton}
@@ -213,7 +262,10 @@ class BloodRequestDetails extends React.Component {
           </Row>
           <Row gutter={24}>
             <Col span={6}> 
-              <Form.Item label="DIAGNOSIS" name="diagnosis">
+              <Form.Item 
+                label="DIAGNOSIS" 
+                name="diagnosis"
+              >
                   <Input 
                     style={{width:200}}
                     maxLength={20}
@@ -222,7 +274,11 @@ class BloodRequestDetails extends React.Component {
                 </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="REQUESTING HOSPITAL" name="requestingHospital">
+              <Form.Item 
+                label="REQUESTING HOSPITAL" 
+                name="requestingHospital" 
+                initialValue={selectedRequest.hospital_name}
+              >
                 <Select
                   showSearch
                   style={{ width: 200 }}
@@ -238,7 +294,11 @@ class BloodRequestDetails extends React.Component {
           </Row>
           <Row gutter={24}>
             <Col span={6}> 
-              <Form.Item label="PHYSICIAN" name="physician">
+              <Form.Item 
+                label="PHYSICIAN" 
+                name="physician" 
+                initialValue={selectedRequest.physician_name}
+              >
                   <Input 
                     style={{width:200}}
                     disabled = {disableButton}
@@ -247,7 +307,11 @@ class BloodRequestDetails extends React.Component {
               </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="LICENSE NO" name="licenseNo">
+              <Form.Item 
+                label="LICENSE NO" 
+                name="licenseNo" 
+                initialValue={selectedRequest.license_no}
+              >
                   <Input 
                     style={{width:200}}
                     maxLength={20}
@@ -259,10 +323,14 @@ class BloodRequestDetails extends React.Component {
           </Row>
           <Row gutter={24}>
             <Col span={6}> 
-              <Form.Item label="BLOOD TYPE" name="bloodType" initialValue={selectedRequest.blood_type_name}>
+              <Form.Item 
+                label="BLOOD TYPE" 
+                name="bloodType" 
+                initialValue={selectedRequest.blood_type}
+              >
                 <Select
                   style={{width:200}}
-                  value={recipientDetail.blood_type_name}
+                  value={recipientDetail.blood_type}
                   disabled = {disableButton}
                 >
                   {BloodTypeOptions}
@@ -271,7 +339,11 @@ class BloodRequestDetails extends React.Component {
               </Form.Item>
             </Col>
             <Col span={6}> 
-              <Form.Item label="PRIORITY" name="priority">
+              <Form.Item 
+                label="PRIORITY" 
+                name="priority"
+                initialValue={selectedRequest.priority_name}
+              >
                 <Select 
                   style={{width:200}}
                   disabled = {disableButton}
@@ -281,7 +353,11 @@ class BloodRequestDetails extends React.Component {
           </Row>
           <Row gutter={24}>
             <Col span={6}> 
-              <Form.Item label="BLOOD PRODUCT" name="bloodProduct">
+              <Form.Item 
+                label="BLOOD PRODUCT" 
+                name="bloodProduct" 
+                initialValue={selectedRequest.blood_product_name}
+              >
                 <Select
                   style={{width:200}}
                   disabled

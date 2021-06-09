@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import hospitalLocationAPI from 'services/lab_request/hospitalLocation';
 import hospitalPhysiciansAPI from 'services/lab_request/hospitalPhysicians';
-import { LR_PERSONAL_INFO, LR_OTHER_INFO } from 'modules/main/lab_request/steps/constants';
 import { fetchExamsByReqId } from 'services/lab_request/labRequest';
 import PageTitle from 'shared_components/page_title';
 import SummarySection from './section';

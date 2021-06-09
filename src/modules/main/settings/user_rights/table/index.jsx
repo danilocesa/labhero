@@ -10,9 +10,6 @@ class UserRightsTable extends React.Component {
 	render() {
 		const { data, pageSize, loading = false, onRowDblClick } = this.props;
 
-		// const mappedData = data.map(cachedExam => ({ ...data, date_Created: `${date} - ${month} - ${year}` }));
-
-
 		const columns = [
 			{ 
 				title: 'USER TYPE',

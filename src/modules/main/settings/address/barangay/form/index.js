@@ -2,9 +2,8 @@
 import React from 'react'
 import {  Switch, Form, Input, Button, Select } from 'antd'
 import PropTypes from 'prop-types'
-import { createBarangayItems,fetchProvincesItems,fetchCityItems,updateBarangayItems } from 'services/settings/Address';
-import HttpCodeMessage from 'shared_components/message_http_status'
-import { buttonLabels,messagePrompts } from '../settings'
+import { fetchProvincesItems,fetchCityItems } from 'services/settings/Address';
+import { buttonLabels } from '../settings'
 
 const layout = {
 	labelCol: { span: 8 },
@@ -85,10 +84,10 @@ class BarangayForm extends React.Component {
 		const { drawerButton,selectedBarangay } = this.props;
 
 		const provinceMappedData = ProvincesItems.map((item) => {
-      return (<option  value={item.province_id}>{item.province_name}</option>)
+      return (<Option  value={item.province_id}>{item.province_name}</Option>)
     });
 		const CityMappedData = CityItem.map((item) => {
-      return (<option  value={item.city_id}>{item.city_name}</option>)
+      return (<Option  value={item.city_id}>{item.city_name}</Option>)
     });
 
 
@@ -104,7 +103,7 @@ class BarangayForm extends React.Component {
 					}}
 					// onFinish={this.onFinish}       
 				>
-					{this.props.drawerButton == "UPDATE"? (		
+					{this.props.drawerButton === "UPDATE"? (		
 						<Form.Item 
 							label="ACTIVE" 
 							{...layout} 

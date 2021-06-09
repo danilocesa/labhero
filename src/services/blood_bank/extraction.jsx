@@ -3,6 +3,7 @@
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
 import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
+import HttpCodeMessage from 'shared_components/message_http_status';
 
 export default async function fetchPatients(patientName, patientID, pageSize, page) {
   let patients = [];
@@ -27,25 +28,26 @@ export default async function fetchPatients(patientName, patientID, pageSize, pa
 } 
 
 export async function createExtraction(payload) {
-  let result = null;
-  
+	let result = [];
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
       url: `bloodbank/extraction/create/`,
       data: payload
-		});
+		}).then(response => {
+      return response;
+    });
 
-    const response = await axiosResponse;
-
-    result = response;
+    // @ts-ignore
+    result = axiosResponse;
   } 
   catch(e) {
-    result = false;
+    HttpCodeMessage({status: 500, message: e});
 	}
 
 	return result;
 }
+
 
 export async function fetchHeaderData(ID) {
   let patients = [];

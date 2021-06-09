@@ -27,6 +27,7 @@ function Login() {
 
 	async function handleSubmit() {
 		const { getFieldsValue } = formRef.current;
+		
 		const { username, password } = getFieldsValue();
 		
 		try {
@@ -37,7 +38,6 @@ function Login() {
 				...omit(response.data, ['accessRights']),
 				secret: crypt.encrypt(password)
 			};
-			
 			// @ts-ignore
 			const { accessRights } = response.data;
 			
