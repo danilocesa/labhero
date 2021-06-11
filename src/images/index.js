@@ -24,3 +24,4 @@ export { default as InvTransaction } from './inventory/transaction.png';
 export { default as Lefthand } from './lefthand.png';
 export { default as Righthand } from './righthand.png';
 export { default as FingerPrint } from './fingerprint.png';
+export { default as Report } from './report.png';

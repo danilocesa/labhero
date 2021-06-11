@@ -46,7 +46,7 @@ function InventoryDashboard() {
                 </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'EXPIRED', blood_type:key, TabKey : index })}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'EXPIRED', blood_type:key, TabKey : index +1 })}>
                 <Statistic
                   title="Expired"
                   value={Object.values(value)[0].expired === undefined ? 0 : Object.values(value)[0].expired}
@@ -56,7 +56,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key, TabKey : index +2})}>
                 <Statistic
                   title="Delivered"
                   value={Object.values(value)[0].delivered === undefined ? 0 : Object.values(value)[0].delivered}

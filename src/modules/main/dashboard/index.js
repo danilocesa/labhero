@@ -89,7 +89,6 @@ class DashboardPage extends React.Component {
         within: within ? within.records : 0
       };
     });
-    console.log("🚀 ~ file: index.js ~ line 92 ~ DashboardPage ~ componentDidMount ~ mappedSections", mappedSections)
 
     this.setState({ user, kpis, sections: mappedSections });
   }
@@ -118,7 +117,7 @@ class DashboardPage extends React.Component {
       
       const data = hasNoData ? [] : [
         { item: 'Pending', count: Number(item.pending) },
-        { item: 'Morethan 2 Hours', count: Number(item.morethan)  },
+        { item: 'Morethan 2 Hours', count: Number(item.pending)  },
         { item: 'Within 2 Hours', count: Number(item.within) }
       ];
 
