@@ -83,11 +83,12 @@ class SelectTable extends React.Component {
 
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
+    console.log("🚀 ~ file: index.js ~ line 86 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 			key: selectedExam.examID,
 			...selectedExam,
-			action: (selectedExam.sampleSpecimenID === null && selectedExam.sampleSpecimenID === null)
+			action: (selectedExam.sampleSpecimenID === null && !selectedExam.isLocked )
 			 ?  
 					<Button 
 						type="dashed" 

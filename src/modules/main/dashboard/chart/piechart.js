@@ -33,6 +33,7 @@ export default function PieChart(props) {
         position="count"
         adjust="stack"
         color={['item', (item) => {
+          
           if(item === 'Within 2 Hours')
             // #009645 - Green | #6395F9 - Blue
             return '#6395F9';
@@ -41,6 +42,7 @@ export default function PieChart(props) {
             // #FFBC00- Yellow | #ff7979-  Red
             return '#ff7979';
 
+            
           return '#CBDEFF'; 
         }]} 
         style={{

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Drawer, message, Tabs } from 'antd';
 import PageTitle from 'shared_components/page_title';
@@ -100,13 +101,14 @@ function SearchBloodInventory(props) {
     </TabPane>
   ));
 
-  return (
+  return (  
     <div>
       <PageTitle pageTitle="BLOOD INVENTORY" />
       <SearchForm onFinish={search} />
       <SearchPager 
         pageTotal={data.length}
       />
+      {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
         defaultActiveKey = {state.actionType === "ManualSearch" ? 0 : state.TabKey + 1 }

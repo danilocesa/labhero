@@ -44,7 +44,6 @@ class HealthInformation extends React.Component {
   }
 
   onFinish = async (formFields) => {
-    console.log("🚀 ~ file: index.js ~ line 46 ~ HealthInformation ~ onFinish= ~ formFields", formFields)
     const { donor_id } = this.props.location.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
@@ -58,7 +57,6 @@ class HealthInformation extends React.Component {
       };
     })
 
-    console.log(custom_fields)
     
     // const custom_fields = Object.keys(formFields).map(key => ({
     //   // field_id:,
@@ -95,9 +93,7 @@ class HealthInformation extends React.Component {
   createHealthInfo = async (payload) => {
     const { history } = this.props;
     const result = await createHealthInformation(payload);
-    console.log(result.data.messages)
     const Messages = Object.values(result.data.messages).map(value =>{
-    console.log("🚀 ~ file: index.js ~ line 100 ~ HealthInformation ~ Messages ~ value", value)
       return message.error(value === Array(0) ? null : value)
     })
     

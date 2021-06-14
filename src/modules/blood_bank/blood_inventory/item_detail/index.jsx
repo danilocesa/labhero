@@ -19,7 +19,7 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
 
 
   async function onSubmit(values) {
-    setLoading(true);
+    // setLoading(true);
     // console.log(values)
     const result = await updateInventory({
       id: inventoryID.blood_inventory_id,
@@ -31,11 +31,11 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
     setLoading(false);
     
 
-    if(result) {
-      message.success('Inventory detail succesfully updated');
-      refreshTableData();
-      closeDrawer();
-    }
+    // if(result) {
+    //   message.success('Inventory detail succesfully updated');
+    //   refreshTableData();
+    //   closeDrawer();
+    // }
   }
 
   useEffect(() => {
