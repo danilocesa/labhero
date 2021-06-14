@@ -56,7 +56,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key, TabKey : index})}>
                 <Statistic
                   title="Delivered"
                   value={Object.values(value)[0].delivered === undefined ? 0 : Object.values(value)[0].delivered}
@@ -66,7 +66,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'INVALID', blood_type:key })}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'INVALID', blood_type:key, TabKey : index })}>
                 <Statistic
                   title="Invalid"
                   value={Object.values(value)[0].invalid === undefined ? 0 : Object.values(value)[0].invalid}
@@ -76,7 +76,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key, TabKey : index})}>
                 <Statistic
                   title="Processed"
                   value={Object.values(value)[0].procesed === undefined ? 0 : Object.values(value)[0].procesed}
