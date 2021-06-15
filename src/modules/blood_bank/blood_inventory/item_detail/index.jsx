@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,  } from 'react';
 import moment from 'moment';
 import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
 import { getInventoryById } from 'services/blood_inventory/blood_inventory';
@@ -18,23 +18,23 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
 
 
   async function onSubmit(values) {
-    setLoading(true);
-    // console.log(values)
-    const result = await updateInventory({
-      id: 16,//inventoryID.blood_inventory_id,
-      blood_storage: values.storage_id,
-      remarks: values.remarks,
-      is_active: isActive,
-      last_updated_by: loggedinUser.userID
-    });
-    setLoading(false);
+    // setLoading(true);
+    // // console.log(values)
+    // const result = await updateInventory({
+    //   id: 16,//inventoryID.blood_inventory_id,
+    //   blood_storage: values.storage_id,
+    //   remarks: values.remarks,
+    //   is_active: isActive,
+    //   last_updated_by: loggedinUser.userID
+    // });
+    // setLoading(false);
     
 
-    if(result) {
-      message.success('Inventory detail succesfully updated');
-      refreshTableData();
-      closeDrawer();
-    }
+    // if(result) {
+    //   message.success('Inventory detail succesfully updated');
+    //   refreshTableData();
+    //   closeDrawer();
+    // }
   }
 
   useEffect(() => {

@@ -67,6 +67,7 @@ export default class BloodTypesTable extends Component {
   }
 
   displayDrawerUpdate = (record) => {
+    console.log (record)
     const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true,
