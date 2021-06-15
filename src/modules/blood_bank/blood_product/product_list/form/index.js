@@ -32,37 +32,20 @@ class FormSearch extends React.Component {
           gutter={16}
           style={{ marginTop: 20 }}
         >
-          {/* <Col span={2}>
-            <Form.Item name="STATUS">
-              <Input placeholder="STATUS" />
-            </Form.Item>
-          </Col> */}
-          <Col span={2}>
+          <Col span={3}>
             <Form.Item name="BLOOD_TYPES">
               <Select defaultValue="Blood Types" style={{ width: '100%' }}>
                 {bloodTypesOption}
               </Select>
             </Form.Item>
           </Col>
-          <Col span={2}>
+          <Col span={3}>
             <Form.Item name="BLOOD_STORAGE">
               <Select defaultValue="Storage" style={{ width: '100%' }}>
                 {bloodStorageOption}
               </Select>
             </Form.Item>
           </Col>
-          <Col span={2}>
-            <Form.Item name="STATUS">
-              <Select defaultValue="Status" style={{ width: '100%' }}>
-                <Option value="AVAILABLE">AVAILABLE</Option>
-                <Option value="INVALID">INVALID</Option>
-                <Option value="EXPIRED">EXPIRED</Option>
-                <Option value="PROCESSED">PROCESSED</Option>
-                <Option value="DELIVERED">DELIVERED</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-
           <Col>
             <Button
               shape="round"

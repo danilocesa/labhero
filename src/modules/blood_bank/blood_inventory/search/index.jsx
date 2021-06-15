@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Drawer, message, Tabs } from 'antd';
 import PageTitle from 'shared_components/page_title';
@@ -10,13 +11,13 @@ import SearchTable from './table'
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
-  console.log("🚀 ~ file: index.jsx ~ line 13 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
   const [cachedPayload, setCachedPayload] = useState(null);
+  const tabKey = state.TabKey + 1;
   
   const { TabPane } = Tabs;
 
@@ -91,23 +92,26 @@ function SearchBloodInventory(props) {
     }
   }
 
-  const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item) => (
-    <TabPane 
+
+  const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
+    <TabPane
       tab={item.blood_comp_name} 
       key={item.blood_comp_code} 
-    />
+    >
+    </TabPane>
   ));
 
-  return (
+  return (  
     <div>
       <PageTitle pageTitle="BLOOD INVENTORY" />
       <SearchForm onFinish={search} />
       <SearchPager 
         pageTotal={data.length}
       />
+      {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
-        defaultActiveKey = {state.actionType === "ManualSearch" ? 0 : state.TabKey }
+        defaultActiveKey = {state.actionType === "ManualSearch" ? 0 : state.TabKey + 1 }
       >
         {TabPanes}
       </Tabs>

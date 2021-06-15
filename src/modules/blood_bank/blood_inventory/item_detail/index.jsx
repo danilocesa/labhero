@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef,  } from 'react';
 import moment from 'moment';
 import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
-import { getInventoryById } from 'services/blood_inventory/blood_inventory';
+import { getInventoryById, updateInventory } from 'services/blood_inventory/blood_inventory';
 import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { FIELD_RULES } from './constant';
@@ -11,14 +11,16 @@ const { TextArea } = Input;
 
 function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const formRef = useRef();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+  
 
 
   async function onSubmit(values) {
     // setLoading(true);
+<<<<<<< HEAD
     // // console.log(values)
     // const result = await updateInventory({
     //   id: 16,//inventoryID.blood_inventory_id,
@@ -28,6 +30,17 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
     //   last_updated_by: loggedinUser.userID
     // });
     // setLoading(false);
+=======
+    // console.log(values)
+    const result = await updateInventory({
+      id: inventoryID.blood_inventory_id,
+      blood_storage: values.storage_id,
+      remarks: values.remarks,
+      is_active: isActive,
+      last_updated_by: loggedinUser.userID
+    });
+    setLoading(false);
+>>>>>>> c6f34876c335a3955678a85a4b04961c8c3fe0aa
     
 
     // if(result) {

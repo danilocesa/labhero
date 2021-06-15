@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 // CUSTOM MODULES
 import PageTitle from 'shared_components/page_title';
 // @ts-ignore
-import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon } from 'images';
+import { LabExamRequestIcon, UserMaintenanceIcon, NormalValuesIcon, Report } from 'images';
 import SettingsCard from './settings_card'
 
 import './setting-menu.css';
@@ -52,7 +52,7 @@ const settingsItemData = [
 		label: 'HOSPITAL'
 	},
 	{
-		image: NormalValuesIcon,
+		image: Report,
 		link: '/settings/reports',
 		label: 'REPORTS'
 	}
