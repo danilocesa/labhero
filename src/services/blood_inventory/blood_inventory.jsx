@@ -126,7 +126,6 @@ export async function getInventoryById(id) {
 }
 
 export async function updateInventory(payload) {
-  // console.log(payload)
   try{
     const response = await axiosPhase2API({
       method: API_PUT_METHOD,
