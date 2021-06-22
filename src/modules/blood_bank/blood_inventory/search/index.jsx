@@ -11,6 +11,7 @@ import SearchTable from './table'
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
+  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
@@ -80,6 +81,7 @@ function SearchBloodInventory(props) {
   }
 
   async function tabOnChange(key) {
+    console.log("🚀 ~ file: index.jsx ~ line 84 ~ tabOnChange ~ key", key)
     state.blood_product_code = key
     const bloodInventory = await searchInventoryAvailableAPI(state);
     if(bloodInventory.length > 0) {
@@ -95,7 +97,7 @@ function SearchBloodInventory(props) {
     return(
       <TabPane 
         tab={item.blood_comp_name} 
-        key={index.toString() + 1} 
+        key={index}
       />
     )
   }); 
@@ -110,7 +112,7 @@ function SearchBloodInventory(props) {
       {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
-        activeKey = {state.TabKey.toString()}
+        activeKey = '1'
       >
         {TabPanes}
       </Tabs>

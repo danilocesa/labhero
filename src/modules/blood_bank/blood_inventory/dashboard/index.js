@@ -29,6 +29,7 @@ function InventoryDashboard() {
   }
 
   const StatusValue = Pertabs.map(item => {
+  console.log("🚀 ~ file: index.js ~ line 32 ~ InventoryDashboard ~ item", item)
 
     const mappedarray = item.map((value ,index ) => {      
       const label = Object.getOwnPropertyNames(value)[0].replace('_',' ').toUpperCase()
@@ -36,7 +37,7 @@ function InventoryDashboard() {
         <Descriptions.Item key={index} label={label}>
           <Row gutter={12}>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', blood_type:key , TabKey : index})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', blood_type:key , TabKey : index,})}>
                 <Statistic
                   title="Available"
                   value={Object.values(value)[0].available === undefined ? 0 : Object.values(value)[0].available}

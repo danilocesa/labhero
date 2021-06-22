@@ -111,7 +111,7 @@ class FillUpForm extends React.Component {
 
     const payload = {
       ...formData,
-      image_location:`images/donor/${imgprop.imageName}`,
+      image_location:'sample',//`images/donor/${imgprop.imageName}`
       birth_date: formData.birth_date.format('YYYY-MM-DD')
     };
 
@@ -199,12 +199,12 @@ class FillUpForm extends React.Component {
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
                   <img src={imgprop ? require(`images/donor/${imgprop.imageName}`) : require(`images/donor/defaulticon.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
-                  <Form.Item 
+                  {/* <Form.Item 
                     name="img"
                     rules={FIELD_RULES.firstName}
                   >
                     <input type="file" onChange={this.handleChange} />
-                  </Form.Item>
+                  </Form.Item> */}
                 </Row>
                 <Form.Item 
                   name="donor_id"

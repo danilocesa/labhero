@@ -178,6 +178,7 @@ class BaseForm extends React.Component {
 		const { getFieldsValue } = this.formRef.current;
 	
 		const fields = getFieldsValue();
+    console.log("🚀 ~ file: index.js ~ line 181 ~ BaseForm ~ fields", fields)
 		const physician = hospitalPhysicianList.find(item => item.physicianID === fields.physicianID);
 		const location = hospitalLocationList.find(item => item.locationID === fields.locationID);
 

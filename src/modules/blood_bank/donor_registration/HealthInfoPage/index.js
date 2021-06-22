@@ -93,9 +93,10 @@ class HealthInformation extends React.Component {
   createHealthInfo = async (payload) => {
     const { history } = this.props;
     const result = await createHealthInformation(payload);
-    const Messages = Object.values(result.data.messages).map(value =>{
-      return message.error(value === Array(0) ? null : value)
-    })
+    console.log("🚀 ~ file: index.js ~ line 96 ~ HealthInformation ~ createHealthInfo= ~ result", result)
+    // const Messages = Object.values(result.data.messages).map(value =>{
+    //   return message.error(value === Array(0) ? null : value)
+    // })
     
     if(result.status === 201){
 
