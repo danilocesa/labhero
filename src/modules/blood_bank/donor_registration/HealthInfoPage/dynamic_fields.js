@@ -2,11 +2,47 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Form, Checkbox, Select, Input, Switch, InputNumber  } from 'antd';
 import { NumberInput } from 'shared_components/pattern_input';
+import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-const tmpDropdownOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+// const tmpDropdownOptions = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+const tmpDropdownOptions = [
+  {
+    blood_id:1,
+    blood_type:'A+'
+  }, 
+  {
+    blood_id:2,
+    blood_type:'A-'
+  }, 
+  {
+    blood_id:3,
+    blood_type:'B+'
+  }, 
+  {
+    blood_id:4,
+    blood_type:'B-'
+  }, 
+  {
+    blood_id:7,
+    blood_type:'O+'
+  }, 
+  {
+    blood_id:8,
+    blood_type:'O-'
+  }, 
+  {
+    blood_id:5,
+    blood_type:'AB+'
+  }, 
+  {
+    blood_id:6,
+    blood_type:'AB-'
+  }, 
+];
+
 
 const generateDynamicField = (paramObject, props) => {
     if(paramObject.field_type === 'nu') {
@@ -34,8 +70,8 @@ const generateDynamicField = (paramObject, props) => {
     if(paramObject.field_type === 'op') {
       return (
         <Select style={{ width: 150 }} {...props}>
-          {tmpDropdownOptions.map(item => (
-            <Option value={item} key={item}>{item}</Option>
+          {tmpDropdownOptions.map((item, i) => (
+            <Option value={item.blood_id} key={i}>{item.blood_type}</Option>
           ))}
           {/* {paramObject.field_list_values.map(function(listValue){
             return <Option value={listValue.list_id}>{listValue.list_value}</Option>
