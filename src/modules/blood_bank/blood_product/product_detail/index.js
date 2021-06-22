@@ -18,6 +18,7 @@ class ProductDetail extends React.Component {
             <ProductDetailHeader Data={state}/>
             <div style={{ marginTop: 20 }}>
               <ProductDetailTable 
+                history={this.props.history}
                 loading={false} 
                 Data={state}
               />
