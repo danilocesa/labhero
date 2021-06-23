@@ -20,17 +20,6 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
 
   async function onSubmit(values) {
     // setLoading(true);
-<<<<<<< HEAD
-    // // console.log(values)
-    // const result = await updateInventory({
-    //   id: 16,//inventoryID.blood_inventory_id,
-    //   blood_storage: values.storage_id,
-    //   remarks: values.remarks,
-    //   is_active: isActive,
-    //   last_updated_by: loggedinUser.userID
-    // });
-    // setLoading(false);
-=======
     // console.log(values)
     const result = await updateInventory({
       id: inventoryID.blood_inventory_id,
@@ -39,8 +28,7 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
       is_active: isActive,
       last_updated_by: loggedinUser.userID
     });
-    setLoading(false);
->>>>>>> c6f34876c335a3955678a85a4b04961c8c3fe0aa
+    setLoading(true);
     
 
     // if(result) {

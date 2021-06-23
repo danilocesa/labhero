@@ -19,15 +19,17 @@ export default class BloodTypesForm extends Component {
   onSubmit = async (values) => {
 		console.log( "buttonNames")
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-		const { buttonNames, selectedBloodGroup } = this.props;
+		const { buttonNames, selectedBloodTypes } = this.props;
+		console.log(selectedBloodTypes, "selectBlood")
     	const payload = {
-			blood_type_id :selectedBloodGroup.blood_type_id,
+			blood_type_id :selectedBloodTypes.blood_type_id,
 			blood_group :values.blood_group,
 			blood_type: values.blood_type,
 			blood_desc : values.blood_description,
 			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
+		console.log(payload,"payload")
 		if(buttonNames === 'ADD'){
 			const createdBloodTypeResponse = await createBloodTypeAPI(payload);
 			// @ts-ignore
@@ -43,14 +45,14 @@ export default class BloodTypesForm extends Component {
 			}	
 		}
 		else {
-			payload.blood_type_id = selectedBloodGroup.blood_type_id;
-			const updateBloodGroupResponse =  await updateBloodTypeAPI(payload)
+			payload.blood_type_id = selectedBloodTypes.blood_type_id;
+			const updateBloodTypeResponse =  await updateBloodTypeAPI(payload)
 			// @ts-ignore)
-			if(updateBloodGroupResponse.status === 200){
+			if(updateBloodTypeResponse.status === 200){
 				const httpMessageConfig = {
 					message: messagePrompts.successUpdateUser,
 					// @ts-ignore
-					status: updateBloodGroupResponse.status,
+					status: updateBloodTypeResponse.status,
 					duration: 3, 
 					onClose: () => window.location.reload() 
 				}
@@ -68,7 +70,8 @@ export default class BloodTypesForm extends Component {
   render() {
     const { disabled } = this.state
     const { buttonNames, dropdownvalues, selectedBloodTypes } = this.props
-    return (
+    
+		return (
       <div>
         <Form 
 					onFinish={this.onSubmit} 

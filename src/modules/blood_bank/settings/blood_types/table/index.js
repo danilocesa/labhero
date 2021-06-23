@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
-import {fetchBloodTypes} from 'services/blood_bank/blood_types'
+import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
 import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import BloodtypesForm from '../form'
+import Form from '../form'
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -14,10 +14,13 @@ const columns = [
   {
     title: 'BLOOD TYPE',
     dataIndex: 'blood_type',
+    key: '1',
+    sorter: (a, b) => a.blood_type_id - b.blood_type_id,
   },
   {
     title: 'DESCRIPTION',
     dataIndex: 'blood_desc',
+    key: 3,
   },
   
 ];
@@ -27,6 +30,8 @@ export default class BloodTypesTable extends Component {
 		super(props);
 			this.state = {
 				drawerTitle:"",
+        actionType:'add',
+        loading:false,
 				isDrawerVisible	: false,
         Data: [],
         dropdownvalues:'',
@@ -35,17 +40,21 @@ export default class BloodTypesTable extends Component {
         tableData:[],
         AddButton:true,
         selectedBloodGroup:{},
+        selectedBloodTypes:{},
 			}
 	}
 
   async componentDidMount(){
+    this.setState({loading:true});
     const apiResponse = await fetchBloodGroupItems();
     this.setState({loading:true});
     const apiResponseBloodType = await fetchBloodTypes();
+
     this.setState({
       loading:false,
       Data:apiResponse,
-      tableData:apiResponseBloodType
+      tableData:apiResponseBloodType,
+    
     })
   }
 
@@ -55,7 +64,10 @@ export default class BloodTypesTable extends Component {
 			isDrawerVisible: true ,
 			drawerTitle: `ADD BLOOD TYPES - ${dropdownvalues}`,
 			buttonNames: "ADD",
+      actionType : 'add',
+      selectedBloodGroup: record,
       selectedBloodTypes: record,
+
 		});
 	};
 
@@ -73,6 +85,8 @@ export default class BloodTypesTable extends Component {
 			isDrawerVisible: true,
 			drawerTitle:`UPDATE BLOOD TYPES - ${dropdownvalues}`,
 			buttonNames: "UPDATE",
+      actionType:'update',
+      selectedBloodGroup:record,
       selectedBloodTypes:record
 		});
 	}
@@ -91,9 +105,11 @@ export default class BloodTypesTable extends Component {
       buttonNames, 
       tableData,
       loading, 
+      actionType,
       AddButton,
       dropdownvalues, 
       selectedBloodTypes,
+      selectedBloodGroup,
     } = this.state
     const BloodGroupOption = Data.map((item,i) => {
       return (<option key={i} value={item.blood_group}>{item.blood_group}</option>)
@@ -133,14 +149,15 @@ export default class BloodTypesTable extends Component {
             >
               ADD BLOOD TYPE
             </Button>
-            <TablePager />
+            <TablePager handleChange={this.handleChange}/>
           </Col>
         </Row>
         <Table 
           loading={loading}
           style={{marginTop:10}}
-          dataSource={tableData} 
+          dataSource={tableData, Data} 
           columns={columns} 
+          rowKey={record => record.userID}
           onRow={(record) => ({
             onDoubleClick: () => { 
               this.displayDrawerUpdate(record);
@@ -154,10 +171,13 @@ export default class BloodTypesTable extends Component {
           width="30%"
           destroyOnClose
 				>
-          <BloodtypesForm 
+          <Form 
             buttonNames={buttonNames} 
             dropdownvalues={dropdownvalues}
+            
+            actionType={actionType}
             selectedBloodTypes={selectedBloodTypes}
+            selectedBloodGroup={selectedBloodGroup} 
           />
 				</Drawer>
       </div>
