@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import createBloodTypeAPI , {updateBloodTypeAPI} from 'services/blood_bank/blood_types'
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import { messagePrompts } from '../setings'
+import {buttonLabels, messagePrompts} from '../settings';
 
 const { TextArea } = Input;
 
@@ -78,9 +78,9 @@ export default class BloodTypesForm extends Component {
 					layout="vertical"
           initialValues={{ 
 						is_active:selectedBloodTypes.is_active === true ,
-						BG:dropdownvalues,
-						BT:selectedBloodTypes.blood_type,
-						DES:selectedBloodTypes.blood_desc 
+						blood_group:dropdownvalues,
+						blood_type:selectedBloodTypes.blood_type,
+						blood_description:selectedBloodTypes.blood_desc 
 					}}  
         >
           {
@@ -100,13 +100,13 @@ export default class BloodTypesForm extends Component {
 					}
           <Form.Item
             label="BLOOD GROUP"
-            name="BG"
+            name="blood_group"
           >
             <Input disabled={true}/>
           </Form.Item>
           <Form.Item
             label="BLOOD TYPES"
-            name="BT"
+            name='blood_type'
             rules={[{ required: true, message: 'Please input your Blood Types!' }]}
           >
             <Input onChange={this.onDisable}/>
@@ -114,13 +114,17 @@ export default class BloodTypesForm extends Component {
 
           <Form.Item
             label="DESCRIPTION"
-            name="DES"
+            name='blood_description'
           >
             <TextArea rows={4} onChange={this.onDisable}/>
           </Form.Item>
         <section className="drawerFooter">
-          <Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-            CANCEL
+          <Button shape="round" style={{ marginRight: 8, width: 120 }} 
+					type="button"
+					onClick={this.props.onClose}>
+            {buttonLabels.cancel}
+
+
           </Button>
           <Button 
 						disabled={disabled} 
@@ -143,5 +147,9 @@ BloodTypesForm.propTypes = {
 	buttonNames: PropTypes.string.isRequired,
   dropdownvalues:PropTypes.string.isRequired,
   selectedBloodTypes:PropTypes.object.isRequired,
+
+	form: PropTypes.object,
+	onClose: PropTypes.func,
+	actionType: PropTypes.string
 }
 

@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
 import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
@@ -47,13 +49,14 @@ export default class BloodTypesTable extends Component {
   async componentDidMount(){
     this.setState({loading:true});
     const apiResponse = await fetchBloodGroupItems();
-    this.setState({loading:true});
-    const apiResponseBloodType = await fetchBloodTypes();
+    //this.setState({loading:true});
+    //const apiResponseBloodType = await fetchBloodTypes();
 
     this.setState({
       loading:false,
       Data:apiResponse,
-      tableData:apiResponseBloodType,
+      //tableData:apiResponseBloodType,
+      usersRef:apiResponse
     
     })
   }
@@ -77,6 +80,32 @@ export default class BloodTypesTable extends Component {
       AddButton:false
     })
   }
+
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { blood_type } = item;
+			return (
+				this.containsString(blood_type, searchedVal)
+			);
+		});
+		this.setState({ 
+			Data: filtered 
+		});
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ Data: usersRef });
+	};
+
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
 
   displayDrawerUpdate = (record) => {
     console.log (record)
@@ -133,9 +162,12 @@ export default class BloodTypesTable extends Component {
         <Row style={{marginTop:10}}>
           <Col span={12}>
             <Search
-              allowClear
-              style={{ width: 200 }}
-              className="panel-table-search-input"
+              placeholder="Search By Blood Type"
+							allowClear
+							onSearch={(value) => this.onSearch(value)}
+							onChange={this.onChangeSearch}
+							style={{ width: 300 }}
+							className="panel-table-search-input"
             />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
@@ -178,6 +210,7 @@ export default class BloodTypesTable extends Component {
             actionType={actionType}
             selectedBloodTypes={selectedBloodTypes}
             selectedBloodGroup={selectedBloodGroup} 
+            onClose={this.onClose}
           />
 				</Drawer>
       </div>
