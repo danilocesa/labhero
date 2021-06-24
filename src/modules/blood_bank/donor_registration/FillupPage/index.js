@@ -111,7 +111,8 @@ class FillUpForm extends React.Component {
 
     const payload = {
       ...formData,
-      image_location:`images/donor/${imgprop.imageName}`,
+      // image_location:`images/donor/${imgprop.imageName}`,
+      image_location:'/test/',
       birth_date: formData.birth_date.format('YYYY-MM-DD')
     };
 
@@ -120,7 +121,8 @@ class FillUpForm extends React.Component {
       if(isUnchanged) 
         history.push('/bloodbank/donor_registration/step/3', { 
           health_info_id: updateInitialValues.health_info_id,
-          donor_id: updateInitialValues.donor_id
+          donor_id: updateInitialValues.donor_id,
+          label: history.state.label
         });   
       else {
         await this.initUpdateDonor({ 
@@ -173,6 +175,7 @@ class FillUpForm extends React.Component {
   render() {
     const { imgprop } =this.state
     const { state } = this.props.location;
+    console.log("🚀 ~ file: index.js ~ line 177 ~ FillUpForm ~ render ~ state", state)
 
     return (
       <div>
@@ -198,13 +201,13 @@ class FillUpForm extends React.Component {
               <div className="left-form">
                 <Text strong>PERSONAL INFORMATION</Text>
                 <Row style={{ marginTop: 10 }}>
-                  <img src={imgprop ? require(`images/donor/${imgprop.imageName}`) : require(`images/donor/defaulticon.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} />
-                  <Form.Item 
+                  {/* <img src={imgprop ? require(`images/donor/${imgprop.imageName}`) : require(`images/donor/defaulticon.png`)} alt="logo" name='sample' style={{ height: 140, width: 140 }} /> */}
+                  {/* <Form.Item 
                     name="img"
                     rules={FIELD_RULES.firstName}
                   >
                     <input type="file" onChange={this.handleChange} />
-                  </Form.Item>
+                  </Form.Item> */}
                 </Row>
                 <Form.Item 
                   name="donor_id"

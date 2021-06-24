@@ -18,6 +18,7 @@ const renderItem = (text, record) => {
 
 const createColumns = handleRemove => {
 	const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
+  console.log("🚀 ~ file: index.js ~ line 21 ~ reqType", reqType)
  
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
@@ -85,10 +86,12 @@ class SelectTable extends React.Component {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
     console.log("🚀 ~ file: index.js ~ line 86 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
+    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ TableCols", TableCols)
 		const TableData = selectedExams.map(selectedExam => ({ 
 			key: selectedExam.examID,
 			...selectedExam,
-			action: (selectedExam.sampleSpecimenID === null && !selectedExam.isLocked )
+			// CONDITION IN BUTTON DELETE PER EXAM
+			action: (selectedExam.selectedPanel === null && !selectedExam.isLocked && selectedExam.sampleSpecimenID === undefined)
 			 ?  
 					<Button 
 						type="dashed" 
@@ -98,6 +101,7 @@ class SelectTable extends React.Component {
 					/> 
 				:	
 					null
+					
 		}));
 
 		return (

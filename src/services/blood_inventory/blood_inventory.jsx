@@ -104,6 +104,25 @@ export async function fetchPerTabsItem(payload) {
   return PerTabsItem;
 }
 
+export async function tabSearch(payload) {
+	let tabItems = [];
+	
+  try{
+    const response = await axiosPhase2API({
+      method: API_GET_METHOD,
+			url: `/blood_inventory/blood_inventory/per_tab/?blood_product_code=${payload}`,
+		});
+		
+		const { data } = response;
+    tabItems = data;
+  } 
+  catch(e) {
+    Message.error();
+ 	}
+  
+  return tabItems;
+}
+
 export async function getInventoryById(id) {
 	let bloodinventory = [];
 	
@@ -126,7 +145,6 @@ export async function getInventoryById(id) {
 }
 
 export async function updateInventory(payload) {
-  // console.log(payload)
   try{
     const response = await axiosPhase2API({
       method: API_PUT_METHOD,

@@ -3,27 +3,52 @@ import React, { useEffect, useState } from 'react';
 import { Drawer, message, Tabs } from 'antd';
 import PageTitle from 'shared_components/page_title';
 import SearchPager from 'shared_components/search_pager';
-import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI } from 'services/blood_inventory/blood_inventory';
+import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI, tabSearch } from 'services/blood_inventory/blood_inventory';
 import {fetchBloodComponents} from 'services/blood_inventory/blood_components'
 import SearchForm from './searchForm';
 import BloodInventoryDetailsForm from "../item_detail";
-import SearchTable from './table'
+import SearchTable from './table';
+import {
+  tableSize,
+  buttonLabels,
+  tableYScroll,
+  tablePageSize,
+} from "modules/inventory/settings/settings";
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
+  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
+   const [loading, setLoading] = useState(false);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
   const [cachedPayload, setCachedPayload] = useState(null);
-  const tabKey = state.TabKey + 1;
+  const [bloodInventoryData, setBloodInventoryData] = useState(null);
+  const [key, setTabKey] = useState('1');
   
   const { TabPane } = Tabs;
 
   function displayDrawerUpdate(id) {
     setSelectedID(id);
     setvisibleDrawer(true);
+  }
+
+  async function searchTab(payload) {
+    setLoading(true);
+    const bloodInventory = await tabSearch(payload.toString());
+    
+    setLoading(false);
+
+    if(bloodInventory.length > 0) {
+      setData(bloodInventory);
+      setCachedPayload(payload);
+    }
+    else {
+      setData([]);
+      message.info('No result found');
+    }
   }
 
   async function refreshTableData() {
@@ -73,7 +98,8 @@ function SearchBloodInventory(props) {
       }
     }
     fetchData();
-  },[]) 
+  },[]
+  ) 
 
   async function search(payload) {  
     setDataFromForm(payload)
@@ -81,25 +107,62 @@ function SearchBloodInventory(props) {
   }
 
   async function tabOnChange(key) {
-    state.blood_product_code = key
-    const bloodInventory = await searchInventoryAvailableAPI(state);
-    if(bloodInventory.length > 0) {
-      setData(bloodInventory);
+
+    if ( key == '1'){
+
+      searchTab('WB');
+      setTabKey(key);
     }
-    else {
-      setData([]);
-      message.info('No result found');
+
+    if ( key == '2'){
+
+      searchTab('RBC');
+      setTabKey(key);
     }
+
+    if ( key == '3'){
+
+      searchTab('WBC');
+      setTabKey(key);
+    }
+
+    if ( key == '4'){
+
+      searchTab('PLASMA');
+      setTabKey(key);
+    }
+
+    if ( key == '5'){
+
+      searchTab('PLATELET');
+      setTabKey(key);
+    }
+    // state.blood_product_code = key
+    // const bloodInventory = await searchInventoryAvailableAPI(state);
+    // if(bloodInventory.length > 0) {
+    //   setData(bloodInventory);
+    // }
+    // else {
+    //   setData([]);
+    //   message.info('No result found');
+    // }
   }
 
+  function handleSelectChange(value) {
+    const { pagination } = this.state;
+    pagination.pageSize = parseInt(value);
+    this.setState({ pagination });
+  };
 
-  const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
-    <TabPane
-      tab={item.blood_comp_name} 
-      key={item.blood_comp_code} 
-    >
-    </TabPane>
-  ));
+
+  // const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
+  //   <TabPane
+  //     tab={item.blood_comp_name}
+  //     // key={item.blood_comp_code} 
+  //     key={index}//"1"//{state.TabKey}
+  //   >
+  //   </TabPane>
+  // ));
 
   return (  
     <div>
@@ -107,16 +170,43 @@ function SearchBloodInventory(props) {
       <SearchForm onFinish={search} />
       <SearchPager 
         pageTotal={data.length}
+        pageSize={tablePageSize}
+        handleChangeSize={handleSelectChange}
       />
       {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
-        defaultActiveKey = {state.actionType === "ManualSearch" ? 0 : state.TabKey + 1 }
+        defaultActiveKey = {state.actionType === "ManualSearch" ? 1 : state.TabKey }
       >
-        {TabPanes}
+        <TabPane
+          tab="Whole Blood"
+          key="1"
+        >
+        </TabPane>
+        <TabPane
+          tab="Red Blood Cell"
+          key="2"
+        >
+        </TabPane>
+        <TabPane
+          tab="White Blood Cell"
+          key="3"
+        >
+        </TabPane>
+        <TabPane
+          tab="Plasma"
+          key="4"
+        >
+        </TabPane>
+        <TabPane
+          tab="Platelet"
+          key="5"
+        >
+        </TabPane>
       </Tabs>
       <SearchTable
         data={data}
+        loading={loading}
         displayDrawerUpdate={displayDrawerUpdate}
       />
       <Drawer

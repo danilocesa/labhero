@@ -48,7 +48,7 @@ class HealthInformation extends React.Component {
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const custom_fields = Object.keys(formFields).map((val, index) => {
-      console.log(formFields[val],"val")
+      
       const id = index+1
       return {
         field_id:id,
@@ -57,21 +57,12 @@ class HealthInformation extends React.Component {
       };
     })
 
-    
-    // const custom_fields = Object.keys(formFields).map(key => ({
-    //   // field_id:,
-    //   field_name: key,
-    //   field_value: formFields[key]
-    // }));  
-
     const payload = {
       donor: donor_id,
       is_extracted: false,
       is_screened: false,
       custom_fields: custom_fields
     };
-
-    console.log(payload,"payload")
 
     this.setState({ loading: true });
  
@@ -83,6 +74,7 @@ class HealthInformation extends React.Component {
   updateHealthInfo = async (payload) => {
     const result = await updateHealthInformation(payload);
 
+    // @ts-ignore
     if(result.status === 201)
       Message.success({ message: 'Health information succesfully updated!' });
     else
@@ -93,10 +85,13 @@ class HealthInformation extends React.Component {
   createHealthInfo = async (payload) => {
     const { history } = this.props;
     const result = await createHealthInformation(payload);
-    const Messages = Object.values(result.data.messages).map(value =>{
+    // @ts-ignore
+    const Messages = Object.values(result.data.messages  ).map(value =>{
+    console.log("🚀 ~ file: index.js ~ line 90 ~ HealthInformation ~ createHealthInfo= ~ payload", payload)
       return message.error(value === Array(0) ? null : value)
     })
     
+    // @ts-ignore
     if(result.status === 201){
 
       Message.success({ 
@@ -110,6 +105,7 @@ class HealthInformation extends React.Component {
 
   getCategoryData = async () => {
     const additionalFieldsData = await fetchAdditionalFields();
+    console.log("🚀 ~ file: index.js ~ line 108 ~ HealthInformation ~ getCategoryData= ~ additionalFieldsData", additionalFieldsData)
 
     if(additionalFieldsData.dynamic_fields.length > 0){
       this.setState({ 
