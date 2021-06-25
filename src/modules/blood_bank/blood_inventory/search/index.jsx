@@ -17,10 +17,11 @@ import {
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
-  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
+  console.log("🚀 ~ file: index.jsx ~ line 20 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
-   const [loading, setLoading] = useState(false);
+  console.log("🚀 ~ file: index.jsx ~ line 22 ~ SearchBloodInventory ~ BloodComponents", BloodComponents)
+  const [loading, setLoading] = useState(false);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
@@ -56,50 +57,40 @@ function SearchBloodInventory(props) {
   }
 
   useEffect(() => {
-    async function fetchData() {
-      if (state.is_nearExpiry === false) {
-        state.blood_product_code = 'WB'
-        const apiResponseBloodComponents = await fetchBloodComponents();
-        const bloodInventory = await searchInventoryAvailableAPI(state);
-        setBloodComponents(apiResponseBloodComponents)
-        if(bloodInventory.length > 0) {
-          setData(bloodInventory);
-        }
-        else {
-          setData([]);
-          message.info('No result found');
-        }
-      } 
-      else if (state.is_nearExpiry === true) {
-        state.blood_product_code = 'WB'
-        const apiResponseBloodComponents = await fetchBloodComponents();
-        const bloodInventory = await searchInventoryNearExpiryAPI(state);
-        setBloodComponents(apiResponseBloodComponents)
-        if(bloodInventory.length > 0) {
-          setData(bloodInventory);
-        }
-        else {
-          setData([]);
-          message.info('No result found');
-        }
-      }
-      else {
-        state.blood_product_code = 'WB'
-        const apiResponseBloodComponents = await fetchBloodComponents();
-        const bloodInventory = await searchInventoryAvailableAPI(state);
-        setBloodComponents(apiResponseBloodComponents)
-        if(bloodInventory.length > 0) {
-          setData(bloodInventory);
-        }
-        else {
-          setData([]);
-          message.info('No result found');
-        }
-      }
-    }
     fetchData();
   },[]
   ) 
+
+  async function fetchData() {
+    const Data = [{...state , blood_product_code:'WB'}]
+    const apiResponseBloodComponents = await fetchBloodComponents();
+    setBloodComponents(apiResponseBloodComponents)
+
+    if (state.is_nearExpiry === false) {
+      const bloodInventory = await searchInventoryAvailableAPI(Data);
+      if(bloodInventory.length > 0) {
+        setData(bloodInventory);
+      }
+      
+    } 
+    else if (state.is_nearExpiry === true) {
+      const bloodInventory = await searchInventoryNearExpiryAPI(Data);
+      if(bloodInventory.length > 0) {
+        setData(bloodInventory);
+      }
+    }
+    else {
+      const bloodInventory = await searchInventoryAvailableAPI(Data);
+      if(bloodInventory.length > 0) {
+        setData(bloodInventory);
+      }
+    }
+
+    if(Data.length < 0) {
+      setData([]);
+      message.info('No result found');
+    }
+  }
 
   async function search(payload) {  
     setDataFromForm(payload)
@@ -107,45 +98,15 @@ function SearchBloodInventory(props) {
   }
 
   async function tabOnChange(key) {
-
-    if ( key == '1'){
-
-      searchTab('WB');
-      setTabKey(key);
+    state.blood_product_code = key
+    const bloodInventory = await searchInventoryAvailableAPI(state);
+    if(bloodInventory.length > 0) {
+      setData(bloodInventory);
     }
-
-    if ( key == '2'){
-
-      searchTab('RBC');
-      setTabKey(key);
+    else {
+      setData([]);
+      message.info('No result found');
     }
-
-    if ( key == '3'){
-
-      searchTab('WBC');
-      setTabKey(key);
-    }
-
-    if ( key == '4'){
-
-      searchTab('PLASMA');
-      setTabKey(key);
-    }
-
-    if ( key == '5'){
-
-      searchTab('PLATELET');
-      setTabKey(key);
-    }
-    // state.blood_product_code = key
-    // const bloodInventory = await searchInventoryAvailableAPI(state);
-    // if(bloodInventory.length > 0) {
-    //   setData(bloodInventory);
-    // }
-    // else {
-    //   setData([]);
-    //   message.info('No result found');
-    // }
   }
 
   function handleSelectChange(value) {
@@ -155,14 +116,13 @@ function SearchBloodInventory(props) {
   };
 
 
-  // const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
-  //   <TabPane
-  //     tab={item.blood_comp_name}
-  //     // key={item.blood_comp_code} 
-  //     key={index}//"1"//{state.TabKey}
-  //   >
-  //   </TabPane>
-  // ));
+  const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
+    <TabPane
+      tab={item.blood_comp_name}
+      key={item.blood_comp_code}
+    >
+    </TabPane>
+  ));
 
   return (  
     <div>
@@ -178,31 +138,32 @@ function SearchBloodInventory(props) {
         onChange={tabOnChange}
         defaultActiveKey = {state.actionType === "ManualSearch" ? 1 : state.TabKey }
       >
-        <TabPane
+        {TabPanes}
+        {/* <TabPane
           tab="Whole Blood"
-          key="1"
+          key="WB"
         >
         </TabPane>
         <TabPane
           tab="Red Blood Cell"
-          key="2"
+          key="RBC"
         >
         </TabPane>
         <TabPane
           tab="White Blood Cell"
-          key="3"
+          key="WBC"
         >
         </TabPane>
         <TabPane
           tab="Plasma"
-          key="4"
+          key="PLASMA"
         >
         </TabPane>
         <TabPane
           tab="Platelet"
-          key="5"
+          key="PLATELET"
         >
-        </TabPane>
+        </TabPane> */}
       </Tabs>
       <SearchTable
         data={data}

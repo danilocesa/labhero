@@ -389,7 +389,6 @@ class SelectStep extends React.Component {
 			const { selectedExams } = state;
 			const isExistingExam = selectedExams.some(iExam => iExam.examID === examID);
 			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
-      console.log("file: index.js ~ line 392 ~ SelectStep ~ newSelectedExams", newSelectedExams)
 			
 			if(!isExistingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });

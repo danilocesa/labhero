@@ -84,9 +84,7 @@ class SelectTable extends React.Component {
 
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
-    console.log("🚀 ~ file: index.js ~ line 86 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
-    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ TableCols", TableCols)
 		const TableData = selectedExams.map(selectedExam => ({ 
 			key: selectedExam.examID,
 			...selectedExam,

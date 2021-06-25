@@ -112,7 +112,7 @@ function InventoryDashboard() {
             </Card>
           </Col>
           <Col span={12}>
-            <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', is_nearExpiry:true})} >
+            <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'NEAR_EXPIRY', is_nearExpiry:true})} >
               <Statistic
                 title="Near Expiry"
                 value={item.near_expiry	}

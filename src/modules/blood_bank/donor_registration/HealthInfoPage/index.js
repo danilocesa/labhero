@@ -96,7 +96,7 @@ class HealthInformation extends React.Component {
 
       Message.success({ 
         message: 'Health information succesfully submitted!',
-        // onClose: () => history.push('/bloodbank/donor_registration/step/1')
+        onClose: () => history.push('/bloodbank/donor_registration/step/1')
       });
     }
     else
