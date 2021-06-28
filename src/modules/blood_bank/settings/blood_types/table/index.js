@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+//import { DndProvider } from 'react-dnd';
+//import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
-import fetchBloodTypes from 'services/blood_bank/blood_types'
+//import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
 import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -39,7 +39,7 @@ export default class BloodTypesTable extends Component {
         dropdownvalues:'',
         drawerButton:'',
         loading:false,
-        tableData:[],
+        //tableData:[],
         AddButton:true,
         selectedBloodGroup:{},
         selectedBloodTypes:{},
@@ -56,6 +56,7 @@ export default class BloodTypesTable extends Component {
       loading:false,
       Data:apiResponse,
       //tableData:apiResponseBloodType,
+      pagination: apiResponse.length,
       usersRef:apiResponse
     
     })
@@ -79,6 +80,11 @@ export default class BloodTypesTable extends Component {
       dropdownvalues:value,
       AddButton:false
     })
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
   }
 
   onSearch = (value) => {
@@ -132,11 +138,12 @@ export default class BloodTypesTable extends Component {
       isDrawerVisible,
       Data,
       buttonNames, 
-      tableData,
+      //tableData,
       loading, 
       actionType,
       AddButton,
       dropdownvalues, 
+      pagination,
       selectedBloodTypes,
       selectedBloodGroup,
     } = this.state
@@ -147,13 +154,13 @@ export default class BloodTypesTable extends Component {
 
     return (
       <div>
-        <Divider plain>
-          <Row>
-            <Col span={12}>
-              <Title level={5}>BLOOD GROUP</Title>
+        <Divider orientation="center" align = "middle">
+          <Row  gutter={[48, 8]}>
+            <Col span={8} pull= {1}>
+              <Title  level={5}>BLOOD GROUP</Title>
             </Col>
-            <Col span={12}>
-              <Select style={{ width: 200 }} onChange={this.handleChange} placeholder="Blood Group">
+            <Col span={8} pull= {1/2} >
+              <Select style={{ width: 155 }} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
             </Col>
@@ -187,7 +194,8 @@ export default class BloodTypesTable extends Component {
         <Table 
           loading={loading}
           style={{marginTop:10}}
-          dataSource={tableData, Data} 
+          dataSource={Data} 
+          pagination={pagination}
           columns={columns} 
           rowKey={record => record.userID}
           onRow={(record) => ({
