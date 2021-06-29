@@ -11,7 +11,6 @@ import {
 	LR_REQUEST_TYPE,
 	LR_IS_EXAM_UPDATED
 } from 'modules/main/lab_request/steps/constants';
-
 import {requestLinks, requestTypes} from 'modules/main/settings/lab_exam_request/settings';
 
 const { Text } = Typography;
@@ -39,6 +38,7 @@ class Navigation extends React.Component {
 	}
 	
 	render() {
+		console.log()
 		const { disabled } = this.props;
 		const dynamicLink = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) 
 			? requestLinks.create.step2 
@@ -46,7 +46,7 @@ class Navigation extends React.Component {
 
 		return (
 			<Row style={{ marginTop: 20 }}>
-				<Col sm={{ span: 12 }} md={{ span: 4, offset: 20 }}>
+				<Col sm={{ span: 6 }} md={{ span: 2, offset: 20 }}>
 					<Link to={dynamicLink}>
 						<Text>
 							<u>BACK</u>
@@ -61,6 +61,19 @@ class Navigation extends React.Component {
 					>
 						NEXT STEP
 					</Button>
+					{
+						sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.edit 
+						? 	
+							<Button 
+								className="nav-btn-round" 
+								type="primary" 
+								style={{ width: '100%' }}
+							>
+								CANCEL REQUEST
+							</Button>
+							:
+								null
+					}
 				</Col>
 			</Row>
 		);

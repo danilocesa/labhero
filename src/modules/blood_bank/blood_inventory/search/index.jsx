@@ -17,6 +17,7 @@ import {
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
+  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
    const [loading, setLoading] = useState(false);

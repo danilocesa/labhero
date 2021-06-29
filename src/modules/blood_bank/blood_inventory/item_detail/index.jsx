@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,  } from 'react';
 import moment from 'moment';
 import { Form, Switch, Input, Button, Row, Col, Select, message } from 'antd';
 import { getInventoryById, updateInventory } from 'services/blood_inventory/blood_inventory';
@@ -27,7 +27,7 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
       is_active: isActive,
       last_updated_by: loggedinUser.userID
     });
-    setLoading(false);
+    setLoading(true);
     
 
     if(result) {

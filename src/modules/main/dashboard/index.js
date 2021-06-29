@@ -116,9 +116,9 @@ class DashboardPage extends React.Component {
       );
       
       const data = hasNoData ? [] : [
-        { item: 'Pending', count: Number(item.pending) },
-        { item: 'Morethan 2 Hours', count: Number(item.pending)  },
-        { item: 'Within 2 Hours', count: Number(item.within) }
+        { item: 'Pending', count: 1 },
+        { item: 'Morethan 2 Hours', count: 1  },
+        { item: 'Within 2 Hours', count: 1 }
       ];
 
       const Placeholder = () => (

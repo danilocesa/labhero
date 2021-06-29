@@ -32,6 +32,7 @@ function InventoryDashboard() {
   }
 
   const StatusValue = Pertabs.map(item => {
+  console.log("🚀 ~ file: index.js ~ line 32 ~ InventoryDashboard ~ item", item)
 
     const mappedarray = item.map((value ,index ) => {      
       const label = Object.getOwnPropertyNames(value)[0].replace('_',' ').toUpperCase()
