@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-//import { DndProvider } from 'react-dnd';
-//import HTML5Backend from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
 //import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
@@ -191,6 +191,7 @@ export default class BloodTypesTable extends Component {
             <TablePager handleChange={this.handleChange}/>
           </Col>
         </Row>
+        <DndProvider backend={HTML5Backend}>
         <Table 
           loading={loading}
           style={{marginTop:10}}
@@ -221,6 +222,7 @@ export default class BloodTypesTable extends Component {
             onClose={this.onClose}
           />
 				</Drawer>
+        </DndProvider>
       </div>
     )
   }
