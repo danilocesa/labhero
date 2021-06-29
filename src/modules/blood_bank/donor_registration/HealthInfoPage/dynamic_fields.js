@@ -134,10 +134,10 @@ class HealthInfoDynamicFields extends React.Component {
     
     const Fields = fields
       ? fields[0].cust_fld_format.map(item => {
-          const isDisabled = (item.field_name === 'blood_type' && isUpdate);
+          const isDisabled = (item.field_name === 'blood_type' ); //&& isUpdate
           const minLength = this.getMinLength(item.field_name);
           const maxLength = this.getMaxLength(item.field_name);
-          const props = { disabled: isDisabled, minLength, maxLength };
+          const props = {  minLength, maxLength }; //disabled: isDisabled,
 
           return (
             <Col key={item.field_name}>

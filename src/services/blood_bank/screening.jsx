@@ -2,7 +2,8 @@
 /* eslint-disable func-names */
 import Message from 'shared_components/message';
 import { axiosPhase2API } from 'services/axios';
-import { API_GET_METHOD } from 'global_config/constant-global';
+import { API_GET_METHOD, API_POST_METHOD } from 'global_config/constant-global';
+import HttpCodeMessage from 'shared_components/message_http_status';
 
 export default async function fetchPatients(patientName, patientID, pageSize, page) {
   let patients = [];
@@ -41,3 +42,22 @@ export async function fetchPatientsNext(url) {
 
   return patients;
 } 
+
+export async function extractSample(payload) {
+	let extractReturn = [];
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: 'POST',
+      url: `/bloodbank/screening/extract_sample/`,
+      data: payload
+		}).then(response => {
+      return response;
+    });
+    // @ts-ignore
+    extractReturn = axiosResponse;
+  } 
+  catch(e) {
+    HttpCodeMessage({status: 500, message: e});
+	}
+	return extractReturn;
+}
