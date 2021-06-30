@@ -3,13 +3,13 @@ import { axiosPhase2API } from 'services/axios';
 import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 
-export async function fetchBloodStorageForLov() {
+export async function fetchBloodStorage() {
 	let bloodStorage = [];
 	
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/blood_inventory/blood_storage/for_lov`,
+			url: `/blood_inventory/blood_storage/`,
 		});
 		
 		const { data } = response;
@@ -23,12 +23,11 @@ export async function fetchBloodStorageForLov() {
 }
 
 export async function createBloodStorage(payload) {
-  console.log("🚀 ~ file: blood_storage.jsx ~ line 26 ~ createBloodStorage ~ payload", payload)
 	let bloodStorage = [];
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
-      url: `/blood_inventory/blood_processing/create/`,
+      url: `/blood_inventory/blood_storage/`,
       data: payload
 		}).then(response => {
       return response;

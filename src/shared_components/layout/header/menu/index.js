@@ -34,6 +34,7 @@ const menu = (
 class UserMenu extends React.Component {
   render() {
     const LOGGEDIN_USER_DATA = sessionStorage.LOGGEDIN_USER_DATA ? JSON.parse(sessionStorage.LOGGEDIN_USER_DATA) : null;
+    console.log("🚀 ~ file: index.js ~ line 37 ~ UserMenu ~ render ~ LOGGEDIN_USER_DATA", LOGGEDIN_USER_DATA)
 
     if(LOGGEDIN_USER_DATA){
       return (
@@ -42,6 +43,7 @@ class UserMenu extends React.Component {
           <div className="user-menu">
             <div className="user-menu-text">
               <Text strong>{`${LOGGEDIN_USER_DATA.givenName} ${LOGGEDIN_USER_DATA.lastName}`}</Text>
+              <Text>{`${LOGGEDIN_USER_DATA.loginTypeName}`}</Text>
               <Text>{`${LOGGEDIN_USER_DATA.loginTypeName}`}</Text>
             </div>
             <div className="user-menu-avatar">

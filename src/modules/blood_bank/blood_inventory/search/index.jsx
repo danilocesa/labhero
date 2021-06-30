@@ -20,7 +20,6 @@ function SearchBloodInventory(props) {
   console.log("🚀 ~ file: index.jsx ~ line 20 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
   const [BloodComponents, setBloodComponents] = useState([]);
-  console.log("🚀 ~ file: index.jsx ~ line 22 ~ SearchBloodInventory ~ BloodComponents", BloodComponents)
   const [loading, setLoading] = useState(false);
   const [visibleDrawer, setvisibleDrawer] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
@@ -62,7 +61,7 @@ function SearchBloodInventory(props) {
   ) 
 
   async function fetchData() {
-    const Data = [{...state , blood_product_code:'WB'}]
+    const Data = {...state , blood_product_code:'WB'}
     const apiResponseBloodComponents = await fetchBloodComponents();
     setBloodComponents(apiResponseBloodComponents)
 
@@ -71,7 +70,6 @@ function SearchBloodInventory(props) {
       if(bloodInventory.length > 0) {
         setData(bloodInventory);
       }
-      
     } 
     else if (state.is_nearExpiry === true) {
       const bloodInventory = await searchInventoryNearExpiryAPI(Data);
@@ -136,10 +134,9 @@ function SearchBloodInventory(props) {
       {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
-        defaultActiveKey = {state.actionType === "ManualSearch" ? 1 : state.TabKey }
+        defaultActiveKey = { state.TabKey }
       >
-        {TabPanes}
-        {/* <TabPane
+        <TabPane
           tab="Whole Blood"
           key="WB"
         >
@@ -163,7 +160,7 @@ function SearchBloodInventory(props) {
           tab="Platelet"
           key="PLATELET"
         >
-        </TabPane> */}
+        </TabPane>
       </Tabs>
       <SearchTable
         data={data}

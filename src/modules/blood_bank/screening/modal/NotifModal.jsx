@@ -1,36 +1,44 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Modal } from 'antd';
+import { Row, Col, Modal, Input  } from 'antd';
+import "./styles.css";
 
 // @ts-ignore
 import { CheckIcon } from 'images';
+const { TextArea } = Input;
 
 
 class NotifModal extends React.Component {
 
+  onChange = (value) => {
+    const { onOk, isDisplay, onChange } = this.props;
+    onChange(value.target.value);
+  }
+
   render() {
-		const { isDisplay, hideModal } = this.props;
+		const { isDisplay, hideModal, onOk, title } = this.props;
 
 		return (
-    <Row onClick={hideModal}>
+    <Row>
       <Modal
+        className='ant-modal-body'
+        title={title}
+        centered={true}
+        style={{padding: 5}}
         visible={isDisplay}
-        maskClosable
-        footer={<></>}
+        onOk={onOk}
+        onCancel={hideModal}
+        // maskClosable
+        width={500}
       >
         <Row justify="center">
-          <Col>
-            <img
-              src={CheckIcon}
-              alt="logo"
-              style={{ height: 65, width: 50, paddingBottom: '1em' }}
-            />
-          </Col>
+          
         </Row>
         <Row justify="center">
-          <Col>
-            <h2>Notify Message</h2>
+          <Col style={{fontWeight: 'bold'}}>
+            REMARKS
+            <TextArea rows={4} style={{width: 800}} onChange={this.onChange} />
           </Col>
         </Row>
       </Modal>
@@ -40,7 +48,8 @@ class NotifModal extends React.Component {
 }
 
 NotifModal.propTypes = {
-  isDisplay: PropTypes.bool.isRequired
+  isDisplay: PropTypes.bool.isRequired,
+  onOk: PropTypes.func.isRequired
 };
 
 export default NotifModal;

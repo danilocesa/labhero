@@ -2,6 +2,8 @@ import React, { useState , useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Descriptions, Badge, Statistic, Row, Col, Card, Tabs, Button  } from 'antd';
 import  { fetchDashboardItem , fetchPerTabsItem }  from 'services/blood_inventory/blood_inventory';
+import { fetchBloodComponents } from 'services/blood_inventory/blood_components'
+import { fetchStatus } from 'services/blood_inventory/blood_bag_status'
 
 const { TabPane } = Tabs;
 
@@ -10,6 +12,8 @@ function InventoryDashboard() {
   const [Pertabs , setPertabs ] = useState([])
   const [key , setKey ] = useState([])
   const [DashboardItem, setDashboardItem] = useState([]);
+  const [BloodComponentsItem, setBloodComponentsItem] = useState([]);
+  const [StatusItem, setStatusItem] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -28,20 +32,21 @@ function InventoryDashboard() {
     const perTabsItem = PertabsItemresponse.map(item => {
       return (item.blood_composition)
     })
+    const BloodComponents = await fetchBloodComponents()
+    const Status = await fetchStatus()
+    setStatusItem(Status)
+    setBloodComponentsItem(BloodComponents)
     setPertabs(perTabsItem)
   }
 
   const StatusValue = Pertabs.map(item => {
-  console.log("🚀 ~ file: index.js ~ line 32 ~ InventoryDashboard ~ item", item)
-
     const mappedarray = item.map((value ,index ) => {      
       const label = Object.getOwnPropertyNames(value)[0].replace('_',' ').toUpperCase()
-      const tabKey = index+1;
       return(
         <Descriptions.Item key={index} label={label}>
           <Row gutter={12}>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', blood_type:key , TabKey : tabKey.toString()})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'AVAILABLE', blood_type:key  })}>
                 <Statistic
                   title="Available"
                   value={Object.values(value)[0].available === undefined ? 0 : Object.values(value)[0].available}
@@ -51,7 +56,7 @@ function InventoryDashboard() {
                 </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'EXPIRED', blood_type:key, TabKey : tabKey.toString() })}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'EXPIRED', blood_type:key })}>
                 <Statistic
                   title="Expired"
                   value={Object.values(value)[0].expired === undefined ? 0 : Object.values(value)[0].expired}
@@ -61,7 +66,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key, TabKey : tabKey.toString()})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'DELIVERED', blood_type:key})}>
                 <Statistic
                   title="Delivered"
                   value={Object.values(value)[0].delivered === undefined ? 0 : Object.values(value)[0].delivered}
@@ -71,7 +76,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'INVALID', blood_type:key, TabKey : tabKey.toString() })}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'INVALID', blood_type:key })}>
                 <Statistic
                   title="Invalid"
                   value={Object.values(value)[0].invalid === undefined ? 0 : Object.values(value)[0].invalid}
@@ -81,7 +86,7 @@ function InventoryDashboard() {
               </Card>
             </Col>
             <Col span={12}>
-              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key, TabKey : tabKey.toString()})}>
+              <Card size="small" onClick={() => history.push('/bloodbank/blood_inventory/search', {...item, actionType:'PROCESSED', blood_type:key })}>
                 <Statistic
                   title="Processed"
                   value={Object.values(value)[0].procesed === undefined ? 0 : Object.values(value)[0].procesed}
@@ -96,6 +101,29 @@ function InventoryDashboard() {
     })
     return(mappedarray)
   })
+
+  const BloodComponentsItemMapped = Pertabs.map(item => {
+    const mappedarray = item.map((value ,index ) => {   
+      return(
+        <Descriptions.Item key={index} label={Object.getOwnPropertyNames(value)[0]}>
+          <Row gutter={12}>
+            <Col span={12}>
+              <Card size="small">
+                <Statistic
+                  title="Available"
+                  value='1'
+                  precision={0}
+                  prefix={<Badge status="processing" />}
+                  />
+                </Card>
+            </Col>
+          </Row>
+        </Descriptions.Item>
+      )
+    })
+    return(mappedarray)
+  })
+
 
   const AllBloodTypes = DashboardItem.map(item => {
     return (
@@ -142,7 +170,7 @@ function InventoryDashboard() {
           key="A+"
         >
           <Descriptions size="small" bordered>
-            {StatusValue}
+            {BloodComponentsItemMapped}
           </Descriptions>
         </TabPane>
         <TabPane 

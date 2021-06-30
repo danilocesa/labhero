@@ -14,7 +14,7 @@ const { Title } = Typography;
 
 const columns = [
   {
-    title: 'BLOOD TYPE',
+    title: 'BLOOD',
     dataIndex: 'blood_type',
     key: '1',
     sorter: (a, b) => a.blood_type_id - b.blood_type_id,
@@ -39,7 +39,7 @@ export default class BloodTypesTable extends Component {
         dropdownvalues:'',
         drawerButton:'',
         loading:false,
-        tableData:[],
+        //tableData:[],
         AddButton:true,
         selectedBloodGroup:{},
         selectedBloodTypes:{},
@@ -49,13 +49,16 @@ export default class BloodTypesTable extends Component {
   async componentDidMount(){
     this.setState({loading:true});
     const apiResponse = await fetchBloodGroupItems();
+    console.log("🚀 ~ file: index.js ~ line 52 ~ BloodTypesTable ~ componentDidMount ~ apiResponse", apiResponse)
     //this.setState({loading:true});
-    //const apiResponseBloodType = await fetchBloodTypes();
+    const apiResponseBloodType = await fetchBloodTypes();
+    console.log("🚀 ~ file: index.js ~ line 54 ~ BloodTypesTable ~ componentDidMount ~ apiResponseBloodType", apiResponseBloodType)
 
     this.setState({
       loading:false,
       Data:apiResponse,
       //tableData:apiResponseBloodType,
+      pagination: apiResponse.length,
       usersRef:apiResponse
     
     })
@@ -79,6 +82,11 @@ export default class BloodTypesTable extends Component {
       dropdownvalues:value,
       AddButton:false
     })
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
   }
 
   onSearch = (value) => {
@@ -132,11 +140,12 @@ export default class BloodTypesTable extends Component {
       isDrawerVisible,
       Data,
       buttonNames, 
-      tableData,
+      //tableData,
       loading, 
       actionType,
       AddButton,
       dropdownvalues, 
+      pagination,
       selectedBloodTypes,
       selectedBloodGroup,
     } = this.state
@@ -147,13 +156,13 @@ export default class BloodTypesTable extends Component {
 
     return (
       <div>
-        <Divider plain>
-          <Row>
-            <Col span={12}>
-              <Title level={5}>BLOOD GROUP</Title>
+        <Divider orientation="center" align = "middle">
+          <Row  gutter={[48, 8]}>
+            <Col span={8} pull= {1}>
+              <Title  level={5}>BLOOD GROUP</Title>
             </Col>
-            <Col span={12}>
-              <Select style={{ width: 200 }} onChange={this.handleChange} placeholder="Blood Group">
+            <Col span={8} pull= {1/2} >
+              <Select style={{ width: 155 }} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
             </Col>
@@ -184,10 +193,12 @@ export default class BloodTypesTable extends Component {
             <TablePager handleChange={this.handleChange}/>
           </Col>
         </Row>
+        <DndProvider backend={HTML5Backend}>
         <Table 
           loading={loading}
           style={{marginTop:10}}
-          dataSource={tableData, Data} 
+          dataSource={Data} 
+          pagination={pagination}
           columns={columns} 
           rowKey={record => record.userID}
           onRow={(record) => ({
@@ -213,6 +224,7 @@ export default class BloodTypesTable extends Component {
             onClose={this.onClose}
           />
 				</Drawer>
+        </DndProvider>
       </div>
     )
   }

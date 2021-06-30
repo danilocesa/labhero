@@ -14,9 +14,7 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const [loading, setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
-  const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-  
-
+  const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));  
 
   async function onSubmit(values) {
     setLoading(true);
@@ -40,10 +38,8 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   useEffect(() => {
     async function getData() {
       const bloogStorage = await fetchBloodStorage(); 
-
       setStorage(bloogStorage);
     }
-
     getData();
   }, []);
 
