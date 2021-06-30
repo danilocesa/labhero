@@ -4,25 +4,26 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
 //import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
-import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
+import { Table,Drawer,Row,Col,Button,Input,Divider,Select} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Form from '../form'
 
 const { Search } = Input;
-const { Title } = Typography;
+
+
 
 
 const columns = [
   {
     title: 'BLOOD TYPE',
     dataIndex: 'blood_type',
-    key: '1',
-    sorter: (a, b) => a.blood_type_id - b.blood_type_id,
+    key: 'blood_type',
+    //sorter: (a, b) => a.blood_type_id - b.blood_type_id,
   },
   {
     title: 'DESCRIPTION',
     dataIndex: 'blood_desc',
-    key: 3,
+    key: 'blood_desc',
   },
   
 ];
@@ -53,14 +54,20 @@ export default class BloodTypesTable extends Component {
     //const apiResponseBloodType = await fetchBloodTypes();
 
     this.setState({
-      loading:false,
       Data:apiResponse,
       //tableData:apiResponseBloodType,
       pagination: apiResponse.length,
-      usersRef:apiResponse
+      usersRef:apiResponse,
+      loading:false
     
     })
   }
+
+  onClose = () => {
+		this.setState({
+			isDrawerVisible: false,
+		});
+	};
 
   showDrawer = (record) => {
     const {dropdownvalues} =this.state
@@ -126,11 +133,7 @@ export default class BloodTypesTable extends Component {
 		});
 	}
 
-  onClose = () => {
-		this.setState({
-			isDrawerVisible: false,
-		});
-	};
+
 
   render() {
     const {
@@ -142,6 +145,7 @@ export default class BloodTypesTable extends Component {
       loading, 
       actionType,
       AddButton,
+      patientInfo,
       dropdownvalues, 
       pagination,
       selectedBloodTypes,
@@ -155,12 +159,9 @@ export default class BloodTypesTable extends Component {
     return (
       <div>
         <Divider orientation="center" align = "middle">
-          <Row  gutter={[48, 8]}>
-            <Col span={8} pull= {1}>
-              <Title  level={5}>BLOOD GROUP</Title>
-            </Col>
-            <Col span={8} pull= {1/2} >
-              <Select style={{ width: 155 }} onChange={this.handleChange} placeholder="Blood Group">
+          <Row >
+            <Col span={12}>
+              <Select style={{ width: 200}} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
             </Col>
@@ -215,7 +216,7 @@ export default class BloodTypesTable extends Component {
           <Form 
             buttonNames={buttonNames} 
             dropdownvalues={dropdownvalues}
-            
+            patientInfo={patientInfo}
             actionType={actionType}
             selectedBloodTypes={selectedBloodTypes}
             selectedBloodGroup={selectedBloodGroup} 
