@@ -4,7 +4,7 @@ import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createHospitalList, updateHospitalList } from 'services/blood_bank/hospital';
 import { Form, Input, Button, Switch } from 'antd';
-import { messagePrompts } from '../settings'
+import {  buttonLabels, drawerAdd, messagePrompts } from '../settings'
 
 const { TextArea } = Input;
 export default class HospitalForm extends Component {
@@ -15,15 +15,16 @@ export default class HospitalForm extends Component {
 
   onFinish = async (values) => {
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-    console.log("file: index.js ~ line 31 ~ BloodGroupForm ~ onFinish= ~ loggedinUser", loggedinUser)
-		const { buttonNames, selecetedData } = this.props;
+    //console.log("file: index.js ~ line 31 ~ BloodGroupForm ~ onFinish= ~ loggedinUser", loggedinUser)
+		const { drawerButton, selectedData } = this.props;
     const payload = {
-			hospital_id:selecetedData.hospital_id,
-			hospital_name :values.Hospital,
-			created_by: loggedinUser.userID,	
+			hospital_id:selectedData.hospital_id,
+			hospital_name :values.hospital_name,
+			hospital_location:values.hospital_location,
+			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
-		if(buttonNames === 'ADD'){
+		if(drawerButton === drawerAdd){
 			const createdHospitalresponse = await createHospitalList(payload);
 			// @ts-ignore
 			if(createdHospitalresponse.status === 201){
@@ -38,7 +39,7 @@ export default class HospitalForm extends Component {
 			}	
 		}
 		else {
-			payload.hospital_id = selecetedData.hospital_id;
+			payload.hospital_id = selectedData.hospital_id;
 			const updateHospitalresponse =  await updateHospitalList(payload)
 			// @ts-ignore)
 			if(updateHospitalresponse.status === 200){
@@ -61,19 +62,21 @@ export default class HospitalForm extends Component {
 
   render() {
     const { disabled } = this.state
-    const { buttonNames, selecetedData } = this.props
+    const { drawerButton, selectedData } = this.props
     return (
       <div>
         <Form 
           layout="vertical" 
           onFinish={this.onFinish} 
           initialValues={{ 
-						is_active:selecetedData.is_active === true ,
-						Hospital:selecetedData.hospital_name
+						is_active:selectedData.is_active === true ,
+						hospital_id:selectedData.hospital_id,
+						hospital_name:selectedData.hospital_name,
+						hospital_location:selectedData.hospital_location,
 					}}   
         >
           {
-						buttonNames === "UPDATE" 
+						drawerButton === "UPDATE" 
 						? 
 							(		
 								<Form.Item 
@@ -89,24 +92,31 @@ export default class HospitalForm extends Component {
 					}
           <Form.Item
             label="Hospital"
-            name="Hospital"
+            name= 'hospital_name'
             rules={[{ required: true, message: 'Please input your Hospital!' }]}
           >
             <Input onChange={this.onDisable}/>
           </Form.Item>
           <Form.Item
             label="Location"
-            name="Location"
+            name= 'hospital_location'
             rules={[{ required: true, message: 'Please input your Location!' }]}
           >
             <TextArea rows={4} onChange={this.onDisable}/>
           </Form.Item>
+
           <section className="drawerFooter">
             <Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
-              CANCEL
+						{buttonLabels.cancel}
             </Button>
-            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-              {buttonNames}
+						<Button 
+              disabled={disabled} 
+              type="primary" 
+              shape="round" 
+              style={{ margin: 10, width: 120 }} 
+              htmlType="submit"
+            >
+              {drawerButton}
             </Button>
 				  </section>
         </Form>
@@ -116,7 +126,11 @@ export default class HospitalForm extends Component {
 }
 
 HospitalForm.propTypes = {
-	buttonNames: PropTypes.string.isRequired,
-	selecetedData:PropTypes.object.isRequired,
+	drawerButton: PropTypes.string.isRequired,
+	selectedData:PropTypes.object.isRequired,
+	patientInfo: PropTypes.array.isRequired,
+  form: PropTypes.object,
+  onClose: PropTypes.func,
+	actionType: PropTypes.string
 }
 
