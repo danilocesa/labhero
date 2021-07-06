@@ -409,7 +409,6 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
-		console.log('removeSelectedExamByPanel');
 		
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
@@ -435,6 +434,7 @@ class SelectStep extends React.Component {
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
+  console.log("🚀 ~ file: index.js ~ line 439 ~ SelectStep ~ examID", examID)
 
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
@@ -486,7 +486,6 @@ class SelectStep extends React.Component {
 			});
 			const isSelectedExam = selectedExams.some(selExam => exam.examID === selExam.examID);
 			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel || exam.isLocked; 
-      console.log("file: index.js ~ line 490 ~ SelectStep ~ isDisabled", isDisabled)
 
 			if(isExistInUExam) 
 				return { ...exam, isSelected: false, isDisabled };
@@ -500,6 +499,8 @@ class SelectStep extends React.Component {
 	displayLoading = (isLoading) => {
 		this.setState({ isLoading });
 	}
+
+	
 
 	render() {
 		const { 
@@ -552,7 +553,9 @@ class SelectStep extends React.Component {
 							</Col>
 							<Col {...ColLayout}>
 								<SelectTable 
+									deletefunction={this.deletefunction}
 									selectedExams={selectedExams}
+									removeSelectedExamByPanel={this.removeSelectedExamByPanel}
 									removeSelectedExamByExam={this.removeSelectedExamByExam}
 									removeAllExams={this.removeAllExams} 
 									populatePanels={this.populatePanels}

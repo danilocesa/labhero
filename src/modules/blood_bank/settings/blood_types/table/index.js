@@ -48,18 +48,17 @@ export default class BloodTypesTable extends Component {
 
   async componentDidMount(){
     this.setState({loading:true});
-    const apiResponse = await fetchBloodGroupItems();
-    console.log("🚀 ~ file: index.js ~ line 52 ~ BloodTypesTable ~ componentDidMount ~ apiResponse", apiResponse)
+    // const apiResponse = await fetchBloodGroupItems();
     //this.setState({loading:true});
     const apiResponseBloodType = await fetchBloodTypes();
     console.log("🚀 ~ file: index.js ~ line 54 ~ BloodTypesTable ~ componentDidMount ~ apiResponseBloodType", apiResponseBloodType)
 
     this.setState({
       loading:false,
-      Data:apiResponse,
+      Data:apiResponseBloodType,
       //tableData:apiResponseBloodType,
-      pagination: apiResponse.length,
-      usersRef:apiResponse
+      pagination: apiResponseBloodType.length,
+      usersRef:apiResponseBloodType
     
     })
   }

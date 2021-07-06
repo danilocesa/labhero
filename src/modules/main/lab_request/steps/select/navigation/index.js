@@ -38,7 +38,6 @@ class Navigation extends React.Component {
 	}
 	
 	render() {
-		console.log()
 		const { disabled } = this.props;
 		const dynamicLink = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) 
 			? requestLinks.create.step2 
@@ -46,7 +45,7 @@ class Navigation extends React.Component {
 
 		return (
 			<Row style={{ marginTop: 20 }}>
-				<Col sm={{ span: 6 }} md={{ span: 2, offset: 20 }}>
+				<Col span={16} offset={17}>
 					<Link to={dynamicLink}>
 						<Text>
 							<u>BACK</u>
@@ -55,7 +54,7 @@ class Navigation extends React.Component {
 					<Button 
 						className="nav-btn-round" 
 						type="primary" 
-						style={{ marginLeft: 20 }}
+						style={{ marginLeft: 10 }}
 						disabled={disabled}
 						onClick={this.onClickNext}
 					>
@@ -67,7 +66,7 @@ class Navigation extends React.Component {
 							<Button 
 								className="nav-btn-round" 
 								type="primary" 
-								style={{ width: '100%' }}
+								style={{ marginLeft: 10, width:150 }}
 							>
 								CANCEL REQUEST
 							</Button>

@@ -54,6 +54,7 @@ class DashboardPage extends React.Component {
     const kpiPending = responseKPIs.find(item => item.category === 'PendingRequest');
     const kpiWithin = responseKPIs.find(item => item.category === 'WithinTwoHours');
     const kpiMorethan = responseKPIs.find(item => item.category === 'MoreThanTwoHours');
+    
     let kpis = [];
 
     kpis.push({ 

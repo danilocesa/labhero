@@ -21,6 +21,7 @@ const colLayout = {
 class PatientInfo extends React.Component {
 	computeAge = (date) => {
 		const years = Math.floor(moment().diff(date, 'years', true));
+    console.log("🚀 ~ file: index.jsx ~ line 24 ~ PatientInfo ~ years", years)
 		const age = years > 0 ? years : '---';
 	
 		return age;

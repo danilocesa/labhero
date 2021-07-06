@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Button, Tooltip, Typography } from 'antd';
+import { Table as AntTable, Button, Tooltip, Typography, Popconfirm } from 'antd';
 import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { CloseOutlined } from '@ant-design/icons';
 import { requestTypes } from 'modules/main/settings/lab_exam_request/settings';
@@ -82,25 +82,34 @@ class SelectTable extends React.Component {
 		populatePanels();
 	}
 
+
+
 	render() {
-		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
+		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
-			key: selectedExam.examID,
-			...selectedExam,
-			// CONDITION IN BUTTON DELETE PER EXAM
-			action: (selectedExam.selectedPanel === null && !selectedExam.isLocked && selectedExam.sampleSpecimenID === undefined)
-			 ?  
+				key: selectedExam.examID,
+				...selectedExam,
+				// CONDITION IN BUTTON DELETE PER EXAM
+				action: ( !selectedExam.isLocked )
+				?  
+				<Popconfirm
+					title={selectedExam.selectedPanel ? "Are you sure to delete this Panel?" : "Are you sure to delete this Exam?"}
+					onConfirm={() => selectedExam.selectedPanel ? removeSelectedExamByPanel(selectedExam.selectedPanel) : removeSelectedExamByExam(selectedExam)}
+					okText="Yes"
+					cancelText="No"
+				>
 					<Button 
 						type="dashed" 
 						icon={<CloseOutlined />}
 						size="small" 
-						onClick={() => removeSelectedExamByExam(selectedExam)}
+						// onClick={() => selectedExam.selectedPanel ? removeSelectedExamByPanel(selectedExam.selectedPanel) : removeSelectedExamByExam(selectedExam)}
 					/> 
-				:	
-					null
-					
-		}));
+				</Popconfirm>
+					:	
+						null
+			}
+		));
 
 		return (
 			<div className="select-step-table">
@@ -134,9 +143,11 @@ SelectTable.propTypes = {
 			panelCode: PropTypes.string
 		})
 	})).isRequired,
+	removeSelectedExamByPanel: PropTypes.func.isRequired,
 	removeSelectedExamByExam: PropTypes.func.isRequired,
 	removeAllExams: PropTypes.func.isRequired,
 	populatePanels: PropTypes.func.isRequired,
+	deletefunction: PropTypes.func.isRequired,
 };
 
 export default SelectTable;
