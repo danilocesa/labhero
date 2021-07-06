@@ -22,8 +22,7 @@ export async function fetchBloodStorageForLov() {
   return bloodStorage;
 }
 
-
-export async function fetchBloodStorage() {
+export default async function fetchBloodStorage() {
 	let bloodStorage = [];
 	
   try{
@@ -61,4 +60,47 @@ export async function createBloodStorage(payload) {
 	}
 
 	return bloodStorage;
+}
+
+
+export async function createBloodStorageAPI(payload) {
+  console.log("🚀 ~ file: blood_storage.jsx ~ line 26 ~ createBloodStorage ~ payload", payload)
+	let bloodStorage = [];
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: API_POST_METHOD,
+      url: `/blood_inventory/blood_storage/`,
+      data: payload
+		}).then(response => {
+      return response;
+    });
+
+    // @ts-ignore
+    bloodStorage = axiosResponse;
+  } 
+  catch(e) {
+    HttpCodeMessage({status: 500, message: e});
+	}
+
+	return bloodStorage;
+}
+
+export async function updateBloodStorageAPI(payload) {
+  let updateBloodStorage = [];
+  const bloodStorageId = payload.blood_storage_id;
+
+  try{
+    const content = {
+      method: API_PUT_METHOD,
+      url:`/blood_inventory/blood_storage/${bloodStorageId}/`,
+      data: payload
+    }
+    const response = await axiosPhase2API(content);
+    // @ts-ignore
+    updateBloodStorage = await response;
+  }
+  catch(error) {
+    Message.error();  
+  }
+  return updateBloodStorage;
 }

@@ -1,7 +1,7 @@
 import { Form,Input,Button, Switch } from 'antd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import createBloodTypeAPI , {updateBloodTypeAPI} from 'services/blood_bank/blood_types'
+import createBloodTypeAPI , {updateBloodTypeAPI} from 'services/general_settings/blood_types'
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import {buttonLabels, messagePrompts} from '../settings';
@@ -20,7 +20,7 @@ export default class BloodTypesForm extends Component {
 		console.log( "buttonNames")
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const { buttonNames, selectedBloodTypes } = this.props;
-		console.log(selectedBloodTypes, "selectBlood")
+	
     	const payload = {
 			blood_type_id :selectedBloodTypes.blood_type_id,
 			blood_group :values.blood_group,
@@ -29,7 +29,7 @@ export default class BloodTypesForm extends Component {
 			created_by: 1,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
-		console.log(payload,"payload")
+	
 		if(buttonNames === 'ADD'){
 			const createdBloodTypeResponse = await createBloodTypeAPI(payload);
 			// @ts-ignore

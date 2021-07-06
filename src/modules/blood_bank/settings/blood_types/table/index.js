@@ -51,7 +51,6 @@ export default class BloodTypesTable extends Component {
     // const apiResponse = await fetchBloodGroupItems();
     //this.setState({loading:true});
     const apiResponseBloodType = await fetchBloodTypes();
-    console.log("🚀 ~ file: index.js ~ line 54 ~ BloodTypesTable ~ componentDidMount ~ apiResponseBloodType", apiResponseBloodType)
 
     this.setState({
       loading:false,
@@ -216,7 +215,6 @@ export default class BloodTypesTable extends Component {
           <Form 
             buttonNames={buttonNames} 
             dropdownvalues={dropdownvalues}
-            
             actionType={actionType}
             selectedBloodTypes={selectedBloodTypes}
             selectedBloodGroup={selectedBloodGroup} 
