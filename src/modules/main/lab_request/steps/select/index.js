@@ -434,7 +434,6 @@ class SelectStep extends React.Component {
 	// from both tables(left and right).
 	// Used when unselecting exam from both tables(left and right).
 	removeSelectedExamByExam = ({ examID }) => {
-  console.log("🚀 ~ file: index.js ~ line 439 ~ SelectStep ~ examID", examID)
 
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
 		const { sectionCode } = selectedSection;
@@ -500,8 +499,6 @@ class SelectStep extends React.Component {
 		this.setState({ isLoading });
 	}
 
-	
-
 	render() {
 		const { 
 			selectedExams, 
@@ -553,7 +550,6 @@ class SelectStep extends React.Component {
 							</Col>
 							<Col {...ColLayout}>
 								<SelectTable 
-									deletefunction={this.deletefunction}
 									selectedExams={selectedExams}
 									removeSelectedExamByPanel={this.removeSelectedExamByPanel}
 									removeSelectedExamByExam={this.removeSelectedExamByExam}

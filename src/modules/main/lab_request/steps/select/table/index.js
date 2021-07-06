@@ -18,7 +18,6 @@ const renderItem = (text, record) => {
 
 const createColumns = handleRemove => {
 	const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
-  console.log("🚀 ~ file: index.js ~ line 21 ~ reqType", reqType)
  
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
@@ -86,28 +85,40 @@ class SelectTable extends React.Component {
 
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
+    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 				key: selectedExam.examID,
 				...selectedExam,
-				// CONDITION IN BUTTON DELETE PER EXAM
-				action: ( !selectedExam.isLocked )
+				// CONDITION IN BUTTON if to show or not to show
+				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID )
 				?  
-				<Popconfirm
-					title={selectedExam.selectedPanel ? "Are you sure to delete this Panel?" : "Are you sure to delete this Exam?"}
-					onConfirm={() => selectedExam.selectedPanel ? removeSelectedExamByPanel(selectedExam.selectedPanel) : removeSelectedExamByExam(selectedExam)}
-					okText="Yes"
-					cancelText="No"
-				>
-					<Button 
-						type="dashed" 
-						icon={<CloseOutlined />}
-						size="small" 
-						// onClick={() => selectedExam.selectedPanel ? removeSelectedExamByPanel(selectedExam.selectedPanel) : removeSelectedExamByExam(selectedExam)}
-					/> 
-				</Popconfirm>
-					:	
-						null
+					<>
+					 	{ selectedExam.selectedPanel // CONFIRMATION AND NO CONFIRMATION 
+						 	? 
+								<Popconfirm
+									title="Are you sure to delete this Panel?" 
+									onConfirm={() => removeSelectedExamByPanel(selectedExam.selectedPanel)}
+									okText="Yes"
+									cancelText="No"
+								>
+									<Button 
+										type="dashed" 
+										icon={<CloseOutlined />}
+										size="small" 
+									/> 
+								</Popconfirm>
+							:
+								<Button 
+									type="dashed" 
+									icon={<CloseOutlined />}
+									size="small" 
+									onClick={() => removeSelectedExamByExam(selectedExam)}
+								/> 
+						}
+					</>
+				:	
+					null
 			}
 		));
 
