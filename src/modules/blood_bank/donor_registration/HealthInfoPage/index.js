@@ -39,8 +39,8 @@ class HealthInformation extends React.Component {
     const { health_info_id } = this.props.location.state;
     await this.getCategoryData();
 
-    if(health_info_id)
-      await this.fetchHealthInfo(health_info_id);
+    // if(health_info_id)
+    //   await this.fetchHealthInfo(health_info_id);
   }
 
   onFinish = async (formFields) => {
@@ -87,7 +87,6 @@ class HealthInformation extends React.Component {
     const result = await createHealthInformation(payload);
     // @ts-ignore
     const Messages = Object.values(result.data.messages  ).map(value =>{
-    console.log("🚀 ~ file: index.js ~ line 90 ~ HealthInformation ~ createHealthInfo= ~ payload", payload)
       return message.error(value === Array(0) ? null : value)
     })
     
@@ -96,7 +95,7 @@ class HealthInformation extends React.Component {
 
       Message.success({ 
         message: 'Health information succesfully submitted!',
-        // onClose: () => history.push('/bloodbank/donor_registration/step/1')
+        onClose: () => history.push('/bloodbank/donor_registration/step/1')
       });
     }
     else
@@ -105,7 +104,6 @@ class HealthInformation extends React.Component {
 
   getCategoryData = async () => {
     const additionalFieldsData = await fetchAdditionalFields();
-    console.log("🚀 ~ file: index.js ~ line 108 ~ HealthInformation ~ getCategoryData= ~ additionalFieldsData", additionalFieldsData)
 
     if(additionalFieldsData.dynamic_fields.length > 0){
       this.setState({ 
