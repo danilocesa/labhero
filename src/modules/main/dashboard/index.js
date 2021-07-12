@@ -54,6 +54,7 @@ class DashboardPage extends React.Component {
     const kpiPending = responseKPIs.find(item => item.category === 'PendingRequest');
     const kpiWithin = responseKPIs.find(item => item.category === 'WithinTwoHours');
     const kpiMorethan = responseKPIs.find(item => item.category === 'MoreThanTwoHours');
+    
     let kpis = [];
 
     kpis.push({ 
@@ -116,9 +117,9 @@ class DashboardPage extends React.Component {
       );
       
       const data = hasNoData ? [] : [
-        { item: 'Pending', count: 1 },
-        { item: 'Morethan 2 Hours', count: 1  },
-        { item: 'Within 2 Hours', count: 1 }
+        { item: 'Pending', count: Number(item.pending) },
+        { item: 'Morethan 2 Hours', count: Number(item.morethan)  },
+        { item: 'Within 2 Hours', count: Number(item.within) }
       ];
 
       const Placeholder = () => (

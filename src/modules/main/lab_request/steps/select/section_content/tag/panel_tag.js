@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tag from './tag';
-
+import { 	LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants'; 
 class PanelTag extends React.Component {
 	handleChange = (isChecked) => {
+		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 		const { 
 			panelID, 
 			isDisabled,
@@ -19,7 +20,7 @@ class PanelTag extends React.Component {
 		if(isChecked)
 			addSelectedExamByPanel({ panelID });
 		else
-			removeSelectedExamByPanel({ panelID });
+      console.log( reqType ===  "create" ? removeSelectedExamByPanel({ panelID }) : null )
 	};
 
 	render() {

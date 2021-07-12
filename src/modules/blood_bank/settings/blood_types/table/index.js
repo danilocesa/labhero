@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
-//import fetchBloodTypes from 'services/blood_bank/blood_types'
+import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
 import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -14,7 +14,7 @@ const { Title } = Typography;
 
 const columns = [
   {
-    title: 'BLOOD TYPE',
+    title: 'BLOOD',
     dataIndex: 'blood_type',
     key: '1',
     sorter: (a, b) => a.blood_type_id - b.blood_type_id,
@@ -48,16 +48,16 @@ export default class BloodTypesTable extends Component {
 
   async componentDidMount(){
     this.setState({loading:true});
-    const apiResponse = await fetchBloodGroupItems();
+    // const apiResponse = await fetchBloodGroupItems();
     //this.setState({loading:true});
-    //const apiResponseBloodType = await fetchBloodTypes();
+    const apiResponseBloodType = await fetchBloodTypes();
 
     this.setState({
       loading:false,
-      Data:apiResponse,
+      Data:apiResponseBloodType,
       //tableData:apiResponseBloodType,
-      pagination: apiResponse.length,
-      usersRef:apiResponse
+      pagination: apiResponseBloodType.length,
+      usersRef:apiResponseBloodType
     
     })
   }
@@ -215,7 +215,6 @@ export default class BloodTypesTable extends Component {
           <Form 
             buttonNames={buttonNames} 
             dropdownvalues={dropdownvalues}
-            
             actionType={actionType}
             selectedBloodTypes={selectedBloodTypes}
             selectedBloodGroup={selectedBloodGroup} 

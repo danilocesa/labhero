@@ -46,11 +46,39 @@ export default class BarangayTable extends Component {
     const BarangayResponse =  await fetchBarangayItems(cityId);
     this.setState({ 
       BarangayItem:BarangayResponse,
+      usersRef:BarangayResponse,
       cityId,
       provinceId,
       buttonDisable:false
     }) 
 	}
+
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { barangay_name } = item;
+			return (
+				this.containsString(barangay_name, searchedVal)
+			);
+		});
+		this.setState({ 
+			BarangayItem: filtered 
+		});
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ BarangayItem: usersRef });
+	};
+
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
+
 
   displayDrawer = (record) => {
 		this.setState({
@@ -99,10 +127,15 @@ export default class BarangayTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Select style={{ width: 120 }}  onChange={this.onChange}>
+            <Select style={{ width: 200 }}  onChange={this.onChange}>
               {CitymappedData}
             </Select>
-            <Search style={{ width: 200 }}/>
+            <Search style={{ width: 200, marginLeft:20  }}
+                    placeholder="Search By Barangay"
+                    allowClear
+                    onSearch={(value) => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+            />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button 

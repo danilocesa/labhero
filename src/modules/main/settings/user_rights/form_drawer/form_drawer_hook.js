@@ -68,7 +68,7 @@ function useFormDrawerHook(id, refreshTableData, onClose) {
     if(response.status === 200) {
       HttpCodeMessage({ 
         status: response.status, 
-        message: 'User type successfully created',
+        message: "Update successful! Reloading page...",
         duration: 3,
         onClose: () => window.location.reload()
       });

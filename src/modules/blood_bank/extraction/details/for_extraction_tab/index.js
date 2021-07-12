@@ -45,9 +45,8 @@ class ForExtractionTab extends React.Component {
   async componentDidMount() {
     const { donorDetail } = this.props;
     this.setState({
-      isAlreadyExtracted:donorDetail.donorDetail.status === 'Invalid' ? true : false
+      isAlreadyExtracted:(donorDetail.donorDetail.status === 'Invalid' || donorDetail.donorDetail.status === 'Extracted') ? true : false,
     })
-    console.log("🚀 ~ file: index.js ~ line 47 ~ ForExtractionTab ~ componentDidMount ~ donorDetail", donorDetail.donorDetail.status)
  
     if(donorDetail.extraction_id !== null) {
       this.fetchExtractionDetail(donorDetail.extraction_id);

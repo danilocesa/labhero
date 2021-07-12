@@ -34,9 +34,37 @@ export default class ProvinceTable extends Component {
 		this.setState({loading:true});
 		const response = await fetchProvinceItems();
     this.setState({ 
-      ProvinceItems:response
+      ProvinceItems:response,
+      usersRef:response
 		});
 	}
+
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { province_name } = item;
+			return (
+				this.containsString(province_name, searchedVal)
+			);
+		});
+		this.setState({ 
+			ProvinceItems: filtered 
+		});
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ ProvinceItems: usersRef });
+	};
+
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
+
 
   displayDrawer = (record) => {
 		this.setState({
@@ -73,7 +101,13 @@ export default class ProvinceTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Search style={{ width: 200 }}/>
+            <Search style={{ width: 200 }}
+                    placeholder="Search By Province"
+                    allowClear
+                    onSearch={(value) => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+            
+            />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button 

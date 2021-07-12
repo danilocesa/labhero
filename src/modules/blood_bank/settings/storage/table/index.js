@@ -1,73 +1,152 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { PlusOutlined } from '@ant-design/icons';
 import StorageForm from '../storageForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer } from 'antd';
+import fetchBloodStorage from 'services/blood_inventory/blood_storage';
 
 const { Search } = Input;
-export default class StorageTable extends Component {
+
+const columns = [
+	{
+		title: 'STORAGE',
+		dataIndex: 'storage_name',
+		key: '1',
+		width: 200,
+		sorter: (a, b) => a.blood_storage_id - b.blood_storage_id,
+	},
+	{
+		title: 'DESCRIPTION',
+		dataIndex: 'storage_desc',
+		key: '3',
+	},
+];
+
+class StorageTable extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = {
-			visible: false,
+			isDrawerVisible	: false,
+      bloodStorageItem: [],
+      actionType:'add',
+			drawerTitle: '',
+			loading:false,
+			drawerButton: '',
+      selectedBloodStorage:{},
 		}
 	}
 
-  displayDrawer = (record) => {
-		this.setState({
-			visible: true,
-			drawerTitle: "UPDATE STORAGE",
-			selecetedData:record,
-      buttonNames:"UPDATE"
+  async componentDidMount() {
+		this.setState({loading:true});
+		const response = await fetchBloodStorage();
+		
+		this.setState({ 
+			bloodStorageItem: response,
+			usersRef:response,
+			pagination: response.length,
+			loading:false
 		});
 	}
 
-  onDrawerClose = () => {
+  onClose = () => {
 		this.setState({
-			visible: false,
+			isDrawerVisible: false,
 		});
 	};
-  
+
   showDrawer = (record) => {
 		this.setState({
-			visible: true,
+			isDrawerVisible: true,
 			drawerTitle: "ADD STORAGE",
-			selecetedData: record,
-      buttonNames:"ADD"
+      drawerButton: 'ADD',
+			actionType : 'add',
+      selectedBloodStorage: record,
 		});
 	}
 
+
+  displayDrawerUpdate = (record) => {
+		this.setState({
+			isDrawerVisible: true,
+			drawerTitle: "UPDATE STORAGE",
+			drawerButton: 'UPDATE',
+			actionType:'update',
+      selectedBloodStorage: record
+		});
+	}
+
+  onSearch = (value) => {
+    const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+    const filtered = usersRef.filter((item) => {
+      // eslint-disable-next-line camelcase
+      const { storage_name } = item;
+
+      return (
+        this.containsString(storage_name, searchedVal)
+      );
+    });
+		this.setState({ bloodStorageItem: filtered });
+  };
+
+  onChangeSearch = (event) => {
+    const { usersRef } = this.state;
+    if (event.target.value === "") this.setState({ bloodStorageItem: usersRef });
+  };
+
+	// Private Function
+  containsString = (searchFrom, searchedVal) => {
+    if (searchFrom === null || searchFrom === "") return false;
+    return searchFrom.toString().toLowerCase().includes(searchedVal);
+  };
+	
+	
+	handleSelectChange = (value) => {
+		// eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+	};
+
+  // onDrawerClose = () => {
+	// 	this.setState({
+	// 		visible: false,
+	// 	});
+	// };
+  
+  
+
   render() {
-    const { visible , drawerTitle,buttonNames } = this.state
-    const dataSource = [
-      {
-        Storage: 'Mike',
-        Description: '10 Downing Street',
-      },
-      {
-        Storage: 'John',
-        Description: '10 Downing Street',
-      },
-    ];
-    
-    const columns = [
-      {
-        title: 'Storage',
-        dataIndex: 'Storage',
-        key: 'Storage',
-      },
-      {
-        title: 'Description',
-        dataIndex: 'Description',
-        key: 'Description',
-      },
-    ];
+    //const { loading = false } = this.props;
+    const { 
+      isDrawerVisible, 
+      actionType, 
+      drawerTitle,
+      drawerButton, 
+      bloodStorageItem,
+      patientInfo,
+      loading,
+      pagination,
+      selectedBloodStorage
+
+    } = this.state;
+  
 
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Search style={{ width: 200 }}/>
+          <Search
+							placeholder="Search By Storage Name"
+							allowClear
+							onSearch={(value) => this.onSearch(value)}
+							onChange={this.onChangeSearch}
+							style={{ width: 300 }}
+							className="panel-table-search-input"
+						/>
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button 
@@ -79,29 +158,42 @@ export default class StorageTable extends Component {
             >
               ADD STORAGE
             </Button >
-            <TablePager/>
+            <TablePager handleChange={this.handleSelectChange}/>
           </Col>
 				</Row>
+        <DndProvider backend={HTML5Backend}>
         <Table  
-          dataSource={dataSource} 
-          columns={columns} 
+          style={{textTransform:'uppercase'}}
+          loading={loading}
+          columns={columns}
+          dataSource={bloodStorageItem} 
+          pagination={pagination}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
-                this.displayDrawer(record);
+                this.displayDrawerUpdate(record);
               }
             }
           }}/>
         <Drawer
           title={drawerTitle}
           width="30%"
-          visible={visible}
-          onClose={this.onDrawerClose}
+          visible={isDrawerVisible}
+          onClose={this.onClose}
           destroyOnClose
         >
-          <StorageForm buttonNames={buttonNames}/>
+          <StorageForm 
+          selectedBloodStorage={selectedBloodStorage} 
+          actionType={actionType}
+          drawerButton={drawerButton} 
+          patientInfo={patientInfo}
+          onClose={this.onClose}
+        />
         </Drawer>
+        </DndProvider>
       </div>
     )
   }
 }
+
+export default StorageTable;

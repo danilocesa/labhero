@@ -109,7 +109,6 @@ class SearchStep extends React.Component {
 
 	render() {
 		const { patients, pageSize, loading, actionType } = this.state;
-    console.log("🚀 ~ file: index.js ~ line 112 ~ SearchStep ~ render ~ patients", patients)
 		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 
 		return (

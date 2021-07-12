@@ -389,7 +389,6 @@ class SelectStep extends React.Component {
 			const { selectedExams } = state;
 			const isExistingExam = selectedExams.some(iExam => iExam.examID === examID);
 			const newSelectedExams = JSON.parse(JSON.stringify(selectedExams)); // Clone selectedExams
-      console.log("file: index.js ~ line 392 ~ SelectStep ~ newSelectedExams", newSelectedExams)
 			
 			if(!isExistingExam) 
 				newSelectedExams.push({ ...exam, selectedPanel });
@@ -410,7 +409,6 @@ class SelectStep extends React.Component {
 	// from the selected exams table(right).
 	// Used when unselecting panel
 	removeSelectedExamByPanel = ({ panelID }) => {
-		console.log('removeSelectedExamByPanel');
 		
 		const { selectedExams, selectedContentsByPanel, selectedContents } = this.state
 		
@@ -487,7 +485,6 @@ class SelectStep extends React.Component {
 			});
 			const isSelectedExam = selectedExams.some(selExam => exam.examID === selExam.examID);
 			const isDisabled = (isExistInContents && !isSelectedExam) || isInSelectedPanel || exam.isLocked; 
-      console.log("file: index.js ~ line 490 ~ SelectStep ~ isDisabled", isDisabled)
 
 			if(isExistInUExam) 
 				return { ...exam, isSelected: false, isDisabled };
@@ -554,6 +551,7 @@ class SelectStep extends React.Component {
 							<Col {...ColLayout}>
 								<SelectTable 
 									selectedExams={selectedExams}
+									removeSelectedExamByPanel={this.removeSelectedExamByPanel}
 									removeSelectedExamByExam={this.removeSelectedExamByExam}
 									removeAllExams={this.removeAllExams} 
 									populatePanels={this.populatePanels}

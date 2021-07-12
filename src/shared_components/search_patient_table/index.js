@@ -74,8 +74,6 @@ class SearchPatientTable extends React.Component {
 				dataIndex: 'address',
 				sorter:  getSorter(data, 'address'),
 				render: (text, row) => {
-        console.log("🚀 ~ file: index.js ~ line 77 ~ SearchPatientTable ~ render ~ text", text)
-        console.log("🚀 ~ file: index.js ~ line 77 ~ SearchPatientTable ~ render ~ row", row)
 					const { address, townName, cityMunicipalityName, provinceName } = row;
 
 					if(row.address)

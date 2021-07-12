@@ -166,6 +166,15 @@ class BloodRequestSearch extends React.Component {
     });
   }; 
 
+
+  clearInputs = () => {
+    const { setFieldsValue } = this.formRef.current;
+
+    setFieldsValue({ patientID: '',  patientName: '', Date:'', blood_type:'', status:'', priority:'' });
+
+    this.setState({  data: [] })
+  }
+
   
 
   render() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Button, Tooltip, Typography } from 'antd';
+import { Table as AntTable, Button, Tooltip, Typography, Popconfirm } from 'antd';
 import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { CloseOutlined } from '@ant-design/icons';
 import { requestTypes } from 'modules/main/settings/lab_exam_request/settings';
@@ -18,7 +18,6 @@ const renderItem = (text, record) => {
 
 const createColumns = handleRemove => {
 	const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
-  console.log("🚀 ~ file: index.js ~ line 21 ~ reqType", reqType)
  
 	const RemoveBtn = (
 		<Tooltip title="Remove all">
@@ -82,27 +81,46 @@ class SelectTable extends React.Component {
 		populatePanels();
 	}
 
+
+
 	render() {
-		const { selectedExams, removeSelectedExamByExam, removeAllExams } = this.props; 
-    console.log("🚀 ~ file: index.js ~ line 86 ~ SelectTable ~ render ~ selectedExams", selectedExams)
+		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
+    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
-    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ TableCols", TableCols)
 		const TableData = selectedExams.map(selectedExam => ({ 
-			key: selectedExam.examID,
-			...selectedExam,
-			// CONDITION IN BUTTON DELETE PER EXAM
-			action: (selectedExam.selectedPanel === null && !selectedExam.isLocked && selectedExam.sampleSpecimenID === undefined)
-			 ?  
-					<Button 
-						type="dashed" 
-						icon={<CloseOutlined />}
-						size="small" 
-						onClick={() => removeSelectedExamByExam(selectedExam)}
-					/> 
+				key: selectedExam.examID,
+				...selectedExam,
+				// CONDITION IN BUTTON if to show or not to show
+				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID )
+				?  
+					<>
+					 	{ selectedExam.selectedPanel // CONFIRMATION AND NO CONFIRMATION 
+						 	? 
+								<Popconfirm
+									title="Are you sure to delete this Panel?" 
+									onConfirm={() => removeSelectedExamByPanel(selectedExam.selectedPanel)}
+									okText="Yes"
+									cancelText="No"
+								>
+									<Button 
+										type="dashed" 
+										icon={<CloseOutlined />}
+										size="small" 
+									/> 
+								</Popconfirm>
+							:
+								<Button 
+									type="dashed" 
+									icon={<CloseOutlined />}
+									size="small" 
+									onClick={() => removeSelectedExamByExam(selectedExam)}
+								/> 
+						}
+					</>
 				:	
 					null
-					
-		}));
+			}
+		));
 
 		return (
 			<div className="select-step-table">
@@ -136,9 +154,11 @@ SelectTable.propTypes = {
 			panelCode: PropTypes.string
 		})
 	})).isRequired,
+	removeSelectedExamByPanel: PropTypes.func.isRequired,
 	removeSelectedExamByExam: PropTypes.func.isRequired,
 	removeAllExams: PropTypes.func.isRequired,
 	populatePanels: PropTypes.func.isRequired,
+	deletefunction: PropTypes.func.isRequired,
 };
 
 export default SelectTable;
