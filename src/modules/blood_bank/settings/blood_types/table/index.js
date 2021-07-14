@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
-import fetchBloodTypes from 'services/blood_bank/blood_types'
+//import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
 import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
@@ -14,7 +14,7 @@ const { Title } = Typography;
 
 const columns = [
   {
-    title: 'BLOOD',
+    title: 'BLOOD TYPE',
     dataIndex: 'blood_type',
     key: '1',
     sorter: (a, b) => a.blood_type_id - b.blood_type_id,
@@ -48,9 +48,9 @@ export default class BloodTypesTable extends Component {
 
   async componentDidMount(){
     this.setState({loading:true});
-    // const apiResponse = await fetchBloodGroupItems();
+     const apiResponseBloodType = await fetchBloodGroupItems();
     //this.setState({loading:true});
-    const apiResponseBloodType = await fetchBloodTypes();
+    //const apiResponseBloodType = await fetchBloodTypes();
 
     this.setState({
       loading:false,
@@ -154,18 +154,18 @@ export default class BloodTypesTable extends Component {
 
     return (
       <div>
-        <Divider orientation="center" align = "middle">
-          <Row  gutter={[48, 8]}>
-            <Col span={8} pull= {1}>
-              <Title  level={5}>BLOOD GROUP</Title>
+        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '15vh'}}>
+          <Row  gutter={[24, 8]}>
+            <Col span={10} pull= {1}>
+            <h4>BLOOD GROUP</h4>
             </Col>
-            <Col span={8} pull= {1/2} >
+            <Col span={8} pull= {1} >
               <Select style={{ width: 155 }} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
             </Col>
           </Row>
-        </Divider>
+        </div>
         <Row style={{marginTop:10}}>
           <Col span={12}>
             <Search
