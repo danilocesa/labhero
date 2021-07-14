@@ -44,8 +44,9 @@ class Navigation extends React.Component {
 			: requestLinks.edit.step2;
 
 		return (
-			<Row style={{ marginTop: 20 }}>
-				<Col span={16} offset={17}>
+			<div style={{float: "right"}}>
+				<Row style={{ marginTop: 20 }}>
+				<Col /*span={16} offset={17}*/>
 					<Link to={dynamicLink}>
 						<Text>
 							<u>BACK</u>
@@ -75,6 +76,7 @@ class Navigation extends React.Component {
 					}
 				</Col>
 			</Row>
+			</div>
 		);
 	}
 }
