@@ -4,12 +4,12 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
 //import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
-import { Table,Drawer,Row,Col,Button,Input,Divider,Select,Typography } from 'antd';
+import { Table,Drawer,Row,Col,Button,Input,Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Form from '../form'
 
 const { Search } = Input;
-const { Title } = Typography;
+//const { Title } = Typography;
 
 
 const columns = [
@@ -159,7 +159,7 @@ export default class BloodTypesTable extends Component {
             <Col span={10} pull= {1}>
             <h4>BLOOD GROUP</h4>
             </Col>
-            <Col span={8} pull= {1} >
+            <Col span={12} pull= {2} >
               <Select style={{ width: 155 }} onChange={this.handleChange} placeholder="Blood Group">
                 {BloodGroupOption}
               </Select>
