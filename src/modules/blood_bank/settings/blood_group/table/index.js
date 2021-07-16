@@ -8,7 +8,7 @@ import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
-import { tableYScroll } from '../settings';
+//import { tableYScroll } from '../settings';
 import Form from '../add_form';
 
 const { Search } = Input;
