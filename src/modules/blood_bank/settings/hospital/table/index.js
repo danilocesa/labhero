@@ -173,7 +173,7 @@ class HospitalTable extends React.Component {
           title={drawerTitle}
           width="30%"
           visible={isDrawerVisible}
-          onClose={this.onDrawerClose}
+          onClose={this.onClose}
           destroyOnClose
         >
           <HospitalForm  
