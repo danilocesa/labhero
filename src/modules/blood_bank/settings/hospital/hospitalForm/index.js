@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import { createHospitalList, updateHospitalList } from 'services/blood_bank/hospital';
-import { Form, Input, Button, Switch } from 'antd';
+import  {createHospitalList, updateHospitalList}  from 'services/blood_bank/hospital';
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
 import {  buttonLabels, drawerAdd, messagePrompts } from '../settings'
 
+
 const { TextArea } = Input;
-export default class HospitalForm extends Component {
+class HospitalForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = { disabled: true };
@@ -79,13 +81,26 @@ export default class HospitalForm extends Component {
 						drawerButton === "UPDATE" 
 						? 
 							(		
-								<Form.Item 
-									label="ACTIVE" 
-									name='is_active'
-									valuePropName='checked'
-								>
-									<Switch onChange={this.onDisable}/>
-								</Form.Item>
+								<Row >
+								<Col span={4}>	
+									<Form.Item >
+										<label >ACTIVE:</label> 	
+									</Form.Item>
+								</Col>
+
+								<Col span={6}>	
+									<Form.Item name='is_active' valuePropName='checked' >
+										<Switch onChange={this.onDisable}/>
+									 </Form.Item>
+								</Col>
+							</Row> 
+								// <Form.Item 
+								// 	label="ACTIVE" 
+								// 	name='is_active'
+								// 	valuePropName='checked'
+								// >
+								// 	<Switch onChange={this.onDisable}/>
+								// </Form.Item>
 							)	
 						:
 							null
@@ -95,18 +110,21 @@ export default class HospitalForm extends Component {
             name= 'hospital_name'
             rules={[{ required: true, message: 'Please input your Hospital!' }]}
           >
-            <Input onChange={this.onDisable}/>
+            <Input  style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
           </Form.Item>
           <Form.Item
             label="Location"
             name= 'hospital_location'
             rules={[{ required: true, message: 'Please input your Location!' }]}
           >
-            <TextArea rows={4} onChange={this.onDisable}/>
+            <TextArea  style={{ textTransform: 'uppercase'}} rows={4} onChange={this.onDisable}/>
           </Form.Item>
 
           <section className="drawerFooter">
-            <Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
+            <Button shape="round" 
+						style={{ marginRight: 8, width: 120 }} 
+						type="button"
+						onClick={this.props.onClose}>
 						{buttonLabels.cancel}
             </Button>
 						<Button 
@@ -134,3 +152,4 @@ HospitalForm.propTypes = {
 	actionType: PropTypes.string
 }
 
+export default withRouter(HospitalForm);
