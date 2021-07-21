@@ -89,8 +89,6 @@ function SummaryPage() {
     }
   }, [otherInfo.requestID]);
 
-
-
   return (
     <div>
       <PageTitle pageTitle="REQUEST SUMMARY" />

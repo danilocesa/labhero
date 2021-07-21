@@ -9,6 +9,13 @@ const columns = [
 		title: 'PANEL',
 		dataIndex: 'panel',
 		width: 200,
+		defaultSortOrder: 'ascend',
+		sorter: (a, b) => {
+			const aPanel =  a.panel === null ? '' : a.panel;
+			const bPanel =  b.panel === null ? '' : b.panel;
+				
+			return aPanel.localeCompare(bPanel);
+		},
 	},
 	{
 		title: 'SECTION',
@@ -29,6 +36,7 @@ const columns = [
 ];
 
 function SummaryTable({ exams }) {
+	 
 	return (
 		<Row style={{ marginTop: 20 }}>
 			<Col sm={{ span: 24 }} lg={{ span: 18, offset: 3 }}>
@@ -36,6 +44,7 @@ function SummaryTable({ exams }) {
 					<Table 
 						dataSource={exams} 
 						rowKey={record => record.key}
+						// @ts-ignore
 						columns={columns} 
 						pagination={false}
 					/>
