@@ -66,7 +66,7 @@ export default class BloodTypesTable extends Component {
     const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true ,
-			drawerTitle: `ADD BLOOD TYPES - ${dropdownvalues}`,
+			drawerTitle: `ADD BLOOD TYPES  ${dropdownvalues}`,
 			buttonNames: "ADD",
       actionType : 'add',
       selectedBloodGroup: record,
@@ -118,7 +118,7 @@ export default class BloodTypesTable extends Component {
     const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle:`UPDATE BLOOD TYPES - ${dropdownvalues}`,
+			drawerTitle:`UPDATE BLOOD TYPES  ${dropdownvalues}`,
 			buttonNames: "UPDATE",
       actionType:'update',
       selectedBloodGroup:record,
@@ -154,7 +154,7 @@ export default class BloodTypesTable extends Component {
 
     return (
       <div>
-        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '15vh'}}>
+        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '8vh'}}>
           <Row  gutter={[24, 8]}>
             <Col span={10} pull= {1}>
             <h4>BLOOD GROUP</h4>
@@ -166,7 +166,7 @@ export default class BloodTypesTable extends Component {
             </Col>
           </Row>
         </div>
-        <Row style={{marginTop:10}}>
+        <Row style={{marginTop:3}}>
           <Col span={12}>
             <Search
               placeholder="Search By Blood Type"

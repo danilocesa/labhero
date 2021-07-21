@@ -1,4 +1,4 @@
-import { Form,Input,Button, Switch } from 'antd'
+import { Form,Input,Button, Switch, Col, Row} from 'antd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import createBloodTypeAPI , {updateBloodTypeAPI} from 'services/general_settings/blood_types'
@@ -87,13 +87,19 @@ export default class BloodTypesForm extends Component {
 						buttonNames == "UPDATE" 
 						? 
 							(		
-								<Form.Item 
-									label="ACTIVE" 
-									name='is_active'
-									valuePropName='checked'
-								>
-									<Switch onChange={this.onDisable}/>
-								</Form.Item>
+								<Row >
+								<Col span={4}>	
+									<Form.Item >
+										<label >ACTIVE:</label> 	
+									</Form.Item>
+								</Col>
+
+								<Col span={6}>	
+									<Form.Item name='is_active' valuePropName='checked' >
+										<Switch onChange={this.onDisable}/>
+									 </Form.Item>
+								</Col>
+							</Row> 
 							)	
 						:
 							null
@@ -109,14 +115,14 @@ export default class BloodTypesForm extends Component {
             name='blood_type'
             rules={[{ required: true, message: 'Please input your Blood Types!' }]}
           >
-            <Input onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
           </Form.Item>
 
           <Form.Item
             label="DESCRIPTION"
             name='blood_description'
           >
-            <TextArea rows={4} onChange={this.onDisable}/>
+            <TextArea style={{ textTransform: 'uppercase'}} rows={4} onChange={this.onDisable}/>
           </Form.Item>
         <section className="drawerFooter">
           <Button shape="round" style={{ marginRight: 8, width: 120 }} 
