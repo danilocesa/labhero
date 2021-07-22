@@ -85,7 +85,7 @@ class SelectTable extends React.Component {
 
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
-    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
+    // console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 				key: selectedExam.examID,
@@ -126,6 +126,7 @@ class SelectTable extends React.Component {
 			<div className="select-step-table">
 				<AntTable
 					size={GLOBAL_TABLE_SIZE}
+					// @ts-ignore
 					columns={TableCols}
 					pagination={false}
 					dataSource={TableData}
