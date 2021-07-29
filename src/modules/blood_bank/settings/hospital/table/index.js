@@ -16,10 +16,12 @@ const columns = [
     dataIndex: 'hospital_id',
     sorter: (a, b) => a.hospital_id - b.hospital_id,
   },
+  
   {
     title: 'HOSPITAL',
     dataIndex: 'hospital_name',
   },
+
   {
     title: 'LOCATION',
     dataIndex: 'hospital_location',

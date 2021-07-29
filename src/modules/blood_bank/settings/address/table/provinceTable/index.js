@@ -26,7 +26,7 @@ export default class ProvinceTable extends Component {
 		super(props);
 		this.state = { 
       visible: false,
-      ProvinceItems:[]
+      ProvinceItems:[],
     }
 	}
 
@@ -35,7 +35,8 @@ export default class ProvinceTable extends Component {
 		const response = await fetchProvinceItems();
     this.setState({ 
       ProvinceItems:response,
-      usersRef:response
+      usersRef:response,
+      pagination: response.length,
 		});
 	}
 
@@ -88,6 +89,14 @@ export default class ProvinceTable extends Component {
 		});
 	}
 
+  handleChange = (value) =>{
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+  }
+
   render() {
     const { 
       visible,
@@ -95,14 +104,15 @@ export default class ProvinceTable extends Component {
       buttonNames,
       ProvinceItems,
       selecetedData,
+      pagination,
     } = this.state
 
     return (
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Search style={{ width: 200 }}
-                    placeholder="Search By Province"
+            <Search style={{ width: 215 }}
+                    placeholder="SEARCH BY PROVINCE"
                     allowClear
                     onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
@@ -119,12 +129,13 @@ export default class ProvinceTable extends Component {
             >
               ADD PROVINCE
             </Button >
-            <TablePager/>
+            <TablePager handleChange={this.handleChange}/>
           </Col>
 				</Row>
         <Table  
           dataSource={ProvinceItems} 
           columns={columns} 
+          pagination={pagination}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {

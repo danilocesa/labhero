@@ -20,10 +20,10 @@ export default class Address extends Component {
     return (
       <div>
         <section style={{ textAlign: 'center', marginTop: 5 }}>
-          <Select style={{ width: 300 }} onChange={this.onAddressChange}>
-            <Option value="Barangay">Barangay</Option>
-            <Option value="Province">Province</Option>
-            <Option value="City">City</Option>
+          <Select style={{ width: 300 }} onChange={this.onAddressChange} placeholder="PLEASE SELECT AN ITEM">
+            <Option value="Province">PROVINCE</Option>
+            <Option value="City">CITY</Option>
+            <Option value="Barangay">BARANGAY</Option>
           </Select>
 				</section>
         {
