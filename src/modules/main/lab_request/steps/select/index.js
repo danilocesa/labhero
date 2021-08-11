@@ -330,7 +330,7 @@ class SelectStep extends React.Component {
 					panelName: selectedPanel.panelName,
 					panelCode: selectedPanel.panelCode,
 				},
-				isDisabled: true
+				// isDisabled: true
 			});
 			
 			// Append selectedContents into one array
@@ -512,7 +512,7 @@ class SelectStep extends React.Component {
 		const { restriction } = this;
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
-		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
+		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create === true ? true && selectedExams.length === 0 : true   ;
 
 		if(restriction.hasAccess) {
 			return (

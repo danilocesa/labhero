@@ -69,12 +69,9 @@ class Actions extends React.Component {
 					action
 				});
 
-				// console.log(savedResults)
-
 				this.setState({ isApproving: false }, () => {
 					if(savedResults) {
 						onSaveSuccess();
-						
 						Message.success({ message: `Result have successfully ${action.toLowerCase()}.` });
 					}
 				});

@@ -46,20 +46,15 @@ function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   useEffect(() => {
     async function getData() {
       const form = formRef.current;
-      
       const inventory = await getInventoryById(inventoryID.blood_inventory_id);
-
       if(form)
         form.setFieldsValue({
           ...inventory,
           date_expiry: moment(inventory.expiration_date).format('MM/DD/YYYY HH:mm:ss'),
         });
     }
-
     if(inventoryID)
       getData();
-
-    console.log('use effect has run');
   }, [inventoryID]);
   
 

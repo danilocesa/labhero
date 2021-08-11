@@ -85,13 +85,12 @@ class SelectTable extends React.Component {
 
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
-    console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 				key: selectedExam.examID,
 				...selectedExam,
 				// CONDITION IN BUTTON if to show or not to show
-				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID )
+				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID  )
 				?  
 					<>
 					 	{ selectedExam.selectedPanel // CONFIRMATION AND NO CONFIRMATION 
@@ -122,6 +121,7 @@ class SelectTable extends React.Component {
 			}
 		));
 
+    console.log("🚀 ~ file: index.js ~ line 122 ~ SelectTable ~ render ~ TableData", TableData)
 		return (
 			<div className="select-step-table">
 				<AntTable

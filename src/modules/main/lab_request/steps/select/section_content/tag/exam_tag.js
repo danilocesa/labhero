@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Tag from './tag';
+import { 	LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants'; 
 
 class ExamTag extends React.Component {
+	
 	handleChange = (checked) => {
+		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 		const { 
 			examName, 
 			examID, 
@@ -22,7 +25,7 @@ class ExamTag extends React.Component {
 		if(checked) 
 			addSelectedExamByExam({ examID, examName, examCode, contents });
 		else 
-			removeSelectedExamByExam({ examID });
+			console.log( reqType ===  "create" ? removeSelectedExamByExam({ examID }) : null )
 	};
 
 	render() {

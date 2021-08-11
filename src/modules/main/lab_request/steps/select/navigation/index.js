@@ -45,34 +45,37 @@ class Navigation extends React.Component {
 
 		return (
 			<Row style={{ marginTop: 20 }}>
-				<Col span={16} offset={17}>
-					<Link to={dynamicLink}>
-						<Text>
-							<u>BACK</u>
-						</Text>
-					</Link>
-					<Button 
-						className="nav-btn-round" 
-						type="primary" 
-						style={{ marginLeft: 10 }}
-						disabled={disabled}
-						onClick={this.onClickNext}
-					>
-						NEXT STEP
-					</Button>
-					{
-						sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.edit 
-						? 	
-							<Button 
-								className="nav-btn-round" 
-								type="primary" 
-								style={{ marginLeft: 10, width:150 }}
-							>
-								CANCEL REQUEST
-							</Button>
-							:
-								null
-					}
+				<Col>
+					<div style={{flexDirection: 'row'}}>
+						<Link to={dynamicLink} style={{ marginLeft: 'auto' }}>
+							<Text>
+								<u>BACK</u>
+							</Text>
+						</Link>
+						<Button 
+							className="nav-btn-round" 
+							type="primary" 
+							style={{ marginLeft: 'auto' }}
+							disabled={disabled}
+							onClick={this.onClickNext}
+						>
+							NEXT STEP
+						</Button>
+					</div>
+						{
+							sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.edit 
+							? 	
+								<Button 
+									className="nav-btn-round" 
+									type="primary" 
+									style={{ marginLeft: 10, width:150,float: 'right' }}
+									
+								>
+									CANCEL REQUEST
+								</Button>
+								:
+									null
+						}
 				</Col>
 			</Row>
 		);

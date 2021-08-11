@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import { fetchCityAllItems, fetchBarangayItems } from 'services/blood_bank/address'  
+import fetchProvinceItems , { fetchCityItems, fetchBarangayItems }   from 'services/blood_bank/address'  
 import BarangayForm from '../barangayForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer, Select  } from 'antd';
+import { tickStep } from 'd3-array';
+import { Point } from 'bizcharts';
 
 const { Search } = Input;
+const { Option } = Select;
 
 const columns = [
   {
@@ -28,15 +31,17 @@ export default class BarangayTable extends Component {
 		this.state = { 
       visible: false,
       CityItems:[],
+      ProvinceItems:[],
       BarangayItem:[],
       buttonDisable:true
     }
 	}
 
   async componentDidMount() {
-		const response = await fetchCityAllItems();
+    const response = await fetchProvinceItems();
+		// const response = await fetchCityAllItems();
     this.setState({ 
-      CityItems:response,
+      ProvinceItems:response,
 		});
 	}
 
@@ -73,6 +78,21 @@ export default class BarangayTable extends Component {
       buttonNames:"ADD"
 		});
 	}
+
+  handleChange = async (ProvinceId) => {
+    const response = await fetchCityItems(ProvinceId);
+    this.setState({
+			CityItems: response
+		});
+  }
+
+  BarangayhandleChange = async (Cityid) => {
+    const response = await fetchBarangayItems(Cityid)
+    this.setState({
+      TableData : response
+    })
+  }
+
   
   render() {
     const { 
@@ -80,68 +100,39 @@ export default class BarangayTable extends Component {
       visible,
       drawerTitle, 
       buttonNames,
+      ProvinceItems,
       CityItems,
       BarangayItem,
       cityId,
       selecetedData,
       buttonDisable
     } = this.state
-    console.log(cityId)
-    const CitymappedData = CityItems.map((item) => {
+
+    const ProvincemappedData = ProvinceItems.map((item) => {
       return (
-        <option value={[item.city_name,item.city_id,item.province_id]} >
+        <Option value={item.province_id} >
+          {item.province_name}
+        </Option>
+      )
+    });
+
+    const CityMappedData = CityItems.map((item) => {
+      return (
+        <Option value={item.city_id} >
           {item.city_name}
-        </option>
+        </Option>
       )
     });
 
     return (
       <div>
-        <Row style={{ marginBottom: 10 }}>
-          <Col span={12} >
-            <Select style={{ width: 120 }}  onChange={this.onChange}>
-              {CitymappedData}
-            </Select>
-            <Search style={{ width: 200 }}/>
-          </Col>
-          <Col span={12} style={{ textAlign: 'right' }}>
-            <Button 
-              disabled={buttonDisable}
-              type="primary" 
-              shape="round" 
-              onClick={this.showDrawer}
-              style={{ marginRight: '15px' }} 
-              icon={<PlusOutlined />}
-            >
-              ADD BARANGAY
-            </Button >
-            <TablePager/>
-          </Col>
-				</Row>
-        <Table  
-          dataSource={BarangayItem} 
-          columns={columns} 
-          onRow={(record) => {
-            return {     
-              onDoubleClick: () => {
-                this.displayDrawer(record);
-              }
-            }
-          }}/>
-        <Drawer
-          title={drawerTitle}
-          width="30%"
-          visible={visible}
-          onClose={this.onDrawerClose}
-          destroyOnClose
-        >
-        <BarangayForm  
-          buttonNames={buttonNames} 
-          cityId={cityId} 
-          selecetedData={selecetedData}
-          provinceId={provinceId}
-        />
-        </Drawer>
+        <Select placeholder="Province" style={{ width: 120 }} onChange={this.handleChange}>
+          {ProvincemappedData}
+        </Select>
+        <Select placeholder="City" style={{ width: 120 }} onChange={this.BarangayhandleChange}>
+          {CityMappedData}
+        </Select>
+        
       </div>
     )
   }

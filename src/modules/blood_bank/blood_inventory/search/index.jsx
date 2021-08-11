@@ -1,32 +1,23 @@
 
-import React, { useEffect, useState } from 'react';
-import { Drawer, message, Tabs } from 'antd';
-import PageTitle from 'shared_components/page_title';
-import SearchPager from 'shared_components/search_pager';
-import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI, tabSearch } from 'services/blood_inventory/blood_inventory';
-import {fetchBloodComponents} from 'services/blood_inventory/blood_components'
-import SearchForm from './searchForm';
-import BloodInventoryDetailsForm from "../item_detail";
 import SearchTable from './table';
-import {
-  tableSize,
-  buttonLabels,
-  tableYScroll,
-  tablePageSize,
-} from "modules/inventory/settings/settings";
+import SearchForm from './searchForm';
+import { Drawer, message, Tabs } from 'antd';
+import React, { useEffect, useState } from 'react';
+import PageTitle from 'shared_components/page_title';
+import BloodInventoryDetailsForm from "../item_detail";
+import SearchPager from 'shared_components/search_pager';
+import {  tablePageSize } from "modules/inventory/settings/settings";
+import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI, tabSearch } from 'services/blood_inventory/blood_inventory';
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
-  console.log("🚀 ~ file: index.jsx ~ line 20 ~ SearchBloodInventory ~ state", state)
+  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
-  const [BloodComponents, setBloodComponents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [visibleDrawer, setvisibleDrawer] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
-  const [cachedPayload, setCachedPayload] = useState(null);
-  const [bloodInventoryData, setBloodInventoryData] = useState(null);
-  const [key, setTabKey] = useState('1');
+  const [cachedPayload, setCachedPayload] = useState(null)
+  const [visibleDrawer, setvisibleDrawer] = useState(false);
   
   const { TabPane } = Tabs;
 
@@ -35,21 +26,6 @@ function SearchBloodInventory(props) {
     setvisibleDrawer(true);
   }
 
-  async function searchTab(payload) {
-    setLoading(true);
-    const bloodInventory = await tabSearch(payload.toString());
-    
-    setLoading(false);
-
-    if(bloodInventory.length > 0) {
-      setData(bloodInventory);
-      setCachedPayload(payload);
-    }
-    else {
-      setData([]);
-      message.info('No result found');
-    }
-  }
 
   async function refreshTableData() {
     await search(cachedPayload);
@@ -61,9 +37,7 @@ function SearchBloodInventory(props) {
   ) 
 
   async function fetchData() {
-    const Data = {...state , blood_product_code:'WB'}
-    const apiResponseBloodComponents = await fetchBloodComponents();
-    setBloodComponents(apiResponseBloodComponents)
+    const Data = {...state }
 
     if (state.is_nearExpiry === false) {
       const bloodInventory = await searchInventoryAvailableAPI(Data);
@@ -96,7 +70,7 @@ function SearchBloodInventory(props) {
   }
 
   async function tabOnChange(key) {
-    state.blood_product_code = key
+    state.blood_comp_code = key
     const bloodInventory = await searchInventoryAvailableAPI(state);
     if(bloodInventory.length > 0) {
       setData(bloodInventory);
@@ -114,13 +88,9 @@ function SearchBloodInventory(props) {
   };
 
 
-  const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
-    <TabPane
-      tab={item.blood_comp_name}
-      key={item.blood_comp_code}
-    >
-    </TabPane>
-  ));
+  // const TabPanes = BloodComponents === undefined ? null : BloodComponents.map((item, index) => (
+  //   <TabPane tab={item.blood_comp_name} key={item.blood_comp_code} />
+  // ));
 
   return (  
     <div>
@@ -131,10 +101,9 @@ function SearchBloodInventory(props) {
         pageSize={tablePageSize}
         handleChangeSize={handleSelectChange}
       />
-      {/* state.actionType === 'ManualSearch' ? 1 : */}
       <Tabs 
         onChange={tabOnChange}
-        defaultActiveKey = { state.TabKey }
+        defaultActiveKey = {  state.blood_comp_code }
       >
         <TabPane
           tab="Whole Blood"

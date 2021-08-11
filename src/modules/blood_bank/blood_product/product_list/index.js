@@ -1,13 +1,13 @@
 
 import React from 'react';
-import PageTitle from 'shared_components/page_title';
 import { Tabs } from 'antd';
-import TablePager from 'shared_components/search_pager';
 import FormSearch from './form'
 import ProductListTable from './table';
-import {fetchBloodTypes} from 'services/blood_bank/blood_types'
-import {fetchBloodComponents} from 'services/blood_inventory/blood_components'
-import {fetchBloodStorageForLov} from 'services/blood_inventory/blood_storage'
+import PageTitle from 'shared_components/page_title';
+import TablePager from 'shared_components/search_pager';
+import { fetchBloodTypes } from 'services/blood_bank/blood_types'
+import { fetchBloodComponents } from 'services/blood_inventory/blood_components'
+import { fetchBloodStorageForLov } from 'services/blood_inventory/blood_storage'
 import { fetchBloodProessingSearch } from 'services/blood_inventory/blood_processing'
 
 const { TabPane } = Tabs;
@@ -50,7 +50,8 @@ class ProductList extends React.Component {
   onFinish = (DataFromForm, payload) => {
     this.setState({ 
       Data: DataFromForm.results, 
-      PayloadFromForm: payload
+      PayloadFromForm: payload,
+      Count: DataFromForm.count
     });
   }
 
@@ -62,11 +63,12 @@ class ProductList extends React.Component {
   render() {
     const { 
       Data,
+      Count,
       bloodTypesList, 
       bloodStorageList, 
       bloodComponentsList,  
     } = this.state
-    
+     
     const TabPanes = bloodComponentsList === undefined ? null : bloodComponentsList.map((item) => (
       <TabPane tab={item.blood_comp_name} key={item.blood_comp_code} />
     ));
@@ -81,8 +83,8 @@ class ProductList extends React.Component {
         />
         <TablePager 
           handleChangeSize={null}
-          pageSize={5}
-          pageTotal={5}
+          pageSize={Count === undefined ? 0 : Count}
+          pageTotal={Count === undefined ? 0 : Count}
         />
         <Tabs 
           onChange={this.tabOnChange}
