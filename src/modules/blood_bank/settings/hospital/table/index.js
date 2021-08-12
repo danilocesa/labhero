@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { PlusOutlined } from '@ant-design/icons';
-import HopitalForm from '../hospitalForm'
-import { getHospitalList } from 'services/blood_bank/hospital';
+import HospitalForm from '../hospitalForm'
+import {getHospitalList} from 'services/blood_bank/hospital';
 // import getHospitalList from 'services/blood_bank/hospital';
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer } from 'antd';
@@ -14,11 +14,14 @@ const columns = [
   {
     title: 'HOSPITAL ID',
     dataIndex: 'hospital_id',
+    sorter: (a, b) => a.hospital_id - b.hospital_id,
   },
+  
   {
     title: 'HOSPITAL',
     dataIndex: 'hospital_name',
   },
+
   {
     title: 'LOCATION',
     dataIndex: 'hospital_location',
@@ -26,11 +29,11 @@ const columns = [
   
 ];
 
-export default class HopitalTable extends Component {
+class HospitalTable extends React.Component {
   constructor(props) {
 		super(props);
 		this.state = { 
-      isDrawerVisible	: false,
+      isDrawerVisible: false,
       HospitalList: [],
       actionType:'add',
 			drawerTitle: '',
@@ -43,10 +46,10 @@ export default class HopitalTable extends Component {
   async componentDidMount() {
 		this.setState({loading:true});
 		const response = await getHospitalList();
-		console.log("Data:",response)
+		
 		this.setState({ 
 			HospitalList: response,
-			usersRef:response,
+			usersRef: response,
 			pagination: response.length,
 			loading:false
 		});
@@ -61,7 +64,7 @@ export default class HopitalTable extends Component {
   showDrawer = (record) => {
 		this.setState({
       isDrawerVisible: true,
-			drawerTitle: "ADD HOPITAL",
+			drawerTitle: "ADD HOSPITAL",
       drawerButton:"ADD",
       actionType : 'add',
       selectedData: record
@@ -72,7 +75,7 @@ export default class HopitalTable extends Component {
   displayDrawerUpdate = (record) => {
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle: "UPDATE HOPITAL",
+			drawerTitle: "UPDATE HOSPITAL",
       drawerButton:"UPDATE",
       actionType:'update',
       selectedData:record,
@@ -173,10 +176,10 @@ export default class HopitalTable extends Component {
           title={drawerTitle}
           width="30%"
           visible={isDrawerVisible}
-          onClose={this.onDrawerClose}
+          onClose={this.onClose}
           destroyOnClose
         >
-          <HopitalForm  
+          <HospitalForm  
           selectedData={selectedData}
           actionType={actionType}
           drawerButton={drawerButton} 
@@ -189,3 +192,6 @@ export default class HopitalTable extends Component {
     )
   }
 }
+
+
+export default HospitalTable;

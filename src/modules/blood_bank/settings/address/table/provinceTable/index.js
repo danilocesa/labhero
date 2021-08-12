@@ -1,39 +1,123 @@
-import React , { useState } from 'react'
-import { Button } from 'antd';
-import { Document, Page, pdfjs } from 'react-pdf';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
+import HttpCodeMessage from 'shared_components/message_http_status'
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
+import { messagePrompts } from '../settings'
 
-export default function ProvinceTable({})  {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+export default class ProvinceForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { disabled: true };
+	} 
 
-  const imageSrc = "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Lsyh5/R7cAoXs8GsdsC/ASYNkJAKZW5kc3RyZWFtCmVuZG9iago2IDAgb2JqCjw8L1RhYnMvUy9Hcm91cDw8L1MvVHJhbnNwYXJlbmN5L1R5cGUvR3JvdXAvQ1MvRGV2aWNlUkdCPj4vQ29udGVudHMgNyAwIFIvVHlwZS9QYWdlL1Jlc291cmNlczw8L0NvbG9yU3BhY2U8PC9DUy9EZXZpY2VSR0I+Pi9Qcm9jU2V0IFsvUERGIC9UZXh0IC9JbWFnZUIgL0ltYWdlQyAvSW1hZ2VJXS9Gb250PDwvRjEgMiAwIFIvRjIgMyAwIFI+Pj4+L1BhcmVudCA1IDAgUi9NZWRpYUJveFswIDAgNTk1IDg0Ml0+PgplbmRvYmoKOCAwIG9iagpbMSAwIFIvWFlaIDAgODUyIDBdCmVuZG9iago5IDAgb2JqCls2IDAgUi9YWVogMCA4NTIgMF0KZW5kb2JqCjIgMCBvYmoKPDwvU3VidHlwZS9UeXBlMS9UeXBlL0ZvbnQvQmFzZUZvbnQvSGVsdmV0aWNhL0VuY29kaW5nL1dpbkFuc2lFbmNvZGluZz4+CmVuZG9iagozIDAgb2JqCjw8L1N1YnR5cGUvVHlwZTEvVHlwZS9Gb250L0Jhc2VGb250L0hlbHZldGljYS1Cb2xkL0VuY29kaW5nL1dpbkFuc2lFbmNvZGluZz4+CmVuZG9iago1IDAgb2JqCjw8L0tpZHNbMSAwIFIgNiAwIFJdL1R5cGUvUGFnZXMvQ291bnQgMi9JVFhUKDIuMS43KT4+CmVuZG9iagoxMCAwIG9iago8PC9OYW1lc1soSlJfUEFHRV9BTkNIT1JfMF8xKSA4IDAgUihKUl9QQUdFX0FOQ0hPUl8wXzIpIDkgMCBSXT4+CmVuZG9iagoxMSAwIG9iago8PC9EZXN0cyAxMCAwIFI+PgplbmRvYmoKMTIgMCBvYmoKPDwvTmFtZXMgMTEgMCBSL1R5cGUvQ2F0YWxvZy9QYWdlcyA1IDAgUi9WaWV3ZXJQcmVmZXJlbmNlczw8L1ByaW50U2NhbGluZy9BcHBEZWZhdWx0Pj4+PgplbmRvYmoKMTMgMCBvYmoKPDwvTW9kRGF0ZShEOjIwMjEwNzI5MTQwNTA3KzA4JzAwJykvQ3JlYXRvcihKYXNwZXJSZXBvcnRzIExpYnJhcnkgdmVyc2lvbiA2LjYuMCkvQ3JlYXRpb25EYXRlKEQ6MjAyMTA3MjkxNDA1MDcrMDgnMDAnKS9Qcm9kdWNlcihpVGV4dCAyLjEuNyBieSAxVDNYVCk+PgplbmRvYmoKeHJlZgowIDE0CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMTYxNyAwMDAwMCBuIAowMDAwMDAzMDU4IDAwMDAwIG4gCjAwMDAwMDMxNDYgMDAwMDAgbiAKMDAwMDAwMDAxNSAwMDAwMCBuIAowMDAwMDAzMjM5IDAwMDAwIG4gCjAwMDAwMDI3MzggMDAwMDAgbiAKMDAwMDAwMTg2NyAwMDAwMCBuIAowMDAwMDAyOTg4IDAwMDAwIG4gCjAwMDAwMDMwMjMgMDAwMDAgbiAKMDAwMDAwMzMwOCAwMDAwMCBuIAowMDAwMDAzMzg5IDAwMDAwIG4gCjAwMDAwMDM0MjMgMDAwMDAgbiAKMDAwMDAwMzUyOCAwMDAwMCBuIAp0cmFpbGVyCjw8L0luZm8gMTMgMCBSL0lEIFs8NmIyMDJiZjNlNmU4MGZiN2I4OGM0ZGMyN2RhMzdlMTE+PDVhMWNiZmEyMjhiMzYyNDYxNDczYjcyNzBiYTkyOTFhPl0vUm9vdCAxMiAwIFIvU2l6ZSAxND4+CnN0YXJ0eHJlZgozNjk2CiUlRU9GCg=="
-  
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
+  onFinish = async (values) => {
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+		const { buttonNames, selecetedData } = this.props;
+    
+    const payload = {
+			province_name :values.Province,
+      province_code:values.Province_code,
+      created_by:loggedinUser.userID,
+      province_id:selecetedData.province_id,
+      is_active: (values.is_active === true) ? 1 : 0,
+		};
+		if(buttonNames === "ADD"){
+			const createdProvinceResponse = await createProvinceItems(payload);
+			// @ts-ignore
+			if(createdProvinceResponse.status === 201){
+				const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: createdProvinceResponse.status,	
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);	
+			}	
+		}
+		else {
+			payload.province_id = selecetedData.province_id;
+  		const updateProvinceResponse =  await updateProvinceItems(payload)
+			// @ts-ignore)
+			if(updateProvinceResponse.status === 200){
+				const httpMessageConfig = {
+					message: messagePrompts.successUpdateUser,
+					// @ts-ignore
+					status: updateProvinceResponse.status,
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);
+			}
+		}
+	};
+
+  onDisable = () => {
+    this.setState({ disabled:false })
   }
 
-  function onNextPage() {
-    setPageNumber(pageNumber+1);
-  }
+  render() {
+    const { disabled } = this.state
+    const { buttonNames, selecetedData } = this.props
 
-  
-  function onBackPage() {
-    setPageNumber(pageNumber-1);
-  }
-
-  return (
+    return (
       <div>
-        <Document
-          file={`data:application/pdf;base64,${imageSrc}`}
-          onLoadSuccess={onDocumentLoadSuccess}
+        <Form 
+          layout="vertical"
+          onFinish={this.onFinish}
+          initialValues={{ 
+						Province:selecetedData.province_name,
+            Province_code:selecetedData.province_code,
+            is_active:selecetedData.is_active === true 
+					}}
         >
-          
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <Button type="primary" onClick={onBackPage}>Back Page</Button>
-        <Button type="primary" onClick={onNextPage}>Next Page</Button>
-        <p>Page {pageNumber} of {numPages}</p>
+          {
+            buttonNames === "UPDATE"? (		
+							<Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
+						)	
+						:
+						null
+					}
+          <Form.Item
+            label="PROVINCE"
+            name="Province"
+            rules={[{ required: true, message: 'PLEASE INPUT YOUR PROVINCE!' }]}
+          >
+            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+          </Form.Item>
+          <section className="drawerFooter">
+            <Button 
+              shape="round" 
+              style={{ marginRight: 8, width: 120 }} 
+              onClick={this.props.onClose}
+            >
+              CANCEL
+            </Button>
+            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+              {buttonNames}
+            </Button>
+				  </section>
+        </Form>
       </div>
     )
-  
+  }
+}
+
+ProvinceForm.propTypes = {
+	buttonNames: PropTypes.string.isRequired,
+  selecetedData:PropTypes.object.isRequired,
 }

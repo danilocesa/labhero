@@ -126,6 +126,7 @@ class SelectTable extends React.Component {
 			<div className="select-step-table">
 				<AntTable
 					size={GLOBAL_TABLE_SIZE}
+					// @ts-ignore
 					columns={TableCols}
 					pagination={false}
 					dataSource={TableData}

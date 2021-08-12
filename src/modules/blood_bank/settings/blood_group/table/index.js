@@ -8,7 +8,7 @@ import fetchbloodgroupitems from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
 
 // CUSTOM
-import { tableYScroll } from '../settings';
+//import { tableYScroll } from '../settings';
 import Form from '../add_form';
 
 const { Search } = Input;
@@ -18,7 +18,7 @@ const columns = [
 		dataIndex: 'blood_group',
 		key: '1',
 		width: 200,
-		sorter: (a, b) => a.blood_group_id - b.blood_group_id,
+		sorter: (a, b) => a.blood_type_id - b.blood_type_id,
 	},
 	{
 		title: 'DESCRIPTION',
@@ -37,10 +37,7 @@ class BloodGroupTable extends React.Component {
 			loading:false,
 			drawerButton: '',
 			selectedBloodGroup:{},
-			pagination: {
-				pageSize: 0,
-			},
-			pagination1:0
+			
 		}
 	}
 
@@ -110,10 +107,10 @@ class BloodGroupTable extends React.Component {
 	
 	handleSelectChange = (value) => {
 		// eslint-disable-next-line react/no-access-state-in-setstate
-		const pagination1 = {...this.state.pagination};
+		const pagination = {...this.state.pagination};
 		// eslint-disable-next-line radix
-		pagination1.pageSize = parseInt(value);
-		this.setState({ pagination1:pagination1 });
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
 	};
 
 	render() {
@@ -127,7 +124,7 @@ class BloodGroupTable extends React.Component {
 			actionType,
 			bloodgroupItem,
 			loading ,
-			pagination1
+		
 		} = this.state;
 		return(
 			<div>
@@ -157,7 +154,7 @@ class BloodGroupTable extends React.Component {
 					</Row>
 				</div>
 				<DndProvider backend={HTML5Backend}>
-				<div className="settings-user-table">
+				{/* <div className="settings-user-table">
 				{
 					pagination1 === 0
 					? 
@@ -166,6 +163,7 @@ class BloodGroupTable extends React.Component {
 								loading={loading}
 								dataSource={bloodgroupItem}
 								columns={columns} 
+								pagination={pagination}
 								//pagination={pagination}
 								rowKey={record => record.userID}
 								onRow={(record) => {
@@ -196,7 +194,20 @@ class BloodGroupTable extends React.Component {
 						)
 				}	
 				</div>    
-				{/* DRAWER */}
+				DRAWER */}
+				<Table 
+          loading={loading}
+          style={{marginTop:10}}
+          dataSource={bloodgroupItem} 
+          pagination={pagination}
+          columns={columns} 
+          rowKey={record => record.userID}
+          onRow={(record) => ({
+            onDoubleClick: () => { 
+              this.displayDrawerUpdate(record);
+            },
+          })}
+        />
 					<Drawer
 						title={drawerTitle}
 						width="30%"

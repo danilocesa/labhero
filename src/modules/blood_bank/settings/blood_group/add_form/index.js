@@ -1,6 +1,6 @@
 // LIBRARY
 import React from 'react'
-import {  Switch, Form, Input, Button} from 'antd'
+import {  Switch, Form, Input, Button, Col, Row} from 'antd'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
@@ -26,7 +26,7 @@ class BloodGroupForm extends React.Component {
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const { drawerButton, selectedBloodGroup } = this.props;
     	const payload = {
-			blood_type_id :selectedBloodGroup.blood_type_id,
+			blood_type_id : selectedBloodGroup.blood_type_id,
 			blood_group :values.blood_group,
 			blood_type: values.blood_type,
 			blood_desc : values.blood_description,
@@ -90,13 +90,21 @@ class BloodGroupForm extends React.Component {
 						drawerButton == "UPDATE" 
 						? 
 							(		
-								<Form.Item 
-									label="ACTIVE" 
-									name='is_active'
-									valuePropName='checked'
-								>
-									<Switch onChange={this.onDisable}/>
-								</Form.Item>
+								
+								<Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
+	
 							)	
 						:
 							null
@@ -119,7 +127,7 @@ class BloodGroupForm extends React.Component {
 						label="DESCRIPTION" 
 						name='blood_description'
 					>
-						<TextArea rows={5} onChange={this.onDisable}/>
+						<TextArea style={{ textTransform: 'uppercase'}} rows={5} onChange={this.onDisable}/>
 					</Form.Item>
 					<section className="drawerFooter">
 						<Button 

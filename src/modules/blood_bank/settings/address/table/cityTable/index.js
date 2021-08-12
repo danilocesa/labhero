@@ -12,10 +12,10 @@ const columns = [
     title: 'CITY',
     dataIndex: 'city_name',
   },
-  {
-    title: 'CITY CODE',
-    dataIndex: 'city_code',
-  }
+  // {
+  //   title: 'CITY CODE',
+  //   dataIndex: 'city_code',
+  // }
 ];
 
 export default class CityTable extends Component {
@@ -33,19 +33,47 @@ export default class CityTable extends Component {
 		this.setState({loading:true});
 		const response = await fetchProvinceItems();
     this.setState({ 
-      ProvinceItems:response
+      ProvinceItems:response,
+      pagination: response.length,
 		});
 	}
 
   onChange = async (value) => { 
     const CityResponse =  await fetchCityItems(value);
     this.setState({ 
-      CityusersRef:CityResponse,
+      usersRef:CityResponse,
       CityItem:CityResponse,
-      Province:value,
+      //Province:value,
       buttonDisable:false
     }) 
 	}
+
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { city_name } = item;
+			return (
+				this.containsString(city_name, searchedVal)
+			);
+		});
+		this.setState({ 
+			CityItem: filtered 
+		});
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ CityItem: usersRef });
+	};
+
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
+
 
   displayDrawer = (record) => {
 		this.setState({
@@ -69,6 +97,14 @@ export default class CityTable extends Component {
 		});
 	}
 
+  handleChange = (value) =>{
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+  }
+
   render() {
     const { 
       visible,
@@ -77,8 +113,10 @@ export default class CityTable extends Component {
       ProvinceItems,
       CityItem,
       selecetedData,
-      Province,
-      buttonDisable
+      //Province,
+      buttonDisable,
+      pagination,
+
     } = this.state
 
     const ProvincemappedData = ProvinceItems.map((item) => {
@@ -93,10 +131,17 @@ export default class CityTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Select style={{ width: 200 }} onChange={this.onChange}>
+            <Select style={{ width: 220 }} placeholder="PLEASE SELECT A PROVINCE" onChange={this.onChange}>
               {ProvincemappedData}
             </Select>
-            <Search style={{ width: 200, marginLeft:20 }}/>
+            <Search style={{ width: 200, marginLeft:20 }}
+                    placeholder="SEARCH BY CITY"
+                    disabled={buttonDisable}
+                    allowClear
+                    onSearch={(value) => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+            
+            />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button 
@@ -109,12 +154,13 @@ export default class CityTable extends Component {
             >
               ADD CITY
             </Button >
-            <TablePager/>
+            <TablePager handleChange={this.handleChange}/>
           </Col>
 				</Row>
         <Table  
           dataSource={CityItem} 
           columns={columns} 
+          pagination={pagination}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
@@ -131,7 +177,7 @@ export default class CityTable extends Component {
         >
           <CityForm  
             buttonNames={buttonNames} 
-            Province={Province} 
+            //Province={Province} 
             selecetedData={selecetedData}
           />
         </Drawer>

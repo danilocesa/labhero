@@ -1,28 +1,25 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import fetchProvinceItems , { fetchCityItems, fetchBarangayItems }   from 'services/blood_bank/address'  
+import fetchProvinceItems, { fetchBarangayItems, fetchCityItems } from 'services/blood_bank/address'  
 import BarangayForm from '../barangayForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer, Select  } from 'antd';
-import { tickStep } from 'd3-array';
-import { Point } from 'bizcharts';
 
 const { Search } = Input;
-const { Option } = Select;
 
 const columns = [
   {
     title: 'BARANGAY',
     dataIndex: 'barangay_name',
   },
-  {
-    title: 'CITY',
-    dataIndex: 'city_name',
-  },
-  {
-    title: 'PROVINCE',
-    dataIndex: 'province_name',
-  }
+  // {
+  //   title: 'CITY',
+  //   dataIndex: 'city_name',
+  // },
+  // {
+  //   title: 'PROVINCE',
+  //   dataIndex: 'province_name',
+  // }
 ];
 
 export default class BarangayTable extends Component {
@@ -30,32 +27,65 @@ export default class BarangayTable extends Component {
 		super(props);
 		this.state = { 
       visible: false,
-      CityItems:[],
       ProvinceItems:[],
+      CityItems:[],
       BarangayItem:[],
       buttonDisable:true
     }
 	}
 
   async componentDidMount() {
-    const response = await fetchProvinceItems();
-		// const response = await fetchCityAllItems();
+    const apiresponse = await fetchProvinceItems();
     this.setState({ 
-      ProvinceItems:response,
+      ProvinceItems:apiresponse,
+      pagination: apiresponse.length,
 		});
 	}
 
-  onChange = async (value) => { 
-    const cityId = value[1]
-    const provinceId = value[2]
-    const BarangayResponse =  await fetchBarangayItems(cityId);
+  onChange = async (provinceId) => { 
+    const CityResponse =  await fetchCityItems(provinceId);
     this.setState({ 
-      BarangayItem:BarangayResponse,
-      cityId,
-      provinceId,
+      CityItems:CityResponse,
       buttonDisable:false
     }) 
 	}
+
+  onChangeBarangay = async (cityId) => { 
+
+    const BarangayResponse =  await fetchBarangayItems(cityId);
+    this.setState({ 
+      BarangayItem:BarangayResponse,
+      usersRef:BarangayResponse,
+      buttonDisable:false
+    }) 
+	}
+
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
+
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { barangay_name } = item;
+			return (
+				this.containsString(barangay_name, searchedVal)
+			);
+		});
+		this.setState({ 
+			BarangayItem: filtered 
+		});
+	};
+
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ BarangayItem: usersRef });
+	};
+
+	containsString = (searchFrom, searchedVal) => {
+		if (searchFrom === null || searchFrom === "") return false;
+		return searchFrom.toString().toLowerCase().includes(searchedVal);
+	};
+
 
   displayDrawer = (record) => {
 		this.setState({
@@ -78,61 +108,115 @@ export default class BarangayTable extends Component {
       buttonNames:"ADD"
 		});
 	}
-
-  handleChange = async (ProvinceId) => {
-    const response = await fetchCityItems(ProvinceId);
-    this.setState({
-			CityItems: response
-		});
-  }
-
-  BarangayhandleChange = async (Cityid) => {
-    const response = await fetchBarangayItems(Cityid)
-    this.setState({
-      TableData : response
-    })
-  }
-
   
+
+  handleChange = (value) =>{
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+  }
+
   render() {
     const { 
       provinceId,
       visible,
       drawerTitle, 
       buttonNames,
-      ProvinceItems,
       CityItems,
+      ProvinceItems,
       BarangayItem,
       cityId,
       selecetedData,
-      buttonDisable
+      buttonDisable,
+      pagination,
     } = this.state
+
 
     const ProvincemappedData = ProvinceItems.map((item) => {
       return (
-        <Option value={item.province_id} >
-          {item.province_name}
-        </Option>
+      <option value={item.province_id}>
+        {item.province_name}
+      </option>
       )
     });
 
-    const CityMappedData = CityItems.map((item) => {
+
+    console.log(cityId)
+    const CitymappedData = CityItems.map((item) => {
       return (
-        <Option value={item.city_id} >
+        <option value={item.city_id} >
           {item.city_name}
-        </Option>
+        </option>
       )
     });
+
+
+
 
     return (
       <div>
-        <Select placeholder="Province" style={{ width: 120 }} onChange={this.handleChange}>
-          {ProvincemappedData}
-        </Select>
-        <Select placeholder="City" style={{ width: 120 }} onChange={this.BarangayhandleChange}>
-          {CityMappedData}
-        </Select>
-        
+        <Row style={{marginTop:12, marginBottom: 12}}>
+          <Col span={9} >
+          <Select style={{ width: 218}} onChange={this.onChange} placeholder="PLEASE SELECT A PROVINCE">
+              {ProvincemappedData}
+            </Select>
+
+            <Select style={{ width: 200, marginLeft:28 }} disabled={buttonDisable} onChange={this.onChangeBarangay} placeholder="PLEASE SELECT A CITY">
+              {CitymappedData}
+            </Select>
+            
+            </Col> 
+          <Col span={4}>
+          <Search style={{ width: 220, marginLeft:10}}
+                    placeholder="SEARCH BY BARANGAY"
+                    disabled={buttonDisable}
+                    allowClear
+                    onSearch={(value) => this.onSearch(value)}
+                    onChange={this.onChangeSearch}
+            />
+          </Col>
+          <Col span={11} style={{ textAlign: 'right' }}>
+            <Button 
+              disabled={buttonDisable}
+              type="primary" 
+              shape="round" 
+              onClick={this.showDrawer}
+              style={{ marginRight: '15px' }} 
+              icon={<PlusOutlined />}
+            >
+              ADD BARANGAY
+            </Button >
+            <TablePager handleChange={this.handleChange}/>
+          </Col>
+				</Row>
+        <Table  
+          dataSource={BarangayItem} 
+          columns={columns} 
+          pagination={pagination}
+          onRow={(record) => {
+            return {     
+              onDoubleClick: () => {
+                this.displayDrawer(record);
+              }
+            }
+          }}/>
+        <Drawer
+          title={drawerTitle}
+          width="30%"
+          visible={visible}
+          onClose={this.onDrawerClose}
+          destroyOnClose
+        >
+        <BarangayForm  
+          buttonNames={buttonNames} 
+          //cityId={cityId} 
+          //Province={Province} 
+          selecetedData={selecetedData}
+          provinceId={provinceId}
+        />
+        </Drawer>
       </div>
     )
   }

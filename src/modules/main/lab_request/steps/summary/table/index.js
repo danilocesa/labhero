@@ -11,6 +11,13 @@ const columns = [
 		title: 'PANEL',
 		dataIndex: ['selectedPanel', 'panelName'],
 		width: 200,
+		defaultSortOrder: 'ascend',
+		sorter: (a, b) => {
+			const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
+			const bPanelName = b.selectedPanel ? b.selectedPanel.panelName : '';
+				
+			return aPanelName.localeCompare(bPanelName);
+		},
 		// align: 'center',
 	},
 	{
@@ -103,6 +110,7 @@ class SummaryTable extends React.Component {
 						<Table 
 							size={GLOBAL_TABLE_SIZE}
 							dataSource={exams} 
+							// @ts-ignore
 							columns={columns} 
 							pagination={false}
 						/>

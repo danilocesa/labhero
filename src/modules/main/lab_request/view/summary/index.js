@@ -6,9 +6,12 @@ import { fetchExamsByReqId } from 'services/lab_request/labRequest';
 import PageTitle from 'shared_components/page_title';
 import SummarySection from './section';
 import SummaryTable from './table';
+import { Button } from 'antd';
+import { useHistory } from 'react-router-dom';
 
 function SummaryPage() {
   const location = useLocation();
+  const history = useHistory();
   const [exams, setExams] = useState([]);
   const [personalInfo, setPersonalInfo] = useState({
     givenName: '',
@@ -35,7 +38,9 @@ function SummaryPage() {
   
 
   useEffect(() => {
+    // @ts-ignore
     const sessOtherInfo = location.state.otherInfo;
+    // @ts-ignore
     const sessPersoInfo = location.state.persoInfo;
 
     async function setInitialValues() {
@@ -84,8 +89,6 @@ function SummaryPage() {
     }
   }, [otherInfo.requestID]);
 
-
-
   return (
     <div>
       <PageTitle pageTitle="REQUEST SUMMARY" />
@@ -94,6 +97,14 @@ function SummaryPage() {
         otherInfo={otherInfo}
       />
       <SummaryTable exams={exams} />
+      <Button 
+						className="nav-btn-round" 
+						type="primary" 
+						style={{ marginRight: 170,marginTop: 10, position: 'absolute', right: '0' }}
+						onClick={() => history.push('/request/view/search')}
+					>
+						BACK
+					</Button>
     </div>
   );
 }

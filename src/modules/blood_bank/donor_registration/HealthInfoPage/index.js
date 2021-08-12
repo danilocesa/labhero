@@ -39,8 +39,8 @@ class HealthInformation extends React.Component {
     const { health_info_id } = this.props.location.state;
     await this.getCategoryData();
 
-    if(health_info_id)
-      await this.fetchHealthInfo(health_info_id);
+    // if(health_info_id)
+    //   await this.fetchHealthInfo(health_info_id);
   }
 
   onFinish = async (formFields) => {
@@ -104,7 +104,6 @@ class HealthInformation extends React.Component {
 
   getCategoryData = async () => {
     const additionalFieldsData = await fetchAdditionalFields();
-    console.log("🚀 ~ file: index.js ~ line 108 ~ HealthInformation ~ getCategoryData= ~ additionalFieldsData", additionalFieldsData)
 
     if(additionalFieldsData.dynamic_fields.length > 0){
       this.setState({ 

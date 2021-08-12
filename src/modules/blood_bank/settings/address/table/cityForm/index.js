@@ -4,7 +4,7 @@ import HttpCodeMessage from 'shared_components/message_http_status'
 import { createCityItems, updateCityItems } from 'services/blood_bank/address'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { messagePrompts } from '../settings'
-import { Form, Input, Button, Switch } from 'antd';
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
 
 export default class CityForm extends Component {
   constructor(props) {
@@ -75,13 +75,19 @@ export default class CityForm extends Component {
       >
         { 
           buttonNames === "UPDATE"? (		
-            <Form.Item 
-              label="ACTIVE" 
-              name='is_active'
-              valuePropName='checked'
-            >
-              <Switch onChange={this.onDisable}/>
-            </Form.Item>
+            <Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
           )	
           :
           null
@@ -94,9 +100,9 @@ export default class CityForm extends Component {
             message: 'Please input your City!' 
           }]}
         >
-          <Input onChange={this.onDisable}/>
+          <Input style={{ textTransform: 'uppercase'}}  onChange={this.onDisable}/>
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="CITY CODE"
           name="city_code"
           rules={[{ 
@@ -105,7 +111,7 @@ export default class CityForm extends Component {
           }]}
         >
           <Input onChange={this.onDisable}/>
-        </Form.Item>
+        </Form.Item> */}
         <section className="drawerFooter">
           <Button 
             shape="round" 
