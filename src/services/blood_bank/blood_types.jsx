@@ -42,7 +42,6 @@ export default async function createBloodTypeAPI(payload) {
 	return createBloodTypes;
 }
 
-
 export async function updateBloodTypeAPI(payload) {
   let updateBloodType = [];
   const blood_type_id = payload.blood_type_id;
