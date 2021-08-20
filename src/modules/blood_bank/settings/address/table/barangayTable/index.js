@@ -159,22 +159,23 @@ export default class BarangayTable extends Component {
       <div>
         <Row style={{marginTop:12, marginBottom: 12}}>
           <Col span={9} >
-          <Select style={{ width: 218}} onChange={this.onChange} placeholder="PLEASE SELECT A PROVINCE">
+          <Select style={{ width: 218, textTransform:'uppercase' }} onChange={this.onChange} placeholder="PLEASE SELECT A PROVINCE">
               {ProvincemappedData}
             </Select>
 
-            <Select style={{ width: 200, marginLeft:28 }} disabled={buttonDisable} onChange={this.onChangeBarangay} placeholder="PLEASE SELECT A CITY">
+            <Select style={{ width: 200, marginLeft:28, textTransform:'uppercase'  }} disabled={buttonDisable} onChange={this.onChangeBarangay} placeholder="PLEASE SELECT A CITY">
               {CitymappedData}
             </Select>
             
             </Col> 
           <Col span={4}>
           <Search style={{ width: 220, marginLeft:10}}
-                    placeholder="SEARCH BY BARANGAY"
+                    placeholder="Search By Barangay"
                     disabled={buttonDisable}
                     allowClear
                     onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
+                    className="panel-table-search-input"
             />
           </Col>
           <Col span={11} style={{ textAlign: 'right' }}>
@@ -192,6 +193,7 @@ export default class BarangayTable extends Component {
           </Col>
 				</Row>
         <Table  
+          style={{textTransform:'uppercase'}}
           dataSource={BarangayItem} 
           columns={columns} 
           pagination={pagination}

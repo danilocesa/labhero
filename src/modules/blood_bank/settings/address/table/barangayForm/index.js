@@ -4,7 +4,7 @@ import HttpCodeMessage from 'shared_components/message_http_status'
 import PropTypes from 'prop-types'
 import { createBarangayItems, updateBarangayItems } from 'services/blood_bank/address'
 import { Form, Input, Button, Switch, Col, Row } from 'antd';
-import { messagePrompts } from '../settings'
+import { buttonLabels, messagePrompts } from '../settings'
 
 export default class BarangayForm extends Component {
   constructor(props) {
@@ -75,10 +75,11 @@ export default class BarangayForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
             barangay:selecetedData.barangay_name,
-            barangay_code:selecetedData.barangay_code,
+            
             is_active:selecetedData.is_active === true 
           }}
         >
+          {/* barangay_code:selecetedData.barangay_code, */}
           { 
             buttonNames === "UPDATE"? (		
               <Row >
@@ -106,7 +107,7 @@ export default class BarangayForm extends Component {
               message: 'PLEASE INPUT YOUR BARANGAY!'
             }]}
           >
-            <Input style={{ textTransform: 'uppercase'}}  onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
           {/* <Form.Item
             label="Barangay Code"
@@ -124,7 +125,7 @@ export default class BarangayForm extends Component {
               style={{ marginRight: 8, width: 120 }} 
               onClick={this.props.onClose}
             >
-              CANCEL
+              {buttonLabels.cancel}
             </Button>
             <Button 
               disabled={disabled} 

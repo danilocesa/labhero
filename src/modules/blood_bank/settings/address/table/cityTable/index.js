@@ -131,15 +131,16 @@ export default class CityTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Select style={{ width: 220 }} placeholder="PLEASE SELECT A PROVINCE" onChange={this.onChange}>
+            <Select style={{ width: 220, textTransform:'uppercase' }}  placeholder="PLEASE SELECT A PROVINCE" onChange={this.onChange}>
               {ProvincemappedData}
             </Select>
             <Search style={{ width: 200, marginLeft:20 }}
-                    placeholder="SEARCH BY CITY"
+                    placeholder="Search By City"
                     disabled={buttonDisable}
                     allowClear
                     onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
+                    className="panel-table-search-input"
             
             />
           </Col>
@@ -158,6 +159,7 @@ export default class CityTable extends Component {
           </Col>
 				</Row>
         <Table  
+          style={{textTransform:'uppercase'}}
           dataSource={CityItem} 
           columns={columns} 
           pagination={pagination}

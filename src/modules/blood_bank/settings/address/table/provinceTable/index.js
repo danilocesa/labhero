@@ -111,12 +111,12 @@ export default class ProvinceTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Search style={{ width: 215 }}
-                    placeholder="SEARCH BY PROVINCE"
+            <Search style={{ width: 215}}
+                    placeholder="Search By Province"
                     allowClear
                     onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
-            
+                    className="panel-table-search-input"
             />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
@@ -133,6 +133,7 @@ export default class ProvinceTable extends Component {
           </Col>
 				</Row>
         <Table  
+          style={{textTransform:'uppercase'}}
           dataSource={ProvinceItems} 
           columns={columns} 
           pagination={pagination}
