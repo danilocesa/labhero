@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-//import fetchBloodGroupItems from 'services/blood_bank/blood_group'
-import {fetchBloodTypes} from 'services/blood_bank/blood_types'
+import fetchBloodGroupItems from 'services/blood_bank/blood_group'
+//import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
-import { Table,Drawer,Row,Col,Button,Input,Select } from 'antd';
+import { Table,Drawer,Row,Col,Button,Input,Select} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Form from '../form'
-//import FormItem from 'antd/lib/form/FormItem';
-
+import { messagePrompts,} from '../settings';
 const { Search } = Input;
-const { Option } = Select;
 //const { Title } = Typography;
 
 
@@ -35,44 +33,50 @@ export default class BloodTypesTable extends Component {
 			this.state = {
 				drawerTitle:"",
         actionType:'add',
+        //loading:false,
 				isDrawerVisible	: false,
-        //Data: [],
+        Data: [],
         bloodtypeData:[],
         dropdownvalues:'',
         drawerButton:'',
+        //loading:false,
+        //tableData:[],
         AddButton:true,
         selectedBloodGroup:{},
         selectedBloodTypes:{},
         Searchbutton:true,
         disableddata:true,
-        Data: [{id: 1, 
-              blood_group: "A"} ,
-             {id: 2, blood_group: "B"},
-             {id: 3, blood_group: "AB"},
-             {id: 4, blood_group: "O"}],
+       // is_active:true,
+       // messageError = "",
+        
 			}
-      //this.handleChange = this.handleChange.bind(this)
 	}
 
-  // async componentDidMount(){
-  //   //this.setState({loading:true});
-  //    const apiResponseBloodType = await fetchBloodTypes(); 
-  //   this.setState({
-  //     //  Data: [{"id": 1, "blood_group": "A"},
-  //     //         {"id": 2, "blood_group": "B"},
-  //     //         {"id": 3, "blood_group": "AB"},
-  //     //         {"id": 4, "blood_group": "O"}],
-  //     pagination: apiResponseBloodType.length,
-  //   })
-  // }
+  async componentDidMount(){
+    //this.setState({loading:true});
+     const apiResponseBloodType = await fetchBloodGroupItems();
+    //this.setState({loading:true});
+    //const apiResponseBloodType = await fetchBloodTypes();
+
+    this.setState({
+     // loading:false,
+       Data:apiResponseBloodType,
+      //tableData:apiResponseBloodType,
+      pagination: apiResponseBloodType.length,
+      
+      
+      
+    
+    })
+  }
 
   showDrawer = (record) => {
+    //const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true ,
-			drawerTitle: `ADD BLOOD TYPE `, 
+			drawerTitle: `ADD BLOOD TYPE `, //${dropdownvalues}
 			drawerButton: "ADD",
       actionType : 'add',
-      Data : [],
       selectedBloodGroup: record,
       selectedBloodTypes: record,
 
@@ -81,10 +85,10 @@ export default class BloodTypesTable extends Component {
 
   displayDrawerUpdate = (record) => {
     console.log (record)
-    
+    //const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true,
-			drawerTitle:`UPDATE BLOOD TYPES `,
+			drawerTitle:`UPDATE BLOOD TYPES `, // ${dropdownvalues}
 			drawerButton: "UPDATE",
       actionType:'update',
       selectedBloodGroup:record,
@@ -94,55 +98,57 @@ export default class BloodTypesTable extends Component {
 		});
 	}
 
-  // onChangedata = async (value) => { 
-  //   const ResponseBloodType = await fetchBloodTypes(value)
-  //   this.setState({
+  // validate = () =>{
+    
+  //   let is_active = true;
+    
+  //   if (!is_active)
+  //  { return (messagePrompts.messageError)
+  // } else
+  //  { return false;
+  // }}
 
-  //     // dropdownvalues:[],
-  //     bloodtypeData:ResponseBloodType,
-  //     usersRef:[],
-  //    // blood_group:value,
-  //     AddButton:false,
-  //     Searchbutton:false,
-  //     disabledata:false,
-  //     //form:false,
-  //   }) 
-
-
-	// }
-
-  // handleChange(e) {
-  //   this.setState({obj: this.props.listOption[e.target.value].obj})
-  // }
-
-  // handleChange = (value) =>{
-  //   // eslint-disable-next-line react/no-access-state-in-setstate
-	// 	const pagination = {...this.state.pagination};
-	// 	// eslint-disable-next-line radix
-	// 	pagination.pageSize = parseInt(value);
-	// 	this.setState({ pagination });
-  // }
-
-  handleChange = async (value) =>{
-    //const ResponseBloodType = await fetchBloodGroupItems();
-    const ResponseBloodType = await fetchBloodTypes(value)
   
-    this.setState({
-     // Data:ResponseBloodType,
-       bloodtypeData:ResponseBloodType,
-       usersRef:[],
+  onChangedata = async (value) => { 
+    const ResponseBloodType = await fetchBloodGroupItems(value)
+   // const isactive = this.validate();
+    this.setState({ 
+      bloodtypeData:ResponseBloodType,
+      usersRef:ResponseBloodType,
       dropdownvalues:value,
       AddButton:false,
       Searchbutton:false,
-      disabledata:false,
-      pagination: ResponseBloodType.length,
-    })
+      disabledata:false
+    }) 
+
+    // if (!isactive){
+    //   console.log(this.state)
+    // }
+	}
+
+  handleChange = (value) =>{
     // eslint-disable-next-line react/no-access-state-in-setstate
 		const pagination = {...this.state.pagination};
 		// eslint-disable-next-line radix
 		pagination.pageSize = parseInt(value);
 		this.setState({ pagination });
   }
+
+  // handleChange = (value) =>{
+  //   //const ResponseBloodType = await fetchBloodGroupItems();
+  //   this.setState({
+  //    // Data:ResponseBloodType,
+  //     dropdownvalues:value,
+  //     AddButton:false,
+  //     Searchbutton:false,
+  //     disabledata:false
+  //   })
+  //   // eslint-disable-next-line react/no-access-state-in-setstate
+	// 	const pagination = {...this.state.pagination};
+	// 	// eslint-disable-next-line radix
+	// 	pagination.pageSize = parseInt(value);
+	// 	this.setState({ pagination });
+  // }
 
   onSearch = (value) => {
 		const searchedVal = value.toLowerCase();
@@ -183,13 +189,14 @@ export default class BloodTypesTable extends Component {
   } 
 
 
-
   render() {
     const {
       drawerTitle,
       isDrawerVisible,
       Data,
       drawerButton, 
+      //tableData,
+      //loading, 
       actionType,
       AddButton,
       dropdownvalues, 
@@ -197,14 +204,13 @@ export default class BloodTypesTable extends Component {
       selectedBloodTypes,
       selectedBloodGroup,
       Searchbutton,
-      bloodtypeData,
+      bloodtypeData
     } = this.state
-
-    const BloodGroupOption = Data.map((item, i ) => {
-      return ( 
-        <Option key={i} value={item.blood_group}> {item.blood_group}</Option>
-     
-      )
+    const BloodGroupOption = Data.map((item,i) => {
+      return (
+      <option 
+      key={i} value={  item.blood_group}>{item.blood_group}
+      </option>)
     });
 
     // const bloodtypeDatamapping = bloodtypeData.map((item,i) => {
@@ -215,25 +221,27 @@ export default class BloodTypesTable extends Component {
     //   )
     // });
 
+
     return (
       <div>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '8vh'}}>
+     
           <Row  gutter={[24, 8]}>
             <Col span={10} pull= {1}>
             <h4>BLOOD GROUP</h4>
             </Col>
             <Col span={12} pull= {2} >
-              <Select style={{ width: 155, textTransform: 'uppercase' }}
-            onChange={this.handleChange} placeholder="Blood Group">
+              <Select style={{ width: 155, textTransform: 'uppercase' }} onChange={this.onChangedata} placeholder="Blood Group">
                 {BloodGroupOption}
-                {/* <Option value="A">A</Option>
-                <Option value="AB">AB</Option>
-                <Option value="B">B</Option>
-                <Option value="0">O</Option> */}
+               
               </Select>
             </Col>
           </Row>
+          : 
+     
         </div>
+
+     
         <Row style={{marginTop:3}}>
           <Col span={12}>
             <Search
@@ -244,6 +252,7 @@ export default class BloodTypesTable extends Component {
 							onChange={this.onChangeSearch}
 							style={{ width: 300 }}
               disabled={Searchbutton}
+							//className="panel-table-search-input"
             />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
@@ -262,6 +271,8 @@ export default class BloodTypesTable extends Component {
         </Row>
         <DndProvider backend={HTML5Backend}>
         <Table 
+          
+          //loading={loading}
           style={{marginTop:10, textTransform: 'uppercase'}}
           dataSource={bloodtypeData} 
           columns={columns} 
@@ -272,12 +283,19 @@ export default class BloodTypesTable extends Component {
               this.displayDrawerUpdate(record);
             },
           })}
+          // onRow={(record) => {
+          //   return {     
+          //     onDoubleClick: () => {
+          //       this.displayDrawerUpdate(record);
+          //     }
+          //   }
+          // }}
         />
         <Drawer
           title={drawerTitle}
           visible={isDrawerVisible}
           onClose={this.onClose}
-          onDisable={this.onDisable}
+          onChange={this.onDisable}
           width="30%"
           destroyOnClose
 				>

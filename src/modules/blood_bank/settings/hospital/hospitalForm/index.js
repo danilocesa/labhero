@@ -106,18 +106,18 @@ class HospitalForm extends React.Component {
 							null
 					}
           <Form.Item
-            label="Hospital"
+            label="HOSPITAL"
             name= 'hospital_name'
             rules={[{ required: true, message: 'Please input your Hospital!' }]}
           >
-            <Input  style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+            <Input  style={{ textTransform: 'uppercase'}}  maxLength={50}  onChange={this.onDisable}/>
           </Form.Item>
           <Form.Item
-            label="Location"
+            label="LOCATION"
             name= 'hospital_location'
             rules={[{ required: true, message: 'Please input your Location!' }]}
           >
-            <TextArea  style={{ textTransform: 'uppercase'}} rows={4} onChange={this.onDisable}/>
+            <TextArea  style={{ textTransform: 'uppercase'}} rows={4} maxLength={500}  onChange={this.onDisable}/>
           </Form.Item>
 
           <section className="drawerFooter">
