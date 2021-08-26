@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { createCategoriesAPI , updateCategoriesAPI} from 'services/general_settings/categories';
-import { Switch, Form, Input, Button } from 'antd';
+import { Switch, Form, Input, Button, Col, Row } from 'antd';
 
 import { buttonLabels,messagePrompts } from '../settings';
 // CSS
 import './panel_form.css';
-
+import { RegexInput } from 'shared_components/pattern_input';
 const { TextArea } = Input;
 
   
@@ -85,13 +85,26 @@ class UserAccountForm extends React.Component {
 				>
 					{
 						drawerButton === "UPDATE"? (
-							<Form.Item 
-								label="ACTIVE" 
-								name='is_active'
-								valuePropName='checked'	
-							>	 
-								<Switch onChange={this.onDisable}/>
-							</Form.Item>
+							// <Form.Item 
+							// 	label="ACTIVE" 
+							// 	name='is_active'
+							// 	valuePropName='checked'	
+							// >	 
+							// 	<Switch onChange={this.onDisable}/>
+							// </Form.Item>
+							<Row >
+								<Col span={4}>	
+									<Form.Item >
+										<label >ACTIVE:</label> 	
+									</Form.Item>
+								</Col>
+
+								<Col span={6}>	
+									<Form.Item name='is_active' valuePropName='checked' >
+										<Switch onChange={this.onDisable}/>
+									 </Form.Item>
+								</Col>
+							</Row> 
 						)	
 						:
 							null
@@ -107,10 +120,17 @@ class UserAccountForm extends React.Component {
 							name='order'
 							rules={[{ required: true, message: 'Please input your Category Order!' }]} 
 						>									
-							<Input 
+							{/* <Input 
 								style={{  textTransform: 'uppercase'}}   
 								onChange={this.onDisable}
-							/>
+							/> */}
+
+               <RegexInput 
+							    style={{  textTransform: 'uppercase'}} 
+                  regex={/[0-9]/} 
+                  maxLength={100}
+									onChange={this.onDisable}
+                />
 						</Form.Item>
 						<Form.Item 
 							label="CATEGORY NAME" 
@@ -119,12 +139,15 @@ class UserAccountForm extends React.Component {
 						>
 							<Input 
 								style={{ textTransform: 'uppercase' }} 
+								maxLength={50}
 								onChange={this.onDisable}
 							/>
 						</Form.Item>
 						<Form.Item label="DESCRIPTION" name='desc'>
 							<TextArea 
+						  	style={{ textTransform: 'uppercase' }}
 								rows={5} 
+								maxLength={100}
 								onChange={this.onDisable}
 							/>
 						</Form.Item>
