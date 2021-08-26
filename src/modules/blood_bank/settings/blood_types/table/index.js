@@ -12,7 +12,7 @@ import { messagePrompts,} from '../settings';
 const { Search } = Input;
 //const { Title } = Typography;
 
-
+const { Option } = Select;
 const columns = [
   {
     title: 'BLOOD TYPE',
@@ -207,6 +207,7 @@ export default class BloodTypesTable extends Component {
       Searchbutton,
       bloodtypeData
     } = this.state
+
     const BloodGroupOption = Data.map((item,i) => {
       return (
       <option 
@@ -224,7 +225,7 @@ export default class BloodTypesTable extends Component {
 
 
     return (
-      <div>
+      <>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '8vh'}}>
      
           <Row  gutter={[24, 8]}>
@@ -270,7 +271,6 @@ export default class BloodTypesTable extends Component {
             <TablePager handleChange={this.handleChange}/>
           </Col>
         </Row>
-        <DndProvider backend={HTML5Backend}>
         <Table 
           
           //loading={loading}
@@ -309,8 +309,7 @@ export default class BloodTypesTable extends Component {
             onClose={this.onClose}
           />
 				</Drawer>
-        </DndProvider>
-      </div>
+      </>
     )
   }
 }

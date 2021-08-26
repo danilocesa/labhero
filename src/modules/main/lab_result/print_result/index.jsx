@@ -2,9 +2,10 @@
 // LIBRARY
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Drawer, Spin } from 'antd';
+import { Drawer, Spin, Button, Col, Row } from 'antd';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { getPrintPreviewV2 } from 'services/lab_result/result';
+import { CaretRightOutlined, CaretLeftOutlined } from '@ant-design/icons';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -15,7 +16,8 @@ class PrintResult extends React.Component {
     this.state = {
       imageSrc: null,
       pageNumber: 1,
-      isReadyToPrint: false
+      isReadyToPrint: false,
+      numPages: null
     };
 
     this.timer = null;
@@ -29,9 +31,15 @@ class PrintResult extends React.Component {
     });
   }
 
+  onDocumentLoadSuccess = ({ numPages })=> {
+    this.setState({
+      numPages,
+    })
+  }
+
   async componentDidUpdate(prevProps) {
     const { requestID, sampleID } = this.props;
-
+ 
     if(prevProps.sampleID !== sampleID && prevProps.requestID !== requestID) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ isReadyToPrint: false });
@@ -64,8 +72,8 @@ class PrintResult extends React.Component {
     const iframe = document.frames
       ? document.frames[id]
       : document.getElementById(id);
+      
     const iframeWindow = iframe.contentWindow || iframe;
-    
 
     iframe.focus();
     iframeWindow.print();
@@ -81,11 +89,17 @@ class PrintResult extends React.Component {
     onClose();
   }
 
+  onNav = (action) => {
+    const { pageNumber } = this.state
+    this.setState({
+      pageNumber: action === "NEXT" ?  pageNumber + 1 : pageNumber - 1
+    })
+  }
+
 	render() {
-    const { pageNumber, imageSrc, isReadyToPrint } = this.state;
+    const { pageNumber, imageSrc, isReadyToPrint, numPages } = this.state; 
     const { visible, sampleID, requestID } = this.props;
 
-    
     return (
       <Drawer 
         title="LABORATORY RESULT PRINT PREVIEW"
@@ -97,7 +111,7 @@ class PrintResult extends React.Component {
         className="ageBracket-drawer"
       >
         <div>
-          { (sampleID && sampleID !== null && visible) && 
+          { (sampleID && sampleID !== null && visible) &&                                                               
             (
               <Spin spinning={!isReadyToPrint && visible}>
                 <iframe
@@ -108,10 +122,27 @@ class PrintResult extends React.Component {
                 />
                 <Document
                   file={`data:application/pdf;base64,${imageSrc}`}
+                  onLoadSuccess={this.onDocumentLoadSuccess}
                   onLoadError={console.error}
                   renderMode="svg"
                 >
-                  <Page pageNumber={pageNumber} renderMode="svg" />
+                  <Page pageNumber={pageNumber} renderMode="svg"/>
+                    <Row>
+                      <Col span={8}>
+                        {
+                          numPages === 1 ?
+                            null
+                          :
+                          <>
+                            <Button type="text" icon={<CaretLeftOutlined />} onClick={()=> this.onNav("BACK")}/>
+                            <Button type="text" icon={<CaretRightOutlined />} onClick={()=> this.onNav("NEXT")}/>
+                          </>
+                        }
+                      </Col>
+                      <Col span={8} offset={8}>
+                        <p>Page {pageNumber} of {numPages}</p>
+                      </Col>
+                    </Row>
                 </Document>
               </Spin>
             )

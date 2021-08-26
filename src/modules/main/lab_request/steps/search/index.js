@@ -11,7 +11,7 @@ import {
 	LR_STEP_PROGRESS,
 	LR_SEL_CONTENTS, 
 	LR_SEL_PANEL_CONTENTS,
-	LR_IS_EXAM_UPDATED,
+	LR_IS_EXAM_UPDATED,LR_EDIT_SEL_EXAM_REF
 } from 'modules/main/lab_request/steps/constants'; 
 import PageTitle from 'shared_components/page_title';
 import Tracker from 'modules/main/lab_request/tracker';
@@ -38,7 +38,7 @@ class SearchStep extends React.Component {
 		sessionStorage.removeItem(LR_SEL_EXAMS);
 		sessionStorage.removeItem(LR_SEL_CONTENTS);
 		sessionStorage.removeItem(LR_SEL_PANEL_CONTENTS);
-		
+		sessionStorage.removeItem(LR_EDIT_SEL_EXAM_REF);
 	}
 
 	setActionType = (patientId, patientName) => {
@@ -54,7 +54,6 @@ class SearchStep extends React.Component {
 		const redirectUrl = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create)
 			? requestLinks.create.step2 
 			: requestLinks.edit.step2;
-
 
 		delete record.dateCreated;
 		delete record.addressID;

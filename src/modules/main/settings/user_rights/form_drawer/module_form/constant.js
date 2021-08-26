@@ -5,7 +5,6 @@ export const initialModules = [
     view: true,
     create: false,
     edit: false,
-    print: false,
   },
   {
     moduleID: 2,

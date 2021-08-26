@@ -145,8 +145,7 @@ class EditableTable extends React.Component {
 
   render() {
 		const { formatedResults } = this.props;
-
-		console.log(formatedResults,"formatedResults")
+    console.log("🚀 ~ file: index.js ~ line 148 ~ EditableTable ~ render ~ formatedResults", formatedResults)
 
     return (
 			<div className="labresult-exam-item-table">

@@ -20,7 +20,7 @@ class PanelTag extends React.Component {
 		if(isChecked)
 			addSelectedExamByPanel({ panelID });
 		else
-      console.log( reqType ===  "create" ? removeSelectedExamByPanel({ panelID }) : null )
+      removeSelectedExamByPanel({ panelID })
 	};
 
 	render() {

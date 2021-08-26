@@ -92,7 +92,6 @@ class EditResult extends React.Component {
 			}, async () => {
 				const results = await fetchLabResultExamItems(examDetails.sampleSpecimenID);
 				const formatedResults = this.recontructExamItems(results.resultValues);
-        console.log("file: index.jsx ~ line 95 ~ EditResult ~ componentDidUpdate ~ formatedResults", formatedResults)
 
 				// eslint-disable-next-line react/no-did-update-set-state
 				this.setState({ 
@@ -162,12 +161,12 @@ class EditResult extends React.Component {
 				newExamItems.push({ ...results[i], isChild: true });
 			};
 		}
-		console.log(newExamItems,"newExamItems")
 		return newExamItems;
 	}
 
 	render() {
 		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched, patientOtherInfo } = this.state;
+    console.log("🚀 ~ file: index.jsx ~ line 169 ~ EditResult ~ render ~ formatedResults", formatedResults)
 		const { patientInfo, examDetails } = this.props;
 
     return (
@@ -210,7 +209,7 @@ class EditResult extends React.Component {
 									onPrint={this.onPrint}
 									resultStatus={results.status || ''}
 									isResultsTouched={isResultsTouched}
-								/>
+								/> 
 							)
 						}
 					</UserAccessContext.Consumer>
