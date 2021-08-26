@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { Component } from 'react'
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -295,7 +296,7 @@ export default class BloodTypesTable extends Component {
           title={drawerTitle}
           visible={isDrawerVisible}
           onClose={this.onClose}
-          onChange={this.onDisable}
+          onDisable={this.onDisable}
           width="30%"
           destroyOnClose
 				>
