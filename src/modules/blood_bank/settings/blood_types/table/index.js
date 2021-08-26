@@ -4,10 +4,10 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import fetchBloodGroupItems from 'services/blood_bank/blood_group'
 //import fetchBloodTypes from 'services/blood_bank/blood_types'
 import TablePager from 'shared_components/table_pager';
-import { Table,Drawer,Row,Col,Button,Input,Select } from 'antd';
+import { Table,Drawer,Row,Col,Button,Input,Select} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Form from '../form'
-
+import { messagePrompts,} from '../settings';
 const { Search } = Input;
 //const { Title } = Typography;
 
@@ -46,14 +46,27 @@ export default class BloodTypesTable extends Component {
         selectedBloodTypes:{},
         Searchbutton:true,
         disableddata:true,
+       // is_active:true,
+       // messageError = "",
+        
 			}
 	}
 
   async componentDidMount(){
-    const apiResponseBloodType = await fetchBloodGroupItems();
+    //this.setState({loading:true});
+     const apiResponseBloodType = await fetchBloodGroupItems();
+    //this.setState({loading:true});
+    //const apiResponseBloodType = await fetchBloodTypes();
+
     this.setState({
-      Data:apiResponseBloodType,
+     // loading:false,
+       Data:apiResponseBloodType,
+      //tableData:apiResponseBloodType,
       pagination: apiResponseBloodType.length,
+      
+      
+      
+    
     })
   }
 
@@ -71,6 +84,7 @@ export default class BloodTypesTable extends Component {
 	};
 
   displayDrawerUpdate = (record) => {
+    console.log (record)
     //const {dropdownvalues} =this.state
 		this.setState({
 			isDrawerVisible: true,
@@ -78,22 +92,38 @@ export default class BloodTypesTable extends Component {
 			drawerButton: "UPDATE",
       actionType:'update',
       selectedBloodGroup:record,
-      selectedBloodTypes:record
+      selectedBloodTypes:record,
+      
+      
 		});
 	}
 
- 
-  onChangedata =  (value) => { 
-    console.log("🚀 ~ file: index.js ~ line 100 ~ BloodTypesTable ~ onChangedata= ~ value", value)
-    // const ResponseBloodType = await fetchBloodGroupItems(value)
-    // this.setState({ 
-    //   bloodtypeData:null,
-    //   usersRef:null,
-    //   dropdownvalues:value,
-    //   AddButton:false,
-    //   Searchbutton:false,
-    //   disabledata:false
-    // }) 
+  // validate = () =>{
+    
+  //   let is_active = true;
+    
+  //   if (!is_active)
+  //  { return (messagePrompts.messageError)
+  // } else
+  //  { return false;
+  // }}
+
+  
+  onChangedata = async (value) => { 
+    const ResponseBloodType = await fetchBloodGroupItems(value)
+   // const isactive = this.validate();
+    this.setState({ 
+      bloodtypeData:ResponseBloodType,
+      usersRef:ResponseBloodType,
+      dropdownvalues:value,
+      AddButton:false,
+      Searchbutton:false,
+      disabledata:false
+    }) 
+
+    // if (!isactive){
+    //   console.log(this.state)
+    // }
 	}
 
   handleChange = (value) =>{
@@ -103,6 +133,22 @@ export default class BloodTypesTable extends Component {
 		pagination.pageSize = parseInt(value);
 		this.setState({ pagination });
   }
+
+  // handleChange = (value) =>{
+  //   //const ResponseBloodType = await fetchBloodGroupItems();
+  //   this.setState({
+  //    // Data:ResponseBloodType,
+  //     dropdownvalues:value,
+  //     AddButton:false,
+  //     Searchbutton:false,
+  //     disabledata:false
+  //   })
+  //   // eslint-disable-next-line react/no-access-state-in-setstate
+	// 	const pagination = {...this.state.pagination};
+	// 	// eslint-disable-next-line radix
+	// 	pagination.pageSize = parseInt(value);
+	// 	this.setState({ pagination });
+  // }
 
   onSearch = (value) => {
 		const searchedVal = value.toLowerCase();
@@ -149,6 +195,8 @@ export default class BloodTypesTable extends Component {
       isDrawerVisible,
       Data,
       drawerButton, 
+      //tableData,
+      //loading, 
       actionType,
       AddButton,
       dropdownvalues, 
@@ -156,18 +204,29 @@ export default class BloodTypesTable extends Component {
       selectedBloodTypes,
       selectedBloodGroup,
       Searchbutton,
+      bloodtypeData
     } = this.state
 
     const BloodGroupOption = Data.map((item,i) => {
       return (
-      <Option key={i} value={item.blood_type_id}>
-        {item.blood_group}
-      </Option>)
+      <option 
+      key={i} value={  item.blood_group}>{item.blood_group}
+      </option>)
     });
 
-    return ( 
+    // const bloodtypeDatamapping = bloodtypeData.map((item,i) => {
+    //   return (
+    //     <option key={i} value={item.blood_type_id} >
+    //       {item.blood_type}
+    //     </option>
+    //   )
+    // });
+
+
+    return (
       <>
         <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '8vh'}}>
+     
           <Row  gutter={[24, 8]}>
             <Col span={10} pull= {1}>
             <h4>BLOOD GROUP</h4>
@@ -175,10 +234,15 @@ export default class BloodTypesTable extends Component {
             <Col span={12} pull= {2} >
               <Select style={{ width: 155, textTransform: 'uppercase' }} onChange={this.onChangedata} placeholder="Blood Group">
                 {BloodGroupOption}
+               
               </Select>
             </Col>
           </Row>
+          : 
+     
         </div>
+
+     
         <Row style={{marginTop:3}}>
           <Col span={12}>
             <Search
@@ -206,12 +270,11 @@ export default class BloodTypesTable extends Component {
             <TablePager handleChange={this.handleChange}/>
           </Col>
         </Row>
-        <DndProvider backend={HTML5Backend}>
         <Table 
           
           //loading={loading}
           style={{marginTop:10, textTransform: 'uppercase'}}
-          // dataSource={bloodtypeData} 
+          dataSource={bloodtypeData} 
           columns={columns} 
           pagination={pagination}
           rowKey={record => record.userID}
@@ -232,6 +295,7 @@ export default class BloodTypesTable extends Component {
           title={drawerTitle}
           visible={isDrawerVisible}
           onClose={this.onClose}
+          onChange={this.onDisable}
           width="30%"
           destroyOnClose
 				>
@@ -244,7 +308,6 @@ export default class BloodTypesTable extends Component {
             onClose={this.onClose}
           />
 				</Drawer>
-        </DndProvider>
       </>
     )
   }

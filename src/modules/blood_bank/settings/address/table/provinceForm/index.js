@@ -4,7 +4,7 @@ import { Form, Input, Button, Switch, Col, Row } from 'antd';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
-import { messagePrompts } from '../settings'
+import { buttonLabels, messagePrompts } from '../settings'
 
 export default class ProvinceForm extends Component {
   constructor(props) {
@@ -69,10 +69,11 @@ export default class ProvinceForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
 						Province:selecetedData.province_name,
-            Province_code:selecetedData.province_code,
+             
             is_active:selecetedData.is_active === true 
 					}}
         >
+          {/* Province_code:selecetedData.province_code, */}
           {
             buttonNames === "UPDATE"? (		
 							<Row >
@@ -104,7 +105,7 @@ export default class ProvinceForm extends Component {
             name="Province"
             rules={[{ required: true, message: 'PLEASE INPUT YOUR PROVINCE!' }]}
           >
-            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
           <section className="drawerFooter">
             <Button 
@@ -112,7 +113,7 @@ export default class ProvinceForm extends Component {
               style={{ marginRight: 8, width: 120 }} 
               onClick={this.props.onClose}
             >
-              CANCEL
+              {buttonLabels.cancel}
             </Button>
             <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
               {buttonNames}

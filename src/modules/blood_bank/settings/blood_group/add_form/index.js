@@ -81,7 +81,7 @@ class BloodGroupForm extends React.Component {
 					initialValues={{ 
 						is_active:selectedBloodGroup.is_active === true ,
 						blood_group_id:selectedBloodGroup.blood_type_id,
-						blood_group:selectedBloodGroup.blood_type,
+						blood_group:selectedBloodGroup.blood_group,
 						blood_type:selectedBloodGroup.blood_type,
 						blood_description:selectedBloodGroup.blood_desc 
 					}}   

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { createCityItems, updateCityItems } from 'services/blood_bank/address'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import { messagePrompts } from '../settings'
+import { buttonLabels, messagePrompts } from '../settings'
 import { Form, Input, Button, Switch, Col, Row } from 'antd';
 
 export default class CityForm extends Component {
@@ -69,10 +69,11 @@ export default class CityForm extends Component {
         layout="vertical"
         initialValues={{ 
           city:selecetedData.city_name,
-          city_code:selecetedData.city_code,
+          
           is_active:selecetedData.is_active === true 
         }}
       >
+        {/* city_code:selecetedData.city_code, */}
         { 
           buttonNames === "UPDATE"? (		
             <Row >
@@ -100,7 +101,7 @@ export default class CityForm extends Component {
             message: 'Please input your City!' 
           }]}
         >
-          <Input style={{ textTransform: 'uppercase'}}  onChange={this.onDisable}/>
+          <Input style={{ textTransform: 'uppercase'}} maxLength={100} onChange={this.onDisable}/>
         </Form.Item>
         {/* <Form.Item
           label="CITY CODE"
@@ -118,7 +119,7 @@ export default class CityForm extends Component {
             style={{ marginRight: 8, width: 120 }} 
             onClick={this.props.onClose}
           >
-            CANCEL
+            {buttonLabels.cancel}
           </Button>
           <Button 
             disabled={disabled} 
