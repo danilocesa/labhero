@@ -18,7 +18,7 @@ class UserRightsTable extends React.Component {
 			},
 			{ 
 				title: 'DATE CREATED',
-				dataIndex: 'date_Created',
+				dataIndex: 'dateTimeCreated',
 			},
 		];
 

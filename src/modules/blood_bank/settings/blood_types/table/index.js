@@ -104,26 +104,26 @@ export default class BloodTypesTable extends Component {
 		this.setState({ pagination });
   }
 
-  // onSearch = (value) => {
-	// 	const searchedVal = value.toLowerCase();
-	// 	const { usersRef } = this.state;
+  onSearch = (value) => {
+		const searchedVal = value.toLowerCase();
+		const { usersRef } = this.state;
 
-	// 	const filtered = usersRef.filter((item) => {
-	// 		// eslint-disable-next-line camelcase
-	// 		const { blood_type } = item;
-	// 		return (
-	// 			this.containsString(blood_type, searchedVal)
-	// 		);
-	// 	});
-	// 	this.setState({ 
-	// 		bloodtypeData: filtered 
-	// 	});
-	// };
+		const filtered = usersRef.filter((item) => {
+			// eslint-disable-next-line camelcase
+			const { blood_type } = item;
+			return (
+				this.containsString(blood_type, searchedVal)
+			);
+		});
+		this.setState({ 
+			bloodtypeData: filtered 
+		});
+	};
 
-	// onChangeSearch = (event) => {
-	// 	const { usersRef } = this.state;
-	// 	if (event.target.value === "") this.setState({ bloodtypeData: usersRef });
-	// };
+	onChangeSearch = (event) => {
+		const { usersRef } = this.state;
+		if (event.target.value === "") this.setState({ bloodtypeData: usersRef });
+	};
 
 	containsString = (searchFrom, searchedVal) => {
 		if (searchFrom === null || searchFrom === "") return false;
@@ -156,7 +156,6 @@ export default class BloodTypesTable extends Component {
       selectedBloodTypes,
       selectedBloodGroup,
       Searchbutton,
-      // bloodtypeData
     } = this.state
 
     const BloodGroupOption = Data.map((item,i) => {
@@ -233,7 +232,6 @@ export default class BloodTypesTable extends Component {
           title={drawerTitle}
           visible={isDrawerVisible}
           onClose={this.onClose}
-          onChange={this.onDisable}
           width="30%"
           destroyOnClose
 				>

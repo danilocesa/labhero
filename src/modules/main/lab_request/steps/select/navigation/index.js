@@ -44,10 +44,10 @@ class Navigation extends React.Component {
 			: requestLinks.edit.step2;
 
 		return (
-			<Row style={{ marginTop: 20 }}>
-				<Col>
-					<div style={{flexDirection: 'row'}}>
-						<Link to={dynamicLink} style={{ marginLeft: 'auto' }}>
+			<div style={{float: "right"}}>
+				<Row style={{ marginTop: 20 }}>
+					<Col /*span={16} offset={17}*/>
+						<Link to={dynamicLink}>
 							<Text>
 								<u>BACK</u>
 							</Text>
@@ -55,29 +55,28 @@ class Navigation extends React.Component {
 						<Button 
 							className="nav-btn-round" 
 							type="primary" 
-							style={{ marginLeft: 'auto' }}
+							style={{ marginLeft: 10 }}
 							disabled={disabled}
 							onClick={this.onClickNext}
 						>
 							NEXT STEP
 						</Button>
-					</div>
-						{
+						{/* {
 							sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.edit 
 							? 	
 								<Button 
 									className="nav-btn-round" 
 									type="primary" 
-									style={{ marginLeft: 10, width:150,float: 'right' }}
-									
+									style={{ marginLeft: 10, width:150 }}
 								>
 									CANCEL REQUEST
 								</Button>
-								:
-									null
-						}
-				</Col>
-			</Row>
+							:
+								null
+						} */}
+ 					</Col>
+ 				</Row>
+			</div>
 		);
 	}
 }
