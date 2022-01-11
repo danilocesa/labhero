@@ -514,13 +514,8 @@ class SelectStep extends React.Component {
 		const { restriction } = this;
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
-<<<<<<< HEAD
-		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
-		
-=======
 		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create  && selectedExams.length === 0;
 
->>>>>>> a55fcea4562a0b1e15ea50e073e619255511db0b
 		if(restriction.hasAccess) {
 			return (
 				<div>
