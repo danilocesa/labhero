@@ -299,6 +299,7 @@ class SelectStep extends React.Component {
 	// Note. This function is use to update the isSelected state of the panel tag 
 	updatePanel = ({ panelID, isSelected }) => {
 		const { panels } = this.state;
+        console.log("🚀 ~ file: index.js ~ line 302 ~ SelectStep ~ panels", panels)
 
 		const updatedPanels = panels.map(item => {
 			if(item.panelID === panelID) 
@@ -330,7 +331,7 @@ class SelectStep extends React.Component {
 					panelName: selectedPanel.panelName,
 					panelCode: selectedPanel.panelCode,
 				},
-				isDisabled: true
+				// isDisabled: true
 			});
 			
 			// Append selectedContents into one array
@@ -513,7 +514,7 @@ class SelectStep extends React.Component {
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
 		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
-
+		
 		if(restriction.hasAccess) {
 			return (
 				<div>

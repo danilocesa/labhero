@@ -179,7 +179,7 @@ class ForScreening extends React.Component {
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
-      screening_id: 1471,//donorDetail.screening_id,
+      screening_id: 1472,//donorDetail.screening_id,
       donor: donorDetail.donor_id,
       health_info: donorDetail.health_info.health_info_id,
       extraction_remarks: getRemarks,
