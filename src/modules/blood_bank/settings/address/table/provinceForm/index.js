@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Form, Input, Button, Switch } from 'antd';
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
-import { messagePrompts } from '../settings'
+import { buttonLabels, messagePrompts } from '../settings'
 
 export default class ProvinceForm extends Component {
   constructor(props) {
@@ -69,36 +69,43 @@ export default class ProvinceForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
 						Province:selecetedData.province_name,
-            Province_code:selecetedData.province_code,
+             
             is_active:selecetedData.is_active === true 
 					}}
         >
+          {/* Province_code:selecetedData.province_code, */}
           {
             buttonNames === "UPDATE"? (		
-							<Form.Item 
-								label="ACTIVE" 
-								name='is_active'
-                valuePropName='checked'
-							>
-								<Switch onChange={this.onDisable}/>
-							</Form.Item>
+							<Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
 						)	
 						:
 						null
 					}
-          <Form.Item
+          {/* <Form.Item
             label="Province Code"
             name="Province_code"
             rules={[{ required: true, message: 'Please input your Province Code!' }]}
           >
             <Input onChange={this.onDisable}/>
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
-            label="Province"
+            label="PROVINCE"
             name="Province"
-            rules={[{ required: true, message: 'Please input your Province!' }]}
+            rules={[{ required: true, message: 'PLEASE INPUT YOUR PROVINCE!' }]}
           >
-            <Input onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
           <section className="drawerFooter">
             <Button 
@@ -106,7 +113,7 @@ export default class ProvinceForm extends Component {
               style={{ marginRight: 8, width: 120 }} 
               onClick={this.props.onClose}
             >
-              CANCEL
+              {buttonLabels.cancel}
             </Button>
             <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
               {buttonNames}

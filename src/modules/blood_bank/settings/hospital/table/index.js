@@ -11,15 +11,18 @@ import { Row, Col, Table, Button, Input, Drawer } from 'antd';
 const { Search } = Input;
 
 const columns = [
-  {
-    title: 'HOSPITAL ID',
-    dataIndex: 'hospital_id',
-    sorter: (a, b) => a.hospital_id - b.hospital_id,
-  },
+  // {
+  //   title: 'HOSPITAL ID',
+  //   dataIndex: 'hospital_id',
+  //   sorter: (a, b) => a.hospital_id - b.hospital_id,
+  // },
+  
   {
     title: 'HOSPITAL',
     dataIndex: 'hospital_name',
+    sorter: (a, b) => a.hospital_id - b.hospital_id,
   },
+
   {
     title: 'LOCATION',
     dataIndex: 'hospital_location',
@@ -135,7 +138,7 @@ class HospitalTable extends React.Component {
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
             <Search
-							placeholder="Search By Storage Name"
+							placeholder="Search By Hospital Name"
 							allowClear
 							onSearch={(value) => this.onSearch(value)}
 							onChange={this.onChangeSearch}

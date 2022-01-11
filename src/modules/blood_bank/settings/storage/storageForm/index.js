@@ -105,9 +105,10 @@ class StorageForm extends React.Component {
             name='storage_name'
             rules={[{ required: true, message: 'Please input your Storage!' }]}
           >
-            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
           <Form.Item
+					  maxLength={100}
             label="DESCRIPTION"
             name= 'storage_desc'
           >

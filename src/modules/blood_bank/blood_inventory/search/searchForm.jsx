@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Row, Col, Form, Select, Button } from 'antd';
 import { NumberInput } from 'shared_components/pattern_input';
 import { searchInventoryAPI } from 'services/blood_inventory/blood_inventory'
-import { fetchBloodStorage } from 'services/blood_bank/blood_storage';
+import  fetchBloodStorage  from 'services/blood_inventory/blood_storage';
 import { fetchBloodTypes } from 'services/blood_bank/blood_types';
 
 const { Option } = Select;
 
 function SearchForm({ onFinish }) {
   const formRef = useRef();
-  const [loading, setLoading] = useState(false);
-  const [bloodStorage, setBloodStorage] = useState([]);
-  const [bloodTypes, setBloodTypes] = useState([]);
+  const [ loading, setLoading ] = useState(false);
+  const [ bloodStorage, setBloodStorage ] = useState([]);
+  const [ bloodTypes, setBloodTypes ] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -21,7 +21,6 @@ function SearchForm({ onFinish }) {
       setBloodStorage(bloodStorage);
       setBloodTypes(bloodTypes);
     }
-
     setLoading(true);
     fetchData();
     setLoading(false);
@@ -46,7 +45,6 @@ function SearchForm({ onFinish }) {
 
   function clearSearch(){
     const { setFieldsValue } = formRef.current;
-    
     setFieldsValue({ bag_id: null, blood_type: null, storage: null });
   }
 

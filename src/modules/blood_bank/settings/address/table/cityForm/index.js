@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { createCityItems, updateCityItems } from 'services/blood_bank/address'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import { messagePrompts } from '../settings'
-import { Form, Input, Button, Switch } from 'antd';
+import { buttonLabels, messagePrompts } from '../settings'
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
 
 export default class CityForm extends Component {
   constructor(props) {
@@ -69,19 +69,26 @@ export default class CityForm extends Component {
         layout="vertical"
         initialValues={{ 
           city:selecetedData.city_name,
-          city_code:selecetedData.city_code,
+          
           is_active:selecetedData.is_active === true 
         }}
       >
+        {/* city_code:selecetedData.city_code, */}
         { 
           buttonNames === "UPDATE"? (		
-            <Form.Item 
-              label="ACTIVE" 
-              name='is_active'
-              valuePropName='checked'
-            >
-              <Switch onChange={this.onDisable}/>
-            </Form.Item>
+            <Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
           )	
           :
           null
@@ -94,9 +101,9 @@ export default class CityForm extends Component {
             message: 'Please input your City!' 
           }]}
         >
-          <Input onChange={this.onDisable}/>
+          <Input style={{ textTransform: 'uppercase'}} maxLength={100} onChange={this.onDisable}/>
         </Form.Item>
-        <Form.Item
+        {/* <Form.Item
           label="CITY CODE"
           name="city_code"
           rules={[{ 
@@ -105,14 +112,14 @@ export default class CityForm extends Component {
           }]}
         >
           <Input onChange={this.onDisable}/>
-        </Form.Item>
+        </Form.Item> */}
         <section className="drawerFooter">
           <Button 
             shape="round" 
             style={{ marginRight: 8, width: 120 }} 
             onClick={this.props.onClose}
           >
-            CANCEL
+            {buttonLabels.cancel}
           </Button>
           <Button 
             disabled={disabled} 

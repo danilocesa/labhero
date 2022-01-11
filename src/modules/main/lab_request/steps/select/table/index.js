@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table as AntTable, Button, Tooltip, Typography, Popconfirm } from 'antd';
+import { Table as AntTable, Button, Tooltip, Typography } from 'antd';
 import { GLOBAL_TABLE_SIZE } from 'global_config/constant-global';
 import { CloseOutlined } from '@ant-design/icons';
 import { requestTypes } from 'modules/main/settings/lab_exam_request/settings';
@@ -9,6 +9,17 @@ import { LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants';
 import './table.css';
 
 const { Text } = Typography; 
+
+const Sample = [
+  {
+    key: 1,
+    name: 'Complete Blood Counts',
+  },
+  {
+    key: 2,
+    name: 'Albumin',
+  },
+];
 
 const renderItem = (text, record) => {
 	const type = record.isLocked ? "secondary" : null;
@@ -71,6 +82,32 @@ const createColumns = handleRemove => {
 };
 
 class SelectTable extends React.Component {
+
+	expandedRowRender = () => {
+		const columnsEx = [
+			{
+				title: 'EXAM',
+				dataIndex: 'name',
+			},
+			{
+				render: () => 
+					<Button 
+						type="dashed" 
+						icon={<CloseOutlined />}
+						size="small" 
+					/>,
+			},
+		];
+
+		return (
+			<AntTable 
+				columns={columnsEx}
+				dataSource={Sample} 
+				pagination={false}
+			/>
+		);
+	};
+
 	shouldComponentUpdate(nextProps) {
 		return this.props.selectedExams !== nextProps.selectedExams;
   }
@@ -81,40 +118,23 @@ class SelectTable extends React.Component {
 		populatePanels();
 	}
 
-
-
 	render() {
 		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
-    // console.log("🚀 ~ file: index.js ~ line 88 ~ SelectTable ~ render ~ selectedExams", selectedExams)
 		const TableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 				key: selectedExam.examID,
 				...selectedExam,
 				// CONDITION IN BUTTON if to show or not to show
-				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID )
+				action: ( !selectedExam.isLocked && !selectedExam.sampleSpecimenID  )
 				?  
 					<>
-					 	{ selectedExam.selectedPanel // CONFIRMATION AND NO CONFIRMATION 
-						 	? 
-								<Popconfirm
-									title="Are you sure to delete this Panel?" 
-									onConfirm={() => removeSelectedExamByPanel(selectedExam.selectedPanel)}
-									okText="Yes"
-									cancelText="No"
-								>
-									<Button 
-										type="dashed" 
-										icon={<CloseOutlined />}
-										size="small" 
-									/> 
-								</Popconfirm>
-							:
-								<Button 
-									type="dashed" 
-									icon={<CloseOutlined />}
-									size="small" 
-									onClick={() => removeSelectedExamByExam(selectedExam)}
-								/> 
+					 	{ 
+							<Button 
+								type="dashed" 
+								icon={<CloseOutlined />}
+								size="small" 
+								onClick={() => removeSelectedExamByExam(selectedExam)}
+							/>
 						}
 					</>
 				:	
@@ -125,6 +145,7 @@ class SelectTable extends React.Component {
 		return (
 			<div className="select-step-table">
 				<AntTable
+					expandedRowRender={(sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? null : this.expandedRowRender }
 					size={GLOBAL_TABLE_SIZE}
 					// @ts-ignore
 					columns={TableCols}
@@ -159,7 +180,6 @@ SelectTable.propTypes = {
 	removeSelectedExamByExam: PropTypes.func.isRequired,
 	removeAllExams: PropTypes.func.isRequired,
 	populatePanels: PropTypes.func.isRequired,
-	deletefunction: PropTypes.func.isRequired,
 };
 
 export default SelectTable;

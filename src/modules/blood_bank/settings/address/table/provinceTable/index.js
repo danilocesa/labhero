@@ -1,150 +1,123 @@
-import React, { Component } from 'react'
-import { PlusOutlined } from '@ant-design/icons';
-import ProvinceForm from '../provinceForm'
-import TablePager from 'shared_components/table_pager';
-import fetchProvinceItems from 'services/blood_bank/address'
-import { 
-  Row, 
-  Col, 
-  Table, 
-  Button, 
-  Input, 
-  Drawer 
-} from 'antd';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
+import HttpCodeMessage from 'shared_components/message_http_status'
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
+import { messagePrompts } from '../settings'
 
-const { Search } = Input;
-
-const columns = [
-  {
-    title: 'PROVINCE',
-    dataIndex: 'province_name',
-  }
-];
-
-export default class ProvinceTable extends Component {
+export default class ProvinceForm extends Component {
   constructor(props) {
-		super(props);
-		this.state = { 
-      visible: false,
-      ProvinceItems:[]
-    }
-	}
+    super(props);
+    this.state = { disabled: true };
+	} 
 
-  async componentDidMount() {
-		this.setState({loading:true});
-		const response = await fetchProvinceItems();
-    this.setState({ 
-      ProvinceItems:response,
-      usersRef:response
-		});
-	}
-
-  onSearch = (value) => {
-		const searchedVal = value.toLowerCase();
-		const { usersRef } = this.state;
-
-		const filtered = usersRef.filter((item) => {
-			// eslint-disable-next-line camelcase
-			const { province_name } = item;
-			return (
-				this.containsString(province_name, searchedVal)
-			);
-		});
-		this.setState({ 
-			ProvinceItems: filtered 
-		});
+  onFinish = async (values) => {
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+		const { buttonNames, selecetedData } = this.props;
+    
+    const payload = {
+			province_name :values.Province,
+      province_code:values.Province_code,
+      created_by:loggedinUser.userID,
+      province_id:selecetedData.province_id,
+      is_active: (values.is_active === true) ? 1 : 0,
+		};
+		if(buttonNames === "ADD"){
+			const createdProvinceResponse = await createProvinceItems(payload);
+			// @ts-ignore
+			if(createdProvinceResponse.status === 201){
+				const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: createdProvinceResponse.status,	
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);	
+			}	
+		}
+		else {
+			payload.province_id = selecetedData.province_id;
+  		const updateProvinceResponse =  await updateProvinceItems(payload)
+			// @ts-ignore)
+			if(updateProvinceResponse.status === 200){
+				const httpMessageConfig = {
+					message: messagePrompts.successUpdateUser,
+					// @ts-ignore
+					status: updateProvinceResponse.status,
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);
+			}
+		}
 	};
 
-	onChangeSearch = (event) => {
-		const { usersRef } = this.state;
-		if (event.target.value === "") this.setState({ ProvinceItems: usersRef });
-	};
-
-	containsString = (searchFrom, searchedVal) => {
-		if (searchFrom === null || searchFrom === "") return false;
-		return searchFrom.toString().toLowerCase().includes(searchedVal);
-	};
-
-
-  displayDrawer = (record) => {
-		this.setState({
-			visible: true,
-			drawerTitle: "UPDATE PROVINCE",
-			selecetedData:record,
-      buttonNames:"UPDATE"
-		});
-	}
-
-  onDrawerClose = () => {
-		this.setState({ visible: false });
-	};
-  
-  showDrawer = (record) => {
-		this.setState({
-			visible: true,
-			drawerTitle: "ADD PROVINCE",
-			selecetedData: record,
-      buttonNames:"ADD"
-		});
-	}
+  onDisable = () => {
+    this.setState({ disabled:false })
+  }
 
   render() {
-    const { 
-      visible,
-      drawerTitle, 
-      buttonNames,
-      ProvinceItems,
-      selecetedData,
-    } = this.state
+    const { disabled } = this.state
+    const { buttonNames, selecetedData } = this.props
 
     return (
       <div>
-        <Row style={{ marginBottom: 10 }}>
-          <Col span={12} >
-            <Search style={{ width: 200 }}
-                    placeholder="Search By Province"
-                    allowClear
-                    onSearch={(value) => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-            
-            />
-          </Col>
-          <Col span={12} style={{ textAlign: 'right' }}>
-            <Button 
-              type="primary" 
-              shape="round" 
-              onClick={this.showDrawer}
-              style={{ marginRight: '15px' }} 
-              icon={<PlusOutlined />}
-            >
-              ADD PROVINCE
-            </Button >
-            <TablePager/>
-          </Col>
-				</Row>
-        <Table  
-          dataSource={ProvinceItems} 
-          columns={columns} 
-          onRow={(record) => {
-            return {     
-              onDoubleClick: () => {
-                this.displayDrawer(record);
-              }
-            }
-          }}/>
-        <Drawer
-          title={drawerTitle}
-          width="30%"
-          visible={visible}
-          onClose={this.onDrawerClose}
-          destroyOnClose
+        <Form 
+          layout="vertical"
+          onFinish={this.onFinish}
+          initialValues={{ 
+						Province:selecetedData.province_name,
+            Province_code:selecetedData.province_code,
+            is_active:selecetedData.is_active === true 
+					}}
         >
-          <ProvinceForm 
-            buttonNames={buttonNames} 
-            selecetedData={selecetedData}
-          />
-        </Drawer>
+          {
+            buttonNames === "UPDATE"? (		
+							<Row >
+									<Col span={4}>	
+									  <Form.Item >
+									    <label >ACTIVE:</label> 	
+									  </Form.Item>
+									</Col>
+
+                  <Col span={6}>	
+									  <Form.Item name='is_active' valuePropName='checked' >
+									    <Switch onChange={this.onDisable}/>
+							   	  </Form.Item>
+									</Col>
+								</Row> 
+						)	
+						:
+						null
+					}
+          <Form.Item
+            label="PROVINCE"
+            name="Province"
+            rules={[{ required: true, message: 'PLEASE INPUT YOUR PROVINCE!' }]}
+          >
+            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
+          </Form.Item>
+          <section className="drawerFooter">
+            <Button 
+              shape="round" 
+              style={{ marginRight: 8, width: 120 }} 
+              onClick={this.props.onClose}
+            >
+              CANCEL
+            </Button>
+            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+              {buttonNames}
+            </Button>
+				  </section>
+        </Form>
       </div>
     )
   }
+}
+
+ProvinceForm.propTypes = {
+	buttonNames: PropTypes.string.isRequired,
+  selecetedData:PropTypes.object.isRequired,
 }

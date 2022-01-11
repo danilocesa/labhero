@@ -9,7 +9,7 @@ export async function fetchStatus(payload) {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/blood_inventory/blood_bag_status/for_lov`,
+			url: `/blood_inventory/blood_storage/`,
 		});
 		
 		const { data } = response;

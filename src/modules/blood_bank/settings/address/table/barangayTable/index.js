@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PlusOutlined } from '@ant-design/icons';
-import { fetchCityAllItems, fetchBarangayItems } from 'services/blood_bank/address'  
+import fetchProvinceItems, { fetchBarangayItems, fetchCityItems } from 'services/blood_bank/address'  
 import BarangayForm from '../barangayForm'
 import TablePager from 'shared_components/table_pager';
 import { Row, Col, Table, Button, Input, Drawer, Select  } from 'antd';
@@ -12,14 +12,14 @@ const columns = [
     title: 'BARANGAY',
     dataIndex: 'barangay_name',
   },
-  {
-    title: 'CITY',
-    dataIndex: 'city_name',
-  },
-  {
-    title: 'PROVINCE',
-    dataIndex: 'province_name',
-  }
+  // {
+  //   title: 'CITY',
+  //   dataIndex: 'city_name',
+  // },
+  // {
+  //   title: 'PROVINCE',
+  //   dataIndex: 'province_name',
+  // }
 ];
 
 export default class BarangayTable extends Component {
@@ -27,6 +27,7 @@ export default class BarangayTable extends Component {
 		super(props);
 		this.state = { 
       visible: false,
+      ProvinceItems:[],
       CityItems:[],
       BarangayItem:[],
       buttonDisable:true
@@ -34,21 +35,27 @@ export default class BarangayTable extends Component {
 	}
 
   async componentDidMount() {
-		const response = await fetchCityAllItems();
+    const apiresponse = await fetchProvinceItems();
     this.setState({ 
-      CityItems:response,
+      ProvinceItems:apiresponse,
+      pagination: apiresponse.length,
 		});
 	}
 
-  onChange = async (value) => { 
-    const cityId = value[1]
-    const provinceId = value[2]
+  onChange = async (provinceId) => { 
+    const CityResponse =  await fetchCityItems(provinceId);
+    this.setState({ 
+      CityItems:CityResponse,
+      buttonDisable:false
+    }) 
+	}
+
+  onChangeBarangay = async (cityId) => { 
+
     const BarangayResponse =  await fetchBarangayItems(cityId);
     this.setState({ 
       BarangayItem:BarangayResponse,
       usersRef:BarangayResponse,
-      cityId,
-      provinceId,
       buttonDisable:false
     }) 
 	}
@@ -102,6 +109,15 @@ export default class BarangayTable extends Component {
 		});
 	}
   
+
+  handleChange = (value) =>{
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		// eslint-disable-next-line radix
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
+  }
+
   render() {
     const { 
       provinceId,
@@ -109,35 +125,60 @@ export default class BarangayTable extends Component {
       drawerTitle, 
       buttonNames,
       CityItems,
+      ProvinceItems,
       BarangayItem,
       cityId,
       selecetedData,
-      buttonDisable
+      buttonDisable,
+      pagination,
     } = this.state
+
+
+    const ProvincemappedData = ProvinceItems.map((item) => {
+      return (
+      <option value={item.province_id}>
+        {item.province_name}
+      </option>
+      )
+    });
+
+
     console.log(cityId)
     const CitymappedData = CityItems.map((item) => {
       return (
-        <option value={[item.city_name,item.city_id,item.province_id]} >
+        <option value={item.city_id} >
           {item.city_name}
         </option>
       )
     });
 
+
+
+
     return (
       <div>
-        <Row style={{ marginBottom: 10 }}>
-          <Col span={12} >
-            <Select style={{ width: 200 }}  onChange={this.onChange}>
+        <Row style={{marginTop:12, marginBottom: 12}}>
+          <Col span={9} >
+          <Select style={{ width: 218, textTransform:'uppercase' }} onChange={this.onChange} placeholder="PLEASE SELECT A PROVINCE">
+              {ProvincemappedData}
+            </Select>
+
+            <Select style={{ width: 200, marginLeft:28, textTransform:'uppercase'  }} disabled={buttonDisable} onChange={this.onChangeBarangay} placeholder="PLEASE SELECT A CITY">
               {CitymappedData}
             </Select>
-            <Search style={{ width: 200, marginLeft:20  }}
+            
+            </Col> 
+          <Col span={4}>
+          <Search style={{ width: 220, marginLeft:10}}
                     placeholder="Search By Barangay"
+                    disabled={buttonDisable}
                     allowClear
                     onSearch={(value) => this.onSearch(value)}
                     onChange={this.onChangeSearch}
+                    className="panel-table-search-input"
             />
           </Col>
-          <Col span={12} style={{ textAlign: 'right' }}>
+          <Col span={11} style={{ textAlign: 'right' }}>
             <Button 
               disabled={buttonDisable}
               type="primary" 
@@ -148,12 +189,14 @@ export default class BarangayTable extends Component {
             >
               ADD BARANGAY
             </Button >
-            <TablePager/>
+            <TablePager handleChange={this.handleChange}/>
           </Col>
 				</Row>
         <Table  
+          style={{textTransform:'uppercase'}}
           dataSource={BarangayItem} 
           columns={columns} 
+          pagination={pagination}
           onRow={(record) => {
             return {     
               onDoubleClick: () => {
@@ -170,7 +213,8 @@ export default class BarangayTable extends Component {
         >
         <BarangayForm  
           buttonNames={buttonNames} 
-          cityId={cityId} 
+          //cityId={cityId} 
+          //Province={Province} 
           selecetedData={selecetedData}
           provinceId={provinceId}
         />

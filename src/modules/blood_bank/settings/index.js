@@ -17,7 +17,7 @@ const pageTitleSettings = "BLOODBANK /";
 const pageTitle = [
   `${pageTitleSettings } BLOOD GROUP`, 
   `${pageTitleSettings } BLOOD GROUP`,
-  `${pageTitleSettings } BLOOD TYPES`,
+  `${pageTitleSettings } BLOOD TYPE`,
   `${pageTitleSettings } CATEGORY`,
   `${pageTitleSettings } QUESTIONNAIRE`,
   `${pageTitleSettings } STORAGE`,
@@ -43,7 +43,7 @@ class settings extends React.Component {
           <TabPane tab="BLOOD GROUP" key="1">
             <BloodGroup />
           </TabPane>
-          <TabPane tab="BLOOD TYPES" key="2">
+          <TabPane tab="BLOOD TYPE" key="2">
             <BloodTypes />
           </TabPane>
           <TabPane tab="CATEGORY" key="3">

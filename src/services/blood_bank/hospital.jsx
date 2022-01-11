@@ -3,7 +3,7 @@ import { axiosPhase2API } from 'services/axios';
 import { API_GET_METHOD, API_POST_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status';
 
-export async function getHospitalList() {
+export  async function getHospitalList() {
 	let hospitals = [];
 	
   try{

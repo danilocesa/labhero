@@ -56,7 +56,6 @@ class SelectStep extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		// 3 is the stepnumber
 		this.restriction = new Restriction(3);
 	}
@@ -65,7 +64,6 @@ class SelectStep extends React.Component {
 		const sessExams = sessionStorage.getItem(LR_SEL_EXAMS);
 		const sessContents = sessionStorage.getItem(LR_SEL_CONTENTS);
 		const sessPanelContents = sessionStorage.getItem(LR_SEL_PANEL_CONTENTS);
-
 
 		if(sessExams) {
 			this.setState({ 
@@ -122,6 +120,7 @@ class SelectStep extends React.Component {
 					tmpRoot.examName = tier2.examRequestName;
 					tmpRoot.examCode = tier2.examRequestCode;
 					tmpRoot.sampleSpecimenID = tier2.sampleSpecimenID;
+					tmpRoot.SampleName = tier1.sectionName;
 					tmpRoot.selectedPanel = tier2.panelID ? tmpPanel : null;
 					tmpRoot.selectedSpecimen = tmpSpecimen;
 					tmpRoot.selectedSection = tmpSection;
@@ -140,15 +139,16 @@ class SelectStep extends React.Component {
 
 			selectedPanel.forEach(panelRef => {
 				panelRef.exams.forEach(exam => {
-					zpanelContents = zpanelContents.concat(exam.contents);
+					zpanelContents = zpanelContents.concat(exam.contents);                  
 				});
 			});
 
 
 			// Store raw exams from API to local storage
-			sessionStorage.setItem(LR_EDIT_SEL_EXAM_REF, JSON.stringify(zexams))
-
+			// sessionStorage.setItem(LR_EDIT_SEL_EXAM_REF, JSON.stringify(zexams))
+				
 			this.setState({ 
+				sampleData : qexams,
 				selectedExams: zexams,
 				// selectedContents: zpanelContents,
 				selectedContents: Array.from(setContents),
@@ -508,13 +508,19 @@ class SelectStep extends React.Component {
 			selectedSection,
 			exams, 
 			panels, 
+			sampleData,
 			isLoading 
 		} = this.state;
 		const { restriction } = this;
 		const { requestType } = this.props;
 		const moduleTitle = (sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? moduleTitles.create : moduleTitles.edit;
+<<<<<<< HEAD
 		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create && selectedExams.length === 0;
 		
+=======
+		const disabled = sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create  && selectedExams.length === 0;
+
+>>>>>>> a55fcea4562a0b1e15ea50e073e619255511db0b
 		if(restriction.hasAccess) {
 			return (
 				<div>
@@ -551,6 +557,7 @@ class SelectStep extends React.Component {
 							</Col>
 							<Col {...ColLayout}>
 								<SelectTable 
+									sampleData= {sampleData}
 									selectedExams={selectedExams}
 									removeSelectedExamByPanel={this.removeSelectedExamByPanel}
 									removeSelectedExamByExam={this.removeSelectedExamByExam}

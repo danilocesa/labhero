@@ -1,12 +1,12 @@
 import { Form,Input,Button, Switch, Col, Row} from 'antd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import createBloodTypeAPI , {updateBloodTypeAPI} from 'services/general_settings/blood_types'
+import createBloodTypeAPI , {updateBloodTypeAPI, fetchBloodTypes} from 'services/general_settings/blood_types'
 import HttpCodeMessage from 'shared_components/message_http_status'
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import {buttonLabels, messagePrompts} from '../settings';
-
+import {buttonLabels, drawerAdd, messagePrompts,} from '../settings';
 const { TextArea } = Input;
+
 
 export default class BloodTypesForm extends Component {
   constructor(props) {
@@ -15,12 +15,19 @@ export default class BloodTypesForm extends Component {
 			disabled: true,
     };
 	} 
+  
+  //  async componentDidMount(){
+  //   const apiResponseBloodType = await fetchBloodTypes(); 
+  //   console.log("🚀 ~ file: index.js ~ line 21 ~ BloodTypesForm ~ componentDidMount ~ apiResponseBloodType", apiResponseBloodType)
+
+  // }
 
   onSubmit = async (values) => {
 		console.log( "buttonNames")
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-		const { buttonNames, selectedBloodTypes } = this.props;
-	
+		//console.log("file: index.js ~ line 31 ~ BloodTypesForm ~ onSubmit= ~ loggedinUser", loggedinUser)
+		const { drawerButton, selectedBloodTypes } = this.props;
+
     	const payload = {
 			blood_type_id :selectedBloodTypes.blood_type_id,
 			blood_group :values.blood_group,
@@ -30,22 +37,29 @@ export default class BloodTypesForm extends Component {
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
 	
-		if(buttonNames === 'ADD'){
+		if(drawerButton === drawerAdd){
+
 			const createdBloodTypeResponse = await createBloodTypeAPI(payload);
 			// @ts-ignore
-			if(createdBloodTypeResponse.status === 201){
+		
+			if(createdBloodTypeResponse.status === 201 ){
 				const httpMessageConfig = {
 					message: messagePrompts.successCreateUser,
 					// @ts-ignore
 					status: createdBloodTypeResponse.status,	
 					duration: 3, 
 					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
+				} 
+         HttpCodeMessage(httpMessageConfig);	
 			}	
+
 		}
+
+
+		
 		else {
 			payload.blood_type_id = selectedBloodTypes.blood_type_id;
+			
 			const updateBloodTypeResponse =  await updateBloodTypeAPI(payload)
 			// @ts-ignore)
 			if(updateBloodTypeResponse.status === 200){
@@ -59,6 +73,12 @@ export default class BloodTypesForm extends Component {
 				HttpCodeMessage(httpMessageConfig);
 			}
 		}
+
+		// if (!(payload.blood_group && payload.is_active === true)) {
+    //   console.log('Probably should just stay in then.');
+    // } else {
+    //   console.log('You should leave the house quickly.');
+    // }
 	};
 
   onDisable = () => {
@@ -69,7 +89,7 @@ export default class BloodTypesForm extends Component {
 
   render() {
     const { disabled } = this.state
-    const { buttonNames, dropdownvalues, selectedBloodTypes } = this.props
+    const { drawerButton, selectedBloodTypes, dropdownvalues} = this.props
     
 		return (
       <div>
@@ -80,11 +100,12 @@ export default class BloodTypesForm extends Component {
 						is_active:selectedBloodTypes.is_active === true ,
 						blood_group:dropdownvalues,
 						blood_type:selectedBloodTypes.blood_type,
-						blood_description:selectedBloodTypes.blood_desc 
+						blood_description:selectedBloodTypes.blood_desc,
+						
 					}}  
         >
           {
-						buttonNames == "UPDATE" 
+						drawerButton === "UPDATE"
 						? 
 							(		
 								<Row >
@@ -106,14 +127,15 @@ export default class BloodTypesForm extends Component {
 					}
           <Form.Item
             label="BLOOD GROUP"
-            name="blood_group"
+            name='blood_group'
           >
-            <Input disabled={true}/>
+            <Input style={{ textTransform: 'uppercase'}} disabled={true}/>
+				
           </Form.Item>
           <Form.Item
-            label="BLOOD TYPES"
+            label="BLOOD TYPE"
             name='blood_type'
-            rules={[{ required: true, message: 'Please input your Blood Types!' }]}
+            rules={[{ required: true, message: 'Please input your Blood Type!' }]}
           >
             <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
           </Form.Item>
@@ -122,7 +144,7 @@ export default class BloodTypesForm extends Component {
             label="DESCRIPTION"
             name='blood_description'
           >
-            <TextArea style={{ textTransform: 'uppercase'}} rows={4} onChange={this.onDisable}/>
+            <TextArea style={{ textTransform: 'uppercase'}} rows={4} maxLength={100} onChange={this.onDisable}/>
           </Form.Item>
         <section className="drawerFooter">
           <Button shape="round" style={{ marginRight: 8, width: 120 }} 
@@ -139,7 +161,7 @@ export default class BloodTypesForm extends Component {
 						style={{ margin: 10, width: 120 }} 
 						htmlType="submit"
 					>
-            {buttonNames}
+            {drawerButton}
           </Button>
 				</section>
 				
@@ -150,9 +172,10 @@ export default class BloodTypesForm extends Component {
 }
 
 BloodTypesForm.propTypes = {
-	buttonNames: PropTypes.string.isRequired,
+	drawerButton: PropTypes.string.isRequired,
   dropdownvalues:PropTypes.string.isRequired,
   selectedBloodTypes:PropTypes.object.isRequired,
+	//selectedBloodGroup:PropTypes.object.isRequired,
 
 	form: PropTypes.object,
 	onClose: PropTypes.func,

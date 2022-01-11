@@ -5,12 +5,13 @@ import { API_GET_METHOD, API_PUT_METHOD } from 'global_config/constant-global';
 export async function searchInventoryAvailableAPI(payload) {
   const blood_types = payload.blood_type
   const DecodeBloodTypes = encodeURIComponent(blood_types);
+  const BloodComponents = payload.blood_comp_code === undefined ? '' : payload.blood_comp_code
 	let bloodinventory = [];
 	
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/blood_inventory/blood_inventory/dashboard/available/?blood_type_name=${DecodeBloodTypes}&status_name=${payload.actionType}&blood_product_code=${payload.blood_product_code}`,
+			url: `/blood_inventory/blood_inventory/dashboard/available/?blood_type_name=${DecodeBloodTypes}&status_name=${payload.actionType}&blood_product_code=${BloodComponents}`,
 		});
 		
 		const { data } = response;
@@ -84,6 +85,8 @@ export async function fetchDashboardItem() {
   return DashboardItem;
 }
 
+
+// FOR TABS 
 export async function fetchPerTabsItem(payload) {
   const DecodeBloodTypes = encodeURIComponent(payload);
 	let PerTabsItem = [];

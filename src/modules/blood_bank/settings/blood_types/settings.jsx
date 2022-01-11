@@ -21,8 +21,10 @@ export const errorMessage = {
 
 export const messagePrompts = {
   successCreateUser: "Successfully created! Reloading page...",
-  successUpdateUser: "Update successful! Reloading page..."
+  successUpdateUser: "Update successful! Reloading page...",
+	messageError:"Blood group is active..."
 }
+
 
 export const drawerAddTitle = 'ADD USER ACCOUNT';
 export const drawerUpdateTitle = 'UPDATE USER ACCOUNT';

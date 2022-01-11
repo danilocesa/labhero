@@ -14,15 +14,16 @@ import './selected_table.css';
 
 	const { Search } = Input;
 	const columns = [
-		{
-			title: 'ID',
-			dataIndex: 'categories_id',
-			key: 'categories_id',
-		},
+		// {
+		// 	title: 'ID',
+		// 	dataIndex: 'categories_id',
+		// 	key: 'categories_id',
+		// },
 		{
 			title: 'ORDER',
 			dataIndex: 'categories_order',
 			key: 'categories_order',
+			sorter: (a, b) => a.categories_id - b.categories_id,
 		},
 		{
 			title: 'CATEGORY NAME',
@@ -64,7 +65,7 @@ class SelectedTable extends React.Component {
 	};
 
 	showDrawer = (record) => {
-		console.log("HARRY TEsT console")
+		//console.log("HARRY TEsT console")
 		this.setState({
 			isDrawerVisible: true ,
 			drawerTitle: "ADD CATEGORY",

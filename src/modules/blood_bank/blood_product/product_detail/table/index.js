@@ -34,9 +34,9 @@ class ProductDetailTable extends React.Component {
 	
   state = {
     selectedRowKeys: [],
-	disabled:true,
-	bloodProductDetail: [],
-	bloodComponentsData: []
+		disabled:true,
+		bloodProductDetail: [],
+		bloodComponentsData: []
   };
 	
 	
@@ -47,19 +47,20 @@ class ProductDetailTable extends React.Component {
 	onClick = async () => {
 		const { history } = this.props;
 		const { bloodProductDetail } = this.state;
-		const createBloodProduct = await createBloodStorage(bloodProductDetail);
-			// @ts-ignore
-			if(createBloodProduct.status === 200){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createBloodProduct.status,	
-					duration: 3, 
-					onClose: () => history.push('/bloodbank/blood_product')
+    console.log("🚀 ~ file: index.js ~ line 50 ~ ProductDetailTable ~ onClick= ~ bloodProductDetail", bloodProductDetail)
+		// const createBloodProduct = await createBloodStorage(bloodProductDetail);
+		// 	// @ts-ignore
+		// 	if(createBloodProduct.status === 200){
+		// 		const httpMessageConfig = {
+		// 			message: messagePrompts.successCreateUser,
+		// 			// @ts-ignore
+		// 			status: createBloodProduct.status,	
+		// 			duration: 3, 
+		// 			onClose: () => history.push('/bloodbank/blood_product')
 					
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
+		// 		}
+		// 		HttpCodeMessage(httpMessageConfig);	
+		// 	}	
 		
   }
 
@@ -78,47 +79,29 @@ class ProductDetailTable extends React.Component {
   // @ts-ignore
   rowSelection  = async (selectedRowKeys, selectedRows) => {
 	const { Data } = this.props;
-	const { BloodStorage, BloodSize, Remarks, bloodComponentsData } = this.state;
+	const { BloodStorage, BloodSize, Remarks } = this.state;
 	const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 	
 	const blood_product = selectedRows.map(value =>{
-    console.log("🚀 ~ file: index.js ~ line 85 ~ ProductDetailTable ~ rowSelection= ~ value", value)
-		return(
-			{
+		return({
+			... Data,
 			"blood_storage": BloodStorage,
-			"blood_comp": 2,//value.blood_product,
-			"blood_type": Data.blood_type_id,
-			"extraction": Data.extraction_id,
-			"expiration_date": Data.expiration_date,
-			"parent_sku": Data.blood_bag_id,
 			"child_sku": "string",
 			"size": BloodSize  ,
-			"remarks": "Remarks",//Remarks === undefined  ? "No Remarks" : Remarks,
+			"remarks": Remarks === undefined  ? "No Remarks" : Remarks,
 			"created_by": loggedinUser.userID
-			}
-		)
+		})
 	})
 
 	this.setState({bloodProductDetail: blood_product, disabled:false})
 }
 	async componentDidMount(){
-    const apiResponseBloodStorage = await fetchBloodStorageForLov();
-	const bloodComponents = await fetchBloodComponents();
-
-    // const bloodComponentsDetails = bloodComponents.map(value =>{
-	// 	return(
-	// 		{
-	// 		"blood_comp_code": value.blood_comp_code,
-	// 		"blood_comp_description": value.blood_comp_description,
-	// 		"key": value.blood_comp_id,
-	// 		"blood_comp_name": value.blood_comp_name
-	// 		}
-	// 	)
-	// })
+		const apiResponseBloodStorage = await fetchBloodStorageForLov();
+		const bloodComponents = await fetchBloodComponents();
 	
     this.setState({
       bloodStorageList:apiResponseBloodStorage,
-	  bloodComponentsData: bloodComponents
+	  	bloodComponentsData: bloodComponents
     })
 
   }

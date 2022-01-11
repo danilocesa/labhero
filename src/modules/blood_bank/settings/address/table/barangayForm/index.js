@@ -3,8 +3,8 @@ import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import HttpCodeMessage from 'shared_components/message_http_status'
 import PropTypes from 'prop-types'
 import { createBarangayItems, updateBarangayItems } from 'services/blood_bank/address'
-import { Form, Input, Button, Switch } from 'antd';
-import { messagePrompts } from '../settings'
+import { Form, Input, Button, Switch, Col, Row } from 'antd';
+import { buttonLabels, messagePrompts } from '../settings'
 
 export default class BarangayForm extends Component {
   constructor(props) {
@@ -75,34 +75,41 @@ export default class BarangayForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
             barangay:selecetedData.barangay_name,
-            barangay_code:selecetedData.barangay_code,
+            
             is_active:selecetedData.is_active === true 
           }}
         >
+          {/* barangay_code:selecetedData.barangay_code, */}
           { 
             buttonNames === "UPDATE"? (		
-            <Form.Item 
-              label="ACTIVE" 
-              name='is_active'
-              valuePropName='checked'
-            >
-              <Switch onChange={this.onDisable}/>
-            </Form.Item>
+              <Row >
+              <Col span={4} >	
+                <Form.Item >
+                  <label >ACTIVE:</label> 	
+                </Form.Item>
+              </Col>
+
+              <Col span={6}>	
+                <Form.Item name='is_active' valuePropName='checked' >
+                  <Switch onChange={this.onDisable}/>
+                 </Form.Item>
+              </Col>
+            </Row> 
             )	
             :
             null
           }
           <Form.Item
-            label="Barangay"
+            label="BARANGAY"
             name="barangay"
             rules={[{ 
               required: true, 
-              message: 'Please input your Barangay!'
+              message: 'PLEASE INPUT YOUR BARANGAY!'
             }]}
           >
-            <Input onChange={this.onDisable}/>
+            <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             label="Barangay Code"
             name="barangay_code"
             rules={[{ 
@@ -111,14 +118,14 @@ export default class BarangayForm extends Component {
             }]}
           >
             <Input onChange={this.onDisable}/>
-          </Form.Item>
+          </Form.Item> */}
           <section className="drawerFooter">
             <Button 
               shape="round" 
               style={{ marginRight: 8, width: 120 }} 
               onClick={this.props.onClose}
             >
-              CANCEL
+              {buttonLabels.cancel}
             </Button>
             <Button 
               disabled={disabled} 
