@@ -1,16 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Input, Button, Row, Col, Form, Select  } from 'antd';
-import { fetchBloodProessingSearch } from 'services/blood_inventory/blood_processing'
+import { fetchBloodProcessingSearch } from 'services/blood_inventory/blood_processing'
 
 const { Option } = Select;
 
 class FormSearch extends React.Component {
 
+  constructor(props) {
+    super(props); 
+    this.state = {
+      bloodType : '',
+      loading:false
+    }
+  }
+
   onFinish = async(payload) => {
+    
     const { onFinish } = this.props
     payload.Blood_Components_Code = 'WB'
-    const APIresponseBloodProcessing = await fetchBloodProessingSearch(payload);
+    const APIresponseBloodProcessing = await fetchBloodProcessingSearch(payload);
     onFinish(APIresponseBloodProcessing, payload)
   }
 
@@ -34,14 +43,14 @@ class FormSearch extends React.Component {
         >
           <Col span={3}>
             <Form.Item name="BLOOD_TYPES">
-              <Select defaultValue="Blood Types" style={{ width: '100%' }}>
+              <Select /*defaultValue="Blood Types"*/ style={{ width: '100%' }} allowClear={true} onChange={(value) => { this.setState({bloodType: value})}}> 
                 {bloodTypesOption}
               </Select>
             </Form.Item>
           </Col>
           <Col span={3}>
             <Form.Item name="BLOOD_STORAGE">
-              <Select defaultValue="Storage" style={{ width: '100%' }}>
+              <Select /*defaultValue="Storage"*/ style={{ width: '100%' }} allowClear={true}>
                 {bloodStorageOption}
               </Select>
             </Form.Item>

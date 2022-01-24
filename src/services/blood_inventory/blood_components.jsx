@@ -20,6 +20,8 @@ export async function fetchBloodComponents(payload) {
  	}
   
   return bloodComponents;
+  
 }
+  
 
 export default fetchBloodComponents;

@@ -384,6 +384,7 @@ class SelectStep extends React.Component {
 	// Note. This function is use to update the isSelected state of the panel tag 
 	updatePanel = ({ panelID, isSelected }) => {
 		const { panels } = this.state;
+        console.log("🚀 ~ file: index.js ~ line 302 ~ SelectStep ~ panels", panels)
 
 		const updatedPanels = panels.map(item => {
 			if(item.panelID === panelID) 

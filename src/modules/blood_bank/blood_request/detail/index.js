@@ -86,6 +86,7 @@ class BloodRequestDetails extends React.Component {
       purpose: "string",
       created_by: loggedinUser.userID,
     }
+    console.log("🚀 ~ file: index.js ~ line 89 ~ BloodRequestDetails ~ onSubmit=async ~ payload", payload)
     const createAPIresponse = await createBloodRecipient(payload);
      // @ts-ignore
     if(createAPIresponse.status === 201){
