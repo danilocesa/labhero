@@ -38,15 +38,16 @@ const columns = [
 class ProductListTable extends React.Component {
 
 	BloodProductDetails = (record) => {
-		const { onSubmit } = this.props;
+		const { onSubmit, loading } = this.props;
 		onSubmit(record);   
 	}
 
 	render() {
-		const { Data } =  this.props
+		const { Data,loading } =  this.props
 
 		return (
 			<Table 
+				loading={loading}
 				columns={columns} 
 				dataSource={Data}
 				onRow={(record) => ({

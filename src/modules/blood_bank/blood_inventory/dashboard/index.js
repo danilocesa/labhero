@@ -50,6 +50,7 @@ function InventoryDashboard() {
               {array.map((i, d) => {
                 return( 
                   <Card.Grid 
+                    // @ts-ignore
                     onClick={() => history.push('/bloodbank/blood_inventory/search', {
                       ...item, 
                       actionType:i, 

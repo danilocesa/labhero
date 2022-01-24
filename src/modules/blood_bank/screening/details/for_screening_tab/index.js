@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { MoreOutlined } from '@ant-design/icons';
 import { Table, Input , Button, Tabs, Popover, Select, Checkbox, Row, Anchor, Col, message } from 'antd';
 
-import { extractSample, fetchExamList, screeningResultUpdate } from 'services/blood_bank/screening';
+import { extractSample, fetchExamList, screeningResultUpdate, fetchExamListWithId } from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 
@@ -13,6 +13,7 @@ import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import { Injection } from 'images';
 
 import NotifModal from '../../modal/NotifModal';
+import { index } from "d3-array";
 
 // CUSTOM MODULES
 const { Option } = Select;
@@ -45,6 +46,7 @@ class ForScreening extends React.Component {
       getRemarks: '',
       screeningData: [],
       examList: [],
+      examListWithId: [],
       hasScreeningID: null,
       buttonData:
       [
@@ -58,10 +60,12 @@ class ForScreening extends React.Component {
 
   coltable = [
       {
+        key: 'exam_item_id',
         title: 'EXAM',  
         dataIndex: 'exam_item_name',
       },
       {
+        key: 'exam_item_id',
         title: 'RESULT',
         dataIndex: 'result',
         render: (e) => (
@@ -74,10 +78,12 @@ class ForScreening extends React.Component {
         ),
       },
       {
+        key: 'exam_item_id',
         title: 'REFERENCE',
         dataIndex: 'normal_values',
       },
       {
+        key: 'exam_item_id',
         title: 'REMARK',
         dataIndex: 'remarks',
         render: (e) => (
@@ -94,19 +100,19 @@ class ForScreening extends React.Component {
 
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
     //dito
-  // const selectedData = selectedRows.map(value =>{
-	// 	return(
-	// 		{
-  //       exam_result_id: rowData.exam_result_id,
-  //       exam_remarks: rowData.exam_remarks,
-  //       exam_results:rowData.exam_results,
-  //       last_updated_by: loggedinUser
-	// 		}
-	// 	)
-	// })
+  const selectedData = selectedRows.map(value =>{
+		return(
+			{
+        exam_result_id: 1,//rowData.exam_result_id,
+        exam_remarks: 'test remarks',//rowData.exam_remarks,
+        exam_results: 'test',//rowData.exam_results,
+        last_updated_by: loggedinUser
+			}
+		)
+	})
 
-  // const { rowData } = selectedRows ;
-  // console.log("🚀 ~ file: index.js ~ line 94 ~ ForScreening ~ rowData", rowData)
+  const { rowData } = selectedData ;
+  console.log("🚀 ~ file: index.js ~ line 94 ~ ForScreening ~ rowData", rowData)
 
   // payload = {
   //   exam_result_id: rowData.exam_result_id,
@@ -153,12 +159,13 @@ class ForScreening extends React.Component {
 
   async componentDidMount(){
 
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
     this.setState({
       loading:true
     });
     
-    const { donorDetail } = this.props.donorDetail;
-    console.log("🚀 ~ file: index.js ~ line 121 ~ ForScreening ~ componentDidMount ~ donorDetail", donorDetail)
+    const { donorDetail, donorHealthInfo } = this.props.donorDetail;
 
     this.setState({
       hasScreeningID: donorDetail.screening_id
@@ -169,6 +176,27 @@ class ForScreening extends React.Component {
       loading:false,
       examList:apiResponseExamList
     })
+
+    const apiResponseExamListWithId = await fetchExamListWithId(donorDetail.screening_id);
+
+    const mappedExamListWithId = apiResponseExamListWithId.map(value =>{
+      return(
+        {
+          exam_result_id: value.exam_result.exam_result_id,
+          exam_remarks: value.exam_result.exam_remarks,
+          exam_results: value.exam_result.exam_results,
+          exam_item_name: value.exam_result.exam_item_name,
+          normal_values: value.exam_result.normal_values,
+          last_updated_by: loggedinUser.userID
+        }
+      )
+    })
+
+    this.setState({
+      loading:false,
+      examListWithId:mappedExamListWithId
+    })
+
   }
 
 
@@ -179,7 +207,7 @@ class ForScreening extends React.Component {
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const payload = {
-      screening_id: 1472,//donorDetail.screening_id,
+      screening_id: 14720,//donorDetail.screening_id,
       donor: donorDetail.donor_id,
       health_info: donorDetail.health_info.health_info_id,
       extraction_remarks: getRemarks,
@@ -196,7 +224,6 @@ class ForScreening extends React.Component {
         ...value, key:index
       })
     })
-    console.log("🚀 ~ file: index.js ~ line 184 ~ ForScreening ~ mappeddata ~ mappeddata", mappeddata)
 
     // @ts-ignore
     if(result.status === 201){
@@ -223,6 +250,33 @@ class ForScreening extends React.Component {
   }
   redirect = () => {this.setState({ redirect: true })}
 
+  onClickSave = async (value) => {
+    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
+    const { examListWithId } = this.state;
+
+    const saveExamResult = examListWithId.map(value =>{
+      return(
+        {
+          exam_result_id: value.exam_result_id,
+          exam_remarks: value.exam_remarks,
+          exam_results: value.exam_results,
+          last_updated_by: value.last_updated_by
+        }
+      )
+    })
+
+    const result = await screeningResultUpdate(saveExamResult);
+    console.log("🚀 ~ file: index.js ~ line 270 ~ ForScreening ~ onClickSave= ~ result", result)
+      // @ts-ignore
+      
+      if(result.status === 200){
+        Message.success({ message: 'Exam Result Saved!' });
+      }
+      else
+        Message.error();
+    }
+
   render() {
 
   const rowSelection = {
@@ -242,6 +296,7 @@ class ForScreening extends React.Component {
             examList, 
             loading, 
             hasScreeningID, 
+            examListWithId,
             screeningData,
             selectedRowKeys 
           } = this.state;
@@ -283,8 +338,9 @@ class ForScreening extends React.Component {
         <Tabs defaultActiveKey="1" style={{width: '100%'}}>
           <TabPane tab="FOR SCREENING">
             <Table 
-              rowSelection={{...rowSelection}}
-              dataSource={hasScreeningID === null ? examList : screeningData }
+              // rowSelection={{...rowSelection}}
+              rowSelection={rowSelection}
+              dataSource={hasScreeningID === null ? examList : examListWithId }
               columns={this.coltable} 
               pagination={false}
               loading={loading}
@@ -294,7 +350,11 @@ class ForScreening extends React.Component {
           </TabPane>
         </Tabs> 
         <div style={{ marginTop: 20, textAlign: 'right' }}>
-          <Button  shape="round" style={{ width: 120, marginRight:20 }} >
+          <Button  
+            shape="round" 
+            style={{ width: 120, marginRight:20 }} 
+            onClick={this.onClickSave}
+          >
             SAVE
           </Button>
           <Button  shape="round" style={{ width: 120, marginRight:20 }} >

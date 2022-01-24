@@ -7,6 +7,9 @@ import {fetchBloodStorageForLov, createBloodStorage} from 'services/blood_invent
 import HttpCodeMessage from 'shared_components/message_http_status'
 import messagePrompts from  './settings'
 import fetchBloodComponents from  'services/blood_inventory/blood_components'
+import moment from 'moment';
+import Message from 'shared_components/message';
+
 
 const { Option } = Select;
 
@@ -47,21 +50,34 @@ class ProductDetailTable extends React.Component {
 	onClick = async () => {
 		const { history } = this.props;
 		const { bloodProductDetail } = this.state;
-    console.log("🚀 ~ file: index.js ~ line 50 ~ ProductDetailTable ~ onClick= ~ bloodProductDetail", bloodProductDetail)
-		// const createBloodProduct = await createBloodStorage(bloodProductDetail);
-		// 	// @ts-ignore
-		// 	if(createBloodProduct.status === 200){
-		// 		const httpMessageConfig = {
-		// 			message: messagePrompts.successCreateUser,
-		// 			// @ts-ignore
-		// 			status: createBloodProduct.status,	
-		// 			duration: 3, 
-		// 			onClose: () => history.push('/bloodbank/blood_product')
-					
-		// 		}
-		// 		HttpCodeMessage(httpMessageConfig);	
-		// 	}	
-		
+		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
+	const payloadbloodProductDetail = bloodProductDetail.map(dtl => ({
+		storage_name: dtl.storage_name,
+		storage_desc: dtl.storage_name,
+		created_by: dtl.created_by,
+		created_date: moment(),
+		last_updated_by: loggedinUser.userID,
+		last_updated_date: moment()
+	}));
+
+	const payload = payloadbloodProductDetail[0];
+    console.log("🚀 ~ file: index.js ~ line 64 ~ ProductDetailTable ~ onClick= ~ payload", payload)
+
+		const createBloodProduct = await createBloodStorage(payload);
+			// @ts-ignore
+			if([201,200].includes(createBloodProduct.status)){
+				const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: createBloodProduct.status,	
+					duration: 3, 
+					onClose: () => history.push('/bloodbank/blood_product')
+				}
+				HttpCodeMessage(httpMessageConfig);	
+			}
+			else
+      		Message.error();
   }
 
 	onChangeBloodStorage = (value) => {
