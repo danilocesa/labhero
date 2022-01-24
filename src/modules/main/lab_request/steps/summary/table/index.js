@@ -7,37 +7,40 @@ import { fetchExamsByReqId } from 'services/lab_request/labRequest';
 import './table.css';
 
 const columns = [
-	{
-		title: 'PANEL',
-		dataIndex: ['selectedPanel', 'panelName'],
-		width: 200,
-		defaultSortOrder: 'ascend',
-		sorter: (a, b) => {
-			const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
-			const bPanelName = b.selectedPanel ? b.selectedPanel.panelName : '';
+	// {
+	// 	title: 'PANEL',
+	// 	dataIndex: ['selectedPanel', 'panelName'],
+	// 	width: 200,
+	// 	defaultSortOrder: 'ascend',
+	// 	sorter: (a, b) => {
+	// 		const aPanelName = a.selectedPanel ? a.selectedPanel.panelName : '';
+	// 		const bPanelName = b.selectedPanel ? b.selectedPanel.panelName : '';
 				
-			return aPanelName.localeCompare(bPanelName);
-		},
-		// align: 'center',
-	},
+	// 		return aPanelName.localeCompare(bPanelName);
+	// 	},
+	// 	// align: 'center',
+	// },
 	{
 		title: 'SECTION',
 		dataIndex: ['selectedSection', 'sectionName'],
 		width: 200,
+		render:(value, row) => {
+		
+		}
 	},
 	{
 		title: 'EXAM NAME',
-		dataIndex: 'examName',
+		dataIndex: 'examCode',
 		width: 300,
 		// align: 'center',
 	},
-	{
-		title: 'SPECIMEN',
-		dataIndex: ['selectedSpecimen', 'specimenName'],
-		width: 200,
-		// align: 'center',
-		render: text => text.toString().toUpperCase()
-	}
+	// {
+	// 	title: 'SPECIMEN',
+	// 	dataIndex: ['selectedSpecimen', 'specimenName'],
+	// 	width: 200,
+	// 	// align: 'center',
+	// 	render: text => text.toString().toUpperCase()
+	// }
 ];
 
 class SummaryTable extends React.Component {
@@ -50,7 +53,7 @@ class SummaryTable extends React.Component {
 		// Variables for Edit Module
 		const otherInfo = sessionStorage.getItem(LR_OTHER_INFO);
 		const requestID = otherInfo ? JSON.parse(otherInfo).requestID : null;
-
+		// const qexams = await fetchExamsByReqId(requestID);
 
 		// Store selected exams from api to session storage
 		// This will trigger if session exam has no value
@@ -58,6 +61,7 @@ class SummaryTable extends React.Component {
 		// Specifically when user jump to summary page using the steps link 
 		if(!sessionExams && requestID) {
 			const qexams = await fetchExamsByReqId(requestID);
+      
 			let zexams = [];
 
 			qexams.forEach(tier1 => {

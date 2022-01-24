@@ -4,7 +4,6 @@ import Tag from './tag';
 import { 	LR_REQUEST_TYPE } from 'modules/main/lab_request/steps/constants'; 
 class PanelTag extends React.Component {
 	handleChange = (isChecked) => {
-		const reqType = sessionStorage.getItem(LR_REQUEST_TYPE);
 		const { 
 			panelID, 
 			isDisabled,

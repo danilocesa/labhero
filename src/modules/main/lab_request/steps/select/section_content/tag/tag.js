@@ -46,7 +46,7 @@ Tag.propTypes = {
 	tagLabel: PropTypes.string.isRequired,
 	isSelected: PropTypes.bool.isRequired,
 	isDisabled: PropTypes.bool.isRequired,
-	onChange: PropTypes.func.isRequired
+	// onChange: PropTypes.func.isRequired
 };
 
 export default Tag;

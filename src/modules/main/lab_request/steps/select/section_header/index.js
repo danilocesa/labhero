@@ -2,6 +2,7 @@ import React from 'react';
 import { Radio, Tooltip, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import fetchPanel from 'services/lab_request/labPanelExamRequesting';
+import { fetchPanelList } from 'services/request_lab/panelList'
 import fetchSection from 'services/shared/section';
 import { fetchPerSpecimens } from 'services/shared/examRequest';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -31,7 +32,7 @@ class SectionHeader extends React.Component {
     }
 
     async componentDidMount() {
-			const { populatePanels, populatePanelRef, displayLoading } = this.props;
+			const { populatePanels, populatePanelRef, displayLoading, populatePanelRefNew } = this.props;
 
 			displayLoading(true);
 
@@ -40,7 +41,6 @@ class SectionHeader extends React.Component {
 			
 			populatePanelRef(rawPanels.filter(rawPanel => rawPanel.active === 1));
 			populatePanels();
-
 			this.setState({ sections });
 
 			displayLoading(false);
@@ -175,6 +175,7 @@ SectionHeader.propTypes = {
 	updateSelectedSpecimen: PropTypes.func.isRequired,
 	updateSelectedSection: PropTypes.func.isRequired,
 	clearExams: PropTypes.func.isRequired,
+	populatePanelRefNew:PropTypes.func.isRequired,
 	displayLoading: PropTypes.func.isRequired
 }
 

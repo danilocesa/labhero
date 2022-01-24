@@ -1,118 +1,125 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Form, Input, Button, Switch, Col, Row } from 'antd';
-import HttpCodeMessage from 'shared_components/message_http_status'
-import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
-import { createProvinceItems,updateProvinceItems } from 'services/blood_bank/address'
-import { messagePrompts } from '../settings'
+import fetchProvinceItems from 'services/blood_bank/address' 
+import { PlusOutlined } from '@ant-design/icons';
+import TablePager from 'shared_components/table_pager';
+import ProvinceForm from '../provinceForm'
+import { 
+  Row, 
+  Col, 
+  Table, 
+  Button, 
+  Input, 
+  Drawer, 
+  Select  } from 'antd';
 
-export default class ProvinceForm extends Component {
+	const columns = [
+		{
+			title: 'PROVINCE',
+			dataIndex: 'province_name',
+		}
+	];
+
+export default class c extends Component {
   constructor(props) {
     super(props);
     this.state = { disabled: true };
 	} 
 
-  onFinish = async (values) => {
-    const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-		const { buttonNames, selecetedData } = this.props;
-    
-    const payload = {
-			province_name :values.Province,
-      province_code:values.Province_code,
-      created_by:loggedinUser.userID,
-      province_id:selecetedData.province_id,
-      is_active: (values.is_active === true) ? 1 : 0,
-		};
-		if(buttonNames === "ADD"){
-			const createdProvinceResponse = await createProvinceItems(payload);
-			// @ts-ignore
-			if(createdProvinceResponse.status === 201){
-				const httpMessageConfig = {
-					message: messagePrompts.successCreateUser,
-					// @ts-ignore
-					status: createdProvinceResponse.status,	
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);	
-			}	
-		}
-		else {
-			payload.province_id = selecetedData.province_id;
-  		const updateProvinceResponse =  await updateProvinceItems(payload)
-			// @ts-ignore)
-			if(updateProvinceResponse.status === 200){
-				const httpMessageConfig = {
-					message: messagePrompts.successUpdateUser,
-					// @ts-ignore
-					status: updateProvinceResponse.status,
-					duration: 3, 
-					onClose: () => window.location.reload() 
-				}
-				HttpCodeMessage(httpMessageConfig);
-			}
-		}
-	};
+	async componentDidMount() {
+		this.setState({loading:true});
+		const response = await fetchProvinceItems();
+    this.setState({ 
+      ProvinceItems:response,
+      pagination: response.length,
+		});
+	}
 
-  onDisable = () => {
-    this.setState({ disabled:false })
+	showDrawer = (record) => {
+		this.setState({
+			visible: true,
+			drawerTitle: "ADD PROVINCE",
+			selecetedData: record,
+      buttonNames:"ADD"
+		});
+	}
+
+	handleChange = (value) =>{
+    // eslint-disable-next-line react/no-access-state-in-setstate
+		const pagination = {...this.state.pagination};
+		pagination.pageSize = parseInt(value);
+		this.setState({ pagination });
   }
 
+	displayDrawer = (record) => {
+		this.setState({
+			visible: true,
+			drawerTitle: "UPDATE CITY",
+			selecetedData:record,
+      buttonNames:"UPDATE"
+		});
+	}
+
+	onDrawerClose = () => {
+		this.setState({ visible: false });
+	};
+
+
   render() {
-    const { disabled } = this.state
-    const { buttonNames, selecetedData } = this.props
+		const { 
+      visible,
+      drawerTitle, 
+      buttonNames,
+      ProvinceItems,
+      CityItem,
+      selecetedData,
+      buttonDisable,
+      pagination,
+    } = this.state
 
     return (
-      <div>
-        <Form 
-          layout="vertical"
-          onFinish={this.onFinish}
-          initialValues={{ 
-						Province:selecetedData.province_name,
-            Province_code:selecetedData.province_code,
-            is_active:selecetedData.is_active === true 
-					}}
-        >
-          {
-            buttonNames === "UPDATE"? (		
-							<Row >
-									<Col span={4}>	
-									  <Form.Item >
-									    <label >ACTIVE:</label> 	
-									  </Form.Item>
-									</Col>
-
-                  <Col span={6}>	
-									  <Form.Item name='is_active' valuePropName='checked' >
-									    <Switch onChange={this.onDisable}/>
-							   	  </Form.Item>
-									</Col>
-								</Row> 
-						)	
-						:
-						null
-					}
-          <Form.Item
-            label="PROVINCE"
-            name="Province"
-            rules={[{ required: true, message: 'PLEASE INPUT YOUR PROVINCE!' }]}
-          >
-            <Input style={{ textTransform: 'uppercase'}} onChange={this.onDisable}/>
-          </Form.Item>
-          <section className="drawerFooter">
-            <Button 
-              shape="round" 
-              style={{ marginRight: 8, width: 120 }} 
-              onClick={this.props.onClose}
-            >
-              CANCEL
-            </Button>
-            <Button disabled={disabled} type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
-              {buttonNames}
-            </Button>
-				  </section>
-        </Form>
-      </div>
+			<div>
+				<Row style={{ marginBottom: 10 }}>
+					<Col span={12} style={{ textAlign: 'right' }}>
+						<Button 
+							disabled={buttonDisable}
+							type="primary" 
+							shape="round" 
+							onClick={this.showDrawer}
+							style={{ marginRight: '15px' }} 
+							icon={<PlusOutlined />}
+						>
+							ADD PROVINCE
+						</Button >
+						<TablePager handleChange={this.handleChange}/>
+					</Col>
+				</Row>
+				<Table  
+					style={{textTransform:'uppercase'}}
+					dataSource={ProvinceItems} 
+					columns={columns} 
+					pagination={pagination}
+					onRow={(record) => {
+						return {     
+							onDoubleClick: () => {
+								this.displayDrawer(record);
+							}
+						}
+					}}/>
+				<Drawer
+					title={drawerTitle}
+					width="30%"
+					visible={visible}
+					onClose={this.onDrawerClose}
+					destroyOnClose
+				>
+					<ProvinceForm  
+						buttonNames={buttonNames} 
+						//Province={Province} 
+						selecetedData={selecetedData}
+					/>
+				</Drawer>
+			</div>
     )
   }
 }

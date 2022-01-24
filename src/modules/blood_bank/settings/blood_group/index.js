@@ -1,5 +1,5 @@
 import React from 'react';
-import BloodGroupTable from './table';
+import BloodGroupTable from './table'
 
 class BloodGroup extends React.Component {
 	render() {

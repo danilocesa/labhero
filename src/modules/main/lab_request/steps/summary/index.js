@@ -43,6 +43,7 @@ class SummaryStep extends React.Component {
 	
 	saveForCreate = async () => {
 		const { otherInfo, exams, user } = this.state;
+    console.log("🚀 ~ file: index.js ~ line 46 ~ SummaryStep ~ saveForCreate= ~ exams", exams)
 		const payloadExams = exams.map(exam => ({
 			panelID: exam.selectedPanel ? exam.selectedPanel.panelID : 0,
 			examID: exam.examID,
