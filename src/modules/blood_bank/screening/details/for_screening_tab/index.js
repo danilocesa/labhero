@@ -1,13 +1,16 @@
 // @ts-nocheck
-import React from "react"
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { MoreOutlined } from '@ant-design/icons';
-import { Table, Input , Button, Tabs, Popover, Select, Checkbox, Row, Anchor, Col, message } from 'antd';
+import { Table, Input , Button, Tabs, Popover, Select, Checkbox, Row, Anchor, Col, message, Form } from 'antd';
 
 import { extractSample, fetchExamList, screeningResultUpdate, fetchExamListWithId } from 'services/blood_bank/screening';
 import Message from 'shared_components/message';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+
+import messagePrompts from  './settings'
+import HttpCodeMessage from 'shared_components/message_http_status'
 
 // @ts-ignore
 import { Injection } from 'images';
@@ -15,11 +18,93 @@ import { Injection } from 'images';
 import NotifModal from '../../modal/NotifModal';
 import { index } from "d3-array";
 
+const EditableContext = React.createContext(null);
+
 // CUSTOM MODULES
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 const { Link } = Anchor;
+
+const EditableRow = ({ index, ...props }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} component={false}>
+      <EditableContext.Provider value={form}>
+        <tr {...props} />
+      </EditableContext.Provider>
+    </Form>
+  );
+};
+
+const EditableCell = ({
+  title,
+  editable,
+  children,
+  dataIndex,
+  record,
+  handleSave,
+  ...restProps
+}) => {
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef(null);
+  const form = useContext(EditableContext);
+  useEffect(() => {
+    if (editing) {
+      inputRef.current.focus();
+    }
+  }, [editing]);
+
+  const toggleEdit = () => {
+    setEditing(!editing);
+    form.setFieldsValue({
+      [dataIndex]: record[dataIndex],
+    });
+  };
+
+  const save = async () => {
+    try {
+      const values = await form.validateFields();
+      toggleEdit();
+      handleSave({ ...record, ...values });
+    } catch (errInfo) {
+      console.log('Save failed:', errInfo);
+    }
+  };
+
+  let childNode = children;
+
+  if (editable) {
+    childNode = editing ? (
+      <Form.Item
+        style={{
+          margin: 0,
+        }}
+        name={dataIndex}
+        rules={[
+          {
+            required: true,
+            message: `${title} is required.`,
+          },
+        ]}
+      >
+        <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+      </Form.Item>
+    ) : (
+      <div
+        className="editable-cell-value-wrap"
+        style={{
+          paddingRight: 24,
+        }}
+        onClick={toggleEdit}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  return <td {...restProps}>{childNode}</td>;
+};
 
 const coltableheader = [
   {
@@ -48,6 +133,7 @@ class ForScreening extends React.Component {
       examList: [],
       examListWithId: [],
       hasScreeningID: null,
+      saveDisable: true,
       buttonData:
       [
         {
@@ -56,84 +142,30 @@ class ForScreening extends React.Component {
         }
       ]
     };
-	} 
 
-  coltable = [
+    this.coltable = [
       {
-        key: 'exam_item_id',
         title: 'EXAM',  
         dataIndex: 'exam_item_name',
+        editable: false
       },
       {
-        key: 'exam_item_id',
         title: 'RESULT',
         dataIndex: 'result',
-        render: (e) => (
-          <div>
-            <Select defaultValue="" style={{ width: 120 }}>
-              <Option value="Positive">Positive</Option>
-              <Option value="Negative">Negative</Option>
-            </Select>
-          </div>
-        ),
+        editable: true
       },
       {
-        key: 'exam_item_id',
         title: 'REFERENCE',
         dataIndex: 'normal_values',
       },
       {
-        key: 'exam_item_id',
         title: 'REMARK',
         dataIndex: 'remarks',
-        render: (e) => (
-          <div>
-            <Input onChange={this.setDisable}/>
-          </div>
-        ),
+        editable: true
       },
     ];
 
-  rowSelection  = (selectedRowKeys, selectedRows) => {
-  console.log("🚀 ~ file: index.js ~ line 94 ~ ForScreening ~ selectedRowKeys", selectedRowKeys)
-  console.log("🚀 ~ file: index.js ~ line 92 ~ ForScreening ~ selectedRows", selectedRows)
-
-  const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-    //dito
-  const selectedData = selectedRows.map(value =>{
-		return(
-			{
-        exam_result_id: 1,//rowData.exam_result_id,
-        exam_remarks: 'test remarks',//rowData.exam_remarks,
-        exam_results: 'test',//rowData.exam_results,
-        last_updated_by: loggedinUser
-			}
-		)
-	})
-
-  const { rowData } = selectedData ;
-  console.log("🚀 ~ file: index.js ~ line 94 ~ ForScreening ~ rowData", rowData)
-
-  // payload = {
-  //   exam_result_id: rowData.exam_result_id,
-  //   exam_remarks: rowData.exam_remarks,
-  //   exam_results:rowData.exam_results,
-  //   last_updated_by: rowData.created_by
-  // };
-
-  // screeningResultUpdate
-  
-
-    // const mappedRowData = rowData.map((value , index ) =>{
-    //   return ({
-    //     ...value, key:index
-    //   })
-    // })
-
-		// this.setState({selectedData: rowData})
-	}
-
-  
+	} 
 
   handleVisibleChange = visible => {
     this.setState({ visible });
@@ -158,35 +190,33 @@ class ForScreening extends React.Component {
   };
 
   async componentDidMount(){
-
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-
     this.setState({
       loading:true
     });
     
     const { donorDetail, donorHealthInfo } = this.props.donorDetail;
-
     this.setState({
       hasScreeningID: donorDetail.screening_id
     });
 
-    const apiResponseExamList = await fetchExamList();
+    const apiResponseExamList = await fetchExamList(); //fetch Exam list if No Screening ID
     this.setState({
       loading:false,
       examList:apiResponseExamList
     })
 
-    const apiResponseExamListWithId = await fetchExamListWithId(donorDetail.screening_id);
-
+    const apiResponseExamListWithId = await fetchExamListWithId(donorDetail.screening_id); //fetch Examlist from screening if has Screening ID
     const mappedExamListWithId = apiResponseExamListWithId.map(value =>{
       return(
         {
+          key: value.exam_result.exam_result_id,
           exam_result_id: value.exam_result.exam_result_id,
-          exam_remarks: value.exam_result.exam_remarks,
-          exam_results: value.exam_result.exam_results,
+          exam_remarks: value.exam_result.exam_remarks === null ? "NULL" : value.exam_result.exam_remarks,
+          result: value.exam_result.exam_results === "1" ? "POSITIVE" : "NEGATIVE",
           exam_item_name: value.exam_result.exam_item_name,
           normal_values: value.exam_result.normal_values,
+          remarks: "REMARK",
           last_updated_by: loggedinUser.userID
         }
       )
@@ -194,7 +224,8 @@ class ForScreening extends React.Component {
 
     this.setState({
       loading:false,
-      examListWithId:mappedExamListWithId
+      examListWithId:mappedExamListWithId,
+      dataSource: donorDetail.screening_id === null ? apiResponseExamList : mappedExamListWithId
     })
 
   }
@@ -242,6 +273,23 @@ class ForScreening extends React.Component {
       
   }
 
+  handleDelete = (key) => {
+    const dataSource = [...this.state.dataSource];
+    this.setState({
+      dataSource: dataSource.filter((item) => item.key !== key),
+    });
+  };
+  
+  handleSave = (row) => {
+    const newData = [...this.state.dataSource];
+    const index = newData.findIndex((item) => row.key === item.key);
+    const item = newData[index];
+    newData.splice(index, 1, { ...item, ...row });
+    this.setState({
+      dataSource: newData,
+    });
+  };
+
   onChange = (value) => {
     this.setState({
       getRemarks: value
@@ -250,12 +298,31 @@ class ForScreening extends React.Component {
   }
   redirect = () => {this.setState({ redirect: true })}
 
+  rowSelection  = (selectedRowKeys, selectedRows) => {
+      const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+      const onSelectedData = selectedRows.map(value =>{
+        return(
+          {
+            exam_result_id: value.exam_result_id,
+            exam_remarks: value.remarks,
+            exam_results: value.result,
+            last_updated_by: loggedinUser.userID
+          }
+        )
+      })
+      
+      this.setState({
+        selectedData: onSelectedData,
+        saveDisable: false
+      });
+    }
+
   onClickSave = async (value) => {
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+    const { history } = this.props;
 
-    const { examListWithId } = this.state;
-
-    const saveExamResult = examListWithId.map(value =>{
+    const { selectedData } = this.state;
+    const saveExamResult = selectedData.map(value =>{
       return(
         {
           exam_result_id: value.exam_result_id,
@@ -267,17 +334,50 @@ class ForScreening extends React.Component {
     })
 
     const result = await screeningResultUpdate(saveExamResult);
-    console.log("🚀 ~ file: index.js ~ line 270 ~ ForScreening ~ onClickSave= ~ result", result)
       // @ts-ignore
       
       if(result.status === 200){
-        Message.success({ message: 'Exam Result Saved!' });
+        // Message.success({ message: 'Exam Result Saved!' });
+        // // window.location.reload();
+        
+        const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: result.status,	
+					duration: 3, 
+					// onClose: () => history.push('/bloodbank/screening/search')
+				}
+				  HttpCodeMessage(httpMessageConfig);	
+          window.location.reload();
       }
       else
         Message.error();
     }
 
   render() {
+
+    const components = {
+      body: {
+        row: EditableRow,
+        cell: EditableCell,
+      },
+    };
+    const coltable = this.coltable.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+
+      return {
+        ...col,
+        onCell: (record) => ({
+          record,
+          editable: col.editable,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          handleSave: this.handleSave,
+        }),
+      };
+    });
 
   const rowSelection = {
     onChange: this.rowSelection
@@ -298,8 +398,11 @@ class ForScreening extends React.Component {
             hasScreeningID, 
             examListWithId,
             screeningData,
-            selectedRowKeys 
+            selectedRowKeys ,
+            saveDisable
           } = this.state;
+    
+    const { dataSource } = this.state;
 
     const render = buttonData.map(data => {
       return (
@@ -338,10 +441,12 @@ class ForScreening extends React.Component {
         <Tabs defaultActiveKey="1" style={{width: '100%'}}>
           <TabPane tab="FOR SCREENING">
             <Table 
-              // rowSelection={{...rowSelection}}
+              components={components}
+              rowClassName={() => 'editable-row'}
+              bordered
               rowSelection={rowSelection}
-              dataSource={hasScreeningID === null ? examList : examListWithId }
-              columns={this.coltable} 
+              dataSource= {dataSource} //{hasScreeningID === null ? examList : examListWithId }
+              columns={coltable} 
               pagination={false}
               loading={loading}
             />
@@ -354,6 +459,7 @@ class ForScreening extends React.Component {
             shape="round" 
             style={{ width: 120, marginRight:20 }} 
             onClick={this.onClickSave}
+            disabled={saveDisable}
           >
             SAVE
           </Button>
