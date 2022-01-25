@@ -36,7 +36,7 @@ class SectionContent extends React.Component {
 					addSelectedExamByExam={addSelectedExamByExam}
 					removeSelectedExamByExam={removeSelectedExamByExam} 
 					updateExam={updateExam}
-				/>
+				/>  
 			))
 		);
 
@@ -49,7 +49,7 @@ class SectionContent extends React.Component {
 					panelCode={item.panelCode}
 					isSelected={item.isSelected}
 					isDisabled={item.isDisabled}
-					addSelectedExamByPanel={addSelectedExamByPanel}
+					addSelectedExamByPanel={addSelectedExamByPanel}	
 					removeSelectedExamByPanel={removeSelectedExamByPanel}
 					updatePanel={updatePanel}
 				/>
@@ -59,7 +59,7 @@ class SectionContent extends React.Component {
 		const EmptyPlaceholder = () => {
 			if(ExamList.length > 0 || PanelList.length > 0)
 				return null;
-
+  
 			return <Empty style={{ marginTop: 40 }} />;
 		};
 

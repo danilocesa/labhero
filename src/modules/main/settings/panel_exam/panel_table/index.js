@@ -59,6 +59,7 @@ class PanelTable extends React.Component {
 	}
 
 	componentDidMount = async () => {
+		this.populatePanelList();
 		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
 		const UserDatatype = userData.loginType //1
 		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
@@ -69,12 +70,13 @@ class PanelTable extends React.Component {
 				buttonAddVisible:true
 			})
 		}
-		this.populatePanelList();
+		
 	}
 
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
+    console.log("🚀 ~ file: index.js ~ line 78 ~ PanelTable ~ populatePanelList= ~ panelListData", panelListData)
 		// if(panelListData.status !== 200){
 		// 	HttpCodeMessage(panelListData.status);
 		// }
@@ -150,8 +152,8 @@ class PanelTable extends React.Component {
 	}
 
 	showDrawer = async () => {
-		this.setState({ loading:true });
 		this.setState({
+			loading:true,
 			isDrawerVisible: true,
 			drawerTitle: drawerAddTitle,
 			drawerButton: buttonLabels.create,
@@ -168,7 +170,7 @@ class PanelTable extends React.Component {
 	};
 
 	render() {
-		const { buttonAddVisible } = this.state
+		const { buttonAddVisible, panelListState } = this.state
 		return(
 			<div>
 				<div className="panel-table-options">
@@ -204,7 +206,7 @@ class PanelTable extends React.Component {
 				<Table 
 					className="settings-panel-exam-table"
 					size={tableSize}
-					dataSource={this.state.panelListState}
+					dataSource={panelListState}
 					pagination={{ ...this.state.pagination, showSizeChanger: false }}
 					loading={this.state.loading} 
 					columns={columns}
@@ -224,11 +226,11 @@ class PanelTable extends React.Component {
 					width="60%"
 					destroyOnClose
 				>
-					<PanelForm 
+					{/* <PanelForm 
 						drawerButton={this.state.drawerButton} 
 						panelInfo={this.state.panelInfo}
 						onCancel={this.onClose}
-					/>
+					/> */}
 				</Drawer>
 			</div>
 		);

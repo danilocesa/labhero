@@ -10,16 +10,6 @@ import './table.css';
 
 const { Text } = Typography; 
 
-const Sample = [
-  {
-    key: 1,
-    name: 'Complete Blood Counts',
-  },
-  {
-    key: 2,
-    name: 'Albumin',
-  },
-];
 
 const renderItem = (text, record) => {
 	const type = record.isLocked ? "secondary" : null;
@@ -81,32 +71,8 @@ const createColumns = handleRemove => {
 	];
 };
 
+
 class SelectTable extends React.Component {
-
-	expandedRowRender = () => {
-		const columnsEx = [
-			{
-				title: 'EXAM',
-				dataIndex: 'name',
-			},
-			{
-				render: () => 
-					<Button 
-						type="dashed" 
-						icon={<CloseOutlined />}
-						size="small" 
-					/>,
-			},
-		];
-
-		return (
-			<AntTable 
-				columns={columnsEx}
-				dataSource={Sample} 
-				pagination={false}
-			/>
-		);
-	};
 
 	shouldComponentUpdate(nextProps) {
 		return this.props.selectedExams !== nextProps.selectedExams;
@@ -119,8 +85,8 @@ class SelectTable extends React.Component {
 	}
 
 	render() {
-		const { selectedExams, removeSelectedExamByExam, removeAllExams, removeSelectedExamByPanel } = this.props; 
-		const TableCols = createColumns(removeAllExams);
+		const { selectedExams, removeSelectedExamByExam, removeAllExams  } = this.props; 
+  	const createTableCols = createColumns(removeAllExams);
 		const TableData = selectedExams.map(selectedExam => ({ 
 				key: selectedExam.examID,
 				...selectedExam,
@@ -139,18 +105,16 @@ class SelectTable extends React.Component {
 					</>
 				:	
 					null
-			}
-		));
+		}));
 
 		return (
 			<div className="select-step-table">
 				<AntTable
-					expandedRowRender={(sessionStorage.getItem(LR_REQUEST_TYPE) === requestTypes.create) ? null : this.expandedRowRender }
+					// expandedRowRender={(record)=> this.expandedRowRender(record) }
 					size={GLOBAL_TABLE_SIZE}
-					// @ts-ignore
-					columns={TableCols}
+					columns= {createTableCols}
 					pagination={false}
-					dataSource={TableData}
+					dataSource={  TableData }
 					scroll={{ y: 285 }}
 				/>
 			</div>
@@ -158,7 +122,7 @@ class SelectTable extends React.Component {
 	}
 }
 
-SelectTable.propTypes = {
+SelectTable.propTypes = {																																																					 
 	selectedExams: PropTypes.arrayOf(PropTypes.shape({
 		examID: PropTypes.number.isRequired,
 		examName: PropTypes.string.isRequired,
@@ -180,6 +144,7 @@ SelectTable.propTypes = {
 	removeSelectedExamByExam: PropTypes.func.isRequired,
 	removeAllExams: PropTypes.func.isRequired,
 	populatePanels: PropTypes.func.isRequired,
+	sampleData:PropTypes.array
 };
 
 export default SelectTable;

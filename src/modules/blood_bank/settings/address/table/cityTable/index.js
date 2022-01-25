@@ -3,7 +3,14 @@ import { PlusOutlined } from '@ant-design/icons';
 import fetchProvinceItems , { fetchCityItems } from 'services/blood_bank/address'  
 import CityForm from '../cityForm'
 import TablePager from 'shared_components/table_pager';
-import { Row, Col, Table, Button, Input, Drawer, Select  } from 'antd';
+import { 
+  Row, 
+  Col, 
+  Table, 
+  Button, 
+  Input, 
+  Drawer, 
+  Select  } from 'antd';
 
 const { Search } = Input;
 
@@ -11,11 +18,7 @@ const columns = [
   {
     title: 'CITY',
     dataIndex: 'city_name',
-  },
-  // {
-  //   title: 'CITY CODE',
-  //   dataIndex: 'city_code',
-  // }
+  }
 ];
 
 export default class CityTable extends Component {
@@ -100,7 +103,6 @@ export default class CityTable extends Component {
   handleChange = (value) =>{
     // eslint-disable-next-line react/no-access-state-in-setstate
 		const pagination = {...this.state.pagination};
-		// eslint-disable-next-line radix
 		pagination.pageSize = parseInt(value);
 		this.setState({ pagination });
   }
@@ -113,7 +115,6 @@ export default class CityTable extends Component {
       ProvinceItems,
       CityItem,
       selecetedData,
-      //Province,
       buttonDisable,
       pagination,
 
@@ -131,17 +132,20 @@ export default class CityTable extends Component {
       <div>
         <Row style={{ marginBottom: 10 }}>
           <Col span={12} >
-            <Select style={{ width: 220, textTransform:'uppercase' }}  placeholder="PLEASE SELECT A PROVINCE" onChange={this.onChange}>
+            <Select 
+              style={{ width: 220, textTransform:'uppercase' }}  
+              placeholder="PLEASE SELECT A PROVINCE" 
+              onChange={this.onChange}
+            >
               {ProvincemappedData}
             </Select>
             <Search style={{ width: 200, marginLeft:20 }}
-                    placeholder="Search By City"
-                    disabled={buttonDisable}
-                    allowClear
-                    onSearch={(value) => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-                    className="panel-table-search-input"
-            
+              placeholder="Search By City"
+              disabled={buttonDisable}
+              allowClear
+              onSearch={(value) => this.onSearch(value)}
+              onChange={this.onChangeSearch}
+              className="panel-table-search-input"
             />
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>

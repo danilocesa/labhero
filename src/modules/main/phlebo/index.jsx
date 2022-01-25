@@ -49,7 +49,6 @@ class Phlebo extends React.Component {
 	}
 
 	displayDrawer = (patientRecord) => {
-  console.log("file: index.jsx ~ line 52 ~ Phlebo ~ patientRecord", patientRecord)
 		this.setState({ 
 			showDrawer: true,
 			patientInfo: patientRecord
@@ -96,13 +95,11 @@ class Phlebo extends React.Component {
 							)}
 							key="1"
 						>
-					
 						<SearchPatientTableHeader 
 							pageSize={pageSize}
 							pageTotal={forExtrationPatientLength} 
 							handleChangeSize={this.handleChangeSize} 
 						/>
-
 						<SearchPatientTable 
 							data={forExtractionPatients}
 							pageSize={pageSize}
@@ -125,7 +122,6 @@ class Phlebo extends React.Component {
 								pageTotal={extractedPatientLength} 
 								handleChangeSize={this.handleChangeSize} 
 							/>
-
 							<SearchPatientTable 
 								data={extractedPatients}
 								pageSize={pageSize}

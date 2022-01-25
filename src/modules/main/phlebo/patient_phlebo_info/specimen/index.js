@@ -60,7 +60,6 @@ class SpecimenList extends React.Component {
 				width: 120,
 				render: (value, row, index) => {
 					const { loadingIndex } = this.state;
-          console.log("file: index.js ~ line 63 ~ SpecimenList ~ constructor ~ loadingIndex", loadingIndex)
 					const isLoading = loadingIndex.findIndex(i => i === index) !== -1;
 
 					return(
