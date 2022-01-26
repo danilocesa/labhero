@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types'
-import { Table, Select, Input, Button  } from 'antd';
+import { Table, Select, Input, Button, Form  } from 'antd';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import {fetchBloodStorageForLov, createBloodStorage} from 'services/blood_inventory/blood_storage'
 import HttpCodeMessage from 'shared_components/message_http_status'
@@ -9,9 +9,89 @@ import messagePrompts from  './settings'
 import fetchBloodComponents from  'services/blood_inventory/blood_components'
 import moment from 'moment';
 import Message from 'shared_components/message';
-
+const EditableContext = React.createContext(null);
 
 const { Option } = Select;
+
+const EditableRow = ({ index, ...props }) => {
+	const [form] = Form.useForm();
+	return (
+	  <Form form={form} component={false}>
+		<EditableContext.Provider value={form}>
+		  <tr {...props} />
+		</EditableContext.Provider>
+	  </Form>
+	);
+  };
+  
+  const EditableCell = ({
+	title,
+	editable,
+	children,
+	dataIndex,
+	record,
+	handleSave,
+	...restProps
+  }) => {
+	const [editing, setEditing] = useState(false);
+	const inputRef = useRef(null);
+	const form = useContext(EditableContext);
+	useEffect(() => {
+	  if (editing) {
+		inputRef.current.focus();
+	  }
+	}, [editing]);
+  
+	const toggleEdit = () => {
+	  setEditing(!editing);
+	  form.setFieldsValue({
+		[dataIndex]: record[dataIndex],
+	  });
+	};
+  
+	const save = async () => {
+	  try {
+		const values = await form.validateFields();
+		toggleEdit();
+		handleSave({ ...record, ...values });
+	  } catch (errInfo) {
+		console.log('Save failed:', errInfo);
+	  }
+	};
+  
+	let childNode = children;
+  
+	if (editable) {
+	  childNode = editing ? (
+		<Form.Item
+		  style={{
+			margin: 0,
+		  }}
+		  name={dataIndex}
+		  rules={[
+			{
+			  required: true,
+			  message: `${title} is required.`,
+			},
+		  ]}
+		>
+		  <Input ref={inputRef} onPressEnter={save} onBlur={save} />
+		</Form.Item>
+	  ) : (
+		<div
+		  className="editable-cell-value-wrap"
+		  style={{
+			paddingRight: 24,
+		  }}
+		  onClick={toggleEdit}
+		>
+		  {children}
+		</div>
+	  );
+	}
+  
+	return <td {...restProps}>{childNode}</td>;
+  };
 
 const data = [
   {
@@ -122,16 +202,65 @@ class ProductDetailTable extends React.Component {
 
   }
 
+  handleDelete = (key) => {
+    const dataSource = [...this.state.dataSource];
+    this.setState({
+      dataSource: dataSource.filter((item) => item.key !== key),
+    });
+  };
+  
+  handleSave = (row) => {
+    const newData = [...this.state.dataSource];
+    const index = newData.findIndex((item) => row.key === item.key);
+    const item = newData[index];
+    newData.splice(index, 1, { ...item, ...row });
+    this.setState({
+      dataSource: newData,
+    });
+  };
+
+  onChange = (value) => {
+    this.setState({
+      getRemarks: value
+      });
+    
+  }
+
+
+
   render() {
 		
     // @ts-ignore
     const { selectedRowKeys, bloodStorageList,disabled, bloodComponentsData } = this.state;
 
-		const bloodStorageOption = bloodStorageList === undefined ? null : bloodStorageList.map((item,i) => {
-			return (<Option key={i} value={item.storage_name}>{item.storage_name}</Option>)
+	const bloodStorageOption = bloodStorageList === undefined ? null : bloodStorageList.map((item,i) => {
+		return (<Option key={i} value={item.storage_name}>{item.storage_name}</Option>)
+	});
+	
+	const components = {
+		body: {
+			row: EditableRow,
+			cell: EditableCell,
+		},
+		};
+		const columns = this.columns.map((col) => {
+		if (!col.editable) {
+			return col;
+		}
+	
+		return {
+			...col,
+			onCell: (record) => ({
+			record,
+			editable: col.editable,
+			dataIndex: col.dataIndex,
+			title: col.title,
+			handleSave: this.handleSave,
+			}),
+		};
 		});
 		
-		const columns = [
+		this.columns = [
 			{
 				title: 'PRODUCT TYPE',
 				dataIndex: 'blood_product',
