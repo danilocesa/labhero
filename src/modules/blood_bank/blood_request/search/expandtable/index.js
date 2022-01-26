@@ -46,6 +46,7 @@ export class Extendtable extends Component {
       drawerTitle: 'REQUEST DETAILS',
       drawerButton: 'UPDATE REQUEST',
       disableButton: true,
+      action:"UPDATE",
       selectedRequest: record 
     });
   };
@@ -57,7 +58,7 @@ export class Extendtable extends Component {
   render() {
     const {record} = this.props
     const data = [record]
-    const {displayDrawer ,drawerTitle, drawerButton, selectedRequest, disableButton} = this.state
+    const {displayDrawer ,drawerTitle, drawerButton, selectedRequest, disableButton , action} = this.state
 
     return (
       <div>
@@ -85,6 +86,7 @@ export class Extendtable extends Component {
             onClose={this.onCloseDrawer} 
             drawerButton={drawerButton}
             disableButton={disableButton}
+            action={action}
           />
         </Drawer>
       </div>

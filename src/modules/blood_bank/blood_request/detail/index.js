@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { Row, Col, Typography, Form, Button, Select, Input, Drawer, InputNumber } from 'antd';
 import PropTypes from 'prop-types';
@@ -72,37 +74,36 @@ class BloodRequestDetails extends React.Component {
 
   onSubmit = async(value) => {
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-    const { selectedRequest } = this.props;
-    const payload = {
-      blood_product:selectedRequest.blood_product_id,
-      recipient:selectedRequest.recipient_id,
-      quantity:value.quantity,
-      priority:value.priority_id,
-      status:selectedRequest.status_id,
-      diagnosis:value.diagnosis,
-      physician:selectedRequest.license_no,
-      hospital:selectedRequest.hospital_id,
-      blood_unit: 0,
-      purpose: "string",
-      created_by: loggedinUser.userID,
-    }
-    console.log("🚀 ~ file: index.js ~ line 89 ~ BloodRequestDetails ~ onSubmit=async ~ payload", payload)
-    const createAPIresponse = await createBloodRecipient(payload);
-     // @ts-ignore
-    if(createAPIresponse.status === 201){
-      const httpMessageConfig = {
-        message: messagePrompts.successCreateUser,
-        // @ts-ignore
-        status: createAPIresponse.status,	
-        duration: 3, 
-        onClose: () => window.location.reload() 
-      }
-      HttpCodeMessage(httpMessageConfig);	
-    }	
+    const { selectedRequest , action } = this.props;
+    console.log("🚀 ~ file: index.js ~ line 78 ~ BloodRequestDetails ~ onSubmit=async ~ action", action)
+    // const payload = {
+    //   blood_product:selectedRequest.blood_product_id,
+    //   recipient:selectedRequest.recipient_id,
+    //   quantity:value.quantity,
+    //   priority:value.priority_id,
+    //   status:selectedRequest.status_id,
+    //   diagnosis:value.diagnosis,
+    //   physician:selectedRequest.physician_id,
+    //   hospital:selectedRequest.hospital_id,
+    //   blood_unit: 0,
+    //   purpose: "string",
+    //   created_by: loggedinUser.userID,
+    // }
+    // const createAPIresponse = await createBloodRecipient(payload);
+    //  // @ts-ignore
+    // if(createAPIresponse.status === 201){
+    //   const httpMessageConfig = {
+    //     message: messagePrompts.successCreateUser,
+    //     // @ts-ignore
+    //     status: createAPIresponse.status,	
+    //     duration: 3, 
+    //     onClose: () => window.location.reload() 
+    //   }
+    //   HttpCodeMessage(httpMessageConfig);	
+    // }	
   } 
 
-
-  closeDrawer = this.props;
+  closeDrawer = this.props; 
 
   render(){
     const { 
@@ -117,19 +118,6 @@ class BloodRequestDetails extends React.Component {
      } = this.state;
 
     const { selectedRequest, drawerButton, disableButton } = this.props;
-  
-    const ProductList = requestDetails.map(item => (
-      <Row key={item.blood_product_id}>
-        <Col span={10}>
-          {item.blood_product_id}
-        </Col>
-        <Col span={14}>
-          <div style={{ textAlign: 'right' }}>
-            {item.quantity}
-          </div>
-        </Col>
-      </Row>
-    ));
 
     const BloodTypeOptions = bloodType.map(item => (
       <Option key={item.blood_type_id} value={item.blood_type}>
@@ -397,7 +385,7 @@ class BloodRequestDetails extends React.Component {
             }
             {
               drawerButton === 'UPDATE REQUEST' && ( 
-                  showUpdateButton == true ?
+                  showUpdateButton === true ?
                   (		
                     <>
                       <Button
@@ -449,32 +437,18 @@ class BloodRequestDetails extends React.Component {
                         PRINT
                       </Button>
                   </div>
-                
               )
             }
           </section>
         </Form>
-        <Drawer
-          title={drawerTitle}
-          width="60%"
-          visible={displayDrawer}
-          onClose={this.onCloseDrawer}
-          destroyOnClose
-        >
-          <BloodRequestDetailsForm 
-            selectedRequest={selectedRequest}
-            onClose={this.onCloseDrawer} 
-            drawerButton='ADD'
-            disableButton={disableButton}
-          />
-        </Drawer>
       </Row>
     );
   }
 }
 
 BloodRequestDetails.propTypes = {
-  selectedRequest: PropTypes.object
+  selectedRequest: PropTypes.object,
+  action:PropTypes.string
 };
 
 

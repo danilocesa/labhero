@@ -180,7 +180,7 @@ class ProductDetailTable extends React.Component {
 	
 	const blood_product = selectedRows.map(value =>{
 		return({
-			... Data,
+			...Data,
 			"blood_storage": BloodStorage,
 			"child_sku": "string",
 			"size": BloodSize  ,
@@ -229,9 +229,8 @@ class ProductDetailTable extends React.Component {
 
 
   render() {
-		
     // @ts-ignore
-    const { selectedRowKeys, bloodStorageList,disabled, bloodComponentsData } = this.state;
+    const {  bloodStorageList,disabled } = this.state;
 
 	const bloodStorageOption = bloodStorageList === undefined ? null : bloodStorageList.map((item,i) => {
 		return (<Option key={i} value={item.storage_name}>{item.storage_name}</Option>)
@@ -344,7 +343,7 @@ class ProductDetailTable extends React.Component {
 }
 
 ProductDetailTable.propTypes = {
-	Data: PropTypes.object.isRequired,
+	Data: PropTypes.object,
 }
 
 export default ProductDetailTable;
