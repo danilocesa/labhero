@@ -35,7 +35,7 @@ class TablePager extends React.Component {
 }
 
 TablePager.propTypes = {
-	handleChange: PropTypes.func.isRequired,
+	handleChange: PropTypes.func,
 };
 
 export default TablePager;

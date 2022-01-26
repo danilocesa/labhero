@@ -23,11 +23,9 @@ class ProductList extends React.Component {
   }
 
   async componentDidMount(){
-
     this.setState({
       loading:true
     });
-  
     const apiResponseBloodType = await fetchBloodTypes();
     const apiResponseBloodStorage = await fetchBloodStorageForLov();
     const apiResponseBloodComponents = await fetchBloodComponents();
@@ -38,7 +36,6 @@ class ProductList extends React.Component {
       loading:false
     })
   }
-
   
   tabOnChange = async (key) => {
     const { PayloadFromForm } = this.state
@@ -55,7 +52,6 @@ class ProductList extends React.Component {
   }
 
   onFinish = (DataFromForm, payload) => {
-
     this.setState({ 
       Data: DataFromForm.results, 
       PayloadFromForm: payload,
@@ -75,7 +71,6 @@ class ProductList extends React.Component {
       bloodTypesList, 
       bloodStorageList, 
       bloodComponentsList,  
-      loading
     } = this.state
      
     const TabPanes = bloodComponentsList === undefined ? null : bloodComponentsList.map((item) => (
@@ -86,14 +81,15 @@ class ProductList extends React.Component {
       <div>
         <PageTitle pageTitle="BLOOD PRODUCT" />
         <FormSearch 
+          Data={Data}
           bloodTypesList={bloodTypesList}
           bloodStorageList={bloodStorageList}
           onFinish={this.onFinish} 
         />
         <TablePager 
-          handleChangeSize={null}
-          pageSize={Count === undefined ? 0 : Count}
+          // handleChange={this.handleSelectChange} 
           pageTotal={Count === undefined ? 0 : Count}
+          pageSize={Count === undefined ? 0 : Count}
         />
         <Tabs 
           onChange={this.tabOnChange}

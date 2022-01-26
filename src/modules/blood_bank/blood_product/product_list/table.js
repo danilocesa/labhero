@@ -61,7 +61,7 @@ class ProductListTable extends React.Component {
 }
 
 ProductListTable.propTypes = {
-  Data:PropTypes.array.isRequired,
+  Data:PropTypes.array,
 }
 
 export default ProductListTable;

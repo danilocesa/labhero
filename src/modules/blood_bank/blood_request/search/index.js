@@ -17,6 +17,7 @@ import {
 import Expandtable from './expandtable'
 import { RegexInput } from 'shared_components/pattern_input';
 import fetchRequest from 'services/blood_recipient/blood_recipient';
+import  fetchPriority, { fetchStatus }  from 'services/blood_recipient/blood_product_request';
 import PageTitle from 'shared_components/page_title';
 import Message from 'shared_components/message';
 import SearchPager from 'shared_components/search_pager';
@@ -28,8 +29,6 @@ import moment from 'moment';
 
 const { Text  } = Typography
 const { Option } = Select;
-
-
 
 const columns = [
   {
@@ -77,27 +76,29 @@ class BloodRequestSearch extends React.Component {
       displayDrawer: false,
       pageSize: GLOBAL_TABLE_PAGE_SIZE,
       selectedDateValue: moment().format("YYYYMMDD"),
-      selectedRequest: [],
+      selectedRequest: {},
       drawerTitle: '',
       drawerButton: '',
       disableButton: false,
       bloodType: [],
       actionType: null,
-      buttons:true
+      buttons:true,
+      status:[],
+      priority:[]
     };
     this.formRef = React.createRef();
   }
-
-
-  //Para sa Dropdown ng BloodType
+  // For Dropdown Parameters
   async componentDidMount() {
-
+    const StatusList = await fetchStatus();
     const bloodTypeList = await fetchBloodTypes();
+    const PriorityList = await fetchPriority();
 
-    console.log(bloodTypeList)
     this.setState({ 
       // loading: true, 
-      bloodType: bloodTypeList 
+      bloodType: bloodTypeList ,
+      status:StatusList,
+      priority:PriorityList
     });
 
   }
@@ -128,7 +129,6 @@ class BloodRequestSearch extends React.Component {
   onChange = (date, dateString) => {
 		this.setState({dateString});
 	} 
-
   
   onDisable = () =>{
     this.setState({
@@ -152,7 +152,8 @@ class BloodRequestSearch extends React.Component {
       drawerTitle: 'ADD REQUEST',
       drawerButton: 'ADD',
       disableButton: false,
-      selectedRequest: record
+      selectedRequest: record,
+      action:"ADD"
     });
   };
 
@@ -169,26 +170,32 @@ class BloodRequestSearch extends React.Component {
 
   clearInputs = () => {
     const { setFieldsValue } = this.formRef.current;
-
-    setFieldsValue({ patientID: '',  patientName: '', Date:'', blood_type:'', status:'', priority:'' });
-
+    setFieldsValue({ 
+      patientID: '',  
+      patientName: '', 
+      Date:'', 
+      blood_type:'', 
+      status:'', 
+      priority:'' 
+    });
     this.setState({  data: [] })
   }
-
-  
 
   render() {
     const { 
       data, 
-      loading, 
+      action,
+      status,
+      buttons,
+      loading,
+      priority,
       pageSize, 
-      displayDrawer, 
-      selectedRequest, 
+      bloodType,
       drawerTitle, 
       drawerButton, 
       disableButton, 
-      bloodType ,
-      buttons
+      displayDrawer, 
+      selectedRequest, 
       // actionType
     } = this.state
 
@@ -198,20 +205,21 @@ class BloodRequestSearch extends React.Component {
       </Option>
     ));
 
-    const TableFooter = (
-      <Row justify="center">
-        <Button 
-          onClick={this.onClickRegister}
-          type="link"
-          htmlType="submit" 
-          style={{ width: 120 }}
-        >
-          REGISTER
-        </Button>
-      </Row>
-    );
+    const StatusOptions = status.map(item => (
+      <Option key={item.status_id} value={item.status_name}>
+        {item.status_name}
+      </Option>
+    ));
+
+    const PriorityOptions = priority.map(item => (
+      <Option key={item.priority_id} value={item.priority_name}>
+        {item.status_name}
+      </Option>
+    ));
     
-    const TableData = data.map((currElement, index,array ) => ({...currElement,key:index}));
+    const TableData = data.map((currElement, index,array ) => ({
+      ...currElement,key:index
+    }));
 
     return (
       <div>   
@@ -253,13 +261,13 @@ class BloodRequestSearch extends React.Component {
               
             </Col>
             <Col>
-						<Form.Item label="SELECT DATE" name="Date" >
-							<AntDatePicker 
-								onChange={this.onChange} 
-								style={{ width: 300 }}
-							/>
-						</Form.Item>
-					</Col>
+              <Form.Item label="SELECT DATE" name="Date" >
+                <AntDatePicker 
+                  onChange={this.onChange} 
+                  style={{ width: 300 }}
+                />
+              </Form.Item>
+					  </Col>
           </Row>  
           <Row gutter={12} align="middle" justify="center">
             <Col>
@@ -282,7 +290,7 @@ class BloodRequestSearch extends React.Component {
                           label="STATUS"
                         >
                           <Select style={{ width: 180, marginRight: 10 }} onChange={this.onDisable} allowClear>
-                            {BloodTypeOptions}
+                            {StatusOptions}
                           </Select>
                         </Form.Item>
                       </Col>
@@ -292,7 +300,7 @@ class BloodRequestSearch extends React.Component {
                           label="PRIORITY"
                         >
                           <Select style={{ width: 190, marginRight: 10 }} onChange={this.onDisable} allowClear>
-                          {BloodTypeOptions}
+                          {PriorityOptions}
                           </Select>
                         </Form.Item>
                       </Col>
@@ -321,13 +329,11 @@ class BloodRequestSearch extends React.Component {
             </Col>
           </Row>
         </Form>     
-        <Col span={24}>
-          <SearchPager 
-            handleChangeSize={this.handleChangeSize}
-            pageTotal={data.length}
-            pageSize={pageSize}
-          />
-        </Col>
+        <SearchPager 
+          handleChangeSize={this.handleChangeSize}
+          pageTotal={data.length}
+          pageSize={pageSize}
+        />
         <Table
           style={{ textTransform: "uppercase" }}
           dataSource={TableData}
@@ -358,6 +364,7 @@ class BloodRequestSearch extends React.Component {
             onClose={this.onCloseDrawer} 
             drawerButton={drawerButton}
             disableButton={disableButton}
+            action={action}
           />
         </Drawer>
       </div>
