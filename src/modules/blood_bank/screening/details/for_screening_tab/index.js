@@ -216,7 +216,7 @@ class ForScreening extends React.Component {
           result: value.exam_result.exam_results === "1" ? "POSITIVE" : "NEGATIVE",
           exam_item_name: value.exam_result.exam_item_name,
           normal_values: value.exam_result.normal_values,
-          remarks: "REMARK",
+          remarks: "No Remarks",
           last_updated_by: loggedinUser.userID
         }
       )

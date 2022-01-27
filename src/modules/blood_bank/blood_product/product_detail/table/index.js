@@ -24,7 +24,7 @@ const EditableRow = ({ index, ...props }) => {
 	);
   };
   
-  const EditableCell = ({
+const EditableCell = ({
 	title,
 	editable,
 	children,
@@ -32,85 +32,66 @@ const EditableRow = ({ index, ...props }) => {
 	record,
 	handleSave,
 	...restProps
-  }) => {
+	}) => {
 	const [editing, setEditing] = useState(false);
 	const inputRef = useRef(null);
 	const form = useContext(EditableContext);
 	useEffect(() => {
-	  if (editing) {
+		if (editing) {
 		inputRef.current.focus();
-	  }
+		}
 	}, [editing]);
-  
+
 	const toggleEdit = () => {
-	  setEditing(!editing);
-	  form.setFieldsValue({
+		setEditing(!editing);
+		form.setFieldsValue({
 		[dataIndex]: record[dataIndex],
-	  });
+		});
 	};
-  
+
 	const save = async () => {
-	  try {
+		try {
 		const values = await form.validateFields();
 		toggleEdit();
 		handleSave({ ...record, ...values });
-	  } catch (errInfo) {
+		} catch (errInfo) {
 		console.log('Save failed:', errInfo);
-	  }
-	};
-  
-	let childNode = children;
-  
-	if (editable) {
-	  childNode = editing ? (
-		<Form.Item
-		  style={{
-			margin: 0,
-		  }}
-		  name={dataIndex}
-		  rules={[
-			{
-			  required: true,
-			  message: `${title} is required.`,
-			},
-		  ]}
-		>
-		  <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-		</Form.Item>
-	  ) : (
-		<div
-		  className="editable-cell-value-wrap"
-		  style={{
-			paddingRight: 24,
-		  }}
-		  onClick={toggleEdit}
-		>
-		  {children}
-		</div>
-	  );
-	}
+		}
+};
+
+let childNode = children;
+
+if (editable) {
+	childNode = editing ? (
+	<Form.Item
+		style={{
+		margin: 0,
+		}}
+		name={dataIndex}
+		rules={[
+		{
+			required: true,
+			message: `${title} is required.`,
+		},
+		]}
+	>
+		<Input ref={inputRef} onPressEnter={save} onBlur={save} />
+	</Form.Item>
+	) : (
+	<div
+		className="editable-cell-value-wrap"
+		style={{
+		paddingRight: 24,
+		}}
+		onClick={toggleEdit}
+	>
+		{children}
+	</div>
+	);
+}
   
 	return <td {...restProps}>{childNode}</td>;
   };
-
-const data = [
-  {
-		key: '1',
-    blood_product: 'Red Blood Cell'
-  },
-  {
-		key: '2',
-    blood_product: 'White Blood Cell'
-  },
-  {
-		key: '3', 
-    blood_product: 'Plasma'
-  },
-	{
-		key: '4',
-    blood_product: 'Platelet'
-  },
-];
 
 
 class ProductDetailTable extends React.Component {
@@ -127,21 +108,12 @@ class ProductDetailTable extends React.Component {
     this.setState({ selectedRowKeys,disabled:false });
   }
 
-	onClick = async () => {
-		const { history } = this.props;
-		const { bloodProductDetail } = this.state;
-		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+onClick = async () => {
+	const { history } = this.props;
+	const { dataSource } = this.state;
+	const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
-	const payloadbloodProductDetail = bloodProductDetail.map(dtl => ({
-		storage_name: dtl.storage_name,
-		storage_desc: dtl.storage_name,
-		created_by: dtl.created_by,
-		created_date: moment(),
-		last_updated_by: loggedinUser.userID,
-		last_updated_date: moment()
-	}));
-
-	const payload = payloadbloodProductDetail[0];
+	const payload = dataSource[0];
     console.log("🚀 ~ file: index.js ~ line 64 ~ ProductDetailTable ~ onClick= ~ payload", payload)
 
 		const createBloodProduct = await createBloodStorage(payload);
@@ -168,36 +140,75 @@ class ProductDetailTable extends React.Component {
 		this.setState({BloodSize:value})
   }
 
-	Remarks = (value) => {
-		this.setState({Remarks:value.target.value})
-  }
 
   // @ts-ignore
   rowSelection  = async (selectedRowKeys, selectedRows) => {
-	const { Data } = this.props;
-	const { BloodStorage, BloodSize, Remarks } = this.state;
+	// const {  dataSource } = this.state;
 	const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 	
 	const blood_product = selectedRows.map(value =>{
 		return({
-			...Data,
-			"blood_storage": BloodStorage,
+			// ...dataSource,
+			key: value.blood_processing_id,
+			blood_type_name: value.blood_type_name,
+			blood_processing_id: value.blood_processing_id,
+			blood_bag_id: value.blood_bag_id,
+			date_extracted: value.date_extracted,
+			expiration_date: value.expiration_date,
+			blood_storage: value.storage_name,
+			storage_name: value.storage_name,
+			storage_desc: value.storage_name,
+			created_by: loggedinUser.userID,
+			created_date: moment(),
+			last_updated_by: loggedinUser.userID,
+			last_updated_date: moment(),
 			"child_sku": "string",
-			"size": BloodSize  ,
-			"remarks": Remarks === undefined  ? "No Remarks" : Remarks,
-			"created_by": loggedinUser.userID
+			"size": value.size  ,
+			"remarks": value.remarks === null  ? "No Remarks" : value.remarks,
+			
 		})
 	})
+    console.log("🚀 ~ file: index.js ~ line 191 ~ ProductDetailTable ~ rowSelection= ~ blood_product", blood_product)
 
-	this.setState({bloodProductDetail: blood_product, disabled:false})
+	this.setState({ disabled:false, dataSource: blood_product})
 }
 	async componentDidMount(){
+		const { Data } = this.props;
+		const dataSource = [Data];
+        // console.log("🚀 ~ file: index.js ~ line 178 ~ ProductDetailTable ~ componentDidMount ~ dataSource", dataSource)
+        // console.log("🚀 ~ file: index.js ~ line 202 ~ ProductDetailTable ~ componentDidMount ~ Data", Data)
+		const { BloodStorage, BloodSize, Remarks } = this.state;
+		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+
 		const apiResponseBloodStorage = await fetchBloodStorageForLov();
 		const bloodComponents = await fetchBloodComponents();
+
+		const blood_product = dataSource.map(value =>{
+			return({
+				key: value.blood_processing_id,
+				blood_type_name: value.blood_type_name,
+				blood_processing_id: value.blood_processing_id,
+				blood_bag_id: value.blood_bag_id,
+				date_extracted: value.date_extracted,
+				expiration_date: value.expiration_date,
+				blood_storage: value.storage_name,
+				storage_name: value.storage_name,
+				storage_desc: value.storage_name,
+				created_by: loggedinUser.userID,
+				created_date: moment(),
+				last_updated_by: loggedinUser.userID,
+				last_updated_date: moment(),
+				child_sku: "string",
+				size: "Size",
+				remarks: "Remarks"
+				
+			})
+		})
 	
     this.setState({
-      bloodStorageList:apiResponseBloodStorage,
-	  	bloodComponentsData: bloodComponents
+      	bloodStorageList:apiResponseBloodStorage,
+	  	bloodComponentsData: bloodComponents,
+		  dataSource: blood_product
     })
 
   }
@@ -227,10 +238,10 @@ class ProductDetailTable extends React.Component {
   }
 
 
-
   render() {
     // @ts-ignore
-    const {  bloodStorageList,disabled } = this.state;
+    const {  bloodStorageList,disabled, dataSource } = this.state;
+	const { Data } = this.props;
 
 	const bloodStorageOption = bloodStorageList === undefined ? null : bloodStorageList.map((item,i) => {
 		return (<Option key={i} value={item.storage_name}>{item.storage_name}</Option>)
@@ -241,8 +252,48 @@ class ProductDetailTable extends React.Component {
 			row: EditableRow,
 			cell: EditableCell,
 		},
-		};
-		const columns = this.columns.map((col) => {
+	};
+		
+		
+	this.columns = [
+		{
+			title: 'PRODUCT TYPE',
+			dataIndex: 'blood_product',
+		},
+		{
+			title: 'PRODUCT BAG ID',
+			dataIndex: 'blood_bag_id',
+		},
+		{
+			title: 'DATE PROCESSED',
+			dataIndex: 'date_extracted',
+		},
+		{
+			title: 'BEST BEFORE',
+			dataIndex: 'expiration_date',
+		}, 
+		{
+			title: 'Storage',
+			dataIndex: 'storage_name',
+			editable: true,
+		}, 
+		{
+			title: 'SIZE',
+			dataIndex: 'size',
+			editable: true,
+		}, 
+		{
+			title: 'REMARKS',
+			dataIndex: 'remarks',
+			editable: true,
+		}, 
+	]
+	
+	const rowSelection = {
+		onChange: this.rowSelection
+	};
+
+	const columns = this.columns.map((col) => {
 		if (!col.editable) {
 			return col;
 		}
@@ -259,61 +310,15 @@ class ProductDetailTable extends React.Component {
 		};
 		});
 		
-		this.columns = [
-			{
-				title: 'PRODUCT TYPE',
-				dataIndex: 'blood_product',
-			},
-			{
-				title: 'PRODUCT BAG ID',
-				dataIndex: 'blood_bag_id',
-			},
-			{
-				title: 'DATE PROCESSED',
-				dataIndex: 'date_extracted',
-			},
-			{
-				title: 'BEST BEFORE',
-				dataIndex: 'expiration_date',
-			}, 
-			{
-				title: 'Storage',
-				dataIndex: 'storage_name',
-				render: () => 
-				<>
-					<Select defaultValue="Storage" onChange={this.onChangeBloodStorage} style={{ width: 120 }} allowClear>
-						{bloodStorageOption}
-					</Select>
-				</>,
-			}, 
-			{
-				title: 'SIZE',
-				dataIndex: 'size',
-				render: () => 
-				<>
-					<Select defaultValue="Size" onChange={this.onChangeBloodSize} style={{ width: 120 }} allowClear>
-						{bloodStorageOption}
-					</Select>
-				</>,
-			}, 
-			{
-				title: 'REMARKS',
-				dataIndex: 'remarks',
-				render: () => <Input placeholder="Remarks" onChange={this.Remarks}/>,
-			}, 
-		]
-		
-		const rowSelection = {
-			onChange: this.rowSelection
-		};
-		
     return (
 
 			<>
       <Table
         rowSelection={rowSelection}
         columns={columns}
-        dataSource={data}
+        dataSource={dataSource}
+		components={components}
+        rowClassName={() => 'editable-row'}
       />
 			<div style={{ textAlign: 'right', marginTop: 30 }}>
 				<Button 
