@@ -4,35 +4,26 @@ import React from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { Row, Col, Table, Button, Input, Icon, Drawer } from 'antd';
-// import fetchbloodTests from 'services/blood_bank/blood_group';
 import TablePager from 'shared_components/table_pager';
-
-// CUSTOM
-import { 
-	drawerAdd, 
-	drawerUpdate, 
-	tableSize ,
-	tableYScroll,
-	tablePageSize
-} from '../settings';
+import fetchNormalValuesItems from 'services/blood_bank/normal_values'
 import UserAccountForm from '../form';
 
 const { Search } = Input;
 const columns = [
 	{
 		title: 'BLOOD ID',
-		dataIndex: 'id',
-		key: 'id',
+		dataIndex: 'normal_value_id',
+		key: 'normal_value_id',
 	},
 	{
 		title: 'BLOOD TEST',
-		dataIndex: 'blood_test',
-		key: 'blood_test',
+		dataIndex: 'reference_field_name',
+		key: 'reference_field_name',
 	},
 	{
 		title: 'DESCRIPTION',
-		dataIndex: 'blood_desc',
-		key: 'blood_desc',
+		dataIndex: 'prompt_message',
+		key: 'prompt_message',
 	},
 	{
 		title: 'NORMAL VALUES',
@@ -41,22 +32,11 @@ const columns = [
 	},
 ];
 
-
-
-
-
 class BloodTestTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			bloodTest: [
-				{
-					id: '001',
-					blood_test: 'HEPATITIS B',
-					blood_desc: 'SURFACE ANTIGEN (HBSAG)',
-					normal_values: 'LESS THAN 5 MIU',
-				},
-			],
+			normalValuesList: [],
 			actionType:'add',
 			drawerTitle: '',
 			loading:false,
@@ -68,18 +48,6 @@ class BloodTestTable extends React.Component {
 			pagination1:0
 		}
 	}
-
-	// async componentDidMount() {
-	// 	this.setState({loading:true});
-	// 	const response = await fetchbloodTests();
-	// 	console.log("Data:",response)
-	// 	this.setState({ 
-	// 		bloodTest: response,
-	// 		usersRef:response,
-	// 		pagination: response.length,
-	// 		loading:false
-	// 	});
-	// }
 
 	onClose = () => {
 		this.setState({
@@ -108,23 +76,31 @@ class BloodTestTable extends React.Component {
 		});
 	}
 
+	async componentDidMount() {
+    const normalValuesList = await fetchNormalValuesItems();
+		this.setState({
+			normalValuesList:normalValuesList.results,
+			usersRef:normalValuesList.results
+		})
+  }
+
   onSearch = (value) => {
     const searchedVal = value.toLowerCase();
 		const { usersRef } = this.state;
     const filtered = usersRef.filter((item) => {
       // eslint-disable-next-line camelcase
-      const { blood_group } = item;
+      const { reference_field_name } = item;
 
       return (
-        this.containsString(blood_group, searchedVal)
+        this.containsString(reference_field_name, searchedVal)
       );
     });
-		this.setState({ bloodTest: filtered });
+		this.setState({ normalValuesList: filtered });
   };
 
   onChangeSearch = (event) => {
     const { usersRef } = this.state;
-    if (event.target.value === "") this.setState({ bloodTest: usersRef });
+    if (event.target.value === "") this.setState({ normalValuesList: usersRef });
   };
 
 	// Private Function
@@ -143,19 +119,14 @@ class BloodTestTable extends React.Component {
 
 	render() {
 		const { 
-			pagination, 
 			drawerButton, 
 			patientInfo, 
 			visible,
 			drawerTitle,
 			selectedBloodTest, 
 			actionType,
-			bloodTest,
-			loading ,
-			pagination1
+			normalValuesList,
 		} = this.state;
-		console.log(pagination,"pagination")
-		console.log(pagination1,"pagination1")
 		return(
 			<div>
 				<div className="settings-user-table-action">
@@ -177,7 +148,6 @@ class BloodTestTable extends React.Component {
 								onClick={this.showDrawer}
 							>
 								<Icon type="plus" /> ADD BLOOD TEST
-								
 							</Button>
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
@@ -185,48 +155,18 @@ class BloodTestTable extends React.Component {
 				</div>
 				<DndProvider backend={HTML5Backend}>
 				<div className="settings-user-table">
-
-				{
-					pagination1 == 0
-					? 
-						(		
-							<Table 
-								// loading={loading}
-								dataSource={bloodTest}
-								//size={tableSize}
-								//scroll={{ y: tableYScroll }}
-								columns={columns} 
-								//pagination={pagination}
-								rowKey={record => record.userID}
-								onRow={(record) => {
-									return {     
-										onDoubleClick: () => {
-											this.displayDrawerUpdate(record);
-										}
-									}
-								}}
-							/>
-						)	
-					: 
-						(
-							<Table 
-								// loading={loading}
-								dataSource={bloodTest}
-								//size={tableSize}
-								scroll={{ y: tableYScroll }}
-								columns={columns} 
-								//pagination={pagination}
-								rowKey={record => record.userID}
-								onRow={(record) => {
-									return {     
-										onDoubleClick: () => {
-											this.displayDrawerUpdate(record);
-										}
-									}
-								}}
-							/>
-						)
-				}	
+					<Table 
+						dataSource={normalValuesList}
+						columns={columns} 
+						rowKey={record => record.userID}
+						onRow={(record) => {
+							return {     
+								onDoubleClick: () => {
+									this.displayDrawerUpdate(record);
+								}
+							}
+						}}
+					/>
 				</div>    
 				{/* DRAWER */}
 					<Drawer

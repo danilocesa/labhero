@@ -10,7 +10,7 @@ export default async function fetchItems() {
   try{
     const response = await axiosPhase2API({
       method: API_GET_METHOD,
-			url: `/bloodbank/questypes/`,
+			url: `/bloodbank/ques_type/list/`,
 		});
 		
 		const { data } = response;

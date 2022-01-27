@@ -30,7 +30,7 @@ class BloodGroupForm extends React.Component {
 			blood_group :values.blood_group,
 			blood_type: values.blood_type,
 			blood_desc : values.blood_description,
-			created_by: 1,	
+			created_by: loggedinUser,	
 			is_active: (values.is_active === true) ? 1 : 0,
 		};
 		if(drawerButton === drawerAdd){
@@ -68,7 +68,7 @@ class BloodGroupForm extends React.Component {
     this.setState({
       disabled:false
     })
-  	}
+  }
 
 	render() {
 		const { disabled } = this.state
@@ -87,10 +87,9 @@ class BloodGroupForm extends React.Component {
 					}}   
 				>
 					{
-						drawerButton == "UPDATE" 
+						drawerButton === "UPDATE" 
 						? 
 							(		
-								
 								<Row >
 									<Col span={4}>	
 									  <Form.Item >

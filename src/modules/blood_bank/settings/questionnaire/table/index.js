@@ -2,7 +2,17 @@
 // LIBRARY
 import React from 'react';
 import TablePager from 'shared_components/table_pager';
-import { Row, Col, Table, Button, Input, Icon, Drawer,Select,Divider } from 'antd';
+import { 
+	Row, 
+	Col, 
+	Icon,
+	Table, 
+	Input,
+	Button, 
+	Drawer,
+	Select,
+	Divider } from 'antd';
+import fetchItems from 'services/blood_bank/question_type'
 import fetchQuestionnareList from 'services/blood_bank/questionnaire';
 
 // CUSTOM
@@ -40,14 +50,17 @@ class BloodBank extends React.Component {
 			actionType:'add',
 			drawerTitle: '',
 			selectedCategories:{},
+			questionTypeList:[]
 		}
 	}
 	
 	async componentDidMount() {
 		const response = await fetchQuestionnareList();
+		const questionTypeList = await fetchItems ();
 		this.setState({ 
 			QuestionnareItem: response,
 			usersRef:response,
+			questionTypeList
 		});
 	}
 
@@ -97,7 +110,6 @@ class BloodBank extends React.Component {
 		if (event.target.value === "") this.setState({ QuestionnareItem: usersRef });
 	};
 
-	// Private Function
 	containsString = (searchFrom, searchedVal) => {
 		if (searchFrom === null || searchFrom === "") return false;
 		return searchFrom.toString().toLowerCase().includes(searchedVal);
@@ -112,18 +124,34 @@ class BloodBank extends React.Component {
 	};
 
 	render() {
-		const { pagination, visible, drawerTitle, loading,actionType,drawerButton,QuestionnareItem,selectedCategories } = this.state;
+		const { 
+			visible, 
+			loading,
+			pagination, 
+			actionType,
+			drawerTitle, 
+			drawerButton,
+			QuestionnareItem,
+			questionTypeList,
+			selectedCategories,
+		} = this.state;
+
+		const questionTypeOption = questionTypeList.map((item,i) => {
+      return (
+      <Option 
+      	key={i} 
+				value={item.ques_type_name}
+			>
+				{item.ques_type_name}
+      </Option>)
+    });
+
 			return(
 				<div>
 					<div className="settings-user-table-action">
 					<Divider plain>
-						<Select style={{ width: 200 }}>
-							<Option value="health">
-								HEALTH
-							</Option>
-							<Option value="Categories">
-								INNER
-							</Option>
+						<Select style={{ width: 200 }}  placeholder="Select a Category">
+							{questionTypeOption}
 						</Select>
 					</Divider>
 					<Row>
