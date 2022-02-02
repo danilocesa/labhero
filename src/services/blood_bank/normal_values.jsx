@@ -27,7 +27,7 @@ export async function createNormalValuesAPI(payload) {
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
-      url: `bloodbank/normal_values/`,
+      url: `bloodbank/normal_values/create/`,
       data: payload
 		}).then(response => {
       return response;

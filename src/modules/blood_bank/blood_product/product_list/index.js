@@ -49,6 +49,9 @@ class ProductList extends React.Component {
         Data: APIresponseBloodProcessing.results
       });
     }
+    this.setState({
+      selectedTabkey:key
+    })
   }
 
   onFinish = (DataFromForm, payload) => {
@@ -68,6 +71,7 @@ class ProductList extends React.Component {
     const { 
       Data,
       Count,
+      selectedTabkey,
       bloodTypesList, 
       bloodStorageList, 
       bloodComponentsList,  
@@ -81,6 +85,7 @@ class ProductList extends React.Component {
       <div>
         <PageTitle pageTitle="BLOOD PRODUCT" />
         <FormSearch 
+          selectedTabkey={selectedTabkey}
           Data={Data}
           bloodTypesList={bloodTypesList}
           bloodStorageList={bloodStorageList}
