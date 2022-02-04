@@ -196,7 +196,6 @@ class ExamItems extends React.Component {
 			isInitializing,
 			isShowAddForm, 
 			isShowUpdateForm ,
-			buttonAddVisible,
 			isLoading,
 			selectedSpecimenId,
 			selectedSectionId,

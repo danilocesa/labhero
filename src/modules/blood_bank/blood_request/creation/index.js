@@ -7,7 +7,6 @@ import PageTitle from 'shared_components/page_title';
 import ProvinceList from 'shared_components/phase2_province';
 import CityList from 'shared_components/phase2_city';
 import TownList from 'shared_components/phase2_town';
-import HouseAddress from 'shared_components/lh_address';
 import { createBloodRecipient } from 'services/blood_bank/blood_recipient';
 import { getHospitalList } from 'services/blood_bank/hospital';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';

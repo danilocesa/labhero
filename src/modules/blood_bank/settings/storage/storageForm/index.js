@@ -26,7 +26,7 @@ class StorageForm extends React.Component {
 			storage_name :values.storage_name,
 			storage_desc : values.storage_desc,	
 			is_active: (values.is_active === true) ? 1 : 0,
-      created_by: 1
+      created_by: loggedinUser.userID
 		};
 		if(drawerButton === drawerAdd){
 			const createdBloodStorageResponse = await createBloodStorageAPI(payload);

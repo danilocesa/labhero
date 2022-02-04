@@ -58,9 +58,9 @@ class AddForm extends React.Component {
 		const payload = {
 			question_order : 1,
 			question :values.question,
-			ques_type: 1,
+			ques_type: selectQuestionType,
 			custom_fields :[],
-			created_by: loggedinUser,	
+			created_by: loggedinUser.userID,	
 		};
     if(drawerButton === "ADD"){
 			const createdBloodGroupResponse = await createData(payload);
@@ -114,7 +114,7 @@ class AddForm extends React.Component {
 			</Option>
 		));
 
-		const { drawerButton, selectQuestionType } = this.props;
+		const { drawerButton } = this.props;
 			return (
 				<div>
 					<Form 

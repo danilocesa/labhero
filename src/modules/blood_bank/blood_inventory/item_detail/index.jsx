@@ -11,7 +11,7 @@ const { TextArea } = Input;
 
 function InventoryDetail({ inventoryID, closeDrawer, refreshTableData }) {
   const formRef = useRef();
-  const [loading, setLoading] = useState(false);
+  const [ setLoading] = useState(false);
   const [storage, setStorage] = useState([]);
   const [isActive, setIsActive] = useState(true);
   const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));  

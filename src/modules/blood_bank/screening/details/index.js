@@ -12,7 +12,7 @@ export default class ScreeningInformation extends Component {
   render() {
     const { state: donorDetail } = this.props.location;
     const donorDetailsData = donorDetail.donorDetail
-    const { last_name, first_name, donor_id, health_info_id } = donorDetail.donorDetail;
+    const { last_name, first_name, donor_id } = donorDetail.donorDetail;
 
     return (
       <div>

@@ -5,7 +5,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { pick } from 'lodash';
-import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { requestLinks, requestTypes } from 'modules/main/settings/lab_exam_request/settings';
 import { 	LR_REQUEST_TYPE , 	LR_OTHER_INFO , LR_PERSONAL_INFO , LR_STEP_PROGRESS, LR_IS_EXAM_UPDATED  } from 'modules/main/lab_request/steps/constants';

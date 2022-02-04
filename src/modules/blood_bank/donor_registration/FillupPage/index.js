@@ -90,7 +90,7 @@ class FillUpForm extends React.Component {
   
   onFinish = async (formData) => {
     const { history } = this.props;
-    const { updateInitialValues, imgprop } = this.state;
+    const { updateInitialValues } = this.state;
     const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
     const isUnchanged = (
@@ -173,7 +173,6 @@ class FillUpForm extends React.Component {
   }
  
   render() {
-    const { imgprop } =this.state
     const { state } = this.props.location;
     console.log("🚀 ~ file: index.js ~ line 177 ~ FillUpForm ~ render ~ state", state)
 

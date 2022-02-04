@@ -9,9 +9,7 @@ import {
   Col, 
   Table, 
   Button, 
-  Input, 
-  Drawer, 
-  Select  } from 'antd';
+  Drawer,  } from 'antd';
 
 	const columns = [
 		{
@@ -71,7 +69,6 @@ export default class c extends Component {
       drawerTitle, 
       buttonNames,
       ProvinceItems,
-      CityItem,
       selecetedData,
       buttonDisable,
       pagination,
@@ -79,8 +76,16 @@ export default class c extends Component {
 
     return (
 			<div>
-				<Row style={{ marginBottom: 10 }}>
-					<Col span={12} style={{ textAlign: 'right' }}>
+				<Row style={{marginTop:12, marginBottom: 12}}>
+          <Col span={9} >
+      
+
+            
+          </Col> 
+          <Col span={4}>
+          
+          </Col>
+          <Col span={11} style={{ textAlign: 'right' }}>
 						<Button 
 							disabled={buttonDisable}
 							type="primary" 
@@ -92,7 +97,7 @@ export default class c extends Component {
 							ADD PROVINCE
 						</Button >
 						<TablePager handleChange={this.handleChange}/>
-					</Col>
+          </Col>
 				</Row>
 				<Table  
 					style={{textTransform:'uppercase'}}

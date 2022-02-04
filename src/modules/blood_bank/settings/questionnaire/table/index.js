@@ -121,9 +121,9 @@ class BloodBank extends React.Component {
 	};
 
 	onChange = async (value) =>{
-		const perQuestionTypesData = await fetchItemsperQuestionTypes(value);
+		const perQuestionTypesData = await fetchItemsperQuestionTypes(value[0]);
 		this.setState({
-			selectQuestionType:value,
+			selectQuestionType:value[1],
 			QuestionnareItem:perQuestionTypesData.data,
 			usersRef:perQuestionTypesData.data,
 			addButtonDisable:false
@@ -149,7 +149,7 @@ class BloodBank extends React.Component {
       return (
       <Option 
       	key={i} 
-				value={item.ques_type_name}
+				value={[item.ques_type_name, item.ques_type_id]}
 			>
 				{item.ques_type_name}
       </Option>)

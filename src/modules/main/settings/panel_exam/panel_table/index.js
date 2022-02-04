@@ -8,7 +8,6 @@ import { Row, Col, Input, Table, Drawer, Icon, Button } from 'antd';
 // import HttpCodeMessage from 'shared_components/message_http_status';
 import { panelListAPI } from 'services/settings/panelExamRequesting';	
 import TablePager from 'shared_components/table_pager';
-import PanelForm from '../panel_form';
 
 import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from '../settings';
 
@@ -76,7 +75,6 @@ class PanelTable extends React.Component {
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
-    console.log("🚀 ~ file: index.js ~ line 78 ~ PanelTable ~ populatePanelList= ~ panelListData", panelListData)
 		// if(panelListData.status !== 200){
 		// 	HttpCodeMessage(panelListData.status);
 		// }
@@ -158,7 +156,6 @@ class PanelTable extends React.Component {
 			drawerTitle: drawerAddTitle,
 			drawerButton: buttonLabels.create,
 			panelInfo: {},
-			loading:false
 		})
 	}
 
