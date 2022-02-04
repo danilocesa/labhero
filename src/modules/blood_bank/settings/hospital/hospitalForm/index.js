@@ -16,9 +16,8 @@ class HospitalForm extends React.Component {
 	} 
 
   onFinish = async (values) => {
-		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
-    //console.log("file: index.js ~ line 31 ~ BloodGroupForm ~ onFinish= ~ loggedinUser", loggedinUser)
-		const { drawerButton, selectedData } = this.props;
+	const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+	const { drawerButton, selectedData } = this.props;
     const payload = {
 			hospital_id:selectedData.hospital_id,
 			hospital_name :values.hospital_name,
@@ -123,11 +122,12 @@ class HospitalForm extends React.Component {
           <section className="drawerFooter">
             <Button shape="round" 
 						style={{ marginRight: 8, width: 120 }} 
+						// @ts-ignore
 						type="button"
 						onClick={this.props.onClose}>
 						{buttonLabels.cancel}
             </Button>
-						<Button 
+			<Button 
               disabled={disabled} 
               type="primary" 
               shape="round" 
