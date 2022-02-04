@@ -31,35 +31,35 @@ export default class BarangayForm extends Component {
       city:cityId,
       is_active: (values.is_active === true) ? 1 : 0,
 		};
-		// if(buttonNames === "ADD"){
-		// 	const createdBarangayResponse = await createBarangayItems(payload);
-		// 	// @ts-ignore
-		// 	if(createdBarangayResponse.status === 201){
-		// 		const httpMessageConfig = {
-		// 			message: messagePrompts.successCreateUser,
-		// 			// @ts-ignore
-		// 			status: createdBarangayResponse.status,	
-		// 			duration: 3, 
-		// 			onClose: () => window.location.reload() 
-		// 		}
-		// 		HttpCodeMessage(httpMessageConfig);	
-		// 	}	
-		// }
-		// else {
-		// 	payload.barangay_id = selecetedData.barangay_id;
-  	// 	const updateBarangayResponse =  await updateBarangayItems(payload)
-		// 	// @ts-ignore)
-		// 	if(updateBarangayResponse.status === 200){
-		// 		const httpMessageConfig = {
-		// 			message: messagePrompts.successUpdateUser,
-		// 			// @ts-ignore
-		// 			status: updateBarangayResponse.status,
-		// 			duration: 3, 
-		// 			onClose: () => window.location.reload() 
-		// 		}
-		// 		HttpCodeMessage(httpMessageConfig);
-		// 	}
-		// }
+		if(buttonNames === "ADD"){
+			const createdBarangayResponse = await createBarangayItems(payload);
+			// @ts-ignore
+			if(createdBarangayResponse.status === 201){
+				const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: createdBarangayResponse.status,	
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);	
+			}	
+		}
+		else {
+			payload.barangay_id = selecetedData.barangay_id;
+  		const updateBarangayResponse =  await updateBarangayItems(payload)
+			// @ts-ignore)
+			if(updateBarangayResponse.status === 200){
+				const httpMessageConfig = {
+					message: messagePrompts.successUpdateUser,
+					// @ts-ignore
+					status: updateBarangayResponse.status,
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);
+			}
+		}
 	};
 
   onDisable = () => {

@@ -46,17 +46,18 @@ export default class BarangayTable extends Component {
     const CityResponse =  await fetchCityItems(provinceId);
     this.setState({ 
       CityItems:CityResponse,
-      buttonDisable:false
+      buttonDisable:false,
+      provinceId
     }) 
 	}
 
   onChangeBarangay = async (cityId) => { 
-
     const BarangayResponse =  await fetchBarangayItems(cityId);
     this.setState({ 
       BarangayItem:BarangayResponse,
       usersRef:BarangayResponse,
-      buttonDisable:false
+      buttonDisable:false,
+      cityId
     }) 
 	}
 
@@ -221,8 +222,8 @@ export default class BarangayTable extends Component {
         >
         <BarangayForm  
           buttonNames={buttonNames} 
-          //cityId={cityId} 
-          //Province={Province} 
+          cityId={cityId} 
+          // Province={Province} 
           selecetedData={selecetedData}
           provinceId={provinceId}
         />

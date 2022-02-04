@@ -18,6 +18,7 @@ import { withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 
 // CUSTOM MODULES
+import { UserAccessContext } from 'context/userAccess';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import { fetchExamRequestList } from 'services/shared/examRequest';
@@ -45,20 +46,19 @@ class PanelFormTemplate extends React.Component {
 	};
 
 	componentDidMount() {
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsUpdateArray =  jsonFormatAccessMatrix.settings.update
-		if (settingsUpdateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonUpdateVisible:true
-			})
-		}
+		// const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
+		// const UserDatatype = userData.loginType
+		// const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
+		// const settingsUpdateArray =  jsonFormatAccessMatrix.settings.update
+		// if (settingsUpdateArray.some(data => data === UserDatatype))
+		// {
+		// 	this.setState({
+		// 		buttonUpdateVisible:true
+		// 	})
+		// }
 		this.getExamRequest();
 		
 		if(this.props.drawerButton === buttonLabels.update){
-
 			// Get selected examrequest in db for update
 			if(this.props.panelInfo){ 
 				this.getSelectedExamRequest(this.props.panelInfo.key);
@@ -346,9 +346,9 @@ class PanelFormTemplate extends React.Component {
 											)}
 										>
 											{this.state.loading && this.state.hasMore && (
-											<div className="panel-loading-container">
-												<AntSpin />
-											</div>
+												<div className="panel-loading-container">
+													<AntSpin />
+												</div>
 											)}
 										</AntList>
 									</AntCheckbox.Group>
@@ -356,8 +356,6 @@ class PanelFormTemplate extends React.Component {
 							</div>
 						</AntForm.Item>
 					</section>	
-					{ 
-						buttonUpdateVisible === true ? 
 							<section className="drawerFooter">
 								<div>
 									<AntButton 
@@ -367,20 +365,21 @@ class PanelFormTemplate extends React.Component {
 									>
 										{buttonLabels.cancel}
 									</AntButton>
-									<AntButton 
-										type="primary" 
-										shape="round" 
-										htmlType="submit" 
-										loading={this.state.loading} 
-										style={{ margin: 10, width: 120 }}
-									>
-										{drawerButton}
-									</AntButton>
+										<UserAccessContext.Consumer>
+											{value => value.userAccess.settings.create && (
+												<AntButton 
+													type="primary" 
+													shape="round" 
+													htmlType="submit" 
+													loading={this.state.loading} 
+													style={{ margin: 10, width: 120 }}
+												>
+													{drawerButton}
+												</AntButton>
+												)}
+										</UserAccessContext.Consumer>
 								</div>
 							</section>
-						: 
-							null 
-					} 
 				</AntForm>
 			</div>
 		);
