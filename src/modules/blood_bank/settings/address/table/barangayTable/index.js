@@ -46,17 +46,18 @@ export default class BarangayTable extends Component {
     const CityResponse =  await fetchCityItems(provinceId);
     this.setState({ 
       CityItems:CityResponse,
-      buttonDisable:false
+      buttonDisable:false,
+      provinceId
     }) 
 	}
 
   onChangeBarangay = async (cityId) => { 
-
     const BarangayResponse =  await fetchBarangayItems(cityId);
     this.setState({ 
       BarangayItem:BarangayResponse,
       usersRef:BarangayResponse,
-      buttonDisable:false
+      buttonDisable:false,
+      cityId
     }) 
 	}
 
@@ -133,7 +134,6 @@ export default class BarangayTable extends Component {
       pagination,
     } = this.state
 
-
     const ProvincemappedData = ProvinceItems.map((item) => {
       return (
       <option value={item.province_id}>
@@ -141,9 +141,7 @@ export default class BarangayTable extends Component {
       </option>
       )
     });
-
-
-    console.log(cityId)
+    
     const CitymappedData = CityItems.map((item) => {
       return (
         <option value={item.city_id} >
@@ -152,31 +150,42 @@ export default class BarangayTable extends Component {
       )
     });
 
-
-
-
     return (
       <div>
         <Row style={{marginTop:12, marginBottom: 12}}>
           <Col span={9} >
-          <Select style={{ width: 218, textTransform:'uppercase' }} onChange={this.onChange} placeholder="PLEASE SELECT A PROVINCE">
+            <Select 
+              style={{ 
+                width: 150, 
+                textTransform:'uppercase' 
+              }} 
+              onChange={this.onChange} 
+              placeholder="PLEASE SELECT A PROVINCE"
+            >
               {ProvincemappedData}
             </Select>
-
-            <Select style={{ width: 200, marginLeft:28, textTransform:'uppercase'  }} disabled={buttonDisable} onChange={this.onChangeBarangay} placeholder="PLEASE SELECT A CITY">
+            <Select 
+              style={{ 
+                width: 150, 
+                marginLeft:20, 
+                textTransform:'uppercase'
+              }} 
+              disabled={buttonDisable} 
+              onChange={this.onChangeBarangay} 
+              placeholder="PLEASE SELECT A CITY"
+            >
               {CitymappedData}
             </Select>
-            
-            </Col> 
+          </Col> 
           <Col span={4}>
-          <Search style={{ width: 220, marginLeft:10}}
-                    placeholder="Search By Barangay"
-                    disabled={buttonDisable}
-                    allowClear
-                    onSearch={(value) => this.onSearch(value)}
-                    onChange={this.onChangeSearch}
-                    className="panel-table-search-input"
-            />
+          <Search style={{ width: 180}}
+            placeholder="Search By Barangay"
+            disabled={buttonDisable}
+            allowClear
+            onSearch={(value) => this.onSearch(value)}
+            onChange={this.onChangeSearch}
+            className="panel-table-search-input"
+          />
           </Col>
           <Col span={11} style={{ textAlign: 'right' }}>
             <Button 
@@ -213,8 +222,8 @@ export default class BarangayTable extends Component {
         >
         <BarangayForm  
           buttonNames={buttonNames} 
-          //cityId={cityId} 
-          //Province={Province} 
+          cityId={cityId} 
+          // Province={Province} 
           selecetedData={selecetedData}
           provinceId={provinceId}
         />

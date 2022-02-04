@@ -28,7 +28,7 @@ export async function createData(payload) {
   try{
     const axiosResponse = await axiosPhase2API({
       method: API_POST_METHOD,
-      url: `/bloodbank/questypes/create/`,
+      url: `/bloodbank/questionnare/create/`,
       data: payload
 		}).then(response => {
       return response;
@@ -42,13 +42,31 @@ export async function createData(payload) {
 	return createData;
 }
 
+export async function fetchItemsperQuestionTypes(payload) {
+	let QuestionTypes = [];
+  try{
+    const axiosResponse = await axiosPhase2API({
+      method: API_GET_METHOD,
+      url: `/bloodbank/questionnare/search/by_quest_types/?search=${payload}`,
+		}).then(response => {
+      return response;
+    });
+    // @ts-ignore
+    QuestionTypes = axiosResponse;
+  } 
+  catch(e) {
+    HttpCodeMessage({status: 500, message: e});
+	}
+	return QuestionTypes;
+}
+
 export async function updateData(payload) {
   let updateData = [];
-  const ID = payload.ques_type_id;
+  const ID = payload.questionnare_id;
 try{
   const content = { 
-          method: API_PUT_METHOD,
-          url:`/bloodbank/questypes/update/${ID}/`,
+    method: API_PUT_METHOD,
+    url:`/bloodbank/questionnare/update/${ID}/`,
     data: payload
   }
   const response = await axiosPhase2API(content);

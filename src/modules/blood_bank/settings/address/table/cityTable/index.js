@@ -46,7 +46,7 @@ export default class CityTable extends Component {
     this.setState({ 
       usersRef:CityResponse,
       CityItem:CityResponse,
-      //Province:value,
+      Province:value,
       buttonDisable:false
     }) 
 	}
@@ -117,7 +117,7 @@ export default class CityTable extends Component {
       selecetedData,
       buttonDisable,
       pagination,
-
+      Province
     } = this.state
 
     const ProvincemappedData = ProvinceItems.map((item) => {
@@ -183,7 +183,7 @@ export default class CityTable extends Component {
         >
           <CityForm  
             buttonNames={buttonNames} 
-            //Province={Province} 
+            Province={Province} 
             selecetedData={selecetedData}
           />
         </Drawer>

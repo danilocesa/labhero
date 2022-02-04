@@ -17,8 +17,8 @@ class FormSearch extends React.Component {
   }
 
   onFinish = async(payload) => {
-    const { onFinish } = this.props
-    // payload.Blood_Components_Code = 'WB'
+    const { onFinish, selectedTabkey } = this.props
+    payload.Blood_Components_Code = selectedTabkey
     const APIresponseBloodProcessing = await fetchBloodProcessingSearch(payload);
     onFinish(APIresponseBloodProcessing, payload)
   }
@@ -102,6 +102,7 @@ class FormSearch extends React.Component {
 FormSearch.propTypes = {
 	bloodTypesList: PropTypes.array,
   bloodStorageList:PropTypes.array,
+  selectedTabkey:PropTypes.string
 }
 
 export default FormSearch;

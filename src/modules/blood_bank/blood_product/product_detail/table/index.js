@@ -1,7 +1,7 @@
 
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types'
-import { Table, Select, Input, Button, Form  } from 'antd';
+import { Table, Input, Button, Form  } from 'antd';
 import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
 import {fetchBloodStorageForLov, createBloodStorage} from 'services/blood_inventory/blood_storage'
 import HttpCodeMessage from 'shared_components/message_http_status'
@@ -11,7 +11,6 @@ import moment from 'moment';
 import Message from 'shared_components/message';
 const EditableContext = React.createContext(null);
 
-const { Option } = Select;
 
 const EditableRow = ({ index, ...props }) => {
 	const [form] = Form.useForm();
@@ -111,10 +110,9 @@ class ProductDetailTable extends React.Component {
 onClick = async () => {
 	const { history } = this.props;
 	const { dataSource } = this.state;
-	const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+	// const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 	const payload = dataSource[0];
-    console.log("🚀 ~ file: index.js ~ line 64 ~ ProductDetailTable ~ onClick= ~ payload", payload)
 
 		const createBloodProduct = await createBloodStorage(payload);
 			// @ts-ignore
@@ -168,16 +166,12 @@ onClick = async () => {
 			
 		})
 	})
-    console.log("🚀 ~ file: index.js ~ line 191 ~ ProductDetailTable ~ rowSelection= ~ blood_product", blood_product)
 
 	this.setState({ disabled:false, dataSource: blood_product})
 }
 	async componentDidMount(){
 		const { Data } = this.props;
 		const dataSource = [Data];
-        // console.log("🚀 ~ file: index.js ~ line 178 ~ ProductDetailTable ~ componentDidMount ~ dataSource", dataSource)
-        // console.log("🚀 ~ file: index.js ~ line 202 ~ ProductDetailTable ~ componentDidMount ~ Data", Data)
-		const { BloodStorage, BloodSize, Remarks } = this.state;
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 
 		const apiResponseBloodStorage = await fetchBloodStorageForLov();
@@ -239,13 +233,8 @@ onClick = async () => {
 
 
   render() {
-    // @ts-ignore
-    const {  bloodStorageList,disabled, dataSource } = this.state;
-	const { Data } = this.props;
-
-	const bloodStorageOption = bloodStorageList === undefined ? null : bloodStorageList.map((item,i) => {
-		return (<Option key={i} value={item.storage_name}>{item.storage_name}</Option>)
-	});
+    
+  const { disabled, dataSource } = this.state;
 	
 	const components = {
 		body: {

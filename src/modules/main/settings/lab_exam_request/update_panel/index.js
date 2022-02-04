@@ -153,7 +153,7 @@ class UpdatePanel extends React.Component {
 	}
 
 	render() {
-		const { isLoading, isFetchingData, examList, selectedExams,buttonUpdateVisible } = this.state;
+		const { isLoading, isFetchingData, examList, selectedExams } = this.state;
 		// eslint-disable-next-line react/prop-types
 		const { 
 			visible, 

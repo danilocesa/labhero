@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {  Form, Input, InputNumber,Button,Select } from 'antd';
+import {  Form, Input, Button, Select } from 'antd';
 import DynamicForm from '../dynamic_form'
 import {
 	// Exam Item Type Codes
@@ -10,8 +10,14 @@ import {
 	EITC_OPTION,
 	EITC_TEXT_AREA,
 } from 'global_config/constant-global';
+
 import getInputTypeCode from 'services/settings/inputType';
-import { AlphaNumInput, RegexInput, NumberInput } from 'shared_components/pattern_input';
+import { messagePrompts } from '../settings'
+import { LOGGEDIN_USER_DATA } from 'global_config/constant-global';
+import HttpCodeMessage from 'shared_components/message_http_status'
+import { AlphaNumInput, NumberInput } from 'shared_components/pattern_input';
+import { createData, updateData } from 'services/blood_bank/question_type';
+
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -46,8 +52,53 @@ class AddForm extends React.Component {
 		this.setState({ selectedRsType: itemTypeCode });
 	}
 
+	onFinish = async (values) => {
+		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
+		const { drawerButton, selectQuestionType , selectedCategories } = this.props;
+		const payload = {
+			question_order : 1,
+			question :values.question,
+			ques_type: selectQuestionType,
+			custom_fields :[],
+			created_by: loggedinUser.userID,	
+		};
+    if(drawerButton === "ADD"){
+			const createdBloodGroupResponse = await createData(payload);
+			// @ts-ignore
+			if(createdBloodGroupResponse.status === 201){
+				const httpMessageConfig = {
+					message: messagePrompts.successCreateUser,
+					// @ts-ignore
+					status: createdBloodGroupResponse.status,	
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);	
+			}	
+		}
+		else {
+			payload.questionnare_id = selectedCategories.questionnare_id;
+			const updateBloodGroupResponse =  await updateData(payload)
+			// @ts-ignore)
+			if(updateBloodGroupResponse.status === 200){
+				const httpMessageConfig = {
+					message: messagePrompts.successUpdateUser,
+					// @ts-ignore
+					status: updateBloodGroupResponse.status,
+					duration: 3, 
+					onClose: () => window.location.reload() 
+				}
+				HttpCodeMessage(httpMessageConfig);
+			}
+		}
+	};
+
 	render() {
-		const { inputTypeCodes, selectedRsType, unitOfMeasures } =this.state
+		const { 
+			inputTypeCodes, 
+			selectedRsType, 
+			unitOfMeasures 
+		} = this.state
 
 		const UnitMeasureOptions = unitOfMeasures.map(unit => {
 			return (
@@ -63,21 +114,23 @@ class AddForm extends React.Component {
 			</Option>
 		));
 
-		const { drawerButton} = this.props;
+		const { drawerButton } = this.props;
 			return (
 				<div>
 					<Form 
+						onFinish={this.onFinish} 
 						ref={this.formRef}
 						layout="vertical"
 						className="exam-item-add-form" 
-						style={{marginTop: -20}}
 					>
 					<div className="form-section">
 						<Form.Item 
 							label="QUESTION" 
 							name='question'
 						>
-								<TextArea style={{ textTransform: 'uppercase'}} />
+								<TextArea 
+									style={{ textTransform: 'uppercase'}} 
+								/>
 						</Form.Item>
 						<Form.Item 
 							name="examItemTypeCode"
@@ -155,8 +208,8 @@ class AddForm extends React.Component {
 }
 
 AddForm.propTypes = {
-	drawerButton: PropTypes.string.isRequired,
-	onSuccess: PropTypes.func.isRequired,
+	drawerButton: PropTypes.string,
+	onSuccess: PropTypes.func,
 	selectedSectionId: PropTypes.number,
   selectedSpecimenId: PropTypes.number,
 	actionType: PropTypes.string

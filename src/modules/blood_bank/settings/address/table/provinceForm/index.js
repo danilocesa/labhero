@@ -69,11 +69,10 @@ export default class ProvinceForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
 						Province:selecetedData.province_name,
-             
+            Province_code:selecetedData.province_code,
             is_active:selecetedData.is_active === true 
 					}}
         >
-          {/* Province_code:selecetedData.province_code, */}
           {
             buttonNames === "UPDATE"? (		
 							<Row >
@@ -93,13 +92,13 @@ export default class ProvinceForm extends Component {
 						:
 						null
 					}
-          {/* <Form.Item
+          <Form.Item
             label="Province Code"
             name="Province_code"
             rules={[{ required: true, message: 'Please input your Province Code!' }]}
           >
             <Input onChange={this.onDisable}/>
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item
             label="PROVINCE"
             name="Province"

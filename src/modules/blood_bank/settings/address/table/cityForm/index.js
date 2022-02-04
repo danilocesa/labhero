@@ -69,11 +69,10 @@ export default class CityForm extends Component {
         layout="vertical"
         initialValues={{ 
           city:selecetedData.city_name,
-          
+          city_code:selecetedData.city_code,
           is_active:selecetedData.is_active === true 
         }}
       >
-        {/* city_code:selecetedData.city_code, */}
         { 
           buttonNames === "UPDATE"? (		
             <Row >
@@ -103,7 +102,7 @@ export default class CityForm extends Component {
         >
           <Input style={{ textTransform: 'uppercase'}} maxLength={100} onChange={this.onDisable}/>
         </Form.Item>
-        {/* <Form.Item
+        <Form.Item
           label="CITY CODE"
           name="city_code"
           rules={[{ 
@@ -112,7 +111,7 @@ export default class CityForm extends Component {
           }]}
         >
           <Input onChange={this.onDisable}/>
-        </Form.Item> */}
+        </Form.Item>
         <section className="drawerFooter">
           <Button 
             shape="round" 

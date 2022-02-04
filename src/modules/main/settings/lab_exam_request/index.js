@@ -195,7 +195,6 @@ class LabExamRequest extends React.Component {
 			isShowAddForm, 
 			isShowUpdateForm,
 			isLoading,
-			buttonAddVisible,
 			isInitializing,
 			selectedSectionId,
 			selectedSpecimenId,

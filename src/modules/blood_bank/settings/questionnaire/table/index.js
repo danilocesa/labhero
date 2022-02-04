@@ -12,8 +12,7 @@ import {
 	Drawer,
 	Select,
 	Divider } from 'antd';
-import fetchItems from 'services/blood_bank/question_type'
-import fetchQuestionnareList from 'services/blood_bank/questionnaire';
+import fetchItems, { fetchItemsperQuestionTypes } from 'services/blood_bank/question_type'
 
 // CUSTOM
 import QuestionTable from '../form'
@@ -38,7 +37,7 @@ const columns = [
 	},
 	{
 		title: 'QUESTION TYPE',
-		dataIndex: 'ques_type',
+		dataIndex: 'quest_type_name',
 	},
 ];
 
@@ -50,16 +49,14 @@ class BloodBank extends React.Component {
 			actionType:'add',
 			drawerTitle: '',
 			selectedCategories:{},
-			questionTypeList:[]
+			questionTypeList:[],
+			addButtonDisable:true
 		}
 	}
 	
 	async componentDidMount() {
-		const response = await fetchQuestionnareList();
 		const questionTypeList = await fetchItems ();
 		this.setState({ 
-			QuestionnareItem: response,
-			usersRef:response,
 			questionTypeList
 		});
 	}
@@ -123,6 +120,16 @@ class BloodBank extends React.Component {
 		this.setState({ pagination });
 	};
 
+	onChange = async (value) =>{
+		const perQuestionTypesData = await fetchItemsperQuestionTypes(value[0]);
+		this.setState({
+			selectQuestionType:value[1],
+			QuestionnareItem:perQuestionTypesData.data,
+			usersRef:perQuestionTypesData.data,
+			addButtonDisable:false
+		})
+	}
+
 	render() {
 		const { 
 			visible, 
@@ -131,16 +138,18 @@ class BloodBank extends React.Component {
 			actionType,
 			drawerTitle, 
 			drawerButton,
+			addButtonDisable,
 			QuestionnareItem,
 			questionTypeList,
 			selectedCategories,
+			selectQuestionType,
 		} = this.state;
 
 		const questionTypeOption = questionTypeList.map((item,i) => {
       return (
       <Option 
       	key={i} 
-				value={item.ques_type_name}
+				value={[item.ques_type_name, item.ques_type_id]}
 			>
 				{item.ques_type_name}
       </Option>)
@@ -150,7 +159,11 @@ class BloodBank extends React.Component {
 				<div>
 					<div className="settings-user-table-action">
 					<Divider plain>
-						<Select style={{ width: 200 }}  placeholder="Select a Category">
+						<Select 
+							style={{ width: 200 }}  
+							placeholder="Select a Category"  
+							onChange={this.onChange}
+						>
 							{questionTypeOption}
 						</Select>
 					</Divider>
@@ -166,13 +179,13 @@ class BloodBank extends React.Component {
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
 							<Button 
+								disabled={addButtonDisable}
 								type="primary" 
 								shape="round" 
 								style={{ marginRight: '15px' }} 
 								onClick={this.showDrawer}
 							>
 								<Icon type="plus" /> ADD QUESTIONNAIRE
-								
 							</Button>
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
@@ -212,6 +225,7 @@ class BloodBank extends React.Component {
 								selectedCategories={selectedCategories}
 								actionType={actionType}
 								drawerButton={drawerButton} 
+								selectQuestionType={selectQuestionType}
 							/>	
 						</Drawer>
 				</div>

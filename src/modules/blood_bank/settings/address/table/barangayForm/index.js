@@ -20,7 +20,8 @@ export default class BarangayForm extends Component {
       selecetedData, 
       provinceId 
     } = this.props;
-    
+    console.log("🚀 ~ file: index.js ~ line 23 ~ BarangayForm ~ onFinish= ~ cityId", cityId)
+    console.log("🚀 ~ file: index.js ~ line 22 ~ BarangayForm ~ onFinish= ~ provinceId", provinceId)
     const payload = {
       barangay_id:selecetedData.barangay_id,
       province:provinceId,
@@ -75,11 +76,10 @@ export default class BarangayForm extends Component {
           onFinish={this.onFinish}
           initialValues={{ 
             barangay:selecetedData.barangay_name,
-            
+            barangay_code:selecetedData.barangay_code,
             is_active:selecetedData.is_active === true 
           }}
         >
-          {/* barangay_code:selecetedData.barangay_code, */}
           { 
             buttonNames === "UPDATE"? (		
               <Row >
@@ -109,7 +109,7 @@ export default class BarangayForm extends Component {
           >
             <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
             label="Barangay Code"
             name="barangay_code"
             rules={[{ 
@@ -118,7 +118,7 @@ export default class BarangayForm extends Component {
             }]}
           >
             <Input onChange={this.onDisable}/>
-          </Form.Item> */}
+          </Form.Item>
           <section className="drawerFooter">
             <Button 
               shape="round" 

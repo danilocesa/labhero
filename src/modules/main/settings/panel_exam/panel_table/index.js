@@ -6,9 +6,10 @@ import { Row, Col, Input, Table, Drawer, Icon, Button } from 'antd';
 
 // CUSTOM MODULES
 // import HttpCodeMessage from 'shared_components/message_http_status';
+import { UserAccessContext } from 'context/userAccess';
 import { panelListAPI } from 'services/settings/panelExamRequesting';	
+import PanelForm from '../panel_form'
 import TablePager from 'shared_components/table_pager';
-import PanelForm from '../panel_form';
 
 import { drawerUpdateTitle, drawerAddTitle, tablePageSize, tableSize, buttonLabels } from '../settings';
 
@@ -20,24 +21,24 @@ const { Search } = Input;
 
 const columns = [
     {
-        title: 'CODE',
-        dataIndex: 'code',
-				key: 'code',
-				width: 200,
-				sorter: (a, b) => { return a.code.localeCompare(b.code)}
+			title: 'CODE',
+			dataIndex: 'code',
+			key: 'code',
+			width: 200,
+			sorter: (a, b) => { return a.code.localeCompare(b.code)}
     },
     {
-        title: 'PANEL NAME',
-        dataIndex: 'panel_name',
-				key: 'panel_name',
-				sorter: (a, b) => { return a.panel_name.localeCompare(b.panel_name)}
+			title: 'PANEL NAME',
+			dataIndex: 'panel_name',
+			key: 'panel_name',
+			sorter: (a, b) => { return a.panel_name.localeCompare(b.panel_name)}
     },
     {   
-        title: 'INTEGRATION CODE',
-        dataIndex: 'integration_code',
-				key: 'integration_code',
-				width: 250,
-				sorter: (a, b) => { return a.integration_code.localeCompare(b.integration_code)}
+			title: 'INTEGRATION CODE',
+			dataIndex: 'integration_code',
+			key: 'integration_code',
+			width: 250,
+			sorter: (a, b) => { return a.integration_code.localeCompare(b.integration_code)}
     },
 ]
 
@@ -60,23 +61,11 @@ class PanelTable extends React.Component {
 
 	componentDidMount = async () => {
 		this.populatePanelList();
-		const userData = JSON.parse(sessionStorage.LOGGEDIN_USER_DATA);
-		const UserDatatype = userData.loginType //1
-		const jsonFormatAccessMatrix = JSON.parse(sessionStorage.ACCESS_MATRIX);
-		const settingsCreateArray =  jsonFormatAccessMatrix.settings.create
-		if (settingsCreateArray.some(data => data === UserDatatype))
-		{
-			this.setState({
-				buttonAddVisible:true
-			})
-		}
-		
 	}
 
 	populatePanelList = async () => {
 		this.setState({ loading: true });
 		const panelListData = await panelListAPI();
-    console.log("🚀 ~ file: index.js ~ line 78 ~ PanelTable ~ populatePanelList= ~ panelListData", panelListData)
 		// if(panelListData.status !== 200){
 		// 	HttpCodeMessage(panelListData.status);
 		// }
@@ -158,7 +147,6 @@ class PanelTable extends React.Component {
 			drawerTitle: drawerAddTitle,
 			drawerButton: buttonLabels.create,
 			panelInfo: {},
-			loading:false
 		})
 	}
 
@@ -170,7 +158,7 @@ class PanelTable extends React.Component {
 	};
 
 	render() {
-		const { buttonAddVisible, panelListState } = this.state
+		const { panelListState } = this.state
 		return(
 			<div>
 				<div className="panel-table-options">
@@ -185,8 +173,8 @@ class PanelTable extends React.Component {
 							/>
 						</Col>
 						<Col span={12} style={{ textAlign: 'right' }}>
-							{ 
-								buttonAddVisible === true ? 
+							<UserAccessContext.Consumer>
+								{value => value.userAccess.settings.create && (
 									<Button 
 										type="primary" 
 										shape="round" 
@@ -196,9 +184,8 @@ class PanelTable extends React.Component {
 										<Icon type="plus" />
 										{drawerAddTitle}
 									</Button>
-								: 
-								null 
-							} 
+								)}
+							</UserAccessContext.Consumer>
 							<TablePager handleChange={this.handleSelectChange} />
 						</Col>
 					</Row>
@@ -208,7 +195,7 @@ class PanelTable extends React.Component {
 					size={tableSize}
 					dataSource={panelListState}
 					pagination={{ ...this.state.pagination, showSizeChanger: false }}
-					loading={this.state.loading} 
+					// loading={this.state.loading} 
 					columns={columns}
 					rowKey={record => record.key}
 					onRow={(record) => {
@@ -219,6 +206,7 @@ class PanelTable extends React.Component {
 						}
 					}}
 				/>
+				
 				<Drawer 
 					title={this.state.drawerTitle}
 					visible={this.state.isDrawerVisible}
@@ -226,11 +214,11 @@ class PanelTable extends React.Component {
 					width="60%"
 					destroyOnClose
 				>
-					{/* <PanelForm 
+					<PanelForm 
 						drawerButton={this.state.drawerButton} 
 						panelInfo={this.state.panelInfo}
 						onCancel={this.onClose}
-					/> */}
+					/>
 				</Drawer>
 			</div>
 		);

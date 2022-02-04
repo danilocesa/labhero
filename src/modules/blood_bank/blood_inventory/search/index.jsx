@@ -7,16 +7,14 @@ import PageTitle from 'shared_components/page_title';
 import BloodInventoryDetailsForm from "../item_detail";
 import SearchPager from 'shared_components/search_pager';
 import {  tablePageSize } from "modules/inventory/settings/settings";
-import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI, tabSearch } from 'services/blood_inventory/blood_inventory';
+import {  searchInventoryAvailableAPI , searchInventoryNearExpiryAPI } from 'services/blood_inventory/blood_inventory';
 
 function SearchBloodInventory(props) {
   const { state } = props.history.location
-  console.log("🚀 ~ file: index.jsx ~ line 14 ~ SearchBloodInventory ~ state", state)
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [selectedID, setSelectedID] = useState(null);
   const [DataFromForm , setDataFromForm] = useState([])
-  const [cachedPayload, setCachedPayload] = useState(null)
+  const [cachedPayload, ] = useState(null)
   const [visibleDrawer, setvisibleDrawer] = useState(false);
   
   const { TabPane } = Tabs;
@@ -133,7 +131,6 @@ function SearchBloodInventory(props) {
       </Tabs>
       <SearchTable
         data={data}
-        loading={loading}
         displayDrawerUpdate={displayDrawerUpdate}
       />
       <Drawer

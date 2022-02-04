@@ -27,15 +27,27 @@ class BloodTestsForm extends React.Component {
 		const loggedinUser = JSON.parse(sessionStorage.getItem(LOGGEDIN_USER_DATA));
 		const { drawerButton } = this.props;
     	const payload = {
+				module:1,
+				normal_values:values.normal_values,
+				maximum_values:12,
+				minimum_values:12,
+				prompt_message:"Message",
+				uom:"SAMPLE",
 				reference_id:1,
 				reference_field_name:"Sample",
+				remarks:"SAMPLE",
 				custom_fields:[],
-				normal_value_id :values.normal_value_id,
-				normal_values :values.normal_values,
-				is_active: (values.is_active === true) ? 1 : 0,
-				created_by: loggedinUser.userID,
-				created_date:"2021-03-11 15:56:32",
-				module:1
+				is_active:true,
+				created_by:1
+				// reference_id:1,
+				// reference_field_name:"Sample",
+				// custom_fields:[],
+				// normal_value_id :values.normal_value_id,
+				// normal_values :values.normal_values,
+				// is_active: (values.is_active === true) ? 1 : 0,
+				// created_by: loggedinUser.userID,
+				// created_date:"2021-03-11 15:56:32",
+				// module:1
 			};
   	if(drawerButton === drawerAdd){
 			const createdNormalValuesResponse = await createNormalValuesAPI(payload);

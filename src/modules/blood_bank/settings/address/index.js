@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Row } from 'antd'; 
+import { Select } from 'antd'; 
 import ProvinceAddressTable from './table/provinceTable'
 import CityAddressTable from './table/cityTable'
 import BarangayAddressTable from './table/barangayTable'
@@ -17,7 +17,6 @@ export default class Address extends Component {
 
   render() {
     const { addressType } = this.state;
-    console.log("🚀 ~ file: index.js ~ line 20 ~ Address ~ render ~ addressType", addressType)
     return (
       <div>
         <section style={{ textAlign: 'center', marginTop: 5 }}>
