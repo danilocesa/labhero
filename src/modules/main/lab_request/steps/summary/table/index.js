@@ -24,9 +24,6 @@ const columns = [
 		title: 'SECTION',
 		dataIndex: ['selectedSection', 'sectionName'],
 		width: 200,
-		render:(value, row) => {
-		
-		}
 	},
 	{
 		title: 'EXAM NAME',
@@ -106,6 +103,7 @@ class SummaryTable extends React.Component {
 	
 	render() {
 		const { exams } = this.state;
+    console.log("🚀 ~ file: index.js ~ line 109 ~ SummaryTable ~ render ~ exams", exams)
 
 		return (
 			<Row style={{ marginTop: 20 }}>

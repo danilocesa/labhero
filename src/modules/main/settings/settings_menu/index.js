@@ -41,16 +41,16 @@ const settingsItemData = [
 		link: '/settings/user-rights',
 		label: 'USER RIGHTS'
 	},
-	{
-		image: UserMaintenanceIcon,
-		link: '/settings/address',
-		label: 'ADDRESS'
-	},
-	{
-		image: UserMaintenanceIcon,
-		link: '/settings/hospital',
-		label: 'HOSPITAL'
-	},
+	// {
+	// 	image: UserMaintenanceIcon,
+	// 	link: '/settings/address',
+	// 	label: 'ADDRESS'
+	// },
+	// {
+	// 	image: UserMaintenanceIcon,
+	// 	link: '/settings/hospital',
+	// 	label: 'HOSPITAL'
+	// },
 	{
 		image: Report,
 		link: '/settings/reports',
