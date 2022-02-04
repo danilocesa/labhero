@@ -20,13 +20,13 @@ class StorageForm extends React.Component {
 		const { drawerButton, selectedBloodStorage } = this.props;
     	const payload = {
 			blood_storage_id :selectedBloodStorage.blood_storage_id,
-      created_date: values.created_date,
-      last_updated_by: values.last_updated_by,
-      last_updated_date: values.last_updated_date,
+			created_date: values.created_date,
+			last_updated_by: values.last_updated_by,
+			last_updated_date: values.last_updated_date,
 			storage_name :values.storage_name,
 			storage_desc : values.storage_desc,	
 			is_active: (values.is_active === true) ? 1 : 0,
-      created_by: 1
+      		created_by: 1
 		};
 		if(drawerButton === drawerAdd){
 			const createdBloodStorageResponse = await createBloodStorageAPI(payload);
@@ -63,9 +63,14 @@ class StorageForm extends React.Component {
     this.setState({ disabled:false })
   }
 
+  onChange = (checked) => {
+	console.log(`switch to ${checked}`);
+  }
+
   render() {
     const { disabled } = this.state
     const { drawerButton, selectedBloodStorage } = this.props
+    console.log("🚀 ~ file: index.js ~ line 73 ~ StorageForm ~ render ~ selectedBloodStorage", selectedBloodStorage)
     return (
       <div>
         <Form
@@ -107,8 +112,9 @@ class StorageForm extends React.Component {
           >
             <Input style={{ textTransform: 'uppercase'}} maxLength={50} onChange={this.onDisable}/>
           </Form.Item>
-          <Form.Item
-					  maxLength={100}
+          <Form.Item 
+			// @ts-ignore
+          	maxLength={100}
             label="DESCRIPTION"
             name= 'storage_desc'
           >

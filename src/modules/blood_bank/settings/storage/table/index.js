@@ -41,6 +41,7 @@ class StorageTable extends React.Component {
   async componentDidMount() {
 		this.setState({loading:true});
 		const response = await fetchBloodStorage();
+    console.log("🚀 ~ file: index.js ~ line 44 ~ StorageTable ~ componentDidMount ~ response", response)
 		
 		this.setState({ 
 			bloodStorageItem: response,
