@@ -28,6 +28,7 @@ class StorageForm extends React.Component {
 			is_active: (values.is_active === true) ? 1 : 0,
       		created_by: loggedinUser.userID
 		};
+                    console.log("🚀 ~ file: index.js ~ line 31 ~ StorageForm ~ onFinish= ~ payload", payload)
 		if(drawerButton === drawerAdd){
 			const createdBloodStorageResponse = await createBloodStorageAPI(payload);
 			// @ts-ignore
