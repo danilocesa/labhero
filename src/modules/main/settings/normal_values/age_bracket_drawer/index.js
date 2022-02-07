@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Drawer, Button, Row, Col, Icon } from 'antd';
+import { UserAccessContext } from 'context/userAccess';
 import Message from 'shared_components/message';
 import TablePager from 'shared_components/table_pager';
 import { fetchAgeBracketList, createAgeBracket, updateAgeBracket } from 'services/settings/ageBracket';
@@ -212,6 +213,8 @@ class AgeBracketDrawer extends React.Component{
 					<Row style={{ marginTop: 50 }}>
 						<Col span={24} style={{ textAlign: 'right' }}>
 							<>
+							<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
 								<Button 
 									shape="round"
 									type="primary" 
@@ -221,6 +224,8 @@ class AgeBracketDrawer extends React.Component{
 								>
 									<Icon type="plus" /> {buttonNames.addAgeBracket}
 								</Button>
+								)}
+								</UserAccessContext.Consumer>
 								<TablePager handleChange={this.onChangePager} />
 							</>
 						</Col>

@@ -9,7 +9,7 @@ import {
 	getAllItemRanges, 
 	updateExamItemRage 
 } from 'services/settings/examItemRange';
-
+import { UserAccessContext } from 'context/userAccess';
 import NormalValuesTable from './table';
 import FillupForm from '../fillup_form';
 import { 
@@ -199,14 +199,18 @@ class NormalValuesDrawer extends React.Component{
 					<Row style={{ marginTop: 50 }}>
 						<Col span={24} style={{ textAlign: 'right' }}>
 							<>
-								<Button 
-									shape="round"
-									type="primary" 
-									style={{ marginRight: 10 }}
-									onClick={this.onClickAdd}
-								>
-									<Icon type="plus" /> {buttonNames.addNormalValues}
-								</Button>
+								<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+										<Button 
+											shape="round"
+											type="primary" 
+											style={{ marginRight: 10 }}
+											onClick={this.onClickAdd}
+										>
+											<Icon type="plus" /> {buttonNames.addNormalValues}
+										</Button>
+									)}
+								</UserAccessContext.Consumer>
 								<TablePager handleChange={this.onChangePager} />
 							</>
 						</Col>

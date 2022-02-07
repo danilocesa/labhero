@@ -3,6 +3,7 @@ import React from 'react';
 import { Col, Switch, Typography, Form, Input, Select, Button, Row as AntRow } from 'antd';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { UserAccessContext } from 'context/userAccess';
 import { RegexInput, AlphaNumInput } from 'shared_components/pattern_input';
 import HttpCodeMessage from 'shared_components/message_http_status';
 import { createUserAccountAPI, updateUserAccountAPI } from 'services/settings/userAccount';
@@ -316,9 +317,18 @@ class UserAccountForm extends React.Component {
 							<Button shape="round" style={{ marginRight: 8, width: 120 }} onClick={this.props.onClose}>
 								{buttonLabels.cancel}
 							</Button>
-							<Button type="primary" shape="round" style={{ margin: 10, width: 120 }} htmlType="submit">
+							<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
+							<Button 
+								type="primary" 
+								shape="round" 
+								style={{ margin: 10, width: 120 }}
+								htmlType="submit"
+							>
 								{drawerButton}
 							</Button>
+								)}
+								</UserAccessContext.Consumer>
 						</React.Fragment>
 					</section>
 				</Form>

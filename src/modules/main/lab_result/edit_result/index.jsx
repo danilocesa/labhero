@@ -32,6 +32,7 @@ class EditResult extends React.Component {
 			patientOtherInfo: {},
 			isDisplayPrint: false,
 			isResultsTouched: false,
+			approvedButtonDisable: true
 		};
 
 		this.resultTable = React.createRef();
@@ -112,7 +113,10 @@ class EditResult extends React.Component {
 	}
 	
 	onChangeResult = () => {
-		this.setState({ isResultsTouched: true });
+		this.setState({ 
+			isResultsTouched: true,
+			approvedButtonDisable : false
+		});
 	}
 
 	onSaveSuccess = () => {
@@ -165,9 +169,8 @@ class EditResult extends React.Component {
 	}
 
 	render() {
-		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched, patientOtherInfo } = this.state;
-    console.log("🚀 ~ file: index.jsx ~ line 169 ~ EditResult ~ render ~ formatedResults", formatedResults)
-		const { patientInfo, examDetails } = this.props;
+		const { results, isLoading, formatedResults, isDisplayPrint, isResultsTouched, patientOtherInfo, approvedButtonDisable } = this.state;
+   	const { patientInfo, examDetails } = this.props;
 
     return (
 	    <Row>
@@ -204,6 +207,7 @@ class EditResult extends React.Component {
 						{({ userAccess }) => userAccess.result.update && 
 							(
 								<Actions 
+									approvedButtonDisable={approvedButtonDisable}
 									getLabResultFormValues={this.getFormValues} 
 									onSaveSuccess={this.onSaveSuccess}
 									onPrint={this.onPrint}

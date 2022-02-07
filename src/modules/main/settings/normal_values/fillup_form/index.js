@@ -6,6 +6,7 @@ import { fetchAgeBracketList } from 'services/settings/ageBracket';
 import { getAllRangeClass } from 'services/settings/ExamItemRangeClass';
 import { getAnalyzers } from 'services/settings/examItemRange';
 import FIELD_RULES from './constants';
+import { UserAccessContext } from 'context/userAccess';
 import { fieldLabels, formMode, buttonNames} from '../settings';
 
 import './fillup_form.css';
@@ -409,6 +410,8 @@ class FillupForm extends React.Component {
 						>
 							{buttonNames.cancel}
 						</Button>
+						<UserAccessContext.Consumer>
+									{value => value.userAccess.settings.create && (
 						<Button 
 							shape="round" 
 							type="primary" 
@@ -418,6 +421,8 @@ class FillupForm extends React.Component {
 						>
 							{(moduleType === formMode.add) ?  buttonNames.create : buttonNames.update}
 						</Button>
+						)}
+						</UserAccessContext.Consumer>
 					</div>
 				</section>
 			</Form>

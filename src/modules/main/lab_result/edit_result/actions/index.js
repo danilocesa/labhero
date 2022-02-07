@@ -19,7 +19,7 @@ class Actions extends React.Component {
 		this.state = { 
 			// isDisplayModal: false,
 			isApproving: false,
-			isSaving: false
+			// isSaving: false
 		};
 	}
 
@@ -81,8 +81,8 @@ class Actions extends React.Component {
 
 
   render() {
-		const { isSaving, isApproving } = this.state;
-		const { onPrint, resultStatus, isResultsTouched } = this.props;
+		const { isApproving } = this.state;
+		const { onPrint, resultStatus, isResultsTouched, approvedButtonDisable } = this.props;
 
 		return (
 	    <div className="lab-res-edit-action-container">
@@ -92,7 +92,7 @@ class Actions extends React.Component {
 					type="primary" 
 					onClick={this.onClickApprove}
 					className="action-buttons"
-					disabled={isSaving}
+					disabled={approvedButtonDisable}
 				>
 					{ resultStatus === 'Approve' ? 'DISAPPROVE' : 'APPROVE' }
 				</Button>
@@ -106,7 +106,7 @@ class Actions extends React.Component {
 					PRINT
 				</Button>
 				<Button 
-					loading={isSaving}
+					// loading={isSaving}
 					shape="round" 
 					type="primary" 
 					onClick={this.onClickSave}
@@ -128,6 +128,7 @@ Actions.propTypes = {
 	onPrint: PropTypes.func.isRequired,
 	resultStatus: PropTypes.string.isRequired,
 	isResultsTouched: PropTypes.bool.isRequired,
+	approvedButtonDisable:PropTypes.bool
 };
 
 export default Actions;
