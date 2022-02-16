@@ -22,6 +22,8 @@ import SelectTable from './table';
 // import SectionHeaderNew from './newSection_header'
 // import SectionContentNew from './newSection_content'
 import Navigation from './navigation';
+import content from 'shared_components/layout/content';
+import { cps } from 'redux-saga/effects';
 
 
 const ColLayout = {
@@ -468,7 +470,7 @@ class SelectStep extends React.Component {
 		const { selectedSection, selectedSpecimen, selectedContents } = this.state;
 		const isExistingContent = selectedContents.some(iContent => contents.includes(iContent));
 		const newSelectedContents = selectedContents.map(item => item); // Clone selectedContents
-		
+
 		// Add selectedContent to the array of selectedContent(s)
 		if(!isExistingContent)
 			newSelectedContents.push(...contents);
@@ -603,6 +605,7 @@ class SelectStep extends React.Component {
 	removeSelectedExamByExam = ({ examID }) => {
 
 		const { exams, selectedExams, selectedSection, selectedContents } = this.state;
+
 		const { sectionCode } = selectedSection;
 		const targetExam = exams.find(exam => examID === exam.examID);
 
@@ -620,6 +623,52 @@ class SelectStep extends React.Component {
 		this.setState(newState, () => {
 			if(sectionCode !== 'panel' && sectionCode !== null)
 				this.unselectExams([{ examID }]);
+		});
+	}
+
+	// DAM - 2022-02-10
+	// Note. This function is use for removing Exams by Section and Specimen
+	// Used when unselecting exam from both tables(left and right).
+	removeSelectedSpecimen = ({ sectionID, specimenID }) => {
+		const { exams, selectedExams, selectedContents } = this.state;
+		console.log("exams", exams)
+		const newSelectedExams = selectedExams.filter(exam => {
+			return !(exam["selectedSection"].sectionID === sectionID 
+				&& exam["selectedSpecimen"].specimenID === specimenID)
+		});
+
+		console.log('newSelectedExams', newSelectedExams)
+
+		const newSelectedContent = [];
+
+		if(newSelectedExams.length > 0){
+			newSelectedExams.forEach( selectedExam => {
+				const currentExam = exams.find(exam => exam.examID === selectedExam.examID)
+
+				console.log('currentExam', currentExam)
+
+				if(currentExam){
+					newSelectedContent.push(...currentExam.contents)
+				}
+			})
+		}
+
+		const newState = {
+			selectedExams: newSelectedExams,
+			selectedContents: newSelectedContent
+		};
+
+		console.log("newState", newState)
+
+		this.setState(newState, () => {
+			const deselectedExams = selectedExams.filter(exam => {
+				return (exam["selectedSection"].sectionID === sectionID 
+					&& exam["selectedSpecimen"].specimenID === specimenID)
+			});
+			
+			this.unselectExams(deselectedExams);
+				
+			console.log('After Deselect', this.state)
 		});
 	}
 
@@ -721,6 +770,7 @@ class SelectStep extends React.Component {
 									selectedExams={selectedExams}
 									removeSelectedExamByPanel={this.removeSelectedExamByPanel}
 									removeSelectedExamByExam={this.removeSelectedExamByExam}
+									removeSelectedSpecimen={this.removeSelectedSpecimen}
 									removeAllExams={this.removeAllExams} 
 									populatePanels={this.populatePanels}
 								/>

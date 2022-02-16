@@ -80,11 +80,12 @@ class SummaryStep extends React.Component {
 		// 		});
 		// });
 
+
+		// DAM - 2022-02-16 - Adjusted newExams Constant. Removed sampleID and adjust sampleSpecimenID
 		const newExams = exams.map(x => ({
 			sectionID: x.selectedSection.sectionID,
-			sampleID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
 			specimenID: x.selectedSpecimen ? x.selectedSpecimen.specimenID : '',
-			sampleSpecimenID: x.sampleSpecimenID ? x.selectedSpecimen.specimenID : '',
+			sampleSpecimenID: x.sampleSpecimenID ? x.sampleSpecimenID : '',
 			panelID: x.selectedPanel ? x.selectedPanel.panelID : null,
 			examID: x.examID,
 			priority: ''
@@ -108,8 +109,6 @@ class SummaryStep extends React.Component {
 					priority: ''
 				});
 		});
-
-
 
 		const payload = {
 			...restOtherInfo,
