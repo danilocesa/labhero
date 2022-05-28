@@ -7,7 +7,7 @@ export const API_POST_METHOD = 'POST';
 export const API_PUT_METHOD = 'PUT';
 
 // API's
-export const apiURL = '----------';
+export const apiURL = '';
 // Patient
 export const apiUrlPatientByID = "lab/Patient/id/";
 export const apiUrlPatientByName = "lab/Patient/name/";

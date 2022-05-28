@@ -16,8 +16,8 @@ pipelines:
             - npm run build
             - pipe: atlassian/aws-s3-deploy:0.2.1
               variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
+                AWS_ACCESS_KEY_ID: ""
+                AWS_SECRET_ACCESS_KEY: ""
                 AWS_DEFAULT_REGION: "us-east-1"
                 S3_BUCKET: "hh-labhero-test"
                 LOCAL_PATH: "build"
@@ -42,8 +42,8 @@ pipelines:
           script:
             - pipe: atlassian/aws-s3-deploy:0.2.1
               variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
+                AWS_ACCESS_KEY_ID: ""
+                AWS_SECRET_ACCESS_KEY: ""
                 AWS_DEFAULT_REGION: "us-east-1"
                 S3_BUCKET: "hh-labhero-test"
                 LOCAL_PATH: "build"
@@ -65,8 +65,8 @@ pipelines:
           script:
             - pipe: atlassian/aws-s3-deploy:0.2.1
               variables:
-                AWS_ACCESS_KEY_ID: "----------"
-                AWS_SECRET_ACCESS_KEY: "----------"
+                AWS_ACCESS_KEY_ID: ""
+                AWS_SECRET_ACCESS_KEY: ""
                 AWS_DEFAULT_REGION: "us-east-1"
                 S3_BUCKET: "hh-labhero-app"
                 LOCAL_PATH: "build"
